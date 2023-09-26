@@ -9,6 +9,24 @@
         where email = #{email} AND status = #{status}
     </select>
 
+    <select id="findUserDetail" parameterType="String" resultMap="userResultMap">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <update id="disableUser" parameterType="String" >
+        UPDATE user SET status = "DISABLE" WHERE id = #{id}
+    </update>
+
+    <update id="approveUserRegisterRequest" parameterType="String">
+        UPDATE user SET
+    </update>
+
+    <update id="">
+        UPDATE user SET
+    </update>
+
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>
         <result property="fullname" column="fullname"/>
