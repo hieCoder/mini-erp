@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class UserResponse {
-    private Long id;
+    private String id;
     private String fullname;
     private String dateOfBirth;
     private String phone;
