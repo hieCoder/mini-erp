@@ -8,6 +8,7 @@
     <include file="db/changelog/timesheets-changelog-create.xml" />
     <include file="db/changelog/accounting-changelog-create.xml" />
     <include file="db/changelog/notification-changelog-create.xml" />
+    <include file="db/changelog/comment_notification-changelog-create.xml" />
 
     <include file="db/changelog/changelog-add-constraint.xml" />
 </databaseChangeLog>
