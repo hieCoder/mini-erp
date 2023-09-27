@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.response.UserResponse;
-import liquibase.pro.packaged.P;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,5 +16,12 @@ public interface UserMapper {
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,
                           @Param("pageSize") int pageSize);
-    User getUserById(String id); // Get User By ID
+
+    User findUserDetail(@Param("id") String id);
+
+    void changeStatusUser(@Param("id") String id,@Param("status") String status);
+
+    void activeUserRegisterRequest(User user);
+
+    void deleteUser(String id);
 }

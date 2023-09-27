@@ -1,7 +1,8 @@
 package com.shsoftvina.erpshsoftvina.converter.user;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.response.UserResponse;
+import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.stream.Collectors;
 @Component
 public class UserConverter {
 
-    public UserResponse toResponse(User user) {
-        return UserResponse.builder()
+    public UserDetailResponse toResponse(User user) {
+        return UserDetailResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
-                .dateOfBirth(user.getDepartment())
+                .dateOfBirth(user.getDateOfBirth())
                 .phone(user.getPhone())
                 .emergencyPhone(user.getEmergencyPhone())
                 .avatar(user.getAvatar())
@@ -33,14 +34,23 @@ public class UserConverter {
                 .build();
     }
 
-    public List<UserResponse> toListResponse(List<User> listUser) {
-        return listUser.stream().map(user -> UserResponse.builder()
+    public List<UserDetailResponse> toListResponse(List<User> listUser) {
+        return listUser.stream().map(user -> UserDetailResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
                 .department(user.getDepartment())
                 .type(user.getType())
                 .status(user.getStatus())
                 .build()).collect(Collectors.toList());
+    }
+
+    public User toEntity(UserActiveRequest userActiveRequest) {
+        return User.builder()
+                .id(userActiveRequest.getId())
+                .role(userActiveRequest.getRole())
+                .email(userActiveRequest.getEmail())
+                .status(userActiveRequest.getStatus())
+                .build();
     }
 
 }
