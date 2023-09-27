@@ -12,4 +12,13 @@
                                  constraintName="fk_timesheets_user"/>
     </changeSet>
 
+    <!-- add column user_id into table accounting and create foreign key constraint -->
+    <changeSet id="2" author="team2">
+        <addForeignKeyConstraint baseTableName="accounting"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_accounting_user"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -16,4 +16,18 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <addColumn tableName="timesheets">
+            <column name="work_date" type="DATE"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <modifyDataType tableName="timesheets" columnName="checkin" newDataType="TIME"/>
+    </changeSet>
+
+    <changeSet id="4" author="team2">
+        <modifyDataType tableName="timesheets" columnName="checkout" newDataType="TIME"/>
+    </changeSet>
+
 </databaseChangeLog>

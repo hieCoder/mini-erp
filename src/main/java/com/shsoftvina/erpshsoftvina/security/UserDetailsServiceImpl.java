@@ -36,7 +36,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // Return the user, which is typically an instance of your custom User class
         // that implements the UserDetails interface and represents the authenticated user.
-        System.out.println(123);
         return user;
     }
 }
