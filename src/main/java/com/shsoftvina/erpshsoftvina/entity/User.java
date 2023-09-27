@@ -22,7 +22,7 @@ import java.util.List;
 @Builder
 public class User implements UserDetails {
 
-    private Long id;
+    private String id;
     private String fullname;
     private String dateOfBirth;
     private String phone;
