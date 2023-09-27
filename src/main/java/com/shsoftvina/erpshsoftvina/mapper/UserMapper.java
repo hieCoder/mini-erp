@@ -1,7 +1,6 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponseDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +11,9 @@ public interface UserMapper {
 
     User findUserDetail(@Param("id") String id);
 
-    void disableUser(String id);
+    void changeStatusUser(@Param("id") String id,@Param("status") String status);
 
-    void approveUserRegisterRequest(User user);
+    void activeUserRegisterRequest(User user);
+
+    void declineUserRegisterRequest(String id);
 }

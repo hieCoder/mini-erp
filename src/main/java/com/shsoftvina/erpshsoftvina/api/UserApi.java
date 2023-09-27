@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.model.request.UserCreateRequestDTO;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponseDTO;
+import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class UserApi {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findUserDetail(@PathVariable("id") String id) {
-        UserDetailResponseDTO userDetailResponse = userService.findUserDetail(id);
+        UserDetailResponse userDetailResponse = userService.findUserDetail(id);
         return new ResponseEntity<>(userDetailResponse, HttpStatus.OK);
     }
 
@@ -27,8 +27,7 @@ public class UserApi {
     }
 
     @PutMapping("/approval")
-    public ResponseEntity<?> approveUserRegisterRequest(@RequestBody() UserCreateRequestDTO user) {
-        userService.approveUserRegisterRequest(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Boolean> activeUserRegisterRequest(@RequestBody() UserActiveRequest user) {
+        return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
 }

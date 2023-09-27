@@ -1,14 +1,14 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.request.UserCreateRequestDTO;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponseDTO;
+import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
-    public UserDetailResponseDTO convertEntityToDetailResponse(User user) {
-        return UserDetailResponseDTO.builder()
+    public UserDetailResponse convertEntityToDetailResponse(User user) {
+        return UserDetailResponse.builder()
                 .allowance(user.getAllowance())
                 .atm(user.getAtm())
                 .insurance(user.getId())
@@ -28,13 +28,12 @@ public class UserConverter {
                 .build();
     }
 
-    public User convertCreateRequestToEntity(UserCreateRequestDTO userCreateRequestDTO) {
+    public User toEntity(UserActiveRequest userActiveRequest) {
         return User.builder()
-                .id(userCreateRequestDTO.getId())
-                .username(userCreateRequestDTO.getUsername())
-                .email(userCreateRequestDTO.getEmail())
-                .role(userCreateRequestDTO.getRole())
-                .status(userCreateRequestDTO.getChoice())
+                .id(userActiveRequest.getId())
+                .role(userActiveRequest.getRole())
+                .email(userActiveRequest.getEmail())
+                .status(userActiveRequest.getStatus())
                 .build();
     }
 }

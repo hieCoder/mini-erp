@@ -15,17 +15,17 @@
         WHERE id = #{id}
     </select>
 
-    <update id="disableUser" parameterType="String" >
-        UPDATE user SET status = "DISABLE" WHERE id = #{id}
+    <update id="changeStatusUser" parameterType="String" >
+        UPDATE user SET status = #{status} WHERE id = #{id}
     </update>
 
-    <update id="approveUserRegisterRequest" parameterType="String">
-        UPDATE user SET
+    <update id="activeUserRegisterRequest" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        UPDATE user SET role = #{role} , status = #{status} where id = #{id}
     </update>
 
-    <update id="">
-        UPDATE user SET
-    </update>
+    <delete id="declineUserRegisterRequest" parameterType="String">
+       DELETE from user where id = #{id}
+    </delete>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>

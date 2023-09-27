@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
+import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
 import com.shsoftvina.erpshsoftvina.enums.TypeUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +42,7 @@ public class User implements UserDetails {
     private String email; // user_id
     private String password;
     private RoleEnum role;
-    private String status;
+    private StatusEnum status;
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override

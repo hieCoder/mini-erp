@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.model.request;
 
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
+import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserCreateRequestDTO {
+public class UserActiveRequest {
     private String id;
-    private String username;
     private String email;
     private RoleEnum role;
-    private String choice;
+    private StatusEnum status;
 }
