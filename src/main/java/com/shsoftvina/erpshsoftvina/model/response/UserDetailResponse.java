@@ -29,6 +29,7 @@ public class UserDetailResponse {
     private Long allowance;
     private String insurance;
     private String atm;
+    private String username;
     private String email; // user_id
     private RoleEnum role;
     private StatusEnum status;
