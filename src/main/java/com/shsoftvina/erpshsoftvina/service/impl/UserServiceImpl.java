@@ -8,12 +8,10 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.DataMailDTO;
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
-import com.shsoftvina.erpshsoftvina.service.MailService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.ultis.SendMailUlti;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -22,8 +20,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private UserConverter userConverter;
-    @Autowired
-    private MailService mailService;
     @Autowired
     private SendMailUlti sendMailUlti;
 
