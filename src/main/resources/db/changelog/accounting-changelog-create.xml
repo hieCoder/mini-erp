@@ -17,4 +17,10 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <addColumn tableName="accounting">
+            <column name="title" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

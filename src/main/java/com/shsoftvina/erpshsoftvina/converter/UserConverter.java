@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +11,7 @@ public class UserConverter {
         return UserDetailResponse.builder()
                 .allowance(user.getAllowance())
                 .atm(user.getAtm())
-                .insurance(user.getId())
+                .insurance(user.getInsurance())
                 .role(user.getRole())
                 .avatar(user.getAvatar())
                 .id(user.getId())
