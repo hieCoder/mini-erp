@@ -12,4 +12,31 @@
                                  constraintName="fk_timesheets_user"/>
     </changeSet>
 
+    <!-- add column user_id into table accounting and create foreign key constraint -->
+    <changeSet id="2" author="team2">
+        <addForeignKeyConstraint baseTableName="accounting"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_accounting_user"/>
+    </changeSet>
+
+    <!-- add column user_id into table comment_notification and create foreign key constraint -->
+    <changeSet id="3" author="team2">
+        <addForeignKeyConstraint baseTableName="comment_notification"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_comment_notification_user"/>
+    </changeSet>
+
+    <!-- add column notification_id into table comment_notification and create foreign key constraint -->
+    <changeSet id="4" author="team2">
+        <addForeignKeyConstraint baseTableName="comment_notification"
+                                 baseColumnNames="notification_id"
+                                 referencedTableName="notification"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_comment_notification_notification"/>
+    </changeSet>
+
 </databaseChangeLog>

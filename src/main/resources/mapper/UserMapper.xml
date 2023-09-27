@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.UserMapper">
 
-    <select id="findByEmailAndStatus" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+    <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM user
         where email = #{email} AND status = #{status}
