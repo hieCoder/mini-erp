@@ -9,6 +9,18 @@
         where email = #{email} AND status = #{status}
     </select>
 
+<!-- Get user combined with sorting and searching (if any)   -->
+    <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+         <![CDATA[
+        SELECT u.id, u.fullname, u.department, u.type
+        FROM user AS u
+        WHERE u.status = 'ACTIVE'
+        AND (u.id = #{searchTerm} OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
+        LIMIT #{start}, #{pageSize};
+        ]]>
+    </select>
+
     <select id="findUserDetail" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM user

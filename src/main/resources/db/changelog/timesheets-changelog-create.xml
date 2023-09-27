@@ -30,4 +30,5 @@
         <modifyDataType tableName="timesheets" columnName="checkout" newDataType="TIME"/>
     </changeSet>
 
+
 </databaseChangeLog>
