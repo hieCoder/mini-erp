@@ -25,6 +25,7 @@ public class UserConverter {
                 .jobStartDate(user.getJobStartDate())
                 .status(user.getStatus())
                 .fullname(user.getFullname())
+                .username(user.getUsername())
                 .build();
     }
 

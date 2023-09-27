@@ -26,7 +26,7 @@ public class UserApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/approval")
+    @PutMapping("/register/approval")
     public ResponseEntity<Boolean> activeUserRegisterRequest(@RequestBody() UserActiveRequest user) {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
