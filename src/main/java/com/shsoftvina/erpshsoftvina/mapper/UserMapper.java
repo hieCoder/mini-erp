@@ -4,6 +4,8 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -16,4 +18,9 @@ public interface UserMapper {
     void activeUserRegisterRequest(User user);
 
     void deleteUser(String id);
+//  Declare using sql query to get information about all users
+    List<User> getAllUser(@Param("searchTerm") String id,
+                          @Param("sortDirection") String sortDirection,
+                          @Param("start") int start,
+                          @Param("pageSize") int pageSize);
 }

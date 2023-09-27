@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.MailConstant;
-import com.shsoftvina.erpshsoftvina.converter.UserConverter;
+import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
@@ -13,6 +13,8 @@ import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.ultis.SendMailUlti;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailResponse findUserDetail(String id) {
         User user = userMapper.findUserDetail(id);
-        return userConverter.convertEntityToDetailResponse(user);
+        return userConverter.toResponse(user);
     }
 
     @Override
@@ -51,4 +53,19 @@ public class UserServiceImpl implements UserService {
             return sendMailUlti.sendEmail(dataMailDTO);
         }
     }
+
+
+
+//  The method returns the entire list of converted users
+    @Override
+    public List<UserDetailResponse> getAllUser(String searchTerm, String sortDirection, int start, int pageSize) {
+//      List of all Users
+        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize);
+
+//      Convert list User entity to List User UserResponse to return to user
+        List<UserDetailResponse> mapperListUser = userConverter.toListResponse(listUser);
+
+        return mapperListUser;
+    }
+
 }
