@@ -1,7 +1,9 @@
 package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+
+import java.util.List;
 
 import java.util.List;
 
@@ -14,4 +16,5 @@ public interface UserService {
     void disableUser(String id);
 
     Boolean activeUserRegisterRequest(UserActiveRequest user);
+
 }

@@ -24,4 +24,5 @@ public interface UserMapper {
     void activeUserRegisterRequest(User user);
 
     void deleteUser(String id);
+
 }

@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter.user;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

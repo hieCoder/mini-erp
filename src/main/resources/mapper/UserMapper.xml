@@ -39,6 +39,7 @@
        DELETE from user where id = #{id}
     </delete>
 
+
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>
         <result property="fullname" column="fullname"/>

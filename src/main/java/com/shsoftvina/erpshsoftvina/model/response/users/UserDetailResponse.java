@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response;
+package com.shsoftvina.erpshsoftvina.model.response.users;
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
