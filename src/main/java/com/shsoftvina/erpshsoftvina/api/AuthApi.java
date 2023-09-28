@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
+import com.shsoftvina.erpshsoftvina.service.AuthService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,16 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/users")
-public class Auth {
+@RequestMapping("/api/v1/auth")
+public class AuthApi {
 
     @Autowired
-    UserService userService;
+    AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserCreateRequest user) {
-            userService.registerUser(user);
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> registerUser(UserRegisterRequest user) {
+            return ResponseEntity.ok(authService.registerUser(user));
     }
 
 
