@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,8 +12,9 @@ public interface UserMapper {
 
     User findByEmailAndStatus(@Param("email") String email, @Param("status") String status);
     User findUserCheckRegister(@Param("email") String email, @Param("username") String username);
-    void registerUser(UserCreateRequest user);
+    int registerUser(User user);
     int updateUser(User user);
+    int createUser(User user);
 //  Declare using sql query to get information about all users
     List<User> getAllUser(@Param("searchTerm") String id,
                           @Param("sortDirection") String sortDirection,
@@ -27,5 +28,4 @@ public interface UserMapper {
     void activeUserRegisterRequest(User user);
 
     void deleteUser(String id);
-
 }

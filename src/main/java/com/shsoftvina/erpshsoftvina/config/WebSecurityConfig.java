@@ -27,7 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Allow unrestricted access to specific endpoints.
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/api/**").permitAll() // api
-                .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/login", "/register").permitAll()// controller
                 // Require authentication for all other requests.
                 .anyRequest().authenticated()
