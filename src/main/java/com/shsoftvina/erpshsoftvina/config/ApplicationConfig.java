@@ -10,5 +10,4 @@ import org.springframework.context.annotation.PropertySource;
 // from which configuration properties will be loaded into the Spring application context.
 @PropertySource("classpath:application.properties")
 public class ApplicationConfig {
-
 }

@@ -25,13 +25,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // Allow unrestricted access to specific endpoints.
+                .antMatchers("/assets/**").permitAll()
+                .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/login", "/register").permitAll()// controller
                 // Require authentication for all other requests.
                 .anyRequest().authenticated()
                 .and()
                 // Configure form-based login.
-                .formLogin();
+                .formLogin()
 //                .loginPage("/login") // Specify the login page URL.
 //                .usernameParameter("username") // Define the parameter name for the username field.
 //                .passwordParameter("password") // Define the parameter name for the password field.
@@ -44,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/logout") // URL for logout.
 //                .logoutSuccessUrl("/login?logout") // URL after successful logout.
 //                .permitAll()
-//                .and()
-//                .csrf().disable(); // Disable CSRF protection.
+              .and()
+              .csrf().disable(); // Disable CSRF protection.
     }
 
     // Inject the userDetailsService for authentication.
