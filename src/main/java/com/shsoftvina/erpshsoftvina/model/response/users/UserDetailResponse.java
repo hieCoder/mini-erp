@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.user;
+package com.shsoftvina.erpshsoftvina.model.response.users;
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
@@ -16,7 +16,6 @@ import java.util.Date;
 @Builder
 public class UserDetailResponse {
     private String id;
-    private String username;
     private String fullname;
     private String dateOfBirth;
     private String phone;
@@ -30,6 +29,7 @@ public class UserDetailResponse {
     private Long allowance;
     private String insurance;
     private String atm;
+    private String username;
     private String email; // user_id
     private RoleEnum role;
     private StatusUserEnum status;

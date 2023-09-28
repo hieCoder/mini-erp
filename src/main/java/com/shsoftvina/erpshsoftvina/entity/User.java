@@ -44,6 +44,7 @@ public class User implements UserDetails {
     private RoleEnum role;
     private StatusUserEnum status;
 
+
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

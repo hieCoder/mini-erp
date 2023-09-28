@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.security;
 
-import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Retrieve a user from the database using the provided username.
-        User user = userMapper.findByEmailAndStatus(email, UserConstant.STATUS_ACTIVE);
+        User user = userMapper.findByEmailAndStatus(email, StatusUserEnum.ACTIVE.toString());
 
         // If the user is not found, throw a UsernameNotFoundException.
         if (user == null) {
