@@ -1,7 +1,8 @@
 package com.shsoftvina.erpshsoftvina.api;
 
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,10 @@ public class UserApi {
     @Autowired
     UserService userService;
 
+    @PostMapping
+    public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
+        return ResponseEntity.ok(userService.updateUser(user));
+    }
     //   API get all User
     @GetMapping
     ResponseEntity<?> getAllUser(
@@ -47,4 +52,5 @@ public class UserApi {
     public ResponseEntity<Boolean> activeUserRegisterRequest(@RequestBody() UserActiveRequest user) {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
+
 }

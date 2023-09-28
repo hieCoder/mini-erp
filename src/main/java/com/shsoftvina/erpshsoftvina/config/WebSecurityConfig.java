@@ -25,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // Allow unrestricted access to specific endpoints.
+                .antMatchers("/assets/**").permitAll()
+                .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/login", "/register").permitAll()// controller
                 // Require authentication for all other requests.
@@ -44,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/logout") // URL for logout.
 //                .logoutSuccessUrl("/login?logout") // URL after successful logout.
 //                .permitAll()
-                .and()
-                .csrf().disable(); // Disable CSRF protection.
+              .and()
+              .csrf().disable(); // Disable CSRF protection.
     }
 
     // Inject the userDetailsService for authentication.

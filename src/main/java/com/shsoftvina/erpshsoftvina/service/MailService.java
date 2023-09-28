@@ -1,9 +1,9 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.model.request.DataMail;
+import com.shsoftvina.erpshsoftvina.model.request.DataMailDTO;
 
 import javax.mail.MessagingException;
 
 public interface MailService {
-    void sendMail(DataMail dataMail) throws MessagingException;
+    void sendMail(DataMailDTO dataMailDTO) throws MessagingException;
 }

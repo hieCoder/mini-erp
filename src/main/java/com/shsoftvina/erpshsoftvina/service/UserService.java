@@ -1,9 +1,12 @@
 package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 
 import java.util.List;
+
 
 public interface UserService {
 
@@ -14,4 +17,10 @@ public interface UserService {
     void disableUser(String id);
 
     Boolean activeUserRegisterRequest(UserActiveRequest user);
+
+    UserDetailResponse findUserCheckRegister(String email, String username);
+
+    void registerUser(UserCreateRequest user);
+
+    int updateUser(UserUpdateRequest user);
 }
