@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.users;
+package com.shsoftvina.erpshsoftvina.model.request.user;
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
@@ -7,30 +7,32 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class UserDetailResponse {
+public class UserUpdateRequest {
     private String id;
+    private String username;
     private String fullname;
     private String dateOfBirth;
     private String phone;
     private String emergencyPhone;
-    private String avatar;
+    private MultipartFile avatar;
     private TypeUserEnum type;
     private String department;
     private Date jobStartDate;
-    private String contract;
+    private MultipartFile contract;
     private Long basicSalary;
     private Long allowance;
     private String insurance;
     private String atm;
-    private String username;
-    private String email; // user_id
+    private String email;
     private RoleEnum role;
     private StatusUserEnum status;
+    private String password;
 }

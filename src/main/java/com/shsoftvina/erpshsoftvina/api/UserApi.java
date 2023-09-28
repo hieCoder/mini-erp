@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.api;
 
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
@@ -16,6 +17,10 @@ public class UserApi {
     @Autowired
     UserService userService;
 
+    @PostMapping
+    public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
+        return ResponseEntity.ok(userService.updateUser(user));
+    }
     //   API get all User
     @GetMapping
     ResponseEntity<?> getAllUser(
