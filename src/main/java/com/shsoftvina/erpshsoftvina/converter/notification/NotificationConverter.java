@@ -1,12 +1,12 @@
-package com.shsoftvina.erpshsoftvina.converter.noti;
+package com.shsoftvina.erpshsoftvina.converter.notification;
 
 import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.model.request.NotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.response.NotificationResponse;
+import com.shsoftvina.erpshsoftvina.model.request.notification.NotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.ultis.DataFormatUtils;
+import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class NotificationConverter {
                 .id(UUID.randomUUID().toString())
                 .title(notificationRequest.getTitle())
                 .content(notificationRequest.getContent())
-                .file(notificationRequest.getFile())
+                .file(FileUtils.convertMultipartFileArrayToString(notificationRequest.getFile()))
                 .createDate(new Date())
                 .build();
     }

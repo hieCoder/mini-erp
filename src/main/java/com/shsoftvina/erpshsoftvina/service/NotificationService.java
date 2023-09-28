@@ -1,8 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.model.request.NotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.response.NotificationResponse;
-import org.apache.ibatis.annotations.Param;
+import com.shsoftvina.erpshsoftvina.model.request.notification.NotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 
 import java.util.List;
 

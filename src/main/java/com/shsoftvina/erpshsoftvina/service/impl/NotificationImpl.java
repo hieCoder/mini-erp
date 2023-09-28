@@ -1,15 +1,18 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.converter.noti.NotificationConverter;
+import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
+import com.shsoftvina.erpshsoftvina.converter.notification.NotificationConverter;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
-import com.shsoftvina.erpshsoftvina.model.request.NotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.response.NotificationResponse;
+import com.shsoftvina.erpshsoftvina.model.request.notification.NotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
-import org.apache.ibatis.annotations.Param;
+import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -21,8 +24,11 @@ public class NotificationImpl implements NotificationService {
     @Autowired
     NotificationConverter notificationConverter;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @Override
-    public List<NotificationResponse> getAllNoti( int start, int pageSize) {
+    public List<NotificationResponse> getAllNoti(int start, int pageSize) {
         List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize);
         return notificationConverter.toListResponse(notificationList);
     }
@@ -34,6 +40,9 @@ public class NotificationImpl implements NotificationService {
 
     @Override
     public void createNoti(NotificationRequest notificationRequest) {
+
+        FileUtils.saveMultipleFilesToServer(request, NotificationConstant.UPLOAD_FILE_DIR,
+                notificationRequest.getFile());
         Notification notification = notificationConverter.toEntity(notificationRequest);
         notificationMapper.createNoti(notification);
     }
