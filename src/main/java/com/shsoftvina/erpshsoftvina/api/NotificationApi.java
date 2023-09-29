@@ -1,13 +1,13 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.model.request.notification.NotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class NotificationApi {
     //    Get all Notification
     @GetMapping
     public ResponseEntity<?> getAllNoti(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                        @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize) {
+                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
         List<NotificationResponse> notificationResponseList =
                 notificationService.getAllNoti((page - 1) * pageSize, pageSize);
@@ -31,26 +31,15 @@ public class NotificationApi {
 
     //    Create New Notification
     @PostMapping
-    public ResponseEntity<?> createNoti(@ModelAttribute NotificationRequest notificationRequest) {
-
-        if (notificationRequest.getFile() == null) notificationRequest.setFile(new MultipartFile[0]);
-        if (notificationRequest.getFile().length > 3) {
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        notificationService.createNoti(notificationRequest);
-
-        return ResponseEntity.ok(true);
+    public ResponseEntity<?> createNoti(CreateNotificationRequest createNotificationRequest) {
+        return ResponseEntity.ok(notificationService.createNoti(createNotificationRequest));
     }
 
     //    Update Notification
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateNoti(@RequestBody NotificationRequest notificationRequest,
+    @PostMapping("/{id}")
+    public ResponseEntity<?> updateNoti(UpdateNotificationRequest updateNotificationRequest,
                                         @PathVariable("id") String id) {
-
-        boolean isUpdateSuccess = notificationService.updateNoti(notificationRequest, id);
-        if (isUpdateSuccess) return ResponseEntity.ok(isUpdateSuccess);
-
-        return new ResponseEntity<>(isUpdateSuccess, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.ok(notificationService.updateNoti(updateNotificationRequest, id));
     }
 
     //    Delete Notification

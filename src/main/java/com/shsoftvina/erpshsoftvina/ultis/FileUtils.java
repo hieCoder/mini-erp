@@ -10,7 +10,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FileUtils {
@@ -41,31 +43,36 @@ public class FileUtils {
         return false;
     }
 
-    public static boolean saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile[] files) {
-        if (files != null && files.length <= 3) {
-            String basePath = request.getSession().getServletContext().getRealPath("/");
-            String grandparentPath = Paths.get(basePath).getParent().getParent().toString();
-            Path savePath = Paths.get(grandparentPath + dir);
+    public static List saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile[] files) {
 
-            try {
-                if (!Files.exists(savePath)) {
-                    Files.createDirectories(savePath);
-                }
+        List<String> listFileName = new ArrayList<>();
 
-                for (MultipartFile file : files) {
-                    if (!file.isEmpty()) {
-                        String fileName = file.getOriginalFilename();
-                        Path filePath = savePath.resolve(fileName);
-                        Files.copy(file.getInputStream(), filePath);
-                    }
-                }
+        boolean isSuccess = true;
 
-                return true;
-            } catch (IOException e) {
-                return false;
+        for(MultipartFile file: files){
+            String fileName = formatNameImage(file);
+            boolean isSave = saveImageToServer(request, dir, file, fileName);
+            listFileName.add(fileName);
+            if(!isSave){
+                isSuccess = false;
+                break;
             }
         }
-        return false;
+
+        if(!isSuccess){
+            for(String fileName: listFileName){
+                deleteImageFromServer(request, dir, fileName);
+            }
+            return null;
+        }
+        return listFileName;
+    }
+
+    public static void deleteMultipleFilesToServer(HttpServletRequest request,String dir, String fileName) {
+        String[] fileNames = fileName.split(",");
+        for(String fn: fileNames){
+            deleteImageFromServer(request, dir, fn);
+        }
     }
 
     public static boolean deleteImageFromServer(HttpServletRequest request,String dir, String fileName) {
@@ -84,14 +91,6 @@ public class FileUtils {
     }
 
     public static String convertMultipartFileArrayToString(MultipartFile[] files) {
-//        if (files != null && files.length > 0) {
-//            return Arrays.stream(files)
-//                    .map(file -> {
-//                        return formatNameImage(file);
-//                    })
-//                    .collect(Collectors.joining(","));
-//        }
-//        return "";
         if (files != null) {
             return Arrays.stream(files)
                     .filter(file -> file != null && !file.isEmpty())
@@ -100,6 +99,6 @@ public class FileUtils {
                     })
                     .collect(Collectors.joining(","));
         }
-        return "";
+        return null;
     }
 }

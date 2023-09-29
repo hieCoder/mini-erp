@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NotificationRequest {
+public class CreateNotificationRequest {
     private String title;
     private String content;
     private MultipartFile[] file;

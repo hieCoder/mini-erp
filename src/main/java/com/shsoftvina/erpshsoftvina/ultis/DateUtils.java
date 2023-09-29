@@ -3,7 +3,7 @@ package com.shsoftvina.erpshsoftvina.ultis;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DataFormatUtils {
+public class DateUtils {
     public static String formatDateTime(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sdf.format(date);

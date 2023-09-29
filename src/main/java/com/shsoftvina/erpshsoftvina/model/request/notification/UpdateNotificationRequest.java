@@ -1,22 +1,17 @@
-package com.shsoftvina.erpshsoftvina.entity;
+package com.shsoftvina.erpshsoftvina.model.request.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Notification {
-
-    private String id;
+public class UpdateNotificationRequest {
     private String title;
     private String content;
-    private String file;
-    private Date createDate;
-
+    private MultipartFile[] file;
 }

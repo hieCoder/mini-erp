@@ -25,6 +25,20 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
+    // Handle FileTooLimitedException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(FileTooLimitedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileTooLimitedException(FileTooLimitedException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    // Handle NotFoundException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileTooLimitedException(NotFoundException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
     // Handle generic Exception and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

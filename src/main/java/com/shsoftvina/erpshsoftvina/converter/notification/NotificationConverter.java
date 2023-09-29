@@ -1,9 +1,10 @@
 package com.shsoftvina.erpshsoftvina.converter.notification;
 
 import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.model.request.notification.NotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
-import com.shsoftvina.erpshsoftvina.ultis.DataFormatUtils;
+import com.shsoftvina.erpshsoftvina.ultis.DateUtils;
 import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
 import org.springframework.stereotype.Component;
 
@@ -20,18 +21,27 @@ public class NotificationConverter {
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .content(notification.getContent())
-                .file(notification.getFile())
-                .createDate(DataFormatUtils.formatDateTime(notification.getCreateDate()))
+                .file(notification.getFile().split(","))
+                .createDate(DateUtils.formatDateTime(notification.getCreateDate()))
                 .build();
     }
 
-    public Notification toEntity (NotificationRequest notificationRequest) {
+    public Notification toEntity (CreateNotificationRequest updateNotificationRequest) {
         return Notification.builder()
                 .id(UUID.randomUUID().toString())
-                .title(notificationRequest.getTitle())
-                .content(notificationRequest.getContent())
-                .file(FileUtils.convertMultipartFileArrayToString(notificationRequest.getFile()))
+                .title(updateNotificationRequest.getTitle())
+                .content(updateNotificationRequest.getContent())
+                .file(FileUtils.convertMultipartFileArrayToString(updateNotificationRequest.getFile()))
                 .createDate(new Date())
+                .build();
+    }
+
+    public Notification toEntity (UpdateNotificationRequest updateNotificationRequest, String id) {
+        return Notification.builder()
+                .id(id)
+                .title(updateNotificationRequest.getTitle())
+                .content(updateNotificationRequest.getContent())
+                .file(FileUtils.convertMultipartFileArrayToString(updateNotificationRequest.getFile()))
                 .build();
     }
 
