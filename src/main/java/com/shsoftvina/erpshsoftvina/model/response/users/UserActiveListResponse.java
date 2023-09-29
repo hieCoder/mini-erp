@@ -1,5 +1,5 @@
-package com.shsoftvina.erpshsoftvina.model.response.users;
 
+package com.shsoftvina.erpshsoftvina.model.response.users;
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

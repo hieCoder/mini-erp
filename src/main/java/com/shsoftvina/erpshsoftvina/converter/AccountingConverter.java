@@ -3,8 +3,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.PageAccountListResponse;
-import com.shsoftvina.erpshsoftvina.ultis.LocalDateTimeFormater;
+import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -28,7 +27,7 @@ public class AccountingConverter {
             revenue =accounting.getExpense();
         }
         LocalDateTime createdDate = accounting.getCreatedDate();
-        String parseCreatedDate = LocalDateTimeFormater.formatTime(createdDate);
+        String parseCreatedDate = DateUtils.formatLocalDateTime(createdDate);
         return AccountResponse.builder()
                 .id(accounting.getId())
                 .bill(accounting.getBill())

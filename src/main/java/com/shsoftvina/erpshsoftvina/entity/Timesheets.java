@@ -1,10 +1,8 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.sql.Time;
 import java.util.Date;
 
 // Define User entity corresponding to user table in the database
@@ -15,9 +13,9 @@ import java.util.Date;
 public class Timesheets{
 
     private String id;
-    private Date work_date;
-    private Date checkin;
-    private Date checkout;
+    private Date workDate;
+    private Time checkin;
+    private Time checkout;
     private boolean ot;
     private User user;
 }

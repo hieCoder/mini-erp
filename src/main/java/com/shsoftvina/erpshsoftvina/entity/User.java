@@ -54,11 +54,6 @@ public class User implements UserDetails {
         return authorities;
     }
 
-    @Override
-    public String getUsername(){
-        return email;
-    }
-
     // Override isAccountNonExpired method to indicate that the user account never expires.
     @Override
     public boolean isAccountNonExpired() {
