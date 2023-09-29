@@ -1,13 +1,17 @@
+
 package com.shsoftvina.erpshsoftvina.utils;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 
+
 public class DateUtils {
+
 
     public static String formatDateTime(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
