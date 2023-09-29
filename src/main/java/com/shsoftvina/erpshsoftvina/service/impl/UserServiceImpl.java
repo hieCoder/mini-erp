@@ -1,39 +1,39 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.shsoftvina.erpshsoftvina.constant.MailConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
+import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
-import com.shsoftvina.erpshsoftvina.ultis.IdGenerator;
-import com.shsoftvina.erpshsoftvina.ultis.StringUtils;
+import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import com.shsoftvina.erpshsoftvina.constant.MailConstant;
-import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
-import com.shsoftvina.erpshsoftvina.model.request.DataMailDTO;
-import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
-import com.shsoftvina.erpshsoftvina.ultis.SendMailUlti;
-
 import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private UserConverter userConverter;
+
     @Autowired
-    private SendMailUlti sendMailUlti;
+    private SendMailUtils sendMailUtils;
+
     @Autowired
     private HttpServletRequest request;
 
@@ -68,11 +68,12 @@ public class UserServiceImpl implements UserService {
         } else {
             User user = userConverter.toEntity(userActiveRequest);
             userMapper.activeUserRegisterRequest(user);
-            DataMailDTO dataMailDTO = new DataMailDTO();
-            dataMailDTO.setTo(userActiveRequest.getEmail());
-            dataMailDTO.setSubject(MailConstant.REGISTER_SUBJECT);
-            dataMailDTO.setContent(MailConstant.REGISTER_CONTENT);
-            return sendMailUlti.sendEmail(dataMailDTO);
+
+            DataMail dataMail = new DataMail();
+            dataMail.setTo(userActiveRequest.getEmail());
+            dataMail.setSubject(MailConstant.REGISTER_SUBJECT);
+            dataMail.setContent(MailConstant.REGISTER_CONTENT);
+            return sendMailUtils.sendEmail(dataMail);
         }
     }
 
@@ -80,27 +81,7 @@ public class UserServiceImpl implements UserService {
     public UserDetailResponse findUserCheckRegister(String email, String username){
         User user = userMapper.findUserCheckRegister(email,username);
         if(user == null) return null;
-        return userConverter.ToUserDetailResponse(user);
-    }
-
-    @Override
-    public void registerUser(UserCreateRequest user){
-        String username = user.getUsername();
-        String email = user.getEmail();
-        UserDetailResponse userDetailResponse = findUserCheckRegister(email,username);
-        if(userDetailResponse == null){
-            String generatorId = IdGenerator.newId();
-            user.setId(generatorId);
-            user.setStatus(StatusUserEnum.PENDING);
-            // Process user registration, including role assignment
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String rawPassword = user.getPassword();
-            // Encode the user's password before storing it in the database
-            String encodedPassword = passwordEncoder.encode(rawPassword);
-            user.setPassword(encodedPassword);
-            userMapper.registerUser(user);
-        }
-
+        return userConverter.toResponse(user);
     }
 
     @Override
@@ -151,5 +132,50 @@ public class UserServiceImpl implements UserService {
         } else{
             return 0;
         }
+    }
+
+    @Override
+    public int createUser(UserCreateRequest userCreateRequest){
+        System.out.println(userCreateRequest);
+        String username = userCreateRequest.getUsername();
+        String email = userCreateRequest.getEmail();
+        UserDetailResponse userDetailResponse = findUserCheckRegister(email,username);
+        if(userDetailResponse == null){
+            MultipartFile avatarFile = userCreateRequest.getAvatar();
+            MultipartFile contractFile = userCreateRequest.getContract();
+
+            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+
+            boolean isSaveAvatar = true;
+            boolean isSaveContract = true;
+
+            String avatarDBValue = null;
+            String contractDBValue = null;
+
+            if(avatarFile != null){
+                avatarDBValue = FileUtils.formatNameImage(avatarFile);
+                isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
+            }
+            if(contractFile != null){
+                contractDBValue = FileUtils.formatNameImage(contractFile);
+                isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
+            }
+
+            if(isSaveAvatar && isSaveContract){
+                User user = userConverter.userCreateRequestToEntity(userCreateRequest);
+                user.setAvatar(avatarDBValue);
+                user.setContract(contractDBValue);
+                int rs = userMapper.createUser(user);
+                if(rs == 0) {
+                    FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
+                    FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
+                    return 0;
+                }
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        throw new DuplicateException("Username or email is exists");
     }
 }

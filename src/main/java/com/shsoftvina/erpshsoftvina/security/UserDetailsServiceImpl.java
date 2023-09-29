@@ -19,9 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
     // The loadUserByUsername method is part of the UserDetailsService interface
     // and is used to load a user's details by their username.
     @Override

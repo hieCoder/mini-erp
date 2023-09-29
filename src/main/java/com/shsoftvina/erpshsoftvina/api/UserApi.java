@@ -1,8 +1,12 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
+
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+
+import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +21,7 @@ public class UserApi {
     @Autowired
     UserService userService;
 
-    @PostMapping
+    @PostMapping("/update")
     public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
         return ResponseEntity.ok(userService.updateUser(user));
     }
@@ -49,8 +53,13 @@ public class UserApi {
     }
 
     @PutMapping("/register/approval")
-    public ResponseEntity<Boolean> activeUserRegisterRequest(@RequestBody() UserActiveRequest user) {
+    public ResponseEntity<Boolean> activeUserRegisterRequest(@RequestBody UserActiveRequest user) {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser (UserCreateRequest user){
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
 }

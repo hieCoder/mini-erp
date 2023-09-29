@@ -98,6 +98,10 @@ public class NotificationImpl implements NotificationService {
 
     @Override
     public boolean delNoti(String id) {
-        return notificationMapper.delNoti(id);
+        Notification notification = notificationMapper.findById(id);
+        notificationMapper.delNoti(id);
+        String dir = NotificationConstant.UPLOAD_FILE_DIR;
+        FileUtils.deleteMultipleFilesToServer(request, dir, notification.getFile());
+        return true;
     }
 }

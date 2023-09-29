@@ -47,6 +47,47 @@
 
     </update>
 
+    <insert id="createUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        INSERT INTO user (username,
+                          fullname,
+                          date_of_birth,
+                          phone,
+                          emergency_phone,
+                          avatar,
+                          type,
+                          department,
+                          job_start_date,
+                          contract,
+                          basic_salary,
+                          allowance,
+                          insurance,
+                          atm,
+                          email,
+                          role,
+                          status,
+                          password,
+                          id)
+        VALUES (#{username},
+                #{fullname},
+                #{dateOfBirth},
+                #{phone},
+                #{emergencyPhone},
+                #{avatar},
+                #{type},
+                #{department},
+                #{jobStartDate},
+                #{contract},
+                #{basicSalary},
+                #{allowance},
+                #{insurance},
+                #{atm},
+                #{email},
+                #{role},
+                #{status},
+                #{password},
+                #{id})
+    </insert>
+
 
 <!-- Get user combined with sorting and searching (if any)   -->
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
