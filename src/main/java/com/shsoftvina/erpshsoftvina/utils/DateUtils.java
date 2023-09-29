@@ -29,6 +29,16 @@ public class DateUtils {
         return sdf.format(time);
     }
 
+    public static String formatLocalDateTime(LocalDateTime time) {
+
+        // Define a DateTimeFormatter for the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        // Format the LocalDateTime to a string
+        return time.format(formatter);
+    }
+
+
     public static String timeWork(Time startDate, Time endDate) {
         LocalTime localStartTime = startDate.toLocalTime();
         LocalTime localEndTime = endDate.toLocalTime();

@@ -34,6 +34,13 @@ public class CustomExceptionHandler {
                 e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
+    // Handle DuplicateException and return an ErrorResponse with HTTP status 409 (Conflict).
+    @ExceptionHandler(NoMatchException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleNoMatchException(NoMatchException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
     // Handle generic Exception and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

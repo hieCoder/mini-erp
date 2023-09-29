@@ -2,16 +2,11 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.constant.TimesheetsConstant;
 import com.shsoftvina.erpshsoftvina.entity.Timesheets;
-import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.response.timesheets.TimesheetsResponse;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import liquibase.util.FileUtil;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
-import java.util.Date;
 
 @Component
 public class TimesheetsConverter {

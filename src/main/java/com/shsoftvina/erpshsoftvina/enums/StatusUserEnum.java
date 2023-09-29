@@ -1,5 +1,5 @@
 package com.shsoftvina.erpshsoftvina.enums;
 
-public enum StatusEnum {
+public enum StatusUserEnum {
     ACTIVE, DISABLE, PENDING, REJECT
 }

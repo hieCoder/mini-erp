@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.model.request.user;
 
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
+import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +16,5 @@ public class UserActiveRequest {
     private String id;
     private String email;
     private RoleEnum role;
-    private StatusEnum status;
+    private StatusUserEnum status;
 }

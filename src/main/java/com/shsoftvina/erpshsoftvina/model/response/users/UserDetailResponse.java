@@ -1,6 +1,8 @@
-package com.shsoftvina.erpshsoftvina.model.response.user;
+
+package com.shsoftvina.erpshsoftvina.model.response.users;
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
+import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.enums.TypeUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponse {
+public class UserDetailResponse {
     private String id;
     private String fullname;
     private String dateOfBirth;
@@ -23,14 +25,13 @@ public class UserResponse {
     private TypeUserEnum type;
     private String department;
     private Date jobStartDate;
-    private String contact;
+    private String contract;
     private Long basicSalary;
     private Long allowance;
     private String insurance;
     private String atm;
     private String username;
     private String email; // user_id
-    private String password;
     private RoleEnum role;
-    private String status;
+    private StatusUserEnum status;
 }

@@ -8,6 +8,98 @@
         FROM user
         where email = #{email} AND status = #{status}
     </select>
+    <select id="findUserDetailById" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+        SELECT *
+        FROM user
+        where id = #{id}
+    </select>
+    <select id="findUserCheckRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+        SELECT *
+        FROM user
+        where email = #{email} OR username = #{username}
+    </select>
+    <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        INSERT
+        INTO user (username, email, id, password, status)
+        VALUES (#{username}, #{email}, #{id},#{password}, #{status});
+    </insert>
+    <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        UPDATE user
+        SET username = #{username},
+            fullname = #{fullname},
+            date_of_birth = #{dateOfBirth},
+            phone = #{phone},
+            emergency_phone = #{emergencyPhone},
+            avatar = #{avatar},
+            type = #{type},
+            department = #{department},
+            job_start_date = #{jobStartDate},
+            contract = #{contract},
+            basic_salary = #{basicSalary},
+            allowance = #{allowance},
+            insurance = #{insurance},
+            atm = #{atm},
+            email = #{email},
+            role = #{role},
+            status = #{status},
+            password = #{password}
+        WHERE id = #{id};
+
+    </update>
+
+    <insert id="createUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        INSERT INTO user (username,
+                          fullname,
+                          date_of_birth,
+                          phone,
+                          emergency_phone,
+                          avatar,
+                          type,
+                          department,
+                          job_start_date,
+                          contract,
+                          basic_salary,
+                          allowance,
+                          insurance,
+                          atm,
+                          email,
+                          role,
+                          status,
+                          password,
+                          id)
+        VALUES (#{username},
+                #{fullname},
+                #{dateOfBirth},
+                #{phone},
+                #{emergencyPhone},
+                #{avatar},
+                #{type},
+                #{department},
+                #{jobStartDate},
+                #{contract},
+                #{basicSalary},
+                #{allowance},
+                #{insurance},
+                #{atm},
+                #{email},
+                #{role},
+                #{status},
+                #{password},
+                #{id})
+    </insert>
+
+
+<!-- Get user combined with sorting and searching (if any)   -->
+    <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+         <![CDATA[
+        SELECT u.id, u.fullname, u.department, u.type
+        FROM user AS u
+        WHERE u.status = 'ACTIVE'
+        AND (u.id = #{searchTerm} OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
+        LIMIT #{start}, #{pageSize};
+        ]]>
+    </select>
 
     <select id="findUserDetail" parameterType="String" resultMap="userResultMap">
         SELECT *
@@ -26,6 +118,7 @@
     <delete id="deleteUser" parameterType="String">
        DELETE from user where id = #{id}
     </delete>
+
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>

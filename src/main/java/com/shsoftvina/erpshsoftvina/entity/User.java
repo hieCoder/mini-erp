@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
 import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
+import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.enums.TypeUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+
 
 // Define User entity corresponding to user table in the database
 @Data
@@ -42,7 +42,8 @@ public class User implements UserDetails {
     private String email; // user_id
     private String password;
     private RoleEnum role;
-    private StatusEnum status;
+    private StatusUserEnum status;
+
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override
