@@ -4,7 +4,7 @@
 <header>
     <security:authorize access = "isAuthenticated()">
         <div class="right font-size-20">
-            <span>Hello <%=Principal.getUserCurrent().getEmail()%></span>
+            <span>Hello <%=Principal.getUserCurrent().getUsername()%></span>
             <img class="round-img" width="30" src="" alt="avatar">
             <a class="ml-10 color-white" href="/logout">Logout</a>
         </div>

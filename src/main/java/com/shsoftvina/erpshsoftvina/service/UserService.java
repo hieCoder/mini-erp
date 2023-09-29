@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 
 public interface UserService {
     UserDetailResponse findUserDetail(String id);

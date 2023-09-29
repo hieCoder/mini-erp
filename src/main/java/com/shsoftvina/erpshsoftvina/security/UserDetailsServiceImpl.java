@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.security;
 
-import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
@@ -19,9 +18,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // Inject an instance of UserMapper using Dependency Injection.
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     // The loadUserByUsername method is part of the UserDetailsService interface
     // and is used to load a user's details by their username.

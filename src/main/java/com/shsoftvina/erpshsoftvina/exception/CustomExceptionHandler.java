@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,6 +24,14 @@ public class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDuplicateException(DuplicateException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    // Handle BindException and return an ErrorResponse with HTTP status 400 (Bad Request).
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBindException(BindException e, WebRequest req) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST,
+                e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
     // Handle generic Exception and return an ErrorResponse with HTTP status 500 (Internal Server Error).

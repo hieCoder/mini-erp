@@ -1,0 +1,30 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TimesheetsMapper">
+
+    <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.Timesheets" resultMap="timesheetsResultMap">
+        SELECT t.*, u.fullname, u.username
+        FROM timesheets t
+        INNER JOIN user u ON t.user_id = u.id
+        ORDER BY t.id DESC
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <resultMap id="timesheetsResultMap" type="com.shsoftvina.erpshsoftvina.entity.Timesheets">
+        <id property="id" column="id"/>
+        <result property="checkin" column="checkin"/>
+        <result property="checkout" column="checkout"/>
+        <result property="ot" column="ot"/>
+        <result property="workDate" column="work_date"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+        </association>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="id"/>
+        <result property="fullname" column="fullname"/>
+        <result property="username" column="username"/>
+    </resultMap>
+
+</mapper>

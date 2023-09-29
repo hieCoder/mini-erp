@@ -5,27 +5,25 @@ import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.StatusEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
-import com.shsoftvina.erpshsoftvina.model.request.DataMail;
-import com.shsoftvina.erpshsoftvina.model.request.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.UserDetailResponse;
-import com.shsoftvina.erpshsoftvina.service.MailService;
+import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
-import com.shsoftvina.erpshsoftvina.ultis.SendMailUlti;
+import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private UserConverter userConverter;
+
     @Autowired
-    private MailService mailService;
-    @Autowired
-    private SendMailUlti sendMailUlti;
+    private SendMailUtils sendMailUtils;
 
     @Override
     public UserDetailResponse findUserDetail(String id) {
@@ -50,7 +48,7 @@ public class UserServiceImpl implements UserService {
             dataMail.setTo(userActiveRequest.getEmail());
             dataMail.setSubject(MailConstant.REGISTER_SUBJECT);
             dataMail.setContent(MailConstant.REGISTER_CONTENT);
-            return sendMailUlti.sendEmail(dataMail);
+            return sendMailUtils.sendEmail(dataMail);
         }
     }
 }

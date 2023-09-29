@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.model.request.DataMail;
+import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
 
 import javax.mail.MessagingException;
 
