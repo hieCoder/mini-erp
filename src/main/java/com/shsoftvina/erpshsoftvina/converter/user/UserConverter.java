@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -136,6 +137,13 @@ public class UserConverter {
                 .id(UUID.randomUUID().toString())
                 .email(userRegisterRequest.getEmail())
                 .password(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()))
+                .build();
+    }
+
+    public UserAccountingResponse toAccountResponse(User user) {
+        return UserAccountingResponse.builder()
+                .id(user.getId())
+                .fullname(user.getFullname())
                 .build();
     }
 }
