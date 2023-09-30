@@ -1,12 +1,10 @@
 package com.shsoftvina.erpshsoftvina.model.response.accountings;
 
+import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +13,10 @@ import java.time.LocalDateTime;
 public class AccountResponse {
     private String id;
     private String createdDate;
-    private Integer revenue;
-    private Integer expense;
-    private Integer remain;
-    private String username;
+    private Long revenue;
+    private Long expense;
+    private Long remain;
+    private UserAccountingResponse user;
     private String bill;
 }
+
