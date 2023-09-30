@@ -26,7 +26,7 @@ public class UserUpdateRequest {
     private TypeUserEnum type;
     private String department;
     private Date jobStartDate;
-    private MultipartFile contract;
+    private MultipartFile[] contract;
     private Long basicSalary;
     private Long allowance;
     private String insurance;

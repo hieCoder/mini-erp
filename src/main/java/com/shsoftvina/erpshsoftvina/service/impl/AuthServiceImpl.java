@@ -32,9 +32,8 @@ public class AuthServiceImpl implements AuthService {
             throw new NoMatchException("Password no match");
         }
 
-        String username = userRegisterRequest.getUsername();
         String email = userRegisterRequest.getEmail();
-        UserDetailResponse userDetailResponse = userService.findUserCheckRegister(email,username);
+        UserDetailResponse userDetailResponse = userService.findUserCheckRegister(email);
         if(userDetailResponse == null){
             User user = userConverter.userRegisterRequestToEntity(userRegisterRequest);
             return userMapper.registerUser(user);

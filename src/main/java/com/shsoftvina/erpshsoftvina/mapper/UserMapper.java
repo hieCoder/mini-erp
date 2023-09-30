@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserMapper {
 
     User findByEmailAndStatus(@Param("email") String email, @Param("status") String status);
-    User findUserCheckRegister(@Param("email") String email, @Param("username") String username);
+    User findUserCheckRegister(@Param("email") String email);
     int registerUser(User user);
     int updateUser(User user);
     int createUser(User user);
@@ -20,12 +20,9 @@ public interface UserMapper {
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,
                           @Param("pageSize") int pageSize);
-
     User findUserDetail(@Param("id") String id);
-
     void changeStatusUser(@Param("id") String id,@Param("status") String status);
-
     void activeUserRegisterRequest(User user);
-
     void deleteUser(String id);
+
 }
