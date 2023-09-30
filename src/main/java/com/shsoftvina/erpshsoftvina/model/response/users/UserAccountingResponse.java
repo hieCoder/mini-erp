@@ -1,17 +1,16 @@
-package com.shsoftvina.erpshsoftvina.model.response.accountings;
+package com.shsoftvina.erpshsoftvina.model.response.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MonthHistoryList {
-    List<String> monthList;
+public class UserAccountingResponse {
+    private String id;
+    private String username;
 }
 

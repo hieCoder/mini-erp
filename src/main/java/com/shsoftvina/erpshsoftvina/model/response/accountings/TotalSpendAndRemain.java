@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MonthHistoryList {
-    List<String> monthList;
+public class TotalSpendAndRemain {
+    private Long totalRevenue;
+    private Long totalExpense;
+    private Long totalRemain;
 }
 
