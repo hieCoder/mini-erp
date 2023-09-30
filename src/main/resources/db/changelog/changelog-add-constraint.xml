@@ -39,4 +39,15 @@
                                  constraintName="fk_comment_notification_notification"/>
     </changeSet>
 
+    <!-- add column parent_id into table comment_notification and create foreign key constraint -->
+    <changeSet id="5" author="team2">
+        <addForeignKeyConstraint
+                baseTableName="comment_notification"
+                baseColumnNames="parent_id"
+                referencedTableName="comment_notification"
+                referencedColumnNames="id"
+                constraintName="fk_comment_notification_parent"
+        />
+    </changeSet>
+
 </databaseChangeLog>
