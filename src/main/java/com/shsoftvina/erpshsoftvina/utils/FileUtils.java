@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.ultis;
+package com.shsoftvina.erpshsoftvina.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 

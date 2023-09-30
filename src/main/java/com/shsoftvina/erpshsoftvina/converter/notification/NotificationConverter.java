@@ -4,8 +4,8 @@ import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
-import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

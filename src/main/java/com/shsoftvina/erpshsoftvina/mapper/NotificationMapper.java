@@ -1,7 +1,6 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
