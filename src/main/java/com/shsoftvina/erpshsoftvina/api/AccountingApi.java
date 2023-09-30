@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +43,19 @@ public class AccountingApi {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createAccounting(@ModelAttribute() AccountingCreateRequest accountingCreateRequest) {
+    public ResponseEntity<?> createAccounting(AccountingCreateRequest accountingCreateRequest) {
         accountingService.createAccounting(accountingCreateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<?> updateAccounting(@ModelAttribute() AccountingUpdateRequest accountingUpdateRequest) {
+    public ResponseEntity<?> updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
         return ResponseEntity.ok(accountingService.updateAccounting(accountingUpdateRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAccounting(@PathVariable("id") String id) {
+        return ResponseEntity.ok(accountingService.deleteAccounting(id));
     }
 }
 

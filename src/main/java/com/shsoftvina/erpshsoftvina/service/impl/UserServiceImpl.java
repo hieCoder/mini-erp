@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailResponse findUserCheckRegister(String email, String username){
-        User user = userMapper.findUserCheckRegister(email,username);
+    public UserDetailResponse findUserCheckRegister(String email){
+        User user = userMapper.findUserCheckRegister(email);
         if(user == null) return null;
         return userConverter.toResponse(user);
     }
@@ -137,9 +137,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int createUser(UserCreateRequest userCreateRequest){
         System.out.println(userCreateRequest);
-        String username = userCreateRequest.getUsername();
         String email = userCreateRequest.getEmail();
-        UserDetailResponse userDetailResponse = findUserCheckRegister(email,username);
+        UserDetailResponse userDetailResponse = findUserCheckRegister(email);
         if(userDetailResponse == null){
             MultipartFile avatarFile = userCreateRequest.getAvatar();
             MultipartFile contractFile = userCreateRequest.getContract();

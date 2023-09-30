@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRe
 import com.shsoftvina.erpshsoftvina.model.response.accountings.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,16 +58,18 @@ public class AccountingConverter {
                 .expense(accountingCreateRequest.getExpense())
                 .createdDate(newDate)
                 .id(UUID.randomUUID().toString())
+                .bill(FileUtils.convertMultipartFileArrayToString(accountingCreateRequest.getBill()))
                 .build();
     }
 
-    public Accounting convertToEntity(AccountingUpdateRequest accountingCreateRequest, User user) {
+    public Accounting convertToEntity(AccountingUpdateRequest accountingUpdateRequest, User user) {
         return Accounting.builder()
                 .user(user)
-                .title(accountingCreateRequest.getTitle())
-                .remain(accountingCreateRequest.getRemain())
-                .expense(accountingCreateRequest.getExpense())
-                .id(accountingCreateRequest.getId())
+                .title(accountingUpdateRequest.getTitle())
+                .remain(accountingUpdateRequest.getRemain())
+                .expense(accountingUpdateRequest.getExpense())
+                .id(accountingUpdateRequest.getId())
+                .bill(FileUtils.convertMultipartFileArrayToString(accountingUpdateRequest.getBill()))
                 .build();
     }
 }

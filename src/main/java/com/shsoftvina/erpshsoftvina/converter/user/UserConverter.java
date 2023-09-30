@@ -62,7 +62,6 @@ public class UserConverter {
 
     public User userUpdateRequestToEntity(UserUpdateRequest userUpdateRequest) {
         return User.builder()
-                .username(userUpdateRequest.getUsername())
                 .allowance(userUpdateRequest.getAllowance())
                 .atm(userUpdateRequest.getAtm())
                 .insurance(userUpdateRequest.getInsurance())
@@ -85,7 +84,6 @@ public class UserConverter {
 
     public User userCreateRequestToEntity(UserCreateRequest userUpdateRequest) {
         return User.builder()
-                .username(userUpdateRequest.getUsername())
                 .allowance(userUpdateRequest.getAllowance())
                 .atm(userUpdateRequest.getAtm())
                 .insurance(userUpdateRequest.getInsurance())
@@ -109,7 +107,6 @@ public class UserConverter {
 
     public User userRegisterRequestToEntity(UserRegisterRequest userRegisterRequest) {
         return User.builder()
-                .username(userRegisterRequest.getUsername())
                 .status(StatusUserEnum.PENDING)
                 .id(UUID.randomUUID().toString())
                 .email(userRegisterRequest.getEmail())
@@ -120,7 +117,7 @@ public class UserConverter {
     public UserAccountingResponse toAccountResponse(User user) {
         return UserAccountingResponse.builder()
                 .id(user.getId())
-                .username(user.getUsername())
+                .fullname(user.getFullname())
                 .build();
     }
 

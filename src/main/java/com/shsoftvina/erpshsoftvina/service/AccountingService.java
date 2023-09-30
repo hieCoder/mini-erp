@@ -15,5 +15,7 @@ public interface AccountingService {
     int createAccounting(AccountingCreateRequest accountingCreateRequest);
 
     int updateAccounting(AccountingUpdateRequest accountingCreateRequest);
+
+    int deleteAccounting(String id);
 }
 
