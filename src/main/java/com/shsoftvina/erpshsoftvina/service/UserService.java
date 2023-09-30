@@ -2,7 +2,6 @@ package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 
@@ -18,7 +17,7 @@ public interface UserService {
 
     Boolean activeUserRegisterRequest(UserActiveRequest user);
 
-    UserDetailResponse findUserCheckRegister(String email, String username);
+    UserDetailResponse findUserCheckRegister(String email);
 
     int updateUser(UserUpdateRequest user);
 

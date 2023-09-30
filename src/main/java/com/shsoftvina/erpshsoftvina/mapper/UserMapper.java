@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserMapper {
 
     User findByEmailAndStatus(@Param("email") String email, @Param("status") String status);
-    User findUserCheckRegister(@Param("email") String email, @Param("username") String username);
+    User findUserCheckRegister(@Param("email") String email);
     int registerUser(User user);
     int updateUser(User user);
     int createUser(User user);

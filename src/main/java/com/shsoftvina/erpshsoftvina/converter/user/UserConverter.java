@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.converter.user;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
@@ -53,9 +54,9 @@ public class UserConverter {
     public User toEntity(UserActiveRequest userActiveRequest) {
         return User.builder()
                 .id(userActiveRequest.getId())
-                .role(userActiveRequest.getRole())
+                .role(RoleEnum.valueOf(userActiveRequest.getRole()))
                 .email(userActiveRequest.getEmail())
-                .status(userActiveRequest.getStatus())
+                .status(StatusUserEnum.valueOf(userActiveRequest.getStatus()))
                 .build();
     }
 
@@ -108,7 +109,7 @@ public class UserConverter {
 
     public User userRegisterRequestToEntity(UserRegisterRequest userRegisterRequest) {
         return User.builder()
-                .username(userRegisterRequest.getUsername())
+                .fullname(userRegisterRequest.getFullname())
                 .status(StatusUserEnum.PENDING)
                 .id(UUID.randomUUID().toString())
                 .email(userRegisterRequest.getEmail())

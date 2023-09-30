@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -53,7 +54,7 @@ public class UserApi {
     }
 
     @PutMapping("/register/approval")
-    public ResponseEntity<Boolean> activeUserRegisterRequest(@RequestBody UserActiveRequest user) {
+    public ResponseEntity<Boolean> activeUserRegisterRequest(@Valid @RequestBody UserActiveRequest user) {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
 
@@ -61,5 +62,4 @@ public class UserApi {
     public ResponseEntity<?> createUser (UserCreateRequest user){
         return ResponseEntity.ok(userService.createUser(user));
     }
-
 }
