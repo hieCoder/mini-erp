@@ -8,24 +8,22 @@
         FROM user
         where email = #{email} AND status = #{status}
     </select>
-    <select id="findUserDetailById" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
-        SELECT *
-        FROM user
-        where id = #{id}
-    </select>
+
     <select id="findUserCheckRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         SELECT *
         FROM user
-        where email = #{email} OR username = #{username}
+        where email = #{email}
     </select>
+
     <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         INSERT
-        INTO user (username, email, id, password, status)
-        VALUES (#{username}, #{email}, #{id},#{password}, #{status});
+        INTO user (email, id, password, status)
+        VALUES (#{email}, #{id},#{password}, #{status});
     </insert>
+
     <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
-        SET username = #{username},
+        SET
             fullname = #{fullname},
             date_of_birth = #{dateOfBirth},
             phone = #{phone},
@@ -48,7 +46,7 @@
     </update>
 
     <insert id="createUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT INTO user (username,
+        INSERT INTO user (
                           fullname,
                           date_of_birth,
                           phone,
@@ -67,7 +65,7 @@
                           status,
                           password,
                           id)
-        VALUES (#{username},
+        VALUES (
                 #{fullname},
                 #{dateOfBirth},
                 #{phone},
@@ -92,13 +90,19 @@
 <!-- Get user combined with sorting and searching (if any)   -->
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
          <![CDATA[
-        SELECT u.id, u.fullname, u.department, u.type
+        SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM user AS u
         WHERE u.status = 'ACTIVE'
         AND (u.id = #{searchTerm} OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
         LIMIT #{start}, #{pageSize};
         ]]>
+    </select>
+
+    <select id="getProfileUser" parameterType="String" resultMap="userResultMap">
+        select u.id, u.address, u.fullname, u.date_of_birth, u.phone, u.emergency_phone, u.avatar, u.type, u.department, u.working_date, u.email, u.password, u.role, u.status, u.position, u.resume
+        from user u
+        where u.id = #{id}
     </select>
 
     <select id="findUserDetail" parameterType="String" resultMap="userResultMap">
@@ -123,23 +127,25 @@
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>
         <result property="fullname" column="fullname"/>
+        <result property="address" column="address"/>
         <result property="dateOfBirth" column="date_of_birth"/>
         <result property="phone" column="phone"/>
         <result property="emergencyPhone" column="emergency_phone"/>
         <result property="avatar" column="avatar"/>
         <result property="type" column="type"/>
         <result property="department" column="department"/>
-        <result property="jobStartDate" column="job-start-date"/>
+        <result property="workingDay" column="working_date"/>
         <result property="contract" column="contract"/>
-        <result property="basicSalary" column="basic-salary"/>
+        <result property="basicSalary" column="basic_salary"/>
         <result property="allowance" column="allowance"/>
         <result property="insurance" column="insurance"/>
         <result property="atm" column="atm"/>
-        <result property="username" column="username"/>
         <result property="email" column="email"/>
         <result property="password" column="password"/>
         <result property="role" column="role"/>
         <result property="status" column="status"/>
+        <result property="position" column="position"/>
+        <result property="resume" column="resume"/>
     </resultMap>
 
 </mapper>

@@ -11,11 +11,12 @@ import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
-import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,12 +40,12 @@ public class UserServiceImpl implements UserService {
 
 //  The method returns the entire list of converted users
     @Override
-    public List<UserDetailResponse> getAllUser(String searchTerm, String sortDirection, int start, int pageSize) {
+    public List<ShowUserRespone> getAllUser(String searchTerm, String sortDirection, int start, int pageSize) {
 //      List of all Users
         List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize);
 
 //      Convert list User entity to List User UserResponse to return to user
-        List<UserDetailResponse> mapperListUser = userConverter.toListResponse(listUser);
+        List<ShowUserRespone> mapperListUser = userConverter.toListShowUserRespone(listUser);
 
         return mapperListUser;
     }
@@ -53,6 +54,12 @@ public class UserServiceImpl implements UserService {
     public UserDetailResponse findUserDetail(String id) {
         User user = userMapper.findUserDetail(id);
         return userConverter.toResponse(user);
+    }
+
+    @Override
+    public BasicUserDetailResponse getProfileUser(String id) {
+        User user = userMapper.findUserDetail(id);
+        return userConverter.toProfileResponse(user);
     }
 
     @Override
@@ -86,95 +93,99 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUser(UserUpdateRequest userUpdateRequest) {
-
-        MultipartFile avatarFile = userUpdateRequest.getAvatar();
-        MultipartFile contractFile = userUpdateRequest.getContract();
-
-        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-
-        boolean isSaveAvatar = true;
-        boolean isSaveContract = true;
-
-        String avatarDBValue = null;
-        String contractDBValue = null;
-
-        if(avatarFile != null){
-            avatarDBValue = FileUtils.formatNameImage(avatarFile);
-            isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
-        }
-        if(contractFile != null){
-            contractDBValue = FileUtils.formatNameImage(contractFile);
-            isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
-        }
-
-        if(isSaveAvatar && isSaveContract){
-
-            User currentUserInDB = userMapper.findUserDetail(userUpdateRequest.getId());
-
-            User user = userConverter.userUpdateRequestToEntity(userUpdateRequest);
-            user.setAvatar(avatarDBValue);
-            user.setContract(contractDBValue);
-            int rs = userMapper.updateUser(user);
-            if(rs == 0) {
-                FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
-                FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
-                return 0;
-            }
-
-
-            if(!StringUtils.isEmpty(currentUserInDB.getAvatar())){
-                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getAvatar());
-            }
-            if(!StringUtils.isEmpty(currentUserInDB.getContract())){
-                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getContract());
-            }
-            return 1;
-        } else{
-            return 0;
-        }
+//
+//        if (userUpdateRequest.getContract().length > NotificationConstant.NUMBER_FILE_LIMIT) {
+//            throw new FileTooLimitedException("Max file is 3");
+//        }
+//        MultipartFile avatarFile = userUpdateRequest.getAvatar();
+//        MultipartFile[] contractFile = userUpdateRequest.getContract();
+//
+//        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+//
+//        boolean isSaveAvatar = true;
+//        boolean isSaveContract = true;
+//
+//        String avatarDBValue = null;
+//        String contractDBValue = null;
+//
+//        if(avatarFile != null){
+//            avatarDBValue = FileUtils.formatNameImage(avatarFile);
+//            isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
+//        }
+//        if(contractFile != null){
+//            contractDBValue = FileUtils.formatNameImage(contractFile);
+//            isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
+//        }
+//
+//        if(isSaveAvatar && isSaveContract){
+//
+//            User currentUserInDB = userMapper.findUserDetail(userUpdateRequest.getId());
+//
+//            User user = userConverter.userUpdateRequestToEntity(userUpdateRequest);
+//            user.setAvatar(avatarDBValue);
+//            user.setContract(contractDBValue);
+//            int rs = userMapper.updateUser(user);
+//            if(rs == 0) {
+//                FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
+//                FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
+//                return 0;
+//            }
+//
+//
+//            if(!StringUtils.isEmpty(currentUserInDB.getAvatar())){
+//                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getAvatar());
+//            }
+//            if(!StringUtils.isEmpty(currentUserInDB.getContract())){
+//                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getContract());
+//            }
+//            return 1;
+//        } else{
+//            return 0;
+//        }
+        return 1;
     }
 
     @Override
     public int createUser(UserCreateRequest userCreateRequest){
-        System.out.println(userCreateRequest);
-        String email = userCreateRequest.getEmail();
-        UserDetailResponse userDetailResponse = findUserCheckRegister(email);
-        if(userDetailResponse == null){
-            MultipartFile avatarFile = userCreateRequest.getAvatar();
-            MultipartFile contractFile = userCreateRequest.getContract();
-
-            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-
-            boolean isSaveAvatar = true;
-            boolean isSaveContract = true;
-
-            String avatarDBValue = null;
-            String contractDBValue = null;
-
-            if(avatarFile != null){
-                avatarDBValue = FileUtils.formatNameImage(avatarFile);
-                isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
-            }
-            if(contractFile != null){
-                contractDBValue = FileUtils.formatNameImage(contractFile);
-                isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
-            }
-
-            if(isSaveAvatar && isSaveContract){
-                User user = userConverter.userCreateRequestToEntity(userCreateRequest);
-                user.setAvatar(avatarDBValue);
-                user.setContract(contractDBValue);
-                int rs = userMapper.createUser(user);
-                if(rs == 0) {
-                    FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
-                    FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
-                    return 0;
-                }
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-        throw new DuplicateException("Username or email is exists");
+//        String email = userCreateRequest.getEmail();
+//        UserDetailResponse userDetailResponse = findUserCheckRegister(email);
+//        if(userDetailResponse == null){
+//            MultipartFile avatarFile = userCreateRequest.getAvatar();
+//            MultipartFile contractFile = userCreateRequest.getContract();
+//
+//            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+//
+//            boolean isSaveAvatar = true;
+//            boolean isSaveContract = true;
+//
+//            String avatarDBValue = null;
+//            String contractDBValue = null;
+//
+//            if(avatarFile != null){
+//                avatarDBValue = FileUtils.formatNameImage(avatarFile);
+//                isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
+//            }
+//            if(contractFile != null){
+//                contractDBValue = FileUtils.formatNameImage(contractFile);
+//                isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
+//            }
+//
+//            if(isSaveAvatar && isSaveContract){
+//                User user = userConverter.userCreateRequestToEntity(userCreateRequest);
+//                user.setAvatar(avatarDBValue);
+//                user.setContract(contractDBValue);
+//                int rs = userMapper.createUser(user);
+//                if(rs == 0) {
+//                    FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
+//                    FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
+//                    return 0;
+//                }
+//                return 1;
+//            } else {
+//                return 0;
+//            }
+//        }
+//        throw new DuplicateException("Username or email is exists");
+        return 0;
     }
 }
