@@ -42,6 +42,15 @@ public class DateUtils {
         return time.format(formatter);
     }
 
+    public static String formatMonthYear(LocalDateTime time) {
+
+        // Define a DateTimeFormatter for the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        // Format the LocalDateTime to a string
+        return time.format(formatter);
+    }
+
 
     public static String timeWork(Time startDate, Time endDate) {
         LocalTime localStartTime = startDate.toLocalTime();

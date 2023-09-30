@@ -43,7 +43,7 @@ public class MyBatisConfig {
         dataSource.setDriverClassName(dbDriverName);
 
 //        This is the connection URL to the MariaDB database. It includes information about the server, port, and database name.
-        dataSource.setUrl(dbUrl);
+        dataSource.setUrl(dbUrl + "?allowMultiQueries=true");
 
 //        This is the username used to log into the database.
         dataSource.setUsername(dbUsername);

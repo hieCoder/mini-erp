@@ -5,22 +5,110 @@
     <select id="findAllMonthlyHistory" resultType="string">
         SELECT DISTINCT DATE_FORMAT(created_date, '%Y - %m') AS month
         FROM accounting
+        ORDER BY created_date DESC
     </select>
 
     <select id="getTotalRecordCountPerMonth" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM accounting
-        WHERE MONTH(created_date) = #{monthId}
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+    </select>
+
+    <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+        INSERT
+        INTO accounting (id,created_date,spending,remain, user_id, bill, title)
+        VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title});
+    </insert>
+
+    <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+        UPDATE accounting
+        SET
+        spending = #{expense},
+        user_id = #{user.id},
+        bill = #{bill},
+        title = #{title}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateRecordsBatch" parameterType="java.util.List">
+        <foreach collection="list" item="record" separator=";" >
+            UPDATE accounting
+            SET
+            spending = #{record.expense},
+            remain = #{record.remain}
+            WHERE id = #{record.id}
+        </foreach>
+    </update>
+
+    <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
+        SELECT spending, remain, id
+        FROM accounting
+        WHERE YEAR(created_date) = YEAR(#{createdDate}) AND MONTH(created_date) = MONTH(#{createdDate}) AND DAY(created_date) >= DAY(#{createdDate})
+        ORDER BY created_date ASC
+    </select>
+
+    <select id="findBeforeCurrentAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+        SELECT spending, remain
+        FROM accounting
+        WHERE created_date &lt; #{createdDate}
+        ORDER BY created_date DESC
+        LIMIT 1;
     </select>
 
     <select id="findAccountingByMonth" parameterType="org.apache.ibatis.session.RowBounds" resultMap="accountingResultMap" >
-        SELECT a.*, u.username
+        SELECT a.*, u.fullname
         FROM accounting a
         INNER JOIN
-            user u
+        user u
         ON a.user_id = u.id
-        WHERE MONTH(created_date) = #{monthId};
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+        <choose>
+            <when test="startDate != null and endDate != null">
+                <if test="startDate != null">
+                    AND created_date &gt;= #{startDate}
+                </if>
+                AND created_date &lt;= #{endDate}
+            </when>
+            <when test="startDate != null and endDate == null">
+                AND created_date &gt;= #{startDate}
+            </when>
+            <when test="endDate != null and startDate == null">
+                AND created_date &lt;= #{endDate}
+            </when>
+        </choose>
+        ORDER BY created_date ASC
     </select>
+
+    <select id="getTotalSpending" resultMap="totalSpendingResultMap">
+        SELECT SUM(CASE WHEN spending &gt; 0 THEN spending ELSE 0 END) AS totalRevenue,
+               SUM(CASE WHEN spending &lt; 0 THEN spending ELSE 0 END) AS totalExpense
+        FROM accounting
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+    </select>
+
+    <resultMap id="totalSpendingResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRemain">
+        <result column="totalExpense" property="totalExpense"/>
+        <result column="totalRevenue" property="totalRevenue"/>
+    </resultMap>
+
+    <select id="getLatestRemain" resultType="java.lang.Long">
+        SELECT remain
+        FROM accounting
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+        ORDER BY created_date DESC
+            LIMIT 1;
+    </select>
+
+    <select id="findAccountingById" parameterType="String" resultMap="accountingResultMap">
+        SELECT *
+        FROM accounting
+        WHERE id = #{id}
+    </select>
+
+    <update id="deleteAccounting" parameterType="String">
+        UPDATE accounting
+        SET status = 'DISABLE'
+    </update>
 
     <resultMap id="accountingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Accounting">
         <id property="id" column="id"/>
@@ -33,8 +121,14 @@
         </association>
     </resultMap>
 
+    <resultMap id="remainAccountingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Accounting">
+        <id property="id" column="id"/>
+        <result property="expense" column="spending"/>
+        <result property="remain" column="remain"/>
+    </resultMap>
+
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="id" />
-        <result property="username" column="username" />
+        <id property="id" column="user_id" />
+        <result property="fullname" column="fullname" />
     </resultMap>
 </mapper>

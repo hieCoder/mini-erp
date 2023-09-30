@@ -2,6 +2,8 @@ package com.shsoftvina.erpshsoftvina.api;
 
 
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
@@ -28,14 +30,13 @@ public class UserApi {
     }
     //   API get all User
     @GetMapping
-    ResponseEntity<?> getAllUser(
+    public ResponseEntity<?> getAllUser(
             @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(name = "search", required = false, defaultValue = "") String search,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
-        List<UserDetailResponse> listUser = userService.getAllUser(search, sort, (page - 1) * pageSize, pageSize);
-
+        List<ShowUserRespone> listUser = userService.getAllUser(search, sort, (page - 1) * pageSize, pageSize);
 
         return new ResponseEntity<>(listUser, HttpStatus.OK);
     }
@@ -46,6 +47,13 @@ public class UserApi {
         UserDetailResponse userDetailResponse = userService.findUserDetail(id);
         return new ResponseEntity<>(userDetailResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<?> getProfileUser(@PathVariable("id") String id) {
+        BasicUserDetailResponse basicUserDetailResponse = userService.getProfileUser(id);
+        return new ResponseEntity<>(basicUserDetailResponse, HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> disableUser(@PathVariable("id") String id) {

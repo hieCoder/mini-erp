@@ -34,10 +34,12 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String email = userRegisterRequest.getEmail();
-        UserDetailResponse userDetailResponse = userService.findUserCheckRegister(email);
+        UserDetailResponse userDetailResponse = userService.findByEmail(email);
+
         if(userDetailResponse != null) throw new DuplicateException("Email is exists in the system");
 
         User user = userConverter.userRegisterRequestToEntity(userRegisterRequest);
         return userMapper.registerUser(user);
+
     }
 }

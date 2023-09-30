@@ -1,24 +1,20 @@
-package com.shsoftvina.erpshsoftvina.entity;
+package com.shsoftvina.erpshsoftvina.model.request.accountings;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Accounting {
+public class AccountingUpdateRequest {
     private String id;
-    private LocalDateTime createdDate;
     private Long expense;
     private Long remain;
-    private User user;
-    private String bill;
+    private String userId;
+    private MultipartFile[] bill;
     private String title;
 }
-
