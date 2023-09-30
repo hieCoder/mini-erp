@@ -1,8 +1,8 @@
 package com.shsoftvina.erpshsoftvina.model.request.user;
 
 
-import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
