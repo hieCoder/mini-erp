@@ -17,5 +17,4 @@ public class PageAccountListResponse {
     long totalPages;
     Boolean hasNext;
     Boolean hasPrevious;
-
 }

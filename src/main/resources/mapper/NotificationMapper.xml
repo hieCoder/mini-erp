@@ -1,0 +1,81 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.NotificationMapper">
+
+    <!--    Get All Notification-->
+    <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiResultMap">
+        SELECT *
+        FROM notification
+                 LIMIT #{start}, #{pageSize}
+    </select>
+
+    <!--    Create new Notification-->
+    <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiResultMap">
+        INSERT INTO notification (id, title, content, file, created_date)
+        VALUES (#{id}, #{title}, #{content}, #{file}, NOW())
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="notiResultMap">
+        SELECT *
+        FROM notification
+        WHERE id = #{id}
+    </select>
+
+    <!--    Update Notification-->
+    <update id="updateNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
+        UPDATE notification
+        SET title   = #{title},
+            content = #{content},
+            file    = #{file}
+        WHERE id = #{id}
+    </update>
+
+    <!--    Delete Notification-->
+    <delete id="delNoti" parameterType="String">
+        DELETE
+        FROM notification
+        WHERE id = #{id}
+    </delete>
+
+    <select id="getCommentsByNotificationId" parameterType="String" resultMap="notiResultMap">
+        SELECT notification.id AS notiId,
+               notification.title AS notiTitle,
+               notification.file AS notiFile,
+               notification.content AS notiContent,
+               notification.created_date AS notiCreatedDate,
+               comment_notification.id AS commentId,
+               comment_notification.content AS commentContent,
+               comment_notification.created_date AS commentCreatedDate,
+               user.id AS userId,
+               user.fullname AS userFname,
+               user.phone AS userPhone
+
+        FROM notification
+                 INNER JOIN comment_notification ON notification.id = comment_notification.notification_id
+                 INNER JOIN user ON comment_notification.user_id = user.id
+        WHERE notification.id = #{notificationId}
+    </select>
+
+    <resultMap id="notiResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+        <id property="id" column="notiId"/>
+        <result property="title" column="notiTitle"/>
+        <result property="content" column="notiContent"/>
+        <result property="file" column="notiFile"/>
+        <result property="createdDate" column="notiCreatedDate"/>
+
+        <collection property="listComments" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
+            <id property="id" column="commentId"/>
+            <result property="content" column="commentContent"/>
+            <result property="createdDate" column="commentCreatedDate"/>
+
+            <association property="user" javaType="com.shsoftvina.erpshsoftvina.entity.User">
+                <id property="id" column="userId"/>
+                <result property="fullname" column="userFname"/>
+                <result property="phone" column="userPhone"/>
+            </association>
+        </collection>
+    </resultMap>
+
+
+</mapper>
