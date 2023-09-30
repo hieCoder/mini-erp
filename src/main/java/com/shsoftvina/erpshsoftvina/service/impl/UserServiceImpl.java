@@ -13,7 +13,7 @@ import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
-import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

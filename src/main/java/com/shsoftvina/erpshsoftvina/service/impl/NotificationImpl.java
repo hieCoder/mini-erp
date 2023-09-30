@@ -10,7 +10,7 @@ import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificatio
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
-import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
