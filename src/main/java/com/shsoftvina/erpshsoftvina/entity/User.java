@@ -38,7 +38,6 @@ public class User implements UserDetails {
     private Long allowance;
     private String insurance;
     private String atm;
-    private String username;
     private String email; // user_id
     private String password;
     private RoleEnum role;
@@ -52,6 +51,11 @@ public class User implements UserDetails {
         // Create a granted authority based on the user's role.
         authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     // Override isAccountNonExpired method to indicate that the user account never expires.

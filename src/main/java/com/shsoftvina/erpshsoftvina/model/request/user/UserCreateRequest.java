@@ -17,7 +17,6 @@ import java.util.Date;
 @Builder
 public class UserCreateRequest {
     private String id;
-    private String username;
     private String fullname;
     private String dateOfBirth;
     private String phone;

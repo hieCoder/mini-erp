@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserAccountingResponse {
     private String id;
-    private String username;
+    private String fullname;
 }
 

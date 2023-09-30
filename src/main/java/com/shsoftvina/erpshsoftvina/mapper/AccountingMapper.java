@@ -28,5 +28,13 @@ public interface AccountingMapper {
     Accounting findAccountingById(String id);
 
     int updateAccounting(Accounting accounting);
+
+    Accounting findBeforeCurrentAccounting(Accounting accounting);
+
+    List<Accounting> getRemainRecordInMonth(Accounting currentAccounting);
+
+    void updateRecordsBatch(List<Accounting> remainRecordInMonthList);
+
+    void deleteAccounting(String id);
 }
 

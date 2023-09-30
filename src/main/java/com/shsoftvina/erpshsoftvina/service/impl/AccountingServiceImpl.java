@@ -1,9 +1,11 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.converter.accounting.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AccountingServiceImpl implements AccountingService {
@@ -36,6 +39,7 @@ public class AccountingServiceImpl implements AccountingService {
     private UserMapper userMapper;
     @Autowired
     private HttpServletRequest request;
+
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
         List<String> monthHistoryList = accountingMapper.findAllMonthlyHistory();
@@ -54,7 +58,7 @@ public class AccountingServiceImpl implements AccountingService {
         RowBounds rowBounds = new RowBounds(offset, size);
         LocalDateTime endDateWithTime = null;
         if (endTime != null) {
-            endDateWithTime = endTime.atTime(23,59,59);
+            endDateWithTime = endTime.atTime(23, 59, 59);
         }
         List<Accounting> accountingList = accountingMapper.findAccountingByMonth(monthId, rowBounds, startTime, endDateWithTime);
         List<AccountResponse> accountResponses = accountingConverter.convertToListResponse(accountingList);
@@ -67,62 +71,74 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
+        if (accountingCreateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
+            throw new FileTooLimitedException("Max file is 3");
+        }
         LocalDateTime newDate = LocalDateTime.now();
         String formattedMonthYear = DateUtils.formatMonthYear(newDate);
         Long latestRemain = accountingMapper.getLatestRemain(formattedMonthYear);
-        MultipartFile billFile = accountingCreateRequest.getBill();
-        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-        boolean isSaveBill = true;
-        String billDBValue = null;
-        if(billFile != null){
-            billDBValue = FileUtils.formatNameImage(billFile);
-            isSaveBill = FileUtils.saveImageToServer(request, uploadDir, billFile, billDBValue);
-        }
-        if (isSaveBill) {
+
+        String uploadDir = AccountingConstant.UPLOAD_FILE_DIR;
+        MultipartFile[] billFile = accountingCreateRequest.getBill();
+        List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, uploadDir, billFile);
+        if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findUserDetail(accountingCreateRequest.getUserId());
-            Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest,currentUser,latestRemain, newDate);
-            accounting.setBill(billDBValue);
-            int rs = accountingMapper.createAccounting(accounting);
-            if(rs == 0) {
-                FileUtils.deleteImageFromServer(request, uploadDir, billDBValue);
+            Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate);
+            try {
+                accountingMapper.createAccounting(accounting);
+            } catch (Exception e) {
+                FileUtils.deleteMultipleFilesToServer(request, uploadDir, accounting.getBill());
                 return 0;
             }
             return 1;
-        } else{
-            return 0;
         }
+        return 0;
+
     }
 
     @Override
     public int updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
-        MultipartFile billFile = accountingUpdateRequest.getBill();
-        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-        boolean isSaveBill = true;
-        String billDBValue = null;
-        if (billFile != null) {
-            billDBValue = FileUtils.formatNameImage(billFile);
-            isSaveBill = FileUtils.saveImageToServer(request,uploadDir,billFile,billDBValue);
+        if (accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
+            throw new FileTooLimitedException("Max file is 3");
         }
-
-        if(isSaveBill) {
-            User currentUser = userMapper.findUserDetail(accountingUpdateRequest.getId());
-            Accounting accounting = accountingConverter.convertToEntity(accountingUpdateRequest,currentUser);
-            Accounting currentAccountInDB = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
-            accounting.setBill(billDBValue);
-            int rs = accountingMapper.updateAccounting(accounting);
-            if (rs == 0) {
-                FileUtils.deleteImageFromServer(request,uploadDir,billDBValue);
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, accountingUpdateRequest.getBill());
+        Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
+        User currentUser = userMapper.findUserDetail(accountingUpdateRequest.getUserId());
+        if (listFileNameSaveFileSuccess != null) {
+            Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
+            try {
+                accountingMapper.updateAccounting(updateAccounting);
+                if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
+                    Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(currentAccounting);
+                    List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(currentAccounting);
+                    Long beforeRemain = 0L;
+                    if (beforeCurrentAccounting != null) {
+                        beforeRemain = beforeCurrentAccounting.getRemain();
+                    }
+                    for (Accounting accounting : remainRecordInMonthList) {
+                        beforeRemain += accounting.getExpense();
+                        accounting.setRemain(beforeRemain);
+                    }
+                    accountingMapper.updateRecordsBatch(remainRecordInMonthList);
+                    return 1;
+                }
+            } catch (Exception e) {
+                FileUtils.deleteMultipleFilesToServer(request, dir, updateAccounting.getBill());
                 return 0;
-            }
-
-            if(!StringUtils.isEmpty(currentAccountInDB.getBill())) {
-                FileUtils.deleteImageFromServer(request,uploadDir,currentAccountInDB.getBill());
             }
             return 1;
         }
-        else {
-            return 0;
-        }
+        return 0;
     }
+
+    @Override
+    public int deleteAccounting(String id) {
+        Accounting deleteAccounting = accountingMapper.findAccountingById(id);
+        accountingMapper.deleteAccounting(id);
+
+        return 0;
+    }
+
 }
 

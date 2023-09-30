@@ -15,6 +15,6 @@ public class AccountingUpdateRequest {
     private Long expense;
     private Long remain;
     private String userId;
-    private MultipartFile bill;
+    private MultipartFile[] bill;
     private String title;
 }
