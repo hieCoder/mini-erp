@@ -4,8 +4,10 @@ import com.shsoftvina.erpshsoftvina.constant.MailConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
+import com.shsoftvina.erpshsoftvina.exception.NotExistException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
@@ -15,6 +17,7 @@ import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,29 +55,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailResponse findUserDetail(String id) {
-        User user = userMapper.findUserDetail(id);
+        User user = userMapper.findById(id);
         return userConverter.toResponse(user);
     }
 
     @Override
     public BasicUserDetailResponse getProfileUser(String id) {
-        User user = userMapper.findUserDetail(id);
+        User user = userMapper.findById(id);
         return userConverter.toProfileResponse(user);
     }
 
     @Override
     public void disableUser(String id) {
-        userMapper.changeStatusUser(id, (StatusUserEnum.DISABLE).toString());
+        userMapper.changeStatusUser(id, (StatusUserEnum.INACTIVE).toString());
     }
+
 
     @Override
     public Boolean activeUserRegisterRequest(UserActiveRequest userActiveRequest) {
+
+        if(!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole())) throw new NotExistException("The value of the role does not exist");
+        if(!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus())) throw new NotExistException("The value of the status does not exist");
+
         if (userActiveRequest.getStatus().equals(StatusUserEnum.REJECT)) {
-            userMapper.deleteUser(userActiveRequest.getId());
-            return true;
+            try{
+                userMapper.deleteUser(userActiveRequest.getId());
+                return true;
+            } catch (Exception e){
+                return false;
+            }
         } else {
             User user = userConverter.toEntity(userActiveRequest);
-            userMapper.activeUserRegisterRequest(user);
+            userMapper.activeUserRegister(user);
 
             DataMail dataMail = new DataMail();
             dataMail.setTo(userActiveRequest.getEmail());
@@ -85,8 +97,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailResponse findUserCheckRegister(String email){
-        User user = userMapper.findUserCheckRegister(email);
+    public UserDetailResponse findByEmail(String email){
+        User user = userMapper.findByEmail(email);
         if(user == null) return null;
         return userConverter.toResponse(user);
     }

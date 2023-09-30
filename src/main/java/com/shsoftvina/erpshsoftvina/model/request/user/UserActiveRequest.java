@@ -8,13 +8,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserActiveRequest {
+
+    @NotBlank(message = "id is not null or empty")
     private String id;
+    @NotBlank(message = "email is not null or empty")
+    @Email(message = "email has incorrect syntax")
     private String email;
-    private RoleEnum role;
-    private StatusUserEnum status;
+    @NotBlank(message = "role is not null or empty")
+    private String role;
+    @NotBlank(message = "status is not null or empty")
+    private String status;
 }

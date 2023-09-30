@@ -9,7 +9,7 @@
         where email = #{email} AND status = #{status}
     </select>
 
-    <select id="findUserCheckRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+    <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         SELECT *
         FROM user
         where email = #{email}
@@ -17,8 +17,8 @@
 
     <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         INSERT
-        INTO user (email, id, password, status)
-        VALUES (#{email}, #{id},#{password}, #{status});
+        INTO user (fullname, email, id, password, status)
+        VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
     </insert>
 
     <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
@@ -86,8 +86,6 @@
                 #{id})
     </insert>
 
-
-<!-- Get user combined with sorting and searching (if any)   -->
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
          <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
@@ -99,13 +97,7 @@
         ]]>
     </select>
 
-    <select id="getProfileUser" parameterType="String" resultMap="userResultMap">
-        select u.id, u.address, u.fullname, u.date_of_birth, u.phone, u.emergency_phone, u.avatar, u.type, u.department, u.working_date, u.email, u.password, u.role, u.status, u.position, u.resume
-        from user u
-        where u.id = #{id}
-    </select>
-
-    <select id="findUserDetail" parameterType="String" resultMap="userResultMap">
+    <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM user
         WHERE id = #{id}
@@ -115,14 +107,13 @@
         UPDATE user SET status = #{status} WHERE id = #{id}
     </update>
 
-    <update id="activeUserRegisterRequest" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+    <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user SET role = #{role} , status = #{status} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
        DELETE from user where id = #{id}
     </delete>
-
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>

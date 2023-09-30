@@ -82,7 +82,7 @@ public class AccountingServiceImpl implements AccountingService {
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, uploadDir, billFile);
         if (listFileNameSaveFileSuccess != null) {
-            User currentUser = userMapper.findUserDetail(accountingCreateRequest.getUserId());
+            User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate);
             try {
                 accountingMapper.createAccounting(accounting);
@@ -104,7 +104,7 @@ public class AccountingServiceImpl implements AccountingService {
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, accountingUpdateRequest.getBill());
         Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
-        User currentUser = userMapper.findUserDetail(accountingUpdateRequest.getUserId());
+        User currentUser = userMapper.findById(accountingUpdateRequest.getUserId());
         if (listFileNameSaveFileSuccess != null) {
             Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
             try {

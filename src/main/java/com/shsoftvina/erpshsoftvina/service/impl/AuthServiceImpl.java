@@ -26,18 +26,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public int registerUser(UserRegisterRequest userRegisterRequest){
+
         String pass = userRegisterRequest.getPassword();
         String passConfirm = userRegisterRequest.getConfirmPassword();
-        if(!passConfirm.equals(pass)){
+        if(pass!= null && passConfirm!= null && !passConfirm.equals(pass)){
             throw new NoMatchException("Password no match");
         }
 
         String email = userRegisterRequest.getEmail();
-        UserDetailResponse userDetailResponse = userService.findUserCheckRegister(email);
-        if(userDetailResponse == null){
-            User user = userConverter.userRegisterRequestToEntity(userRegisterRequest);
-            return userMapper.registerUser(user);
-        }
-        throw new DuplicateException("Username or email is exists");
+        UserDetailResponse userDetailResponse = userService.findByEmail(email);
+
+        if(userDetailResponse != null) throw new DuplicateException("Email is exists in the system");
+
+        User user = userConverter.userRegisterRequestToEntity(userRegisterRequest);
+        return userMapper.registerUser(user);
+
     }
 }
