@@ -1,7 +1,5 @@
 package com.shsoftvina.erpshsoftvina.enums.user;
 
-import lombok.Data;
-
 public enum DepartmentEnum {
 
     ADMINISTRATION("Administration"), MANAGEMENT("Management"), UI_UX("UI/UX"), DEV1("Dev1"), DEV2("Dev2");

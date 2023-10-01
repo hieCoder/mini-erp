@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
-import com.shsoftvina.erpshsoftvina.converter.notification.NotificationConverter;
+import com.shsoftvina.erpshsoftvina.converter.NotificationConverter;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;

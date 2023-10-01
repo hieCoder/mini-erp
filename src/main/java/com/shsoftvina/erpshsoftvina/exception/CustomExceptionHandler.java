@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.exception;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -49,17 +47,24 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle NotExistException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
-    @ExceptionHandler(NotExistException.class)
+    // Handle FileTypeNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(FileTypeNotAllowException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleNotExistException(NotExistException ex, WebRequest req) {
+    public ErrorResponse handleFileTypeNotAllowException(FileTypeNotAllowException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle BindException and return an ErrorResponse with HTTP status 400 (Bad Request).
+    // Handle FileSizeNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(FileSizeNotAllowException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileSizeNotAllowException(FileSizeNotAllowException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    // Handle MethodArgumentNotValidException and return an ErrorResponse with HTTP status 400 (Bad Request).
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBindException(MethodArgumentNotValidException e, WebRequest req) {
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e, WebRequest req) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST,
                 e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }

@@ -1,6 +1,5 @@
-package com.shsoftvina.erpshsoftvina.converter.accounting;
+package com.shsoftvina.erpshsoftvina.converter;
 
-import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;

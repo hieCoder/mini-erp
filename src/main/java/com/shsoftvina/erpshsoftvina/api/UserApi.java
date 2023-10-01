@@ -2,13 +2,10 @@ package com.shsoftvina.erpshsoftvina.api;
 
 
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
-
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-
+import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserApi {
+
     @Autowired
     UserService userService;
 
@@ -28,36 +26,29 @@ public class UserApi {
     public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
         return ResponseEntity.ok(userService.updateUser(user));
     }
-    //   API get all User
+
     @GetMapping
     public ResponseEntity<?> getAllUser(
             @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(name = "search", required = false, defaultValue = "") String search,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
+            @RequestParam(name = "status", required = false, defaultValue = "ACTIVE") String status) {
 
-        List<ShowUserRespone> listUser = userService.getAllUser(search, sort, (page - 1) * pageSize, pageSize);
+        List<ShowUserRespone> listUser = userService.getAllUser(search,
+                sort, (page - 1) * pageSize, pageSize, status);
 
         return new ResponseEntity<>(listUser, HttpStatus.OK);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findUserDetail(@PathVariable("id") String id) {
-        UserDetailResponse userDetailResponse = userService.findUserDetail(id);
-        return new ResponseEntity<>(userDetailResponse, HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUserDetail(id), HttpStatus.OK);
     }
-
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<?> getProfileUser(@PathVariable("id") String id) {
-        BasicUserDetailResponse basicUserDetailResponse = userService.getProfileUser(id);
-        return new ResponseEntity<>(basicUserDetailResponse, HttpStatus.OK);
-    }
-
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> disableUser(@PathVariable("id") String id) {
-        userService.disableUser(id);
+    public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
+        userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -69,5 +60,10 @@ public class UserApi {
     @PostMapping("/create")
     public ResponseEntity<?> createUser (UserCreateRequest user){
         return ResponseEntity.ok(userService.createUser(user));
+    }
+
+    @PostMapping("/update/profile")
+    public ResponseEntity<?> updateUserBasicProfile (@Valid UserUpdateProfileRequest user){
+        return ResponseEntity.ok(userService.updateUserBasicProfile(user));
     }
 }
