@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.MailConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.converter.UserConverter;
@@ -14,7 +13,6 @@ import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
@@ -55,19 +53,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BasicUserDetailResponse findUserDetail(String id) {
-        User user = userMapper.findById(id);
-
-        User userCurrent = Principal.getUserCurrent();
-        if(!user.getRole().equals(userCurrent.getRole())
-                && userCurrent.getRole().equals(RoleEnum.DEVELOPER))
-            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
-
-        RoleEnum userCurrentRole = Principal.getUserCurrent().getRole();
-        if(userCurrentRole.equals(RoleEnum.DEVELOPER)){
-            return userConverter.toBasicUserDetailResponse(user);
-        }
-        return userConverter.toUserDetailResponse(user);
+    public UserDetailResponse findUserDetail(String id) {
+        return userConverter.toUserDetailResponse(userMapper.findById(id));
     }
 
     @Override

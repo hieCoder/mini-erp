@@ -102,9 +102,10 @@
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT *
-        FROM user
-        WHERE id = #{id}
+        SELECT u.*, c.id AS contract_id, c.*, i.id AS insurance_id, i.*
+        FROM user u
+        INNER JOIN contract c ON u.id = c.user_id INNER JOIN insurance i
+        WHERE u.id = #{id}
     </select>
 
     <update id="changeStatusUser" parameterType="String" >
@@ -142,11 +143,6 @@
         <result property="avatar" column="avatar"/>
         <result property="type" column="type"/>
         <result property="department" column="department"/>
-        <result property="workingDay" column="working_date"/>
-        <result property="contract" column="contract"/>
-        <result property="basicSalary" column="basic_salary"/>
-        <result property="allowance" column="allowance"/>
-        <result property="insurance" column="insurance"/>
         <result property="atm" column="atm"/>
         <result property="email" column="email"/>
         <result property="password" column="password"/>
@@ -156,6 +152,23 @@
         <result property="resume" column="resume"/>
         <result property="isFirstUpdateProfile" column="is_first_update_profile"/>
         <result property="timesheetsCode" column="timesheets_code"/>
+        <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
+    </resultMap>
+
+    <resultMap id="listContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract" >
+        <id property="id" column="contract_id"/>
+        <result property="basicSalary" column="basic_salary"/>
+        <result property="allowance" column="allowance"/>
+        <result property="contract" column="contract"/>
+        <result property="createdDate" column="created_date"/>
+        <association property="insurance" column="insurance_id" javaType="com.shsoftvina.erpshsoftvina.entity.Insurance" resultMap="insuranceResultMap">
+        </association>
+    </resultMap>
+
+    <resultMap id="insuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Insurance" >
+        <id property="id" column="insurance_id"/>
+        <result property="insuranceType" column="insurance_type"/>
+        <result property="money" column="money"/>
     </resultMap>
 
 </mapper>

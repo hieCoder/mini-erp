@@ -58,4 +58,16 @@
         <addUniqueConstraint tableName="user" columnNames="timesheets_code" constraintName="unique_timesheets_code"/>
     </changeSet>
 
+    <changeSet id="7" author="team2">
+        <renameColumn tableName="user" oldColumnName="working_date" newColumnName="working_day" columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet id="8" author="team2">
+        <dropColumn tableName="user" columnName="working_day"/>
+        <dropColumn tableName="user" columnName="basic_salary"/>
+        <dropColumn tableName="user" columnName="allowance"/>
+        <dropColumn tableName="user" columnName="insurance"/>
+        <dropColumn tableName="user" columnName="contract"/>
+    </changeSet>
+
 </databaseChangeLog>

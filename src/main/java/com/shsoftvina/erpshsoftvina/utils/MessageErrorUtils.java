@@ -22,4 +22,8 @@ public class MessageErrorUtils {
     public static String unauthorized(){
         return "Unauthorized!";
     }
+
+    public static String unknown(String s){
+        return s.concat(" unknown!");
+    }
 }

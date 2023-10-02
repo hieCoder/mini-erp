@@ -49,4 +49,22 @@
                 constraintName="fk_comment_notification_parent"
         />
     </changeSet>
+
+    <!-- add column user_id into table contract and create foreign key constraint -->
+    <changeSet id="6" author="team2">
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_contract_user"/>
+    </changeSet>
+
+    <!-- add column insurance_id into table contract and create foreign key constraint -->
+    <changeSet id="7" author="team2">
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="insurance_id"
+                                 referencedTableName="insurance"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_contract_insurance"/>
+    </changeSet>
 </databaseChangeLog>
