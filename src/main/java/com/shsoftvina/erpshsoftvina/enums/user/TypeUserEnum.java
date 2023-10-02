@@ -1,5 +1,20 @@
 package com.shsoftvina.erpshsoftvina.enums.user;
 
 public enum TypeUserEnum {
-    PROBATION, OFFICIAL, PARTTIME
+
+    PROBATION("Probation"), OFFICIAL("Official"), PARTTIME("Partime");
+
+    private String value;
+
+    TypeUserEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

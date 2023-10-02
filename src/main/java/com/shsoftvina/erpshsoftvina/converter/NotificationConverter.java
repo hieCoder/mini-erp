@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.converter.notification;
+package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.converter.CommentNotificationConverter;
 import com.shsoftvina.erpshsoftvina.entity.CommentNotification;

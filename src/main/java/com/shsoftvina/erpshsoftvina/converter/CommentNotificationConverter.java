@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
-import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.CommentNotification;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;

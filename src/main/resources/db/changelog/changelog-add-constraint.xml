@@ -49,5 +49,5 @@
                 constraintName="fk_comment_notification_parent"
         />
     </changeSet>
-
 </databaseChangeLog>
+

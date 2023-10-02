@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
+import com.shsoftvina.erpshsoftvina.enums.accounting.StatusAccountingEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +16,11 @@ import java.time.LocalDateTime;
 public class Accounting {
     private String id;
     private LocalDateTime createdDate;
-    private Integer expense;
-    private Integer remain;
+    private Long expense;
+    private Long remain;
     private User user;
     private String bill;
     private String title;
+    private StatusAccountingEnum status;
 }
+
