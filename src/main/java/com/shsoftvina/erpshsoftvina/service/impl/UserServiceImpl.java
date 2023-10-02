@@ -223,7 +223,7 @@ public class UserServiceImpl implements UserService {
         boolean isSaveSuccess = true;
         if(avatarFile != null){
 
-            if(!FileUtils.isAllowedImageType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
+            if(!FileUtils.isAllowedImageType(avatarFile, UserConstant.LIST_TYPE_IMAGE))
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
             if(!FileUtils.isAllowedFileSize(avatarFile))
                 throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
