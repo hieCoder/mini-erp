@@ -7,10 +7,7 @@ import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.TypeUserEnum;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
-import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.*;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -164,6 +161,13 @@ public class UserConverter {
                 .emergencyPhone(userUpdateProfileRequest.getEmergencyPhone())
                 .dateOfBirth(userUpdateProfileRequest.getDateOfBirth())
                 .avatar(avatar)
+                .build();
+    }
+
+    public static UserCommentResponse toUserCommentResponse(User user){
+        return UserCommentResponse.builder()
+                .fullname(user.getFullname())
+                .avatar(user.getAvatar())
                 .build();
     }
 }

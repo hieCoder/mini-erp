@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationCommentsListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,11 @@ public class NotificationApi {
         if (isDelSuccess) return ResponseEntity.ok(isDelSuccess);
 
         return new ResponseEntity<>(isDelSuccess, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/{notificationId}")
+    public ResponseEntity<?> getCommentsByNotificationId(@PathVariable String notificationId) {
+        NotificationCommentsListResponse comments = notificationService.getCommentsByNotificationId(notificationId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 }

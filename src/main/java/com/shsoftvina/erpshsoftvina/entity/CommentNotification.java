@@ -12,12 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Notification {
-
+public class CommentNotification {
     private String id;
-    private String title;
     private String content;
-    private String file;
     private Date createdDate;
-    private List<CommentNotification> listComments;
+    private Notification notification;
+    private User user;
+    private Date modifiedDate;
+    private String modifiedBy;
+    private String parentId;
+    private List<CommentNotification> childComments;
 }
+

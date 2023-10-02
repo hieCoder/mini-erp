@@ -2,12 +2,14 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
 import com.shsoftvina.erpshsoftvina.converter.NotificationConverter;
+
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationCommentsListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -103,5 +105,12 @@ public class NotificationImpl implements NotificationService {
         String dir = NotificationConstant.UPLOAD_FILE_DIR;
         FileUtils.deleteMultipleFilesToServer(request, dir, notification.getFile());
         return true;
+    }
+
+    @Override
+    public NotificationCommentsListResponse getCommentsByNotificationId(String notificationId){
+        Notification comments = notificationMapper.getCommentsByNotificationId(notificationId);
+        System.out.println(comments);
+        return notificationConverter.toListCommentsResponse(comments);
     }
 }
