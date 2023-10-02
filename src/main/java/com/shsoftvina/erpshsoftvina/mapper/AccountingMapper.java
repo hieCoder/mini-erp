@@ -17,7 +17,7 @@ public interface AccountingMapper {
 
     List<Accounting> findAccountingByMonth(@Param("monthId") String monthId, RowBounds rowBounds,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
 
-    long getTotalRecordCountPerMonth(String monthId);
+    long getTotalRecordCountPerMonth(@Param("monthId") String monthId, @Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
 
     TotalSpendAndRemain getTotalSpending(@Param("monthId") String monthId);
 

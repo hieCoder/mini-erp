@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
+import com.shsoftvina.erpshsoftvina.enums.accounting.StatusAccountingEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class Accounting {
     private User user;
     private String bill;
     private String title;
+    private StatusAccountingEnum status;
 }
 

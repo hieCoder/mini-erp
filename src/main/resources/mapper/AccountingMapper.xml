@@ -11,7 +11,21 @@
     <select id="getTotalRecordCountPerMonth" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM accounting
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
+        <choose>
+            <when test="startDate != null and endDate != null">
+                <if test="startDate != null">
+                    AND created_date &gt;= #{startDate}
+                </if>
+                AND created_date &lt;= #{endDate}
+            </when>
+            <when test="startDate != null and endDate == null">
+                AND created_date &gt;= #{startDate}
+            </when>
+            <when test="endDate != null and startDate == null">
+                AND created_date &lt;= #{endDate}
+            </when>
+        </choose>
     </select>
 
     <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
@@ -22,8 +36,7 @@
 
     <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         UPDATE accounting
-        SET
-        spending = #{expense},
+        SET spending = #{expense},
         user_id = #{user.id},
         bill = #{bill},
         title = #{title}
@@ -43,7 +56,11 @@
     <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
         SELECT spending, remain, id
         FROM accounting
-        WHERE YEAR(created_date) = YEAR(#{createdDate}) AND MONTH(created_date) = MONTH(#{createdDate}) AND DAY(created_date) >= DAY(#{createdDate})
+        WHERE YEAR (created_date) = YEAR (#{createdDate})
+          AND MONTH (created_date) = MONTH (#{createdDate})
+          AND DAY (created_date) >= DAY (#{createdDate})
+          AND TIME (created_date) > TIME (#{createdDate})
+          AND status ='ACTIVE'
         ORDER BY created_date ASC
     </select>
 
@@ -61,40 +78,35 @@
         INNER JOIN
         user u
         ON a.user_id = u.id
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+        WHERE DATE_FORMAT(a.created_date, '%Y-%m') = #{monthId} AND a.status ='ACTIVE'
         <choose>
             <when test="startDate != null and endDate != null">
                 <if test="startDate != null">
-                    AND created_date &gt;= #{startDate}
+                    AND a.created_date &gt;= #{startDate}
                 </if>
-                AND created_date &lt;= #{endDate}
+                AND a.created_date &lt;= #{endDate}
             </when>
             <when test="startDate != null and endDate == null">
-                AND created_date &gt;= #{startDate}
+                AND a.created_date &gt;= #{startDate}
             </when>
             <when test="endDate != null and startDate == null">
-                AND created_date &lt;= #{endDate}
+                AND a.created_date &lt;= #{endDate}
             </when>
         </choose>
-        ORDER BY created_date ASC
+        ORDER BY a.created_date ASC
     </select>
 
     <select id="getTotalSpending" resultMap="totalSpendingResultMap">
         SELECT SUM(CASE WHEN spending &gt; 0 THEN spending ELSE 0 END) AS totalRevenue,
                SUM(CASE WHEN spending &lt; 0 THEN spending ELSE 0 END) AS totalExpense
         FROM accounting
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
     </select>
-
-    <resultMap id="totalSpendingResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRemain">
-        <result column="totalExpense" property="totalExpense"/>
-        <result column="totalRevenue" property="totalRevenue"/>
-    </resultMap>
 
     <select id="getLatestRemain" resultType="java.lang.Long">
         SELECT remain
         FROM accounting
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId}
+        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
         ORDER BY created_date DESC
             LIMIT 1;
     </select>
@@ -102,12 +114,13 @@
     <select id="findAccountingById" parameterType="String" resultMap="accountingResultMap">
         SELECT *
         FROM accounting
-        WHERE id = #{id}
+        WHERE id = #{id} AND status ='ACTIVE'
     </select>
 
     <update id="deleteAccounting" parameterType="String">
         UPDATE accounting
         SET status = 'DISABLE'
+        WHERE id =#{id}
     </update>
 
     <resultMap id="accountingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Accounting">
@@ -117,6 +130,7 @@
         <result property="remain" column="remain"/>
         <result property="bill" column="bill"/>
         <result property="title" column="title"/>
+        <result property="status" column="status"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         </association>
     </resultMap>
@@ -130,5 +144,10 @@
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="user_id" />
         <result property="fullname" column="fullname" />
+    </resultMap>
+
+    <resultMap id="totalSpendingResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRemain">
+        <result column="totalExpense" property="totalExpense"/>
+        <result column="totalRevenue" property="totalRevenue"/>
     </resultMap>
 </mapper>

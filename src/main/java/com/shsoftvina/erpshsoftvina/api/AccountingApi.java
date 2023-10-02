@@ -38,7 +38,7 @@ public class AccountingApi {
                                                    @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                    @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
-        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(monthId,page-1,size,startDate,endDate);
+        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(monthId,page,size,startDate,endDate);
         return ResponseEntity.ok(accountListResponse);
     }
 
