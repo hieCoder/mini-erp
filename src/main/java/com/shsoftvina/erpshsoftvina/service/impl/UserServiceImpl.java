@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.MailConstant;
+import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
@@ -10,24 +11,19 @@ import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.exception.*;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.UserService;
-import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
-import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
-import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
+import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
@@ -114,57 +110,72 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUser(UserUpdateRequest userUpdateRequest) {
+    public User findById(String id) {
+        return userMapper.findById(id);
+    }
+
+    @Override
+    public int updateUserForAdmin(UserUpdateRequest userUpdateRequest, String id) {
+//        User user = findById(id);
+//        if(user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 //
-//        if (userUpdateRequest.getContract().length > NotificationConstant.NUMBER_FILE_LIMIT) {
-//            throw new FileTooLimitedException("Max file is 3");
-//        }
 //        MultipartFile avatarFile = userUpdateRequest.getAvatar();
 //        MultipartFile[] contractFile = userUpdateRequest.getContract();
+//        MultipartFile resumeFile = userUpdateRequest.getResume();
+//        String avatarFileName = null;
+//        String resumeFileName = null;
+//        String contractFileName = null;
 //
-//        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-//
-//        boolean isSaveAvatar = true;
-//        boolean isSaveContract = true;
-//
-//        String avatarDBValue = null;
-//        String contractDBValue = null;
+//        boolean isSaveSuccessAvatar = true, isSaveSuccessResume = true;
+//        List<String> isContractSuccess = new ArrayList();
 //
 //        if(avatarFile != null){
-//            avatarDBValue = FileUtils.formatNameImage(avatarFile);
-//            isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
+//
+//            if(!FileUtils.isAllowedImageType(avatarFile, UserConstant.LIST_TYPE_IMAGE))
+//                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
+//            if(!FileUtils.isAllowedFileSize(avatarFile))
+//                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+//
+//            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+//            avatarFileName = FileUtils.formatNameImage(avatarFile);
+//            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarFileName);
 //        }
 //        if(contractFile != null){
-//            contractDBValue = FileUtils.formatNameImage(contractFile);
-//            isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
+//
+//            for (MultipartFile multipartFile : contractFile) {
+//                if(!FileUtils.isAllowedImageType(multipartFile, UserConstant.LIST_TYPE_FILE))
+//                    throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
+//                if(!FileUtils.isAllowedFileSize(multipartFile))
+//                    throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+//            }
+//
+//            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+//            contractFileName = FileUtils.convertMultipartFileArrayToString(contractFile);
+//            isContractSuccess = FileUtils.saveMultipleFilesToServer(request, uploadDir, userUpdateRequest.getContract());
+//        }
+//        if(resumeFile != null){
+//
+//            if(!FileUtils.isAllowedImageType(resumeFile, UserConstant.LIST_TYPE_FILE))
+//                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
+//            if(!FileUtils.isAllowedFileSize(resumeFile))
+//                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+//
+//            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+//            resumeFileName = FileUtils.formatNameImage(resumeFile);
+//            isSaveSuccessResume = FileUtils.saveImageToServer(request, uploadDir, resumeFile, resumeFileName);
 //        }
 //
-//        if(isSaveAvatar && isSaveContract){
 //
-//            User currentUserInDB = userMapper.findUserDetail(userUpdateRequest.getId());
-//
-//            User user = userConverter.userUpdateRequestToEntity(userUpdateRequest);
-//            user.setAvatar(avatarDBValue);
-//            user.setContract(contractDBValue);
-//            int rs = userMapper.updateUser(user);
-//            if(rs == 0) {
-//                FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
-//                FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
+//        if(isSaveSuccessAvatar && isSaveSuccessResume && isContractSuccess!=null){
+//            user = userConverter.userUpdateRequestToEntity(userUpdateRequest, avatarFileName, resumeFileName, contractFileName);
+//            try{
+//                userMapper.updateUserForAdmin(user);
+//                return 1;
+//            } catch (Exception e){
 //                return 0;
 //            }
-//
-//
-//            if(!StringUtils.isEmpty(currentUserInDB.getAvatar())){
-//                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getAvatar());
-//            }
-//            if(!StringUtils.isEmpty(currentUserInDB.getContract())){
-//                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getContract());
-//            }
-//            return 1;
-//        } else{
-//            return 0;
 //        }
-        return 1;
+        return 0;
     }
 
     @Override
@@ -212,6 +223,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int createUserForAdmin(UserCreateAdminRequest userCreateAdminRequest) {
+
+        if(!EnumUtils.isExistInEnum(RoleEnum.class, userCreateAdminRequest.getRole()))
+            throw new NotFoundException(MessageErrorUtils.notFound("Role"));
+        if (findByEmail(userCreateAdminRequest.getEmail()) != null)
+            throw new DuplicateException("Email is exists");
+
+        User user = userConverter.userCreateAdminRequestToEntity(userCreateAdminRequest);
+        userMapper.createUserForAdmin(user);
+
+        return 1;
+    }
+
+    @Override
     public int updateUserBasicProfile(UserUpdateProfileRequest userUpdateProfileRequest) {
 
         String id = userUpdateProfileRequest.getId();
@@ -220,7 +245,8 @@ public class UserServiceImpl implements UserService {
 
         MultipartFile avatarFile = userUpdateProfileRequest.getAvatar();
         MultipartFile resumeFile = userUpdateProfileRequest.getResume();
-        String fileName = null;
+        String avatarFileName = null;
+        String resumeFileName = null;
         boolean isSaveSuccessAvatar = true, isSaveSuccessResume = true;
         if(avatarFile != null){
 
@@ -230,8 +256,8 @@ public class UserServiceImpl implements UserService {
                 throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
 
             String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-            fileName = FileUtils.formatNameImage(avatarFile);
-            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, fileName);
+            avatarFileName = FileUtils.formatNameImage(avatarFile);
+            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarFileName);
         }
         if(resumeFile != null){
 
@@ -241,12 +267,12 @@ public class UserServiceImpl implements UserService {
                 throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
 
             String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-            fileName = FileUtils.formatNameImage(resumeFile);
-            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, resumeFile, fileName);
+            resumeFileName = FileUtils.formatNameImage(resumeFile);
+            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, resumeFile, resumeFileName);
         }
 
         if(isSaveSuccessAvatar && isSaveSuccessResume){
-            user = userConverter.toEntity(userUpdateProfileRequest, fileName);
+            user = userConverter.toEntity(userUpdateProfileRequest, avatarFileName, resumeFileName);
             try{
                 userMapper.updateUserProfile(user);
                 return 1;

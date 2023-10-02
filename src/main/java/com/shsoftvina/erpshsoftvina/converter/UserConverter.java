@@ -2,9 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.enums.user.TypeUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.*;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
@@ -93,27 +91,38 @@ public class UserConverter {
                 .build();
     }
 
-//    public User userUpdateRequestToEntity(UserUpdateRequest userUpdateRequest) {
+    public User userUpdateRequestToEntity(UserUpdateRequest userUpdateRequest, String avatar, String resume, String contract) {
+//        TypeUserEnum type = userUpdateRequest.getType()!=null?TypeUserEnum.valueOf(userUpdateRequest.getType()):null;
+//        DepartmentEnum department = userUpdateRequest.getDepartment()!=null?DepartmentEnum.valueOf(userUpdateRequest.getDepartment()):null;
+//        PositionEnum position = userUpdateRequest.getPosition()!=null?PositionEnum.valueOf(userUpdateRequest.getPosition()):null;
+//        RoleEnum role = userUpdateRequest.getRole()!=null?RoleEnum.valueOf(userUpdateRequest.getRole()):null;
+//        StatusUserEnum statusUserEnum = userUpdateRequest.getStatus()!=null?StatusUserEnum.valueOf(userUpdateRequest.getStatus()):null;
 //        return User.builder()
-//                .allowance(userUpdateRequest.getAllowance())
-//                .atm(userUpdateRequest.getAtm())
-//                .insurance(userUpdateRequest.getInsurance())
-//                .role(userUpdateRequest.getRole())
-//                .avatar(null)
-//                .id(userUpdateRequest.getId())
-//                .basicSalary(userUpdateRequest.getBasicSalary())
-//                .contract(null)
-//                .dateOfBirth(userUpdateRequest.getDateOfBirth())
-//                .department(userUpdateRequest.getDepartment())
-//                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
-//                .email(userUpdateRequest.getEmail())
-//                .phone(userUpdateRequest.getPhone())
-//                .jobStartDate(userUpdateRequest.getJobStartDate())
-//                .role(userUpdateRequest.getRole())
-//                .status(userUpdateRequest.getStatus())
 //                .fullname(userUpdateRequest.getFullname())
+//                .address(userUpdateRequest.getAddress())
+//                .dateOfBirth(userUpdateRequest.getDateOfBirth())
+//                .phone(userUpdateRequest.getPhone())
+//                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
+//                .avatar(avatar)
+//                .type(type)
+//                .department(department)
+//                .workingDay(DateUtils.formatDate(userUpdateRequest.getWorkingDay()))
+//                .contract(contract)
+//                .basicSalary(userUpdateRequest.getBasicSalary())
+//                .allowance(userUpdateRequest.getAllowance())
+//                .insurance(userUpdateRequest.getInsurance())
+//                .atm(userUpdateRequest.getAtm())
+//                .email(userUpdateRequest.getEmail())
+//                .password(userUpdateRequest.getPassword())
+//                .role(role)
+//                .status(statusUserEnum)
+//                .position(position)
+//                .resume(resume)
+//                .isFirstUpdateProfile(true)
+//                .timesheetsCode(userUpdateRequest.getTimesheetsCode())
 //                .build();
-//    }
+        return  null;
+    }
 
 //    public User userCreateRequestToEntity(UserCreateRequest userUpdateRequest) {
 //        return User.builder()
@@ -138,6 +147,17 @@ public class UserConverter {
 //                .build();
 //    }
 
+    public User userCreateAdminRequestToEntity(UserCreateAdminRequest userCreateAdminRequest) {
+        return User.builder()
+                .id(UUID.randomUUID().toString())
+                .email(userCreateAdminRequest.getEmail())
+                .password(new BCryptPasswordEncoder().encode(userCreateAdminRequest.getPassword()))
+                .role(RoleEnum.valueOf(userCreateAdminRequest.getRole()))
+                .status(StatusUserEnum.ACTIVE)
+                .isFirstUpdateProfile(false)
+                .build();
+    }
+
     public User toEntity(UserRegisterRequest userRegisterRequest) {
         return User.builder()
                 .fullname(userRegisterRequest.getFullname())
@@ -155,7 +175,7 @@ public class UserConverter {
                 .build();
     }
 
-    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar) {
+    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar, String resume) {
         return User.builder()
                 .id(userUpdateProfileRequest.getId())
                 .fullname(userUpdateProfileRequest.getFullname())
@@ -163,6 +183,7 @@ public class UserConverter {
                 .phone(userUpdateProfileRequest.getPhone())
                 .emergencyPhone(userUpdateProfileRequest.getEmergencyPhone())
                 .dateOfBirth(userUpdateProfileRequest.getDateOfBirth())
+                .resume(resume)
                 .avatar(avatar)
                 .build();
     }

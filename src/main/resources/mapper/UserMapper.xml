@@ -6,7 +6,8 @@
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM user
-        where email = #{email} AND status = #{status}
+        where email = #{email}
+          AND status = #{status}
     </select>
 
     <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
@@ -18,84 +19,58 @@
     <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         INSERT
         INTO user (fullname, email, id, password, status)
-        VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
+        VALUES (#{fullname}, #{email}, #{id}, #{password}, #{status});
     </insert>
 
-    <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+    <update id="updateUserForAdmin" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
-        SET
-            fullname = #{fullname},
-            address = #{address},
-            date_of_birth = #{dateOfBirth},
-            phone = #{phone},
+        SET fullname        = #{fullname},
+            address         = #{address},
+            date_of_birth   = #{dateOfBirth},
+            phone           = #{phone},
             emergency_phone = #{emergencyPhone},
-            avatar = #{avatar},
-            type = #{type},
-            department = #{department},
-            working_day = #{workingDay},
-            contract = #{contract},
-            basic_salary = #{basicSalary},
-            allowance = #{allowance},
-            insurance = #{insurance},
-            atm = #{atm},
-            email = #{email},
-            password = #{password},
-            role = #{role},
-            status = #{status},
-            position = #{position},
-            resume = #{resume},
-            timesheetsCode = #{timesheetsCode}
+            avatar          = #{avatar},
+            type            = #{type},
+            department      = #{department},
+            working_date     = #{workingDay},
+            contract        = #{contract},
+            basic_salary    = #{basicSalary},
+            allowance       = #{allowance},
+            insurance       = #{insurance},
+            atm             = #{atm},
+            email           = #{email},
+            password        = #{password},
+            role            = #{role},
+            status          = #{status},
+            position        = #{position},
+            resume          = #{resume},
+            is_first_update_profile   = #{isFirstUpdateProfile},
+            timesheetsCode  = #{timesheetsCode}
         WHERE id = #{id};
 
     </update>
 
-    <insert id="createUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT INTO user (
-                          fullname,
-                          date_of_birth,
-                          phone,
-                          emergency_phone,
-                          avatar,
-                          type,
-                          department,
-                          job_start_date,
-                          contract,
-                          basic_salary,
-                          allowance,
-                          insurance,
-                          atm,
+    <insert id="createUserForAdmin" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        INSERT INTO user (id,
                           email,
+                          password,
                           role,
                           status,
-                          password,
-                          id)
-        VALUES (
-                #{fullname},
-                #{dateOfBirth},
-                #{phone},
-                #{emergencyPhone},
-                #{avatar},
-                #{type},
-                #{department},
-                #{jobStartDate},
-                #{contract},
-                #{basicSalary},
-                #{allowance},
-                #{insurance},
-                #{atm},
+                          is_first_update_profile)
+        VALUES (#{id},
                 #{email},
+                #{password},
                 #{role},
                 #{status},
-                #{password},
-                #{id})
+                #{isFirstUpdateProfile})
     </insert>
 
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
          <![CDATA[
-        SELECT u.fullname, u.id, u.email , u.department, u.position
+        SELECT u.fullname, u.id, u.email, u.department, u.position
         FROM user AS u
         WHERE u.status = #{status}
-        AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+          AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
         LIMIT #{start}, #{pageSize};
         ]]>
@@ -107,28 +82,35 @@
         WHERE id = #{id}
     </select>
 
-    <update id="changeStatusUser" parameterType="String" >
-        UPDATE user SET status = #{status} WHERE id = #{id}
+    <update id="changeStatusUser" parameterType="String">
+        UPDATE user
+        SET status = #{status}
+        WHERE id = #{id}
     </update>
 
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
+        UPDATE user
+        SET role                    = #{role},
+            status                  = #{status},
+            is_first_update_profile = #{isFirstUpdateProfile}
+        where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
-       DELETE from user where id = #{id}
+        DELETE
+        from user
+        where id = #{id}
     </delete>
 
     <update id="updateUserProfile" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
-        SET
-            fullname = #{fullname},
-            date_of_birth = #{dateOfBirth},
-            phone = #{phone},
+        SET fullname        = #{fullname},
+            date_of_birth   = #{dateOfBirth},
+            phone           = #{phone},
             emergency_phone = #{emergencyPhone},
-            avatar = #{avatar},
-            address = #{address},
-            resume = #{resume}
+            avatar          = #{avatar},
+            address         = #{address},
+            resume          = #{resume}
         WHERE id = #{id};
 
     </update>

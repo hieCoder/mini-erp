@@ -64,5 +64,6 @@ public class UserCreateRequest {
     private String position;
 
     private MultipartFile resume;
+    private boolean firstUpdateProfile;
     private String timesheetsCode;
 }

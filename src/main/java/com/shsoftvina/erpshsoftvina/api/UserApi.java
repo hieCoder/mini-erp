@@ -1,10 +1,7 @@
 package com.shsoftvina.erpshsoftvina.api;
 
 
-import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +19,9 @@ public class UserApi {
     @Autowired
     UserService userService;
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
-        return ResponseEntity.ok(userService.updateUser(user));
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> updateUserForAdmin(@Valid UserUpdateRequest userUpdateRequest,@PathVariable("id") String id) {
+        return ResponseEntity.ok(userService.updateUserForAdmin(userUpdateRequest, id));
     }
 
     @GetMapping
@@ -57,9 +54,14 @@ public class UserApi {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
 
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createUser (UserCreateRequest user){
+//        return ResponseEntity.ok(userService.createUser(user));
+//    }
+
     @PostMapping("/create")
-    public ResponseEntity<?> createUser (UserCreateRequest user){
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<?> createUserforAdmin (@Valid UserCreateAdminRequest userCreateAdminRequest){
+        return ResponseEntity.ok(userService.createUserForAdmin(userCreateAdminRequest));
     }
 
     @PostMapping("/update/profile")
