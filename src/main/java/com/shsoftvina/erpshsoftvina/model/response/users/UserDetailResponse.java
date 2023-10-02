@@ -1,8 +1,9 @@
+
 package com.shsoftvina.erpshsoftvina.model.response.users;
 
-import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.enums.TypeUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.TypeUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

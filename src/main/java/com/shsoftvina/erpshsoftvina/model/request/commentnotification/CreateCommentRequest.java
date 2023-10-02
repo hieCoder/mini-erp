@@ -1,7 +1,5 @@
 package com.shsoftvina.erpshsoftvina.model.request.commentnotification;
 
-import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CreateCommentRequest {
+    private String notificationId;
     private String content;
-    private Notification notification;
-    private User user;
+    private String parentId;
+    private String userId;
 }
 
 

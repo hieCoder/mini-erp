@@ -14,14 +14,8 @@
             <column name="remain" type="BIGINT"/>
             <column name="bill" type="VARCHAR(255)"/>
             <column name="user_id" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="2" author="team2">
-        <addColumn tableName="accounting">
-            <column name="title" type="VARCHAR(255)"/>
-        </addColumn>
-    </changeSet>
-
 </databaseChangeLog>
-

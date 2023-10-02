@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +18,9 @@ public class CommentNotification {
     private Date createdDate;
     private Notification notification;
     private User user;
+    private Date modifiedDate;
+    private String modifiedBy;
+    private String parentId;
+    private List<CommentNotification> childComments;
 }
 

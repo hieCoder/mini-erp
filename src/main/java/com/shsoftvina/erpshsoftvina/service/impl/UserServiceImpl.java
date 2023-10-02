@@ -1,39 +1,39 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.shsoftvina.erpshsoftvina.constant.MailConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
+import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
-import com.shsoftvina.erpshsoftvina.exception.NoMatchException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
-import com.shsoftvina.erpshsoftvina.ultis.FileUtils;
-import com.shsoftvina.erpshsoftvina.ultis.StringUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import com.shsoftvina.erpshsoftvina.constant.MailConstant;
-import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
-import com.shsoftvina.erpshsoftvina.model.request.DataMailDTO;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
-import com.shsoftvina.erpshsoftvina.ultis.SendMailUlti;
-
 import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private UserConverter userConverter;
+
     @Autowired
-    private SendMailUlti sendMailUlti;
+    private SendMailUtils sendMailUtils;
+
     @Autowired
     private HttpServletRequest request;
 
@@ -68,11 +68,12 @@ public class UserServiceImpl implements UserService {
         } else {
             User user = userConverter.toEntity(userActiveRequest);
             userMapper.activeUserRegisterRequest(user);
-            DataMailDTO dataMailDTO = new DataMailDTO();
-            dataMailDTO.setTo(userActiveRequest.getEmail());
-            dataMailDTO.setSubject(MailConstant.REGISTER_SUBJECT);
-            dataMailDTO.setContent(MailConstant.REGISTER_CONTENT);
-            return sendMailUlti.sendEmail(dataMailDTO);
+
+            DataMail dataMail = new DataMail();
+            dataMail.setTo(userActiveRequest.getEmail());
+            dataMail.setSubject(MailConstant.REGISTER_SUBJECT);
+            dataMail.setContent(MailConstant.REGISTER_CONTENT);
+            return sendMailUtils.sendEmail(dataMail);
         }
     }
 

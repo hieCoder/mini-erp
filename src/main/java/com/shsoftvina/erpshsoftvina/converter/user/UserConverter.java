@@ -1,15 +1,14 @@
 package com.shsoftvina.erpshsoftvina.converter.user;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserCommentResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -115,6 +114,13 @@ public class UserConverter {
                 .id(UUID.randomUUID().toString())
                 .email(userRegisterRequest.getEmail())
                 .password(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()))
+                .build();
+    }
+
+    public static UserCommentResponse toUserCommentResponse(User user){
+        return UserCommentResponse.builder()
+                .fullname(user.getFullname())
+                .avatar(user.getAvatar())
                 .build();
     }
 }

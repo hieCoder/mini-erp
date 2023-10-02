@@ -3,32 +3,17 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <!-- create table ckeckin -->
+    <!-- create table timesheets -->
     <changeSet id="1" author="team2">
         <createTable tableName="timesheets">
             <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="checkin" type="DATETIME"/>
-            <column name="checkout" type="DATETIME"/>
+            <column name="work_date" type="DATE"/>
+            <column name="checkin" type="TIME"/>
+            <column name="checkout" type="TIME"/>
             <column name="ot" type="BIT"/>
             <column name="user_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="2" author="team2">
-        <addColumn tableName="timesheets">
-            <column name="work_date" type="DATE"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="3" author="team2">
-        <modifyDataType tableName="timesheets" columnName="checkin" newDataType="TIME"/>
-    </changeSet>
-
-    <changeSet id="4" author="team2">
-        <modifyDataType tableName="timesheets" columnName="checkout" newDataType="TIME"/>
-    </changeSet>
-
 </databaseChangeLog>
-

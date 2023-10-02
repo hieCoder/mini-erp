@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.ultis;
+package com.shsoftvina.erpshsoftvina.utils;
 
 public class StringUtils {
     public static boolean isEmpty(String s){

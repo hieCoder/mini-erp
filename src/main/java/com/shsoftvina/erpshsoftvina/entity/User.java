@@ -1,8 +1,8 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
-import com.shsoftvina.erpshsoftvina.enums.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.enums.TypeUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.TypeUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,11 +52,6 @@ public class User implements UserDetails {
         // Create a granted authority based on the user's role.
         authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         return authorities;
-    }
-
-    @Override
-    public String getUsername(){
-        return email;
     }
 
     // Override isAccountNonExpired method to indicate that the user account never expires.

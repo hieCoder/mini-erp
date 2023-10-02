@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request;
+package com.shsoftvina.erpshsoftvina.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

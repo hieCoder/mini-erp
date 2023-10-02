@@ -7,7 +7,7 @@
     <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiResultMap">
         SELECT *
         FROM notification
-                 LIMIT #{start}, #{pageSize}
+        LIMIT #{start}, #{pageSize}
     </select>
 
     <!--    Create new Notification-->
@@ -38,44 +38,88 @@
         WHERE id = #{id}
     </delete>
 
-    <select id="getCommentsByNotificationId" parameterType="String" resultMap="notiResultMap">
-        SELECT notification.id AS notiId,
-               notification.title AS notiTitle,
-               notification.file AS notiFile,
-               notification.content AS notiContent,
-               notification.created_date AS notiCreatedDate,
-               comment_notification.id AS commentId,
-               comment_notification.content AS commentContent,
-               comment_notification.created_date AS commentCreatedDate,
-               user.id AS userId,
-               user.fullname AS userFname,
-               user.phone AS userPhone
-
-        FROM notification
-                 INNER JOIN comment_notification ON notification.id = comment_notification.notification_id
-                 INNER JOIN user ON comment_notification.user_id = user.id
-        WHERE notification.id = #{notificationId}
-    </select>
-
     <resultMap id="notiResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
-        <id property="id" column="notiId"/>
-        <result property="title" column="notiTitle"/>
-        <result property="content" column="notiContent"/>
-        <result property="file" column="notiFile"/>
-        <result property="createdDate" column="notiCreatedDate"/>
-
-        <collection property="listComments" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
-            <id property="id" column="commentId"/>
-            <result property="content" column="commentContent"/>
-            <result property="createdDate" column="commentCreatedDate"/>
-
-            <association property="user" javaType="com.shsoftvina.erpshsoftvina.entity.User">
-                <id property="id" column="userId"/>
-                <result property="fullname" column="userFname"/>
-                <result property="phone" column="userPhone"/>
-            </association>
-        </collection>
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="file" column="file"/>
+        <result property="createdDate" column="created_date"/>
     </resultMap>
 
+    <select id="getCommentsByNotificationId" resultMap="notificationWithCommentsResultMap">
+        SELECT
+            n.id AS notification_id,
+            n.title AS notification_title,
+            n.content AS notification_content,
+            n.file AS notification_file,
+            n.created_date AS notification_created_date,
+            c.id AS comment_id,
+            c.user_id AS comment_user_id,
+            c.content AS comment_content,
+            c.created_date AS comment_created_date,
+            c.parent_id AS comment_parent_id,
+            c.created_date AS comment_created_date,
+            c.modified_date AS comment_modified_date,
+            c.modified_by AS comment_modified_by,
+            u.fullname AS user_fullname,
+            u.avatar AS user_avatar,
+            u.status AS user_status
+        FROM
+            notification n
+                LEFT JOIN comment_notification c ON n.id = c.notification_id AND c.parent_id IS NULL
+                LEFT JOIN user u ON c.user_id = u.id
+        WHERE n.id = #{notificationId}
+    </select>
+
+
+    <select id="getChildComments" resultMap="commentChildTreeResultMap">
+        SELECT c.id AS comment_id,
+               c.user_id AS comment_user_id,
+               c.content AS comment_content,
+               c.created_date AS comment_created_date,
+               c.parent_id AS comment_parent_id,
+               c.created_date AS comment_created_date,
+               c.modified_date AS comment_modified_date,
+               c.modified_by AS comment_modified_by,
+               u.fullname AS user_fullname,
+               u.avatar AS user_avatar,
+               u.status AS user_status
+        FROM comment_notification c
+                 INNER JOIN user u ON c.user_id = u.id
+        WHERE c.parent_id = #{id}
+    </select>
+
+    <resultMap id="commentTreeResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
+        <id property="id" column="comment_id" />
+        <result property="content" column="comment_content" />
+        <result property="createdDate" column="comment_created_date" />
+        <result property="parentId" column="comment_parent_id" />
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="getChildComments" />
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="comment_user_id" />
+        <result property="fullname" column="user_fullname" />
+        <result property="avatar" column="user_avatar" />
+        <result property="status" column="user_status" />
+    </resultMap>
+
+    <resultMap id="commentChildTreeResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
+        <id property="id" column="comment_id" />
+        <result property="content" column="comment_content" />
+        <result property="createdDate" column="comment_created_date" />
+        <result property="parentId" column="comment_parent_id" />
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+    </resultMap>
+
+    <resultMap id="notificationWithCommentsResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+        <id property="id" column="notification_id" />
+        <result property="title" column="notification_title" />
+        <result property="content" column="notification_content" />
+        <result property="file" column="notification_file" />
+        <result property="createdDate" column="notification_created_date" />
+        <collection property="listComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" resultMap="commentTreeResultMap" />
+    </resultMap>
 
 </mapper>

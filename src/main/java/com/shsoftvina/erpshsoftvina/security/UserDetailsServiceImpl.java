@@ -1,13 +1,12 @@
 package com.shsoftvina.erpshsoftvina.security;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.enums.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // The @Service annotation marks this class as a Spring service component,
@@ -18,9 +17,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // Inject an instance of UserMapper using Dependency Injection.
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     // The loadUserByUsername method is part of the UserDetailsService interface
     // and is used to load a user's details by their username.
