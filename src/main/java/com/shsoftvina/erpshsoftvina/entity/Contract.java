@@ -15,7 +15,6 @@ import java.util.Date;
 public class Contract {
 
     private String id;
-    private Date workingDay;
     private String basicSalary;
     private String allowance;
     private String contract;

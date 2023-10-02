@@ -49,47 +49,6 @@
 
     </update>
 
-    <insert id="createUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT INTO user (
-                          fullname,
-                          date_of_birth,
-                          phone,
-                          emergency_phone,
-                          avatar,
-                          type,
-                          department,
-                          job_start_date,
-                          contract,
-                          basic_salary,
-                          allowance,
-                          insurance,
-                          atm,
-                          email,
-                          role,
-                          status,
-                          password,
-                          id)
-        VALUES (
-                #{fullname},
-                #{dateOfBirth},
-                #{phone},
-                #{emergencyPhone},
-                #{avatar},
-                #{type},
-                #{department},
-                #{jobStartDate},
-                #{contract},
-                #{basicSalary},
-                #{allowance},
-                #{insurance},
-                #{atm},
-                #{email},
-                #{role},
-                #{status},
-                #{password},
-                #{id})
-    </insert>
-
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
          <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
@@ -104,7 +63,7 @@
     <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT u.*, c.id AS contract_id, c.*, i.id AS insurance_id, i.*
         FROM user u
-        INNER JOIN contract c ON u.id = c.user_id INNER JOIN insurance i
+        LEFT JOIN contract c ON u.id = c.user_id LEFT JOIN insurance i ON i.id = c.insurance_id
         WHERE u.id = #{id}
     </select>
 
@@ -128,9 +87,11 @@
             phone = #{phone},
             emergency_phone = #{emergencyPhone},
             avatar = #{avatar},
-            address = #{address}
+            address = #{address},
+            resume = #{resume},
+            avatar = #{avatar},
+            timesheets_code = #{timesheetsCode}
         WHERE id = #{id};
-
     </update>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">

@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class InsuranceResponse {
     private String id;
-    private EnumDto type;
+    private EnumDto insuranceType;
     private String money;
 }

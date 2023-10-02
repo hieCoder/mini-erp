@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.enums.insurance;
 
 public enum InsuranceType {
 
-    BHYT("Bao hiem y te"), BHXH("Bao hiem xa hoi");
+    HEALTH_INSURANCE("Health insurance"), SOCIAL_INSURANCE("Social insurance");
 
     private String value;
 

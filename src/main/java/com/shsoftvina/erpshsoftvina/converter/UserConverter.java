@@ -151,7 +151,7 @@ public class UserConverter {
                 .build();
     }
 
-    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar) {
+    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar, String resume) {
         return User.builder()
                 .id(userUpdateProfileRequest.getId())
                 .fullname(userUpdateProfileRequest.getFullname())
@@ -160,6 +160,8 @@ public class UserConverter {
                 .emergencyPhone(userUpdateProfileRequest.getEmergencyPhone())
                 .dateOfBirth(userUpdateProfileRequest.getDateOfBirth())
                 .avatar(avatar)
+                .resume(resume)
+                .timesheetsCode(userUpdateProfileRequest.getTimesheetsCode())
                 .build();
     }
 }

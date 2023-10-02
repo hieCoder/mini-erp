@@ -2,8 +2,6 @@ package com.shsoftvina.erpshsoftvina.api;
 
 
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.service.UserService;
@@ -21,11 +19,6 @@ public class UserApi {
 
     @Autowired
     UserService userService;
-
-    @PostMapping("/update")
-    public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
-        return ResponseEntity.ok(userService.updateUser(user));
-    }
 
     @GetMapping
     public ResponseEntity<?> getAllUser(
@@ -57,13 +50,8 @@ public class UserApi {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createUser (UserCreateRequest user){
-        return ResponseEntity.ok(userService.createUser(user));
-    }
-
-    @PostMapping("/update/profile")
-    public ResponseEntity<?> updateUserBasicProfile (@Valid UserUpdateProfileRequest user){
-        return ResponseEntity.ok(userService.updateUserBasicProfile(user));
+    @PostMapping("/updation")
+    public ResponseEntity<?> updateInfo(UserUpdateRequest user) {
+        return ResponseEntity.ok(userService.updateUser(user));
     }
 }

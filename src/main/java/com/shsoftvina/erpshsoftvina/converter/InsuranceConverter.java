@@ -10,7 +10,7 @@ public class InsuranceConverter {
     public InsuranceResponse toResponse(Insurance insurance) {
         return InsuranceResponse.builder()
                 .id(insurance.getId())
-                .type(EnumUtils.instance(insurance.getInsuranceType()))
+                .insuranceType(EnumUtils.instance(insurance.getInsuranceType()))
                 .money(insurance.getMoney()).build();
     }
 }
