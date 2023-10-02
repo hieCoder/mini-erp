@@ -25,7 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // Allow unrestricted access to specific endpoints.
-                .antMatchers("/assets/**").permitAll()
+                .antMatchers("/upload/**").permitAll() // resource
+                .antMatchers("/assets/**").permitAll() // css, js
                 .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/login", "/register").permitAll()// controller
                 // Require authentication for all other requests.

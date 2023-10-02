@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.request.user;
 
 
-import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,13 +15,16 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class UserActiveRequest {
 
-    @NotBlank(message = "id is not null or empty")
+    @NotBlank(message = "Field id is not filled")
     private String id;
-    @NotBlank(message = "email is not null or empty")
-    @Email(message = "email has incorrect syntax")
+
+    @NotBlank(message = "Field UserID is not filled")
+    @Email(message = "Invalid UserID")
     private String email;
-    @NotBlank(message = "role is not null or empty")
+
+    @NotBlank(message = "Field role is not filled")
     private String role;
-    @NotBlank(message = "status is not null or empty")
+
+    @NotBlank(message = "Field status is not filled")
     private String status;
 }

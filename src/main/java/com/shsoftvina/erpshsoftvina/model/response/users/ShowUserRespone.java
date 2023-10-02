@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.model.response.users;
 
 import com.shsoftvina.erpshsoftvina.enums.user.DepartmentEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.PositionEnum;
+import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -13,8 +14,7 @@ public class ShowUserRespone {
 
     private String id;
     private String fullname;
-    private DepartmentEnum department;
+    private EnumDto department;
     private String email; // user_id
-    private PositionEnum position;
-
+    private EnumDto position;
 }

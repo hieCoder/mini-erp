@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 
-// Define User entity corresponding to user table in the database
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class User implements UserDetails {
     private String id;
     private String fullname;
     private String address;
-    private String dateOfBirth;
+    private Date dateOfBirth;
     private String phone;
     private String emergencyPhone;
     private String avatar;
@@ -43,7 +42,8 @@ public class User implements UserDetails {
     private StatusUserEnum status;
     private PositionEnum position;
     private String resume;
-
+    private boolean isFirstUpdateProfile;
+    private String timesheetsCode;
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override

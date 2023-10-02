@@ -2,6 +2,7 @@
 package com.shsoftvina.erpshsoftvina.model.response.users;
 
 import com.shsoftvina.erpshsoftvina.enums.user.*;
+import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -20,13 +21,13 @@ public class BasicUserDetailResponse {
     private String phone;
     private String emergencyPhone;
     private String avatar;
-    private TypeUserEnum type;
-    private DepartmentEnum department;
+    private EnumDto type;
+    private EnumDto department;
     private String[] workingday;
     private String email; // user_id
-    private String password;
-    private RoleEnum role;
-    private StatusUserEnum status;
-    private PositionEnum position;
+    private EnumDto role;
+    private EnumDto position;
     private String resume;
+    private String atm;
+    private String timesheetsCode;
 }

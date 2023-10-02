@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
-import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
+import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,15 +15,15 @@ public class SendMailUtils {
     @Autowired
     JavaMailSender javaMailSender;
 
-    public Boolean sendEmail(DataMail dataMail) {
+    public Boolean sendEmail(DataMailDto dataMailDto) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true,"utf-8");
 
-            helper.setTo(dataMail.getTo());
-            helper.setSubject(dataMail.getSubject());
-            helper.setText(dataMail.getContent());
+            helper.setTo(dataMailDto.getTo());
+            helper.setSubject(dataMailDto.getSubject());
+            helper.setText(dataMailDto.getContent());
 
             javaMailSender.send(mimeMessage);
             return true;

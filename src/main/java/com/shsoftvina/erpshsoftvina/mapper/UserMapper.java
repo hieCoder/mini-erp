@@ -13,12 +13,14 @@ public interface UserMapper {
     User findByEmailAndStatus(@Param("email") String email, @Param("status") String status);
     User findByEmail(@Param("email") String email);
     int registerUser(User user);
+    int updateUserProfile(User user);
     int updateUser(User user);
     int createUser(User user);
     List<User> getAllUser(@Param("searchTerm") String id,
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,
-                          @Param("pageSize") int pageSize);
+                          @Param("pageSize") int pageSize,
+                          @Param("status") String status);
     User findById(@Param("id") String id);
     void changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);

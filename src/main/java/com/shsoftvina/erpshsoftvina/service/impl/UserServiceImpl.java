@@ -1,24 +1,27 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.MailConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
-import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
+import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
-import com.shsoftvina.erpshsoftvina.exception.NotExistException;
+import com.shsoftvina.erpshsoftvina.exception.*;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
-import com.shsoftvina.erpshsoftvina.model.dto.DataMail;
+import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,41 +44,44 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private HttpServletRequest request;
 
-//  The method returns the entire list of converted users
     @Override
-    public List<ShowUserRespone> getAllUser(String searchTerm, String sortDirection, int start, int pageSize) {
-//      List of all Users
-        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize);
-
-//      Convert list User entity to List User UserResponse to return to user
-        List<ShowUserRespone> mapperListUser = userConverter.toListShowUserRespone(listUser);
-
-        return mapperListUser;
+    public List<ShowUserRespone> getAllUser(String searchTerm,
+                                            String sortDirection,
+                                            int start,
+                                            int pageSize,
+                                            String status) {
+        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize, status);
+        return userConverter.toListShowUserRespone(listUser);
     }
 
     @Override
-    public UserDetailResponse findUserDetail(String id) {
+    public BasicUserDetailResponse findUserDetail(String id) {
         User user = userMapper.findById(id);
-        return userConverter.toResponse(user);
+
+        User userCurrent = Principal.getUserCurrent();
+        if(!user.getRole().equals(userCurrent.getRole())
+                && userCurrent.getRole().equals(RoleEnum.DEVELOPER))
+            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
+
+        RoleEnum userCurrentRole = Principal.getUserCurrent().getRole();
+        if(userCurrentRole.equals(RoleEnum.DEVELOPER)){
+            return userConverter.toBasicUserDetailResponse(user);
+        }
+        return userConverter.toUserDetailResponse(user);
     }
 
     @Override
-    public BasicUserDetailResponse getProfileUser(String id) {
-        User user = userMapper.findById(id);
-        return userConverter.toProfileResponse(user);
-    }
-
-    @Override
-    public void disableUser(String id) {
+    public void deleteUser(String id) {
         userMapper.changeStatusUser(id, (StatusUserEnum.INACTIVE).toString());
     }
-
 
     @Override
     public Boolean activeUserRegisterRequest(UserActiveRequest userActiveRequest) {
 
-        if(!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole())) throw new NotExistException("The value of the role does not exist");
-        if(!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus())) throw new NotExistException("The value of the status does not exist");
+        if(!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
+            throw new NotFoundException(MessageErrorUtils.notFound("Role"));
+        if(!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus()))
+            throw new NotFoundException(MessageErrorUtils.notFound("Status"));
 
         if (userActiveRequest.getStatus().equals(StatusUserEnum.REJECT)) {
             try{
@@ -86,13 +92,17 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             User user = userConverter.toEntity(userActiveRequest);
-            userMapper.activeUserRegister(user);
 
-            DataMail dataMail = new DataMail();
-            dataMail.setTo(userActiveRequest.getEmail());
-            dataMail.setSubject(MailConstant.REGISTER_SUBJECT);
-            dataMail.setContent(MailConstant.REGISTER_CONTENT);
-            return sendMailUtils.sendEmail(dataMail);
+            try{
+                userMapper.activeUserRegister(user);
+
+                DataMailDto dataMailDto = new DataMailDto();
+                dataMailDto.setTo(userActiveRequest.getEmail());
+                dataMailDto.setSubject(MailConstant.REGISTER_SUBJECT);
+                dataMailDto.setContent(MailConstant.REGISTER_CONTENT);
+                return sendMailUtils.sendEmail(dataMailDto);
+            } catch (Exception e){ }
+            return false;
         }
     }
 
@@ -100,7 +110,7 @@ public class UserServiceImpl implements UserService {
     public UserDetailResponse findByEmail(String email){
         User user = userMapper.findByEmail(email);
         if(user == null) return null;
-        return userConverter.toResponse(user);
+        return userConverter.toUserDetailResponse(user);
     }
 
     @Override
@@ -198,6 +208,52 @@ public class UserServiceImpl implements UserService {
 //            }
 //        }
 //        throw new DuplicateException("Username or email is exists");
+        return 0;
+    }
+
+    @Override
+    public int updateUserBasicProfile(UserUpdateProfileRequest userUpdateProfileRequest) {
+
+        String id = userUpdateProfileRequest.getId();
+        User user = userMapper.findById(id);
+        if(user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+
+        MultipartFile avatarFile = userUpdateProfileRequest.getAvatar();
+        MultipartFile resumeFile = userUpdateProfileRequest.getResume();
+        String fileName = null;
+        boolean isSaveSuccessAvatar = true, isSaveSuccessResume = true;
+        if(avatarFile != null){
+
+            if(!FileUtils.isAllowedImageType(avatarFile, UserConstant.LIST_TYPE_IMAGE))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
+            if(!FileUtils.isAllowedFileSize(avatarFile))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+
+            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+            fileName = FileUtils.formatNameImage(avatarFile);
+            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, fileName);
+        }
+        if(resumeFile != null){
+
+            if(!FileUtils.isAllowedImageType(resumeFile, UserConstant.LIST_TYPE_FILE))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
+            if(!FileUtils.isAllowedFileSize(resumeFile))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+
+            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+            fileName = FileUtils.formatNameImage(resumeFile);
+            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, resumeFile, fileName);
+        }
+
+        if(isSaveSuccessAvatar && isSaveSuccessResume){
+            user = userConverter.toEntity(userUpdateProfileRequest, fileName);
+            try{
+                userMapper.updateUserProfile(user);
+                return 1;
+            } catch (Exception e){
+                return 0;
+            }
+        }
         return 0;
     }
 }

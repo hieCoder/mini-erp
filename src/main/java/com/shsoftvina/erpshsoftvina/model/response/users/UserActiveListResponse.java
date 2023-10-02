@@ -15,6 +15,6 @@ public class UserActiveListResponse {
     private String id;
     private String username;
     private String email;
-    private RoleEnum role;
-    private StatusUserEnum status;
+    private String role;
+    private String status;
 }
