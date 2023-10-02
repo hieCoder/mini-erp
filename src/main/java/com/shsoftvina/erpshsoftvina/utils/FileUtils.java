@@ -1,5 +1,12 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
+import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
+import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
+import com.shsoftvina.erpshsoftvina.constant.UserConstant;
+import com.shsoftvina.erpshsoftvina.entity.Accounting;
+import com.shsoftvina.erpshsoftvina.entity.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,5 +107,45 @@ public class FileUtils {
                     .collect(Collectors.joining(","));
         }
         return null;
+    }
+
+    public static String getPathUpload(Class<?> c, String fileName) {
+        if(fileName != null){
+            if (c == User.class) {
+                return UserConstant.PATH_FILE + fileName;
+            }
+            else if (c == Accounting.class) {
+                return AccountingConstant.PATH_FILE + fileName;
+            }
+        }
+        return null;
+    }
+
+    public static boolean isAllowedImageType(MultipartFile file, String listType) {
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName != null) {
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+            String[] allowedExtensions = listType.split(",");
+
+            for (String allowedExtension : allowedExtensions) {
+                if (fileExtension.equals(allowedExtension.trim().toLowerCase())) return true;
+            }
+        }
+        return false;
+    }
+
+    public static long parseFileSize(String size) {
+        if (size.endsWith("MB")) {
+            return Long.parseLong(size.substring(0, size.length() - 2)) * 1024 * 1024;
+        }
+        return Long.parseLong(size);
+    }
+
+    public static boolean isAllowedFileSize(MultipartFile file) {
+        long fileSizeInBytes = file.getSize();
+        long maxFileSizeInBytes = parseFileSize(ApplicationConstant.MAX_FILE_SIZE);
+        long maxRequestSizeInBytes = parseFileSize(ApplicationConstant.MAX_REQUEST_SIZE);
+
+        return fileSizeInBytes <= maxFileSizeInBytes && fileSizeInBytes <= maxRequestSizeInBytes;
     }
 }

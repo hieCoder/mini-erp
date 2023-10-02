@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.converter.notification;
+package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;

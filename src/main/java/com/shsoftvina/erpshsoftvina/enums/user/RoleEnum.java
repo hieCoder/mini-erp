@@ -1,5 +1,19 @@
 package com.shsoftvina.erpshsoftvina.enums.user;
 
 public enum RoleEnum {
-    OWNER, MANAGER, DEVELOPER
+    OWNER("Owner"), MANAGER("Manager"), DEVELOPER("Developer");
+
+    private String value;
+
+    RoleEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

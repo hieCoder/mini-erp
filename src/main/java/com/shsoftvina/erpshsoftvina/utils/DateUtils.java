@@ -12,25 +12,36 @@ import java.util.Date;
 
 public class DateUtils {
 
-
     public static String formatDateTime(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return sdf.format(date);
+        if(date != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            return sdf.format(date);
+        }
+        return null;
     }
 
     public static String formatTime(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        return sdf.format(date);
+        if(date != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            return sdf.format(date);
+        }
+        return null;
     }
 
     public static String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        return sdf.format(date);
+        if(date != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            return sdf.format(date);
+        }
+        return null;
     }
 
     public static String formatTime(Time time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        return sdf.format(time);
+        if(time != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            return sdf.format(time);
+        }
+        return null;
     }
 
     public static String formatLocalDateTime(LocalDateTime time) {
@@ -53,6 +64,9 @@ public class DateUtils {
 
 
     public static String timeWork(Time startDate, Time endDate) {
+
+        if(startDate == null || endDate == null) return null;
+
         LocalTime localStartTime = startDate.toLocalTime();
         LocalTime localEndTime = endDate.toLocalTime();
 
@@ -64,5 +78,4 @@ public class DateUtils {
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
-
 }

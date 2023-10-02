@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,19 +40,33 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle BindException and return an ErrorResponse with HTTP status 400 (Bad Request).
-    @ExceptionHandler(BindException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBindException(BindException e, WebRequest req) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST,
-                e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-    }
-
     // Handle DuplicateException and return an ErrorResponse with HTTP status 409 (Conflict).
     @ExceptionHandler(NoMatchException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleNoMatchException(NoMatchException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    // Handle FileTypeNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(FileTypeNotAllowException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileTypeNotAllowException(FileTypeNotAllowException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    // Handle FileSizeNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(FileSizeNotAllowException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileSizeNotAllowException(FileSizeNotAllowException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    // Handle MethodArgumentNotValidException and return an ErrorResponse with HTTP status 400 (Bad Request).
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e, WebRequest req) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST,
+                e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
     // Handle generic Exception and return an ErrorResponse with HTTP status 500 (Internal Server Error).

@@ -1,8 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
-import com.shsoftvina.erpshsoftvina.constant.UserConstant;
-import com.shsoftvina.erpshsoftvina.converter.accounting.AccountingConverter;
+import com.shsoftvina.erpshsoftvina.converter.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
@@ -17,7 +16,6 @@ import com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRema
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,7 +80,7 @@ public class AccountingServiceImpl implements AccountingService {
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, uploadDir, billFile);
         if (listFileNameSaveFileSuccess != null) {
-            User currentUser = userMapper.findUserDetail(accountingCreateRequest.getUserId());
+            User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate);
             try {
                 accountingMapper.createAccounting(accounting);
@@ -104,7 +102,7 @@ public class AccountingServiceImpl implements AccountingService {
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, accountingUpdateRequest.getBill());
         Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
-        User currentUser = userMapper.findUserDetail(accountingUpdateRequest.getUserId());
+        User currentUser = userMapper.findById(accountingUpdateRequest.getUserId());
         if (listFileNameSaveFileSuccess != null) {
             Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
             try {

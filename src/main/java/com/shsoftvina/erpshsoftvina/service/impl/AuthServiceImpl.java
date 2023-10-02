@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.converter.user.UserConverter;
+import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
 import com.shsoftvina.erpshsoftvina.exception.NoMatchException;
@@ -26,18 +26,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public int registerUser(UserRegisterRequest userRegisterRequest){
+
         String pass = userRegisterRequest.getPassword();
         String passConfirm = userRegisterRequest.getConfirmPassword();
-        if(!passConfirm.equals(pass)){
-            throw new NoMatchException("Password no match");
+        if(pass!= null && passConfirm!= null && !passConfirm.equals(pass)){
+            throw new NoMatchException("Password confirm isn't matched");
         }
 
         String email = userRegisterRequest.getEmail();
-        UserDetailResponse userDetailResponse = userService.findUserCheckRegister(email);
-        if(userDetailResponse == null){
-            User user = userConverter.userRegisterRequestToEntity(userRegisterRequest);
-            return userMapper.registerUser(user);
-        }
-        throw new DuplicateException("Username or email is exists");
+        UserDetailResponse userDetailResponse = userService.findByEmail(email);
+
+        if(userDetailResponse != null) throw new DuplicateException("UserID is existed in the system");
+
+        User user = userConverter.toEntity(userRegisterRequest);
+        return userMapper.registerUser(user);
+
     }
 }

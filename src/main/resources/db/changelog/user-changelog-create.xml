@@ -34,4 +34,28 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <addColumn tableName="user">
+            <column name="is_first_update_profile" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <modifyDataType tableName="user" columnName="avatar" newDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet id="4" author="team2">
+        <modifyDataType tableName="user" columnName="date_of_birth" newDataType="DATE"/>
+    </changeSet>
+
+    <changeSet id="5" author="team2">
+        <addColumn tableName="user">
+            <column name="timesheets_code" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="6" author="team2">
+        <addUniqueConstraint tableName="user" columnNames="timesheets_code" constraintName="unique_timesheets_code"/>
+    </changeSet>
+
 </databaseChangeLog>
