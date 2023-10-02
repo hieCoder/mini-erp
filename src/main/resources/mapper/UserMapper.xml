@@ -127,7 +127,8 @@
             phone = #{phone},
             emergency_phone = #{emergencyPhone},
             avatar = #{avatar},
-            address = #{address}
+            address = #{address},
+            resume = #{resume}
         WHERE id = #{id};
 
     </update>

@@ -219,21 +219,33 @@ public class UserServiceImpl implements UserService {
         if(user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile avatarFile = userUpdateProfileRequest.getAvatar();
+        MultipartFile resumeFile = userUpdateProfileRequest.getResume();
         String fileName = null;
-        boolean isSaveSuccess = true;
+        boolean isSaveSuccessAvatar = true, isSaveSuccessResume = true;
         if(avatarFile != null){
 
-            if(!FileUtils.isAllowedImageType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
+            if(!FileUtils.isAllowedImageType(avatarFile, UserConstant.LIST_TYPE_IMAGE))
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
             if(!FileUtils.isAllowedFileSize(avatarFile))
                 throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
 
             String uploadDir = UserConstant.UPLOAD_FILE_DIR;
             fileName = FileUtils.formatNameImage(avatarFile);
-            isSaveSuccess = FileUtils.saveImageToServer(request, uploadDir, avatarFile, fileName);
+            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, fileName);
+        }
+        if(resumeFile != null){
+
+            if(!FileUtils.isAllowedImageType(resumeFile, UserConstant.LIST_TYPE_FILE))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
+            if(!FileUtils.isAllowedFileSize(resumeFile))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+
+            String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+            fileName = FileUtils.formatNameImage(resumeFile);
+            isSaveSuccessAvatar = FileUtils.saveImageToServer(request, uploadDir, resumeFile, fileName);
         }
 
-        if(isSaveSuccess){
+        if(isSaveSuccessAvatar && isSaveSuccessResume){
             user = userConverter.toEntity(userUpdateProfileRequest, fileName);
             try{
                 userMapper.updateUserProfile(user);
