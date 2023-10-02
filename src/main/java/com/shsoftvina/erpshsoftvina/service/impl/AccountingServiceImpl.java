@@ -52,7 +52,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         Long latestRemain = accountingMapper.getLatestRemain(monthId);
         totals.setTotalRemain(latestRemain);
-        int offset = (page - 1 ) * size;
+        int offset = (page ) * size;
         RowBounds rowBounds = new RowBounds(offset, size);
         LocalDateTime endDateWithTime = null;
         if (endTime != null) {
