@@ -20,7 +20,7 @@ public class MessageErrorUtils {
     }
 
     public static String notAllowFileSize(){
-        return "File size must < " + ApplicationConstant.MAX_FILE_SIZE;
+        return "File count must < " + ApplicationConstant.MAX_FILE_SIZE;
     }
 
     public static String unauthorized(){

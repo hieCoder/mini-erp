@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
+import com.shsoftvina.erpshsoftvina.model.response.commentnotification.UserCommentResponse;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
@@ -162,6 +163,13 @@ public class UserConverter {
                 .avatar(avatar)
                 .resume(resume)
                 .timesheetsCode(userUpdateProfileRequest.getTimesheetsCode())
+                .build();
+    }
+
+    public static UserCommentResponse toUserCommentResponse(User user){
+        return UserCommentResponse.builder()
+                .fullname(user.getFullname())
+                .avatar(user.getAvatar())
                 .build();
     }
 }

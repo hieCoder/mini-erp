@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
         MultipartFile avatarFile = userUpdateProfileRequest.getAvatar();
         MultipartFile resumeFile = userUpdateProfileRequest.getResume();
 
+
         if(avatarFile != null){
             if(!FileUtils.isAllowedFileType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
