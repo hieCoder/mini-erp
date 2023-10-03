@@ -14,7 +14,7 @@ public class EnumUtils {
                 return false;
             }
         }
-        return true;
+        return false;
     }
 
     public static EnumDto instance(Enum<?> enumValue) {

@@ -150,20 +150,27 @@ public class UserServiceImpl implements UserService {
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
                 } else if(newFileNameList.size() == 2){
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+                } else{ // = 0, no avatar and resume
+                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
                 }
             } else{
                 if(newFileNameList.size() == 1){
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
                 } else if(newFileNameList.size() == 2){
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
-                } else{ // = 0, no avatar or resume
+                } else{ // = 0, no avatar and resume
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
                 }
             }
 
             try{
                 userMapper.updateUserDetail(userUpdate);
-                FileUtils.deleteMultipleFilesToServer(request, uploadDir, avatarNameOld.concat(",").concat(resumeNameOld));
+                if(avatarNameOld != null){
+                    FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                }
+                if(resumeNameOld != null){
+                    FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
+                }
                 return 1;
             } catch (Exception e){
                 return 0;

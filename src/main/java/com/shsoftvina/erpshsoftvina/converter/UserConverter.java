@@ -95,24 +95,11 @@ public class UserConverter {
 
     public User toUpdateDetail(UserUpdateRequest userUpdateRequest, String newAvatarFileName, String newResumeFileName) {
         User user = toUpdateBasic(userUpdateRequest, newAvatarFileName, newResumeFileName);
-
-        String type = userUpdateRequest.getType();
-        if(!EnumUtils.isExistInEnum(TypeUserEnum.class, type)) throw new NotFoundException("Type");
-        user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, type));
-
-        String department = userUpdateRequest.getDepartment();
-        if(!EnumUtils.isExistInEnum(DepartmentEnum.class, department)) throw new NotFoundException("Department");
-        user.setDepartment(EnumUtils.getEnumFromValue(DepartmentEnum.class, department));
-
+        user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, userUpdateRequest.getType()));
+        user.setDepartment(EnumUtils.getEnumFromValue(DepartmentEnum.class, userUpdateRequest.getDepartment()));
         user.setEmail(userUpdateRequest.getEmail());
         user.setPassword(userUpdateRequest.getPassword());
-
-        String role = userUpdateRequest.getRole();
-        if(!EnumUtils.isExistInEnum(RoleEnum.class, role)) throw new NotFoundException("Role");
-        user.setRole(EnumUtils.getEnumFromValue(RoleEnum.class, role));
-
-        String position = userUpdateRequest.getPosition();
-        if(!EnumUtils.isExistInEnum(PositionEnum.class, position)) throw new NotFoundException("Position");
+        user.setRole(EnumUtils.getEnumFromValue(RoleEnum.class, userUpdateRequest.getRole()));
         user.setPosition(EnumUtils.getEnumFromValue(PositionEnum.class, userUpdateRequest.getPosition()));
         return user;
     }
