@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ShowUserRespone {
+public class UserShowRespone {
 
     private String id;
     private String fullname;

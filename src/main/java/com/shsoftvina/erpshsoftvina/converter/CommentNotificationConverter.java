@@ -1,61 +1,78 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.CommentNotification;
-import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentRequest;
-import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentRequest;
-import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentResponse;
-import com.shsoftvina.erpshsoftvina.model.response.commentnotification.UserCommentResponse;
+import com.shsoftvina.erpshsoftvina.mapper.CommentNotificationMapper;
+import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
+import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class CommentNotificationConverter {
-    public static CommentNotification createCommentRequestToEntity(CreateCommentRequest createCommentRequest) {
-        User user = new User();
-        user.setId(createCommentRequest.getUserId());
-        Notification notification = new Notification();
-        notification.setId(createCommentRequest.getNotificationId());
-        return CommentNotification.builder()
-                .id(UUID.randomUUID().toString())
-                .notification(notification)
-                .content(createCommentRequest.getContent())
-                .user(user)
-                .parentId(createCommentRequest.getParentId())
-                .build();
-    }
 
-    public static CommentNotification updateCommentRequestToEntity(UpdateCommentRequest updateCommentRequest) {
-        return CommentNotification.builder()
-                .content(updateCommentRequest.getContent())
-                .id(updateCommentRequest.getId())
-                .build();
-    }
+    @Autowired
+    private NotificationMapper notificationMapper;
 
-    public CommentResponse commentToResponse(CommentNotification commentNotification) {
-        List<CommentResponse> childCommentResponses = new ArrayList<>();
-        List<CommentNotification>  childComment =  commentNotification.getChildComments();
-        if(childComment!=null){
-             childCommentResponses = commentNotification.getChildComments().stream()
-                    .map(this::commentToResponse)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private CommentNotificationMapper commentNotificationMapper;
+
+    public CommentNotificationResponse toResponse(CommentNotification commentNotification) {
+
+        User user = commentNotification.getUser();
+        String avatarUser = null, fullnameUser = null;
+        if(commentNotification.getUser() != null){
+            avatarUser = user.getAvatar();
+            fullnameUser = user.getFullname();
         }
 
-        UserCommentResponse userCommentResponse = UserConverter.toUserCommentResponse(commentNotification.getUser());
-                return CommentResponse.builder()
+        return CommentNotificationResponse.builder()
                 .id(commentNotification.getId())
                 .content(commentNotification.getContent())
-                .createdDate(commentNotification.getCreatedDate())
-                .parentId(commentNotification.getParentId())
-                .user(userCommentResponse)
-                .childComments(childCommentResponses)
+                .createdDate(DateUtils.formatDateTime(commentNotification.getCreatedDate()))
+                .modifiedBy(commentNotification.getModifiedBy())
+                .modifiedDate(DateUtils.formatDateTime(commentNotification.getModifiedDate()))
+                .avatarUser(avatarUser)
+                .fullnameUser(fullnameUser)
+                .childComments(toListResponse(commentNotification.getChildComments()))
+                .build();
+    }
+
+    public List<CommentNotificationResponse> toListResponse(List<CommentNotification> commentNotifications) {
+        if(commentNotifications == null) return null;
+        return commentNotifications.stream().map(c -> toResponse(c)).collect(Collectors.toList());
+    }
+
+    public CommentNotification toEntity(CreateCommentNotificationRequest createCommentNotificationRequest) {
+
+        CommentNotification commentNotification = commentNotificationMapper.findById(createCommentNotificationRequest.getParentId());
+
+        return CommentNotification.builder().id(UUID.randomUUID().toString())
+                .content(createCommentNotificationRequest.getContent())
+                .createdDate(new Date())
+                .notification(notificationMapper.findById(createCommentNotificationRequest.getNotificationId()))
+                .user(userMapper.findById(createCommentNotificationRequest.getUserId()))
+                .parentComment(commentNotificationMapper.findById(createCommentNotificationRequest.getParentId()))
+                .build();
+    }
+
+    public CommentNotification toEntity(UpdateCommentNotificationRequest updateCommentNotificationRequest) {
+        return CommentNotification.builder()
+                .content(updateCommentNotificationRequest.getContent())
+                .id(updateCommentNotificationRequest.getId())
+                .modifiedBy(Principal.getUserCurrent().getFullname())
+                .modifiedDate(new Date())
                 .build();
     }
 }

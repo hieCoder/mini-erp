@@ -13,7 +13,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private HttpServletRequest request;
 
     @Override
-    public List<ShowUserRespone> getAllUser(String searchTerm,
+    public List<UserShowRespone> getAllUser(String searchTerm,
                                             String sortDirection,
                                             int start,
                                             int pageSize,

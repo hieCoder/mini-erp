@@ -3,7 +3,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class UserApi {
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
             @RequestParam(name = "status", required = false, defaultValue = "ACTIVE") String status) {
 
-        List<ShowUserRespone> listUser = userService.getAllUser(search,
+        List<UserShowRespone> listUser = userService.getAllUser(search,
                 sort, (page - 1) * pageSize, pageSize, status);
 
         return new ResponseEntity<>(listUser, HttpStatus.OK);
