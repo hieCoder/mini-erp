@@ -2,8 +2,8 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
-import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
+
+import com.shsoftvina.erpshsoftvina.enums.user.*;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
@@ -32,10 +32,10 @@ public class UserConverter {
     public UserDetailResponse toUserDetailResponse(User user) {
 
         User userCurrent = Principal.getUserCurrent();
-        if(user.getRole() == null)
+        if (user.getRole() == null)
             throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
-        else{
-            if(!user.getRole().equals(userCurrent.getRole()) && userCurrent.getRole().equals(RoleEnum.DEVELOPER)){
+        else {
+            if (!user.getRole().equals(userCurrent.getRole()) && userCurrent.getRole().equals(RoleEnum.DEVELOPER)) {
                 throw new UnauthorizedException(MessageErrorUtils.unauthorized());
             }
         }
@@ -43,7 +43,7 @@ public class UserConverter {
         List<ContractResponse> contracts = null;
 
         RoleEnum userCurrentRole = Principal.getUserCurrent().getRole();
-        if(!userCurrentRole.equals(RoleEnum.DEVELOPER))
+        if (!userCurrentRole.equals(RoleEnum.DEVELOPER))
             contracts = contractConverter.toListResponse(user.getContracts());
 
         return UserDetailResponse.builder()
@@ -89,50 +89,62 @@ public class UserConverter {
                 .build();
     }
 
-//    public User userUpdateRequestToEntity(UserUpdateRequest userUpdateRequest) {
-//        return User.builder()
-//                .allowance(userUpdateRequest.getAllowance())
-//                .atm(userUpdateRequest.getAtm())
-//                .insurance(userUpdateRequest.getInsurance())
-//                .role(userUpdateRequest.getRole())
-//                .avatar(null)
-//                .id(userUpdateRequest.getId())
-//                .basicSalary(userUpdateRequest.getBasicSalary())
-//                .contract(null)
-//                .dateOfBirth(userUpdateRequest.getDateOfBirth())
-//                .department(userUpdateRequest.getDepartment())
-//                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
-//                .email(userUpdateRequest.getEmail())
-//                .phone(userUpdateRequest.getPhone())
-//                .jobStartDate(userUpdateRequest.getJobStartDate())
-//                .role(userUpdateRequest.getRole())
-//                .status(userUpdateRequest.getStatus())
-//                .fullname(userUpdateRequest.getFullname())
-//                .build();
-//    }
 
-//    public User userCreateRequestToEntity(UserCreateRequest userUpdateRequest) {
-//        return User.builder()
-//                .allowance(userUpdateRequest.getAllowance())
-//                .atm(userUpdateRequest.getAtm())
-//                .insurance(userUpdateRequest.getInsurance())
-//                .role(userUpdateRequest.getRole())
-//                .avatar(null)
-//                .id(UUID.randomUUID().toString())
-//                .basicSalary(userUpdateRequest.getBasicSalary())
-//                .contract(null)
-//                .dateOfBirth(userUpdateRequest.getDateOfBirth())
-//                .department(userUpdateRequest.getDepartment())
-//                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
-//                .email(userUpdateRequest.getEmail())
-//                .phone(userUpdateRequest.getPhone())
-//                .jobStartDate(userUpdateRequest.getJobStartDate())
-//                .role(userUpdateRequest.getRole())
-//                .status(userUpdateRequest.getStatus())
-//                .fullname(userUpdateRequest.getFullname())
-//                .password(new BCryptPasswordEncoder().encode(userUpdateRequest.getPassword()))
-//                .build();
-//    }
+    public User userUpdateRequestToEntity(UserUpdateRequest userUpdateRequest, User existingUser) {
+        User.UserBuilder userBuilder = User.builder();
+
+        if (userUpdateRequest.getType() == null) {
+            userBuilder.type(existingUser.getType());
+        } else userBuilder.type(TypeUserEnum.valueOf(userUpdateRequest.getType()));
+
+        if (userUpdateRequest.getDepartment() == null) {
+            userBuilder.department(existingUser.getDepartment());
+        } else userBuilder.department(DepartmentEnum.valueOf(userUpdateRequest.getDepartment()));
+
+        if (userUpdateRequest.getRole() == null) {
+            userBuilder.role(existingUser.getRole());
+        } else userBuilder.role(RoleEnum.valueOf(userUpdateRequest.getRole()));
+
+        if (userUpdateRequest.getStatus() == null) {
+            userBuilder.status(existingUser.getStatus());
+        } else userBuilder.status(StatusUserEnum.valueOf(userUpdateRequest.getStatus()));
+
+        if (userUpdateRequest.getPosition() == null) {
+            userBuilder.position(existingUser.getPosition());
+        } else userBuilder.position(PositionEnum.valueOf(userUpdateRequest.getPosition()));
+
+
+        userBuilder
+                .id(existingUser.getId())
+                .fullname(userUpdateRequest.getFullname())
+                .dateOfBirth(userUpdateRequest.getDateOfBirth())
+                .phone(userUpdateRequest.getPhone())
+                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
+                .avatar(FileUtils.formatNameImage(userUpdateRequest.getAvatar()))
+                .atm(userUpdateRequest.getAtm())
+                .email(userUpdateRequest.getEmail())
+                .password(userUpdateRequest.getPassword())
+                .resume(FileUtils.formatNameImage(userUpdateRequest.getResume()))
+                .address(userUpdateRequest.getAddress())
+                .isFirstUpdateProfile(true)
+                .timesheetsCode(userUpdateRequest.getTimesheetsCode());
+
+        return userBuilder.build();
+    }
+
+    public UserUpdateProfileRequest userUpdateProfileRequestToUserDetail(UserUpdateRequest userUpdateRequest) {
+        return UserUpdateProfileRequest.builder()
+                .id(userUpdateRequest.getId())
+                .fullname(userUpdateRequest.getFullname())
+                .address(userUpdateRequest.getAddress())
+                .dateOfBirth(userUpdateRequest.getDateOfBirth())
+                .phone(userUpdateRequest.getPhone())
+                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
+                .avatar(userUpdateRequest.getAvatar())
+                .resume(userUpdateRequest.getResume())
+                .timesheetsCode(userUpdateRequest.getTimesheetsCode())
+                .build();
+    }
 
     public User toEntity(UserRegisterRequest userRegisterRequest) {
         return User.builder()
@@ -159,8 +171,10 @@ public class UserConverter {
                 .phone(userUpdateProfileRequest.getPhone())
                 .emergencyPhone(userUpdateProfileRequest.getEmergencyPhone())
                 .dateOfBirth(userUpdateProfileRequest.getDateOfBirth())
+                .resume(resume)
                 .avatar(avatar)
                 .resume(resume)
+                .isFirstUpdateProfile(true)
                 .timesheetsCode(userUpdateProfileRequest.getTimesheetsCode())
                 .build();
     }

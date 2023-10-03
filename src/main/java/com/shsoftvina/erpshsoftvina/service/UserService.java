@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.service;
 
+
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
@@ -23,5 +24,5 @@ public interface UserService {
 
     UserDetailResponse findByEmail(String email);
 
-    int updateUser(UserUpdateRequest userUpdateRequest);
+    int updateUserDetail(UserUpdateRequest userUpdateRequest);
 }

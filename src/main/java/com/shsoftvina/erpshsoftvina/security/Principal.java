@@ -12,12 +12,14 @@ public class Principal {
     public static User getUserCurrent() {
         // Access the security context to obtain the current authentication information.
         // The user information is typically stored in the Principal of the authentication object.
+
         User user = User.builder().email("canh@gmail.com")
                 .password("$2a$12$f6ld0R7LiYdJ6TwzjxLxT.QJ45febxzuZV1UbDg7TQUwPf.nRvTl2")
                 .role(RoleEnum.OWNER)
                 .status(StatusUserEnum.ACTIVE)
                 .fullname("HuynhCanh")
                 .build();//(User) (SecurityContextHolder.getContext()).getAuthentication().getPrincipal();
+
         return user;
     }
 }

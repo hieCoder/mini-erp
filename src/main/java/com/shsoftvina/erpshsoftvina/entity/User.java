@@ -23,7 +23,6 @@ public class User implements UserDetails {
 
     private String id;
     private String fullname;
-    private String address;
     private Date dateOfBirth;
     private String phone;
     private String emergencyPhone;
@@ -37,6 +36,7 @@ public class User implements UserDetails {
     private StatusUserEnum status;
     private PositionEnum position;
     private String resume;
+    private String address;
     private boolean isFirstUpdateProfile;
     private String timesheetsCode;
     private List<Contract> contracts;

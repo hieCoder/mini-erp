@@ -33,5 +33,6 @@ public class UserUpdateProfileRequest {
     private String emergencyPhone;
     private MultipartFile avatar;
     private MultipartFile resume;
+    private boolean isFirstUpdateProfile;
     private String timesheetsCode;
 }
