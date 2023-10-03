@@ -50,19 +50,21 @@ public class FileUtils {
         return false;
     }
 
-    public static List saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile[] files) {
+    public static List saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
 
         List<String> listFileName = new ArrayList<>();
 
         boolean isSuccess = true;
 
         for(MultipartFile file: files){
-            String fileName = formatNameImage(file);
-            boolean isSave = saveImageToServer(request, dir, file, fileName);
-            listFileName.add(fileName);
-            if(!isSave){
-                isSuccess = false;
-                break;
+            if(file!= null){
+                String fileName = formatNameImage(file);
+                boolean isSave = saveImageToServer(request, dir, file, fileName);
+                listFileName.add(fileName);
+                if(!isSave){
+                    isSuccess = false;
+                    break;
+                }
             }
         }
 
@@ -72,13 +74,17 @@ public class FileUtils {
             }
             return null;
         }
+
+        if(listFileName.isEmpty()) return null;
         return listFileName;
     }
 
-    public static void deleteMultipleFilesToServer(HttpServletRequest request,String dir, String fileName) {
-        String[] fileNames = fileName.split(",");
-        for(String fn: fileNames){
-            deleteImageFromServer(request, dir, fn);
+    public static void deleteMultipleFilesToServer(HttpServletRequest request,String dir, String listFileName) {
+        if(listFileName != null){
+            String[] fileNames = listFileName.split(",");
+            for(String fn: fileNames){
+                deleteImageFromServer(request, dir, fn);
+            }
         }
     }
 
@@ -101,9 +107,7 @@ public class FileUtils {
         if (files != null) {
             return Arrays.stream(files)
                     .filter(file -> file != null && !file.isEmpty())
-                    .map(file -> {
-                        return formatNameImage(file);
-                    })
+                    .map(file -> formatNameImage(file))
                     .collect(Collectors.joining(","));
         }
         return null;
@@ -121,7 +125,7 @@ public class FileUtils {
         return null;
     }
 
-    public static boolean isAllowedImageType(MultipartFile file, String listType) {
+    public static boolean isAllowedFileType(MultipartFile file, String listType) {
         String originalFileName = file.getOriginalFilename();
         if (originalFileName != null) {
             String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();

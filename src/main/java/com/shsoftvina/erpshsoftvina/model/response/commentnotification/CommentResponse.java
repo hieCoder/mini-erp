@@ -1,8 +1,5 @@
 package com.shsoftvina.erpshsoftvina.model.response.commentnotification;
 
-import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserCommentResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

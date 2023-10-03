@@ -35,22 +35,22 @@ public class NotificationConverter {
                 .build();
     }
 
-    public Notification toEntity (CreateNotificationRequest updateNotificationRequest) {
+    public Notification toEntity(CreateNotificationRequest updateNotificationRequest, List<String> listFileNameSaveFileSuccess) {
         return Notification.builder()
                 .id(UUID.randomUUID().toString())
                 .title(updateNotificationRequest.getTitle())
                 .content(updateNotificationRequest.getContent())
-                .file(FileUtils.convertMultipartFileArrayToString(updateNotificationRequest.getFile()))
+                .file(String.join(",", listFileNameSaveFileSuccess))
                 .createdDate(new Date())
                 .build();
     }
 
-    public Notification toEntity (UpdateNotificationRequest updateNotificationRequest, String id) {
+    public Notification toEntity(UpdateNotificationRequest updateNotificationRequest, String id, List<String> listFileNameSaveFileSuccess) {
         return Notification.builder()
                 .id(id)
                 .title(updateNotificationRequest.getTitle())
                 .content(updateNotificationRequest.getContent())
-                .file(FileUtils.convertMultipartFileArrayToString(updateNotificationRequest.getFile()))
+                .file(String.join(",", listFileNameSaveFileSuccess))
                 .build();
     }
 

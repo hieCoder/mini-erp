@@ -9,9 +9,8 @@ import java.util.List;
 
 public interface NotificationService {
     List<NotificationResponse> getAllNoti(int start, int pageSize);
-    NotificationResponse findById(String id);
     int createNoti(CreateNotificationRequest createNotificationRequest);
     int updateNoti(UpdateNotificationRequest updateNotificationRequest, String id);
     boolean delNoti(String id);
-    NotificationCommentsListResponse getCommentsByNotificationId(String notificationId);
+    NotificationCommentsListResponse findById(String id);
 }

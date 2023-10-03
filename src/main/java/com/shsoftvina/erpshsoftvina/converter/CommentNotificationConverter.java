@@ -6,7 +6,7 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserCommentResponse;
+import com.shsoftvina.erpshsoftvina.model.response.commentnotification.UserCommentResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

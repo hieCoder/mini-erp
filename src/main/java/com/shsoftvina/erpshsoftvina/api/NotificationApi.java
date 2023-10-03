@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,13 +33,13 @@ public class NotificationApi {
 
     //    Create New Notification
     @PostMapping
-    public ResponseEntity<?> createNoti(CreateNotificationRequest createNotificationRequest) {
+    public ResponseEntity<?> createNoti(@Valid CreateNotificationRequest createNotificationRequest) {
         return ResponseEntity.ok(notificationService.createNoti(createNotificationRequest));
     }
 
     //    Update Notification
     @PostMapping("/{id}")
-    public ResponseEntity<?> updateNoti(UpdateNotificationRequest updateNotificationRequest,
+    public ResponseEntity<?> updateNoti(@Valid UpdateNotificationRequest updateNotificationRequest,
                                         @PathVariable("id") String id) {
         return ResponseEntity.ok(notificationService.updateNoti(updateNotificationRequest, id));
     }
@@ -46,16 +47,11 @@ public class NotificationApi {
     //    Delete Notification
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delNoti(@PathVariable("id") String id) {
-
-        boolean isDelSuccess = notificationService.delNoti(id);
-        if (isDelSuccess) return ResponseEntity.ok(isDelSuccess);
-
-        return new ResponseEntity<>(isDelSuccess, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.ok(notificationService.delNoti(id));
     }
 
-    @GetMapping("/{notificationId}")
-    public ResponseEntity<?> getCommentsByNotificationId(@PathVariable String notificationId) {
-        NotificationCommentsListResponse comments = notificationService.getCommentsByNotificationId(notificationId);
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> notificationDetail(@PathVariable String id) {
+        return ResponseEntity.ok(notificationService.findById(id));
     }
 }

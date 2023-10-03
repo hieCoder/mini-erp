@@ -4,15 +4,19 @@ import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.enums.user.TypeUserEnum;
-import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
+import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
-import com.shsoftvina.erpshsoftvina.model.response.users.*;
+import com.shsoftvina.erpshsoftvina.model.response.commentnotification.UserCommentResponse;
+import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import com.shsoftvina.erpshsoftvina.utils.StringUtils;
-import liquibase.pro.packaged.D;
+import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +27,26 @@ import java.util.stream.Collectors;
 @Component
 public class UserConverter {
 
+    @Autowired
+    ContractConverter contractConverter;
+
     public UserDetailResponse toUserDetailResponse(User user) {
+
+        User userCurrent = Principal.getUserCurrent();
+        if(user.getRole() == null)
+            throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
+        else{
+            if(!user.getRole().equals(userCurrent.getRole()) && userCurrent.getRole().equals(RoleEnum.DEVELOPER)){
+                throw new UnauthorizedException(MessageErrorUtils.unauthorized());
+            }
+        }
+
+        List<ContractResponse> contracts = null;
+
+        RoleEnum userCurrentRole = Principal.getUserCurrent().getRole();
+        if(!userCurrentRole.equals(RoleEnum.DEVELOPER))
+            contracts = contractConverter.toListResponse(user.getContracts());
+
         return UserDetailResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
@@ -33,36 +56,13 @@ public class UserConverter {
                 .avatar(FileUtils.getPathUpload(User.class, user.getAvatar()))
                 .type(EnumUtils.instance(user.getType()))
                 .department(EnumUtils.instance(user.getDepartment()))
-                .workingday(StringUtils.split(user.getWorkingDay(), ","))
-                .contract(StringUtils.splitPathFile(User.class, user.getContract(), ","))
-                .basicSalary(StringUtils.split(user.getBasicSalary(), ","))
-                .allowance(StringUtils.split(user.getAllowance(), ","))
-                .insurance(StringUtils.split(user.getInsurance(), ","))
                 .atm(user.getAtm())
                 .email(user.getEmail())
                 .role(EnumUtils.instance(user.getRole()))
                 .position(EnumUtils.instance(user.getPosition()))
                 .address(user.getAddress())
                 .timesheetsCode(user.getTimesheetsCode())
-                .build();
-    }
-
-    public BasicUserDetailResponse toBasicUserDetailResponse(User user) {
-        return BasicUserDetailResponse.builder()
-                .id(user.getId())
-                .fullname(user.getFullname())
-                .dateOfBirth(DateUtils.formatDate(user.getDateOfBirth()))
-                .phone(user.getPhone())
-                .emergencyPhone(user.getEmergencyPhone())
-                .avatar(user.getAvatar())
-                .type(EnumUtils.instance(user.getType()))
-                .department(EnumUtils.instance(user.getDepartment()))
-                .workingday(StringUtils.split(user.getWorkingDay(), ","))
-                .email(user.getEmail())
-                .role(EnumUtils.instance(user.getRole()))
-                .position(EnumUtils.instance(user.getPosition()))
-                .resume(user.getResume())
-                .timesheetsCode(user.getTimesheetsCode())
+                .contracts(contracts)
                 .build();
     }
 
@@ -152,7 +152,7 @@ public class UserConverter {
                 .build();
     }
 
-    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar) {
+    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar, String resume) {
         return User.builder()
                 .id(userUpdateProfileRequest.getId())
                 .fullname(userUpdateProfileRequest.getFullname())
@@ -161,6 +161,8 @@ public class UserConverter {
                 .emergencyPhone(userUpdateProfileRequest.getEmergencyPhone())
                 .dateOfBirth(userUpdateProfileRequest.getDateOfBirth())
                 .avatar(avatar)
+                .resume(resume)
+                .timesheetsCode(userUpdateProfileRequest.getTimesheetsCode())
                 .build();
     }
 
