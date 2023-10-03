@@ -16,6 +16,7 @@ public class Principal {
         .password("$2a$12$f6ld0R7LiYdJ6TwzjxLxT.QJ45febxzuZV1UbDg7TQUwPf.nRvTl2")
         .role(RoleEnum.DEVELOPER).status(StatusUserEnum.ACTIVE)
         .build();//(User) (SecurityContextHolder.getContext()).getAuthentication().getPrincipal();
+
         return user;
     }
 }

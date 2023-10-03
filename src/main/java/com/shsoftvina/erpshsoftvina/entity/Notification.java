@@ -17,7 +17,7 @@ public class Notification {
     private String id;
     private String title;
     private String content;
-    private String file;
+    private String files;
     private Date createdDate;
-    private List<CommentNotification> listComments;
+    private List<CommentNotification> comments;
 }

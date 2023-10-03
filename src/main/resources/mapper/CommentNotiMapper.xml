@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentNotificationMapper">
+
     <insert id="createCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" >
         INSERT
         INTO comment_notification (created_date, content, id, notification_id, user_id, parent_id)
-        VALUES (NOW(), #{content}, #{id},#{notification.id}, #{user.id}, #{parentId});
+        VALUES (NOW(), #{content}, #{id},#{notification.id}, #{user.id}, #{parentComment.id});
     </insert>
 
     <update id="updateCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
@@ -17,7 +18,7 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="deleteCommentNotificationNoChild" parameterType="java.lang.String">
+    <delete id="deleteById" parameterType="java.lang.String">
           DELETE FROM comment_notification WHERE id = #{id}
     </delete>
 
@@ -26,16 +27,50 @@
         DELETE FROM comment_notification WHERE id = #{id}
     </delete>
 
-    <select id="getCommentById" parameterType="java.lang.String" resultType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" resultMap="commentNotificationResultMap">
-        SELECT * FROM comment_notification WHERE id = #{id}
-    </select>
-
-    <select id="getCommentChildById" parameterType="java.lang.String" resultType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" resultMap="commentNotificationResultMap">
-        SELECT * FROM comment_notification WHERE parent_id = #{id} LIMIT 1
+    <select id="findById" resultMap="commentNotificationResultMap">
+        SELECT
+            c.id AS comment_id,
+            c.user_id AS comment_user_id,
+            c.content AS comment_content,
+            c.parent_id AS comment_parent_id,
+            c.created_date AS comment_created_date,
+            c.modified_date AS comment_modified_date,
+            c.modified_by AS comment_modified_by,
+            u.fullname AS user_fullname,
+            u.avatar AS user_avatar
+        FROM comment_notification c LEFT JOIN user u ON c.user_id = u.id AND c.parent_id IS NOT NULL
+        WHERE c.id = #{id}
     </select>
 
     <resultMap id="commentNotificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
-        <id property="id" column="id" />
-        <result property="parentId" column="parent_id" />
+        <id property="id" column="comment_id" />
+        <result property="content" column="comment_content" />
+        <result property="createdDate" column="comment_created_date" />
+        <result property="modifiedDate" column="comment_modified_date" />
+        <result property="modifiedBy" column="comment_modified_by" />
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="getChildComments" />
     </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="id" />
+        <result property="fullname" column="user_fullname" />
+        <result property="avatar" column="user_avatar" />
+    </resultMap>
+
+    <select id="getChildComments" resultMap="commentNotificationResultMap">
+        SELECT c.id AS comment_id,
+               c.user_id AS comment_user_id,
+               c.content AS comment_content,
+               c.created_date AS comment_created_date,
+               c.parent_id AS comment_parent_id,
+               c.created_date AS comment_created_date,
+               c.modified_date AS comment_modified_date,
+               c.modified_by AS comment_modified_by,
+               u.fullname AS user_fullname,
+               u.avatar AS user_avatar
+        FROM comment_notification c
+                 INNER JOIN user u ON c.user_id = u.id
+        WHERE c.parent_id = #{id}
+    </select>
 </mapper>

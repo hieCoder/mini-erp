@@ -6,9 +6,8 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.*;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
-import com.shsoftvina.erpshsoftvina.model.response.commentnotification.UserCommentResponse;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
@@ -66,8 +65,8 @@ public class UserConverter {
                 .build();
     }
 
-    public ShowUserRespone toShowUserRespone(User user) {
-        return ShowUserRespone.builder()
+    public UserShowRespone toShowUserRespone(User user) {
+        return UserShowRespone.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
                 .department(EnumUtils.instance(user.getDepartment()))
@@ -76,7 +75,7 @@ public class UserConverter {
                 .build();
     }
 
-    public List<ShowUserRespone> toListShowUserRespone(List<User> listUser) {
+    public List<UserShowRespone> toListShowUserRespone(List<User> listUser) {
         return listUser.stream().map(this::toShowUserRespone).collect(Collectors.toList());
     }
 
@@ -180,10 +179,4 @@ public class UserConverter {
                 .build();
     }
 
-    public static UserCommentResponse toUserCommentResponse(User user) {
-        return UserCommentResponse.builder()
-                .fullname(user.getFullname())
-                .avatar(user.getAvatar())
-                .build();
-    }
 }

@@ -1,22 +1,17 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
-import com.shsoftvina.erpshsoftvina.converter.CommentNotificationConverter;
-import com.shsoftvina.erpshsoftvina.entity.CommentNotification;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentResponse;
-import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationCommentsListResponse;
-import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,22 +20,33 @@ public class NotificationConverter {
     @Autowired
     CommentNotificationConverter commentNotificationConverter;
 
-    public NotificationResponse toResponse(Notification notification) {
-        return NotificationResponse.builder()
+    public NotificationShowResponse toShowResponse(Notification notification) {
+        return NotificationShowResponse.builder()
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .content(notification.getContent())
-                .file(notification.getFile().split(","))
+                .files(FileUtils.getPathUploadList(Notification.class, notification.getFiles()))
                 .createdDate(DateUtils.formatDateTime(notification.getCreatedDate()))
                 .build();
     }
 
-    public Notification toEntity(CreateNotificationRequest updateNotificationRequest, List<String> listFileNameSaveFileSuccess) {
+    public List<NotificationShowResponse> toListShowResponse(List<Notification> notifications) {
+        return notifications.stream().map(this::toShowResponse).collect(Collectors.toList());
+    }
+
+
+    public Notification toEntity(CreateNotificationRequest createNotificationRequest, List<String> listFileNameSaveFileSuccess) {
+
+        String files = null;
+        if(!listFileNameSaveFileSuccess.isEmpty()){
+            files = String.join(",", listFileNameSaveFileSuccess);
+        }
+
         return Notification.builder()
                 .id(UUID.randomUUID().toString())
-                .title(updateNotificationRequest.getTitle())
-                .content(updateNotificationRequest.getContent())
-                .file(String.join(",", listFileNameSaveFileSuccess))
+                .title(createNotificationRequest.getTitle())
+                .content(createNotificationRequest.getContent())
+                .files(files)
                 .createdDate(new Date())
                 .build();
     }
@@ -50,28 +56,19 @@ public class NotificationConverter {
                 .id(id)
                 .title(updateNotificationRequest.getTitle())
                 .content(updateNotificationRequest.getContent())
-                .file(String.join(",", listFileNameSaveFileSuccess))
+                .files(String.join(",", listFileNameSaveFileSuccess))
                 .build();
     }
 
-    public List<NotificationResponse> toListResponse(List<Notification> listNoti) {
-        return listNoti.stream().map(this::toResponse).collect(Collectors.toList());
-    }
-
-    public NotificationCommentsListResponse toListCommentsResponse(Notification notification) {
-        List<CommentResponse> commentResponses = notification.getListComments().stream()
-                .map(commentNotificationConverter::commentToResponse)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return NotificationCommentsListResponse.builder()
+    public NotificationDetailResponse toNotificationDetailResponse(Notification notification) {
+        return NotificationDetailResponse.builder()
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .content(notification.getContent())
-                .file(notification.getFile().split(","))
-                .listComments(commentResponses)
+                .files(FileUtils.getPathUploadList(Notification.class, notification.getFiles()))
+                .createdDate(DateUtils.formatDateTime(notification.getCreatedDate()))
+                .comments(commentNotificationConverter.toListResponse(notification.getComments()))
                 .build();
     }
-
 }
 
