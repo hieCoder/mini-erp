@@ -56,10 +56,8 @@
     <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
         SELECT spending, remain, id
         FROM accounting
-        WHERE YEAR (created_date) = YEAR (#{createdDate})
-          AND MONTH (created_date) = MONTH (#{createdDate})
-          AND DAY (created_date) >= DAY (#{createdDate})
-          AND TIME (created_date) > TIME (#{createdDate})
+        WHERE created_date >= #{createdDate}
+        AND created_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
           AND status ='ACTIVE'
         ORDER BY created_date ASC
     </select>
@@ -68,6 +66,9 @@
         SELECT spending, remain
         FROM accounting
         WHERE created_date &lt; #{createdDate}
+        AND created_date &gt;= DATE_FORMAT(#{createdDate}, '%Y-%m-01 00:00:00')
+        AND created_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
+        AND status = 'ACTIVE'
         ORDER BY created_date DESC
         LIMIT 1;
     </select>

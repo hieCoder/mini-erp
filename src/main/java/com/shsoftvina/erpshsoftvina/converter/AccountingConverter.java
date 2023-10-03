@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.enums.accounting.StatusAccountingEnum;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.AccountResponse;
@@ -44,6 +45,7 @@ public class AccountingConverter {
                 .remain(accounting.getRemain())
                 .revenue(revenue)
                 .user(userConverter.toAccountResponse(accounting.getUser()))
+                .title(accounting.getTitle())
                 .build();
     }
 
@@ -61,6 +63,7 @@ public class AccountingConverter {
                 .createdDate(newDate)
                 .id(UUID.randomUUID().toString())
                 .bill(FileUtils.convertMultipartFileArrayToString(accountingCreateRequest.getBill()))
+                .status(StatusAccountingEnum.ACTIVE)
                 .build();
     }
 

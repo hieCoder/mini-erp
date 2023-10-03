@@ -15,6 +15,10 @@ public class MessageErrorUtils {
         return "Image type is not allowed (jpg, jpeg, png, svg)";
     }
 
+    public static String notAllowFileType(){
+        return "File type is not allowed (pdf, csv, xlsx, doc, xls, pptx)";
+    }
+
     public static String notAllowFileSize(){
         return "File size must < " + ApplicationConstant.MAX_FILE_SIZE;
     }

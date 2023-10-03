@@ -12,5 +12,5 @@ public class UserConstant {
     public static String PATH_FILE = "/upload/user/";
     public static boolean DEFAULT_FIRST_UPDATE_PROFILE = false;
     public static String LIST_TYPE_IMAGE = "jpg,jpeg,png,svg";
-    public static String LIST_TYPE_FILE = "pdf,csv,xlsx,doc";
+    public static String LIST_TYPE_FILE = "pdf,csv,xlsx,doc,xls";
 }

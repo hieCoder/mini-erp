@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.converter.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
+import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
@@ -16,6 +17,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRema
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +54,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         Long latestRemain = accountingMapper.getLatestRemain(monthId);
         totals.setTotalRemain(latestRemain);
-        int offset = (page ) * size;
+        int offset = (page - 1) * size;
         RowBounds rowBounds = new RowBounds(offset, size);
         LocalDateTime endDateWithTime = null;
         if (endTime != null) {
@@ -60,11 +62,11 @@ public class AccountingServiceImpl implements AccountingService {
         }
         List<Accounting> accountingList = accountingMapper.findAccountingByMonth(monthId, rowBounds, startTime, endDateWithTime);
         List<AccountResponse> accountResponses = accountingConverter.convertToListResponse(accountingList);
-        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(monthId,startTime, endDateWithTime);
-        long totalPage = (long) Math.ceil((double) totalRecordCount /size);
-        boolean hasNext = page < (totalPage - 1);
-        boolean hasPrevious = page > 0;
-        return new PageAccountListResponse(accountResponses, page, totalPage, hasNext, hasPrevious, totals);
+        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(monthId, startTime, endDateWithTime);
+        long totalPage = (long) Math.ceil((double) totalRecordCount / size);
+        boolean hasNext = page < totalPage;
+        boolean hasPrevious = page > 1;
+        return new PageAccountListResponse(accountResponses, page, totalPage, size, hasNext, hasPrevious, totals);
     }
 
     @Override
@@ -75,34 +77,50 @@ public class AccountingServiceImpl implements AccountingService {
         LocalDateTime newDate = LocalDateTime.now();
         String formattedMonthYear = DateUtils.formatMonthYear(newDate);
         Long latestRemain = accountingMapper.getLatestRemain(formattedMonthYear);
-
-        String uploadDir = AccountingConstant.UPLOAD_FILE_DIR;
+        if (latestRemain == null) {
+            latestRemain = 0L;
+        }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
-        List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, uploadDir, billFile);
+        List listFileNameSaveFileSuccess = null;
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        if (billFile != null) {
+            FileUtils.validateFiles(billFile);
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
+        }
         if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
+            if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
             Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate);
             try {
                 accountingMapper.createAccounting(accounting);
             } catch (Exception e) {
-                FileUtils.deleteMultipleFilesToServer(request, uploadDir, accounting.getBill());
+                FileUtils.deleteMultipleFilesToServer(request, dir, accounting.getBill());
                 return 0;
             }
             return 1;
         }
         return 0;
-
     }
+
+
 
     @Override
     public int updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
         if (accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
             throw new FileTooLimitedException("Max file is 3");
         }
-        String dir = AccountingConstant.UPLOAD_FILE_DIR;
-        List listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, accountingUpdateRequest.getBill());
         Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
+        if (currentAccounting == null) throw new NotFoundException(MessageErrorUtils.notFound("Account id"));
         User currentUser = userMapper.findById(accountingUpdateRequest.getUserId());
+        if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
+        MultipartFile[] billFile = accountingUpdateRequest.getBill();
+        List listFileNameSaveFileSuccess = null;
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        if (billFile != null) {
+            FileUtils.validateFiles(billFile);
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
+        }
+
         if (listFileNameSaveFileSuccess != null) {
             Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
             try {
@@ -134,6 +152,7 @@ public class AccountingServiceImpl implements AccountingService {
     public int deleteAccounting(String id) {
         try {
             Accounting deleteAccounting = accountingMapper.findAccountingById(id);
+            if (deleteAccounting == null) throw new NotFoundException(MessageErrorUtils.notFound("Account id"));
             accountingMapper.deleteAccounting(id);
             Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(deleteAccounting);
             List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(deleteAccounting);
