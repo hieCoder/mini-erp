@@ -16,7 +16,7 @@ public class MessageErrorUtils {
     }
 
     public static String notAllowFileType(){
-        return "File type is not allowed! (pdf, csv, xlsx, doc)";
+        return "File type is not allowed (pdf, csv, xlsx, doc, xls, pptx)";
     }
 
     public static String notAllowFileSize(){
