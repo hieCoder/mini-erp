@@ -16,12 +16,6 @@
         VALUES (#{id}, #{title}, #{content}, #{file}, NOW())
     </select>
 
-    <select id="findById" parameterType="String" resultMap="notiResultMap">
-        SELECT *
-        FROM notification
-        WHERE id = #{id}
-    </select>
-
     <!--    Update Notification-->
     <update id="updateNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
         UPDATE notification
@@ -38,15 +32,7 @@
         WHERE id = #{id}
     </delete>
 
-    <resultMap id="notiResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
-        <id property="id" column="id"/>
-        <result property="title" column="title"/>
-        <result property="content" column="content"/>
-        <result property="file" column="file"/>
-        <result property="createdDate" column="created_date"/>
-    </resultMap>
-
-    <select id="getCommentsByNotificationId" resultMap="notificationWithCommentsResultMap">
+    <select id="findById" resultMap="notificationWithCommentsResultMap">
         SELECT
             n.id AS notification_id,
             n.title AS notification_title,
@@ -68,9 +54,16 @@
             notification n
                 LEFT JOIN comment_notification c ON n.id = c.notification_id AND c.parent_id IS NULL
                 LEFT JOIN user u ON c.user_id = u.id
-        WHERE n.id = #{notificationId}
+        WHERE n.id = #{id}
     </select>
 
+    <resultMap id="notiResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="file" column="file"/>
+        <result property="createdDate" column="created_date"/>
+    </resultMap>
 
     <select id="getChildComments" resultMap="commentChildTreeResultMap">
         SELECT c.id AS comment_id,

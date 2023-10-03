@@ -40,12 +40,6 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
-    public NotificationResponse findById(String id) {
-        Notification notification = notificationMapper.findById(id);
-        return notificationConverter.toResponse(notification);
-    }
-
-    @Override
     public int createNoti(CreateNotificationRequest createNotificationRequest) {
 
         if (createNotificationRequest.getFile().length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
@@ -117,8 +111,8 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
-    public NotificationCommentsListResponse getCommentsByNotificationId(String notificationId){
-        Notification comments = notificationMapper.getCommentsByNotificationId(notificationId);
+    public NotificationCommentsListResponse findById(String id){
+        Notification comments = notificationMapper.findById(id);
         System.out.println(comments);
         return notificationConverter.toListCommentsResponse(comments);
     }

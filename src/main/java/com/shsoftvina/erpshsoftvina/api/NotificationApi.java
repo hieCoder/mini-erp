@@ -50,9 +50,8 @@ public class NotificationApi {
         return ResponseEntity.ok(notificationService.delNoti(id));
     }
 
-    @GetMapping("/{notificationId}")
-    public ResponseEntity<?> notificationDetail(@PathVariable String notificationId) {
-        NotificationCommentsListResponse comments = notificationService.getCommentsByNotificationId(notificationId);
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> notificationDetail(@PathVariable String id) {
+        return ResponseEntity.ok(notificationService.findById(id));
     }
 }

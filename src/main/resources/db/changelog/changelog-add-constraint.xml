@@ -36,7 +36,8 @@
                                  baseColumnNames="notification_id"
                                  referencedTableName="notification"
                                  referencedColumnNames="id"
-                                 constraintName="fk_comment_notification_notification"/>
+                                 constraintName="fk_comment_notification_notification"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <!-- add column parent_id into table comment_notification and create foreign key constraint -->
@@ -47,7 +48,7 @@
                 referencedTableName="comment_notification"
                 referencedColumnNames="id"
                 constraintName="fk_comment_notification_parent"
-        />
+                onDelete="CASCADE"/>
     </changeSet>
 
     <!-- add column user_id into table contract and create foreign key constraint -->
@@ -67,39 +68,4 @@
                                  referencedColumnNames="id"
                                  constraintName="fk_contract_insurance"/>
     </changeSet>
-
-    <!-- drop ForeignKeyConstraint notification with comment notification -->
-    <changeSet id="8" author="team2">
-        <dropForeignKeyConstraint baseTableName="comment_notification"
-                                  constraintName="fk_comment_notification_notification"/>
-    </changeSet>
-
-    <!-- readd column parent_id into table comment_notification and create foreign key constraint -->
-    <changeSet id="9" author="team2">
-        <addForeignKeyConstraint baseTableName="comment_notification"
-                                 baseColumnNames="notification_id"
-                                 referencedTableName="notification"
-                                 referencedColumnNames="id"
-                                 constraintName="fk_comment_notification_notification"
-                                 onDelete="CASCADE"/>
-    </changeSet>
-
-    <!-- drop ForeignKeyConstraint comment notification with comment notification -->
-    <changeSet id="10" author="team2">
-        <dropForeignKeyConstraint baseTableName="comment_notification"
-                                  constraintName="fk_comment_notification_parent"/>
-    </changeSet>
-
-    <!-- readd column parent_id into table comment_notification and create foreign key constraint -->
-    <changeSet id="11" author="team2">
-        <addForeignKeyConstraint
-                baseTableName="comment_notification"
-                baseColumnNames="parent_id"
-                referencedTableName="comment_notification"
-                referencedColumnNames="id"
-                constraintName="fk_comment_notification_parent"
-                onDelete="CASCADE"
-        />
-    </changeSet>
 </databaseChangeLog>
-
