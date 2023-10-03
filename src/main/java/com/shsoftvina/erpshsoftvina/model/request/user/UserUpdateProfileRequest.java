@@ -33,4 +33,5 @@ public class UserUpdateProfileRequest {
     private String emergencyPhone;
     private MultipartFile avatar;
     private MultipartFile resume;
+    private String timesheetsCode;
 }

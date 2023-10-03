@@ -12,7 +12,7 @@ public class MessageErrorUtils {
     }
 
     public static String notAllowImageType(){
-        return "Image type is not allowed (jpg, jpeg, png, svg)";
+        return "Image type is not allowed! (jpg, jpeg, png, svg)";
     }
 
     public static String notAllowFileType(){
@@ -20,10 +20,14 @@ public class MessageErrorUtils {
     }
 
     public static String notAllowFileSize(){
-        return "File size must < " + ApplicationConstant.MAX_FILE_SIZE;
+        return "File count must < " + ApplicationConstant.MAX_FILE_SIZE;
     }
 
     public static String unauthorized(){
         return "Unauthorized!";
+    }
+
+    public static String unknown(String s){
+        return s.concat(" unknown!");
     }
 }

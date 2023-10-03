@@ -9,6 +9,11 @@
     <include file="db/changelog/accounting-changelog-create.xml" />
     <include file="db/changelog/notification-changelog-create.xml" />
     <include file="db/changelog/comment_notification-changelog-create.xml" />
+    <include file="db/changelog/contract-changelog-create.xml" />
+    <include file="db/changelog/insurance-changelog-create.xml" />
+    <include file="db/changelog/management-time-changelog-create.xml" />
+    <include file="db/changelog/category-management-time-changelog-create.xml" />
+    <include file="db/changelog/todo-management-time-changelog-create.xml" />
 
     <include file="db/changelog/changelog-add-constraint.xml" />
 </databaseChangeLog>

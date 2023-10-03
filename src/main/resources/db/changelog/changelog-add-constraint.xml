@@ -36,7 +36,8 @@
                                  baseColumnNames="notification_id"
                                  referencedTableName="notification"
                                  referencedColumnNames="id"
-                                 constraintName="fk_comment_notification_notification"/>
+                                 constraintName="fk_comment_notification_notification"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <!-- add column parent_id into table comment_notification and create foreign key constraint -->
@@ -47,6 +48,51 @@
                 referencedTableName="comment_notification"
                 referencedColumnNames="id"
                 constraintName="fk_comment_notification_parent"
-        />
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- add column user_id into table contract and create foreign key constraint -->
+    <changeSet id="6" author="team2">
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_contract_user"/>
+    </changeSet>
+
+    <!-- add column insurance_id into table contract and create foreign key constraint -->
+    <changeSet id="7" author="team2">
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="insurance_id"
+                                 referencedTableName="insurance"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_contract_insurance"/>
+    </changeSet>
+
+    <!-- add column user_id into table todomanagementtime and create foreign key constraint -->
+    <changeSet id="8" author="team2">
+        <addForeignKeyConstraint baseTableName="todo-management-time"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_todo_management_time_user"/>
+    </changeSet>
+
+    <!-- add column category-management-time_id into table todomanagementtime and create foreign key constraint -->
+    <changeSet id="9" author="team2">
+        <addForeignKeyConstraint baseTableName="todo-management-time"
+                                 baseColumnNames="category-management-time_id"
+                                 referencedTableName="category-management-time"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_todo_management_time_category_management_time"/>
+    </changeSet>
+
+    <!-- add column management-time_id into table category-management-time and create foreign key constraint -->
+    <changeSet id="10" author="team2">
+        <addForeignKeyConstraint baseTableName="category-management-time"
+                                 baseColumnNames="management-time_id"
+                                 referencedTableName="management-time"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_category-management-time_management_time"/>
     </changeSet>
 </databaseChangeLog>

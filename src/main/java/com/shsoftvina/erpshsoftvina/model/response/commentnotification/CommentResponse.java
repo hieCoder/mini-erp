@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.entity;
+package com.shsoftvina.erpshsoftvina.model.response.commentnotification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +9,14 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Notification {
-
+public class CommentResponse {
     private String id;
-    private String title;
     private String content;
-    private String file;
     private Date createdDate;
-    private List<CommentNotification> listComments;
+    private UserCommentResponse user;
+    private String parentId;
+    private List<CommentResponse> childComments;
 }

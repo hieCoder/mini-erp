@@ -1,11 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.BasicUserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 
@@ -19,7 +15,7 @@ public interface UserService {
                                      int pageSize,
                                      String status);
 
-    BasicUserDetailResponse findUserDetail(String id);
+    UserDetailResponse findUserDetail(String id);
 
     void deleteUser(String id);
 
@@ -28,8 +24,4 @@ public interface UserService {
     UserDetailResponse findByEmail(String email);
 
     int updateUser(UserUpdateRequest userUpdateRequest);
-
-    int createUser(UserCreateRequest user);
-
-    int updateUserBasicProfile(UserUpdateProfileRequest user);
 }

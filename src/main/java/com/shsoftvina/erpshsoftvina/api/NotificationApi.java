@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationCommentsListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,13 +33,13 @@ public class NotificationApi {
 
     //    Create New Notification
     @PostMapping
-    public ResponseEntity<?> createNoti(CreateNotificationRequest createNotificationRequest) {
+    public ResponseEntity<?> createNoti(@Valid CreateNotificationRequest createNotificationRequest) {
         return ResponseEntity.ok(notificationService.createNoti(createNotificationRequest));
     }
 
     //    Update Notification
     @PostMapping("/{id}")
-    public ResponseEntity<?> updateNoti(UpdateNotificationRequest updateNotificationRequest,
+    public ResponseEntity<?> updateNoti(@Valid UpdateNotificationRequest updateNotificationRequest,
                                         @PathVariable("id") String id) {
         return ResponseEntity.ok(notificationService.updateNoti(updateNotificationRequest, id));
     }
@@ -45,10 +47,11 @@ public class NotificationApi {
     //    Delete Notification
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delNoti(@PathVariable("id") String id) {
+        return ResponseEntity.ok(notificationService.delNoti(id));
+    }
 
-        boolean isDelSuccess = notificationService.delNoti(id);
-        if (isDelSuccess) return ResponseEntity.ok(isDelSuccess);
-
-        return new ResponseEntity<>(isDelSuccess, HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> notificationDetail(@PathVariable String id) {
+        return ResponseEntity.ok(notificationService.findById(id));
     }
 }
