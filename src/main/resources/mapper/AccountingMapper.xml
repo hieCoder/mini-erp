@@ -30,8 +30,8 @@
 
     <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         INSERT
-        INTO accounting (id,created_date,spending,remain, user_id, bill, title)
-        VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title});
+        INTO accounting (id,created_date,spending,remain, user_id, bill, title, status)
+        VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status});
     </insert>
 
     <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
