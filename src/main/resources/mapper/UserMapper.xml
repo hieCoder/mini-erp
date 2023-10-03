@@ -35,11 +35,9 @@
             email = #{email},
             password = #{password},
             role = #{role},
-            status = #{status},
             position = #{position},
             resume = #{resume},
             address = #{address},
-            is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
         WHERE id = #{id}
     </update>

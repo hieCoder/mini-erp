@@ -22,7 +22,7 @@ public class UserApi {
     UserService userService;
 
     @PostMapping("/updation")
-    public ResponseEntity<?> updateUserForAdmin(@Valid UserUpdateRequest userUpdateRequest) {
+    public ResponseEntity<?> updateUserForAdmin(UserUpdateRequest userUpdateRequest) {
         return ResponseEntity.ok(userService.updateUserDetail(userUpdateRequest));
     }
 

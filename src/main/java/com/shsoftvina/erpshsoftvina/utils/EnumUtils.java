@@ -6,12 +6,15 @@ import java.lang.reflect.Field;
 
 public class EnumUtils {
     public static <T extends Enum<T>> boolean isExistInEnum(Class<T> enumClass, String value) {
-        try {
-            Enum.valueOf(enumClass, value);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
+        if(value!=null){
+            try {
+                Enum.valueOf(enumClass, value);
+                return true;
+            } catch (IllegalArgumentException e) {
+                return false;
+            }
         }
+        return true;
     }
 
     public static EnumDto instance(Enum<?> enumValue) {
@@ -26,6 +29,11 @@ public class EnumUtils {
             }
             return enumDto;
         }
+        return null;
+    }
+
+    public static <T extends Enum<T>> T getEnumFromValue(Class<T> enumClass, String value) {
+        if(isExistInEnum(enumClass, value)) return Enum.valueOf(enumClass, value);
         return null;
     }
 }

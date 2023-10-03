@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Data
@@ -19,44 +16,30 @@ import java.util.Date;
 @Builder
 public class UserUpdateRequest {
 
+    @NotBlank(message = "Field id is not filled")
     private String id;
 
+    @NotBlank(message = "Field fullname is not filled")
     private String fullname;
 
+    @NotBlank(message = "Field address is not filled")
+    private String address;
+
+    @NotNull(message = "Field dateOfBirth is not filled")
     private Date dateOfBirth;
 
+    @NotBlank(message = "Field phone is not filled")
     private String phone;
 
     private String emergencyPhone;
-
     private MultipartFile avatar;
-
-    private String type;
-
-    private String department;
-    private String atm;
-
-    private String email;
-
-    @Size(min = 6, message = "Password must have at least 6 characters and include Letters, numbers and special characters")
-    @Pattern(
-            regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).*$",
-            message = "Password must have at least 6 characters and include Letters, numbers and special characters"
-    )
-    private String password;
-
-    private String role;
-
-    private String status;
-
-    private String position;
-
     private MultipartFile resume;
-
-    private String address;
-
-    private boolean isFirstUpdateProfile;
-
     private String timesheetsCode;
-
+    private String atm;
+    private String type;
+    private String department;
+    private String email;
+    private String password;
+    private String role;
+    private String position;
 }

@@ -4,6 +4,8 @@ import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
 
 import com.shsoftvina.erpshsoftvina.enums.user.*;
+import com.shsoftvina.erpshsoftvina.exception.NoMatchException;
+import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
@@ -15,6 +17,7 @@ import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import org.springframework.asm.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -90,59 +93,42 @@ public class UserConverter {
     }
 
 
-    public User userUpdateRequestToEntity(UserUpdateRequest userUpdateRequest, User existingUser) {
-        User.UserBuilder userBuilder = User.builder();
+    public User toUpdateDetail(UserUpdateRequest userUpdateRequest, String newAvatarFileName, String newResumeFileName) {
+        User user = toUpdateBasic(userUpdateRequest, newAvatarFileName, newResumeFileName);
 
-        if (userUpdateRequest.getType() == null) {
-            userBuilder.type(existingUser.getType());
-        } else userBuilder.type(TypeUserEnum.valueOf(userUpdateRequest.getType()));
+        String type = userUpdateRequest.getType();
+        if(!EnumUtils.isExistInEnum(TypeUserEnum.class, type)) throw new NotFoundException("Type");
+        user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, type));
 
-        if (userUpdateRequest.getDepartment() == null) {
-            userBuilder.department(existingUser.getDepartment());
-        } else userBuilder.department(DepartmentEnum.valueOf(userUpdateRequest.getDepartment()));
+        String department = userUpdateRequest.getDepartment();
+        if(!EnumUtils.isExistInEnum(DepartmentEnum.class, department)) throw new NotFoundException("Department");
+        user.setDepartment(EnumUtils.getEnumFromValue(DepartmentEnum.class, department));
 
-        if (userUpdateRequest.getRole() == null) {
-            userBuilder.role(existingUser.getRole());
-        } else userBuilder.role(RoleEnum.valueOf(userUpdateRequest.getRole()));
+        user.setEmail(userUpdateRequest.getEmail());
+        user.setPassword(userUpdateRequest.getPassword());
 
-        if (userUpdateRequest.getStatus() == null) {
-            userBuilder.status(existingUser.getStatus());
-        } else userBuilder.status(StatusUserEnum.valueOf(userUpdateRequest.getStatus()));
+        String role = userUpdateRequest.getRole();
+        if(!EnumUtils.isExistInEnum(RoleEnum.class, role)) throw new NotFoundException("Role");
+        user.setRole(EnumUtils.getEnumFromValue(RoleEnum.class, role));
 
-        if (userUpdateRequest.getPosition() == null) {
-            userBuilder.position(existingUser.getPosition());
-        } else userBuilder.position(PositionEnum.valueOf(userUpdateRequest.getPosition()));
-
-
-        userBuilder
-                .id(existingUser.getId())
-                .fullname(userUpdateRequest.getFullname())
-                .dateOfBirth(userUpdateRequest.getDateOfBirth())
-                .phone(userUpdateRequest.getPhone())
-                .emergencyPhone(userUpdateRequest.getEmergencyPhone())
-                .avatar(FileUtils.formatNameImage(userUpdateRequest.getAvatar()))
-                .atm(userUpdateRequest.getAtm())
-                .email(userUpdateRequest.getEmail())
-                .password(userUpdateRequest.getPassword())
-                .resume(FileUtils.formatNameImage(userUpdateRequest.getResume()))
-                .address(userUpdateRequest.getAddress())
-                .isFirstUpdateProfile(true)
-                .timesheetsCode(userUpdateRequest.getTimesheetsCode());
-
-        return userBuilder.build();
+        String position = userUpdateRequest.getPosition();
+        if(!EnumUtils.isExistInEnum(PositionEnum.class, position)) throw new NotFoundException("Position");
+        user.setPosition(EnumUtils.getEnumFromValue(PositionEnum.class, userUpdateRequest.getPosition()));
+        return user;
     }
 
-    public UserUpdateProfileRequest userUpdateProfileRequestToUserDetail(UserUpdateRequest userUpdateRequest) {
-        return UserUpdateProfileRequest.builder()
+    public User toUpdateBasic(UserUpdateRequest userUpdateRequest, String newAvatarFileName, String newResumeFileName) {
+        return User.builder()
                 .id(userUpdateRequest.getId())
                 .fullname(userUpdateRequest.getFullname())
                 .address(userUpdateRequest.getAddress())
                 .dateOfBirth(userUpdateRequest.getDateOfBirth())
                 .phone(userUpdateRequest.getPhone())
                 .emergencyPhone(userUpdateRequest.getEmergencyPhone())
-                .avatar(userUpdateRequest.getAvatar())
-                .resume(userUpdateRequest.getResume())
+                .avatar(newAvatarFileName)
+                .resume(newResumeFileName)
                 .timesheetsCode(userUpdateRequest.getTimesheetsCode())
+                .atm(userUpdateRequest.getAtm())
                 .build();
     }
 

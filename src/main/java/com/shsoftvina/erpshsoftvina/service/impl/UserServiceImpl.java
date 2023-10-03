@@ -116,14 +116,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUserDetail(UserUpdateRequest userUpdateRequest) {
 
-        if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
-            UserUpdateProfileRequest userUpdateProfileRequest = userConverter.userUpdateProfileRequestToUserDetail(userUpdateRequest);
-            return updateUserBasicProfile(userUpdateProfileRequest);
-        }
-
         String id = userUpdateRequest.getId();
-        User existingUser = userMapper.findById(id);
-        if (existingUser == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+        User user = userMapper.findById(id);
+        if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile avatarFile = userUpdateRequest.getAvatar();
         MultipartFile resumeFile = userUpdateRequest.getResume();
@@ -142,57 +137,38 @@ public class UserServiceImpl implements UserService {
         }
 
         String uploadDir = UserConstant.UPLOAD_FILE_DIR;
+        List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request,
+                uploadDir, avatarFile, resumeFile);
 
-        if (avatarFile != null || resumeFile != null) {
-            List<String> newFileName = FileUtils.saveMultipleFilesToServer(request,
-                    uploadDir, avatarFile, resumeFile);
-            if (newFileName == null) return 0;
+        if (newFileNameList != null) {
+            String avatarNameOld = user.getAvatar();
+            String resumeNameOld = user.getResume();
+
+            User userUpdate = null;
+            if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                if(newFileNameList.size() == 1){
+                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
+                } else if(newFileNameList.size() == 2){
+                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+                }
+            } else{
+                if(newFileNameList.size() == 1){
+                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
+                } else if(newFileNameList.size() == 2){
+                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+                } else{ // = 0, no avatar or resume
+                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
+                }
+            }
+
+            try{
+                userMapper.updateUserDetail(userUpdate);
+                FileUtils.deleteMultipleFilesToServer(request, uploadDir, avatarNameOld.concat(",").concat(resumeNameOld));
+                return 1;
+            } catch (Exception e){
+                return 0;
+            }
         }
-        User user = userConverter.userUpdateRequestToEntity(userUpdateRequest, existingUser);
-
-        return userMapper.updateUserDetail(user);
+        return 0;
     }
-
-    public int updateUserBasicProfile(UserUpdateProfileRequest userUpdateProfileRequest) {
-
-        String id = userUpdateProfileRequest.getId();
-        User user = userMapper.findById(id);
-        if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
-
-        MultipartFile avatarFile = userUpdateProfileRequest.getAvatar();
-        MultipartFile resumeFile = userUpdateProfileRequest.getResume();
-
-
-        if (avatarFile != null) {
-            if (!FileUtils.isAllowedFileType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
-            if (!FileUtils.isAllowedFileSize(avatarFile))
-                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-        }
-        if (resumeFile != null) {
-            if (!FileUtils.isAllowedFileType(resumeFile, ApplicationConstant.LIST_TYPE_FILE))
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            if (!FileUtils.isAllowedFileSize(resumeFile))
-                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-        }
-
-        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-        String avatarFileName = null;
-        String resumeFileName = null;
-
-        if (avatarFile != null || resumeFile != null) {
-            List<String> newFileName = FileUtils.saveMultipleFilesToServer(request,
-                    uploadDir, avatarFile, resumeFile);
-            if (newFileName == null) return 0;
-            if (newFileName.size() == 2) {
-                avatarFileName = newFileName.get(0);
-                resumeFileName = newFileName.get(1);
-            } else if (avatarFile != null) avatarFileName = newFileName.get(0);
-            else if (resumeFile != null) resumeFileName = newFileName.get(0);
-        }
-        user = userConverter.toEntity(userUpdateProfileRequest, avatarFileName, resumeFileName);
-        return userMapper.updateUserProfile(user);
-
-    }
-
 }
