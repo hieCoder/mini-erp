@@ -21,7 +21,7 @@ public class UserApi {
 
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateUserForAdmin(@Valid UserUpdateRequest userUpdateRequest,@PathVariable("id") String id) {
-        return ResponseEntity.ok(userService.updateUserForAdmin(userUpdateRequest, id));
+        return ResponseEntity.ok(userService.updateUserDetail(userUpdateRequest, id));
     }
 
     @GetMapping

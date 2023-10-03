@@ -18,11 +18,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class UserUpdateRequest {
+
     private String id;
 
     private String fullname;
-
-    private String address;
 
     private Date dateOfBirth;
 
@@ -35,11 +34,6 @@ public class UserUpdateRequest {
     private String type;
 
     private String department;
-    private Date workingDay;
-    private MultipartFile[] contract;
-    private String basicSalary;
-    private String allowance;
-    private String insurance;
     private String atm;
 
     private String email;
@@ -58,6 +52,11 @@ public class UserUpdateRequest {
     private String position;
 
     private MultipartFile resume;
+
+    private String address;
+
+    private boolean isFirstUpdateProfile;
+
     private String timesheetsCode;
-    private boolean firstUpdateProfile;
+
 }

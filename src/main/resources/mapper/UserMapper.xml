@@ -6,8 +6,7 @@
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM user
-        where email = #{email}
-          AND status = #{status}
+        where email = #{email} AND status = #{status}
     </select>
 
     <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
@@ -19,55 +18,40 @@
     <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         INSERT
         INTO user (fullname, email, id, password, status)
-        VALUES (#{fullname}, #{email}, #{id}, #{password}, #{status});
+        VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
     </insert>
 
-    <update id="updateUserForAdmin" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+    <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
-        SET fullname        = #{fullname},
-            address         = #{address},
-            date_of_birth   = #{dateOfBirth},
-            phone           = #{phone},
+        SET
+            fullname = #{fullname},
+            address = #{address},
+            date_of_birth = #{dateOfBirth},
+            phone = #{phone},
             emergency_phone = #{emergencyPhone},
-            avatar          = #{avatar},
-            type            = #{type},
-            department      = #{department},
-            working_date     = #{workingDay},
-            contract        = #{contract},
-            basic_salary    = #{basicSalary},
-            allowance       = #{allowance},
-            insurance       = #{insurance},
-            atm             = #{atm},
-            email           = #{email},
-            password        = #{password},
-            role            = #{role},
-            status          = #{status},
-            position        = #{position},
-            resume          = #{resume},
-            is_first_update_profile   = #{isFirstUpdateProfile},
-            timesheetsCode  = #{timesheetsCode}
+            avatar = #{avatar},
+            type = #{type},
+            department = #{department},
+            working_day = #{workingDay},
+            contract = #{contract},
+            basic_salary = #{basicSalary},
+            allowance = #{allowance},
+            insurance = #{insurance},
+            atm = #{atm},
+            email = #{email},
+            password = #{password},
+            role = #{role},
+            status = #{status},
+            position = #{position},
+            resume = #{resume},
+            timesheetsCode = #{timesheetsCode}
         WHERE id = #{id};
 
     </update>
 
-    <insert id="createUserForAdmin" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT INTO user (id,
-                          email,
-                          password,
-                          role,
-                          status,
-                          is_first_update_profile)
-        VALUES (#{id},
-                #{email},
-                #{password},
-                #{role},
-                #{status},
-                #{isFirstUpdateProfile})
-    </insert>
-
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
          <![CDATA[
-        SELECT u.fullname, u.id, u.email, u.department, u.position
+        SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM user AS u
         WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
@@ -77,42 +61,37 @@
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT *
-        FROM user
-        WHERE id = #{id}
+        SELECT u.*, c.id AS contract_id, c.*, i.id AS insurance_id, i.*
+        FROM user u
+                 LEFT JOIN contract c ON u.id = c.user_id LEFT JOIN insurance i ON i.id = c.insurance_id
+        WHERE u.id = #{id}
     </select>
 
-    <update id="changeStatusUser" parameterType="String">
-        UPDATE user
-        SET status = #{status}
-        WHERE id = #{id}
+    <update id="changeStatusUser" parameterType="String" >
+        UPDATE user SET status = #{status} WHERE id = #{id}
     </update>
 
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user
-        SET role                    = #{role},
-            status                  = #{status},
-            is_first_update_profile = #{isFirstUpdateProfile}
-        where id = #{id}
+        UPDATE user SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
-        DELETE
-        from user
-        where id = #{id}
+        DELETE from user where id = #{id}
     </delete>
 
     <update id="updateUserProfile" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
-        SET fullname        = #{fullname},
-            date_of_birth   = #{dateOfBirth},
-            phone           = #{phone},
+        SET
+            fullname = #{fullname},
+            date_of_birth = #{dateOfBirth},
+            phone = #{phone},
             emergency_phone = #{emergencyPhone},
-            avatar          = #{avatar},
-            address         = #{address},
-            resume          = #{resume}
+            avatar = #{avatar},
+            address = #{address},
+            resume = #{resume},
+            avatar = #{avatar},
+            timesheets_code = #{timesheetsCode}
         WHERE id = #{id};
-
     </update>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
@@ -125,11 +104,6 @@
         <result property="avatar" column="avatar"/>
         <result property="type" column="type"/>
         <result property="department" column="department"/>
-        <result property="workingDay" column="working_date"/>
-        <result property="contract" column="contract"/>
-        <result property="basicSalary" column="basic_salary"/>
-        <result property="allowance" column="allowance"/>
-        <result property="insurance" column="insurance"/>
         <result property="atm" column="atm"/>
         <result property="email" column="email"/>
         <result property="password" column="password"/>
@@ -139,6 +113,23 @@
         <result property="resume" column="resume"/>
         <result property="isFirstUpdateProfile" column="is_first_update_profile"/>
         <result property="timesheetsCode" column="timesheets_code"/>
+        <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
+    </resultMap>
+
+    <resultMap id="listContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract" >
+        <id property="id" column="contract_id"/>
+        <result property="basicSalary" column="basic_salary"/>
+        <result property="allowance" column="allowance"/>
+        <result property="contract" column="contract"/>
+        <result property="createdDate" column="created_date"/>
+        <association property="insurance" column="insurance_id" javaType="com.shsoftvina.erpshsoftvina.entity.Insurance" resultMap="insuranceResultMap">
+        </association>
+    </resultMap>
+
+    <resultMap id="insuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Insurance" >
+        <id property="id" column="insurance_id"/>
+        <result property="insuranceType" column="insurance_type"/>
+        <result property="money" column="money"/>
     </resultMap>
 
 </mapper>

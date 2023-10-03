@@ -14,7 +14,7 @@ public interface UserMapper {
     User findByEmail(@Param("email") String email);
     int registerUser(User user);
     int updateUserProfile(User user);
-    int updateUserForAdmin(User user);
+    int updateUserDetail(User user);
     int createUserForAdmin(User user);
     int createUser(User user);
     List<User> getAllUser(@Param("searchTerm") String id,

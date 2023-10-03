@@ -20,21 +20,15 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-
+    private String address;
     private String id;
     private String fullname;
-    private String address;
     private Date dateOfBirth;
     private String phone;
     private String emergencyPhone;
     private String avatar;
     private TypeUserEnum type;
     private DepartmentEnum department;
-    private String workingDay;
-    private String contract;
-    private String basicSalary;
-    private String allowance;
-    private String insurance;
     private String atm;
     private String email; // user_id
     private String password;
@@ -44,6 +38,7 @@ public class User implements UserDetails {
     private String resume;
     private boolean isFirstUpdateProfile;
     private String timesheetsCode;
+    private List<Contract> contracts;
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override
