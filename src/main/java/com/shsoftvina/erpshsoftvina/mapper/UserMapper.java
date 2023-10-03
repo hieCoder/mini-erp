@@ -15,8 +15,6 @@ public interface UserMapper {
     int registerUser(User user);
     int updateUserProfile(User user);
     int updateUserDetail(User user);
-    int createUserForAdmin(User user);
-    int createUser(User user);
     List<User> getAllUser(@Param("searchTerm") String id,
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,

@@ -1,6 +1,8 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.model.request.user.*;
+
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
 
@@ -22,11 +24,5 @@ public interface UserService {
 
     UserDetailResponse findByEmail(String email);
 
-    int updateUserDetail(UserUpdateRequest userUpdateRequest, String id);
-
-    int createUser(UserCreateRequest userCreateRequest);
-
-    int createUserForAdmin(UserCreateAdminRequest userCreateAdminRequest);
-
-    int updateUserBasicProfile(UserUpdateProfileRequest user);
+    int updateUserDetail(UserUpdateRequest userUpdateRequest);
 }

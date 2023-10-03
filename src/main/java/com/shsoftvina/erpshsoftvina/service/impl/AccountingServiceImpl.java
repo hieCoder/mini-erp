@@ -52,7 +52,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         Long latestRemain = accountingMapper.getLatestRemain(monthId);
         totals.setTotalRemain(latestRemain);
-        int offset = page * size;
+        int offset = (page ) * size;
         RowBounds rowBounds = new RowBounds(offset, size);
         LocalDateTime endDateWithTime = null;
         if (endTime != null) {
@@ -60,8 +60,8 @@ public class AccountingServiceImpl implements AccountingService {
         }
         List<Accounting> accountingList = accountingMapper.findAccountingByMonth(monthId, rowBounds, startTime, endDateWithTime);
         List<AccountResponse> accountResponses = accountingConverter.convertToListResponse(accountingList);
-        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(monthId);
-        long totalPage = (totalRecordCount + size - 1) / size;
+        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(monthId,startTime, endDateWithTime);
+        long totalPage = (long) Math.ceil((double) totalRecordCount /size);
         boolean hasNext = page < (totalPage - 1);
         boolean hasPrevious = page > 0;
         return new PageAccountListResponse(accountResponses, page, totalPage, hasNext, hasPrevious, totals);
@@ -132,10 +132,29 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int deleteAccounting(String id) {
-        Accounting deleteAccounting = accountingMapper.findAccountingById(id);
-        accountingMapper.deleteAccounting(id);
-
-        return 0;
+        try {
+            Accounting deleteAccounting = accountingMapper.findAccountingById(id);
+            accountingMapper.deleteAccounting(id);
+            Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(deleteAccounting);
+            List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(deleteAccounting);
+            Long beforeRemain = 0L;
+            if (beforeCurrentAccounting != null) {
+                beforeRemain = beforeCurrentAccounting.getRemain();
+            }
+            if (remainRecordInMonthList.isEmpty()) {
+                return 1;
+            } else {
+                for (Accounting accounting : remainRecordInMonthList) {
+                    beforeRemain += accounting.getExpense();
+                    accounting.setRemain(beforeRemain);
+                }
+                accountingMapper.updateRecordsBatch(remainRecordInMonthList);
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

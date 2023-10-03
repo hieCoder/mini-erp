@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-    private String address;
+
     private String id;
     private String fullname;
     private Date dateOfBirth;
@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private StatusUserEnum status;
     private PositionEnum position;
     private String resume;
+    private String address;
     private boolean isFirstUpdateProfile;
     private String timesheetsCode;
     private List<Contract> contracts;
@@ -77,4 +78,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

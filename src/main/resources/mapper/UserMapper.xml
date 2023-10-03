@@ -21,22 +21,16 @@
         VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
     </insert>
 
-    <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+    <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
         SET
             fullname = #{fullname},
-            address = #{address},
             date_of_birth = #{dateOfBirth},
             phone = #{phone},
             emergency_phone = #{emergencyPhone},
             avatar = #{avatar},
             type = #{type},
             department = #{department},
-            working_day = #{workingDay},
-            contract = #{contract},
-            basic_salary = #{basicSalary},
-            allowance = #{allowance},
-            insurance = #{insurance},
             atm = #{atm},
             email = #{email},
             password = #{password},
@@ -44,9 +38,10 @@
             status = #{status},
             position = #{position},
             resume = #{resume},
-            timesheetsCode = #{timesheetsCode}
-        WHERE id = #{id};
-
+            address = #{address},
+            is_first_update_profile = #{isFirstUpdateProfile},
+            timesheets_code = #{timesheetsCode}
+        WHERE id = #{id}
     </update>
 
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
@@ -63,7 +58,7 @@
     <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT u.*, c.id AS contract_id, c.*, i.id AS insurance_id, i.*
         FROM user u
-                 LEFT JOIN contract c ON u.id = c.user_id LEFT JOIN insurance i ON i.id = c.insurance_id
+        LEFT JOIN contract c ON u.id = c.user_id LEFT JOIN insurance i ON i.id = c.insurance_id
         WHERE u.id = #{id}
     </select>
 
@@ -90,6 +85,7 @@
             address = #{address},
             resume = #{resume},
             avatar = #{avatar},
+            is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
         WHERE id = #{id};
     </update>

@@ -14,5 +14,5 @@ public class NotificationResponse {
     private String title;
     private String content;
     private String[] file;
-    private String createDate;
+    private String createdDate;
 }
