@@ -2,17 +2,19 @@ package com.shsoftvina.erpshsoftvina.model.response.task;
 
 import com.shsoftvina.erpshsoftvina.model.dto.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
+import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class TaskResponse {
+import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class TaskDetailResponse {
     private String id;
     private ActionChangeStatusTaskEnumDto statusTask;
     private String title;
@@ -23,4 +25,5 @@ public class TaskResponse {
     private String dueOrCloseDate;
     private Integer progress;
     private EnumDto priority;
+    //private List<CommentNotificationResponse> comments;
 }

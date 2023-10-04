@@ -42,4 +42,69 @@
         VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{closeDate}, #{priority}, #{progress}, #{status});
     </insert>
 
+    <select id="getStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
+        SELECT status_task, COUNT(*) as taskCount
+        FROM task
+        GROUP BY status_task
+    </select>
+
+    <resultMap id="statusTaskCountResultMap" type="java.util.Map">
+        <result property="statusTask" column="status_task"/>
+        <result property="taskCount" column="taskCount"/>
+    </resultMap>
+
+
+
+
+
+
+
+<!--    <select id="findById" resultMap="taskResultMap">-->
+<!--        SELECT t.*, u.fullname-->
+<!--        FROM task t INNER JOIN user u -->
+<!--        ON t.user_id = u.id-->
+<!--        WHERE n.id = #{id}-->
+<!--    </select>-->
+
+<!--    <resultMap id="notificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">-->
+<!--        <id property="id" column="notification_id" />-->
+<!--        <result property="title" column="notification_title" />-->
+<!--        <result property="content" column="notification_content" />-->
+<!--        <result property="files" column="notification_file" />-->
+<!--        <result property="createdDate" column="notification_created_date" />-->
+<!--        <collection property="comments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" resultMap="commentResultMap" />-->
+<!--    </resultMap>-->
+
+<!--    <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentNotification">-->
+<!--        <id property="id" column="comment_id" />-->
+<!--        <result property="content" column="comment_content" />-->
+<!--        <result property="createdDate" column="comment_created_date" />-->
+<!--        <result property="modifiedDate" column="comment_modified_date" />-->
+<!--        <result property="modifiedBy" column="comment_modified_by" />-->
+<!--        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>-->
+
+<!--        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="getChildComments" />-->
+<!--    </resultMap>-->
+
+<!--    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">-->
+<!--        <id property="id" column="comment_user_id" />-->
+<!--        <result property="fullname" column="user_fullname" />-->
+<!--        <result property="avatar" column="user_avatar" />-->
+<!--    </resultMap>-->
+
+<!--    <select id="getChildComments" resultMap="commentResultMap">-->
+<!--        SELECT c.id AS comment_id,-->
+<!--               c.user_id AS comment_user_id,-->
+<!--               c.content AS comment_content,-->
+<!--               c.created_date AS comment_created_date,-->
+<!--               c.parent_id AS comment_parent_id,-->
+<!--               c.created_date AS comment_created_date,-->
+<!--               c.modified_date AS comment_modified_date,-->
+<!--               c.modified_by AS comment_modified_by,-->
+<!--               u.fullname AS user_fullname,-->
+<!--               u.avatar AS user_avatar-->
+<!--        FROM comment_notification c-->
+<!--                 INNER JOIN user u ON c.user_id = u.id-->
+<!--        WHERE c.parent_id = #{id}-->
+<!--    </select>-->
 </mapper>
