@@ -7,6 +7,8 @@ import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -181,5 +183,16 @@ public class FileUtils {
         long maxRequestSizeInBytes = parseFileSize(ApplicationConstant.MAX_REQUEST_SIZE);
 
         return fileSizeInBytes <= maxFileSizeInBytes && fileSizeInBytes <= maxRequestSizeInBytes;
+    }
+
+    public static void validateFiles(MultipartFile[] files) {
+        for (MultipartFile file : files) {
+            if (!isAllowedFileType(file, ApplicationConstant.LIST_TYPE_FILE)) {
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
+            }
+            if (!isAllowedFileSize(file)) {
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+            }
+        }
     }
 }

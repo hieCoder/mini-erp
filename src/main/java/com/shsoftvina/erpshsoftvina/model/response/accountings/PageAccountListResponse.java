@@ -15,6 +15,7 @@ public class PageAccountListResponse {
     List<AccountResponse> accountResponseList;
     long pageNumber;
     long totalPages;
+    long pageSize;
     Boolean hasNext;
     Boolean hasPrevious;
     TotalSpendAndRemain totalList;
