@@ -1,32 +1,38 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentRequest;
-import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentRequest;
+import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.service.CommentNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/api/v1/comment")
+@RequestMapping("/api/v1/comment-notification")
 public class CommentNotificationApi {
+
     @Autowired
     CommentNotificationService commentNotificationService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getComment(@PathVariable("id") String id){
+        return ResponseEntity.ok(commentNotificationService.findById(id));
+    }
+
     @PostMapping
-    public ResponseEntity<?> commentNotification(@RequestBody CreateCommentRequest createCommentRequest){
-        return new ResponseEntity<>(commentNotificationService.createCommentNotification(createCommentRequest), HttpStatus.OK);
+    public ResponseEntity<?> commentNotification(@Valid @RequestBody CreateCommentNotificationRequest createCommentNotificationRequest){
+        return ResponseEntity.ok(commentNotificationService.createCommentNotification(createCommentNotificationRequest));
     }
 
     @PutMapping
-    public ResponseEntity<?> updateComment(@RequestBody UpdateCommentRequest updateCommentRequest){
-        return new ResponseEntity<>(commentNotificationService.updateCommentNotification(updateCommentRequest), HttpStatus.OK);
+    public ResponseEntity<?> updateComment(@Valid @RequestBody UpdateCommentNotificationRequest updateCommentNotificationRequest){
+        return ResponseEntity.ok(commentNotificationService.updateCommentNotification(updateCommentNotificationRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") String id){
-        return new ResponseEntity<>(commentNotificationService.deleteCommentNotification(id), HttpStatus.OK);
+        return ResponseEntity.ok(commentNotificationService.deleteCommentNotification(id));
     }
-
 }

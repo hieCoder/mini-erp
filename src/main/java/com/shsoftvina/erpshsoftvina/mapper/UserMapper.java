@@ -14,8 +14,7 @@ public interface UserMapper {
     User findByEmail(@Param("email") String email);
     int registerUser(User user);
     int updateUserProfile(User user);
-    int updateUser(User user);
-    int createUser(User user);
+    int updateUserDetail(User user);
     List<User> getAllUser(@Param("searchTerm") String id,
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,

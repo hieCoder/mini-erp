@@ -20,5 +20,5 @@ public class CreateNotificationRequest {
     @NotBlank(message = "Field content is not filled")
     private String content;
 
-    private MultipartFile[] file;
+    private MultipartFile[] files;
 }

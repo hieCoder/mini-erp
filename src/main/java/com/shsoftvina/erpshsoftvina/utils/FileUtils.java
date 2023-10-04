@@ -2,8 +2,10 @@ package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
+import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
+import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileUtils {
 
@@ -54,6 +57,8 @@ public class FileUtils {
 
     public static List saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
 
+        if(files == null) return null;
+
         List<String> listFileName = new ArrayList<>();
 
         boolean isSuccess = true;
@@ -77,7 +82,6 @@ public class FileUtils {
             return null;
         }
 
-        if(listFileName.isEmpty()) return null;
         return listFileName;
     }
 
@@ -123,6 +127,27 @@ public class FileUtils {
             else if (c == Accounting.class) {
                 return AccountingConstant.PATH_FILE + fileName;
             }
+            else if (c == Notification.class) {
+                return NotificationConstant.PATH_FILE + fileName;
+            }
+        }
+        return null;
+    }
+
+    public static String[] getPathUploadList(Class<?> c, String fileNames) {
+        if(fileNames != null){
+            String[] rs = fileNames.split(",");
+            return Stream.of(rs).map(fileName -> {
+                if (c == User.class) {
+                    return UserConstant.PATH_FILE + fileName;
+                }
+                else if (c == Accounting.class) {
+                    return AccountingConstant.PATH_FILE + fileName;
+                }
+                else if (c == Notification.class) {
+                    return NotificationConstant.PATH_FILE + fileName;
+                } else return null;
+            }).toArray(String[]::new);
         }
         return null;
     }
@@ -138,6 +163,11 @@ public class FileUtils {
             }
         }
         return false;
+    }
+
+    public static boolean isAllowedFileType(MultipartFile[] files, String listType) {
+        return Arrays.stream(files)
+                .allMatch(file -> isAllowedFileType(file, listType));
     }
 
     public static long parseFileSize(String size) {

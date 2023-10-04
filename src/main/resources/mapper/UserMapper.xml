@@ -21,32 +21,25 @@
         VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
     </insert>
 
-    <update id="updateUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+    <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
         SET
             fullname = #{fullname},
-            address = #{address},
             date_of_birth = #{dateOfBirth},
             phone = #{phone},
             emergency_phone = #{emergencyPhone},
             avatar = #{avatar},
             type = #{type},
             department = #{department},
-            working_day = #{workingDay},
-            contract = #{contract},
-            basic_salary = #{basicSalary},
-            allowance = #{allowance},
-            insurance = #{insurance},
             atm = #{atm},
             email = #{email},
             password = #{password},
             role = #{role},
-            status = #{status},
             position = #{position},
             resume = #{resume},
-            timesheetsCode = #{timesheetsCode}
-        WHERE id = #{id};
-
+            address = #{address},
+            timesheets_code = #{timesheetsCode}
+        WHERE id = #{id}
     </update>
 
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
@@ -54,7 +47,7 @@
         SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM user AS u
         WHERE u.status = #{status}
-        AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+          AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
         LIMIT #{start}, #{pageSize};
         ]]>
@@ -76,7 +69,7 @@
     </update>
 
     <delete id="deleteUser" parameterType="String">
-       DELETE from user where id = #{id}
+        DELETE from user where id = #{id}
     </delete>
 
     <update id="updateUserProfile" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
@@ -90,6 +83,7 @@
             address = #{address},
             resume = #{resume},
             avatar = #{avatar},
+            is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
         WHERE id = #{id};
     </update>
