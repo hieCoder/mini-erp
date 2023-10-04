@@ -11,6 +11,22 @@
         LIMIT #{start}, #{pageSize}
     </select>
 
+    <select id="totalWorkDateByYear" parameterType="String" resultType="java.util.Map">
+        SELECT YEAR(work_date) AS year, COUNT(*) AS workdays
+        FROM timesheets
+        WHERE user_id = #{userID}
+        GROUP BY year
+        ORDER BY year ASC;
+    </select>
+
+    <select id="getMonthWork" parameterType="String" resultType="java.util.Map">
+        SELECT MONTH(work_date) AS month, COUNT(*) AS workdays
+        FROM timesheets
+        WHERE user_id = #{userID} AND YEAR(work_date) = #{year}
+        GROUP BY month
+        ORDER BY month ASC;
+    </select>
+
     <resultMap id="timesheetsResultMap" type="com.shsoftvina.erpshsoftvina.entity.Timesheets">
         <id property="id" column="id"/>
         <result property="checkin" column="checkin"/>

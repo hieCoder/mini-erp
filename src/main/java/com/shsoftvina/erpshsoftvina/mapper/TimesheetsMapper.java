@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TimesheetsMapper {
@@ -13,4 +14,6 @@ public interface TimesheetsMapper {
     List<Timesheets> findAll(@Param("start") int start,
                              @Param("pageSize") int pageSize
     );
+    List<Map<String, ?>> totalWorkDateByYear(@Param("userID") String userID);
+    List<Map<String, ?>> getMonthWork(@Param("userID") String userID, @Param("year") String year);
 }
