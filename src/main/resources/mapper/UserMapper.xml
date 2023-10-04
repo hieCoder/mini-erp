@@ -15,12 +15,6 @@
         where email = #{email}
     </select>
 
-    <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT
-        INTO user (fullname, email, id, password, status)
-        VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
-    </insert>
-
     <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
         SET

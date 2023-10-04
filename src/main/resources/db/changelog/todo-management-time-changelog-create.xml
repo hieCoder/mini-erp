@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <!-- create table category-management-time -->
+    <!-- create table todo-management-time -->
     <changeSet id="1" author="team2">
         <createTable tableName="todo-management-time">
             <column name="id" type="VARCHAR(255)">
@@ -21,6 +21,14 @@
         <addColumn tableName="todo-management-time">
             <column name="management-time_id" type="VARCHAR(255)"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <renameColumn tableName="todo-management-time" oldColumnName="performence" newColumnName="performance" columnDataType="BIT"/>
+    </changeSet>
+
+    <changeSet id="4" author="team2">
+        <renameTable oldTableName="todo-management-time" newTableName="todo_management_time"/>
     </changeSet>
 </databaseChangeLog>
 

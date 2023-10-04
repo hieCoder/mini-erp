@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public class TimesheetsServiceImpl implements TimesheetsService {
 
     @Autowired
-    TimesheetsMapper findAll;
+    TimesheetsMapper timesheetsMapper;
 
     @Autowired
     TimesheetsConverter timesheetsConverter;
 
     @Override
     public List<TimesheetsResponse> findAll(int start, int pageSize) {
-        return findAll.findAll(start, pageSize).stream().map(timesheets -> timesheetsConverter.toResponse(timesheets)).collect(Collectors.toList());
+        return timesheetsMapper.findAll(start, pageSize).stream().map(timesheets -> timesheetsConverter.toResponse(timesheets)).collect(Collectors.toList());
     }
 }

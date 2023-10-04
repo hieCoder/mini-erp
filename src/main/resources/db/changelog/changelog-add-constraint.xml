@@ -104,4 +104,13 @@
                                  referencedColumnNames="id"
                                  constraintName="fk_todo_management_time_management_time"/>
     </changeSet>
+
+    <!-- add column user_id into table task and create foreign key constraint -->
+    <changeSet id="12" author="team2">
+        <addForeignKeyConstraint baseTableName="task"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_task_user"/>
+    </changeSet>
 </databaseChangeLog>
