@@ -5,18 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommentResponse {
+public class CommentNotificationResponse {
     private String id;
     private String content;
-    private Date createdDate;
-    private UserCommentResponse user;
-    private String parentId;
-    private List<CommentResponse> childComments;
+    private String createdDate;
+    private String modifiedBy;
+    private String modifiedDate;
+    private String fullnameUser;
+    private String avatarUser;
+    private List<CommentNotificationResponse> childComments;
 }

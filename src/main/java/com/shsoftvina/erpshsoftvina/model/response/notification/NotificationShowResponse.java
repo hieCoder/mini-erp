@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NotificationResponse {
+public class NotificationShowResponse {
     private String id;
-    private String title;
     private String content;
-    private String[] file;
+    private String title;
+    private String[] files;
     private String createdDate;
 }

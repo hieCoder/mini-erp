@@ -7,14 +7,16 @@ import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.*;
+import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.ShowUserRespone;
+import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -42,7 +45,7 @@ public class UserServiceImpl implements UserService {
     private HttpServletRequest request;
 
     @Override
-    public List<ShowUserRespone> getAllUser(String searchTerm,
+    public List<UserShowRespone> getAllUser(String searchTerm,
                                             String sortDirection,
                                             int start,
                                             int pageSize,
@@ -53,7 +56,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailResponse findUserDetail(String id) {
-        return userConverter.toUserDetailResponse(userMapper.findById(id));
+        User s = null;
+        try {
+            s = userMapper.findById(id);
+        } catch (Exception e) {
+
+        }
+        return userConverter.toUserDetailResponse(s);
     }
 
     @Override
@@ -64,22 +73,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean activeUserRegisterRequest(UserActiveRequest userActiveRequest) {
 
-        if(!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
+        if (!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
             throw new NotFoundException(MessageErrorUtils.notFound("Role"));
-        if(!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus()))
+        if (!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus()))
             throw new NotFoundException(MessageErrorUtils.notFound("Status"));
 
         if (userActiveRequest.getStatus().equals(StatusUserEnum.REJECT)) {
-            try{
+            try {
                 userMapper.deleteUser(userActiveRequest.getId());
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
         } else {
             User user = userConverter.toEntity(userActiveRequest);
 
-            try{
+            try {
                 userMapper.activeUserRegister(user);
 
                 DataMailDto dataMailDto = new DataMailDto();
@@ -87,103 +96,80 @@ public class UserServiceImpl implements UserService {
                 dataMailDto.setSubject(MailConstant.REGISTER_SUBJECT);
                 dataMailDto.setContent(MailConstant.REGISTER_CONTENT);
                 return sendMailUtils.sendEmail(dataMailDto);
-            } catch (Exception e){ }
+            } catch (Exception e) {
+            }
             return false;
         }
     }
 
     @Override
-    public UserDetailResponse findByEmail(String email){
+    public UserDetailResponse findByEmail(String email) {
         User user = userMapper.findByEmail(email);
-        if(user == null) return null;
+        if (user == null) return null;
         return userConverter.toUserDetailResponse(user);
     }
 
+
     @Override
-    public int updateUser(UserUpdateRequest userUpdateRequest) {
-//
-//        if (userUpdateRequest.getContract().length > NotificationConstant.NUMBER_FILE_LIMIT) {
-//            throw new FileTooLimitedException("Max file is 3");
-//        }
-//        MultipartFile avatarFile = userUpdateRequest.getAvatar();
-//        MultipartFile[] contractFile = userUpdateRequest.getContract();
-//
-//        String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-//
-//        boolean isSaveAvatar = true;
-//        boolean isSaveContract = true;
-//
-//        String avatarDBValue = null;
-//        String contractDBValue = null;
-//
-//        if(avatarFile != null){
-//            avatarDBValue = FileUtils.formatNameImage(avatarFile);
-//            isSaveAvatar = FileUtils.saveImageToServer(request, uploadDir, avatarFile, avatarDBValue);
-//        }
-//        if(contractFile != null){
-//            contractDBValue = FileUtils.formatNameImage(contractFile);
-//            isSaveContract = FileUtils.saveImageToServer(request, uploadDir, contractFile, contractDBValue);
-//        }
-//
-//        if(isSaveAvatar && isSaveContract){
-//
-//            User currentUserInDB = userMapper.findUserDetail(userUpdateRequest.getId());
-//
-//            User user = userConverter.userUpdateRequestToEntity(userUpdateRequest);
-//            user.setAvatar(avatarDBValue);
-//            user.setContract(contractDBValue);
-//            int rs = userMapper.updateUser(user);
-//            if(rs == 0) {
-//                FileUtils.deleteImageFromServer(request, uploadDir, avatarDBValue);
-//                FileUtils.deleteImageFromServer(request, uploadDir, contractDBValue);
-//                return 0;
-//            }
-//
-//
-//            if(!StringUtils.isEmpty(currentUserInDB.getAvatar())){
-//                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getAvatar());
-//            }
-//            if(!StringUtils.isEmpty(currentUserInDB.getContract())){
-//                FileUtils.deleteImageFromServer(request, uploadDir, currentUserInDB.getContract());
-//            }
-//            return 1;
-//        } else{
-//            return 0;
-//        }
-        return 1;
-    }
+    public int updateUserDetail(UserUpdateRequest userUpdateRequest) {
 
-    public int updateUserBasicProfile(UserUpdateProfileRequest userUpdateProfileRequest) {
-
-        String id = userUpdateProfileRequest.getId();
+        String id = userUpdateRequest.getId();
         User user = userMapper.findById(id);
-        if(user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+        if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
-        MultipartFile avatarFile = userUpdateProfileRequest.getAvatar();
-        MultipartFile resumeFile = userUpdateProfileRequest.getResume();
+        MultipartFile avatarFile = userUpdateRequest.getAvatar();
+        MultipartFile resumeFile = userUpdateRequest.getResume();
 
-
-        if(avatarFile != null){
-            if(!FileUtils.isAllowedFileType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
+        if (avatarFile != null) {
+            if (!FileUtils.isAllowedFileType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
-            if(!FileUtils.isAllowedFileSize(avatarFile))
+            if (!FileUtils.isAllowedFileSize(avatarFile))
                 throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
         }
-        if(resumeFile != null){
-            if(!FileUtils.isAllowedFileType(resumeFile, ApplicationConstant.LIST_TYPE_FILE))
+        if (resumeFile != null) {
+            if (!FileUtils.isAllowedFileType(resumeFile, ApplicationConstant.LIST_TYPE_FILE))
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            if(!FileUtils.isAllowedFileSize(resumeFile))
+            if (!FileUtils.isAllowedFileSize(resumeFile))
                 throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
         }
 
         String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-        List<String> newFileName = FileUtils.saveMultipleFilesToServer(request,
+        List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request,
                 uploadDir, avatarFile, resumeFile);
 
-        if(newFileName != null){
-            user = userConverter.toEntity(userUpdateProfileRequest, newFileName.get(0), newFileName.get(1));
+        if (newFileNameList != null) {
+            String avatarNameOld = user.getAvatar();
+            String resumeNameOld = user.getResume();
+
+            User userUpdate = null;
+            if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                if(newFileNameList.size() == 1){
+                    if(avatarFile != null) userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
+                    else if(resumeFile != null) userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, newFileNameList.get(0));
+                } else if(newFileNameList.size() == 2){
+                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+                } else{ // = 0, no avatar and resume
+                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
+                }
+            } else{
+                if(newFileNameList.size() == 1){
+                    if(avatarFile != null) userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
+                    else if(resumeFile != null) userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, newFileNameList.get(0));
+                } else if(newFileNameList.size() == 2){
+                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+                } else{ // = 0, no avatar and resume
+                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
+                }
+            }
+
             try{
-                userMapper.updateUserProfile(user);
+                userMapper.updateUserDetail(userUpdate);
+                if(avatarNameOld != null){
+                    FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                }
+                if(resumeNameOld != null){
+                    FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
+                }
                 return 1;
             } catch (Exception e){
                 return 0;

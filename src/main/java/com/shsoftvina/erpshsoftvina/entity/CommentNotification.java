@@ -16,11 +16,14 @@ public class CommentNotification {
     private String id;
     private String content;
     private Date createdDate;
-    private Notification notification;
-    private User user;
     private Date modifiedDate;
+
+    private Notification notification;
+
+    private User user;
+    private CommentNotification parentComment;
+
     private String modifiedBy;
-    private String parentId;
     private List<CommentNotification> childComments;
 }
 

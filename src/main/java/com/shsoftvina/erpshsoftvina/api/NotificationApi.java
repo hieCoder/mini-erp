@@ -2,8 +2,6 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationCommentsListResponse;
-import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +23,7 @@ public class NotificationApi {
     public ResponseEntity<?> getAllNoti(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
-        List<NotificationResponse> notificationResponseList =
-                notificationService.getAllNoti((page - 1) * pageSize, pageSize);
-
-        return new ResponseEntity<>(notificationResponseList, HttpStatus.OK);
+        return ResponseEntity.ok(notificationService.getAllNoti((page - 1) * pageSize, pageSize));
     }
 
     //    Create New Notification

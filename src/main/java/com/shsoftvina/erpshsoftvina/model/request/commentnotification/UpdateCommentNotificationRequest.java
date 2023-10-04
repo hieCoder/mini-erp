@@ -1,19 +1,19 @@
 package com.shsoftvina.erpshsoftvina.model.request.commentnotification;
 
-import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateCommentRequest {
+public class UpdateCommentNotificationRequest {
+    @NotBlank(message = "Field content is not filled")
     private String content;
+    @NotBlank(message = "Field id is not filled")
     private String id;
 }
