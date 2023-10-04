@@ -20,6 +20,7 @@ import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.asm.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,6 +32,9 @@ public class UserConverter {
 
     @Autowired
     ContractConverter contractConverter;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public UserDetailResponse toUserDetailResponse(User user) {
 
@@ -98,7 +102,7 @@ public class UserConverter {
         user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, userUpdateRequest.getType()));
         user.setDepartment(EnumUtils.getEnumFromValue(DepartmentEnum.class, userUpdateRequest.getDepartment()));
         user.setEmail(userUpdateRequest.getEmail());
-        user.setPassword(userUpdateRequest.getPassword());
+        user.setPassword(userUpdateRequest.getPassword() != null? passwordEncoder.encode(userUpdateRequest.getPassword()): null);
         user.setRole(EnumUtils.getEnumFromValue(RoleEnum.class, userUpdateRequest.getRole()));
         user.setPosition(EnumUtils.getEnumFromValue(PositionEnum.class, userUpdateRequest.getPosition()));
         return user;
@@ -133,22 +137,6 @@ public class UserConverter {
         return UserAccountingResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
-                .build();
-    }
-
-    public User toEntity(UserUpdateProfileRequest userUpdateProfileRequest, String avatar, String resume) {
-        return User.builder()
-                .id(userUpdateProfileRequest.getId())
-                .fullname(userUpdateProfileRequest.getFullname())
-                .address(userUpdateProfileRequest.getAddress())
-                .phone(userUpdateProfileRequest.getPhone())
-                .emergencyPhone(userUpdateProfileRequest.getEmergencyPhone())
-                .dateOfBirth(userUpdateProfileRequest.getDateOfBirth())
-                .resume(resume)
-                .avatar(avatar)
-                .resume(resume)
-                .isFirstUpdateProfile(true)
-                .timesheetsCode(userUpdateProfileRequest.getTimesheetsCode())
                 .build();
     }
 }

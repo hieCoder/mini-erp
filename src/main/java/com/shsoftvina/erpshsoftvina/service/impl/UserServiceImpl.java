@@ -7,15 +7,12 @@ import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
-import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateProfileRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
 import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
@@ -147,7 +144,8 @@ public class UserServiceImpl implements UserService {
             User userUpdate = null;
             if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
                 if(newFileNameList.size() == 1){
-                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
+                    if(avatarFile != null) userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
+                    else if(resumeFile != null) userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, newFileNameList.get(0));
                 } else if(newFileNameList.size() == 2){
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
                 } else{ // = 0, no avatar and resume
@@ -155,7 +153,8 @@ public class UserServiceImpl implements UserService {
                 }
             } else{
                 if(newFileNameList.size() == 1){
-                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
+                    if(avatarFile != null) userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
+                    else if(resumeFile != null) userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, newFileNameList.get(0));
                 } else if(newFileNameList.size() == 2){
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
                 } else{ // = 0, no avatar and resume
