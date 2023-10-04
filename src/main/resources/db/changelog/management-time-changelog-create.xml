@@ -14,5 +14,9 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <renameTable oldTableName="management-time" newTableName="management_time"/>
+    </changeSet>
+
 </databaseChangeLog>
 
