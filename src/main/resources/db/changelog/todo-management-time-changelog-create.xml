@@ -30,5 +30,10 @@
     <changeSet id="4" author="team2">
         <renameTable oldTableName="todo-management-time" newTableName="todo_management_time"/>
     </changeSet>
+
+    <changeSet id="5" author="team2">
+        <renameColumn tableName="todo_management_time" oldColumnName="category-management-time_id" newColumnName="category_management_time_id" columnDataType="VARCHAR(255)"/>
+        <renameColumn tableName="todo_management_time" oldColumnName="management-time_id" newColumnName="management_time_id" columnDataType="VARCHAR(255)"/>
+    </changeSet>
 </databaseChangeLog>
 

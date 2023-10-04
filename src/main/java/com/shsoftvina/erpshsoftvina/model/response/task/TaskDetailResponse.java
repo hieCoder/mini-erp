@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.model.response.task;
 import com.shsoftvina.erpshsoftvina.model.dto.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
+import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +26,5 @@ public class TaskDetailResponse {
     private String dueOrCloseDate;
     private Integer progress;
     private EnumDto priority;
-    //private List<CommentNotificationResponse> comments;
+    private List<CommentTaskResponse> comments;
 }

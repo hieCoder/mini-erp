@@ -30,6 +30,9 @@ public class TaskConverter {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentTaskConverter commentTaskConverter;
+
     public TaskShowResponse toResponse(Task task){
 
         Date closeDate = task.getCloseDate();
@@ -105,6 +108,7 @@ public class TaskConverter {
                 .dueOrCloseDate(dueOrCloseDate)
                 .progress(task.getProgress())
                 .priority(EnumUtils.instance(task.getPriority()))
+                .comments(commentTaskConverter.toListResponse(task.getComments()))
                 .build();
     }
 }
