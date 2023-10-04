@@ -4,10 +4,26 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TimesheetsMapper">
 
     <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.Timesheets" resultMap="timesheetsResultMap">
-        SELECT t.*, u.fullname, u.username
+        SELECT t.*, u.fullname
         FROM timesheets t
         INNER JOIN user u ON t.user_id = u.id
         LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="totalWorkingDateByYear" parameterType="String" resultType="java.util.Map">
+        SELECT YEAR(work_date) AS year, COUNT(*) AS workdays
+        FROM timesheets
+        WHERE user_id = #{userID}
+        GROUP BY year
+        ORDER BY year ASC;
+    </select>
+
+    <select id="totalWorkingDateByMonth" parameterType="String" resultType="java.util.Map">
+        SELECT MONTH(work_date) AS month, COUNT(*) AS workdays
+        FROM timesheets
+        WHERE user_id = #{userID} AND YEAR(work_date) = #{year}
+        GROUP BY month
+        ORDER BY month ASC;
     </select>
 
     <resultMap id="timesheetsResultMap" type="com.shsoftvina.erpshsoftvina.entity.Timesheets">
@@ -23,7 +39,6 @@
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>
         <result property="fullname" column="fullname"/>
-        <result property="username" column="username"/>
     </resultMap>
 
 </mapper>
