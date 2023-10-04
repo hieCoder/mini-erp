@@ -15,6 +15,7 @@
     <include file="db/changelog/category-management-time-changelog-create.xml" />
     <include file="db/changelog/todo-management-time-changelog-create.xml" />
     <include file="db/changelog/task-changelog-create.xml" />
+    <include file="db/changelog/comment_task-changelog-create.xml" />
 
     <include file="db/changelog/changelog-add-constraint.xml" />
 </databaseChangeLog>

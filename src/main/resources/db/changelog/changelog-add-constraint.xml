@@ -113,4 +113,34 @@
                                  referencedColumnNames="id"
                                  constraintName="fk_task_user"/>
     </changeSet>
+
+    <!-- add column user_id into table comment_task and create foreign key constraint -->
+    <changeSet id="13" author="team2">
+        <addForeignKeyConstraint baseTableName="comment_task"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_comment_task_user"/>
+    </changeSet>
+
+    <!-- add column task_id into table comment_task and create foreign key constraint -->
+    <changeSet id="14" author="team2">
+        <addForeignKeyConstraint baseTableName="comment_task"
+                                 baseColumnNames="task_id"
+                                 referencedTableName="task"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_comment_task_task"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- add column parent_id into table comment_task and create foreign key constraint -->
+    <changeSet id="15" author="team2">
+        <addForeignKeyConstraint
+                baseTableName="comment_task"
+                baseColumnNames="parent_id"
+                referencedTableName="comment_task"
+                referencedColumnNames="id"
+                constraintName="fk_comment_task_parent"
+                onDelete="CASCADE"/>
+    </changeSet>
 </databaseChangeLog>
