@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
+import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.service.TaskService;
 import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class TaskApi {
         return ResponseEntity.ok(taskService.registerTask(taskRegisterRequest));
     }
 
+    @PutMapping
+    public ResponseEntity<?> updateTask(@Valid @RequestBody TaskUpdateRequest taskUpdateRequest){
+        return ResponseEntity.ok(taskService.updateTask(taskUpdateRequest));
+    }
+
     @GetMapping("/status-task-count")
     public ResponseEntity<?> getStatusTaskCount(){
         return ResponseEntity.ok(taskService.getStatusTaskCount());
@@ -38,4 +44,6 @@ public class TaskApi {
     public ResponseEntity<?> getDetailTask(@PathVariable String id){
         return ResponseEntity.ok(taskService.findById(id));
     }
+
+
 }

@@ -2,12 +2,15 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Task;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.enums.task.ActionChangeStatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.PriorityTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
+import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
+import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
@@ -33,7 +36,12 @@ public class TaskConverter {
     @Autowired
     private CommentTaskConverter commentTaskConverter;
 
+    @Autowired
+    private TaskMapper taskMapper;
+
     public TaskShowResponse toResponse(Task task){
+
+        if (task == null) return null;
 
         Date closeDate = task.getCloseDate();
         String dueOrCloseDate = null;
@@ -90,6 +98,8 @@ public class TaskConverter {
 
     public TaskDetailResponse toDetailResponse(Task task){
 
+        if (task == null) return null;
+
         Date closeDate = task.getCloseDate();
         String dueOrCloseDate = null;
         if(closeDate != null){
@@ -109,6 +119,35 @@ public class TaskConverter {
                 .progress(task.getProgress())
                 .priority(EnumUtils.instance(task.getPriority()))
                 .comments(commentTaskConverter.toListResponse(task.getComments()))
+                .build();
+    }
+
+    public Task toEntity(TaskUpdateRequest taskUpdateRequest) {
+
+        String id = taskUpdateRequest.getId();
+        String action = taskUpdateRequest.getAction();
+        Integer progress = taskUpdateRequest.getProgress();
+
+        Task task = taskMapper.findById(id);
+
+        StatusTaskEnum statusTaskCurrent = task.getStatusTask();
+        StatusTaskEnum statusTaskNew = ApplicationUtils.getNextStatusTaskEnum(statusTaskCurrent, action);
+
+        if(task.getStatusTask().equals(StatusTaskEnum.OPENED) || task.getStatusTask().equals(StatusTaskEnum.REOPENED)){
+            if(progress == 100) statusTaskNew = StatusTaskEnum.CLOSED;
+            if (statusTaskNew.equals(StatusTaskEnum.CLOSED)) progress = 100;
+        } else if (!task.getStatusTask().equals(StatusTaskEnum.REOPENED) && statusTaskNew.equals(StatusTaskEnum.REOPENED)){
+            progress = 0;
+        }
+
+        return Task.builder()
+                .id(id)
+                .statusTask(statusTaskNew)
+                .title(taskUpdateRequest.getTitle())
+                .content(taskUpdateRequest.getContent())
+                .startDate(new Date())
+                .priority(EnumUtils.getEnumFromValue(PriorityTaskEnum.class, taskUpdateRequest.getPriority()))
+                .progress(progress)
                 .build();
     }
 }

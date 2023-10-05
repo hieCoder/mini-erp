@@ -15,6 +15,8 @@ public class CommentTaskConverter {
 
     public CommentTaskResponse toResponse(CommentTask commentTask) {
 
+        if(commentTask == null) return null;
+
         User user = commentTask.getUser();
         String avatarUser = null, fullnameUser = null;
         if(commentTask.getUser() != null){

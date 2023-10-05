@@ -56,6 +56,17 @@
         VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{closeDate}, #{priority}, #{progress}, #{status});
     </insert>
 
+    <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
+        UPDATE task SET
+            title = #{title},
+            status_task = #{statusTask},
+            priority = #{priority},
+            content = #{content},
+            progress = #{progress},
+            start_date = #{startDate}
+        WHERE id = #{id};
+    </update>
+
     <select id="getStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
         SELECT status_task, COUNT(*) as taskCount
         FROM task
@@ -83,6 +94,7 @@
                c.id AS comment_id,
                c.user_id AS comment_user_id,
                c.content AS comment_content,
+               c.files AS comment_files,
                c.parent_id AS comment_parent_id,
                c.created_date AS comment_created_date,
                c.modified_date AS comment_modified_date,
@@ -115,6 +127,7 @@
     <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
         <id property="id" column="comment_id" />
         <result property="content" column="comment_content" />
+        <result property="files" column="comment_files" />
         <result property="createdDate" column="comment_created_date" />
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
@@ -126,6 +139,7 @@
         SELECT c.id AS comment_id,
                c.user_id AS comment_user_id,
                c.content AS comment_content,
+               c.files AS comment_files,
                c.created_date AS comment_created_date,
                c.parent_id AS comment_parent_id,
                c.created_date AS comment_created_date,
