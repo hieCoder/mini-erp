@@ -78,7 +78,6 @@
         <result property="createdDate" column="comment_created_date" />
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
-        <!--        <result property="parentId" column="comment_parent_id" />-->
         <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
 
         <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="getChildComments" />

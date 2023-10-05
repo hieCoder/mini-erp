@@ -14,8 +14,8 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
@@ -45,11 +45,11 @@ public class UserServiceImpl implements UserService {
     private HttpServletRequest request;
 
     @Override
-    public List<UserShowRespone> getAllUser(String searchTerm,
-                                            String sortDirection,
-                                            int start,
-                                            int pageSize,
-                                            String status) {
+    public List<UserShowResponse> getAllUser(String searchTerm,
+                                             String sortDirection,
+                                             int start,
+                                             int pageSize,
+                                             String status) {
         List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize, status);
         return userConverter.toListShowUserRespone(listUser);
     }

@@ -7,7 +7,6 @@
         SELECT t.*, u.fullname, u.username
         FROM timesheets t
         INNER JOIN user u ON t.user_id = u.id
-        ORDER BY t.id DESC
         LIMIT #{start}, #{pageSize}
     </select>
 
