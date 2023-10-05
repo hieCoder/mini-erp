@@ -35,4 +35,5 @@
         <renameColumn tableName="todo_management_time" oldColumnName="category-management-time_id" newColumnName="category_management_time_id" columnDataType="VARCHAR(255)"/>
         <renameColumn tableName="todo_management_time" oldColumnName="management-time_id" newColumnName="management_time_id" columnDataType="VARCHAR(255)"/>
     </changeSet>
+
 </databaseChangeLog>

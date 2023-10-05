@@ -26,13 +26,8 @@ public class TimesheetsServiceImpl implements TimesheetsService {
     }
 
     @Override
-    public List<Map<String, ?>> totalWorkDateByYear(String userID) {
-        return timesheetsMapper.totalWorkDateByYear(userID);
+    public List<Map<String, ?>> getTotalWorkingDate(String userID, String year) {
+        if (year!=null)  return timesheetsMapper.totalWorkingDateByMonth(userID, year);
+        return timesheetsMapper.totalWorkingDateByYear(userID);
     }
-
-    @Override
-    public List<Map<String, ?>> totalWorkDateByMonth(String userID, String year) {
-        return timesheetsMapper.getMonthWork(userID, year);
-    }
-
 }

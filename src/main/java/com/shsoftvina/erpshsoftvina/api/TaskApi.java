@@ -28,4 +28,14 @@ public class TaskApi {
     public ResponseEntity<?> registerTask(@Valid @RequestBody TaskRegisterRequest taskRegisterRequest) {
         return ResponseEntity.ok(taskService.registerTask(taskRegisterRequest));
     }
+
+    @GetMapping("/status-task-count")
+    public ResponseEntity<?> getStatusTaskCount(){
+        return ResponseEntity.ok(taskService.getStatusTaskCount());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getDetailTask(@PathVariable String id){
+        return ResponseEntity.ok(taskService.findById(id));
+    }
 }

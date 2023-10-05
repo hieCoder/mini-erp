@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TaskMapper {
@@ -14,4 +15,6 @@ public interface TaskMapper {
                        @Param("status") String status,
                        @Param("search") String search);
     int registerTask(Task task);
+    List<Map<String, Object>> getStatusTaskCounts();
+    Task findById(String id);
 }

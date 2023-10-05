@@ -11,14 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskResponse {
+public class TaskShowResponse {
 
     private String id;
-    private ActionChangeStatusTaskEnumDto statusTask;
+    private EnumDto statusTask;
     private String title;
-    private String content;
     private String fullnameUser;
-    private String createdDate;
     private String startDate;
     private String dueOrCloseDate;
     private Integer progress;

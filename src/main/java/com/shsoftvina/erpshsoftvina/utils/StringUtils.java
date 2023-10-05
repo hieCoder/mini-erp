@@ -1,8 +1,10 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
+import com.shsoftvina.erpshsoftvina.constant.CommentTaskConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
+import com.shsoftvina.erpshsoftvina.entity.CommentTask;
 import com.shsoftvina.erpshsoftvina.entity.User;
 
 public class StringUtils {
@@ -28,6 +30,8 @@ public class StringUtils {
                     pathRoot = UserConstant.PATH_FILE;
                 } else if(entityClass == Accounting.class){
                     pathRoot = AccountingConstant.PATH_FILE;
+                } else if(entityClass == CommentTask.class){
+                    pathRoot = CommentTaskConstant.PATH_FILE;
                 }
                 parts[i] = pathRoot + parts[i];
             }

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,4 +28,5 @@ public class Task {
     private Integer progress;
     private PriorityTaskEnum priority;
     private StatusDeleteTaskEnum status;
+    private List<CommentTask> comments;
 }

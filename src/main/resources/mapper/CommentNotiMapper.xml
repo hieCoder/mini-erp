@@ -64,7 +64,6 @@
                c.content AS comment_content,
                c.created_date AS comment_created_date,
                c.parent_id AS comment_parent_id,
-               c.created_date AS comment_created_date,
                c.modified_date AS comment_modified_date,
                c.modified_by AS comment_modified_by,
                u.fullname AS user_fullname,

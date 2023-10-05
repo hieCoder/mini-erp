@@ -14,6 +14,6 @@ public interface TimesheetsMapper {
     List<Timesheets> findAll(@Param("start") int start,
                              @Param("pageSize") int pageSize
     );
-    List<Map<String, ?>> totalWorkDateByYear(@Param("userID") String userID);
-    List<Map<String, ?>> getMonthWork(@Param("userID") String userID, @Param("year") String year);
+    List<Map<String, ?>> totalWorkingDateByYear(@Param("userID") String userID);
+    List<Map<String, ?>> totalWorkingDateByMonth(@Param("userID") String userID, @Param("year") String year);
 }
