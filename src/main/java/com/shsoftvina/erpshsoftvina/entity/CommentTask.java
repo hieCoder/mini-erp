@@ -15,6 +15,7 @@ import java.util.List;
 public class CommentTask {
     private String id;
     private String content;
+    private String files;
     private Date createdDate;
     private Date modifiedDate;
     private Task task;

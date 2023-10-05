@@ -14,6 +14,7 @@ import java.util.List;
 public class CommentTaskResponse {
     private String id;
     private String content;
+    private String[] files;
     private String createdDate;
     private String modifiedBy;
     private String modifiedDate;

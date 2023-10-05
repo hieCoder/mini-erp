@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.entity.CommentTask;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class CommentTaskConverter {
         return CommentTaskResponse.builder()
                 .id(commentTask.getId())
                 .content(commentTask.getContent())
+                .files(StringUtils.splitPathFile(CommentTask.class, commentTask.getFiles(), ","))
                 .createdDate(DateUtils.formatDateTime(commentTask.getCreatedDate()))
                 .modifiedBy(commentTask.getModifiedBy())
                 .modifiedDate(DateUtils.formatDateTime(commentTask.getModifiedDate()))
