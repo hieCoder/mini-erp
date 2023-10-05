@@ -93,7 +93,7 @@
                                  baseColumnNames="management_time_id"
                                  referencedTableName="management_time"
                                  referencedColumnNames="id"
-                                 constraintName="fk_category-management-time_management_time"/>
+                                 constraintName="fk_category_management_time_management_time"/>
     </changeSet>
 
     <!-- add column user_id into table todomanagementtime and create foreign key constraint -->

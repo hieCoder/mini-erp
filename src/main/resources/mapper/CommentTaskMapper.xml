@@ -1,0 +1,74 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentTaskMapper">
+
+    <select id="findById" resultMap="commentTaskResultMap">
+        SELECT
+            c.id AS comment_id,
+            c.content AS comment_content,
+            c.files AS comment_files,
+            c.created_date AS comment_created_date,
+            c.user_id AS comment_user_id,
+            c.parent_id AS comment_parent_id,
+            c.modified_date AS comment_modified_date,
+            c.modified_by AS comment_modified_by,
+            u.fullname AS user_fullname,
+            u.avatar AS user_avatar
+        FROM comment_task c LEFT JOIN user u ON c.user_id = u.id OR c.parent_id IS NOT NULL
+        WHERE c.id = #{id}
+    </select>
+
+    <insert id="createCommentTask" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentTask" >
+        insert into comment_task (id, content, files, created_date, task_id, user_id, parent_id)
+            value(#{id}, #{content}, #{files}, NOW(), #{task.id}, #{user.id}, #{parentComment.id})
+    </insert>
+
+    <update id="updateCommentTask" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentTask">
+        UPDATE comment_task
+        SET
+            content = #{content},
+            files = #{files},
+            modified_by = #{modifiedBy},
+            modified_date = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        DELETE FROM comment_task WHERE id = #{id}
+    </delete>
+
+    <resultMap id="commentTaskResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
+        <id property="id" column="comment_id" />
+        <result property="content" column="comment_content" />
+        <result property="files" column="comment_files" />
+        <result property="createdDate" column="comment_created_date" />
+        <result property="modifiedDate" column="comment_modified_date" />
+        <result property="modifiedBy" column="comment_modified_by" />
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentTask" select="getChildComments" />
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="comment_user_id" />
+        <result property="fullname" column="user_fullname" />
+        <result property="avatar" column="user_avatar" />
+    </resultMap>
+
+    <select id="getChildComments" resultMap="commentTaskResultMap">
+        SELECT c.id AS comment_id,
+               c.user_id AS comment_user_id,
+               c.content AS comment_content,
+               c.files AS comment_files,
+               c.created_date AS comment_created_date,
+               c.parent_id AS comment_parent_id,
+               c.modified_date AS comment_modified_date,
+               c.modified_by AS comment_modified_by,
+               u.fullname AS user_fullname,
+               u.avatar AS user_avatar
+        FROM comment_task c
+                 INNER JOIN user u ON c.user_id = u.id
+        WHERE c.parent_id = #{id}
+    </select>
+
+</mapper>
