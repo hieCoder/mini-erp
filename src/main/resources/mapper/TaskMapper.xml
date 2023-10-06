@@ -137,7 +137,7 @@
         <result property="createdDate" column="comment_created_date" />
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
-        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUserId"/>
         <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentTask" select="getChildComments" />
     </resultMap>
 
@@ -156,5 +156,14 @@
         FROM comment_task c
                  INNER JOIN user u ON c.user_id = u.id
         WHERE c.parent_id = #{id}
+    </select>
+
+    <select id="getUserId" resultMap="userResultMap">
+        SELECT
+               u.id AS comment_user_id,
+               u.fullname AS user_fullname,
+               u.avatar AS user_avatar
+        FROM user u
+        WHERE u.id = #{id}
     </select>
 </mapper>
