@@ -67,6 +67,12 @@
         WHERE id = #{id};
     </update>
 
+    <update id="deleteById" parameterType="String">
+        UPDATE task SET
+            status = 'INACTIVE'
+        WHERE id = #{id};
+    </update>
+
     <select id="getStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
         SELECT status_task, COUNT(*) as taskCount
         FROM task

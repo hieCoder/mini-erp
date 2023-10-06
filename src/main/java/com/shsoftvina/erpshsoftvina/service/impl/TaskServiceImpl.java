@@ -73,6 +73,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public int deleteById(String id) {
+        if(taskMapper.findById(id) == null)
+            throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+        return taskMapper.deleteById(id);
+    }
+
+    @Override
     public List<StatusTaskCountsResponse> getStatusTaskCount() {
         return taskConverter.toListStatusTaskCountsResponse(taskMapper.getStatusTaskCounts());
     }

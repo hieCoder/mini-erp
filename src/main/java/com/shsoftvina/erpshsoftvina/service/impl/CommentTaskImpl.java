@@ -113,8 +113,16 @@ public class CommentTaskImpl implements CommentTaskService {
 
     @Override
     public int deleteCommentTask(String id) {
-        if(commentTaskMapper.findById(id) == null)
+        CommentTask commentTask = commentTaskMapper.findById(id);
+        if(commentTask == null)
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
-        return commentTaskMapper.deleteById(id);
+        try {
+            commentTaskMapper.deleteById(id);
+            String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
+            FileUtils.deleteMultipleFilesToServer(request, dir, commentTask.getFiles());
+            return 1;
+        } catch (Exception e){
+        }
+        return 0;
     }
 }

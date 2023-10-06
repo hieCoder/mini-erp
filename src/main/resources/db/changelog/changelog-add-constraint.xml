@@ -143,4 +143,13 @@
                 constraintName="fk_comment_task_parent"
                 onDelete="CASCADE"/>
     </changeSet>
+
+    <!-- add column user_id into table timesheets and create foreign key constraint -->
+    <changeSet id="16" author="team2">
+        <addForeignKeyConstraint baseTableName="weekly_report"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_weekly_report_user"/>
+    </changeSet>
 </databaseChangeLog>
