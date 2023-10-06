@@ -3,6 +3,9 @@ package com.shsoftvina.erpshsoftvina.converter;
 import com.shsoftvina.erpshsoftvina.entity.CategoryManagementTime;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTime;
 import com.shsoftvina.erpshsoftvina.entity.TodoManagementTime;
+import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.model.request.todo.TodoManagementTimeEditRequest;
+import com.shsoftvina.erpshsoftvina.model.request.todo.TodoManagementTimeRequest;
 import com.shsoftvina.erpshsoftvina.model.response.todo.CategoryManagementTimeResponse;
 import com.shsoftvina.erpshsoftvina.model.response.todo.ManagementTimeResponse;
 import com.shsoftvina.erpshsoftvina.model.response.todo.TodoManagementBoardResponse;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -63,5 +67,32 @@ public class TodoManagementConverter {
 
     public List<CategoryManagementTimeResponse> convertToListResponse(List<CategoryManagementTime> categoryList) {
         return categoryList.stream().map(this::convertToResponse).collect(Collectors.toList());
+    }
+
+    public TodoManagementTime convertToEntity(TodoManagementTimeRequest todo, CategoryManagementTime category, ManagementTime management, User user) {
+        Boolean performance = null;
+        if (category != null) {
+            performance = false;
+        }
+        return TodoManagementTime.builder()
+                .day(todo.getDay())
+                .management(management)
+                .category(category)
+                .user(user)
+                .target(todo.getTarget())
+                .performance(performance)
+                .id(UUID.randomUUID().toString())
+                .build();
+    }
+
+    public TodoManagementTime convertToEntity(TodoManagementTimeEditRequest todo, CategoryManagementTime category, ManagementTime management, User user) {
+        return TodoManagementTime.builder()
+                .management(management)
+                .category(category)
+                .user(user)
+                .target(todo.getTarget())
+                .performance(todo.getPerformance())
+                .id(todo.getId())
+                .build();
     }
 }
