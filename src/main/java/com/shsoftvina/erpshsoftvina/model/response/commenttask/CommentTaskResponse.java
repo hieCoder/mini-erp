@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class CommentTaskResponse {
     private String id;
+    private String title;
     private String content;
     private String[] files;
     private String createdDate;

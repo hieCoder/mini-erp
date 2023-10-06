@@ -16,7 +16,7 @@ public interface TaskMapper {
                        @Param("search") String search);
     int registerTask(Task task);
     int updateTask(Task task);
-    int deleteById(@Param("id") String id);
+    int changeStatusTask(@Param("id") String id, @Param("status") String status);
     List<Map<String, Object>> getStatusTaskCounts();
     Task findById(String id);
 }

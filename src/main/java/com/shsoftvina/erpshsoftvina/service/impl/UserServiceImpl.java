@@ -109,7 +109,6 @@ public class UserServiceImpl implements UserService {
         return userConverter.toUserDetailResponse(user);
     }
 
-
     @Override
     public int updateUserDetail(UserUpdateRequest userUpdateRequest) {
 
@@ -163,7 +162,12 @@ public class UserServiceImpl implements UserService {
             }
 
             try{
-                userMapper.updateUserDetail(userUpdate);
+                if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                    userMapper.updateUserProfile(userUpdate);
+                } else{
+                    userMapper.updateUserDetail(userUpdate);
+                }
+
                 if(avatarNameOld != null){
                     FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
                 }

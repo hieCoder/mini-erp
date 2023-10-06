@@ -49,5 +49,4 @@ public class TaskApi {
     public ResponseEntity<?> deleteTask(@PathVariable("id") String id){
         return ResponseEntity.ok(taskService.deleteById(id));
     }
-
 }

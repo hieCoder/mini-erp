@@ -117,6 +117,7 @@ public class UserConverter {
                 .resume(newResumeFileName)
                 .timesheetsCode(userUpdateRequest.getTimesheetsCode())
                 .atm(userUpdateRequest.getAtm())
+                .isFirstUpdateProfile(UserConstant.ACTIVE_FIRST_UPDATE_PROFILE)
                 .build();
     }
 

@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.converter.TaskConverter;
 import com.shsoftvina.erpshsoftvina.entity.Task;
 import com.shsoftvina.erpshsoftvina.enums.task.PriorityTaskEnum;
+import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
@@ -76,7 +77,7 @@ public class TaskServiceImpl implements TaskService {
     public int deleteById(String id) {
         if(taskMapper.findById(id) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
-        return taskMapper.deleteById(id);
+        return taskMapper.changeStatusTask(id, StatusDeleteTaskEnum.INACTIVE.toString());
     }
 
     @Override
