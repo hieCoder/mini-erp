@@ -10,6 +10,7 @@
                t.user_id AS task_user_id,
                t.created_date AS task_created_date,
                t.start_date AS task_start_date,
+               t.due_date AS task_due_date,
                t.close_date AS task_close_date,
                t.priority AS task_priority,
                t.progress AS task_progress,
@@ -36,6 +37,7 @@
         <result property="content" column="task_content"/>
         <result property="createdDate" column="task_created_date"/>
         <result property="startDate" column="task_start_date"/>
+        <result property="dueDate" column="task_due_date"/>
         <result property="closeDate" column="task_close_date"/>
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
@@ -52,8 +54,8 @@
 
     <insert id="registerTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
         INSERT
-        INTO task (id, status_task, title, content, user_id, created_date, close_date, priority, progress, status)
-        VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{closeDate}, #{priority}, #{progress}, #{status});
+        INTO task (id, status_task, title, content, user_id, created_date, due_date, priority, progress, status)
+        VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{dueDate}, #{priority}, #{progress}, #{status});
     </insert>
 
     <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
@@ -63,7 +65,9 @@
             priority = #{priority},
             content = #{content},
             progress = #{progress},
-            start_date = #{startDate}
+            start_date = #{startDate},
+            close_date = #{closeDate},
+            due_date = #{dueDate}
         WHERE id = #{id};
     </update>
 
@@ -92,6 +96,7 @@
                t.user_id AS task_user_id,
                t.created_date AS task_created_date,
                t.start_date AS task_start_date,
+               t.due_date AS task_due_date,
                t.close_date AS task_close_date,
                t.priority AS task_priority,
                t.progress AS task_progress,
@@ -121,6 +126,7 @@
         <result property="content" column="task_content"/>
         <result property="createdDate" column="task_created_date"/>
         <result property="startDate" column="task_start_date"/>
+        <result property="dueDate" column="task_due_date"/>
         <result property="closeDate" column="task_close_date"/>
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
@@ -166,4 +172,16 @@
         FROM user u
         WHERE u.id = #{id}
     </select>
+
+    <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
+        SELECT t.id, t.title
+        FROM task t
+        INNER JOIN user u ON t.user_id = u.id
+        WHERE t.status = 'ACTIVE' AND u.id = #{userId} AND t.content LIKE CONCAT('%', #{hashtag}, '%')
+    </select>
+
+    <resultMap id="TaskByHashTagResultMap" type="java.util.Map">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+    </resultMap>
 </mapper>

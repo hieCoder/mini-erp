@@ -24,5 +24,5 @@ public interface UserMapper {
     void changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);
     void deleteUser(String id);
-
+    List<String> getAllFullname();
 }

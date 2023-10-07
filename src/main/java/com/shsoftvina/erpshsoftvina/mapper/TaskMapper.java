@@ -16,7 +16,11 @@ public interface TaskMapper {
                        @Param("search") String search);
     int registerTask(Task task);
     int updateTask(Task task);
-    int changeStatusTask(@Param("id") String id, @Param("status") String status);
+    int changeStatusTask(@Param("id") String id,
+                         @Param("status") String status);
     List<Map<String, Object>> getStatusTaskCounts();
     Task findById(String id);
+    List<Map<String, Object>> getTaskByHashtag(
+            @Param("userId") String userId,
+            @Param("hashtag") String hashtag);
 }

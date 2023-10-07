@@ -12,7 +12,19 @@
             w.created_date AS weeklyReport_created_date
         FROM weekly_report w
         INNER JOIN user u ON w.user_id = u.id
-        WHERE SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm}
+        LIMIT #{page}, #{pageSize}
+    </select>
+
+    <select id="getAllWeeklyReportByUserId" resultMap="weeklyReportResultMap">
+        SELECT
+            w.id AS weeklyReport_id,
+            w.title AS weeklyReport_title,
+            w.user_id AS weeklyReport_user_id,
+            u.fullname AS user_fullname,
+            w.created_date AS weeklyReport_created_date
+        FROM weekly_report w
+        INNER JOIN user u ON w.user_id = u.id
+        WHERE u.id = #{userId}
         LIMIT #{page}, #{pageSize}
     </select>
 
@@ -37,7 +49,7 @@
             u.fullname AS user_fullname,
             w.created_date AS weeklyReport_created_date
         FROM weekly_report w
-        LEFT JOIN user u ON w.user_id = u.id
+        INNER JOIN user u ON w.user_id = u.id
         WHERE w.id = #{id}
     </select>
 

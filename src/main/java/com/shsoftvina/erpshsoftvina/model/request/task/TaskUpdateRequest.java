@@ -31,4 +31,6 @@ public class TaskUpdateRequest {
 
     @NotBlank(message = "Field content is not filled")
     private String content;
+
+    private Date dueDate;
 }

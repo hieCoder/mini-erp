@@ -15,14 +15,10 @@ public interface UserService {
                                       int start,
                                       int pageSize,
                                       String status);
-
     UserDetailResponse findUserDetail(String id);
-
     void deleteUser(String id);
-
     Boolean activeUserRegisterRequest(UserActiveRequest user);
-
     UserDetailResponse findByEmail(String email);
-
     int updateUserDetail(UserUpdateRequest userUpdateRequest);
+    List<String> getAllFullname();
 }

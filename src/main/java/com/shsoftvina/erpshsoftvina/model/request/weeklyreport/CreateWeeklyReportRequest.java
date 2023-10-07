@@ -21,5 +21,4 @@ public class CreateWeeklyReportRequest {
 
     @NotBlank(message = "Field userId is not filled")
     private String userId;
-
 }

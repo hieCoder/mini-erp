@@ -181,4 +181,9 @@ public class UserServiceImpl implements UserService {
         }
         return 0;
     }
+
+    @Override
+    public List<String> getAllFullname() {
+        return userMapper.getAllFullname();
+    }
 }

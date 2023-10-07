@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/weeklyReports")
+@RequestMapping("/api/v1/weekly-reports")
 public class WeeklyReportApi {
 
     @Autowired
@@ -17,9 +17,8 @@ public class WeeklyReportApi {
 
     @GetMapping
     public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
-                                    @RequestParam(name = "search", required = false, defaultValue = "") String search) {
-        return ResponseEntity.ok(weeklyReportService.getAllWeeklyReport((page-  1) * pageSize, pageSize, search));
+                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        return ResponseEntity.ok(weeklyReportService.getAllWeeklyReport((page-  1) * pageSize, pageSize));
     }
 
     @GetMapping("/{id}")
