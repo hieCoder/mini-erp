@@ -18,7 +18,7 @@ import java.util.List;
 public class UserApi {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping("/updation")
     public ResponseEntity<?> updateUser(@Valid UserUpdateRequest userUpdateRequest) {
