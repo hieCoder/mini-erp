@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.insurance;
+package com.shsoftvina.erpshsoftvina.model.response.user;
 
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InsuranceResponse {
+public class UserShowResponse {
+
     private String id;
-    private EnumDto insuranceType;
-    private String money;
+    private String fullname;
+    private EnumDto department;
+    private String email; // user_id
+    private EnumDto position;
 }

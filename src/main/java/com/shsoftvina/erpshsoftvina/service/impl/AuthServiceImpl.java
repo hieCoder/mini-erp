@@ -6,7 +6,7 @@ import com.shsoftvina.erpshsoftvina.exception.DuplicateException;
 import com.shsoftvina.erpshsoftvina.exception.NoMatchException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.AuthService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -56,8 +56,6 @@ public class CommentNotificationConverter {
 
     public CommentNotification toEntity(CreateCommentNotificationRequest createCommentNotificationRequest) {
 
-        CommentNotification commentNotification = commentNotificationMapper.findById(createCommentNotificationRequest.getParentId());
-
         return CommentNotification.builder().id(UUID.randomUUID().toString())
                 .content(createCommentNotificationRequest.getContent())
                 .createdDate(new Date())

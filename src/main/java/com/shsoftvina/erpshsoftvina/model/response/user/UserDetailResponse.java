@@ -1,11 +1,10 @@
 
-package com.shsoftvina.erpshsoftvina.model.response.users;
+package com.shsoftvina.erpshsoftvina.model.response.user;
 
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 

@@ -1,10 +1,8 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
-import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
-import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
-import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
-import com.shsoftvina.erpshsoftvina.constant.UserConstant;
+import com.shsoftvina.erpshsoftvina.constant.*;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
+import com.shsoftvina.erpshsoftvina.entity.Contract;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
@@ -55,7 +53,7 @@ public class FileUtils {
         return false;
     }
 
-    public static List saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
+    public static List<String> saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
 
         if(files == null) return null;
 
@@ -129,6 +127,9 @@ public class FileUtils {
             }
             else if (c == Notification.class) {
                 return NotificationConstant.PATH_FILE + fileName;
+            }
+            else if (c == Contract.class) {
+                return ContractConstant.PATH_FILE + fileName;
             }
         }
         return null;

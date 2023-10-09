@@ -15,7 +15,6 @@ public class TimesheetsResponse{
     private String workDate;
     private String checkin;
     private String checkout;
-    private String usernameUser;
     private String fullnameUser;
     private String totalOfficeHours;
     private boolean ot;

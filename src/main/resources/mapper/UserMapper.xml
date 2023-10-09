@@ -15,12 +15,6 @@
         where email = #{email}
     </select>
 
-    <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT
-        INTO user (fullname, email, id, password, status)
-        VALUES (#{fullname}, #{email}, #{id},#{password}, #{status});
-    </insert>
-
     <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE user
         SET
@@ -54,9 +48,9 @@
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT u.*, c.id AS contract_id, c.*, i.id AS insurance_id, i.*
+        SELECT u.*, c.id AS contract_id, c.*
         FROM user u
-        LEFT JOIN contract c ON u.id = c.user_id LEFT JOIN insurance i ON i.id = c.insurance_id
+                 LEFT JOIN contract c ON u.id = c.user_id
         WHERE u.id = #{id}
     </select>
 
@@ -116,14 +110,14 @@
         <result property="allowance" column="allowance"/>
         <result property="contract" column="contract"/>
         <result property="createdDate" column="created_date"/>
-        <association property="insurance" column="insurance_id" javaType="com.shsoftvina.erpshsoftvina.entity.Insurance" resultMap="insuranceResultMap">
-        </association>
-    </resultMap>
-
-    <resultMap id="insuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Insurance" >
-        <id property="id" column="insurance_id"/>
         <result property="insuranceType" column="insurance_type"/>
-        <result property="money" column="money"/>
+        <result property="insuranceMoney" column="insurance_money"/>
     </resultMap>
 
+    <select id="getAllFullname" resultType="java.lang.String">
+    <![CDATA[
+        SELECT fullname
+        FROM user;
+        ]]>
+    </select>
 </mapper>

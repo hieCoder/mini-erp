@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.users;
+package com.shsoftvina.erpshsoftvina.model.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
