@@ -223,7 +223,8 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
-            <!-- Plugin Maven Surefire cho kiểm tra unit -->
+
+            <!-- Plugin Maven Surefire for unit -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -233,8 +234,6 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                 </configuration>
             </plugin>
-            <!-- Plugin Maven Failsafe cho kiểm tra tích hợp -->
-            <!-- (Nếu bạn sử dụng kiểm tra tích hợp) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>

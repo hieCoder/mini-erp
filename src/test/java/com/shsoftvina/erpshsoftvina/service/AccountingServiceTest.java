@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.converter.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.service.impl.AccountingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

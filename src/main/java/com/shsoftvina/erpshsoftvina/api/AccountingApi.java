@@ -2,8 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.PageAccountListResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
