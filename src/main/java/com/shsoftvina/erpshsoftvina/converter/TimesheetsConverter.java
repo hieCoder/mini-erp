@@ -31,7 +31,6 @@ public class TimesheetsConverter {
         return TimesheetsResponse.builder()
                 .id(timesheets.getId())
                 .workDate(DateUtils.formatDate(timesheets.getWorkDate()))
-                .usernameUser(timesheets.getUser().getUsername())
                 .fullnameUser(timesheets.getUser().getFullname())
                 .checkin(DateUtils.formatTime(timesheets.getCheckin()))
                 .checkout(DateUtils.formatTime(timesheets.getCheckout()))

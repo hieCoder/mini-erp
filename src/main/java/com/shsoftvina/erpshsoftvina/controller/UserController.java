@@ -7,8 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/hello")
 public class UserController {
-    @GetMapping()
+
+    @GetMapping
     public String hello() {
-       return "index";
+       return "auth/index";
+    }
+
+    @GetMapping("/testUpdateProfile")
+    public String testUpdateProfile() {
+        return "user/testUpdateProfile";
     }
 }

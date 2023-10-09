@@ -1,0 +1,43 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
+
+    <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
+        insert into contract (id, basic_salary, allowance, contract, created_date, user_id, insurance_type, insurance_money, status)
+            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status})
+    </insert>
+
+    <select id="findById" resultMap="contractResultMap">
+        SELECT c.*, u.fullname FROM contract c
+        INNER JOIN user u ON c.user_id = u.id
+        WHERE c.id = #{id}
+    </select>
+
+    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
+        UPDATE contract SET
+                        basic_salary = #{basicSalary},
+                        allowance = #{allowance},
+                        contract = #{contract},
+                        insurance_type = #{insuranceType},
+                        insurance_money = #{insuranceMoney}
+        WHERE id = #{id};
+    </update>
+
+    <update id="changeStatusContract" parameterType="String">
+        UPDATE contract SET
+            status = #{status}
+        WHERE id = #{id};
+    </update>
+
+    <resultMap id="contractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract">
+        <id property="id" column="id"/>
+        <result property="basicSalary" column="basic_salary"/>
+        <result property="allowance" column="allowance"/>
+        <result property="contract" column="contract"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="status" column="status"/>
+        <result property="insuranceType" column="insurance_type"/>
+        <result property="insuranceMoney" column="insurance_money"/>
+    </resultMap>
+</mapper>

@@ -1,11 +1,12 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
+import com.shsoftvina.erpshsoftvina.enums.contract.InsuranceTypeEnum;
+import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
 import java.util.Date;
 
 @Data
@@ -20,5 +21,7 @@ public class Contract {
     private String contract;
     private Date createdDate;
     private User user;
-    private Insurance insurance;
+    private InsuranceTypeEnum insuranceType;
+    private String insuranceMoney;
+    private StatusContractEnum status;
 }

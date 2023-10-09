@@ -15,5 +15,13 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <renameTable oldTableName="category-management-time" newTableName="category_management_time"/>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <renameColumn tableName="category_management_time" oldColumnName="management-time_id" newColumnName="management_time_id" columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
 </databaseChangeLog>
 

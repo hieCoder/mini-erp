@@ -4,20 +4,17 @@ import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
 
 import com.shsoftvina.erpshsoftvina.enums.user.*;
-import com.shsoftvina.erpshsoftvina.exception.NoMatchException;
-import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserShowRespone;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
-import org.springframework.asm.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,6 +61,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .atm(user.getAtm())
                 .email(user.getEmail())
+                .resume(user.getResume())
                 .role(EnumUtils.instance(user.getRole()))
                 .position(EnumUtils.instance(user.getPosition()))
                 .address(user.getAddress())
@@ -72,8 +70,8 @@ public class UserConverter {
                 .build();
     }
 
-    public UserShowRespone toShowUserRespone(User user) {
-        return UserShowRespone.builder()
+    public UserShowResponse toShowUserRespone(User user) {
+        return UserShowResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
                 .department(EnumUtils.instance(user.getDepartment()))
@@ -82,7 +80,7 @@ public class UserConverter {
                 .build();
     }
 
-    public List<UserShowRespone> toListShowUserRespone(List<User> listUser) {
+    public List<UserShowResponse> toListShowUserRespone(List<User> listUser) {
         return listUser.stream().map(this::toShowUserRespone).collect(Collectors.toList());
     }
 
@@ -120,6 +118,7 @@ public class UserConverter {
                 .resume(newResumeFileName)
                 .timesheetsCode(userUpdateRequest.getTimesheetsCode())
                 .atm(userUpdateRequest.getAtm())
+                .isFirstUpdateProfile(UserConstant.ACTIVE_FIRST_UPDATE_PROFILE)
                 .build();
     }
 

@@ -8,19 +8,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class TimesheetsServiceImpl implements TimesheetsService {
 
     @Autowired
-    TimesheetsMapper findAll;
+    TimesheetsMapper timesheetsMapper;
 
     @Autowired
     TimesheetsConverter timesheetsConverter;
 
     @Override
     public List<TimesheetsResponse> findAll(int start, int pageSize) {
-        return findAll.findAll(start, pageSize).stream().map(timesheets -> timesheetsConverter.toResponse(timesheets)).collect(Collectors.toList());
+        return timesheetsMapper.findAll(start, pageSize).stream().map(timesheets -> timesheetsConverter.toResponse(timesheets)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Map<String, ?>> getTotalWorkingDate(String userID, String year) {
+        if (year!=null)  return timesheetsMapper.totalWorkingDateByMonth(userID, year);
+        return timesheetsMapper.totalWorkingDateByYear(userID);
     }
 }
