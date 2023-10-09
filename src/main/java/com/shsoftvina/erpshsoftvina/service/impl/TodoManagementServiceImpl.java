@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,8 +29,8 @@ public class TodoManagementServiceImpl implements TodoManagementService {
     @Autowired
     private TodoManagementConverter todoManagementConverter;
     @Override
-    public TodoManagementBoardResponse findTotalElementPerMonth(String id) {
-        return todoManagementConverter.convertToResponse(todoManagementMapper.findTotalElementPerMonth(id));
+    public TodoManagementBoardResponse findTotalElementPerMonth(String id, Date date) {
+        return todoManagementConverter.convertToResponse(todoManagementMapper.findTotalElementPerMonth(id,date));
     }
 
     @Override

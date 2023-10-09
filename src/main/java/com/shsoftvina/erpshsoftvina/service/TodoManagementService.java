@@ -4,9 +4,11 @@ import com.shsoftvina.erpshsoftvina.model.request.todo.TodoManagementEditListReq
 import com.shsoftvina.erpshsoftvina.model.request.todo.TodoManagementListRequest;
 import com.shsoftvina.erpshsoftvina.model.response.todo.TodoManagementBoardResponse;
 
+import java.util.Date;
+
 public interface TodoManagementService {
 
-    TodoManagementBoardResponse findTotalElementPerMonth(String id);
+    TodoManagementBoardResponse findTotalElementPerMonth(String id, Date date);
 
     void postTodoListByUser(TodoManagementListRequest todoManagementListRequest);
 

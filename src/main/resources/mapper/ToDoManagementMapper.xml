@@ -13,12 +13,15 @@
                t.performance AS todo_management_time_performance,
                t.user_id     AS todo_management_time_user_id,
                u.fullname    AS user_fullname,
-               #{userId}     AS user_id
+               #{userId}     AS user_id,
+               #{date}       AS date_id
         FROM management_time m
                  LEFT JOIN category_management_time c
                            on m.id = c.management_time_id
-                 LEFT JOIN todo_management_time t on c.id = t.category_management_time_id and t.user_id = #{userId}
-                 LEFT JOIN user u on t.user_id = u.id
+                 LEFT JOIN todo_management_time t
+                           on c.id = t.category_management_time_id and t.user_id = #{userId} and YEAR (t.day) = YEAR (#{date}) and MONTH (t.day) = MONTH (#{date})
+            LEFT JOIN user u
+        on t.user_id = u.id
     </select>
 
     <select id="getTodoByManagementTime" resultMap="todoManagementTimeMap">
@@ -35,7 +38,10 @@
                  LEFT JOIN todo_management_time t on m.id = t.management_time_id
                  LEFT JOIN user u on t.user_id = u.id
         WHERE t.management_time_id = #{id}
-          AND t.user_id = #{userId}
+            AND t.user_id = #{userId}
+            AND YEAR (
+            t.day) = YEAR (#{date})
+          and MONTH (t.day) = MONTH (#{date})
     </select>
 
     <resultMap id="managementTimeMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTime">
@@ -45,7 +51,7 @@
                     ofType="com.shsoftvina.erpshsoftvina.entity.CategoryManagementTime"
                     resultMap="categoryManagementTimeMap"/>
         <!--        <collection property="todos" column="todo_management_time_id" ofType="com.shsoftvina.erpshsoftvina.entity.TodoManagementTime" resultMap="todoManagementTimeMap" />-->
-        <collection property="todos" column="{id = management_time_id,userId = user_id }"
+        <collection property="todos" column="{id = management_time_id,userId = user_id, date = date_id }"
                     ofType="com.shsoftvina.erpshsoftvina.entity.TodoManagementTime" select="getTodoByManagementTime"/>
     </resultMap>
 
