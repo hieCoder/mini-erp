@@ -13,8 +13,7 @@ public interface UserService {
     List<UserShowResponse> getAllUser(String searchTerm,
                                       String sortDirection,
                                       int start,
-                                      int pageSize,
-                                      String status);
+                                      int pageSize);
 
     UserDetailResponse findUserDetail(String id);
 

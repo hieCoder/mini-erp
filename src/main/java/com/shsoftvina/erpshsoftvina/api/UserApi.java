@@ -27,14 +27,13 @@ public class UserApi {
 
     @GetMapping
     public ResponseEntity<?> getAllUser(
-            @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
             @RequestParam(name = "search", required = false, defaultValue = "") String search,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
-            @RequestParam(name = "status", required = false, defaultValue = "ACTIVE") String status) {
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
         List<UserShowResponse> listUser = userService.getAllUser(search,
-                sort, (page - 1) * pageSize, pageSize, status);
+                sort, (page - 1) * pageSize, pageSize);
 
         return new ResponseEntity<>(listUser, HttpStatus.OK);
     }

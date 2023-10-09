@@ -37,14 +37,14 @@
     </update>
 
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
-         <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM user AS u
-        WHERE u.status = #{status}
+        WHERE u.status = 'ACTIVE'
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
-        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
-        LIMIT #{start}, #{pageSize};
-        ]]>
+        ORDER BY
+            CASE WHEN #{sortDirection} = 'ASC' THEN SUBSTRING_INDEX(u.fullname, ' ', -1) END ASC,
+            CASE WHEN #{sortDirection} = 'DESC' THEN SUBSTRING_INDEX(u.fullname, ' ', -1) END DESC
+        LIMIT #{start}, #{pageSize}
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
@@ -79,7 +79,7 @@
             avatar = #{avatar},
             is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">

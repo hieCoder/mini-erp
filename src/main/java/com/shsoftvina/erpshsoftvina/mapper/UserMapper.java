@@ -18,8 +18,7 @@ public interface UserMapper {
     List<User> getAllUser(@Param("searchTerm") String id,
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,
-                          @Param("pageSize") int pageSize,
-                          @Param("status") String status);
+                          @Param("pageSize") int pageSize);
     User findById(@Param("id") String id);
     void changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);

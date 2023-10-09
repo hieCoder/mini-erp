@@ -48,9 +48,8 @@ public class UserServiceImpl implements UserService {
     public List<UserShowResponse> getAllUser(String searchTerm,
                                              String sortDirection,
                                              int start,
-                                             int pageSize,
-                                             String status) {
-        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize, status);
+                                             int pageSize) {
+        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize);
         return userConverter.toListShowUserRespone(listUser);
     }
 
