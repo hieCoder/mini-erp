@@ -13,5 +13,4 @@
             <column name="VALUE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
 </databaseChangeLog>

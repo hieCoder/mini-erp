@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.accountings;
+package com.shsoftvina.erpshsoftvina.model.request.todo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class MonthHistoryList {
-    List<String> monthList;
+public class TodoManagementListRequest {
+    private List<TodoManagementTimeRequest> todos;
 }
-
