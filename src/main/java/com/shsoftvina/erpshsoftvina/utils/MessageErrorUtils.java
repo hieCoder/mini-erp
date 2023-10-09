@@ -30,4 +30,8 @@ public class MessageErrorUtils {
     public static String unknown(String s){
         return s.concat(" unknown!");
     }
+
+    public static String notAllow(String s){
+        return s.concat(" is not allow");
+    }
 }

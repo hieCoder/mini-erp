@@ -61,6 +61,13 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
+    // Handle NotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(NotAllowException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleNotAllowException(NotAllowException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
     // Handle MethodArgumentNotValidException and return an ErrorResponse with HTTP status 400 (Bad Request).
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

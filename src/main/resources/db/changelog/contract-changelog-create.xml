@@ -17,4 +17,32 @@
             <column name="insurance_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="team2">
+        <addColumn tableName="contract">
+            <column name="status" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <dropForeignKeyConstraint baseTableName="contract"
+                                  constraintName="fk_contract_insurance"/>
+    </changeSet>
+
+    <changeSet id="4" author="team2">
+        <dropColumn tableName="contract" columnName="insurance_id"/>
+    </changeSet>
+
+    <changeSet id="5" author="team2">
+        <addColumn tableName="contract">
+            <column name="insurance_type" type="VARCHAR(255)"/>
+        </addColumn>
+        <addColumn tableName="contract">
+            <column name="money" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="6" author="team2">
+        <renameColumn tableName="contract" oldColumnName="money" newColumnName="insurance_money" columnDataType="VARCHAR(255)"/>
+    </changeSet>
 </databaseChangeLog>
