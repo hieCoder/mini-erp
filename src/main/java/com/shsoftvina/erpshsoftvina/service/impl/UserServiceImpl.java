@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
-        userMapper.changeStatusUser(id, (StatusUserEnum.INACTIVE).toString());
+    public int deleteUser(String id) {
+        return userMapper.changeStatusUser(id, (StatusUserEnum.INACTIVE).toString());
     }
 
     @Override
@@ -186,4 +186,5 @@ public class UserServiceImpl implements UserService {
     public List<String> getAllFullname() {
         return userMapper.getAllFullname();
     }
+
 }

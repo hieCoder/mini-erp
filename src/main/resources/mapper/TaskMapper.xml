@@ -104,6 +104,7 @@
                t.content AS task_content,
                c.id AS comment_id,
                c.user_id AS comment_user_id,
+               c.title AS comment_title,
                c.content AS comment_content,
                c.files AS comment_files,
                c.parent_id AS comment_parent_id,
@@ -138,6 +139,7 @@
 
     <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
         <id property="id" column="comment_id" />
+        <result property="title" column="comment_title" />
         <result property="content" column="comment_content" />
         <result property="files" column="comment_files" />
         <result property="createdDate" column="comment_created_date" />
@@ -150,6 +152,7 @@
     <select id="getChildComments" resultMap="commentResultMap">
         SELECT c.id AS comment_id,
                c.user_id AS comment_user_id,
+               c.title AS comment_title,
                c.content AS comment_content,
                c.files AS comment_files,
                c.created_date AS comment_created_date,

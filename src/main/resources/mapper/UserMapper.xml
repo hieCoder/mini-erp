@@ -50,7 +50,7 @@
     <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT u.*, c.id AS contract_id, c.*
         FROM user u
-        LEFT JOIN contract c ON u.id = c.user_id
+                 LEFT JOIN contract c ON u.id = c.user_id
         WHERE u.id = #{id}
     </select>
 

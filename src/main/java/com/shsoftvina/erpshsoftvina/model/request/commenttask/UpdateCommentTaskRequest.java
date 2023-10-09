@@ -17,10 +17,8 @@ public class UpdateCommentTaskRequest {
     @NotBlank(message = "Field id is not filled")
     private String id;
 
-    @NotBlank(message = "Field title is not filled")
     private String title;
 
-    @NotBlank(message = "Field content is not filled")
     private String content;
 
     private MultipartFile[] files;

@@ -61,6 +61,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .atm(user.getAtm())
                 .email(user.getEmail())
+                .resume(user.getResume())
                 .role(EnumUtils.instance(user.getRole()))
                 .position(EnumUtils.instance(user.getPosition()))
                 .address(user.getAddress())

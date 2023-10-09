@@ -1,7 +1,10 @@
 package com.shsoftvina.erpshsoftvina.model.response.user;
 
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
