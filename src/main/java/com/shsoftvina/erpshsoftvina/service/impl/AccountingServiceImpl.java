@@ -43,7 +43,8 @@ public class AccountingServiceImpl implements AccountingService {
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
         List<String> monthHistoryList = accountingMapper.findAllMonthlyHistory();
-        return accountingConverter.convertListToObjectDTO(monthHistoryList);
+        MonthHistoryList monthHistory = accountingConverter.convertListToObjectDTO(monthHistoryList);
+        return monthHistory;
     }
 
     @Override
