@@ -1,12 +1,12 @@
-package com.shsoftvina.erpshsoftvina.enums.insurance;
+package com.shsoftvina.erpshsoftvina.enums.contract;
 
-public enum InsuranceType {
+public enum InsuranceTypeEnum {
 
     HEALTH_INSURANCE("Health insurance"), SOCIAL_INSURANCE("Social insurance");
 
     private String value;
 
-    InsuranceType(String value) {
+    InsuranceTypeEnum(String value) {
         this.value = value;
     }
 

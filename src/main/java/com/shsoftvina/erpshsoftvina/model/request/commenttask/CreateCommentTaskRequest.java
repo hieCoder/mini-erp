@@ -17,6 +17,9 @@ public class CreateCommentTaskRequest {
     @NotBlank(message = "Field taskId is not filled")
     private String taskId;
 
+    @NotBlank(message = "Field title is not filled")
+    private String title;
+
     @NotBlank(message = "Field content is not filled")
     private String content;
 
@@ -25,5 +28,4 @@ public class CreateCommentTaskRequest {
 
     @NotBlank(message = "Field userId is not filled")
     private String userId;
-
 }

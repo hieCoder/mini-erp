@@ -1,9 +1,9 @@
 package com.shsoftvina.erpshsoftvina.api;
 
+import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.service.TaskService;
-import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,4 +50,9 @@ public class TaskApi {
         return ResponseEntity.ok(taskService.deleteById(id));
     }
 
+    @GetMapping("/hashtag")
+    public ResponseEntity<?> getTaskByHashtag(@RequestParam String userId,
+                                              @RequestParam String hashtag){
+        return ResponseEntity.ok(taskService.getTaskByHashtag(userId, hashtag));
+    }
 }

@@ -17,14 +17,15 @@ import java.util.List;
 @Builder
 public class TaskDetailResponse {
     private String id;
-    private ActionChangeStatusTaskEnumDto statusTask;
+    private EnumDto statusTask;
     private String title;
-    private String content;
     private String fullnameUser;
     private String createdDate;
     private String startDate;
-    private String dueOrCloseDate;
+    private String dueDate;
+    private String closeDate;
     private Integer progress;
     private EnumDto priority;
+    private String content;
     private List<CommentTaskResponse> comments;
 }

@@ -22,12 +22,12 @@ public class CommentTaskApi {
     }
 
     @PostMapping
-    public ResponseEntity<?> CreateCommentTask(@Valid CreateCommentTaskRequest createCommentTaskRequest) {
+    public ResponseEntity<?> createCommentTask(@Valid CreateCommentTaskRequest createCommentTaskRequest) {
         return ResponseEntity.ok(commentTaskService.createCommentTask(createCommentTaskRequest));
     }
 
-    @PostMapping("/editComment")
-    public ResponseEntity<?> UpdateCommentTask(@Valid UpdateCommentTaskRequest updateCommentTaskRequest) {
+    @PostMapping("/updation")
+    public ResponseEntity<?> updateCommentTask(@Valid UpdateCommentTaskRequest updateCommentTaskRequest) {
         return ResponseEntity.ok(commentTaskService.updateCommentTask(updateCommentTaskRequest));
     }
 
@@ -35,5 +35,4 @@ public class CommentTaskApi {
     public ResponseEntity<?> deleteComment(@PathVariable("id") String id){
         return ResponseEntity.ok(commentTaskService.deleteCommentTask(id));
     }
-
 }

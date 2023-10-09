@@ -18,10 +18,11 @@ public interface UserMapper {
     List<User> getAllUser(@Param("searchTerm") String id,
                           @Param("sortDirection") String sortDirection,
                           @Param("start") int start,
-                          @Param("pageSize") int pageSize);
+                          @Param("pageSize") int pageSize,
+                          @Param("status") String status);
     User findById(@Param("id") String id);
-    void changeStatusUser(@Param("id") String id,@Param("status") String status);
+    int changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);
-    void deleteUser(String id);
-
+    int deleteUser(String id);
+    List<String> getAllFullname();
 }

@@ -18,7 +18,7 @@ public class WeeklyReportConverter {
     @Autowired
     UserMapper userMapper;
 
-    public WeeklyReportShowResponse toEntity(WeeklyReport weeklyReport) {
+    public WeeklyReportShowResponse toShowResponse(WeeklyReport weeklyReport) {
         if (weeklyReport == null) return null;
         return WeeklyReportShowResponse.builder()
                 .id(weeklyReport.getId())
@@ -49,5 +49,4 @@ public class WeeklyReportConverter {
                 .user(userMapper.findById(createWeeklyReportRequest.getUserId()))
                 .build();
     }
-
 }

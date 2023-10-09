@@ -4,14 +4,13 @@ import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.CommentTaskConstant;
 import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
 import com.shsoftvina.erpshsoftvina.converter.CommentTaskConverter;
-import com.shsoftvina.erpshsoftvina.entity.CommentNotification;
-import com.shsoftvina.erpshsoftvina.entity.CommentTask;
-import com.shsoftvina.erpshsoftvina.entity.Notification;
+import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.CommentTaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.CreateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.UpdateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
@@ -38,6 +37,12 @@ public class CommentTaskImpl implements CommentTaskService {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private TaskMapper taskMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public CommentTaskResponse findById(String id) {
         CommentTask commentTask = commentTaskMapper.findById(id);
@@ -46,6 +51,22 @@ public class CommentTaskImpl implements CommentTaskService {
 
     @Override
     public int createCommentTask(CreateCommentTaskRequest createCommentTaskRequest) {
+
+        String taskId = createCommentTaskRequest.getTaskId();
+        Task task = taskMapper.findById(taskId);
+        if (task==null) throw new NotFoundException(MessageErrorUtils.notFound("taskID"));
+
+        String userID = createCommentTaskRequest.getUserId();
+        User user = userMapper.findById(userID);
+        if (user==null) throw new NotFoundException(MessageErrorUtils.notFound("userID"));
+
+        String parentId = createCommentTaskRequest.getParentId();
+        CommentTask commentTask = null;
+        if (parentId!=null){
+            commentTask = commentTaskMapper.findById(parentId);
+            if (commentTask==null) throw new NotFoundException(MessageErrorUtils.notFound("parentId"));
+        }
+
         MultipartFile[] files = createCommentTaskRequest.getFiles();
 
         String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
@@ -65,11 +86,11 @@ public class CommentTaskImpl implements CommentTaskService {
         }
 
         if(listFileNameSaveFileSuccess != null){
-            CommentTask commentTask = commentTaskConverter.toEntity(createCommentTaskRequest, listFileNameSaveFileSuccess);
+            CommentTask ct = commentTaskConverter.toEntity(createCommentTaskRequest, listFileNameSaveFileSuccess);
             try{
-                return commentTaskMapper.createCommentTask(commentTask);
+                return commentTaskMapper.createCommentTask(ct);
             } catch (Exception e){
-                FileUtils.deleteMultipleFilesToServer(request,dir, commentTask.getFiles());
+                FileUtils.deleteMultipleFilesToServer(request,dir, ct.getFiles());
                 return 0;
             }
         }
@@ -78,13 +99,16 @@ public class CommentTaskImpl implements CommentTaskService {
 
     @Override
     public int updateCommentTask(UpdateCommentTaskRequest updateCommentTaskRequest) {
-        if(commentTaskMapper.findById(updateCommentTaskRequest.getId()) == null)
+        CommentTask commentTask = commentTaskMapper.findById(updateCommentTaskRequest.getId());
+        if(commentTask == null)
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile[] files = updateCommentTaskRequest.getFiles();
 
         String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = null;
+
+        String listFileNameOld = null;
 
         if (files!= null){
             if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
@@ -94,15 +118,17 @@ public class CommentTaskImpl implements CommentTaskService {
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
             }
 
+            listFileNameOld = commentTask.getFiles();
             listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
         } else{
             listFileNameSaveFileSuccess = new ArrayList<>();
         }
 
         if(listFileNameSaveFileSuccess != null){
-            CommentTask commentTask = commentTaskConverter.toEntity(updateCommentTaskRequest, listFileNameSaveFileSuccess);
             try{
-                return commentTaskMapper.updateCommentTask(commentTask);
+                commentTaskMapper.updateCommentTask(commentTaskConverter.toEntity(updateCommentTaskRequest, listFileNameSaveFileSuccess));
+                FileUtils.deleteMultipleFilesToServer(request, dir, listFileNameOld);
+                return 1;
             } catch (Exception e){
                 FileUtils.deleteMultipleFilesToServer(request,dir, commentTask.getFiles());
                 return 0;

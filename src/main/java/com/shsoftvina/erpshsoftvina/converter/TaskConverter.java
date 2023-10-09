@@ -18,6 +18,7 @@ import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import liquibase.pro.packaged.D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,10 +44,10 @@ public class TaskConverter {
 
         if (task == null) return null;
 
-        Date closeDate = task.getCloseDate();
+        Date dueDate = task.getDueDate();
         String dueOrCloseDate = null;
-        if(closeDate != null){
-            if(!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) dueOrCloseDate = "~ " + DateUtils.formatDate(task.getCloseDate());
+        if(dueDate != null){
+            if(!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) dueOrCloseDate = "~ " + DateUtils.formatDate(task.getDueDate());
             else dueOrCloseDate = DateUtils.formatDate(task.getCloseDate());
         }
 
@@ -64,22 +65,16 @@ public class TaskConverter {
 
     public Task toEntity(TaskRegisterRequest taskRegisterRequest) {
 
-        String userId = taskRegisterRequest.getUserId();
-        String priority = taskRegisterRequest.getPriority();
-
-        User user = userMapper.findById(userId);
-        if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
-        if (!EnumUtils.isExistInEnum(PriorityTaskEnum.class, priority)) throw new NotFoundException(MessageErrorUtils.notFound("Priority"));
-
         return Task.builder()
                 .id(UUID.randomUUID().toString())
                 .statusTask(StatusTaskEnum.REGISTERED)
                 .title(taskRegisterRequest.getTitle())
                 .content(taskRegisterRequest.getContent())
-                .user(userMapper.findById(userId))
+                .user(userMapper.findById(taskRegisterRequest.getUserId()))
                 .createdDate(new Date())
-                .closeDate(taskRegisterRequest.getCloseDate())
-                .priority(EnumUtils.getEnumFromValue(PriorityTaskEnum.class, priority))
+                .dueDate(taskRegisterRequest.getDueDate())
+                .priority(EnumUtils.getEnumFromValue(PriorityTaskEnum.class,
+                        taskRegisterRequest.getPriority()))
                 .progress(0)
                 .status(StatusDeleteTaskEnum.ACTIVE)
                 .build();
@@ -100,24 +95,18 @@ public class TaskConverter {
 
         if (task == null) return null;
 
-        Date closeDate = task.getCloseDate();
-        String dueOrCloseDate = null;
-        if(closeDate != null){
-            if(!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) dueOrCloseDate = "~ " + DateUtils.formatDate(task.getCloseDate());
-            else dueOrCloseDate = DateUtils.formatDate(task.getCloseDate());
-        }
-
         return TaskDetailResponse.builder()
                 .id(task.getId())
-                .statusTask(ApplicationUtils.instance(task.getStatusTask()))
+                .statusTask(EnumUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
-                .content(task.getContent())
                 .fullnameUser(task.getUser().getFullname())
                 .createdDate(DateUtils.formatDate(task.getCreatedDate()))
                 .startDate(DateUtils.formatDate(task.getStartDate()))
-                .dueOrCloseDate(dueOrCloseDate)
+                .dueDate(DateUtils.formatDate(task.getDueDate()))
+                .closeDate(DateUtils.formatDate(task.getCloseDate()))
                 .progress(task.getProgress())
                 .priority(EnumUtils.instance(task.getPriority()))
+                .content(task.getContent())
                 .comments(commentTaskConverter.toListResponse(task.getComments()))
                 .build();
     }
@@ -127,17 +116,32 @@ public class TaskConverter {
         String id = taskUpdateRequest.getId();
         String action = taskUpdateRequest.getAction();
         Integer progress = taskUpdateRequest.getProgress();
+        Date dueDate = taskUpdateRequest.getDueDate();
 
         Task task = taskMapper.findById(id);
+
+        Date startDate = task.getStartDate();
+        if (action.equals(ActionChangeStatusTaskEnum.OPEN.toString()) && startDate== null){
+            startDate = new Date();
+        }
 
         StatusTaskEnum statusTaskCurrent = task.getStatusTask();
         StatusTaskEnum statusTaskNew = ApplicationUtils.getNextStatusTaskEnum(statusTaskCurrent, action);
 
+        Date closeDate = task.getCloseDate();
+
         if(task.getStatusTask().equals(StatusTaskEnum.OPENED) || task.getStatusTask().equals(StatusTaskEnum.REOPENED)){
-            if(progress == 100) statusTaskNew = StatusTaskEnum.CLOSED;
-            if (statusTaskNew.equals(StatusTaskEnum.CLOSED)) progress = 100;
+            if(progress == 100) {
+                statusTaskNew = StatusTaskEnum.CLOSED;
+                closeDate = new Date();
+            }
+            if (statusTaskNew.equals(StatusTaskEnum.CLOSED)) {
+                progress = 100;
+                closeDate = new Date();
+            }
         } else if (!task.getStatusTask().equals(StatusTaskEnum.REOPENED) && statusTaskNew.equals(StatusTaskEnum.REOPENED)){
             progress = 0;
+            closeDate = null;
         }
 
         return Task.builder()
@@ -145,9 +149,11 @@ public class TaskConverter {
                 .statusTask(statusTaskNew)
                 .title(taskUpdateRequest.getTitle())
                 .content(taskUpdateRequest.getContent())
-                .startDate(new Date())
+                .startDate(startDate)
                 .priority(EnumUtils.getEnumFromValue(PriorityTaskEnum.class, taskUpdateRequest.getPriority()))
                 .progress(progress)
+                .closeDate(closeDate)
+                .dueDate(dueDate)
                 .build();
     }
 }

@@ -24,6 +24,7 @@ public class Task {
     private User user;
     private Date createdDate;
     private Date startDate;
+    private Date dueDate;
     private Date closeDate;
     private Integer progress;
     private PriorityTaskEnum priority;

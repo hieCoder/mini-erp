@@ -48,8 +48,9 @@ public class UserServiceImpl implements UserService {
     public List<UserShowResponse> getAllUser(String searchTerm,
                                              String sortDirection,
                                              int start,
-                                             int pageSize) {
-        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize);
+                                             int pageSize,
+                                             String status) {
+        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize, status);
         return userConverter.toListShowUserRespone(listUser);
     }
 
@@ -65,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
-        userMapper.changeStatusUser(id, (StatusUserEnum.INACTIVE).toString());
+    public int deleteUser(String id) {
+        return userMapper.changeStatusUser(id, (StatusUserEnum.INACTIVE).toString());
     }
 
     @Override
@@ -107,7 +108,6 @@ public class UserServiceImpl implements UserService {
         if (user == null) return null;
         return userConverter.toUserDetailResponse(user);
     }
-
 
     @Override
     public int updateUserDetail(UserUpdateRequest userUpdateRequest) {
@@ -162,7 +162,12 @@ public class UserServiceImpl implements UserService {
             }
 
             try{
-                userMapper.updateUserDetail(userUpdate);
+                if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                    userMapper.updateUserProfile(userUpdate);
+                } else{
+                    userMapper.updateUserDetail(userUpdate);
+                }
+
                 if(avatarNameOld != null){
                     FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
                 }
@@ -176,4 +181,10 @@ public class UserServiceImpl implements UserService {
         }
         return 0;
     }
+
+    @Override
+    public List<String> getAllFullname() {
+        return userMapper.getAllFullname();
+    }
+
 }

@@ -37,20 +37,20 @@
     </update>
 
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+         <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM user AS u
-        WHERE u.status = 'ACTIVE'
+        WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
-        ORDER BY
-            CASE WHEN #{sortDirection} = 'ASC' THEN SUBSTRING_INDEX(u.fullname, ' ', -1) END ASC,
-            CASE WHEN #{sortDirection} = 'DESC' THEN SUBSTRING_INDEX(u.fullname, ' ', -1) END DESC
-        LIMIT #{start}, #{pageSize}
+        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
+        LIMIT #{start}, #{pageSize};
+        ]]>
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT u.*, c.id AS contract_id, c.*, i.id AS insurance_id, i.*
+        SELECT u.*, c.id AS contract_id, c.*
         FROM user u
-        LEFT JOIN contract c ON u.id = c.user_id LEFT JOIN insurance i ON i.id = c.insurance_id
+                 LEFT JOIN contract c ON u.id = c.user_id
         WHERE u.id = #{id}
     </select>
 
@@ -79,7 +79,7 @@
             avatar = #{avatar},
             is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
-        WHERE id = #{id}
+        WHERE id = #{id};
     </update>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
@@ -110,14 +110,14 @@
         <result property="allowance" column="allowance"/>
         <result property="contract" column="contract"/>
         <result property="createdDate" column="created_date"/>
-        <association property="insurance" column="insurance_id" javaType="com.shsoftvina.erpshsoftvina.entity.Insurance" resultMap="insuranceResultMap">
-        </association>
-    </resultMap>
-
-    <resultMap id="insuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Insurance" >
-        <id property="id" column="insurance_id"/>
         <result property="insuranceType" column="insurance_type"/>
-        <result property="money" column="money"/>
+        <result property="insuranceMoney" column="insurance_money"/>
     </resultMap>
 
+    <select id="getAllFullname" resultType="java.lang.String">
+    <![CDATA[
+        SELECT fullname
+        FROM user;
+        ]]>
+    </select>
 </mapper>

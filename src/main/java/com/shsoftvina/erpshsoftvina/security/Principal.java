@@ -8,7 +8,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class Principal {
 
     public static User getUserCurrent() {
-        User user = User.builder().email("canh@gmail.com")
+        User user = User.builder()
+                .id("1")
+                .email("canh@gmail.com")
                 .password("$2a$12$f6ld0R7LiYdJ6TwzjxLxT.QJ45febxzuZV1UbDg7TQUwPf.nRvTl2")
                 .role(RoleEnum.OWNER)
                 .status(StatusUserEnum.ACTIVE)

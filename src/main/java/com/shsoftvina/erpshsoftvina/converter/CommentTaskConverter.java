@@ -1,20 +1,16 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
-import com.shsoftvina.erpshsoftvina.entity.CommentNotification;
 import com.shsoftvina.erpshsoftvina.entity.CommentTask;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.CommentTaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
-import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.CreateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.UpdateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +44,7 @@ public class CommentTaskConverter {
 
         return CommentTaskResponse.builder()
                 .id(commentTask.getId())
+                .title(commentTask.getTitle())
                 .content(commentTask.getContent())
                 .files(StringUtils.splitPathFile(CommentTask.class, commentTask.getFiles(), ","))
                 .createdDate(DateUtils.formatDateTime(commentTask.getCreatedDate()))
@@ -66,6 +63,7 @@ public class CommentTaskConverter {
         }
         return CommentTask.builder()
                 .id(UUID.randomUUID().toString())
+                .title(createCommentTaskRequest.getTitle())
                 .content(createCommentTaskRequest.getContent())
                 .files(files)
                 .createdDate(new Date())
@@ -82,6 +80,7 @@ public class CommentTaskConverter {
         }
         return CommentTask.builder()
                 .id(updateCommentTaskRequest.getId())
+                .title(updateCommentTaskRequest.getTitle())
                 .content(updateCommentTaskRequest.getContent())
                 .files(files)
                 .modifiedDate(new Date())

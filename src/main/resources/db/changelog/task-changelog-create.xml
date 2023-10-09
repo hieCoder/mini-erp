@@ -26,5 +26,11 @@
             <column name="content" type="TEXT"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="3" author="team2">
+        <addColumn tableName="task">
+            <column name="due_date" type="DATE"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
 

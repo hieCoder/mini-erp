@@ -13,15 +13,12 @@ public interface UserService {
     List<UserShowResponse> getAllUser(String searchTerm,
                                       String sortDirection,
                                       int start,
-                                      int pageSize);
-
+                                      int pageSize,
+                                      String status);
     UserDetailResponse findUserDetail(String id);
-
-    void deleteUser(String id);
-
+    int deleteUser(String id);
     Boolean activeUserRegisterRequest(UserActiveRequest user);
-
     UserDetailResponse findByEmail(String email);
-
     int updateUserDetail(UserUpdateRequest userUpdateRequest);
+    List<String> getAllFullname();
 }

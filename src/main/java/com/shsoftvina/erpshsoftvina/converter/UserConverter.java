@@ -61,6 +61,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .atm(user.getAtm())
                 .email(user.getEmail())
+                .resume(user.getResume())
                 .role(EnumUtils.instance(user.getRole()))
                 .position(EnumUtils.instance(user.getPosition()))
                 .address(user.getAddress())
@@ -117,6 +118,7 @@ public class UserConverter {
                 .resume(newResumeFileName)
                 .timesheetsCode(userUpdateRequest.getTimesheetsCode())
                 .atm(userUpdateRequest.getAtm())
+                .isFirstUpdateProfile(UserConstant.ACTIVE_FIRST_UPDATE_PROFILE)
                 .build();
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 public class UserApi {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping("/updation")
     public ResponseEntity<?> updateUser(@Valid UserUpdateRequest userUpdateRequest) {
@@ -27,13 +27,14 @@ public class UserApi {
 
     @GetMapping
     public ResponseEntity<?> getAllUser(
-            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(name = "search", required = false, defaultValue = "") String search,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
+            @RequestParam(name = "status", required = false, defaultValue = "ACTIVE") String status) {
 
         List<UserShowResponse> listUser = userService.getAllUser(search,
-                sort, (page - 1) * pageSize, pageSize);
+                sort, (page - 1) * pageSize, pageSize, status);
 
         return new ResponseEntity<>(listUser, HttpStatus.OK);
     }
@@ -45,8 +46,7 @@ public class UserApi {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
-        userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
     }
 
     @PutMapping("/register/approval")
@@ -54,4 +54,8 @@ public class UserApi {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
 
+    @GetMapping("/usernames")
+    public ResponseEntity<?> getAllFullname() {
+        return new ResponseEntity<>(userService.getAllFullname(), HttpStatus.OK);
+    }
 }

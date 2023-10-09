@@ -10,6 +10,7 @@
                t.user_id AS task_user_id,
                t.created_date AS task_created_date,
                t.start_date AS task_start_date,
+               t.due_date AS task_due_date,
                t.close_date AS task_close_date,
                t.priority AS task_priority,
                t.progress AS task_progress,
@@ -36,6 +37,7 @@
         <result property="content" column="task_content"/>
         <result property="createdDate" column="task_created_date"/>
         <result property="startDate" column="task_start_date"/>
+        <result property="dueDate" column="task_due_date"/>
         <result property="closeDate" column="task_close_date"/>
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
@@ -52,8 +54,8 @@
 
     <insert id="registerTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
         INSERT
-        INTO task (id, status_task, title, content, user_id, created_date, close_date, priority, progress, status)
-        VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{closeDate}, #{priority}, #{progress}, #{status});
+        INTO task (id, status_task, title, content, user_id, created_date, due_date, priority, progress, status)
+        VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{dueDate}, #{priority}, #{progress}, #{status});
     </insert>
 
     <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
@@ -63,13 +65,15 @@
             priority = #{priority},
             content = #{content},
             progress = #{progress},
-            start_date = #{startDate}
+            start_date = #{startDate},
+            close_date = #{closeDate},
+            due_date = #{dueDate}
         WHERE id = #{id};
     </update>
 
-    <update id="deleteById" parameterType="String">
+    <update id="changeStatusTask" parameterType="String">
         UPDATE task SET
-            status = 'INACTIVE'
+            status = #{status}
         WHERE id = #{id};
     </update>
 
@@ -92,6 +96,7 @@
                t.user_id AS task_user_id,
                t.created_date AS task_created_date,
                t.start_date AS task_start_date,
+               t.due_date AS task_due_date,
                t.close_date AS task_close_date,
                t.priority AS task_priority,
                t.progress AS task_progress,
@@ -99,6 +104,7 @@
                t.content AS task_content,
                c.id AS comment_id,
                c.user_id AS comment_user_id,
+               c.title AS comment_title,
                c.content AS comment_content,
                c.files AS comment_files,
                c.parent_id AS comment_parent_id,
@@ -121,6 +127,7 @@
         <result property="content" column="task_content"/>
         <result property="createdDate" column="task_created_date"/>
         <result property="startDate" column="task_start_date"/>
+        <result property="dueDate" column="task_due_date"/>
         <result property="closeDate" column="task_close_date"/>
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
@@ -132,6 +139,7 @@
 
     <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
         <id property="id" column="comment_id" />
+        <result property="title" column="comment_title" />
         <result property="content" column="comment_content" />
         <result property="files" column="comment_files" />
         <result property="createdDate" column="comment_created_date" />
@@ -144,6 +152,7 @@
     <select id="getChildComments" resultMap="commentResultMap">
         SELECT c.id AS comment_id,
                c.user_id AS comment_user_id,
+               c.title AS comment_title,
                c.content AS comment_content,
                c.files AS comment_files,
                c.created_date AS comment_created_date,
@@ -160,10 +169,22 @@
 
     <select id="getUserId" resultMap="userResultMap">
         SELECT
-               u.id AS comment_user_id,
-               u.fullname AS user_fullname,
-               u.avatar AS user_avatar
+            u.id AS comment_user_id,
+            u.fullname AS user_fullname,
+            u.avatar AS user_avatar
         FROM user u
         WHERE u.id = #{id}
     </select>
+
+    <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
+        SELECT t.id, t.title
+        FROM task t
+        INNER JOIN user u ON t.user_id = u.id
+        WHERE t.status = 'ACTIVE' AND u.id = #{userId} AND t.content LIKE CONCAT('%', #{hashtag}, '%')
+    </select>
+
+    <resultMap id="TaskByHashTagResultMap" type="java.util.Map">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+    </resultMap>
 </mapper>

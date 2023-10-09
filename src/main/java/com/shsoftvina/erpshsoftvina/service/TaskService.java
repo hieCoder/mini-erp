@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TaskService {
     List<TaskShowResponse> findAll(int start, int pageSize, String status, String search);
@@ -16,4 +17,5 @@ public interface TaskService {
     int deleteById(String id);
     List<StatusTaskCountsResponse> getStatusTaskCount();
     TaskDetailResponse findById(String id);
+    List<Map<String, Object>> getTaskByHashtag(String userId, String hashtag);
 }
