@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.SettingMapper">
+
+    <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.Setting" resultMap="settingResultMap">
+        SELECT *
+        FROM SETTING
+    </select>
+
+    <update id="updateSetting" parameterType="com.shsoftvina.erpshsoftvina.entity.Setting">
+        UPDATE SETTING
+        SET IMAGE_TYPE = #{imageType},
+            FILE_TYPE = #{fileType},
+            FILE_SIZE = #{fileSize}
+        WHERE ID = #{id}
+    </update>
+
+    <resultMap id="settingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Setting">
+        <id property="id" column="id"/>
+        <result property="code" column="CODE"/>
+        <result property="imageType" column="IMAGE_TYPE"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+    </resultMap>
+
+    <select id="findById" resultMap="settingResultMap">
+        SELECT *
+        FROM SETTING
+        WHERE ID = #{id}
+    </select>
+</mapper>
