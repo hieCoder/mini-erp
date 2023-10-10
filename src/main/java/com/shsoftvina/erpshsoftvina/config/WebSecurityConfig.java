@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.config;
 
-import com.shsoftvina.erpshsoftvina.security.UpdateProfileFirstInterceptor;
+
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import javax.servlet.Filter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UpdateProfileFirstInterceptor updateProfileFirstInterceptor;
+    private UpdateProfileInterceptorFilter updateProfileInterceptorFilter;
 
     // Configure security for HTTP requests.
     @Override
@@ -56,8 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessUrl("/login?logout") // URL after successful logout.
 //                .permitAll()
               .and()
-                .addFilterBefore(new UpdateProfileInterceptorFilter(updateProfileFirstInterceptor),
-                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(updateProfileInterceptorFilter, UsernamePasswordAuthenticationFilter.class)
               .csrf().disable(); // Disable CSRF protection.
     }
 
