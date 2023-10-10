@@ -129,4 +129,36 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_WEEKLY_REPORT_USER"/>
     </changeSet>
+
+    <changeSet id="16" author="team2">
+        <addForeignKeyConstraint baseTableName="ONETHING_CALENDAR"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_ONETHING_CALENDAR_USER"/>
+    </changeSet>
+
+    <changeSet id="17" author="team2">
+        <addForeignKeyConstraint baseTableName="TODO_LIST"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_TODO_LIST_USER"/>
+    </changeSet>
+
+    <changeSet id="18" author="team2">
+        <addForeignKeyConstraint baseTableName="TODO_LIST_DETAIL"
+                                 baseColumnNames="TODO_LIST_ID"
+                                 referencedTableName="TODO_LIST"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_TODO_LIST_DETAIL_TODO_LIST"/>
+    </changeSet>
+
+    <changeSet id="19" author="team2">
+        <addForeignKeyConstraint baseTableName="AFFIRMATION"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_AFFIRMATION_USER"/>
+    </changeSet>
 </databaseChangeLog>
