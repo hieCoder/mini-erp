@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.accountings;
+package com.shsoftvina.erpshsoftvina.model.response.accounting;
 
 import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
 import lombok.AllArgsConstructor;

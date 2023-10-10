@@ -10,10 +10,10 @@ import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.AccountResponse;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.PageAccountListResponse;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRemain;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -43,7 +43,8 @@ public class AccountingServiceImpl implements AccountingService {
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
         List<String> monthHistoryList = accountingMapper.findAllMonthlyHistory();
-        return accountingConverter.convertListToObjectDTO(monthHistoryList);
+        MonthHistoryList monthHistory = accountingConverter.convertListToObjectDTO(monthHistoryList);
+        return monthHistory;
     }
 
     @Override

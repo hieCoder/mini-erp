@@ -5,12 +5,12 @@
 
     <insert id="createCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" >
         INSERT
-        INTO comment_notification (created_date, content, id, notification_id, user_id, parent_id)
+        INTO COMMENT_NOTIFICATION (created_date, content, id, notification_id, user_id, parent_id)
         VALUES (NOW(), #{content}, #{id},#{notification.id}, #{user.id}, #{parentComment.id});
     </insert>
 
     <update id="updateCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
-        UPDATE comment_notification
+        UPDATE COMMENT_NOTIFICATION
         SET
             content = #{content},
             modified_by = #{modifiedBy},
@@ -19,12 +19,7 @@
     </update>
 
     <delete id="deleteById" parameterType="java.lang.String">
-          DELETE FROM comment_notification WHERE id = #{id}
-    </delete>
-
-    <delete id="deleteCommentNotificationHasChild" parameterType="java.lang.String">
-        DELETE FROM comment_notification WHERE parent_id = #{id};
-        DELETE FROM comment_notification WHERE id = #{id}
+          DELETE FROM COMMENT_NOTIFICATION WHERE id = #{id}
     </delete>
 
     <select id="findById" resultMap="commentNotificationResultMap">
@@ -38,7 +33,7 @@
             c.modified_by AS comment_modified_by,
             u.fullname AS user_fullname,
             u.avatar AS user_avatar
-        FROM comment_notification c LEFT JOIN user u ON c.user_id = u.id AND c.parent_id IS NOT NULL
+        FROM COMMENT_NOTIFICATION c LEFT JOIN USER u ON c.user_id = u.id AND c.parent_id IS NOT NULL
         WHERE c.id = #{id}
     </select>
 
@@ -68,8 +63,8 @@
                c.modified_by AS comment_modified_by,
                u.fullname AS user_fullname,
                u.avatar AS user_avatar
-        FROM comment_notification c
-                 INNER JOIN user u ON c.user_id = u.id
+        FROM COMMENT_NOTIFICATION c
+                 INNER JOIN USER u ON c.user_id = u.id
         WHERE c.parent_id = #{id}
     </select>
 </mapper>
