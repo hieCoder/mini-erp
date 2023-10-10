@@ -46,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/logout") // URL for logout.
 //                .logoutSuccessUrl("/login?logout") // URL after successful logout.
 //                .permitAll()
-              .and()
-              .csrf().disable(); // Disable CSRF protection.
+                .and()
+                .csrf().disable().headers().defaultsDisabled().contentTypeOptions(); // Disable CSRF protection.
     }
 
     // Inject the userDetailsService for authentication.
