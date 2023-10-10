@@ -10,6 +10,10 @@
         LIMIT #{start}, #{pageSize}
     </select>
 
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM NOTIFICATION;
+    </select>
+
     <!--    Create new Notification-->
     <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
         INSERT INTO NOTIFICATION (id, title, content, files, created_date)
