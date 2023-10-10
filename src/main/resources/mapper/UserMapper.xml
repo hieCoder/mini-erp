@@ -5,7 +5,7 @@
 
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
-        FROM user
+        FROM USER
         where email = #{email} AND status = #{status}
     </select>
 
