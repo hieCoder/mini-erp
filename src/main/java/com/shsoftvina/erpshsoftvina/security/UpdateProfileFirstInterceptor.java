@@ -20,11 +20,8 @@ public class UpdateProfileFirstInterceptor implements HandlerInterceptor {
             response.sendRedirect("/login");
             return false;
         }
-
-        if(!currentUser.isFirstUpdateProfile()) {
-            response.sendRedirect("/testUpdateProfile");
-            System.out.println("Redirect to login page");
-            return false;
+        if(!currentUser.isFirstUpdateProfile() && !request.getRequestURI().startsWith("/assets/")) {
+            request.getRequestDispatcher("/testUpdateProfile").forward(request, response);
         }
         return true;
     }
