@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.security;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,19 +20,30 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             try {
-//                updateProfileFirstInterceptor.preHandle(request, response, null);
                 User currentUser = Principal.getUserCurrent();
                 if(currentUser == null) {
                     response.sendRedirect("/login");
                 }
-                System.out.println(request.getRequestURI());
-                if(!currentUser.isFirstUpdateProfile() && !request.getRequestURI().startsWith("/assets/")) {
-                    request.getRequestDispatcher("/testUpdateProfile").forward(request, response);
+                if(!currentUser.isFirstUpdateProfile() && !urlsAllow(request.getRequestURI())) {
+                    response.sendRedirect("/testUpdateProfile");
+//                    request.getRequestDispatcher("/testUpdateProfile").forward(request, response);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean urlsAllow(String u){
+        String[] urls = new String[]{
+                "/assets/",
+                "/login", "/testUpdateProfile"
+        };
+
+        for(String url: urls){
+            if(u.startsWith(url)) return true;
+        }
+        return false;
     }
 }
