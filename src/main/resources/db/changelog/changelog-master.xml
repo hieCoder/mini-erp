@@ -18,5 +18,10 @@
     <include file="db/changelog/weekly-report-changelog-create.xml" />
     <include file="db/changelog/setting-changelog-create.xml" />
 
+    <include file="db/changelog/onething-calendar-changelog-create.xml" />
+    <include file="db/changelog/todo-list-changelog-create.xml" />
+    <include file="db/changelog/todo-list-detail-changelog-create.xml" />
+    <include file="db/changelog/affirmation-changelog-create.xml" />
+
     <include file="db/changelog/changelog-add-constraint.xml" />
 </databaseChangeLog>
