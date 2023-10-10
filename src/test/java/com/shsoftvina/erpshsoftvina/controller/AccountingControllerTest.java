@@ -8,7 +8,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accountings.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRemain;
-import com.shsoftvina.erpshsoftvina.model.response.users.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import com.shsoftvina.erpshsoftvina.service.impl.AccountingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
