@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/hello")
+@RequestMapping("/")
 public class UserController {
 
-    @GetMapping
+    @GetMapping("/home")
     public String hello() {
        return "auth/index";
     }
