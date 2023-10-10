@@ -5,12 +5,11 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.accounting.StatusAccountingEnum;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.AccountResponse;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

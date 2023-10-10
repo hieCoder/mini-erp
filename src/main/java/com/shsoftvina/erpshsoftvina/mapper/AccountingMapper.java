@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
-import com.shsoftvina.erpshsoftvina.model.response.accountings.TotalSpendAndRemain;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
