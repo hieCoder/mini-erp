@@ -55,7 +55,7 @@ public class TaskConverter {
                 .id(task.getId())
                 .statusTask(EnumUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
-                .fullnameUser(task.getUser().getFullname())
+                .fullnameUser(task.getUser()!=null?task.getUser().getFullname():null)
                 .startDate(DateUtils.formatDate(task.getStartDate()))
                 .dueOrCloseDate(dueOrCloseDate)
                 .progress(task.getProgress())

@@ -1,7 +1,5 @@
 package com.shsoftvina.erpshsoftvina.model.response.todo;
 
-import com.shsoftvina.erpshsoftvina.entity.CategoryManagementTime;
-import com.shsoftvina.erpshsoftvina.entity.TodoManagementTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

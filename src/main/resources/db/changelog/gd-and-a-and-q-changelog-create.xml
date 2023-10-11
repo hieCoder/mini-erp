@@ -3,18 +3,17 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <!-- create table TODO_MANAGEMENT_TIME -->
+    <!-- create table GARATITUDE_DIARY_AFFIRMATION_QUOTE -->
     <changeSet id="1" author="team2">
-        <createTable tableName="TODO_MANAGEMENT_TIME">
+        <createTable tableName="GARATITUDE_DIARY_AFFIRMATION_QUOTE">
             <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="DAY" type="DATE"/>
-            <column name="TARGET" type="VARCHAR(255)"/>
-            <column name="PERFORMANCE" type="BIT"/>
+            <column name="GARATITUDE_DIARY" type="TEXT"/>
+            <column name="AFFIRMATION" type="TEXT"/>
+            <column name="QUOTE" type="TEXT"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
-            <column name="CATEGORY_MANAGEMENT_TIME_ID" type="VARCHAR(255)"/>
-            <column name="MANAGEMENT_TIME_ID" type="VARCHAR(255)"/>
+            <column name="DAY" type="DATE"/>
         </createTable>
     </changeSet>
 

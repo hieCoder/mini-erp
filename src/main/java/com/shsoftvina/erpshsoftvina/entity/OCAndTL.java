@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
+import com.shsoftvina.erpshsoftvina.enums.oc_and_tl.OCAndTLCategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,15 +9,14 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class TodoManagementTime {
+public class OCAndTL {
     private String id;
-    private Date day;
+    private OCAndTLCategoryEnum category;
     private String target;
-    private Boolean performance;
+    private boolean performance;
     private User user;
-    private CategoryManagementTime category;
-    private ManagementTime management;
+    private Date day;
 }
