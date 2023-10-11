@@ -39,7 +39,7 @@
     <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
          <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
-        FROM user AS u
+        FROM USER AS u
         WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}

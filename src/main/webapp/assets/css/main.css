@@ -8,11 +8,13 @@ body {
 header {
     background-color: #333 !important;
     color: #fff !important;
-    padding: 30px !important;
+    padding: 16px !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
+    font-family: Arial, sans-serif;
+    z-index: 9999;
 }
 
 footer {
@@ -23,6 +25,7 @@ footer {
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
+    z-index: 9999;
 }
 
 .content-wrapper {
@@ -30,6 +33,14 @@ footer {
     margin-bottom: 40px !important;
     padding: 20px !important;
     height: 1000px !important;
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+li.disabled:hover {
+    cursor: not-allowed;
 }
 
 h1 {
@@ -50,11 +61,13 @@ th, td {
     border: 1px solid #ccc !important;
     padding: 10px !important;
     text-align: left !important;
+    line-height: 100%;
 }
 
 th {
     background-color: #333 !important;
     color: #fff !important;
+    text-align: center !important;
 }
 
 tr:nth-child(even) {
@@ -167,4 +180,45 @@ td:nth-child(3) {
 #pagination a.active {
     background-color: #333;
     color: #fff;
+}
+
+/*Scrollbar*/
+/* Ẩn thanh cuộn mặc định */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Điểm cuộn */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 6px;
+}
+
+/* Điểm cuộn khi hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* Track (phần nền của thanh cuộn) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Track khi hover */
+::-webkit-scrollbar-track:hover {
+    background: #ddd;
+}
+
+.loading-spin {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding-top: 20%;
+    font-size: 24px;
+    z-index: 9999;
 }

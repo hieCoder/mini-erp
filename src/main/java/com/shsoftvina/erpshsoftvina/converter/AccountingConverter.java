@@ -38,7 +38,7 @@ public class AccountingConverter {
         String parseCreatedDate = DateUtils.formatLocalDateTime(accounting.getCreatedDate());
         return AccountResponse.builder()
                 .id(accounting.getId())
-                .bill(accounting.getBill())
+                .bill(FileUtils.getPathUpload(Accounting.class, accounting.getBill()))
                 .createdDate(parseCreatedDate)
                 .expense(expense)
                 .remain(accounting.getRemain())
