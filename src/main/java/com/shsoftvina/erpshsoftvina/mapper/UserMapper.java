@@ -1,9 +1,9 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -15,14 +15,14 @@ public interface UserMapper {
     int registerUser(User user);
     int updateUserProfile(User user);
     int updateUserDetail(User user);
-    List<User> getAllUser(@Param("searchTerm") String id,
+    List<User> getAllUser(@Param("searchTerm") String searchTerm,
                           @Param("sortDirection") String sortDirection,
-                          @Param("start") int start,
-                          @Param("pageSize") int pageSize,
-                          @Param("status") String status);
+                          @Param("status") String status,
+                          RowBounds rowBounds);
     User findById(@Param("id") String id);
     int changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);
     int deleteUser(String id);
     List<String> getAllFullname();
+    long getTotalUser();
 }

@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(updateProfileFirstInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login")
+                .excludePathPatterns("/login", "/assets/**")
                 .order(Ordered.HIGHEST_PRECEDENCE);
     }
 }

@@ -5,18 +5,18 @@
 
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
-        FROM user
+        FROM USER
         where email = #{email} AND status = #{status}
     </select>
 
     <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         SELECT *
-        FROM user
+        FROM USER
         where email = #{email}
     </select>
 
     <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user
+        UPDATE USER
         SET
             fullname = #{fullname},
             date_of_birth = #{dateOfBirth},
@@ -36,38 +36,42 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+    <select id="getAllUser" parameterType="org.apache.ibatis.session.RowBounds" resultMap="userResultMap">
          <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
-        FROM user AS u
+        FROM USER AS u
         WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
-        LIMIT #{start}, #{pageSize};
+
         ]]>
+    </select>
+
+    <select id="getTotalUser" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM USER
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT u.*, c.id AS contract_id, c.*
-        FROM user u
-                 LEFT JOIN contract c ON u.id = c.user_id
+        FROM USER u
+                 LEFT JOIN CONTRACT c ON u.id = c.user_id
         WHERE u.id = #{id}
     </select>
 
     <update id="changeStatusUser" parameterType="String" >
-        UPDATE user SET status = #{status} WHERE id = #{id}
+        UPDATE USER SET status = #{status} WHERE id = #{id}
     </update>
 
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
+        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
-        DELETE from user where id = #{id}
+        DELETE from USER where id = #{id}
     </delete>
 
     <update id="updateUserProfile" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user
+        UPDATE USER
         SET
             fullname = #{fullname},
             date_of_birth = #{dateOfBirth},
@@ -117,7 +121,7 @@
     <select id="getAllFullname" resultType="java.lang.String">
     <![CDATA[
         SELECT fullname
-        FROM user;
+        FROM USER;
         ]]>
     </select>
 </mapper>
