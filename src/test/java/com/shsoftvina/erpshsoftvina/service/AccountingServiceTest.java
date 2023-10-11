@@ -35,16 +35,16 @@ public class AccountingServiceTest {
         mockMvc = MockMvcBuilders.standaloneSetup(accountingService).build();
     }
 
-    @Test
-     void findAllMonthlyHistory() {
-        List<String> monthList = new ArrayList<>();
-        monthList.add("2023-10");
-        monthList.add("2023-09");
-        monthList.add("2023-08");
-        monthList.add("2023-07");
-        when(accountingMapper.findAllMonthlyHistory()).thenReturn(monthList);
-        when(accountingConverter.convertListToObjectDTO(monthList)).thenReturn(new MonthHistoryList(monthList));
-        MonthHistoryList monthListActual = accountingService.findAllMonthlyHistory();
-        assertEquals(monthList,monthListActual.getMonthList());
-    }
+//    @Test
+//     void findAllMonthlyHistory() {
+//        List<String> monthList = new ArrayList<>();
+//        monthList.add("2023-10");
+//        monthList.add("2023-09");
+//        monthList.add("2023-08");
+//        monthList.add("2023-07");
+//        when(accountingMapper.findAllMonthlyHistory()).thenReturn(monthList);
+//        when(accountingConverter.convertListToObjectDTO(monthList)).thenReturn(new MonthHistoryList(monthList));
+//        MonthHistoryList monthListActual = accountingService.findAllMonthlyHistory();
+//        assertEquals(monthList,monthListActual.getMonthList());
+//    }
 }

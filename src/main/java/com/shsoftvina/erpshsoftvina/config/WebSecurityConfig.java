@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/login", "/register").permitAll()// controller
                 // Require authentication for all other requests.
-                .anyRequest().permitAll()
+//                .anyRequest().authenticated()
                 .and()
                 // Configure form-based login.
                 .formLogin()
