@@ -35,7 +35,7 @@ footer {
     height: 1000px !important;
 }
 
-a:hover{
+a,ul:hover{
     cursor: pointer;
 }
 

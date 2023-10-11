@@ -23,10 +23,13 @@
                         Menu
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Mục 1</a>
-                        <a class="dropdown-item" href="#">Mục 2</a>
+                        <a class="dropdown-item" href="/user">User</a>
+                        <a class="dropdown-item" href="/accounting">Accounting</a>
+                        <a class="dropdown-item" href="/task">Task</a>
+                        <a class="dropdown-item" href="/timesheets">Timesheets</a>
+                        <a class="dropdown-item" href="/todo">Todo Schedule</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Mục 3</a>
+                        <a class="dropdown-item" href="/notification">Notification</a>
                     </div>
                 </li>
             </ul>
@@ -38,10 +41,10 @@
                     <%=Principal.getUserCurrent().getUsername()%>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="#">Thông Tin</a>
-                    <a class="dropdown-item" href="#">Cài Đặt</a>
+                    <a class="dropdown-item" href="/user">Thông Tin</a>
+                    <a class="dropdown-item" href="/setting">Cài Đặt</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Đăng Xuất</a>
+                    <a class="dropdown-item" href="/logout">Đăng Xuất</a>
                 </div>
             </li>
         </ul>

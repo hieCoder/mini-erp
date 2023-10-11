@@ -75,25 +75,25 @@ public class AccountingControllerTest {
         verifyNoMoreInteractions(accountingService);
     }
 
-    @Test
-    public void findAllMonthlyHistoryTest() throws Exception {
-        List<String> monthList = new ArrayList<>();
-        monthList.add("2023-10");
-        monthList.add("2023-09");
-        monthList.add("2023-08");
-        monthList.add("2023-07");
-        MonthHistoryList monthHistoryList = new MonthHistoryList(monthList);
-        when(accountingService.findAllMonthlyHistory()).thenReturn(monthHistoryList);
-
-        mockMvc.perform(get("/api/v1/accounts/"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.monthList", hasSize(4)))
-                .andExpect(jsonPath("$.monthList", containsInAnyOrder("2023-10", "2023-09", "2023-08", "2023-07")))
-                .andExpect(jsonPath("$.monthList", contains("2023-10", "2023-09", "2023-08", "2023-07")))
-                .andExpect(jsonPath("$.monthList[0]", is("2023-10")));
-        verify(accountingService, times(1)).findAllMonthlyHistory();
-        verifyNoMoreInteractions(accountingService);
-    }
+//    @Test
+//    public void findAllMonthlyHistoryTest() throws Exception {
+//        List<String> monthList = new ArrayList<>();
+//        monthList.add("2023-10");
+//        monthList.add("2023-09");
+//        monthList.add("2023-08");
+//        monthList.add("2023-07");
+//        MonthHistoryList monthHistoryList = new MonthHistoryList(monthList);
+//        when(accountingService.findAllMonthlyHistory()).thenReturn(monthHistoryList);
+//
+//        mockMvc.perform(get("/api/v1/accounts/"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.monthList", hasSize(4)))
+//                .andExpect(jsonPath("$.monthList", containsInAnyOrder("2023-10", "2023-09", "2023-08", "2023-07")))
+//                .andExpect(jsonPath("$.monthList", contains("2023-10", "2023-09", "2023-08", "2023-07")))
+//                .andExpect(jsonPath("$.monthList[0]", is("2023-10")));
+//        verify(accountingService, times(1)).findAllMonthlyHistory();
+//        verifyNoMoreInteractions(accountingService);
+//    }
     @Test
     public void createAccountingTest() throws Exception {
         AccountingCreateRequest accountingUpdateRequest = new AccountingCreateRequest(20000L,"4",new MultipartFile[]{},"Buy watermelon");

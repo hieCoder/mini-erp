@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRe
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AccountingConverter {
     @Autowired
     private UserConverter userConverter;
 
-    public MonthHistoryList convertListToObjectDTO(List<String> monthList) {
+    public MonthHistoryList convertListToObjectDTO(List<MonthYearFormat> monthList) {
         return MonthHistoryList.builder()
                 .monthList(monthList)
                 .build();
@@ -76,5 +77,6 @@ public class AccountingConverter {
                 .bill(FileUtils.convertMultipartFileArrayToString(accountingUpdateRequest.getBill()))
                 .build();
     }
+
 }
 
