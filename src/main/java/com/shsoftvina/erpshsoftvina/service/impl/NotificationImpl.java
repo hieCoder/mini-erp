@@ -140,4 +140,9 @@ public class NotificationImpl implements NotificationService {
     public NotificationDetailResponse findById(String id){
         return notificationConverter.toNotificationDetailResponse(notificationMapper.findById(id));
     }
+
+    @Override
+    public int countAll(){
+        return notificationMapper.countAll();
+    };
 }

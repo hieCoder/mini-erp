@@ -13,4 +13,5 @@ public interface NotificationService {
     int updateNoti(UpdateNotificationRequest updateNotificationRequest, String id);
     boolean delNoti(String id);
     NotificationDetailResponse findById(String id);
+    int countAll();
 }
