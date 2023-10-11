@@ -12,7 +12,7 @@
     <title>Title</title>
 </head>
 <body>
-<form id="form" action="/hello/users" method="GET">
+<form id="form" action="/users" method="GET">
     <div class="container">
         <h1 class="mt-4">LIST USER</h1>
         <div class="row mt-4">
@@ -69,7 +69,7 @@
                 <tr>
                     <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>
                     <td>${user.getId()}</td>
-                    <td>${user.getFullname()}</td>
+                    <td><a href="/userDetail/${user.getId()}">${user.getFullname()}</a></td>
                     <td>${user.getEmail()}</td>
                     <td>${user.getDepartment().getName()}</td>
                     <td>${user.getPosition().getName()}</td>

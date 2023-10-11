@@ -7,18 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><dec:title default="Base page" /></title>
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
-<%@ include file="/common/layout-component/header.jsp"%>
-
-<div class="content-wrapper">
+<%--<%@ include file="/common/layout-component/header.jsp"%>--%>
+<main class="mt-5 mb-5">
+    <div class="container pt-4 pb-5">
     <dec:body/>
-</div>
+    </div>
+</main>
+<%--<%@ include file="/common/layout-component/footer.jsp"%>--%>
 
-<%@ include file="/common/layout-component/footer.jsp"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ public class Principal {
                 .role(RoleEnum.OWNER)
                 .status(StatusUserEnum.ACTIVE)
                 .fullname("HuynhCanh")
-                .isFirstUpdateProfile(false)
+                .isFirstUpdateProfile(true)
                 .build();//(User) (SecurityContextHolder.getContext()).getAuthentication().getPrincipal();
         return user;
     }

@@ -3,19 +3,19 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <!-- create table accounting -->
+    <!-- create table ACCOUNTING -->
     <changeSet id="1" author="team2">
-        <createTable tableName="accounting">
-            <column name="id" type="VARCHAR(255)">
+        <createTable tableName="ACCOUNTING">
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="created_date" type="DATETIME"/>
-            <column name="spending" type="BIGINT"/>
-            <column name="remain" type="BIGINT"/>
-            <column name="bill" type="VARCHAR(255)"/>
-            <column name="user_id" type="VARCHAR(255)"/>
-            <column name="title" type="VARCHAR(255)"/>
-            <column name="status" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
+            <column name="SPENDING" type="BIGINT"/>
+            <column name="REMAIN" type="BIGINT"/>
+            <column name="BILL" type="VARCHAR(255)"/>
+            <column name="USER_ID" type="VARCHAR(255)"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="STATUS" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 

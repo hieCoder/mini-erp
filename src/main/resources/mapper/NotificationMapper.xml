@@ -6,19 +6,23 @@
     <!--    Get All Notification-->
     <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
-        FROM notification
+        FROM NOTIFICATION
         LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM NOTIFICATION;
     </select>
 
     <!--    Create new Notification-->
     <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
-        INSERT INTO notification (id, title, content, files, created_date)
+        INSERT INTO NOTIFICATION (id, title, content, files, created_date)
         VALUES (#{id}, #{title}, #{content}, #{files}, NOW())
     </select>
 
     <!--    Update Notification-->
     <update id="updateNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
-        UPDATE notification
+        UPDATE NOTIFICATION
         SET title   = #{title},
             content = #{content},
             files    = #{files}
@@ -28,7 +32,7 @@
     <!--    Delete Notification-->
     <delete id="delNoti" parameterType="String">
         DELETE
-        FROM notification
+        FROM NOTIFICATION
         WHERE id = #{id}
     </delete>
 
@@ -57,9 +61,9 @@
             u.fullname AS user_fullname,
             u.avatar AS user_avatar
         FROM
-            notification n
-                LEFT JOIN comment_notification c ON n.id = c.notification_id AND c.parent_id IS NULL
-                LEFT JOIN user u ON c.user_id = u.id
+            NOTIFICATION n
+                LEFT JOIN COMMENT_NOTIFICATION c ON n.id = c.notification_id AND c.parent_id IS NULL
+                LEFT JOIN USER u ON c.user_id = u.id
         WHERE n.id = #{id}
     </select>
 
@@ -100,8 +104,8 @@
                c.modified_by AS comment_modified_by,
                u.fullname AS user_fullname,
                u.avatar AS user_avatar
-        FROM comment_notification c
-                 INNER JOIN user u ON c.user_id = u.id
+        FROM COMMENT_NOTIFICATION c
+                 INNER JOIN USER u ON c.user_id = u.id
         WHERE c.parent_id = #{id}
     </select>
 </mapper>

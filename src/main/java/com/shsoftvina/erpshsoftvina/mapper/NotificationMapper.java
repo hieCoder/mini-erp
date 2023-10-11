@@ -16,4 +16,5 @@ public interface NotificationMapper {
     Notification updateNoti(Notification notification);
     boolean delNoti(String id);
     Notification findById(String id);
+    int countAll();
 }

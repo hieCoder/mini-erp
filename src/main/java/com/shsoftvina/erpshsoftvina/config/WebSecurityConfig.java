@@ -1,5 +1,7 @@
 package com.shsoftvina.erpshsoftvina.config;
 
+
+import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.Filter;
 
 // Annotating this class with @Configuration designates it as a configuration class,
 // allowing it to define Spring beans, configurations, and other application setup.
@@ -19,16 +24,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 // such as authentication, authorization, and protection against common security vulnerabilities.
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UpdateProfileInterceptorFilter updateProfileInterceptorFilter;
+
     // Configure security for HTTP requests.
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 // Allow unrestricted access to specific endpoints.
-//                .antMatchers("/upload/**").permitAll() // resource
-//                .antMatchers("/assets/**").permitAll() // css, js
-//                .antMatchers("/api/**").permitAll() // api
-//                .antMatchers("/login", "/register").permitAll()// controller
+                .antMatchers("/upload/**").permitAll() // resource
+                .antMatchers("/assets/**").permitAll() // css, js
+                .antMatchers("/api/**").permitAll() // api
+                .antMatchers("/login", "/register").permitAll()// controller
                 // Require authentication for all other requests.
                 .anyRequest().permitAll()
                 .and()
@@ -46,8 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/logout") // URL for logout.
 //                .logoutSuccessUrl("/login?logout") // URL after successful logout.
 //                .permitAll()
-                .and()
-                .csrf().disable().headers().defaultsDisabled().contentTypeOptions(); // Disable CSRF protection.
+              .and()
+                .addFilterBefore(updateProfileInterceptorFilter, UsernamePasswordAuthenticationFilter.class)
+              .csrf().disable(); // Disable CSRF protection.
     }
 
     // Inject the userDetailsService for authentication.

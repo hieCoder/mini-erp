@@ -3,17 +3,17 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <!-- create table timesheets -->
+    <!-- create table TIMESHEETS -->
     <changeSet id="1" author="team2">
-        <createTable tableName="timesheets">
-            <column name="id" type="VARCHAR(255)">
+        <createTable tableName="TIMESHEETS">
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="work_date" type="DATE"/>
-            <column name="checkin" type="TIME"/>
-            <column name="checkout" type="TIME"/>
-            <column name="ot" type="BIT"/>
-            <column name="user_id" type="VARCHAR(255)"/>
+            <column name="WORK_DATE" type="DATE"/>
+            <column name="CHECKIN" type="TIME"/>
+            <column name="CHECKOUT" type="TIME"/>
+            <column name="OT" type="BIT"/>
+            <column name="USER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 
