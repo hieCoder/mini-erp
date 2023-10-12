@@ -6,6 +6,7 @@
         SELECT DISTINCT DATE_FORMAT(created_date, '%Y') AS year,
         DATE_FORMAT(created_date, '%Y - %m') AS month_list
         FROM ACCOUNTING
+        WHERE status = 'ACTIVE'
         ORDER BY created_date DESC
     </select>
     <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
@@ -120,9 +121,9 @@
     </select>
 
     <select id="findAccountingById" parameterType="String" resultMap="accountingResultMap">
-        SELECT *
-        FROM ACCOUNTING
-        WHERE id = #{id} AND status ='ACTIVE'
+        SELECT a.*, u.fullname
+        FROM ACCOUNTING a INNER JOIN USER u on a.user_id = u.id
+        WHERE a.id = #{id} AND a.status ='ACTIVE'
     </select>
 
     <update id="deleteAccounting" parameterType="String">
