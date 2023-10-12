@@ -72,7 +72,7 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
-        if (accountingCreateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
+        if (accountingCreateRequest.getBill() != null && accountingCreateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
             throw new FileTooLimitedException("Max file is 3");
         }
         LocalDateTime newDate = LocalDateTime.now();
@@ -82,12 +82,11 @@ public class AccountingServiceImpl implements AccountingService {
             latestRemain = 0L;
         }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
-        List listFileNameSaveFileSuccess = null;
-        String dir = AccountingConstant.UPLOAD_FILE_DIR;
         if (billFile != null) {
             FileUtils.validateFiles(billFile);
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         }
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
@@ -104,10 +103,9 @@ public class AccountingServiceImpl implements AccountingService {
     }
 
 
-
     @Override
-    public int updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
-        if (accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
+    public AccountResponse updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
+        if (accountingUpdateRequest.getBill() != null && accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
             throw new FileTooLimitedException("Max file is 3");
         }
         Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
@@ -115,13 +113,11 @@ public class AccountingServiceImpl implements AccountingService {
         User currentUser = userMapper.findById(accountingUpdateRequest.getUserId());
         if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
-        List listFileNameSaveFileSuccess = null;
-        String dir = AccountingConstant.UPLOAD_FILE_DIR;
         if (billFile != null) {
             FileUtils.validateFiles(billFile);
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         }
-
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
             Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
             try {
@@ -138,15 +134,15 @@ public class AccountingServiceImpl implements AccountingService {
                         accounting.setRemain(beforeRemain);
                     }
                     accountingMapper.updateRecordsBatch(remainRecordInMonthList);
-                    return 1;
                 }
             } catch (Exception e) {
                 FileUtils.deleteMultipleFilesToServer(request, dir, updateAccounting.getBill());
-                return 0;
+                return null;
             }
-            return 1;
+            Accounting newAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
+            return accountingConverter.convertToResponseDTO(newAccounting);
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -175,6 +171,12 @@ public class AccountingServiceImpl implements AccountingService {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public AccountResponse findAccountingById(String id) {
+        Accounting accounting = accountingMapper.findAccountingById(id);
+        return accountingConverter.convertToResponseDTO(accounting);
     }
 
 }

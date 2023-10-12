@@ -12,6 +12,11 @@
 <c:set var="totalRevenue" value="0" scope="page"/>
 <div class="container mt-5">
     <div class="row">
+        <div class="col-12">
+            <h3 class="text-center">Accounting ${month}</h3>
+        </div>
+    </div>
+    <div class="row mt-1">
         <div class="col-md-9">
             <div class="form-group">
                 <label for="datePickerStart">Choose time start:</label>
@@ -50,14 +55,14 @@
         <c:forEach varStatus="loop" var="a" items="${requestScope.list.accountResponseList}">
             <tr>
                 <th scope="row">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
-                <td><c:out value="${a.id}"/></td>
+                <td><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a></td>
                 <td><c:out value="${a.createdDate}"/></td>
                 <td><c:out value="${a.title}"/></td>
                 <td><c:out value="${a.revenue}"/></td>
                 <td><c:out value="${a.expense}"/></td>
                 <td><c:out value="${a.remain}"/></td>
                 <td><c:out value="${a.user.fullname}"/></td>
-                <td><c:out value="${a.bill}"/></td>
+                <td><a href="${a.bill}" download="" target="_blank" id="resumeLink">Download Bill</a></td>
             </tr>
             <c:set var="totalExpense" value="${totalExpense + a.expense}" scope="page"/>
             <c:set var="totalRevenue" value="${totalRevenue + a.revenue}" scope="page"/>
@@ -74,12 +79,14 @@
             <c:choose>
                 <c:when test="${list.hasPrevious}">
                     <li class="page-item">
-                        <a class="page-link" onclick="loadPage(${list.pageNumber - 1})" tabindex="-1" aria-disabled="true">Previous</a>
+                        <a class="page-link" onclick="loadPage(${list.pageNumber - 1})" tabindex="-1"
+                           aria-disabled="true">Previous</a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li class="page-item disabled">
-                        <a class="page-link" onclick="loadPage(${list.pageNumber - 1})" tabindex="-1" aria-disabled="true">Previous</a>
+                        <a class="page-link" onclick="loadPage(${list.pageNumber - 1})" tabindex="-1"
+                           aria-disabled="true">Previous</a>
                     </li>
                 </c:otherwise>
             </c:choose>
@@ -96,12 +103,14 @@
             <c:choose>
                 <c:when test="${list.hasNext}">
                     <li class="page-item">
-                        <a class="page-link" onclick="loadPage(${list.pageNumber + 1})" tabindex="-1" aria-disabled="true">Next</a>
+                        <a class="page-link" onclick="loadPage(${list.pageNumber + 1})" tabindex="-1"
+                           aria-disabled="true">Next</a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li class="page-item disabled">
-                        <a class="page-link" onclick="loadPage(${list.pageNumber + 1})" tabindex="-1" aria-disabled="true">Next</a>
+                        <a class="page-link" onclick="loadPage(${list.pageNumber + 1})" tabindex="-1"
+                           aria-disabled="true">Next</a>
                     </li>
                 </c:otherwise>
             </c:choose>
@@ -138,24 +147,28 @@
     </table>
 </div>
 <script>
-        document.getElementById("pageCount").addEventListener("change", function() {
-            localStorage.setItem("selectedPageSize", this.value);
-            loadPage(1);
-        });
+    document.getElementById("pageCount").addEventListener("change", function () {
+        localStorage.setItem("selectedPageSize", this.value);
+        loadPage(1);
+    });
 
-        window.addEventListener("beforeunload", function() {
-            localStorage.removeItem("selectedPageSize");
-            localStorage.removeItem("selectedDateStart");
-            localStorage.removeItem("selectedDateEnd");
-        });
+    window.addEventListener("beforeunload", function () {
+        localStorage.removeItem("selectedPageSize");
+        localStorage.removeItem("selectedDateStart");
+        localStorage.removeItem("selectedDateEnd");
+    });
 
-        document.getElementById("datePickerStart").addEventListener("input", function() {
-            localStorage.setItem("selectedDateStart", this.value);
-        });
+    document.getElementById("datePickerStart").addEventListener("input", function () {
+        localStorage.setItem("selectedDateStart", this.value);
+    });
 
-        document.getElementById("datePickerEnd").addEventListener("input", function() {
-            localStorage.setItem("selectedDateEnd", this.value);
-        });
+    document.getElementById("datePickerEnd").addEventListener("input", function () {
+        localStorage.setItem("selectedDateEnd", this.value);
+    });
+
+    var url = window.location.href;
+    var segments = url.split("/");
+    var month = segments[segments.length - 1];
 
     function loadPage(page) {
         var selectedPageSize = localStorage.getItem("selectedPageSize") || ${list.pageSize};
@@ -166,11 +179,8 @@
         loading.style.display = "block";
 
         var xhr = new XMLHttpRequest();
-        var url = window.location.href;
-        var segments = url.split("/");
-        var month = segments[segments.length - 1];
 
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 loading.style.display = "none";
                 var responseData = JSON.parse(xhr.responseText);
@@ -183,23 +193,29 @@
                 var totalRevenue = 0;
                 var totalRemain = 0;
 
-                tableBody.innerHTML = "";
-                responseData.accountResponseList.forEach((account, index) => {
+                if (responseData.accountResponseList.length === 0) {
+                    tableBody.innerHTML = "";
                     var row = tableBody.insertRow();
-                    row.innerHTML = "<th scope='row'>" +  ((page - 1) * selectedPageSize + index + 1) + "</th>"
-                    + "<td>" +  account.id + "</td>"
-                    + "<td>" +  account.createdDate + "</td>"
-                    + "<td>" +  account.title + "</td>"
-                    + "<td>" +  account.revenue + "</td>"
-                    + "<td>" +  account.expense + "</td>"
-                    + "<td>" +  account.remain + "</td>"
-                    + "<td>" +  account.user.fullname + "</td>"
-                    + "<td>" +  account.bill + "</td>"
-                    ;
-                    totalExpense += account.expense;
-                    totalRevenue += account.revenue;
-                    totalRemain = account.remain;
-                });
+                    row.innerHTML = "<td colspan='9' class='center'>NOT FOUND DATA IN THIS DURATION</td>";
+                } else {
+                    tableBody.innerHTML = "";
+                    responseData.accountResponseList.forEach((account, index) => {
+                        var row = tableBody.insertRow();
+                        row.innerHTML = "<th scope='row'>" + ((page - 1) * selectedPageSize + index + 1) + "</th>"
+                            + "<td>" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
+                            + "<td>" + account.createdDate + "</td>"
+                            + "<td>" + account.title + "</td>"
+                            + "<td>" + account.revenue + "</td>"
+                            + "<td>" + account.expense + "</td>"
+                            + "<td>" + account.remain + "</td>"
+                            + "<td>" + account.user.fullname + "</td>"
+                            + "<td>" + '<a href="' + account.bill + '" download="" target="_blank" id="resumeLink">Download Bill</a>' + "</td>"
+                        ;
+                        totalExpense += account.expense;
+                        totalRevenue += account.revenue;
+                        totalRemain = account.remain;
+                    });
+                }
 
                 updatePagination(responseData);
 
@@ -208,7 +224,7 @@
                     + '<td>' + totalRemain + '</td>';
             }
         };
-        xhr.open("GET", "/api/v1/accounts/"+ month + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + selectedDateStart + "&endDate=" + selectedDateEnd, true);
+        xhr.open("GET", "/api/v1/accounts/" + month + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + selectedDateStart + "&endDate=" + selectedDateEnd, true);
         xhr.send();
     }
 
