@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -107,5 +108,10 @@ public class ContractServiceImpl implements ContractService {
         } catch (Exception e){
             return 0;
         }
+    }
+
+    @Override
+    public List<ContractResponse> getContractByUser(String userId) {
+        return contractConverter.toListResponse(contractMapper.getContractByUser(userId));
     }
 }

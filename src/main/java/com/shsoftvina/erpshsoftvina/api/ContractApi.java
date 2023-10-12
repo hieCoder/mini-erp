@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,13 +25,20 @@ public class ContractApi {
     private ContractService contractService;
 
     @PostMapping
-    public ResponseEntity<?> createContract(CreateContractRequest createContractRequest) {
+    public ResponseEntity<?> createContract(@Valid CreateContractRequest createContractRequest) {
+//        System.out.println(contract);
+        System.out.println(createContractRequest);
         return ResponseEntity.ok(contractService.addContract(createContractRequest));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getContract(@PathVariable String id) {
         return ResponseEntity.ok(contractService.findById(id));
+    }
+
+    @GetMapping("/userContract/{userId}")
+    public ResponseEntity<?> getContractByUser(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok(contractService.getContractByUser(userId));
     }
 
     @PostMapping("/updation")

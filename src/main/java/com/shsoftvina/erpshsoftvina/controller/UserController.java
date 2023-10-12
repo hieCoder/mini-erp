@@ -1,9 +1,11 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
+import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +30,9 @@ public class UserController {
 
     @Autowired
     TimesheetsService timesheetsService;
+
+    @Autowired
+    ContractService contractService;
 
     @GetMapping("/home")
     public String hello() {
@@ -62,9 +68,17 @@ public class UserController {
 
         UserDetailResponse user = userService.findUserDetail(id);
         List<Map<String, ?>> workingDay = timesheetsService.getTotalWorkingDate(id, year);
+        List<ContractResponse> contractUser = contractService.getContractByUser(id);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateOfBirth = sdf.format(user.getDateOfBirth());
+
 
         view.addObject("user", user);
+        view.addObject("dateOfBirth", dateOfBirth);
         view.addObject("workingDay", workingDay);
+        view.addObject("contractUser", contractUser);
+
         return view;
     }
 
