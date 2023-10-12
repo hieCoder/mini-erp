@@ -182,6 +182,31 @@ td:nth-child(3) {
     color: #fff;
 }
 
+
+.custom-spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+}
+
+.custom-spinner .dot {
+    width: 16px;
+    height: 16px;
+    background-color: #333;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bounce 1s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
 /*Scrollbar*/
 /* Ẩn thanh cuộn mặc định */
 ::-webkit-scrollbar {
@@ -222,3 +247,4 @@ td:nth-child(3) {
     font-size: 24px;
     z-index: 9999;
 }
+

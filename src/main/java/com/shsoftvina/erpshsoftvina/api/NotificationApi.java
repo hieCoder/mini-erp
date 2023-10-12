@@ -21,9 +21,11 @@ public class NotificationApi {
     //    Get all Notification
     @GetMapping
     public ResponseEntity<?> getAllNoti(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
+                                         @RequestParam(name = "search", required = false, defaultValue = "") String search
+    ) {
 
-        return ResponseEntity.ok(notificationService.getAllNoti((page - 1) * pageSize, pageSize));
+        return ResponseEntity.ok(notificationService.getAllNoti((page - 1) * pageSize, pageSize, search));
     }
 
     //    Create New Notification

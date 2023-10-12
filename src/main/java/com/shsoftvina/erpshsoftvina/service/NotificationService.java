@@ -8,10 +8,10 @@ import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShow
 import java.util.List;
 
 public interface NotificationService {
-    List<NotificationShowResponse> getAllNoti(int start, int pageSize);
+    List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search);
     int createNoti(CreateNotificationRequest createNotificationRequest);
     int updateNoti(UpdateNotificationRequest updateNotificationRequest, String id);
     boolean delNoti(String id);
     NotificationDetailResponse findById(String id);
-    int countAll();
+    int countAll(String search);
 }

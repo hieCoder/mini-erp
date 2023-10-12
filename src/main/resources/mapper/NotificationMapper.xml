@@ -6,17 +6,20 @@
     <!--    Get All Notification-->
     <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
-        FROM NOTIFICATION
+        FROM NOTIFICATION n
+        WHERE (n.title LIKE '%' #{search} '%' OR n.files LIKE '%' #{search} '%')
         LIMIT #{start}, #{pageSize}
     </select>
 
     <select id="countAll" resultType="int">
-        SELECT COUNT(*) FROM NOTIFICATION;
+        SELECT COUNT(*)
+        FROM NOTIFICATION n
+        WHERE (n.title LIKE '%' #{search} '%' OR n.files LIKE '%' #{search} '%');
     </select>
 
     <!--    Create new Notification-->
     <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
-        INSERT INTO NOTIFICATION (id, title, content, files, created_date)
+        INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE)
         VALUES (#{id}, #{title}, #{content}, #{files}, NOW())
     </select>
 
