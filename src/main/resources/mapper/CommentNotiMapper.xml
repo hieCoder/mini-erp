@@ -6,7 +6,7 @@
     <insert id="createCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" >
         INSERT
         INTO COMMENT_NOTIFICATION (created_date, content, id, notification_id, user_id, parent_id)
-        VALUES (NOW(), #{content}, #{id},#{notification.id}, #{user.id}, #{parentComment.id});
+        VALUES (#{createdDate}, #{content}, #{id},#{notification.id}, #{user.id}, #{parentComment.id});
     </insert>
 
     <update id="updateCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification">

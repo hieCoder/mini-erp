@@ -54,6 +54,7 @@ public class NotificationConverter {
     public Notification toEntity(UpdateNotificationRequest updateNotificationRequest, String id, List<String> listFileNameSaveFileSuccess) {
         return Notification.builder()
                 .id(id)
+                .createdDate(new Date())
                 .title(updateNotificationRequest.getTitle())
                 .content(updateNotificationRequest.getContent())
                 .files(String.join(",", listFileNameSaveFileSuccess))

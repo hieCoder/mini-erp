@@ -5,10 +5,13 @@
 
     <!--    Get All Notification-->
     <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
+        <![CDATA[
         SELECT *
         FROM NOTIFICATION n
         WHERE (n.title LIKE '%' #{search} '%' OR n.files LIKE '%' #{search} '%')
-        LIMIT #{start}, #{pageSize}
+        ORDER BY created_date DESC
+            LIMIT #{start}, #{pageSize}
+        ]]>
     </select>
 
     <select id="countAll" resultType="int">
@@ -20,7 +23,7 @@
     <!--    Create new Notification-->
     <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
         INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE)
-        VALUES (#{id}, #{title}, #{content}, #{files}, NOW())
+        VALUES (#{id}, #{title}, #{content}, #{files}, #{createdDate})
     </select>
 
     <!--    Update Notification-->
@@ -68,6 +71,7 @@
                 LEFT JOIN COMMENT_NOTIFICATION c ON n.id = c.notification_id AND c.parent_id IS NULL
                 LEFT JOIN USER u ON c.user_id = u.id
         WHERE n.id = #{id}
+        ORDER BY c.created_date DESC;
     </select>
 
     <resultMap id="notificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
@@ -110,5 +114,6 @@
         FROM COMMENT_NOTIFICATION c
                  INNER JOIN USER u ON c.user_id = u.id
         WHERE c.parent_id = #{id}
+        ORDER BY c.created_date DESC;
     </select>
 </mapper>

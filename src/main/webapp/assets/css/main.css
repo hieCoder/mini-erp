@@ -248,3 +248,11 @@ td:nth-child(3) {
     z-index: 9999;
 }
 
+.avatar {
+    width: 60px;
+    height: 60px;
+}
+
+p {
+    margin: 0;
+}
