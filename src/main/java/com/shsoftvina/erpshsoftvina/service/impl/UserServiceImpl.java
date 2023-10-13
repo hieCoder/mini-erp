@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         RowBounds rowBounds = new RowBounds(offset, pageSize);
         List<User> users = userMapper.getAllUser(searchTerm, sortDirection, status, rowBounds);
         List<UserShowResponse> showUsers = userConverter.toListShowUserRespone(users);
-        long totalRecordCount = userMapper.getTotalUser();
+        long totalRecordCount = userMapper.getTotalUser(status, searchTerm, sortDirection);
         long totalPage = (long) Math.ceil((double) totalRecordCount / pageSize);
         boolean hasNext = start < totalPage;
         boolean hasPrevious = start > 1;
@@ -121,6 +121,7 @@ public class UserServiceImpl implements UserService {
 
         String id = userUpdateRequest.getId();
         User user = userMapper.findById(id);
+
         if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile avatarFile = userUpdateRequest.getAvatar();
@@ -156,6 +157,8 @@ public class UserServiceImpl implements UserService {
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
                 } else{ // = 0, no avatar and resume
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
+                    userUpdate.setAvatar(user.getAvatar());
+                    userUpdate.setResume(user.getResume());
                 }
             } else{
                 if(newFileNameList.size() == 1){
@@ -165,13 +168,17 @@ public class UserServiceImpl implements UserService {
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
                 } else{ // = 0, no avatar and resume
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
+                    userUpdate.setAvatar(user.getAvatar());
+                    userUpdate.setResume(user.getResume());
                 }
             }
 
             try{
                 if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                    if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
                     userMapper.updateUserProfile(userUpdate);
                 } else{
+                    if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
                     userMapper.updateUserDetail(userUpdate);
                 }
 

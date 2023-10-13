@@ -39,7 +39,7 @@ public class UserConverter {
         if (user.getRole() == null)
             throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
         else {
-            if (!user.getRole().equals(userCurrent.getRole()) && userCurrent.getRole().equals(RoleEnum.DEVELOPER)) {
+            if (userCurrent.getRole().equals(RoleEnum.DEVELOPER) && !user.getId().equals(userCurrent.getId())) {
                 throw new UnauthorizedException(MessageErrorUtils.unauthorized());
             }
         }

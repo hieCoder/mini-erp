@@ -16,7 +16,7 @@
     <div class="container">
         <h1 class="mt-4">LIST USER</h1>
         <div class="row mt-4">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="search">Search</label>
                     <div class="input-group">
@@ -27,28 +27,31 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <select id="status" name="status" class="form-select" onchange="this.form.submit()">
-                        <option value="ACTIVE">ACTIVE</option>
-                        <option value="INACTIVE">INACTIVE</option>
-                        <option value="PENDING">PENDING</option>
-                        <option value="REJECT">REJECT</option>
-                    </select>
+                    <div class="input-group">
+                        <select id="status" name="status" class="form-control" onchange="this.form.submit()">
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                            <option value="PENDING">PENDING</option>
+                            <option value="REJECT">REJECT</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="pageSize">Page Count</label>
-                    <select id="pageSize" name="pageSize" class="form-select" onchange="this.form.submit()">
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
+                    <div class="input-group">
+                        <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-
         </div>
         <table class="table mt-4 table-bordered">
             <thead>
@@ -56,8 +59,12 @@
                 <th>NO.</th>
                 <th>ID</th>
                 <th class="sortable-header">Username
-                    <button style="border: none; margin: 0" class="btn-link" type="submit" name="sort" value="ASC">&#9650;</button>
-                    <button style="border: none; margin: 0" class="btn-link" type="submit" name="sort" value="DESC">&#9660;</button>
+                    <button style="border: none; margin: 0" class="btn-link" type="submit" name="sort" value="ASC">
+                        &#9650;
+                    </button>
+                    <button style="border: none; margin: 0" class="btn-link" type="submit" name="sort" value="DESC">
+                        &#9660;
+                    </button>
                 </th>
                 <th>User ID</th>
                 <th>Department</th>
@@ -114,29 +121,25 @@
                 </li>
             </ul>
         </div>
-
     </div>
 </form>
 
 <script>
     // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
-    document.getElementById("pageSize").addEventListener("change", function() {
+    document.getElementById("pageSize").addEventListener("change", function () {
         localStorage.setItem("selectedPageSize", this.value);
     });
 
-    document.getElementById("status").addEventListener("change", function() {
+    document.getElementById("status").addEventListener("change", function () {
         localStorage.setItem("selectedStatus", this.value);
     });
 
-    document.getElementById("search").addEventListener("input", function() {
+    document.getElementById("search").addEventListener("input", function () {
         localStorage.setItem("selectedSearch", this.value);
     });
 
-
-
-
     // Khôi phục giá trị lựa chọn "Page Count," "Status," và "Search" từ Local Storage khi trang được load
-    window.addEventListener("load", function() {
+    window.addEventListener("load", function () {
         var selectedPageSize = localStorage.getItem("selectedPageSize");
         if (selectedPageSize) {
             document.getElementById("pageSize").value = selectedPageSize;
@@ -152,7 +155,6 @@
             document.getElementById("search").value = selectedSearch;
         }
     });
-
 
 </script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

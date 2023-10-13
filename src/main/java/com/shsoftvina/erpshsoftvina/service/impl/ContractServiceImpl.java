@@ -83,8 +83,9 @@ public class ContractServiceImpl implements ContractService {
         String fileNameContract = FileUtils.formatNameImage(contractFile);
         boolean isSaveContractSuccess = FileUtils.saveImageToServer(
                 request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getContract(), fileNameContract);
+        Contract c;
         if(isSaveContractSuccess){
-            Contract c = contractConverter.toEntity(updateContractRequest, fileNameContract);
+            c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getContract());
@@ -93,8 +94,12 @@ public class ContractServiceImpl implements ContractService {
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                 return 0;
             }
+        } else {
+            fileNameContract = contract.getContract();
+            c = contractConverter.toEntity(updateContractRequest, fileNameContract);
+            contractMapper.updateContract(c);
+            return 1;
         }
-        return 0;
     }
 
     @Override

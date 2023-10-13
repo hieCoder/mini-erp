@@ -26,8 +26,6 @@ public class ContractApi {
 
     @PostMapping
     public ResponseEntity<?> createContract(@Valid CreateContractRequest createContractRequest) {
-//        System.out.println(contract);
-        System.out.println(createContractRequest);
         return ResponseEntity.ok(contractService.addContract(createContractRequest));
     }
 

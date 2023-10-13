@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/timesheets")
 public class TimesheetsApi {
@@ -22,6 +25,12 @@ public class TimesheetsApi {
     @GetMapping("/workingday/{userID}")
     public ResponseEntity<?> getTotalWorkingDate(@PathVariable("userID") String userID,
                                                @RequestParam(name = "year", required = false) String year) {
-        return ResponseEntity.ok(timesheetsService.getTotalWorkingDate(userID, year));
+
+        List<Map<String, ?>> workingDay = null;
+        if (year == null)  workingDay = timesheetsService.getTotalWorkDayByYear(userID);
+        else workingDay = timesheetsService.getTotalWorkDayByMonth(userID, year);
+
+        return ResponseEntity.ok(workingDay);
     }
+
 }

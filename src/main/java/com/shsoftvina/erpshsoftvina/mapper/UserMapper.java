@@ -24,5 +24,5 @@ public interface UserMapper {
     void activeUserRegister(User user);
     int deleteUser(String id);
     List<String> getAllFullname();
-    long getTotalUser();
+    long getTotalUser(@Param("status") String status, @Param("searchTerm") String searchTerm, @Param("sortDirection") String sortDirection);
 }

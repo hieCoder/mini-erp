@@ -10,6 +10,17 @@
 <html>
 <head>
     <title>Title</title>
+    <style>
+        .form-group {
+            position: relative;
+        }
+
+        #change-password-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    </style>
 </head>
 <body>
 <form action="" method="get">
@@ -20,7 +31,8 @@
                 <div class="text-center">
                     <img src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
                     <input type="file" class="form-control mt-2" id="avatar">
-                    <h5 class="mt-2" id="fullname">${user.getFullname()}</h5>
+                    <small class="text-muted ml-2">Choose New Avatar</small>
+                    <h3 class="mt-2">${user.getFullname()}</h3>
                 </div>
             </div>
 
@@ -29,6 +41,10 @@
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" class="form-control" id="address" value="${user.getAddress()}">
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Fullname</label>
+                    <input type="text" class="form-control" id="fullname" value="${user.getFullname()}">
                 </div>
                 <div class="form-group">
                     <label for="dob">Date of Birth</label>
@@ -42,7 +58,7 @@
                     <label for="emergencyPhone">Emergency Phone</label>
                     <input type="tel" class="form-control" id="emergencyPhone" value="${user.getEmergencyPhone()}">
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="resume">Resume File: </label>
                     <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
                     <input type="file" class="form-control mt-2" id="resume">
@@ -52,7 +68,7 @@
                     <label for="timeSheetsCode">TimeSheets code</label>
                     <input type="text" class="form-control" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="type">Type</label>
                     <select class="form-control" id="type">
                         <option value="OFFICIAL"
@@ -69,7 +85,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="department">Department</label>
                     <select class="form-control" id="department">
                         <option value="ADMINISTRATION"
@@ -96,14 +112,18 @@
                     <input type="email" class="form-control" id="userId" value="${user.getEmail()}">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password">
+                    <label for="password">Password: </label>
+                    <a id="change-password-button" class="text-primary" style="text-decoration: none">Change
+                        password</a>
+                    <div id="password-form" style="display: none;">
+                        <input type="password" class="form-control" id="password" value="" placeholder="New Password">
+                    </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="atm">ATM</label>
                     <input type="text" class="form-control" id="atm" value="${user.getAtm()}">
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="role">Role</label>
                     <select class="form-control" id="role">
                         <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
@@ -117,7 +137,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="position">Position</label>
                     <select class="form-control" id="position">
                         <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
@@ -141,46 +161,30 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="contract">Contract: </label>
                     <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
                             data-target="#contractModal">
                         VIEW
                     </button>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="working-day">Working Day</label>
                     <div class="input-group" id="working-day">
                         <select class="form-control" id="working-year">
                             <option value="">-- Select Year --</option>
-                            <c:forEach items="${workingDay}" var="data">
-                                <option value="${data.year}">${data.year}</option>
-                            </c:forEach>
                         </select>
                         <select class="form-control" id="working-month" style="display: none;">
-                            <option value="">-- Select Month --</option>
-                            <c:choose>
-                                <c:when test="${not empty workingDay and not empty workingDay[0].month}">
-                                    <c:forEach items="${workingDay}" var="data">
-                                        <option value="${data.month}">${data.month}</option>
-                                    </c:forEach>
-                                </c:when>
-                            </c:choose>
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <!-- Thêm các option cho các tháng khác nếu cần -->
+                            <option>-- Select Month --</option>
                         </select>
-                        <input type="text" class="form-control" id="totailWorkingDay" readonly placeholder="Result">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-primary" type="button" id="checkTotalWorkingDay">Check Total
-                                WorkingDay
-                            </button>
-                        </div>
+                        <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
                     </div>
                 </div>
                 <div class="form-group">
-                    <button value="${user.getId()}" type="button" class="btn btn-primary" id="updateUserButton">Save</button>
-                    <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteUserModal">
+                    <button value="${user.getId()}" type="button" class="btn btn-primary" id="updateUserButton">Save
+                    </button>
+                    <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteUserModal"
+                            id="delUser">
                         Delete
                     </button>
                     <a class="btn btn-secondary ml-2" href="/users">Cancel</a>
@@ -191,7 +195,8 @@
 </form>
 
 <!-- Modal Contract History -->
-<div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel" aria-hidden="true">
+<div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -219,10 +224,15 @@
                             <td>${contract.getAllowance()}$</td>
                             <td>${contract.getInsuranceType().getName()}</td>
                             <td>${contract.getInsuranceMoney()}$</td>
-                            <td><a href="${contract.getContract()}" download target="_blank">Contract Files</a></td>
+                            <td><a href="${contract.getContract()}" download target="_blank" class="contractLink">Contract
+                                Files</a></td>
                             <td>
-                                <button value="${contract.getId()}" type="button" class="btn btn-primary mb-3 edit-contract-button">Edit</button>
-                                <button value="${contract.getId()}" type="button" class="btn btn-danger delete-contract-button">Delete</button>
+                                <button value="${contract.getId()}" type="button"
+                                        class="btn btn-primary mb-3 edit-contract-button">Edit
+                                </button>
+                                <button value="${contract.getId()}" type="button"
+                                        class="btn btn-danger delete-contract-button">Delete
+                                </button>
                             </td>
                         </tr>
                     </c:forEach>
@@ -238,7 +248,8 @@
 </div>
 
 <!-- Modal Contract Edit -->
-<div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel" aria-hidden="true">
+<div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -259,7 +270,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editInsuranceType">Insurance Type:</label>
-                        <select class="form-control" id="editInsuranceType"  name="editInsuranceType">
+                        <select class="form-control" id="editInsuranceType" name="editInsuranceType">
                             <option value="HEALTH_INSURANCE">Health insurance</option>
                             <option value="SOCIAL_INSURANCE">Social insurance</option>
                         </select>
@@ -277,7 +288,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="editContractButton">Edit</button>
+                <button type="button" class="btn btn-primary" id="confirmContractButton">Confirm</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -285,7 +296,8 @@
 </div>
 
 <!-- Modal ADD Contract  -->
-<div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel" aria-hidden="true">
+<div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -295,7 +307,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/api/v1/contracts" method="post" id="addContractForm" >
+                <form action="/api/v1/contracts" method="post" id="addContractForm">
                     <div class="form-group">
                         <label for="editBasicSalary">Basic Salary:</label>
                         <input type="text" class="form-control" id="addBasicSalary" name="basicSalary">
@@ -306,7 +318,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editInsuranceType">Insurance Type:</label>
-                        <select class="form-control" id="addInsuranceType"  name="insuranceType">
+                        <select class="form-control" id="addInsuranceType" name="insuranceType">
                             <option value="HEALTH_INSURANCE">Health insurance</option>
                             <option value="SOCIAL_INSURANCE">Social insurance</option>
                         </select>
@@ -323,7 +335,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button value="${user.getId()}" type="button" class="btn btn-primary" id="addContractButton">Confirm</button>
+                <button value="${user.getId()}" type="button" class="btn btn-primary" id="addContractButton">Confirm
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -356,7 +369,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button value="${user.getId()}" type="button" class="btn btn-danger" id="deleteUser">Delete</button>
             </div>
         </div>
     </div>
@@ -365,62 +378,29 @@
 
 <%-------------------------------------------- CODE JAVASCRIPT--------------------------------------------%>
 
-
-
-<script>
-    // Lắng nghe sự kiện khi người dùng thay đổi năm
-    document.getElementById("working-year").addEventListener("change", function () {
-        var yearValue = this.value;
-        var monthInput = document.getElementById("working-month");
-
-        if (yearValue !== "") {
-            // Gọi API để lấy dữ liệu month
-            fetch(`/api/v1/timesheets/workingday/{userID}?year=${yearValue}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Xóa tất cả các option hiện tại trong select month
-                    while (monthInput.options.length > 0) {
-                        monthInput.remove(0);
-                    }
-
-                    // Thêm các option mới dựa trên dữ liệu từ API
-                    data.forEach(item => {
-                        var option = document.createElement("option");
-                        option.value = item.month;
-                        option.text = item.month;
-                        monthInput.add(option);
-                    });
-
-                    // Hiển thị select month
-                    monthInput.style.display = "block";
-                })
-                .catch(error => console.error(error));
-        } else {
-            // Nếu không chọn năm, ẩn select month
-            monthInput.style.display = "none";
-        }
-    });
-
-</script>
-
 <%--Handle User--%>
 <script>
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Save"
+    // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
+    document.getElementById("change-password-button").addEventListener("click", function () {
+        var inputPassword = document.getElementById("password-form");
+        if (inputPassword.style.display == "none") inputPassword.style.display = "block";
+        else inputPassword.style.display = "none";
+    });
+
+    // Lắng nghe sự kiện khi người dùng nhấn nút "Save User"
     document.getElementById('updateUserButton').addEventListener('click', function () {
 
         // Lấy dữ liệu từ các trường trong form
         var id = this.value;
-        var fullname = document.getElementById('fullname').textContent;
+        var fullname = document.getElementById('fullname').value;
         var adderss = document.getElementById('address').value;
-        var dobString  = document.getElementById('dob').value;
+        var dobString = document.getElementById('dob').value;
         var jsDate = new Date(dobString);
         var dob = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
         var phone = document.getElementById('phone').value;
         var emergencyPhone = document.getElementById('emergencyPhone').value;
         var fileAvatar = document.getElementById('avatar');
-        var avatarFileName = fileAvatar.files[0];
         var fileResume = document.getElementById('resume');
-        var resumeFileName = fileResume.files[0];
         var timeSheetsCode = document.getElementById('timeSheetsCode').value;
         var type = document.getElementById('type').value;
         var department = document.getElementById('department').value;
@@ -437,8 +417,6 @@
         user.append('dateOfBirth', dob);
         user.append('phone', phone);
         user.append('emergencyPhone', emergencyPhone);
-        user.append('avatar', avatarFileName);
-        user.append('resume', resumeFileName);
         user.append('timesheetsCode', timeSheetsCode);
         user.append('atm', atm);
         user.append('type', type);
@@ -447,6 +425,17 @@
         user.append('password', password);
         user.append('role', role);
         user.append('position', position);
+
+        // Kiểm tra xem có tệp được chọn không
+        if (fileAvatar.files.length > 0) {
+            var fileAavar = fileAvatar.files[0];
+            user.append('avatar', fileAavar);
+
+        }
+        if (fileResume.files.length > 0) {
+            var fileResume = fileResume.files[0];
+            user.append('resume', fileResume);
+        }
 
         // Khởi tạo đối tượng XMLHttpRequest
         var xhr = new XMLHttpRequest();
@@ -460,10 +449,17 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     // Xử lý kết quả ở đây nếu cần
+                    alert("Save is success");
                     window.location.href = "/users";
                 } else {
                     // Xử lý lỗi nếu có
-                    console.log('Yêu cầu POST thất bại');
+                    var errorMessage = "Lỗi:\n";
+                    errorMessage += "The file transfer is just under 100MB.\n";
+                    errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
+                    errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
+                    alert(errorMessage);
+
+                    console.log("Error File: " + xhr.status);
                 }
             }
         };
@@ -471,10 +467,193 @@
         xhr.send(user);
     });
 
+    // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete User"
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var deleteUserButtons = document.getElementById('deleteUser');
+        var userId = deleteUserButtons.value;
+
+        // Show File Name Contract
+        var contractLinks = document.getElementsByClassName("contractLink");
+        for (var i = 0; i < contractLinks.length; i++) {
+            var contractLink = contractLinks[i];
+            var contractHref = contractLink.getAttribute("href");
+            var contractfileName = contractHref.substring(contractHref.indexOf("-") + 1);
+
+            // Đặt nội dung mặc định cho thẻ <a> bằng cách sử dụng textContent.
+            contractLink.textContent = contractfileName;
+        }
+
+
+        // Xử lý khi nút Delete được nhấn trong modal
+        deleteUserButtons.addEventListener("click", function () {
+            if (userId) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("DELETE", "/api/v1/users/" + userId, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            // Tải lại trang
+                            alert("Delete is success")
+                            window.location.href = "/users";
+                        } else {
+                            // Xử lý khi API gọi không thành công
+                            console.log("Delete User is False: " + xhr.status);
+                        }
+                    }
+                };
+                xhr.send();
+            }
+        });
+    });
+
+</script>
+
+<%--Handle WorkingDay--%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy tham chiếu đến các phần tử HTML
+        var yearSelect = document.getElementById('working-year');
+        var monthSelect = document.getElementById('working-month');
+        var totalWorkingDayInput = document.getElementById('totalWorkingDay');
+
+        // Sử dụng XMLHttpRequest để gọi API
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/v1/timesheets/workingday/' + ${user.getId()}, true);
+        var data;
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                data = JSON.parse(xhr.responseText);
+                // Xóa các option cũ trong dropdown year
+                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+
+                // Thêm các option mới từ dữ liệu API
+                data.forEach(function (entry) {
+                    var option = document.createElement('option');
+                    option.value = entry.year;
+                    option.textContent = entry.year;
+                    yearSelect.appendChild(option);
+                });
+            } else {
+                console.error("Can't get year: " + xhr.status);
+            }
+        };
+        xhr.send();
+
+        // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
+        yearSelect.addEventListener('change', function () {
+            xhr.open('GET', '/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var dataMonth = JSON.parse(xhr.responseText);
+                    // Xóa các option cũ trong dropdown year
+                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
+
+                    // Thêm các option mới từ dữ liệu API
+                    dataMonth.forEach(function (entry) {
+                        var option = document.createElement('option');
+                        option.value = entry.month;
+                        option.textContent = entry.month;
+                        monthSelect.appendChild(option);
+                    });
+                    monthSelect.addEventListener('change', function () {
+                        var selectedMonth = monthSelect.value;
+                        var selectedData = dataMonth.find(function (entry) {
+                            return entry.month === parseInt(selectedMonth);
+                        });
+                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                    });
+                } else {
+                    console.error("Can't get month: " + xhr.status);
+                }
+            };
+            xhr.send();
+
+            if (yearSelect.value != "") {
+                var selectedYear = yearSelect.value;
+                var selectedData = data.find(function (entry) {
+                    return entry.year === parseInt(selectedYear);
+                });
+                totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                monthSelect.style.display = 'block';
+            } else {
+                totalWorkingDayInput.value = null;
+                monthSelect.style.display = 'none';
+            }
+        });
+    });
 </script>
 
 <%--Handle Contract--%>
 <script>
+    // Lắng nghe sự kiện khi người dùng nhấn nút "Add Contract"
+    document.addEventListener("DOMContentLoaded", function () {
+        var addButtons = document.querySelectorAll(".add-contract-button");
+
+        // Show modal Edit Contract
+        addButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                $("#addContractModal").modal("show");
+            });
+        });
+    });
+
+    // Lắng nghe sự kiện click trên nút "Confirm Add Contract"
+    document.getElementById('addContractButton').addEventListener('click', function () {
+
+        // Lấy dữ liệu từ các trường trong form
+        var userId = this.value;
+        var basicSalary = document.getElementById('addBasicSalary').value;
+        var allowance = document.getElementById('addAllowance').value;
+        var insuranceType = document.getElementById('addInsuranceType').value;
+        var insuranceMoney = document.getElementById('addInsuranceMoney').value;
+        var fileInputContract = document.getElementById('newContract');
+
+
+        var contract = new FormData();
+        contract.append('basicSalary', basicSalary);
+        contract.append('allowance', allowance);
+        contract.append('insuranceType', insuranceType);
+        contract.append('insuranceMoney', insuranceMoney);
+        contract.append('userId', userId);
+
+        // Kiểm tra xem có tệp được chọn không
+        if (fileInputContract.files.length > 0) {
+            var file = fileInputContract.files[0];
+            contract.append('contract', file);
+        }
+
+        // Khởi tạo đối tượng XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        var url = '/api/v1/contracts';
+
+        // Thiết lập phương thức và URL cho yêu cầu
+        xhr.open('POST', url, true);
+
+        // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Xử lý kết quả ở đây nếu cần
+                    alert("Add Contract is success")
+                    localStorage.setItem("showModal", "true");
+                    location.reload();
+                } else {
+                    // Xử lý lỗi nếu có
+                    var errorMessage = "Error:\n";
+                    errorMessage += "The file transfer is just under 100MB.\n";
+                    errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
+                    errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
+                    alert(errorMessage);
+
+                    console.log('Add Contract is False' + xhr.status);
+                }
+            }
+        };
+
+        // Gửi yêu cầu với dữ liệu formData
+        xhr.send(contract);
+    });
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Edit Contract"
     document.addEventListener("DOMContentLoaded", function () {
@@ -502,7 +681,6 @@
 
                                 var selectElement = document.getElementById("editInsuranceType");
                                 var editInsuranceType = responseData.insuranceType.name;
-                                console.log(editInsuranceType)
                                 for (var i = 0; i < selectElement.options.length; i++) {
                                     if (selectElement.options[i].text === editInsuranceType) {
                                         // Option đã tồn tại, di chuyển option đó lên đầu
@@ -515,10 +693,9 @@
                                 document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;
                                 document.getElementById("contractFile").setAttribute("href", responseData.contract);
 
-                                // location.reload(); // Làm tải lại trang
                             } else {
                                 // Xử lý khi API gọi không thành công
-                                console.log("Lỗi khi xóa hợp đồng: " + xhr.status);
+                                console.log("Get Detail Contract is False: " + xhr.status);
                             }
                         }
                     };
@@ -528,61 +705,71 @@
         });
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Add Contract"
-    document.addEventListener("DOMContentLoaded", function () {
-        var addButtons = document.querySelectorAll(".add-contract-button");
+    // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Edit Contract"
+    document.addEventListener('DOMContentLoaded', function () {
+        var confirmButton = document.getElementById("confirmContractButton");
+        var contractId = document.querySelectorAll(".edit-contract-button");
+        var contractIdValue;
 
-        // Show modal Edit Contract
-        addButtons.forEach(function (button) {
+        contractId.forEach(function (button) {
             button.addEventListener("click", function () {
-                $("#addContractModal").modal("show");
+                contractIdValue = button.value;
             });
         });
-    });
 
-    // Lắng nghe sự kiện click trên nút "Confirm"
-    document.getElementById('addContractButton').addEventListener('click', function () {
+        confirmButton.addEventListener('click', function () {
+            // Lấy dữ liệu từ các trường trong form
+            var basicSalary = document.getElementById('editBasicSalary').value;
+            var allowance = document.getElementById('editAllowance').value;
+            var insuranceType = document.getElementById('editInsuranceType').value;
+            var insuranceMoney = document.getElementById('editInsuranceMoney').value;
+            var fileContract = document.getElementById('contractUser');
 
-        // Lấy dữ liệu từ các trường trong form
-        var userId = this.value;
-        var basicSalary = document.getElementById('addBasicSalary').value;
-        var allowance = document.getElementById('addAllowance').value;
-        var insuranceType = document.getElementById('addInsuranceType').value;
-        var insuranceMoney = document.getElementById('addInsuranceMoney').value;
-        var fileInputContract = document.getElementById('newContract');
-        var file = fileInputContract.files[0];
+            var contract = new FormData();
+            contract.append('id', contractIdValue);
+            contract.append('basicSalary', basicSalary);
+            contract.append('allowance', allowance);
+            contract.append('insuranceType', insuranceType);
+            contract.append('insuranceMoney', insuranceMoney);
 
-        var contract = new FormData();
-        contract.append('basicSalary', basicSalary);
-        contract.append('allowance', allowance);
-        contract.append('insuranceType', insuranceType);
-        contract.append('insuranceMoney', insuranceMoney);
-        contract.append('contract', file);
-        contract.append('userId', userId);
-
-        // Khởi tạo đối tượng XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        var url = '/api/v1/contracts';
-
-        // Thiết lập phương thức và URL cho yêu cầu
-        xhr.open('POST', url, true);
-
-        // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Xử lý kết quả ở đây nếu cần
-                    localStorage.setItem("showModal", "true");
-                    location.reload();
-                } else {
-                    // Xử lý lỗi nếu có
-                    console.log('Yêu cầu POST thất bại');
-                }
+            // Kiểm tra xem có tệp được chọn không
+            if (fileContract.files.length > 0) {
+                var contractFileName = fileContract.files[0];
+                contract.append('contract', contractFileName);
             }
-        };
 
-        // Gửi yêu cầu với dữ liệu formData
-        xhr.send(contract);
+            // Khởi tạo đối tượng XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            var url = '/api/v1/contracts/updation';
+
+            // Thiết lập phương thức và URL cho yêu cầu
+            xhr.open('POST', url, true);
+
+            // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Xử lý kết quả ở đây nếu cần
+                        alert("Edit is Success");
+                        localStorage.setItem("showModal", "true");
+                        location.reload();
+                    } else {
+                        // Xử lý lỗi nếu có
+                        // Xử lý lỗi nếu có
+                        var errorMessage = "Error:\n";
+                        errorMessage += "The file transfer is just under 100MB.\n";
+                        errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
+                        errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
+                        alert(errorMessage);
+                        console.log('Edit Contract is False: ' + xhr.status);
+                    }
+                }
+            };
+
+            // Gửi yêu cầu với dữ liệu formData
+            xhr.send(contract);
+        });
+
     });
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete Contract"
@@ -598,7 +785,6 @@
 
                 // Đặt trạng thái hiển thị modal trong Local Storage thành true
                 localStorage.setItem("showModal", "true");
-
                 $("#deleteContractModal").modal("show");
             });
         });
@@ -612,10 +798,11 @@
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             // Tải lại trang
+                            alert("Delete Contract is success");
                             location.reload();
                         } else {
                             // Xử lý khi API gọi không thành công
-                            console.log("Lỗi khi xóa hợp đồng: " + xhr.status);
+                            console.log("Delete False: " + xhr.status);
                         }
                     }
                 };
@@ -631,6 +818,43 @@
             localStorage.setItem("showModal", "false");
         }
     };
+
+</script>
+
+<%--Handle Role--%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy vai trò của người dùng
+        var userRole = "${roleUser}";
+
+        var fieldsToHide = document.getElementsByClassName("hide");
+
+        // Danh sách các trường và nút cần ẩn
+        var buttonsToHide = ["delUser"];
+
+        for (var i = 0; i < fieldsToHide.length; i++) {
+            var div = fieldsToHide[i];
+            if (div) {
+                if (userRole === "Developer") {
+                    div.style.display = "none";
+                } else {
+                    div.style.display = "block";
+                }
+            }
+        }
+
+        // Ẩn các nút
+        buttonsToHide.forEach(function (buttonName) {
+            var button = document.getElementById(buttonName);
+            if (button) {
+                if (userRole === "Developer") {
+                    button.style.display = "none";
+                } else {
+                    button.style.display = "inline-block";
+                }
+            }
+        });
+    });
 
 </script>
 </body>

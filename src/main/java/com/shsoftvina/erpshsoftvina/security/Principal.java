@@ -9,12 +9,12 @@ public class Principal {
 
     public static User getUserCurrent() {
         User user = User.builder()
-                .id("1")
-                .email("canh@gmail.com")
-                .password("$2a$12$f6ld0R7LiYdJ6TwzjxLxT.QJ45febxzuZV1UbDg7TQUwPf.nRvTl2")
+                .id("21")
+                .email("hieu11@gmail.com")
+                .password("$2a$10$ANk.9FRk6K6IpfU0Q5o4zer6/lHWb7uy7.l9n.SAmQIk6IqvJn1/i")
                 .role(RoleEnum.OWNER)
                 .status(StatusUserEnum.ACTIVE)
-                .fullname("HuynhCanh")
+                .fullname("trunghieu")
                 .isFirstUpdateProfile(true)
                 .build();//(User) (SecurityContextHolder.getContext()).getAuthentication().getPrincipal();
         return user;

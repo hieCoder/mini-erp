@@ -48,7 +48,11 @@
     </select>
 
     <select id="getTotalUser" resultType="java.lang.Long">
-        SELECT COUNT(*) FROM USER
+        SELECT COUNT(*)
+        FROM USER AS u
+        WHERE u.status = #{status}
+          AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
