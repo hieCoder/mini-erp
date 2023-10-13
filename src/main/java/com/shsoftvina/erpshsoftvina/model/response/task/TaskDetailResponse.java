@@ -1,8 +1,7 @@
 package com.shsoftvina.erpshsoftvina.model.response.task;
 
-import com.shsoftvina.erpshsoftvina.model.dto.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
-import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
+import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,8 +16,9 @@ import java.util.List;
 @Builder
 public class TaskDetailResponse {
     private String id;
-    private EnumDto statusTask;
+    private ActionChangeStatusTaskEnumDto statusTask;
     private String title;
+    private String idUser;
     private String fullnameUser;
     private String createdDate;
     private String startDate;

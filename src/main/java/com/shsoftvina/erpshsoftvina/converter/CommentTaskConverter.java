@@ -10,6 +10,7 @@ import com.shsoftvina.erpshsoftvina.model.request.commenttask.UpdateCommentTaskR
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class CommentTaskConverter {
         User user = commentTask.getUser();
         String avatarUser = null, fullnameUser = null;
         if(commentTask.getUser() != null){
-            avatarUser = user.getAvatar();
+            avatarUser = FileUtils.getPathUpload(User.class, user.getAvatar());
             fullnameUser = user.getFullname();
         }
 

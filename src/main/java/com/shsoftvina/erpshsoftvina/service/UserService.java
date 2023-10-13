@@ -21,4 +21,5 @@ public interface UserService {
     Boolean activeUserRegisterRequest(UserActiveRequest user);
     UserDetailResponse findByEmail(String email);
     int updateUserDetail(UserUpdateRequest userUpdateRequest);
+    List<Map<String, Object>> getAllFullname();
 }

@@ -53,7 +53,7 @@
             }, 'Password is not macth')
         ],
         onSubmit: function (formData) {
-            callAjaxByJson("/api/v1/auth/register", "POST", formData, function (rs) {
+            callAjaxByJsonWithDataForm("/api/v1/auth/register", "POST", formData, function (rs) {
                 window.location.href = "/login?registerSuccess";
             });
         }

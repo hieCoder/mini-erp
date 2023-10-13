@@ -97,8 +97,9 @@ public class TaskConverter {
 
         return TaskDetailResponse.builder()
                 .id(task.getId())
-                .statusTask(EnumUtils.instance(task.getStatusTask()))
+                .statusTask(ApplicationUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
+                .idUser(task.getUser().getId())
                 .fullnameUser(task.getUser().getFullname())
                 .createdDate(DateUtils.formatDate(task.getCreatedDate()))
                 .startDate(DateUtils.formatDate(task.getStartDate()))

@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.enums.task.ActionChangeStatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
-import com.shsoftvina.erpshsoftvina.model.dto.ActionChangeStatusTaskEnumDto;
+import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 
 public class ApplicationUtils {
@@ -28,7 +28,7 @@ public class ApplicationUtils {
 
         StatusTaskEnum nextStatusTask= null;
 
-        if(action == null) return statusCurrent;
+        if(StringUtils.isBlank(action)) return statusCurrent;
 
         switch (statusCurrent){
             case REGISTERED:

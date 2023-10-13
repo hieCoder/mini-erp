@@ -1,0 +1,39 @@
+/* loading comment */
+.custom-spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+}
+
+.custom-spinner .dot {
+    width: 16px;
+    height: 16px;
+    background-color: #333;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bounce 1s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+/*border radius around for avatar*/
+.rounded-circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px; /* Điều này đặt kích thước tối thiểu */
+    height: 120px; /* Điều này đặt kích thước tối thiểu */
+    overflow: hidden;
+    border-radius: 50%;
+}
+.rounded-circle-container img {
+    max-width: 100%;
+    max-height: 100%;
+}

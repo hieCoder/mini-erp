@@ -7,16 +7,16 @@ function Validator(options){
         var rules=selectorRules[rule.selector];
         for(var i = 0;i<rules.length;i++){
             // <input>
-            errorMessage = rules[i](inputElement.value);
+            if(inputElement.nodeName === 'INPUT') {
+                errorMessage = rules[i](inputElement.value);
+            }
             // ckeditor
-            if(inputElement.nodeName === 'TEXTAREA'){
-                if (typeof editor !== 'undefined') {
-                    let valEditor=editor.getData();
-                    errorMessage =  rules[i](valEditor);
-                    inputElement.value = valEditor;
-                }else {
-                    errorMessage = rules[i](inputElement.value);
-                }
+            else if(inputElement.nodeName === 'DIV'){
+                var id = inputElement.id;
+                var valEditor = $('#'+ id).summernote().summernote('code');
+                if(valEditor === '<p><br></p>' || valEditor === '') valEditor= '';
+                errorMessage =  rules[i](valEditor);
+                // inputElement.value = valEditor;
             }
             // <image>
             else if(inputElement.nodeName === 'IMG'){
@@ -55,7 +55,11 @@ function Validator(options){
                         });
                     });
 
+                    var allFormElements = $(obj).find('*');
+                    allFormElements.prop('disabled', false);
                     var params = $(obj).serializeArray();
+                    allFormElements.prop('disabled', true);
+
                     $.each(params, function (i, v) {
                         formData.append(""+v.name+"", v.value);
                     });

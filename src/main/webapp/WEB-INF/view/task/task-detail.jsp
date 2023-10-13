@@ -1,0 +1,417 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp" %>
+<html>
+<head>
+    <title>Task detail</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Task detail</h2>
+                <c:if test="${param.updateSuccess != null}">
+                    <div class="alert alert-success">
+                        Update success!
+                    </div>
+                </c:if>
+                <form id="taskDetailForm">
+                    <div class="form-group mt-3">
+                        <label>Username: <b id="fullnameUser"></b></label>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="title">Title:</label>
+                        <input id="title" name="title" type="text" class="form-control" aria-describedby="emailHelp">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="content">Content:</label>
+                        <div id="content" class="summernote"></div>
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label>Status:</label>
+                        <div class="d-flex align-items-center">
+                            <p id="statusTask" style="margin: 0 20px 0 0;"></p>
+                            <label style="margin: 0 5px;">Select action:</label>
+                            <select id="selectAction" name="action" class="form-select" style="width: auto;" aria-label="Default select example">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label>Priority:</label>
+                        <select id="selectPriority" name="priority" class="form-select" aria-label="Default select example">
+                            <option value="LOW" class="text-warning">Low</option>
+                            <option value="MEDIUM" class="text-primary">Medium</option>
+                            <option value="HIGH" class="text-danger">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label>Progress:</label>
+                        <input id="progress" name="progress" type="number" class="form-control" aria-describedby="emailHelp">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="registeredDate">Registered date:</label>
+                        <input id="registeredDate" type="text" class="form-control" aria-describedby="emailHelp" disabled>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="startDate">Start date:</label>
+                        <input id="startDate" name="startDate" type="text" class="form-control" aria-describedby="emailHelp" disabled>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="dueDate">Due date:</label>
+                        <input id="dueDate" name="dueDate" type="date" class="form-control">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="closeDate">Closed date:</label>
+                        <input id="closeDate" name="closeDate" type="text" class="form-control" aria-describedby="emailHelp" disabled>
+                    </div>
+                    <div class="form-group mt-3 text-end">
+                        <span id="group-button-task-detail" class="d-none">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">Delete</button>
+                        </span>
+                        <a href="/tasks" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Your comment</h2>
+                <form id="yourCommentForm">
+                    <div class="form-group">
+                        <label for="yourCommentTitle">Title:</label>
+                        <input id="yourCommentTitle" name="title" type="text" class="form-control" aria-describedby="emailHelp">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-grou mt-1">
+                        <label for="yourCommentTitle">Content:</label>
+                        <div id="yourCommentContent" class="summernote"></div>
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="input-group mt-1">
+                        <input name="files" type="file" class="form-control" id="yourCommentFiles" multiple>
+                    </div>
+                    <div class="form-group mt-1 text-end">
+                        <button id="yourCommentSubmitComment" type="submit" class="btn btn-success">Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h2>List of comment</h2>
+                <ul id="comment-list" class="list-group">
+<%--                    <li class="list-group-item">--%>
+<%--                        <div class="row">--%>
+<%--                            <div class="col-md-2 text-center">--%>
+<%--                                <img class="rounded-circle-container" src="/upload/task/download.jpg" alt="User Avatar">--%>
+<%--                                <figcaption><b>huynhcanh</b></figcaption>--%>
+<%--                                <small>2023-10-13 14:19:11</small>--%>
+<%--                            </div>--%>
+<%--                            <div class="col-md-10">--%>
+<%--                                <form>--%>
+<%--                                    <div class="form-group">--%>
+<%--                                        <input type="text" class="form-control fw-bold" value="my title" disabled>--%>
+<%--                                    </div>--%>
+<%--                                    <div class="form-group mt-2">--%>
+<%--                                        <div class="form-control summernote" style="min-height: 110px;">--%>
+<%--                                            Nội dung bình luận sẽ được hiển thị ở đây.--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                    <div class="form-group mt-2 row">--%>
+<%--                                        <div class="col-md-6">--%>
+<%--                                            <span class="file" style="border: 1px solid red;">--%>
+<%--                                                <a href="/upload/task/a.xlsx" download>File 1</a>--%>
+<%--                                                <span aria-hidden="true" style="cursor: pointer;">&times;</span>--%>
+<%--                                            </span>--%>
+<%--                                            <input type="file" class="form-control mt-2" id="inputGroupFile04">--%>
+<%--                                        </div>--%>
+<%--                                        <div class="col-md-6 text-end">--%>
+<%--                                            <button class="btn btn-primary">Update</button>--%>
+<%--                                            <button class="btn btn-danger">Delete</button>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </form>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
+                </ul>
+            </div>
+        </div>
+
+        <%-- modal confirm delete task --%>
+        <div class="modal fade" id="deleteTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Confirm delete task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button id="delete-task" type="button" class="btn btn-danger">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%-- modal confirm delete comment --%>
+        <div class="modal fade" id="deleteCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete comment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button id="delete-comment" type="button" class="btn btn-danger">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/task/task.js"></script>
+    <script>
+
+        //id
+        var idTask = '${id}';
+        var idComment = null;
+
+        $(document).ready(function() {
+
+            callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
+
+                // TASK DETAIL
+                $('#fullnameUser').text(rs.fullnameUser);
+
+                $('#title').val(rs.title);
+
+                $('#content').summernote('code', rs.content);
+
+                var statusTask = rs.statusTask;
+                $('#statusTask').html('<span class="badge ' + getStatusColor(statusTask.code) + '">' + statusTask.name + '</span>');
+
+                $('#selectAction').empty();
+                $('#selectAction').html('<option value="">-- Actions --</option>');
+                statusTask.actions.forEach(function(action) {
+                    var option = $('<option></option>');
+                    option.attr('value', action.code);
+                    option.text(action.name);
+                    $('#selectAction').append(option);
+                });
+
+                $('#selectPriority').val(rs.priority.code);
+
+                $('#progress').val(rs.progress);
+                if([T_REGISTERED, T_POSTPONSED, T_CLOSED].includes(statusTask.code)){
+                    $('#progress').prop('disabled', true);
+                }
+
+                $('#registeredDate').val(rs.createdDate);
+
+                $('#startDate').val(rs.startDate);
+
+                $('#dueDate').val(formatDateValueToValueOfInputDate(rs.dueDate));
+                if(userCurrent.role === U_DEVELOPER){
+                    $('#dueDate').prop('disabled', true);
+                }
+
+                $('#closeDate').val(rs.closeDate);
+
+                if(userCurrent.role !== U_DEVELOPER || userCurrent.id === rs.idUser){
+                    $('#group-button-task-detail').removeClass('d-none');
+                }
+
+
+                // YOUR COMMENT
+                $('#yourCommentContent').summernote();
+
+
+                // LIST OF COMMENT
+                var comments = rs.comments;
+
+                comments.forEach(function (comment) {
+                    var listItem = $('<li class="list-group-item">');
+                    var row = $('<div class="row">');
+                    var userCol = $('<div class="col-md-2 text-center">');
+                    var commentCol = $('<div class="col-md-10">');
+
+                    userCol.append('<img class="rounded-circle-container" src="' + comment.avatarUser + '" alt="User Avatar">');
+                    userCol.append('<figcaption><b>' + comment.fullnameUser + '</b></figcaption>');
+                    userCol.append('<small>' + comment.createdDate + '</small>');
+
+                    var commentForm = $('<form id="updateCommentForm'+comment.id+'">');
+
+                    commentForm.append('<div class="form-group"><input id="updateCommentTitle" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
+                    commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
+
+                    var fileLinksCol = $('<div class="col-md-6">');
+                    var buttonCol = $('<div class="col-md-6 text-end">');
+
+                    var fileLinks = $('<div class="form-group list-file">');
+                    if (comment.files && comment.files.length > 0) {
+                        comment.files.forEach(function (file) {
+                            var fileSpan = $('<span class="file">');
+                            var fileA = $('<a class="p-2" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
+                            var closeSpan = $('<span style="font-size: 20px;cursor: pointer;" class="d-none remove-file" aria-hidden="true">&times;</span>');
+
+                            fileSpan.append(fileA);
+                            fileSpan.append(closeSpan);
+
+                            fileLinks.append(fileSpan);
+                        });
+                    }
+
+                    var fileInput = $('<input type="file" class="form-control mt-2 d-none" id="attractFileUpdateComment" multiple>');
+                    fileLinks.append(fileInput);
+
+                    fileLinksCol.append(fileLinks);
+
+                    var updateButton = $('<button type="button" class="btn btn-warning btn-modify-comment" style="margin-right: 2px;">Modify</button>' +
+                        '<button type="submit" class="btn btn-primary btn-update-comment" style="margin-right: 2px;">Update</button>');
+                    updateButton.attr('data-comment-id', comment.id);
+                    var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">Delete</button>');
+                    deleteButton.attr('data-comment-id', comment.id);
+                    buttonCol.append(updateButton);
+                    buttonCol.append(deleteButton);
+
+                    commentForm.append('<div class="form-group mt-2 row">');
+                    commentForm.find('.row').append(fileLinksCol).append(buttonCol);
+
+                    commentCol.append(commentForm);
+
+                    row.append(userCol).append(commentCol);
+                    listItem.append(row);
+
+                    $('#comment-list').append(listItem);
+                });
+
+                $('.btn-modify-comment').click(function () {
+                    var id = $(this).data('comment-id');
+                    var closestLI = $(this).closest('li');
+
+                    // title
+                    var titleInput = closestLI.find('input[name="title"]');
+                    titleInput.prop('disabled', false);
+                    var currentValue = titleInput.val();
+                    titleInput.val('');
+                    titleInput.val(currentValue);
+                    titleInput.focus();
+                    // content
+                    var summernoteDiv = closestLI.find('.summernote');
+                    summernoteDiv.summernote();
+                    // files
+                    var files = closestLI.find('.file');
+                    files.css({
+                        'border': '1px solid #9f9292',
+                        'margin-right': '20px'
+                    });
+                    files.find('span').removeClass('d-none');
+                    // attach file
+                    $('#attractFileUpdateComment').removeClass('d-none');
+
+                    // remove file
+                    $('.remove-file').click(function () {
+                         $(this).closest('.file').remove();
+                    });
+
+                    // update
+                    Validator({
+                        form:'#updateCommentForm'+id,
+                        errorSelector: '.form-message',
+                        rules:[
+                            Validator.isRequired('#updateCommentTitle'),
+                            Validator.isRequired('#updateCommentContent')
+                        ],
+                        onSubmit: function (formData) {
+                            var idForm = '#updateCommentForm'+id;
+                            var listFile = $(idForm + ' .list-file');
+                            var oldFiles = listFile.find('a').map(function() {
+                                 return $(this).text();
+                            }).get().join(',');
+
+                            formData.append('oldFiles', oldFiles);
+                            formData.append('content', $('#updateCommentContent').summernote().summernote('code'));
+
+                            var data = {};
+                            formData.forEach((value, key) => data[key] = value);
+
+                            console.log(data);
+
+                            $(idForm).find('*').prop('disabled', false);
+                        }
+                    });
+                });
+
+                $('.btn-delete-comment').click(function () {
+                    idComment = $(this).data('comment-id');
+                });
+            });
+        });
+
+        Validator({
+            form:'#taskDetailForm',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title'),
+                Validator.isRequired('#dueDate'),
+                Validator.isRequired('#content'),
+                Validator.isRequired('#progress')
+            ],
+            onSubmit: function (formData) {
+                formData.append('id', idTask);
+                formData.append('content', $('#content').summernote().summernote('code'));
+
+                callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {
+                    window.location.href = "/tasks/"+idTask + "?updateSuccess";
+                });
+            }
+        });
+
+        Validator({
+            form:'#yourCommentForm',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#yourCommentTitle'),
+                Validator.isRequired('#yourCommentContent')
+            ],
+            onSubmit: function (formData) {
+                formData.append('taskId', idTask);
+                formData.append('content', $('#yourCommentContent').summernote().summernote('code'));
+                formData.append('userId', userCurrent.id);
+
+                callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                    $('#yourCommentForm').find('*').prop('disabled', false);
+                });
+            }
+        });
+
+        $('#delete-task').click(function() {
+            callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
+                window.location.href = "/tasks?deleteSuccess";
+            });
+        });
+
+        $('#delete-comment').click(function() {
+            console.log(idComment);
+            // callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
+            //     window.location.href = "/tasks?deleteSuccess";
+            // });
+        });
+    </script>
+</body>
+</html>

@@ -9,20 +9,20 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 
 public class StringUtils {
 
-    public static boolean isEmpty(String s){
+    public static boolean isBlank(String s){
         if(s == null || s.isEmpty()) return true;
         return false;
     }
 
     public static String[] split(String s, String regex){
-        if (!isEmpty(s)) {
+        if (!isBlank(s)) {
             return s.split(regex);
         }
         return null;
     }
 
     public static String[] splitPathFile(Class<?> entityClass, String s, String regex){
-        if (!isEmpty(s)) {
+        if (!isBlank(s)) {
             String[] parts = s.split(regex);
             for (int i = 0; i < parts.length; i++) {
                 String pathRoot = "";

@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
               .and()
-                .addFilterBefore(updateProfileInterceptorFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(updateProfileInterceptorFilter, UsernamePasswordAuthenticationFilter.class)
               .csrf().disable();
     }
 

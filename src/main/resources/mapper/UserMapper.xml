@@ -117,4 +117,14 @@
         <result property="insuranceType" column="INSURANCE_TYPE"/>
         <result property="insuranceMoney" column="INSURANCE_MONEY"/>
     </resultMap>
+
+    <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">
+        SELECT ID, FULLNAME
+        FROM USER;
+    </select>
+
+    <resultMap id="fullnameResultMap" type="java.util.Map">
+        <result property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
+    </resultMap>
 </mapper>

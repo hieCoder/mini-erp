@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.model.response.task;
 
-import com.shsoftvina.erpshsoftvina.model.dto.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

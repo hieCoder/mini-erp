@@ -53,4 +53,9 @@ public class UserApi {
     public ResponseEntity<Boolean> activeUserRegisterRequest(@Valid @RequestBody UserActiveRequest user) {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
+
+    @GetMapping("/usernames")
+    public ResponseEntity<?> getAllFullname() {
+        return new ResponseEntity<>(userService.getAllFullname(), HttpStatus.OK);
+    }
 }

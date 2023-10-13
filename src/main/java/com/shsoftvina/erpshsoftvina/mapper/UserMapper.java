@@ -25,4 +25,5 @@ public interface UserMapper {
     int changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);
     int deleteUser(String id);
+    List<Map<String, Object>> getAllFullname();
 }

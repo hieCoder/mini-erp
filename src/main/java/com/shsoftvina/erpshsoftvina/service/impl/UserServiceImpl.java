@@ -182,4 +182,9 @@ public class UserServiceImpl implements UserService {
         }
         return 0;
     }
+
+    @Override
+    public List<Map<String, Object>> getAllFullname() {
+        return userMapper.getAllFullname();
+    }
 }
