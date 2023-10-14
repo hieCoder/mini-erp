@@ -80,7 +80,7 @@ public class UserConverter {
                 .build();
     }
 
-    public List<UserShowResponse> toListShowUserRespone(List<User> listUser) {
+    public List<UserShowResponse> toListShowUserResponse(List<User> listUser) {
         return listUser.stream().map(this::toShowUserRespone).collect(Collectors.toList());
     }
 

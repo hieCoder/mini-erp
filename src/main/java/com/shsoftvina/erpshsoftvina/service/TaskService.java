@@ -17,5 +17,5 @@ public interface TaskService {
     int deleteById(String id);
     List<StatusTaskCountsResponse> getStatusTaskCount();
     TaskDetailResponse findById(String id);
-    List<Map<String, Object>> getTaskByHashtag(String userId, String hashtag);
+    List<Map<String, Object>> getTaskByHashtag(String userId);
 }

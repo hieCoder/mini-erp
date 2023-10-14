@@ -49,7 +49,7 @@ public class UserController {
                                      @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
                                      @RequestParam(name = "status", required = false, defaultValue = "ACTIVE") String status) {
-        ModelAndView view = new ModelAndView("user/get-list");
+        ModelAndView view = new ModelAndView("user/listUser");
 
         PageUserListRespone users = userService.getAllUser(search, sort, page, pageSize, status);
 

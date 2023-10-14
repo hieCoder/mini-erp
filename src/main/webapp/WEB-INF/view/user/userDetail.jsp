@@ -58,7 +58,7 @@
                     <label for="emergencyPhone">Emergency Phone</label>
                     <input type="tel" class="form-control" id="emergencyPhone" value="${user.getEmergencyPhone()}">
                 </div>
-                <div class="form-group hide">
+                <div class="form-group">
                     <label for="resume">Resume File: </label>
                     <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
                     <input type="file" class="form-control mt-2" id="resume">
@@ -107,11 +107,11 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="userId">User ID</label>
                     <input type="email" class="form-control" id="userId" value="${user.getEmail()}">
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <label for="password">Password: </label>
                     <a id="change-password-button" class="text-primary" style="text-decoration: none">Change
                         password</a>
@@ -307,7 +307,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/api/v1/contracts" method="post" id="addContractForm">
+                <form action="/api/v1/contracts" method="post">
                     <div class="form-group">
                         <label for="editBasicSalary">Basic Salary:</label>
                         <input type="text" class="form-control" id="addBasicSalary" name="basicSalary">
@@ -375,6 +375,25 @@
     </div>
 </div>
 
+<!-- Modal Notification Success -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="resultModalLabel">Result</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="resultMessage">
+                <!-- Message Success -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%-------------------------------------------- CODE JAVASCRIPT--------------------------------------------%>
 
@@ -449,8 +468,8 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     // Xử lý kết quả ở đây nếu cần
-                    alert("Save is success");
-                    window.location.href = "/users";
+                    sessionStorage.setItem('result', 'updateSuccess');
+                    location.href = "/userDetail/" + ${user.getId()};
                 } else {
                     // Xử lý lỗi nếu có
                     var errorMessage = "Lỗi:\n";
@@ -484,7 +503,6 @@
             contractLink.textContent = contractfileName;
         }
 
-
         // Xử lý khi nút Delete được nhấn trong modal
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {
@@ -494,7 +512,7 @@
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             // Tải lại trang
-                            alert("Delete is success")
+                            sessionStorage.setItem('result', 'deleteSuccess');
                             window.location.href = "/users";
                         } else {
                             // Xử lý khi API gọi không thành công
@@ -507,6 +525,32 @@
         });
     });
 
+    // Notification Success
+    document.addEventListener('DOMContentLoaded', function () {
+        const result = sessionStorage.getItem('result');
+        if (result) {
+            let message;
+            switch (result) {
+                case 'updateSuccess':
+                    message = 'Update User Success';
+                    break;
+                case 'addContractSuccess':
+                    message = 'Add Contract Success';
+                    break;
+                case 'editContractSuccess':
+                    message = 'Edit Contract Success';
+                    break;
+                case 'deleteContractSuccess':
+                    message = 'Delete Contract Success';
+                    break;
+                default:
+                    message = 'Unknown Result';
+            }
+            $('#resultMessage').text(message);
+            $('#resultModal').modal('show');
+            sessionStorage.clear();
+        }
+    });
 </script>
 
 <%--Handle WorkingDay--%>
@@ -635,7 +679,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     // Xử lý kết quả ở đây nếu cần
-                    alert("Add Contract is success")
+                    sessionStorage.setItem('result', 'addContractSuccess');
                     localStorage.setItem("showModal", "true");
                     location.reload();
                 } else {
@@ -750,7 +794,7 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         // Xử lý kết quả ở đây nếu cần
-                        alert("Edit is Success");
+                        sessionStorage.setItem('result', 'editContractSuccess');
                         localStorage.setItem("showModal", "true");
                         location.reload();
                     } else {
@@ -798,7 +842,8 @@
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             // Tải lại trang
-                            alert("Delete Contract is success");
+                            sessionStorage.setItem('result', 'deleteContractSuccess');
+                            localStorage.setItem("showModal", "true");
                             location.reload();
                         } else {
                             // Xử lý khi API gọi không thành công
@@ -825,7 +870,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Lấy vai trò của người dùng
-        var userRole = "${roleUser}";
+        var roleUser = "${roleUser}";
 
         var fieldsToHide = document.getElementsByClassName("hide");
 
@@ -835,7 +880,7 @@
         for (var i = 0; i < fieldsToHide.length; i++) {
             var div = fieldsToHide[i];
             if (div) {
-                if (userRole === "Developer") {
+                if (roleUser === "Developer") {
                     div.style.display = "none";
                 } else {
                     div.style.display = "block";
@@ -847,7 +892,7 @@
         buttonsToHide.forEach(function (buttonName) {
             var button = document.getElementById(buttonName);
             if (button) {
-                if (userRole === "Developer") {
+                if (roleUser === "Developer") {
                     button.style.display = "none";
                 } else {
                     button.style.display = "inline-block";

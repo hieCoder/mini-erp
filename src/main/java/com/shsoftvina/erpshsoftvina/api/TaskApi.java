@@ -50,9 +50,8 @@ public class TaskApi {
         return ResponseEntity.ok(taskService.deleteById(id));
     }
 
-    @GetMapping("/hashtag")
-    public ResponseEntity<?> getTaskByHashtag(@RequestParam String userId,
-                                              @RequestParam String hashtag){
-        return ResponseEntity.ok(taskService.getTaskByHashtag(userId, hashtag));
+    @GetMapping("/hashtag/{userId}")
+    public ResponseEntity<?> getTaskByHashtag(@PathVariable("userId") String userId){
+        return ResponseEntity.ok(taskService.getTaskByHashtag(userId));
     }
 }

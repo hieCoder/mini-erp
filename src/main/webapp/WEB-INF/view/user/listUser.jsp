@@ -124,6 +124,25 @@
     </div>
 </form>
 
+<!-- Modal Notification Success -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="resultModalLabel">Result</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="resultMessage">
+                <!-- Message Success -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
     document.getElementById("pageSize").addEventListener("change", function () {
@@ -136,6 +155,16 @@
 
     document.getElementById("search").addEventListener("input", function () {
         localStorage.setItem("selectedSearch", this.value);
+    });
+
+    // Notification Delete User Success
+    document.addEventListener('DOMContentLoaded', function () {
+        const result = sessionStorage.getItem('result');
+        if (result) {
+            $('#resultMessage').text(result === 'deleteSuccess' ? 'Delete User Success' : '');
+            $('#resultModal').modal('show');
+            sessionStorage.clear();
+        }
     });
 
     // Khôi phục giá trị lựa chọn "Page Count," "Status," và "Search" từ Local Storage khi trang được load

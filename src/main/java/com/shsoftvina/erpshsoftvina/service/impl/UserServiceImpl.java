@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
         List<User> users = userMapper.getAllUser(searchTerm, sortDirection, status, rowBounds);
-        List<UserShowResponse> showUsers = userConverter.toListShowUserRespone(users);
+        List<UserShowResponse> showUsers = userConverter.toListShowUserResponse(users);
         long totalRecordCount = userMapper.getTotalUser(status, searchTerm, sortDirection);
         long totalPage = (long) Math.ceil((double) totalRecordCount / pageSize);
         boolean hasNext = start < totalPage;

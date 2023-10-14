@@ -12,15 +12,21 @@ import java.util.List;
 public interface UserService {
 
     PageUserListRespone getAllUser(String searchTerm,
-                                      String sortDirection,
-                                      int start,
-                                      int pageSize,
-                                      String status);
+                                   String sortDirection,
+                                   int start,
+                                   int pageSize,
+                                   String status);
+
     UserDetailResponse findUserDetail(String id);
+
     int deleteUser(String id);
+
     Boolean activeUserRegisterRequest(UserActiveRequest user);
+
     UserDetailResponse findByEmail(String email);
+
     int updateUserDetail(UserUpdateRequest userUpdateRequest);
+
     List<String> getAllFullname();
 
 }
