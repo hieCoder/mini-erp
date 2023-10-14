@@ -39,12 +39,21 @@ public class FileUtils {
             String basePath = request.getSession().getServletContext().getRealPath("/");
             String grandparentPath = Paths.get(basePath).getParent().getParent().toString();
             Path savePath = Paths.get(grandparentPath + dir);
+            String[] parts = dir.split("upload");
+            String destinationFolder = parts[parts.length-1];
+            Path SavePathTarget = Paths.get(basePath + "/upload/" + destinationFolder);
             Path filePath = savePath.resolve(fileName);
+            Path filePathTarget = SavePathTarget.resolve(fileName);
             try {
                 if (!Files.exists(savePath)) {
                     Files.createDirectories(savePath);
                 }
+                if (!Files.exists(SavePathTarget)) {
+                    Files.createDirectories(SavePathTarget);
+                }
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(file.getInputStream(), filePathTarget, StandardCopyOption.REPLACE_EXISTING);
+
                 return true;
             } catch (IOException e) {
                 return false;
