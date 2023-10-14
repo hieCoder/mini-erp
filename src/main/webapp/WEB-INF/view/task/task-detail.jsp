@@ -1,5 +1,3 @@
-<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
-<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <html>
@@ -49,7 +47,7 @@
                     </div>
                     <div class="form-group mt-3">
                         <label>Progress:</label>
-                        <input id="progress" name="progress" type="number" class="form-control" aria-describedby="emailHelp">
+                        <input id="progress" max="100" name="progress" type="number" class="form-control" aria-describedby="emailHelp">
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group mt-3">
@@ -218,13 +216,13 @@
                 $('#startDate').val(rs.startDate);
 
                 $('#dueDate').val(formatDateValueToValueOfInputDate(rs.dueDate));
-                if(userCurrent.role === U_DEVELOPER){
+                if(userCurrent.role == U_DEVELOPER){
                     $('#dueDate').prop('disabled', true);
                 }
 
                 $('#closeDate').val(rs.closeDate);
 
-                if(userCurrent.role !== U_DEVELOPER || userCurrent.id === rs.idUser){
+                if(userCurrent.role != U_DEVELOPER || userCurrent.id == rs.idUser){
                     $('#group-button-task-detail').removeClass('d-none');
                 }
 
@@ -363,13 +361,7 @@
                     formData.append('userId', userCurrent.id);
                     formData.append('parentId', parentId);
 
-                    // var data = {};
-                    // formData.forEach((value, key) => data[key] = value);
-                    //
-                    // console.log(data);
-
                     callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
-                        console.log(rs);
                         var liE = createCommentForm(rs);
                         var ulChildsComment = closestLI.find('.childs-comment-list').first();
                         liE.prependTo(ulChildsComment);
@@ -457,16 +449,16 @@
             listItem.append('<div class="row mt-3"><div class="col-md-2"></div><div class="col-md-10 reply-form-container"></div></div>');
 
             var childComments = comment.childComments;
+            var ul = $('<ul class="childs-comment-list"></ul>');
             if (childComments && childComments.length > 0) {
-                var ul = $('<ul class="childs-comment-list"></ul>');
+
                 childComments.forEach(function (comment) {
                     var liE = createCommentForm(comment);
                     ul.append(liE);
                 });
-
-                var rowCommentChilds = $('<div class="row"></div>');
-                rowCommentChilds.append(ul);
             }
+            var rowCommentChilds = $('<div class="row"></div>');
+            rowCommentChilds.append(ul);
             listItem.append(rowCommentChilds);
 
             return listItem;

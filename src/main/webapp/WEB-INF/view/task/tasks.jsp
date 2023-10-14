@@ -54,7 +54,7 @@
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
                     <label style="margin-right: 5px;">Page count:</label>
                     <select id="page-count-select" class="form-select" style="width: auto;" aria-label="Default select example">
-                        <option value="2">2</option>
+                        <option value="3">3</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                     </select>
@@ -96,7 +96,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Username:</label>
-                            <select id="selectUsername" class="form-select" aria-label="Default select example"></select>
+                            <select id="selectUsername" name="userId" class="form-select" aria-label="Default select example"></select>
                         </div>
                         <div class="form-group">
                             <label for="title">Title:</label>
@@ -332,8 +332,6 @@
                 ],
                 onSubmit: function (formData) {
                     formData.append('content', $('#content').summernote().summernote('code'));
-                    formData.append('userId', userCurrent.id);
-
                     callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
                         window.location.href = "/tasks?registerSuccess";
                     });
