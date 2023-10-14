@@ -110,32 +110,22 @@
                 <ul id="comment-list" class="list-group">
 <%--                    <li class="list-group-item">--%>
 <%--                        <div class="row">--%>
-<%--                            <div class="col-md-2 text-center">--%>
-<%--                                <img class="rounded-circle-container" src="/upload/task/download.jpg" alt="User Avatar">--%>
-<%--                                <figcaption><b>huynhcanh</b></figcaption>--%>
-<%--                                <small>2023-10-13 14:19:11</small>--%>
-<%--                            </div>--%>
+<%--                            <div class="col-md-2 text-center"></div>--%>
 <%--                            <div class="col-md-10">--%>
 <%--                                <form>--%>
 <%--                                    <div class="form-group">--%>
-<%--                                        <input type="text" class="form-control fw-bold" value="my title" disabled>--%>
+<%--                                        <input type="text" class="form-control fw-bold" placeholder="Title">--%>
 <%--                                    </div>--%>
 <%--                                    <div class="form-group mt-2">--%>
-<%--                                        <div class="form-control summernote" style="min-height: 110px;">--%>
-<%--                                            Nội dung bình luận sẽ được hiển thị ở đây.--%>
-<%--                                        </div>--%>
+<%--                                        <div class="form-control summernote" style="min-height: 110px;"></div>--%>
 <%--                                    </div>--%>
 <%--                                    <div class="form-group mt-2 row">--%>
 <%--                                        <div class="col-md-6">--%>
-<%--                                            <span class="file" style="border: 1px solid red;">--%>
-<%--                                                <a href="/upload/task/a.xlsx" download>File 1</a>--%>
-<%--                                                <span aria-hidden="true" style="cursor: pointer;">&times;</span>--%>
-<%--                                            </span>--%>
-<%--                                            <input type="file" class="form-control mt-2" id="inputGroupFile04">--%>
+<%--                                            <input type="file" name="newFiles" class="form-control mt-2 attract-update-comment" multiple="">--%>
 <%--                                        </div>--%>
 <%--                                        <div class="col-md-6 text-end">--%>
-<%--                                            <button class="btn btn-primary">Update</button>--%>
-<%--                                            <button class="btn btn-danger">Delete</button>--%>
+<%--                                            <button class="btn btn-primary">Reply</button>--%>
+<%--                                            <button class="btn btn-danger">Cancel</button>--%>
 <%--                                        </div>--%>
 <%--                                    </div>--%>
 <%--                                </form>--%>
@@ -196,7 +186,6 @@
 
         $(document).ready(function() {
             callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
-                console.log(rs);
 
                 // TASK DETAIL
                 $('#fullnameUser').text(rs.fullnameUser);
@@ -340,7 +329,7 @@
                 }
             });
         });
-        $(document).on('click','.btn-cancel-comment',function(){
+        $(document).on('click','.btn-cancel-update-comment',function(){
             var idComment = $(this).data('comment-id');
             var closestLI = $(this).closest('li');
 
@@ -353,9 +342,38 @@
             commentObj.liEComment = $(this).closest('li');
         });
         $(document).on('click','.btn-reply-comment',function(){
-            var id = $(this).data('comment-id');
+            var parentId = $(this).data('comment-id');
             var closestLI = $(this).closest('li');
+            var containerReplyForm = closestLI.find('.reply-form-container').first();
+            replyCommentForm(parentId).appendTo(containerReplyForm);
+            var contentEditor = closestLI.find('.replyCommentForm .summernote').first();
+            contentEditor.summernote();
+            closestLI.find('.list-button').first().hide();
 
+            // Validator({
+            //     form:'#yourCommentForm',
+            //     errorSelector: '.form-message',
+            //     rules:[
+            //         Validator.isRequired('#yourCommentTitle'),
+            //         Validator.isRequired('#yourCommentContent')
+            //     ],
+            //     onSubmit: function (formData) {
+            //         formData.append('taskId', idTask);
+            //         formData.append('content', $('#yourCommentContent').summernote().summernote('code'));
+            //         formData.append('userId', userCurrent.id);
+            //
+            //         callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+            //             var liE = createCommentForm(rs);
+            //             liE.prependTo('#comment-list');
+            //             $('#yourCommentForm').find('*').prop('disabled', false);
+            //         });
+            //     }
+            // });
+        });
+        $(document).on('click','.btn-cancel-reply-comment',function(){
+            var closestLI = $(this).closest('li');
+            closestLI.find('.reply-form-container .replyCommentForm').first().remove();
+            closestLI.find('.list-button').first().show();
         });
 
         function createCommentForm(comment) {
@@ -374,7 +392,7 @@
             commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
 
             var fileLinksCol = $('<div class="col-md-6">');
-            var buttonCol = $('<div class="col-md-6 text-end">');
+            var buttonCol = $('<div class="col-md-6 text-end list-button">');
 
             var fileLinks = $('<div class="form-group list-file">');
             if (comment.files && comment.files.length > 0) {
@@ -400,16 +418,18 @@
             var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment d-none" style="margin-right: 2px;" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">Delete</button>');
             deleteButton.attr('data-comment-id', comment.id);
             var updateButton = $('<button type="submit" class="btn btn-primary btn-update-comment d-none" style="margin-right: 2px;">Update</button>');
-            var cancelButton = $('<button type="button" class="btn btn-secondary btn-cancel-comment d-none" style="margin-right: 2px;">Cancel</button>');
-            cancelButton.attr('data-comment-id', comment.id);
-            if(!comment.parentId){
+            var cancelUpdateButton = $('<button type="button" class="btn btn-secondary btn-cancel-update-comment d-none" style="margin-right: 2px;">Cancel</button>');
+            cancelUpdateButton.attr('data-comment-id', comment.id);
+
+            if(comment.parentId == null){
                 var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment" style="margin-right: 2px;">Reply</button>');
+                replyButton.attr('data-comment-id', comment.id);
                 buttonCol.append(replyButton);
             }
             buttonCol.append(modifyButton);
             buttonCol.append(updateButton);
             buttonCol.append(deleteButton);
-            buttonCol.append(cancelButton);
+            buttonCol.append(cancelUpdateButton);
             if(isAdminOrUserLogin(comment.idUser)){
                 deleteButton.removeClass('d-none');
                 modifyButton.removeClass('d-none');
@@ -423,6 +443,7 @@
             row.append(userCol).append(commentCol);
             listItem.append(row);
 
+            listItem.append('<div class="row mt-3"><div class="col-md-2"></div><div class="col-md-10 reply-form-container"></div></div>');
 
             var childComments = comment.childComments;
             if (childComments && childComments.length > 0) {
@@ -442,24 +463,25 @@
 
         function updateCommemtForm(closestLI) {
             // title
-            var titleInput = closestLI.find('input[name="title"]');
+            var titleInput = closestLI.find('input[name="title"]').first();
             titleInput.prop('disabled', false);
             var currentValue = titleInput.val();
             titleInput.val('');
             titleInput.val(currentValue);
             titleInput.focus();
             // content
-            var summernoteDiv = closestLI.find('.summernote');
+            var summernoteDiv = closestLI.find('.summernote').first();
             summernoteDiv.summernote();
             // files
-            var files = closestLI.find('.file');
+            var files = closestLI.find('.list-file').first().find('.file');
             files.css({
                 'border': '1px solid #9f9292',
                 'margin-right': '20px'
             });
             files.find('span').removeClass('d-none');
+
             // attach file
-            closestLI.find('input.attract-update-comment').removeClass('d-none');
+            closestLI.find('input.attract-update-comment').first().removeClass('d-none');
 
             // remove file
             $('.remove-file').click(function () {
@@ -467,8 +489,42 @@
             });
 
             // list button
-            closestLI.find('.btn-update-comment, .btn-cancel-comment').removeClass('d-none');
-            closestLI.find('.btn-modify-comment, .btn-reply-comment, .btn-delete-comment').addClass('d-none');
+            closestLI.find('.list-button').first().find('.btn-update-comment, .btn-cancel-update-comment').removeClass('d-none');
+            closestLI.find('.list-button').first().find('.btn-modify-comment, .btn-reply-comment, .btn-delete-comment').addClass('d-none');
+        }
+
+        function replyCommentForm(parentId) {
+            var form = $('<form class="replyCommentForm"></form>');
+
+            var titleFormGroup = $('<div class="form-group"></div>');
+            var titleInput = $('<input name="title" type="text" class="form-control fw-bold" placeholder="Title">');
+            titleFormGroup.append(titleInput);
+
+            var contentFormGroup = $('<div class="form-group mt-2"></div>');
+            var contentTextarea = $('<div class="form-control summernote" style="min-height: 110px;"></div>');
+            contentFormGroup.append(contentTextarea);
+
+            var buttonFormGroup = $('<div class="form-group row"></div>');
+
+            var fileInputContainer = $('<div class="col-md-6 mt-1 mb-1"></div>');
+            var fileInput = $('<input type="file" name="files" class="form-control attract-update-comment" multiple>' +
+                '<input hidden type="text" name="parentId" value="'+ parentId + '1">');
+            fileInputContainer.append(fileInput);
+
+            var buttonContainer = $('<div class="col-md-6 mt-1 mb-1 text-end"></div>');
+            var replyButton = $('<button type="submit" class="btn btn-info" style="margin-right: 2px;">Reply</button>');
+            var cancelButton = $('<button type="button"class="btn btn-secondary btn-cancel-reply-comment" >Cancel</button>');
+            buttonContainer.append(replyButton);
+            buttonContainer.append(cancelButton);
+
+            buttonFormGroup.append(fileInputContainer);
+            buttonFormGroup.append(buttonContainer);
+
+            form.append(titleFormGroup);
+            form.append(contentFormGroup);
+            form.append(buttonFormGroup);
+
+            return form;
         }
     </script>
 </body>
