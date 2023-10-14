@@ -85,3 +85,7 @@ function getFileNameFromPath(path) {
     var lastPart = parts[parts.length - 1];
     return lastPart;
 }
+
+function isAdminOrUserLogin(idUser) {
+    return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
+}

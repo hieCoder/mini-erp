@@ -51,8 +51,10 @@ public class CommentTaskConverter {
                 .createdDate(DateUtils.formatDateTime(commentTask.getCreatedDate()))
                 .modifiedBy(commentTask.getModifiedBy())
                 .modifiedDate(DateUtils.formatDateTime(commentTask.getModifiedDate()))
+                .parentId(commentTask.getParentComment() != null?commentTask.getParentComment().getId(): null)
                 .avatarUser(avatarUser)
                 .fullnameUser(fullnameUser)
+                .idUser(commentTask.getUser().getId())
                 .childComments(toListResponse(commentTask.getChildComments()))
                 .build();
     }
@@ -74,19 +76,15 @@ public class CommentTaskConverter {
                 .build();
     }
 
-    public CommentTask toEntity(UpdateCommentTaskRequest updateCommentTaskRequest, List<String> listFileNameSaveFileSuccess) {
-        String files = null;
-        if(!listFileNameSaveFileSuccess.isEmpty()){
-            files = String.join(",", listFileNameSaveFileSuccess);
-        }
-        return CommentTask.builder()
-                .id(updateCommentTaskRequest.getId())
-                .title(updateCommentTaskRequest.getTitle())
-                .content(updateCommentTaskRequest.getContent())
-                .files(files)
-                .modifiedDate(new Date())
-                .modifiedBy(Principal.getUserCurrent().getFullname())
-                .build();
+    public CommentTask toEntity(UpdateCommentTaskRequest updateCommentTaskRequest, String newFilesToDB) {
+
+        CommentTask commentTask = commentTaskMapper.findById(updateCommentTaskRequest.getId());
+        commentTask.setTitle(updateCommentTaskRequest.getTitle());
+        commentTask.setContent(updateCommentTaskRequest.getContent());
+        commentTask.setFiles(newFilesToDB);
+        commentTask.setModifiedDate(new Date());
+        commentTask.setModifiedBy(Principal.getUserCurrent().getFullname());
+        return commentTask;
     }
 
     public List<CommentTaskResponse> toListResponse(List<CommentTask> commentTasks) {

@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.CreateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.UpdateCommentTaskRequest;
+import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.service.CommentTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,8 @@ public class CommentTaskApi {
 
     @PostMapping
     public ResponseEntity<?> createCommentTask(@Valid CreateCommentTaskRequest createCommentTaskRequest) {
-        return ResponseEntity.ok(commentTaskService.createCommentTask(createCommentTaskRequest));
+        CommentTaskResponse commentTaskResponse = commentTaskService.createCommentTask(createCommentTaskRequest);
+        return ResponseEntity.ok(commentTaskResponse);
     }
 
     @PostMapping("/updation")

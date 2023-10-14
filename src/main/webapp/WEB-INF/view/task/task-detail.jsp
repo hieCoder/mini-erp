@@ -189,11 +189,14 @@
 
         //id
         var idTask = '${id}';
-        var idComment = null;
+        var commentObj = {
+            idComment: null,
+            liEComment: null
+        };
 
         $(document).ready(function() {
-
             callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
+                console.log(rs);
 
                 // TASK DETAIL
                 $('#fullnameUser').text(rs.fullnameUser);
@@ -245,120 +248,7 @@
                 var comments = rs.comments;
 
                 comments.forEach(function (comment) {
-                    var listItem = $('<li class="list-group-item">');
-                    var row = $('<div class="row">');
-                    var userCol = $('<div class="col-md-2 text-center">');
-                    var commentCol = $('<div class="col-md-10">');
-
-                    userCol.append('<img class="rounded-circle-container" src="' + comment.avatarUser + '" alt="User Avatar">');
-                    userCol.append('<figcaption><b>' + comment.fullnameUser + '</b></figcaption>');
-                    userCol.append('<small>' + comment.createdDate + '</small>');
-
-                    var commentForm = $('<form id="updateCommentForm'+comment.id+'">');
-
-                    commentForm.append('<div class="form-group"><input id="updateCommentTitle" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
-                    commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
-
-                    var fileLinksCol = $('<div class="col-md-6">');
-                    var buttonCol = $('<div class="col-md-6 text-end">');
-
-                    var fileLinks = $('<div class="form-group list-file">');
-                    if (comment.files && comment.files.length > 0) {
-                        comment.files.forEach(function (file) {
-                            var fileSpan = $('<span class="file">');
-                            var fileA = $('<a class="p-2" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
-                            var closeSpan = $('<span style="font-size: 20px;cursor: pointer;" class="d-none remove-file" aria-hidden="true">&times;</span>');
-
-                            fileSpan.append(fileA);
-                            fileSpan.append(closeSpan);
-
-                            fileLinks.append(fileSpan);
-                        });
-                    }
-
-                    var fileInput = $('<input type="file" class="form-control mt-2 d-none" id="attractFileUpdateComment" multiple>');
-                    fileLinks.append(fileInput);
-
-                    fileLinksCol.append(fileLinks);
-
-                    var updateButton = $('<button type="button" class="btn btn-warning btn-modify-comment" style="margin-right: 2px;">Modify</button>' +
-                        '<button type="submit" class="btn btn-primary btn-update-comment" style="margin-right: 2px;">Update</button>');
-                    updateButton.attr('data-comment-id', comment.id);
-                    var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">Delete</button>');
-                    deleteButton.attr('data-comment-id', comment.id);
-                    buttonCol.append(updateButton);
-                    buttonCol.append(deleteButton);
-
-                    commentForm.append('<div class="form-group mt-2 row">');
-                    commentForm.find('.row').append(fileLinksCol).append(buttonCol);
-
-                    commentCol.append(commentForm);
-
-                    row.append(userCol).append(commentCol);
-                    listItem.append(row);
-
-                    $('#comment-list').append(listItem);
-                });
-
-                $('.btn-modify-comment').click(function () {
-                    var id = $(this).data('comment-id');
-                    var closestLI = $(this).closest('li');
-
-                    // title
-                    var titleInput = closestLI.find('input[name="title"]');
-                    titleInput.prop('disabled', false);
-                    var currentValue = titleInput.val();
-                    titleInput.val('');
-                    titleInput.val(currentValue);
-                    titleInput.focus();
-                    // content
-                    var summernoteDiv = closestLI.find('.summernote');
-                    summernoteDiv.summernote();
-                    // files
-                    var files = closestLI.find('.file');
-                    files.css({
-                        'border': '1px solid #9f9292',
-                        'margin-right': '20px'
-                    });
-                    files.find('span').removeClass('d-none');
-                    // attach file
-                    $('#attractFileUpdateComment').removeClass('d-none');
-
-                    // remove file
-                    $('.remove-file').click(function () {
-                         $(this).closest('.file').remove();
-                    });
-
-                    // update
-                    Validator({
-                        form:'#updateCommentForm'+id,
-                        errorSelector: '.form-message',
-                        rules:[
-                            Validator.isRequired('#updateCommentTitle'),
-                            Validator.isRequired('#updateCommentContent')
-                        ],
-                        onSubmit: function (formData) {
-                            var idForm = '#updateCommentForm'+id;
-                            var listFile = $(idForm + ' .list-file');
-                            var oldFiles = listFile.find('a').map(function() {
-                                 return $(this).text();
-                            }).get().join(',');
-
-                            formData.append('oldFiles', oldFiles);
-                            formData.append('content', $('#updateCommentContent').summernote().summernote('code'));
-
-                            var data = {};
-                            formData.forEach((value, key) => data[key] = value);
-
-                            console.log(data);
-
-                            $(idForm).find('*').prop('disabled', false);
-                        }
-                    });
-                });
-
-                $('.btn-delete-comment').click(function () {
-                    idComment = $(this).data('comment-id');
+                    $('#comment-list').append(createCommentForm(comment));
                 });
             });
         });
@@ -395,6 +285,8 @@
                 formData.append('userId', userCurrent.id);
 
                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                    var liE = createCommentForm(rs);
+                    liE.prependTo('#comment-list');
                     $('#yourCommentForm').find('*').prop('disabled', false);
                 });
             }
@@ -407,11 +299,177 @@
         });
 
         $('#delete-comment').click(function() {
-            console.log(idComment);
-            // callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
-            //     window.location.href = "/tasks?deleteSuccess";
-            // });
+            callAjaxByJsonWithData("/api/v1/comment-task/" + commentObj.idComment, "DELETE", null, function (rs) {
+                commentObj.liEComment.remove();
+                $('#deleteCommentModal').modal('hide');
+            });
         });
+
+        $(document).on('click','.btn-modify-comment',function(){
+            var id = $(this).data('comment-id');
+            var closestLI = $(this).closest('li');
+
+            updateCommemtForm(closestLI);
+
+            // update
+            Validator({
+                form:'#updateCommentForm'+id,
+                errorSelector: '.form-message',
+                rules:[
+                    Validator.isRequired('#updateCommentTitle'),
+                    Validator.isRequired('#updateCommentContent')
+                ],
+                onSubmit: function (formData) {
+                    var idForm = '#updateCommentForm'+id;
+                    var listFile = $(idForm + ' .list-file');
+                    var oldFiles = listFile.find('a').map(function() {
+                        return $(this).text();
+                    }).get().join(',');
+
+                    formData.append('id', id);
+                    formData.append('remainFiles', oldFiles);
+                    formData.append('content', $('#updateCommentContent').summernote().summernote('code'));
+
+                    $(idForm).find('*').prop('disabled', false);
+
+                    callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
+                        var isReply = true;
+                        //if(rs.parentId)
+                        closestLI.replaceWith(createCommentForm(rs));
+                    });
+                }
+            });
+        });
+        $(document).on('click','.btn-cancel-comment',function(){
+            var idComment = $(this).data('comment-id');
+            var closestLI = $(this).closest('li');
+
+            callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
+                closestLI.replaceWith(createCommentForm(rs));
+            });
+        });
+        $(document).on('click','.btn-delete-comment',function(){
+            commentObj.idComment = $(this).data('comment-id');
+            commentObj.liEComment = $(this).closest('li');
+        });
+        $(document).on('click','.btn-reply-comment',function(){
+            var id = $(this).data('comment-id');
+            var closestLI = $(this).closest('li');
+
+        });
+
+        function createCommentForm(comment) {
+            var listItem = $('<li class="list-group-item">');
+            var row = $('<div class="row">');
+            var userCol = $('<div class="col-md-2 text-center">');
+            var commentCol = $('<div class="col-md-10">');
+
+            userCol.append('<img class="rounded-circle-container" src="' + comment.avatarUser + '" alt="User Avatar">');
+            userCol.append('<figcaption><b>' + comment.fullnameUser + '</b></figcaption>');
+            userCol.append('<small>' + comment.createdDate + '</small>');
+
+            var commentForm = $('<form id="updateCommentForm'+comment.id+'">');
+
+            commentForm.append('<div class="form-group"><input id="updateCommentTitle" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
+            commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
+
+            var fileLinksCol = $('<div class="col-md-6">');
+            var buttonCol = $('<div class="col-md-6 text-end">');
+
+            var fileLinks = $('<div class="form-group list-file">');
+            if (comment.files && comment.files.length > 0) {
+                comment.files.forEach(function (file) {
+                    var fileSpan = $('<span class="file">');
+                    var fileA = $('<a class="p-2" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
+                    var closeSpan = $('<span style="font-size: 20px;cursor: pointer;" class="d-none remove-file" aria-hidden="true">&times;</span>');
+
+                    fileSpan.append(fileA);
+                    fileSpan.append(closeSpan);
+
+                    fileLinks.append(fileSpan);
+                });
+            }
+
+            var fileInput = $('<input type="file" name="newFiles" class="form-control mt-2 attract-update-comment d-none" multiple>');
+            fileLinks.append(fileInput);
+
+            fileLinksCol.append(fileLinks);
+
+            var modifyButton = $('<button type="button" class="btn btn-warning btn-modify-comment d-none" style="margin-right: 2px;">Modify</button>');
+            modifyButton.attr('data-comment-id', comment.id);
+            var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment d-none" style="margin-right: 2px;" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">Delete</button>');
+            deleteButton.attr('data-comment-id', comment.id);
+            var updateButton = $('<button type="submit" class="btn btn-primary btn-update-comment d-none" style="margin-right: 2px;">Update</button>');
+            var cancelButton = $('<button type="button" class="btn btn-secondary btn-cancel-comment d-none" style="margin-right: 2px;">Cancel</button>');
+            cancelButton.attr('data-comment-id', comment.id);
+            if(!comment.parentId){
+                var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment" style="margin-right: 2px;">Reply</button>');
+                buttonCol.append(replyButton);
+            }
+            buttonCol.append(modifyButton);
+            buttonCol.append(updateButton);
+            buttonCol.append(deleteButton);
+            buttonCol.append(cancelButton);
+            if(isAdminOrUserLogin(comment.idUser)){
+                deleteButton.removeClass('d-none');
+                modifyButton.removeClass('d-none');
+            }
+
+            commentForm.append('<div class="form-group mt-2 row">');
+            commentForm.find('.row').append(fileLinksCol).append(buttonCol);
+
+            commentCol.append(commentForm);
+
+            row.append(userCol).append(commentCol);
+            listItem.append(row);
+
+
+            var childComments = comment.childComments;
+            if (childComments && childComments.length > 0) {
+                var ul = $('<ul class="childs-comment-list"></ul>');
+                childComments.forEach(function (comment) {
+                    var liE = createCommentForm(comment);
+                    ul.append(liE);
+                });
+
+                var rowCommentChilds = $('<div class="row"></div>');
+                rowCommentChilds.append(ul);
+            }
+            listItem.append(rowCommentChilds);
+
+            return listItem;
+        }
+
+        function updateCommemtForm(closestLI) {
+            // title
+            var titleInput = closestLI.find('input[name="title"]');
+            titleInput.prop('disabled', false);
+            var currentValue = titleInput.val();
+            titleInput.val('');
+            titleInput.val(currentValue);
+            titleInput.focus();
+            // content
+            var summernoteDiv = closestLI.find('.summernote');
+            summernoteDiv.summernote();
+            // files
+            var files = closestLI.find('.file');
+            files.css({
+                'border': '1px solid #9f9292',
+                'margin-right': '20px'
+            });
+            files.find('span').removeClass('d-none');
+            // attach file
+            closestLI.find('input.attract-update-comment').removeClass('d-none');
+
+            // remove file
+            $('.remove-file').click(function () {
+                $(this).closest('.file').remove();
+            });
+
+            // list button
+            closestLI.find('.btn-update-comment, .btn-cancel-comment').removeClass('d-none');
+            closestLI.find('.btn-modify-comment, .btn-reply-comment, .btn-delete-comment').addClass('d-none');
+        }
     </script>
 </body>
 </html>

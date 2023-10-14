@@ -21,5 +21,7 @@ public class CommentTaskResponse {
     private String modifiedDate;
     private String fullnameUser;
     private String avatarUser;
+    private String idUser;
+    private String parentId;
     private List<CommentTaskResponse> childComments;
 }
