@@ -265,6 +265,70 @@
         margin-top: 50%;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script>
+    var stompClient = Stomp.over(new SockJS("/websocket"));
+
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/notification/comments", function (comment) {
+            if(comment.body!=null) {
+                            var data = JSON.parse(comment.body);
+
+                    } else{
+                        console.log("Error")
+                    }
+                    $("button#newCommentBtn").prop("disabled", false);
+                    $("textarea#newComment").prop("disabled", false);
+                    $('div.custom-spinner').parent().remove()
+        });
+    });
+
+    function sendComment(data) {
+
+        return new Promise(function(resolve, reject) {
+            stompClient.send("/app/comment", {}, data);
+            stompClient.subscribe("/notification/comments", function (comment) {
+                var data = JSON.parse(comment.body);
+                if (data != null) {
+                    $("textarea#newComment").val('');
+                    var html = '<li class="list-group-item" data-id="' + data.id + '">' +
+                        '<div class="comment-header d-flex align-items-center">' +
+                        '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
+                        '<div class="user-info">' +
+                        '<p class="user-name">' + data.fullnameUser + '</p>' +
+                        '<p class="comment-date">' + data.createdDate + '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
+                        '<div class="ml-auto">' +
+                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                        '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
+                        '</div>' +
+                        '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
+                        '</li>'
+
+                    if( $("ul#commentList li.list-group-item:first").length >0){
+                        $("ul#commentList li.list-group-item:first").before(html)
+                    }else{
+                        $("ul#commentList").html(html)
+                    }
+                    resolve(data);
+                } else {
+                    reject(new Error("Failed to send comment"));
+                }
+            });
+        });
+    }
+
+    function editComment(data) {
+        stompClient.send("/app/editcomment", {}, data);
+    }
+
+    function deleteComment(data) {
+        stompClient.send("/app/deletecomment", {},data);
+    }
+</script>
 <script>
     const baseUrlComment = "/api/v1/comment-notification";
     const baseUrlNotification = "/api/v1/notifications";
@@ -546,49 +610,65 @@
                 notificationId: notificationId,
                 // Add any other data you want to send to the server
             };
-            var jsonData = JSON.stringify(data);
-            xhttp.open("POST", apiUrl, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.onreadystatechange  = function () {
-                    if (xhttp.status === 200 && xhttp.readyState === 4) {
-                        var data = JSON.parse(xhttp.responseText);
-                        $("textarea#newComment").val('');
-                        var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
-                        `
-                        $("#successModal div.modal-body").html(modal)
-                        $("#successModal").modal("show");
-                        var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-                            '<div class="comment-header d-flex align-items-center">' +
-                            '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-                            '<div class="user-info">' +
-                            '<p class="user-name">' + data.fullnameUser + '</p>' +
-                            '<p class="comment-date">' + data.createdDate + '</p>' +
-                            '</div>' +
-                            '</div>' +
-                            '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                            '<div class="ml-auto">' +
-                            '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
-                            '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
-                            '</div>' +
-                            '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
-                            '</li>'
+            // Gửi comment
 
-                             if( $("ul#commentList li.list-group-item:first").length >0){
-                                 $("ul#commentList li.list-group-item:first").before(html)
-                             }else{
-                                 $("ul#commentList").html(html)
-                             }
-                    } else {
-                        // Request failed, handle errors or display a message to the user
-                        console.error("Request failed with status: " + xhttp.status);
-                    }
+            var jsonData = JSON.stringify(data);
+            sendComment(jsonData)
+                .then(function (){
+                    var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
+                            `
+                    $("#successModal div.modal-body").html(modal)
+                    $("#successModal").modal("show");
                     $("button#newCommentBtn").prop("disabled", false);
                     $("textarea#newComment").prop("disabled", false);
                     $('div.custom-spinner').parent().remove()
-            };
-            // Send the request with the JSON data
-            xhttp.send(jsonData);
+            })
+                .catch(function (error) {
+                   console.log(error)
+                });
+
+            // xhttp.open("POST", apiUrl, true); // Replace "/your-api-endpoint" with your actual API URL
+            // xhttp.setRequestHeader("Content-Type", "application/json");
+            // xhttp.onreadystatechange  = function () {
+            //         if (xhttp.status === 200 && xhttp.readyState === 4) {
+            //             var data = JSON.parse(xhttp.responseText);
+            //             $("textarea#newComment").val('');
+            //             var modal = `
+            //             <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
+            //             `
+            //             $("#successModal div.modal-body").html(modal)
+            //             $("#successModal").modal("show");
+            //             var html = '<li class="list-group-item" data-id="' + data.id + '">' +
+            //                 '<div class="comment-header d-flex align-items-center">' +
+            //                 '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
+            //                 '<div class="user-info">' +
+            //                 '<p class="user-name">' + data.fullnameUser + '</p>' +
+            //                 '<p class="comment-date">' + data.createdDate + '</p>' +
+            //                 '</div>' +
+            //                 '</div>' +
+            //                 '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
+            //                 '<div class="ml-auto">' +
+            //                 '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+            //                 '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
+            //                 '</div>' +
+            //                 '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
+            //                 '</li>'
+            //
+            //                  if( $("ul#commentList li.list-group-item:first").length >0){
+            //                      $("ul#commentList li.list-group-item:first").before(html)
+            //                  }else{
+            //                      $("ul#commentList").html(html)
+            //                  }
+            //         } else {
+            //             // Request failed, handle errors or display a message to the user
+            //             console.error("Request failed with status: " + xhttp.status);
+            //         }
+            //         $("button#newCommentBtn").prop("disabled", false);
+            //         $("textarea#newComment").prop("disabled", false);
+            //         $('div.custom-spinner').parent().remove()
+            // };
+            // // Send the request with the JSON data
+            // xhttp.send(jsonData);
             })
         document.getElementById("deleteButton").addEventListener("click", function () {
             $("#deleteConfirmationModal").modal("hide");

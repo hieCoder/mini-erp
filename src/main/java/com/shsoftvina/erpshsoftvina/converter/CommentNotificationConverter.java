@@ -31,10 +31,11 @@ public class CommentNotificationConverter {
     public CommentNotificationResponse toResponse(CommentNotification commentNotification) {
 
         User user = commentNotification.getUser();
-        String avatarUser = null, fullnameUser = null, parentCommentId = null;
+        String avatarUser = null, fullnameUser = null, userId = null,parentCommentId = null;
         if(user != null){
             avatarUser = user.getAvatar();
             fullnameUser = user.getFullname();
+            userId = user.getId();
         }
         CommentNotification parentComment = commentNotification.getParentComment();
         if(parentComment != null){
@@ -49,6 +50,7 @@ public class CommentNotificationConverter {
                 .modifiedDate(DateUtils.formatDateTime(commentNotification.getModifiedDate()))
                 .avatarUser(avatarUser)
                 .fullnameUser(fullnameUser)
+                .userId(userId)
                 .childComments(toListResponse(commentNotification.getChildComments()))
                 .build();
     }
