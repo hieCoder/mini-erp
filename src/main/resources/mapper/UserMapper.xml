@@ -36,21 +36,28 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+    <select id="getAllUser" parameterType="org.apache.ibatis.session.RowBounds" resultMap="userResultMap">
          <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM USER AS u
         WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
-        LIMIT #{start}, #{pageSize};
         ]]>
+    </select>
+
+    <select id="getTotalUser" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM USER AS u
+        WHERE u.status = #{status}
+          AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT u.*, c.id AS contract_id, c.*
         FROM USER u
-                 LEFT JOIN contract c ON u.id = c.user_id
+        LEFT JOIN CONTRACT c ON u.id = c.user_id
         WHERE u.id = #{id}
     </select>
 
@@ -80,7 +87,6 @@
             avatar = #{avatar},
             address = #{address},
             resume = #{resume},
-            avatar = #{avatar},
             is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
         WHERE id = #{id};

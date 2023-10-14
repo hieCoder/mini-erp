@@ -39,7 +39,7 @@ public class UserConverter {
         if (user.getRole() == null)
             throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
         else {
-            if (!user.getRole().equals(userCurrent.getRole()) && userCurrent.getRole().equals(RoleEnum.DEVELOPER)) {
+            if (userCurrent.getRole().equals(RoleEnum.DEVELOPER) && !user.getId().equals(userCurrent.getId())) {
                 throw new UnauthorizedException(MessageErrorUtils.unauthorized());
             }
         }
@@ -53,7 +53,7 @@ public class UserConverter {
         return UserDetailResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
-                .dateOfBirth(DateUtils.formatDate(user.getDateOfBirth()))
+                .dateOfBirth(user.getDateOfBirth())
                 .phone(user.getPhone())
                 .emergencyPhone(user.getEmergencyPhone())
                 .avatar(FileUtils.getPathUpload(User.class, user.getAvatar()))
@@ -61,7 +61,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .atm(user.getAtm())
                 .email(user.getEmail())
-                .resume(user.getResume())
+                .resume(FileUtils.getPathUpload(User.class, user.getResume()))
                 .role(EnumUtils.instance(user.getRole()))
                 .position(EnumUtils.instance(user.getPosition()))
                 .address(user.getAddress())
@@ -80,7 +80,7 @@ public class UserConverter {
                 .build();
     }
 
-    public List<UserShowResponse> toListShowUserRespone(List<User> listUser) {
+    public List<UserShowResponse> toListShowUserResponse(List<User> listUser) {
         return listUser.stream().map(this::toShowUserRespone).collect(Collectors.toList());
     }
 

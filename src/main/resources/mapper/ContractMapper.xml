@@ -4,18 +4,24 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
 
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        insert into contract (id, basic_salary, allowance, contract, created_date, user_id, insurance_type, insurance_money, status)
+        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type, insurance_money, status)
             value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status})
     </insert>
 
     <select id="findById" resultMap="contractResultMap">
-        SELECT c.*, u.fullname FROM contract c
-        INNER JOIN user u ON c.user_id = u.id
+        SELECT c.*, u.fullname FROM CONTRACT c
+        INNER JOIN USER u ON c.user_id = u.id
         WHERE c.id = #{id}
     </select>
 
+    <select id="getContractByUser" parameterType="String" resultMap="contractResultMap">
+        SELECT c.*, u.fullname FROM CONTRACT c
+        INNER JOIN USER u ON c.user_id = u.id
+        WHERE u.id = #{userId} AND c.status = 'ACTIVE'
+    </select>
+
     <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
-        UPDATE contract SET
+        UPDATE CONTRACT SET
                         basic_salary = #{basicSalary},
                         allowance = #{allowance},
                         contract = #{contract},
@@ -25,7 +31,7 @@
     </update>
 
     <update id="changeStatusContract" parameterType="String">
-        UPDATE contract SET
+        UPDATE CONTRACT SET
             status = #{status}
         WHERE id = #{id};
     </update>

@@ -14,6 +14,7 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
@@ -22,6 +23,7 @@ import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,13 +48,18 @@ public class UserServiceImpl implements UserService {
     private HttpServletRequest request;
 
     @Override
-    public List<UserShowResponse> getAllUser(String searchTerm,
-                                             String sortDirection,
-                                             int start,
-                                             int pageSize,
-                                             String status) {
-        List<User> listUser = userMapper.getAllUser(searchTerm, sortDirection, start, pageSize, status);
-        return userConverter.toListShowUserRespone(listUser);
+    public PageUserListRespone getAllUser(String searchTerm, String sortDirection, int start, int pageSize, String status) {
+
+        int offset = (start - 1) * pageSize;
+        RowBounds rowBounds = new RowBounds(offset, pageSize);
+        List<User> users = userMapper.getAllUser(searchTerm, sortDirection, status, rowBounds);
+        List<UserShowResponse> showUsers = userConverter.toListShowUserResponse(users);
+        long totalRecordCount = userMapper.getTotalUser(status, searchTerm, sortDirection);
+        long totalPage = (long) Math.ceil((double) totalRecordCount / pageSize);
+        boolean hasNext = start < totalPage;
+        boolean hasPrevious = start > 1;
+
+        return new PageUserListRespone(showUsers, start, totalPage, pageSize, hasNext, hasPrevious);
     }
 
     @Override
@@ -115,6 +122,7 @@ public class UserServiceImpl implements UserService {
 
         String id = userUpdateRequest.getId();
         User user = userMapper.findById(id);
+
         if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile avatarFile = userUpdateRequest.getAvatar();
@@ -150,6 +158,8 @@ public class UserServiceImpl implements UserService {
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
                 } else{ // = 0, no avatar and resume
                     userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
+                    userUpdate.setAvatar(user.getAvatar());
+                    userUpdate.setResume(user.getResume());
                 }
             } else{
                 if(newFileNameList.size() == 1){
@@ -159,13 +169,17 @@ public class UserServiceImpl implements UserService {
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
                 } else{ // = 0, no avatar and resume
                     userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
+                    userUpdate.setAvatar(user.getAvatar());
+                    userUpdate.setResume(user.getResume());
                 }
             }
 
             try{
                 if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                    if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
                     userMapper.updateUserProfile(userUpdate);
                 } else{
+                    if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
                     userMapper.updateUserDetail(userUpdate);
                 }
 

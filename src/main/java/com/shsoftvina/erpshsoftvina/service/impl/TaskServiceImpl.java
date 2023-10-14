@@ -120,7 +120,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Map<String, Object>> getTaskByHashtag(String userId, String hashtag) {
-        return taskMapper.getTaskByHashtag(userId, hashtag);
+    public List<Map<String, Object>> getTaskByHashtag(String userId) {
+        return taskMapper.getTaskByHashtag(userId);
     }
 }

@@ -4,13 +4,13 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AccountingMapper">
     <select id="findAllMonthlyHistory" resultType="string">
         SELECT DISTINCT DATE_FORMAT(created_date, '%Y - %m') AS month
-        FROM accounting
+        FROM ACCOUNTING
         ORDER BY created_date DESC
     </select>
 
     <select id="getTotalRecordCountPerMonth" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM accounting
+        FROM ACCOUNTING
         WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
         <choose>
             <when test="startDate != null and endDate != null">
@@ -30,12 +30,12 @@
 
     <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         INSERT
-        INTO accounting (id,created_date,spending,remain, user_id, bill, title, status)
+        INTO ACCOUNTING (id,created_date,spending,remain, user_id, bill, title, status)
         VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status});
     </insert>
 
     <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
-        UPDATE accounting
+        UPDATE ACCOUNTING
         SET spending = #{expense},
         user_id = #{user.id},
         bill = #{bill},
@@ -45,7 +45,7 @@
 
     <update id="updateRecordsBatch" parameterType="java.util.List">
         <foreach collection="list" item="record" separator=";" >
-            UPDATE accounting
+            UPDATE ACCOUNTING
             SET
             spending = #{record.expense},
             remain = #{record.remain}
@@ -55,7 +55,7 @@
 
     <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
         SELECT spending, remain, id
-        FROM accounting
+        FROM ACCOUNTING
         WHERE created_date >= #{createdDate}
         AND created_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
           AND status ='ACTIVE'
@@ -64,7 +64,7 @@
 
     <select id="findBeforeCurrentAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         SELECT spending, remain
-        FROM accounting
+        FROM ACCOUNTING
         WHERE created_date &lt; #{createdDate}
         AND created_date &gt;= DATE_FORMAT(#{createdDate}, '%Y-%m-01 00:00:00')
         AND created_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
@@ -75,9 +75,9 @@
 
     <select id="findAccountingByMonth" parameterType="org.apache.ibatis.session.RowBounds" resultMap="accountingResultMap" >
         SELECT a.*, u.fullname
-        FROM accounting a
+        FROM ACCOUNTING a
         INNER JOIN
-        user u
+        USER u
         ON a.user_id = u.id
         WHERE DATE_FORMAT(a.created_date, '%Y-%m') = #{monthId} AND a.status ='ACTIVE'
         <choose>
@@ -100,13 +100,13 @@
     <select id="getTotalSpending" resultMap="totalSpendingResultMap">
         SELECT SUM(CASE WHEN spending &gt; 0 THEN spending ELSE 0 END) AS totalRevenue,
                SUM(CASE WHEN spending &lt; 0 THEN spending ELSE 0 END) AS totalExpense
-        FROM accounting
+        FROM ACCOUNTING
         WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
     </select>
 
     <select id="getLatestRemain" resultType="java.lang.Long">
         SELECT remain
-        FROM accounting
+        FROM ACCOUNTING
         WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
         ORDER BY created_date DESC
             LIMIT 1;
@@ -114,12 +114,12 @@
 
     <select id="findAccountingById" parameterType="String" resultMap="accountingResultMap">
         SELECT *
-        FROM accounting
+        FROM ACCOUNTING
         WHERE id = #{id} AND status ='ACTIVE'
     </select>
 
     <update id="deleteAccounting" parameterType="String">
-        UPDATE accounting
+        UPDATE ACCOUNTING
         SET status = 'DISABLE'
         WHERE id =#{id}
     </update>

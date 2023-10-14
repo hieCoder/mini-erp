@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserShowResponse {
-
     private String id;
     private String fullname;
     private EnumDto department;
