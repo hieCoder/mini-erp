@@ -305,8 +305,8 @@
                 form:'#updateCommentForm'+id,
                 errorSelector: '.form-message',
                 rules:[
-                    Validator.isRequired('#updateCommentTitle'),
-                    Validator.isRequired('#updateCommentContent')
+                    Validator.isRequired('#updateCommentTitle'+id),
+                    Validator.isRequired('#updateCommentContent'+id)
                 ],
                 onSubmit: function (formData) {
                     var idForm = '#updateCommentForm'+id;
@@ -317,7 +317,7 @@
 
                     formData.append('id', id);
                     formData.append('remainFiles', oldFiles);
-                    formData.append('content', $('#updateCommentContent').summernote().summernote('code'));
+                    formData.append('content', $('#updateCommentContent'+id).summernote().summernote('code'));
 
                     $(idForm).find('*').prop('disabled', false);
 
@@ -346,29 +346,40 @@
             var closestLI = $(this).closest('li');
             var containerReplyForm = closestLI.find('.reply-form-container').first();
             replyCommentForm(parentId).appendTo(containerReplyForm);
-            var contentEditor = closestLI.find('.replyCommentForm .summernote').first();
+            var contentEditor = closestLI.find('#replyCommentForm'+parentId+' .summernote').first();
             contentEditor.summernote();
             closestLI.find('.list-button').first().hide();
 
-            // Validator({
-            //     form:'#yourCommentForm',
-            //     errorSelector: '.form-message',
-            //     rules:[
-            //         Validator.isRequired('#yourCommentTitle'),
-            //         Validator.isRequired('#yourCommentContent')
-            //     ],
-            //     onSubmit: function (formData) {
-            //         formData.append('taskId', idTask);
-            //         formData.append('content', $('#yourCommentContent').summernote().summernote('code'));
-            //         formData.append('userId', userCurrent.id);
-            //
-            //         callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
-            //             var liE = createCommentForm(rs);
-            //             liE.prependTo('#comment-list');
-            //             $('#yourCommentForm').find('*').prop('disabled', false);
-            //         });
-            //     }
-            // });
+            Validator({
+                form:'#replyCommentForm'+parentId,
+                errorSelector: '.form-message',
+                rules:[
+                    Validator.isRequired('#titleReply'+parentId),
+                    Validator.isRequired('#contentReply'+parentId)
+                ],
+                onSubmit: function (formData) {
+                    formData.append('taskId', idTask);
+                    formData.append('content', $('#contentReply'+parentId).summernote().summernote('code'));
+                    formData.append('userId', userCurrent.id);
+                    formData.append('parentId', parentId);
+
+                    // var data = {};
+                    // formData.forEach((value, key) => data[key] = value);
+                    //
+                    // console.log(data);
+
+                    callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                        console.log(rs);
+                        var liE = createCommentForm(rs);
+                        var ulChildsComment = closestLI.find('.childs-comment-list').first();
+                        liE.prependTo(ulChildsComment);
+                        $('#replyCommentForm'+parentId).find('*').prop('disabled', false);
+
+                        closestLI.find('.reply-form-container form').first().remove();
+                        closestLI.find('.list-button').first().show();
+                    });
+                }
+            });
         });
         $(document).on('click','.btn-cancel-reply-comment',function(){
             var closestLI = $(this).closest('li');
@@ -388,8 +399,8 @@
 
             var commentForm = $('<form id="updateCommentForm'+comment.id+'">');
 
-            commentForm.append('<div class="form-group"><input id="updateCommentTitle" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
-            commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
+            commentForm.append('<div class="form-group"><input id="updateCommentTitle'+comment.id+'" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
+            commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
 
             var fileLinksCol = $('<div class="col-md-6">');
             var buttonCol = $('<div class="col-md-6 text-end list-button">');
@@ -494,21 +505,20 @@
         }
 
         function replyCommentForm(parentId) {
-            var form = $('<form class="replyCommentForm"></form>');
+            var form = $('<form id="replyCommentForm'+parentId+'"></form>');
 
             var titleFormGroup = $('<div class="form-group"></div>');
-            var titleInput = $('<input name="title" type="text" class="form-control fw-bold" placeholder="Title">');
+            var titleInput = $('<input id="titleReply'+parentId+'" name="title" type="text" class="form-control fw-bold" placeholder="Title"><small class="form-message"></small>');
             titleFormGroup.append(titleInput);
 
             var contentFormGroup = $('<div class="form-group mt-2"></div>');
-            var contentTextarea = $('<div class="form-control summernote" style="min-height: 110px;"></div>');
+            var contentTextarea = $('<div id="contentReply'+parentId+'" class="form-control summernote" style="min-height: 110px;"></div><small class="form-message"></small>');
             contentFormGroup.append(contentTextarea);
 
             var buttonFormGroup = $('<div class="form-group row"></div>');
 
             var fileInputContainer = $('<div class="col-md-6 mt-1 mb-1"></div>');
-            var fileInput = $('<input type="file" name="files" class="form-control attract-update-comment" multiple>' +
-                '<input hidden type="text" name="parentId" value="'+ parentId + '1">');
+            var fileInput = $('<input type="file" name="files" class="form-control attract-update-comment" multiple>');
             fileInputContainer.append(fileInput);
 
             var buttonContainer = $('<div class="col-md-6 mt-1 mb-1 text-end"></div>');
