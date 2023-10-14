@@ -31,14 +31,18 @@ public class CommentNotificationConverter {
     public CommentNotificationResponse toResponse(CommentNotification commentNotification) {
 
         User user = commentNotification.getUser();
-        String avatarUser = null, fullnameUser = null;
-        if(commentNotification.getUser() != null){
+        String avatarUser = null, fullnameUser = null, parentCommentId = null;
+        if(user != null){
             avatarUser = user.getAvatar();
             fullnameUser = user.getFullname();
         }
-
+        CommentNotification parentComment = commentNotification.getParentComment();
+        if(parentComment != null){
+            parentCommentId = parentComment.getId();
+        }
         return CommentNotificationResponse.builder()
                 .id(commentNotification.getId())
+                .parentId(parentCommentId)
                 .content(commentNotification.getContent())
                 .createdDate(DateUtils.formatDateTime(commentNotification.getCreatedDate()))
                 .modifiedBy(commentNotification.getModifiedBy())

@@ -18,4 +18,6 @@ public interface NotificationMapper {
     boolean delNoti(String id);
     Notification findById(String id);
     int countAll(@Param("search") String search);
+    int updateNotification(Notification notification);
+    Notification getNotificationById(String id);
 }

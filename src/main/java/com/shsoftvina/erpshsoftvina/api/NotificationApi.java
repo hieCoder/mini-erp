@@ -45,9 +45,7 @@ public class NotificationApi {
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateNotification(@Valid UpdateNotificationRequest2 updateNotificationRequest2,
                                                 @PathVariable("id") String id) {
-        System.out.println(updateNotificationRequest2);
-        return ResponseEntity.ok(200);
-//        return ResponseEntity.ok(notificationService.updateNoti(updateNotificationRequest, id));
+        return ResponseEntity.ok(notificationService.updateNotification(updateNotificationRequest2, id));
     }
 
     //    Delete Notification

@@ -27,23 +27,23 @@
                     <table id="tableNotification" data-id="${notification.id}" class="table table-bordered">
                         <tr>
                             <th class="text-center align-middle">Title</th>
-                            <td id="title">${notification.title}</td>
+                            <td id="titleNotification">${notification.title}</td>
                         </tr>
                         <tr>
                             <th class="text-center align-middle">Content</th>
-                            <td id="content">${notification.content}</td>
+                            <td id="contentNotification">${notification.content}</td>
                         </tr>
                         <tr>
                             <th class="text-center align-middle">Author</th>
-                            <td id="author">${notification.title}</td>
+                            <td id="authorNotification">${notification.title}</td>
                         </tr>
                         <tr>
                             <th class="text-center align-middle">Created Date</th>
-                            <td>${notification.createdDate}</td>
+                            <td id="createdDateNotification">${notification.createdDate}</td>
                         </tr>
                         <tr>
                             <th class="text-center align-middle">Attached Files</th>
-                            <td>
+                            <td id="attachedFilesNotification">
                                 <c:forEach items="${notification.files}" var="file">
                                     <a href="${file}" download class="btn btn-link text-primary">${file.split("-")[1]}</a>
                                 </c:forEach>
@@ -82,7 +82,7 @@
                                 <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
                                 <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply</button>
                             </div>
-                                <ul id="commentChildList" data-id="${comment.id}" class="list-group mt-2 ml-4">
+                                <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
                                     <c:if test="${not empty comment.childComments}">
                                     <c:forEach items="${comment.childComments}" var="childComment">
                                         <li class="list-group-item" data-id="${childComment.id}">
@@ -294,6 +294,7 @@
             });
 
             var formData = new FormData();
+            formData.append("notificationId", title);
             formData.append("title", title);
             formData.append("content", content);
             formData.append("oldFile", oldFile);
@@ -304,7 +305,22 @@
             xhttp.onreadystatechange  = function () {
                 if (xhttp.status === 200 && xhttp.readyState === 4) {
                     var data = JSON.parse(xhttp.responseText);
-                    console.log(data)
+                    $("#titleNotification").text(data.title)
+                    $("#contentNotification").text(data.content)
+                    $("#authorNotification").text(data.title)
+                    $("#createdDateNotification").text(data.createdDate)
+                    var xhtml = ''
+                    if(data.files!=null){
+                        data.files.forEach((e)=>{
+                            xhtml += '<a href="'+ e +'" download class="btn btn-link text-primary">'+e.split("-")[1]+'</a>'
+                        })
+                    }
+                    $("#attachedFilesNotification").html(xhtml)
+                    var modal = `
+                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Notification Updated successfully.
+                        `
+                    $("#successModal div.modal-body").html(modal)
+                    $("#successModal").modal("show");
                 }else{
                     console.error("Request failed with status: " + xhttp.status);
                 }
@@ -312,6 +328,7 @@
                 $("#popupFormEditNotification .modal-footer button").each(function() {
                     $(this).prop("disabled", false);
                 });
+                $("#popupFormEditNotification").modal("hide");
             }
 
             xhttp.send(formData);
@@ -374,8 +391,8 @@
                 if (xhttp.status === 200 && xhttp.readyState === 4) {
                     var data = JSON.parse(xhttp.responseText);
                     var fileList = data.files
-                    if (fileList.length > 0) {
-                        var fileListHTML = '<ul class="list-group">';
+                    var fileListHTML = '<ul class="list-group">';
+                    if (fileList != null) {
                         for (var i = 0; i < fileList.length; i++) {
                             var fileName = fileList[i].trim();
                             fileListHTML += '<li class="list-group-item listFilesEdit" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +
@@ -387,7 +404,8 @@
                                 '</button>' +
                                 '</li>';
                         }
-                        fileListHTML += '<label for="file">Attached Files:</label>'
+                    }
+                    fileListHTML += '<label for="file">Attached Files:</label>'
                             +'<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'
                             +'</ul>'
                             +'<table class="table table-bordered text-center">'
@@ -406,7 +424,6 @@
                             +'</tr>'
                             +'</tbody>'
                             +' </table>';
-                    }
                     var xhtml = '<form id="editNotificationForm">'
                         +'<div class="form-group">'
                         +'<label for="title">Title:</label>'
@@ -456,10 +473,10 @@
                     +   ' <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="replyCommentBtn" data-id="'+parentId+'">Submit</button>'
                     +'</div>'
                 +'</div>'
-            if( $('ul#commentChildList[data-id="'+ parentId +'"] li.list-group-item').length > 0){
-                $(document).find('ul#commentChildList[data-id="' + parentId + '"] li.list-group-item:first-child').before(html);
+            if( $('ul#commentChildList-'+parentId+' li.list-group-item').length > 0){
+                $(document).find('ul#commentChildList-'+parentId+' li.list-group-item:first-child').before(html);
             }else{
-                $(document).find('ul#commentChildList[data-id="' + parentId + '"]').html(html);
+                $(document).find('ul#commentChildList-'+parentId).html(html);
             }
         });
 
@@ -485,6 +502,21 @@
                 if (xhttp.status === 200 && xhttp.readyState === 4) {
                     var data = JSON.parse(xhttp.responseText);
                     $('textarea#replyComment[data-id='+ parentId +']').val('');
+                    var html = '<li class="list-group-item" data-id="' + data.id + '">' +
+                        '<div class="comment-header d-flex align-items-center">' +
+                        '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
+                        '<div class="user-info">' +
+                        '<p class="user-name">' + data.fullnameUser + '</p>' +
+                        '<p class="comment-date">' + data.createdDate + '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
+                        '<div class="ml-auto">' +
+                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                        '</div>' +
+                        '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
+                        '</li>'
+                    $('#commentList #commentChildList-'+data.parentId+' > div.row').after(html)
                     var modal = `
                         <strong class="btn-success rounded-circle p-2">Success!</strong>  Reply successfully.
                         `
@@ -539,7 +571,7 @@
                             '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
                             '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
                             '</div>' +
-                            '<ul id="commentChildList" data-id="'+ data.id +'" class="list-group mt-2 ml-4">' +
+                            '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
                             '</li>'
 
                              if( $("ul#commentList li.list-group-item:first").length >0){

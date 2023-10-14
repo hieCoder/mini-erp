@@ -136,7 +136,7 @@ public class FileUtils {
     }
 
     public static String[] getPathUploadList(Class<?> c, String fileNames) {
-        if(fileNames != null){
+        if(fileNames != null && !fileNames.isEmpty()){
             String[] rs = fileNames.split(",");
             return Stream.of(rs).map(fileName -> {
                 if (c == User.class) {
