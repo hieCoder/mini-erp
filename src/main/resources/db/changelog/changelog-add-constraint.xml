@@ -99,18 +99,10 @@
     </changeSet>
 
     <changeSet id="12" author="team2">
-        <addForeignKeyConstraint baseTableName="ONETHING_CALENDAR_AND_TODO_LIST"
+        <addForeignKeyConstraint baseTableName="MANAGEMENT_TIME_DAY"
                                  baseColumnNames="USER_ID"
                                  referencedTableName="USER"
                                  referencedColumnNames="ID"
-                                 constraintName="FK_ONETHING_CALENDAR_AND_TODO_LIST_USER"/>
-    </changeSet>
-
-    <changeSet id="13" author="team2">
-        <addForeignKeyConstraint baseTableName="GARATITUDE_DIARY_AFFIRMATION_QUOTE"
-                                 baseColumnNames="USER_ID"
-                                 referencedTableName="USER"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_GARATITUDE_DIARY_AFFIRMATION_QUOTE_USER"/>
+                                 constraintName="FK_MANAGEMENT_TIME_DAY_USER"/>
     </changeSet>
 </databaseChangeLog>

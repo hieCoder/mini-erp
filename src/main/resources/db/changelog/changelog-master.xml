@@ -15,8 +15,7 @@
     <include file="db/changelog/weekly-report-changelog-create.xml" />
     <include file="db/changelog/setting-changelog-create.xml" />
 
-    <include file="db/changelog/oc-and-tl-changelog-create.xml" />
-    <include file="db/changelog/gd-and-a-and-q-changelog-create.xml" />
+    <include file="db/changelog/management-time-day-changelog-create.xml" />
 
     <include file="db/changelog/changelog-add-constraint.xml" />
 </databaseChangeLog>
