@@ -56,7 +56,7 @@ public class UserController {
         return view;
     }
 
-    @GetMapping("/userDetail/{id}")
+    @GetMapping("/users/{id}")
     public ModelAndView showUserDetail(@PathVariable("id") String id) {
         ModelAndView view = new ModelAndView("user/userDetail");
 

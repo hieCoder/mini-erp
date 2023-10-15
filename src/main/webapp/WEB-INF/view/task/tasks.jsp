@@ -9,22 +9,22 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <h1>Status</h1>
+            <h1 class="text-center">Status</h1>
             <div class="row">
                 <div class="table-responsive">
                     <table id="data-table-status" class="table">
                         <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>Total</th>
-                        </tr>
+                            <tr>
+                                <th>Status</th>
+                                <th>Total</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
             </div>
         </div>
         <div class="col-md-9">
-            <h1>List task</h1>
+            <h1 class="text-center">List task</h1>
             <c:if test="${param.registerSuccess != null}">
                 <div class="alert alert-success">
                     Register success!
@@ -36,67 +36,64 @@
                 </div>
             </c:if>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="custom-search row">
-                        <div class="col-md-8">
-                            <input class="form-control" id="custom-search-input" type="text" placeholder="Search by title, username, hashtag">
-                        </div>
-                        <div class="col-md-4 p-0">
-                            <button id="custom-search-button" type="button" class="btn btn-info">Search</button>
-                        </div>
+                <div class="col-md-8">
+                    <div class="d-flex justify-content-center">
+                        <input class="form-control mr-1" id="search-input" type="text" placeholder="Title, username, hashtag">
+                        <button id="search-button" type="button" class="btn btn-info mr-5">Search</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#registerTaskModal">
+                            Register</button>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerTaskModal">
-                        Register task
-                    </button>
-                </div>
-                <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <label style="margin-right: 5px;">Page count:</label>
-                    <select id="page-count-select" class="form-select" style="width: auto;" aria-label="Default select example">
+                <div class="col-md-4 d-flex align-items-end justify-content-end">
+                    <label for="page-count-select" class="mr-2">Page count:</label>
+                    <select class="form-control w-auto" id="page-count-select">
                         <option value="3">3</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="table-responsive">
-                    <table id="data-table-task" class="table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Status</th>
-                            <th>Title</th>
-                            <th>Username</th>
-                            <th>Priority</th>
-                            <th>Progress</th>
-                            <th>Start date</th>
-                            <th>Due/Closed date</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div>
-                    <ul id="pagination" class="pagination pagination-sm mt-2"></ul>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="data-table-task" class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Title</th>
+                                <th>Username</th>
+                                <th>Priority</th>
+                                <th>Progress</th>
+                                <th>Start date</th>
+                                <th>Due/Closed date</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div>
+                        <ul id="pagination" class="pagination pagination-sm mt-2 justify-content-center"></ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <%-- modal register --%>
-    <div class="modal fade" id="registerTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="registerTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="registerTaskForm">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Register task</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="exampleModalLabel">Register task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Username:</label>
-                            <select id="selectUsername" name="userId" class="form-select" aria-label="Default select example"></select>
+                            <select id="selectUsername" name="userId" class="form-control" aria-label="Default select example"></select>
                         </div>
                         <div class="form-group">
                             <label for="title">Title:</label>
@@ -115,7 +112,7 @@
                         </div>
                         <div class="form-group">
                             <label>Priority:</label>
-                            <select id="selectPriority" name="priority" class="form-select" aria-label="Default select example">
+                            <select id="selectPriority" name="priority" class="form-control" aria-label="Default select example">
                                 <option value="LOW" class="text-warning">Low</option>
                                 <option value="MEDIUM" class="text-primary">Medium</option>
                                 <option value="HIGH" class="text-danger">High</option>
@@ -124,7 +121,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Register</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -196,8 +193,8 @@
             info: false
         });
 
-        $('#custom-search-button').on('click', function() {
-            var keyword = $('#custom-search-input').val();
+        $('#search-button').on('click', function() {
+            var keyword = $('#search-input').val();
             tasksRequest.search = keyword;
             tasksRequest.page = 1;
             tableTask.ajax.reload();

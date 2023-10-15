@@ -25,8 +25,7 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
                     response.sendRedirect("/login");
                 }
                 if(!currentUser.isFirstUpdateProfile() && !urlsAllow(request.getRequestURI())) {
-                    response.sendRedirect("/testUpdateProfile");
-//                    request.getRequestDispatcher("/testUpdateProfile").forward(request, response);
+                    response.sendRedirect("/users/" + currentUser.getId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -38,7 +37,9 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
     private boolean urlsAllow(String u){
         String[] urls = new String[]{
                 "/assets/",
-                "/login", "/testUpdateProfile"
+                "/upload/",
+                "/login", "/users/",
+                "/api/"
         };
 
         for(String url: urls){

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 10/10/2023
-  Time: 10:56 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -39,37 +32,37 @@
             <!-- Phần 2: Form thông tin người dùng -->
             <div class="col-md-8">
                 <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="address">Address:</label>
                     <input type="text" class="form-control" id="address" value="${user.getAddress()}">
                 </div>
                 <div class="form-group">
-                    <label for="fullname">Fullname</label>
+                    <label for="fullname">Username:</label>
                     <input type="text" class="form-control" id="fullname" value="${user.getFullname()}">
                 </div>
                 <div class="form-group">
-                    <label for="dob">Date of Birth</label>
+                    <label for="dob">Date of birth:</label>
                     <input type="date" class="form-control" id="dob" value="${dateOfBirth}">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone">Phone number:</label>
                     <input type="tel" class="form-control" id="phone" value="${user.getPhone()}">
                 </div>
                 <div class="form-group">
-                    <label for="emergencyPhone">Emergency Phone</label>
+                    <label for="emergencyPhone">Emergency phone:</label>
                     <input type="tel" class="form-control" id="emergencyPhone" value="${user.getEmergencyPhone()}">
                 </div>
                 <div class="form-group">
-                    <label for="resume">Resume File: </label>
+                    <label for="resume">Resume file:</label>
                     <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
                     <input type="file" class="form-control mt-2" id="resume">
-                    <small class="text-muted ml-2">Choose New Resume</small>
+                    <small class="text-muted ml-2">Choose new resume</small>
                 </div>
                 <div class="form-group">
-                    <label for="timeSheetsCode">TimeSheets code</label>
+                    <label for="timeSheetsCode">TimeSheets code:</label>
                     <input type="text" class="form-control" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
                 </div>
                 <div class="form-group hide">
-                    <label for="type">Type</label>
+                    <label for="type">Type:</label>
                     <select class="form-control" id="type">
                         <option value="OFFICIAL"
                                 <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
@@ -86,7 +79,7 @@
                     </select>
                 </div>
                 <div class="form-group hide">
-                    <label for="department">Department</label>
+                    <label for="department">Department:</label>
                     <select class="form-control" id="department">
                         <option value="ADMINISTRATION"
                                 <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
@@ -108,7 +101,7 @@
                     </select>
                 </div>
                 <div class="form-group hide">
-                    <label for="userId">User ID</label>
+                    <label for="userId">User ID:</label>
                     <input type="email" class="form-control" id="userId" value="${user.getEmail()}">
                 </div>
                 <div class="form-group hide">
@@ -120,11 +113,11 @@
                     </div>
                 </div>
                 <div class="form-group hide">
-                    <label for="atm">ATM</label>
+                    <label for="atm">ATM:</label>
                     <input type="text" class="form-control" id="atm" value="${user.getAtm()}">
                 </div>
                 <div class="form-group hide">
-                    <label for="role">Role</label>
+                    <label for="role">Role:</label>
                     <select class="form-control" id="role">
                         <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
                             Owner
@@ -138,7 +131,7 @@
                     </select>
                 </div>
                 <div class="form-group hide">
-                    <label for="position">Position</label>
+                    <label for="position">Position:</label>
                     <select class="form-control" id="position">
                         <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
                             Inter
@@ -154,7 +147,7 @@
                         </option>
                         <option value="SENIOR_MANAGER"
                                 <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
-                            Senior Manager
+                            Senior manager
                         </option>
                         <option value="OWNER" <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
                             Owner
@@ -162,20 +155,20 @@
                     </select>
                 </div>
                 <div class="form-group hide">
-                    <label for="contract">Contract: </label>
+                    <label for="contract">Contract:</label>
                     <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
                             data-target="#contractModal">
-                        VIEW
+                        View
                     </button>
                 </div>
                 <div class="form-group hide">
-                    <label for="working-day">Working Day</label>
+                    <label for="working-day">Working day:</label>
                     <div class="input-group" id="working-day">
                         <select class="form-control" id="working-year">
-                            <option value="">-- Select Year --</option>
+                            <option value="">-- Select year --</option>
                         </select>
                         <select class="form-control" id="working-month" style="display: none;">
-                            <option>-- Select Month --</option>
+                            <option>-- Select month --</option>
                         </select>
                         <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
                     </div>
@@ -200,7 +193,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Contract History</h4>
+                <h4 class="modal-title">Contract history</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

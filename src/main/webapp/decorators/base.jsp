@@ -1,3 +1,4 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@include file="/common/taglib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -9,14 +10,13 @@
     <%-- main --%>
     <link rel="stylesheet" href="/assets/css/main.css">
     <%-- bootstrap --%>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <%-- datatable --%>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <%-- summernote --%>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+    <dec:head/>
 
     <%-- main --%>
     <script src="/assets/js/main.js"></script>
@@ -36,16 +36,17 @@
     </script>
 </head>
 <body>
-<%@ include file="/common/layout-component/header.jsp"%>
+<%--<%@ include file="/common/layout-component/header.jsp"%>--%>
 
 <div class="content-wrapper">
     <dec:body/>
 </div>
 
-<%@ include file="/common/layout-component/footer.jsp"%>
+<%--<%@ include file="/common/layout-component/footer.jsp"%>--%>
+
 <%-- bootstrap --%>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <%-- summernote --%>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <%-- sweetalert --%>

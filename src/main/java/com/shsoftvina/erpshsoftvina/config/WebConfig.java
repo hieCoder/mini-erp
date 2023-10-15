@@ -10,8 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
@@ -22,5 +20,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceHandler("/assets/**")
                 .addResourceLocations("/assets/");
     }
-
 }

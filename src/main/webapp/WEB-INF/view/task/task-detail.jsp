@@ -8,7 +8,7 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8">
-                <h2>Task detail</h2>
+                <h2 class="text-center">Task detail</h2>
                 <c:if test="${param.updateSuccess != null}">
                     <div class="alert alert-success">
                         Update success!
@@ -30,16 +30,15 @@
                     </div>
                     <div class="form-group mt-3">
                         <label>Status:</label>
-                        <div class="d-flex align-items-center">
-                            <p id="statusTask" style="margin: 0 20px 0 0;"></p>
-                            <label style="margin: 0 5px;">Select action:</label>
-                            <select id="selectAction" name="action" class="form-select" style="width: auto;" aria-label="Default select example">
-                            </select>
+                        <div class="d-flex align-items-end">
+                            <label id="statusTask" class="mr-3"></label>
+                            <label class="mr-1">Select action:</label>
+                            <select id="selectAction" name="action" class="form-control w-auto" aria-label="Default select example"></select>
                         </div>
                     </div>
                     <div class="form-group mt-3">
                         <label>Priority:</label>
-                        <select id="selectPriority" name="priority" class="form-select" aria-label="Default select example">
+                        <select id="selectPriority" name="priority" class="form-control" aria-label="Default select example">
                             <option value="LOW" class="text-warning">Low</option>
                             <option value="MEDIUM" class="text-primary">Medium</option>
                             <option value="HIGH" class="text-danger">High</option>
@@ -67,35 +66,34 @@
                         <label for="closeDate">Closed date:</label>
                         <input id="closeDate" name="closeDate" type="text" class="form-control" aria-describedby="emailHelp" disabled>
                     </div>
-                    <div class="form-group mt-3 text-end">
+                    <div class="form-group text-right">
                         <span id="group-button-task-detail" class="d-none">
                             <button type="submit" class="btn btn-primary">Update</button>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">Delete</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal">Delete</button>
                         </span>
                         <a href="/tasks" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-8">
-                <h2>Your comment</h2>
+                <h2 class="text-center">Your comment</h2>
                 <form id="yourCommentForm">
                     <div class="form-group">
                         <label for="yourCommentTitle">Title:</label>
                         <input id="yourCommentTitle" name="title" type="text" class="form-control" aria-describedby="emailHelp">
                         <small class="form-message"></small>
                     </div>
-                    <div class="form-grou mt-1">
+                    <div class="form-group">
                         <label for="yourCommentTitle">Content:</label>
                         <div id="yourCommentContent" class="summernote"></div>
                         <small class="form-message"></small>
                     </div>
-                    <div class="input-group mt-1">
+                    <div class="form-group">
                         <input name="files" type="file" class="form-control" id="yourCommentFiles" multiple>
                     </div>
-                    <div class="form-group mt-1 text-end">
+                    <div class="form-group text-right">
                         <button id="yourCommentSubmitComment" type="submit" class="btn btn-success">Comment</button>
                     </div>
                 </form>
@@ -104,7 +102,7 @@
 
         <div class="row">
             <div class="col-md-8">
-                <h2>List of comment</h2>
+                <h2 class="text-center">List of comment</h2>
                 <ul id="comment-list" class="list-group">
 <%--                    <li class="list-group-item">--%>
 <%--                        <div class="row">--%>
@@ -121,7 +119,7 @@
 <%--                                        <div class="col-md-6">--%>
 <%--                                            <input type="file" name="newFiles" class="form-control mt-2 attract-update-comment" multiple="">--%>
 <%--                                        </div>--%>
-<%--                                        <div class="col-md-6 text-end">--%>
+<%--                                        <div class="col-md-6 text-right">--%>
 <%--                                            <button class="btn btn-primary">Reply</button>--%>
 <%--                                            <button class="btn btn-danger">Cancel</button>--%>
 <%--                                        </div>--%>
@@ -135,38 +133,42 @@
         </div>
 
         <%-- modal confirm delete task --%>
-        <div class="modal fade" id="deleteTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Confirm delete task</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         Are you sure?
                     </div>
                     <div class="modal-footer">
                         <button id="delete-task" type="button" class="btn btn-danger">Confirm</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <%-- modal confirm delete comment --%>
-        <div class="modal fade" id="deleteCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Confirm delete comment</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         Are you sure?
                     </div>
                     <div class="modal-footer">
                         <button id="delete-comment" type="button" class="btn btn-danger">Confirm</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -193,7 +195,7 @@
                 $('#content').summernote('code', rs.content);
 
                 var statusTask = rs.statusTask;
-                $('#statusTask').html('<span class="badge ' + getStatusColor(statusTask.code) + '">' + statusTask.name + '</span>');
+                $('#statusTask').html('<span class="p-2 badge ' + getStatusColor(statusTask.code) + '">' + statusTask.name + '</span>');
 
                 $('#selectAction').empty();
                 $('#selectAction').html('<option value="">-- Actions --</option>');
@@ -375,7 +377,7 @@
         });
         $(document).on('click','.btn-cancel-reply-comment',function(){
             var closestLI = $(this).closest('li');
-            closestLI.find('.reply-form-container .replyCommentForm').first().remove();
+            closestLI.find('.reply-form-container form').first().remove();
             closestLI.find('.list-button').first().show();
         });
 
@@ -392,10 +394,10 @@
             var commentForm = $('<form id="updateCommentForm'+comment.id+'">');
 
             commentForm.append('<div class="form-group"><input id="updateCommentTitle'+comment.id+'" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
-            commentForm.append('<div class="form-group mt-2"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
+            commentForm.append('<div class="form-group"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
 
             var fileLinksCol = $('<div class="col-md-6">');
-            var buttonCol = $('<div class="col-md-6 text-end list-button">');
+            var buttonCol = $('<div class="col-md-6 text-right list-button">');
 
             var fileLinks = $('<div class="form-group list-file">');
             if (comment.files && comment.files.length > 0) {
@@ -416,16 +418,16 @@
 
             fileLinksCol.append(fileLinks);
 
-            var modifyButton = $('<button type="button" class="btn btn-warning btn-modify-comment d-none" style="margin-right: 2px;">Modify</button>');
+            var modifyButton = $('<button type="button" class="btn btn-warning btn-modify-comment d-none mr-1"">Modify</button>');
             modifyButton.attr('data-comment-id', comment.id);
-            var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment d-none" style="margin-right: 2px;" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">Delete</button>');
+            var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment d-none mr-1" data-toggle="modal" data-target="#deleteCommentModal">Delete</button>');
             deleteButton.attr('data-comment-id', comment.id);
-            var updateButton = $('<button type="submit" class="btn btn-primary btn-update-comment d-none" style="margin-right: 2px;">Update</button>');
-            var cancelUpdateButton = $('<button type="button" class="btn btn-secondary btn-cancel-update-comment d-none" style="margin-right: 2px;">Cancel</button>');
+            var updateButton = $('<button type="submit" class="btn btn-primary btn-update-comment d-none mr-1">Update</button>');
+            var cancelUpdateButton = $('<button type="button" class="btn btn-secondary btn-cancel-update-comment d-none mr-1">Cancel</button>');
             cancelUpdateButton.attr('data-comment-id', comment.id);
 
             if(comment.parentId == null){
-                var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment" style="margin-right: 2px;">Reply</button>');
+                var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment mr-1">Reply</button>');
                 replyButton.attr('data-comment-id', comment.id);
                 buttonCol.append(replyButton);
             }
@@ -438,7 +440,7 @@
                 modifyButton.removeClass('d-none');
             }
 
-            commentForm.append('<div class="form-group mt-2 row">');
+            commentForm.append('<div class="form-group row">');
             commentForm.find('.row').append(fileLinksCol).append(buttonCol);
 
             commentCol.append(commentForm);
@@ -446,10 +448,10 @@
             row.append(userCol).append(commentCol);
             listItem.append(row);
 
-            listItem.append('<div class="row mt-3"><div class="col-md-2"></div><div class="col-md-10 reply-form-container"></div></div>');
+            listItem.append('<div class="row"><div class="col-md-2"></div><div class="col-md-10 reply-form-container"></div></div>');
 
             var childComments = comment.childComments;
-            var ul = $('<ul class="childs-comment-list"></ul>');
+            var ul = $('<ul class="childs-comment-list w-100"></ul>');
             if (childComments && childComments.length > 0) {
 
                 childComments.forEach(function (comment) {
@@ -503,18 +505,18 @@
             var titleInput = $('<input id="titleReply'+parentId+'" name="title" type="text" class="form-control fw-bold" placeholder="Title"><small class="form-message"></small>');
             titleFormGroup.append(titleInput);
 
-            var contentFormGroup = $('<div class="form-group mt-2"></div>');
+            var contentFormGroup = $('<div class="form-group"></div>');
             var contentTextarea = $('<div id="contentReply'+parentId+'" class="form-control summernote" style="min-height: 110px;"></div><small class="form-message"></small>');
             contentFormGroup.append(contentTextarea);
 
             var buttonFormGroup = $('<div class="form-group row"></div>');
 
-            var fileInputContainer = $('<div class="col-md-6 mt-1 mb-1"></div>');
+            var fileInputContainer = $('<div class="col-md-6"></div>');
             var fileInput = $('<input type="file" name="files" class="form-control attract-update-comment" multiple>');
             fileInputContainer.append(fileInput);
 
-            var buttonContainer = $('<div class="col-md-6 mt-1 mb-1 text-end"></div>');
-            var replyButton = $('<button type="submit" class="btn btn-info" style="margin-right: 2px;">Reply</button>');
+            var buttonContainer = $('<div class="col-md-6 text-right"></div>');
+            var replyButton = $('<button type="submit" class="btn btn-info mr-1">Reply</button>');
             var cancelButton = $('<button type="button"class="btn btn-secondary btn-cancel-reply-comment" >Cancel</button>');
             buttonContainer.append(replyButton);
             buttonContainer.append(cancelButton);
