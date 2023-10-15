@@ -13,4 +13,9 @@ import java.util.Map;
 public interface ManagementTimeDayMapper {
 
     int createDayInfo(ManagementTimeDay day);
+    int updateDayInfo(ManagementTimeDay day);
+    ManagementTimeDay findById(String id);
+    List<ManagementTimeDay> findAllByMonthYear(@Param("userId") String userId,
+                                               @Param("month") String month,
+                                               @Param("year") String year);
 }

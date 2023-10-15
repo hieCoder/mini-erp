@@ -1,5 +1,6 @@
-package com.shsoftvina.erpshsoftvina.model.dto.management_time;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DayDto {
+public class DayCreateRequest {
     private Date day;
     private DataOfDayDto data;
     private String userId;
