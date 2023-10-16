@@ -38,7 +38,7 @@
 <body>
 <%@ include file="/common/layout-component/header.jsp"%>
 
-<main class="mt-5 mb-5 pt-4 pb-5">
+<main class="content-wrapper">
     <dec:body/>
 </main>
 

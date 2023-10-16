@@ -33,6 +33,7 @@
                         <a class="dropdown-item" href="/accounting">Accounting</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/timesheets">Timesheets</a>
+                        <a class="dropdown-item" href="/notifications">Notification</a>
                     </div>
                 </li>
                 <li class="nav-item">

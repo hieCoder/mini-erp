@@ -21,7 +21,6 @@ public class CreateCommentNotificationRequest {
 
     private String parentId;
 
-    @NotBlank(message = "Field userId is not filled")
     private String userId;
 }
 

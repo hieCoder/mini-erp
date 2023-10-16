@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.mapper.CommentNotificationMapper;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.CommentNotificationService;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,12 @@ public class CommentNotificationServiceImpl implements CommentNotificationServic
     }
 
     @Override
-    public int createCommentNotification(CreateCommentNotificationRequest createCommentNotificationRequest){
-        return commentNotificationMapper.createCommentNotification(commentNotificationConverter.toEntity(createCommentNotificationRequest));
+    public CommentNotificationResponse createCommentNotification(CreateCommentNotificationRequest createCommentNotificationRequest){
+        String id = Principal.getUserCurrent().getId();
+        createCommentNotificationRequest.setUserId(id);
+        CommentNotification commentNotification = commentNotificationConverter.toEntity(createCommentNotificationRequest);
+        commentNotificationMapper.createCommentNotification(commentNotification);
+        return commentNotificationConverter.toResponse(commentNotification);
     }
 
     @Override
