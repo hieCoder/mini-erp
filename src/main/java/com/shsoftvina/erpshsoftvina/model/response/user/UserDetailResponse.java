@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDetailResponse{
     private String id;
     private String fullname;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private String address;
     private String phone;
     private String emergencyPhone;

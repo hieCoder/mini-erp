@@ -53,7 +53,7 @@ public class UserConverter {
         return UserDetailResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
-                .dateOfBirth(user.getDateOfBirth())
+                .dateOfBirth(DateUtils.formatDate(user.getDateOfBirth()))
                 .phone(user.getPhone())
                 .emergencyPhone(user.getEmergencyPhone())
                 .avatar(FileUtils.getPathUpload(User.class, user.getAvatar()))
