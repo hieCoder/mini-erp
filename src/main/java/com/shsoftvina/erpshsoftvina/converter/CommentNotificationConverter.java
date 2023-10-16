@@ -11,6 +11,7 @@ import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNo
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -75,7 +76,7 @@ public class CommentNotificationConverter {
         return CommentNotification.builder()
                 .content(updateCommentNotificationRequest.getContent())
                 .id(updateCommentNotificationRequest.getId())
-                .modifiedBy(Principal.getUserCurrent().getFullname())
+                .modifiedBy(userMapper.findById(updateCommentNotificationRequest.getUserId()).getFullname())
                 .modifiedDate(new Date())
                 .build();
     }

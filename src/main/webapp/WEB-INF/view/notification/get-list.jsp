@@ -13,6 +13,7 @@
 <html>
 <head>
     <title>Notifications List</title>
+    <link rel="stylesheet" href="../../../assets/css/notification/style.css">
 </head>
 <body>
 <div class="container mt-4">

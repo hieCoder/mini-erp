@@ -15,6 +15,7 @@
 <html>
 <head>
     <title>Create Notification Form</title>
+    <link rel="stylesheet" href="../../../assets/css/notification/style.css">
 </head>
 <body>
 <div class="container mt-4">
@@ -35,10 +36,6 @@
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
                             <textarea class="form-control" id="content" name="content" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="author" class="form-label">Author</label>
-                            <input type="text" class="form-control" id="author" name="author">
                         </div>
                         <div class="mb-3">
                             <label for="file" class="form-label">Attached files</label>
@@ -84,11 +81,6 @@
     </div>
 </div>
 
-<style>
-    #createNotificationModal div.modal-content{
-        margin-top: 50%;
-    }
-</style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var dot = `
@@ -106,12 +98,11 @@
             document.getElementById("errorAlert").style.display = "none";
             var title = document.getElementById("title").value;
         var content = document.getElementById("content").value;
-        var author = document.getElementById("author").value;
         var files = document.getElementById("file").files;
         var formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
-        formData.append("author", author);
+        formData.append("userId", userCurrent.id);
         for (var i = 0; i < files.length; i++) {
             formData.append("files", files[i]);
         }

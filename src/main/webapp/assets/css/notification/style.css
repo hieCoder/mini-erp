@@ -1,0 +1,44 @@
+.avatar{
+    width: 60px;
+    height: 60px;
+}
+
+.custom-spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+}
+
+.custom-spinner .dot {
+    width: 16px;
+    height: 16px;
+    background-color: #333;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bounce 1s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+div.modal-content {
+    margin-top: 20%;
+}
+
+#successModal div.modal-content{
+    margin-top: 50%;
+}
+
+#deleteNotificationModal div.modal-content{
+    margin-top: 50%;
+}
+
+ #createNotificationModal div.modal-content{
+     margin-top: 50%;
+ }
