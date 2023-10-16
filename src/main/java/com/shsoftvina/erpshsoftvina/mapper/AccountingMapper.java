@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface AccountingMapper {
 
-    List<String> findAllMonthlyHistory();
+    List<MonthYearFormat> findAllMonthlyHistory();
 
     List<Accounting> findAccountingByMonth(@Param("monthId") String monthId, RowBounds rowBounds,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
 

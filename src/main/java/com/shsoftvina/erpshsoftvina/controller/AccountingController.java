@@ -1,5 +1,7 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +32,21 @@ public class AccountingController {
         modelAndView.addObject("month",monthId);
         return modelAndView;
     }
+
+    @GetMapping()
+    public ModelAndView showAllMonthlyHistory() {
+        ModelAndView modelAndView = new ModelAndView("accounting/total-month");
+        MonthHistoryList monthHistoryList = accountingService.findAllMonthlyHistory();
+        modelAndView.addObject("monthList",monthHistoryList);
+        return modelAndView;
+    }
+
+    @GetMapping("/detail/{id}")
+    public ModelAndView showAccountingDetail(@PathVariable("id") String id) {
+        ModelAndView modelAndView = new ModelAndView("accounting/detail");
+        AccountResponse accountingResponse = accountingService.findAccountingById(id);
+        modelAndView.addObject("account",accountingResponse);
+        return modelAndView;
+    }
+
 }

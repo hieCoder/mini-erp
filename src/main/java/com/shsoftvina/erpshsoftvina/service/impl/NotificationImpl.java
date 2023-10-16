@@ -10,6 +10,7 @@ import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,8 +39,8 @@ public class NotificationImpl implements NotificationService {
     private HttpServletRequest request;
 
     @Override
-    public List<NotificationShowResponse> getAllNoti(int start, int pageSize) {
-        List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize);
+    public List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search) {
+        List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize, search);
         return notificationConverter.toListShowResponse(notificationList);
     }
 
@@ -87,7 +89,6 @@ public class NotificationImpl implements NotificationService {
         List<String> listFileNameSaveFileSuccess = null;
 
         Notification notification = notificationMapper.findById(id);
-
         if (files!= null){
             if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
                 throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
@@ -121,6 +122,50 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
+    public NotificationDetailResponse updateNotification(UpdateNotificationRequest2 updateNotificationRequest2, String id){
+        Notification notificationDb = notificationMapper.getNotificationById(id);
+        if(notificationDb == null){
+            throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+        }
+        String dir = NotificationConstant.UPLOAD_FILE_DIR;
+        String fileList = notificationDb.getFiles();
+        List<String> files = Arrays.asList(fileList.split(","));
+        List<String> oldFile = Arrays.asList(updateNotificationRequest2.getOldFile());
+        List<String> removeFiles = new ArrayList<>();
+        List<String> newFiles    = new ArrayList<>();
+        for (String file : files) {
+            if (!oldFile.contains(file)) {
+                removeFiles.add(file);
+            }else{
+                newFiles.add(file);
+            }
+        }
+        MultipartFile[] upFiles = updateNotificationRequest2.getFiles();
+        List<String> newFilesUpdate = new ArrayList<>();
+        if (upFiles!= null){
+            if((upFiles.length + oldFile.size()) > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
+                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
+            }
+            if(!FileUtils.isAllowedFileType(upFiles, ApplicationConstant.LIST_TYPE_FILE)){
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
+            }
+            newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, upFiles);
+            newFiles.addAll(newFilesUpdate);
+        }
+        List<String> listFileNameSaveFileSuccess = newFiles;
+        Notification notificationUpdate =  notificationConverter.toEntity2(updateNotificationRequest2, id, listFileNameSaveFileSuccess);
+        int rs = notificationMapper.updateNotification(notificationUpdate);
+        if(rs > 0){
+            NotificationDetailResponse updateNotification = notificationConverter.toNotificationDetailResponse(notificationMapper.getNotificationById(id));
+            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+            return (updateNotification);
+        } else{
+            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+            throw new NotFoundException("Fail to update notification");
+        }
+    }
+
+    @Override
     public boolean delNoti(String id) {
         Notification notification = notificationMapper.findById(id);
         if(notification == null){
@@ -142,7 +187,12 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
-    public int countAll(){
-        return notificationMapper.countAll();
+    public NotificationShowResponse getNotification(String id){
+        return notificationConverter.toShowResponse(notificationMapper.getNotificationById(id));
+    }
+
+    @Override
+    public int countAll(String search){
+        return notificationMapper.countAll(search);
     };
 }

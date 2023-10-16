@@ -25,3 +25,4 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleMapper.getScheduleDetail(userId, startDate, endDate).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
     }
 }
+

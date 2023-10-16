@@ -39,12 +39,21 @@ public class FileUtils {
             String basePath = request.getSession().getServletContext().getRealPath("/");
             String grandparentPath = Paths.get(basePath).getParent().getParent().toString();
             Path savePath = Paths.get(grandparentPath + dir);
+            String[] parts = dir.split("upload");
+            String destinationFolder = parts[parts.length-1];
+            Path SavePathTarget = Paths.get(basePath + "/upload/" + destinationFolder);
             Path filePath = savePath.resolve(fileName);
+            Path filePathTarget = SavePathTarget.resolve(fileName);
             try {
                 if (!Files.exists(savePath)) {
                     Files.createDirectories(savePath);
                 }
+                if (!Files.exists(SavePathTarget)) {
+                    Files.createDirectories(SavePathTarget);
+                }
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(file.getInputStream(), filePathTarget, StandardCopyOption.REPLACE_EXISTING);
+
                 return true;
             } catch (IOException e) {
                 return false;
@@ -55,9 +64,9 @@ public class FileUtils {
 
     public static List<String> saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
 
-        if(files == null) return null;
-
         List<String> listFileName = new ArrayList<>();
+
+        if(files == null) return listFileName;
 
         boolean isSuccess = true;
 
@@ -117,6 +126,15 @@ public class FileUtils {
         return null;
     }
 
+    public static String convertMultipartFileArrayToString(List<String> listFileNameSaveFileSuccess) {
+        if (!listFileNameSaveFileSuccess.isEmpty()) {
+            return listFileNameSaveFileSuccess.stream()
+                    .filter(file -> file != null && !file.isEmpty())
+                    .collect(Collectors.joining(","));
+        }
+        return null;
+    }
+
     public static String getPathUpload(Class<?> c, String fileName) {
         if(fileName != null){
             if (c == User.class) {
@@ -136,7 +154,7 @@ public class FileUtils {
     }
 
     public static String[] getPathUploadList(Class<?> c, String fileNames) {
-        if(fileNames != null){
+        if(fileNames != null && !fileNames.isEmpty()){
             String[] rs = fileNames.split(",");
             return Stream.of(rs).map(fileName -> {
                 if (c == User.class) {

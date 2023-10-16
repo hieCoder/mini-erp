@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,11 @@ public class NotificationApi {
     //    Get all Notification
     @GetMapping
     public ResponseEntity<?> getAllNoti(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
+                                         @RequestParam(name = "search", required = false, defaultValue = "") String search
+    ) {
 
-        return ResponseEntity.ok(notificationService.getAllNoti((page - 1) * pageSize, pageSize));
+        return ResponseEntity.ok(notificationService.getAllNoti((page - 1) * pageSize, pageSize, search));
     }
 
     //    Create New Notification
@@ -37,6 +40,12 @@ public class NotificationApi {
     public ResponseEntity<?> updateNoti(@Valid UpdateNotificationRequest updateNotificationRequest,
                                         @PathVariable("id") String id) {
         return ResponseEntity.ok(notificationService.updateNoti(updateNotificationRequest, id));
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> updateNotification(@Valid UpdateNotificationRequest2 updateNotificationRequest2,
+                                                @PathVariable("id") String id) {
+        return ResponseEntity.ok(notificationService.updateNotification(updateNotificationRequest2, id));
     }
 
     //    Delete Notification

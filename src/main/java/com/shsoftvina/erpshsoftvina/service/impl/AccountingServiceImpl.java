@@ -12,6 +12,7 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRe
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
@@ -42,9 +43,8 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
-        List<String> monthHistoryList = accountingMapper.findAllMonthlyHistory();
-        MonthHistoryList monthHistory = accountingConverter.convertListToObjectDTO(monthHistoryList);
-        return monthHistory;
+        List<MonthYearFormat> monthHistoryList = accountingMapper.findAllMonthlyHistory();
+        return accountingConverter.convertListToObjectDTO(monthHistoryList);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
-        if (accountingCreateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
+        if (accountingCreateRequest.getBill() != null && accountingCreateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
             throw new FileTooLimitedException("Max file is 3");
         }
         LocalDateTime newDate = LocalDateTime.now();
@@ -82,16 +82,15 @@ public class AccountingServiceImpl implements AccountingService {
             latestRemain = 0L;
         }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
-        List listFileNameSaveFileSuccess = null;
-        String dir = AccountingConstant.UPLOAD_FILE_DIR;
         if (billFile != null) {
             FileUtils.validateFiles(billFile);
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         }
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
-            Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate);
+            Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate, listFileNameSaveFileSuccess);
             try {
                 accountingMapper.createAccounting(accounting);
             } catch (Exception e) {
@@ -104,10 +103,9 @@ public class AccountingServiceImpl implements AccountingService {
     }
 
 
-
     @Override
-    public int updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
-        if (accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
+    public AccountResponse updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
+        if (accountingUpdateRequest.getBill() != null && accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
             throw new FileTooLimitedException("Max file is 3");
         }
         Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
@@ -115,15 +113,13 @@ public class AccountingServiceImpl implements AccountingService {
         User currentUser = userMapper.findById(accountingUpdateRequest.getUserId());
         if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
-        List listFileNameSaveFileSuccess = null;
-        String dir = AccountingConstant.UPLOAD_FILE_DIR;
         if (billFile != null) {
             FileUtils.validateFiles(billFile);
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         }
-
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
-            Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
+            Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, listFileNameSaveFileSuccess);
             try {
                 accountingMapper.updateAccounting(updateAccounting);
                 if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
@@ -138,15 +134,15 @@ public class AccountingServiceImpl implements AccountingService {
                         accounting.setRemain(beforeRemain);
                     }
                     accountingMapper.updateRecordsBatch(remainRecordInMonthList);
-                    return 1;
+                    FileUtils.deleteMultipleFilesToServer(request, dir, currentAccounting.getBill());
                 }
             } catch (Exception e) {
                 FileUtils.deleteMultipleFilesToServer(request, dir, updateAccounting.getBill());
-                return 0;
+                return null;
             }
-            return 1;
+            return findAccountingById(accountingUpdateRequest.getId());
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -175,6 +171,12 @@ public class AccountingServiceImpl implements AccountingService {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public AccountResponse findAccountingById(String id) {
+        Accounting accounting = accountingMapper.findAccountingById(id);
+        return accountingConverter.convertToResponseDTO(accounting);
     }
 
 }

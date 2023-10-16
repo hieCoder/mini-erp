@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class MonthHistoryList {
-    List<String> monthList;
+    List<MonthYearFormat> monthList;
 }
 

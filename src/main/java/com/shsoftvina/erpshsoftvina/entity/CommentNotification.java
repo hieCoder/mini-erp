@@ -17,12 +17,9 @@ public class CommentNotification {
     private String content;
     private Date createdDate;
     private Date modifiedDate;
-
     private Notification notification;
-
     private User user;
     private CommentNotification parentComment;
-
     private String modifiedBy;
     private List<CommentNotification> childComments;
 }

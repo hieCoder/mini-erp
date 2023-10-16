@@ -16,8 +16,8 @@
             <column name="USER_ID" type="VARCHAR(255)"/>
             <column name="TITLE" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
+            <column name="NOTE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 
 </databaseChangeLog>
-

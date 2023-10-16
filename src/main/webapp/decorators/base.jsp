@@ -36,13 +36,13 @@
     </script>
 </head>
 <body>
-<%--<%@ include file="/common/layout-component/header.jsp"%>--%>
+<%@ include file="/common/layout-component/header.jsp"%>
 
-<div class="content-wrapper">
+<main class="content-wrapper">
     <dec:body/>
-</div>
+</main>
 
-<%--<%@ include file="/common/layout-component/footer.jsp"%>--%>
+<%@ include file="/common/layout-component/footer.jsp"%>
 
 <%-- bootstrap --%>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.service;
 import com.shsoftvina.erpshsoftvina.converter.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.service.impl.AccountingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,11 +39,9 @@ public class AccountingServiceTest {
 
     @Test
      void findAllMonthlyHistory() {
-        List<String> monthList = new ArrayList<>();
-        monthList.add("2023-10");
-        monthList.add("2023-09");
-        monthList.add("2023-08");
-        monthList.add("2023-07");
+        List<MonthYearFormat> monthList = new ArrayList<>();
+        monthList.add(new MonthYearFormat("2023", Arrays.asList("2023-10","2023-09","2023-08","2023-07")));
+        monthList.add(new MonthYearFormat("2022", Arrays.asList("2022-10","2022-09","2022-08","2022-07")));
         when(accountingMapper.findAllMonthlyHistory()).thenReturn(monthList);
         when(accountingConverter.convertListToObjectDTO(monthList)).thenReturn(new MonthHistoryList(monthList));
         MonthHistoryList monthListActual = accountingService.findAllMonthlyHistory();

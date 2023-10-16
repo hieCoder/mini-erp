@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRe
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AccountingConverter {
     @Autowired
     private UserConverter userConverter;
 
-    public MonthHistoryList convertListToObjectDTO(List<String> monthList) {
+    public MonthHistoryList convertListToObjectDTO(List<MonthYearFormat> monthList) {
         return MonthHistoryList.builder()
                 .monthList(monthList)
                 .build();
@@ -38,7 +39,7 @@ public class AccountingConverter {
         String parseCreatedDate = DateUtils.formatLocalDateTime(accounting.getCreatedDate());
         return AccountResponse.builder()
                 .id(accounting.getId())
-                .bill(FileUtils.getPathUpload(Accounting.class, accounting.getBill()))
+                .bill(FileUtils.getPathUploadList(Accounting.class, accounting.getBill()))
                 .createdDate(parseCreatedDate)
                 .expense(expense)
                 .remain(accounting.getRemain())
@@ -52,7 +53,7 @@ public class AccountingConverter {
         return accountingList.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
     }
 
-    public Accounting convertToEntity(AccountingCreateRequest accountingCreateRequest, User user, Long latestRemain, LocalDateTime newDate) {
+    public Accounting convertToEntity(AccountingCreateRequest accountingCreateRequest, User user, Long latestRemain, LocalDateTime newDate, List<String> listFileNameSaveFileSuccess) {
         Long newRemain = latestRemain + accountingCreateRequest.getExpense();
         return Accounting.builder()
                 .user(user)
@@ -61,20 +62,21 @@ public class AccountingConverter {
                 .expense(accountingCreateRequest.getExpense())
                 .createdDate(newDate)
                 .id(UUID.randomUUID().toString())
-                .bill(FileUtils.convertMultipartFileArrayToString(accountingCreateRequest.getBill()))
+                .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .status(StatusAccountingEnum.ACTIVE)
                 .build();
     }
 
-    public Accounting convertToEntity(AccountingUpdateRequest accountingUpdateRequest, User user) {
+    public Accounting convertToEntity(AccountingUpdateRequest accountingUpdateRequest, User user, List<String> listFileNameSaveFileSuccess) {
         return Accounting.builder()
                 .user(user)
                 .title(accountingUpdateRequest.getTitle())
                 .remain(accountingUpdateRequest.getRemain())
                 .expense(accountingUpdateRequest.getExpense())
                 .id(accountingUpdateRequest.getId())
-                .bill(FileUtils.convertMultipartFileArrayToString(accountingUpdateRequest.getBill()))
+                .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .build();
     }
+
 }
 

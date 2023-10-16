@@ -2,11 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AccountingMapper">
-    <select id="findAllMonthlyHistory" resultType="string">
-        SELECT DISTINCT DATE_FORMAT(created_date, '%Y - %m') AS month
+    <select id="findAllMonthlyHistory" resultMap="MonthYearFormatResultMap">
+        SELECT DISTINCT DATE_FORMAT(created_date, '%Y') AS year,
+        DATE_FORMAT(created_date, '%Y - %m') AS month_list
         FROM ACCOUNTING
+        WHERE status = 'ACTIVE'
         ORDER BY created_date DESC
     </select>
+    <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
+        <id property="year" column="year" />
+        <collection property="month" ofType="java.lang.String">
+            <result column="month_list" />
+        </collection>
+    </resultMap>
 
     <select id="getTotalRecordCountPerMonth" resultType="java.lang.Long">
         SELECT COUNT(*)
@@ -113,9 +121,9 @@
     </select>
 
     <select id="findAccountingById" parameterType="String" resultMap="accountingResultMap">
-        SELECT *
-        FROM ACCOUNTING
-        WHERE id = #{id} AND status ='ACTIVE'
+        SELECT a.*, u.fullname
+        FROM ACCOUNTING a INNER JOIN USER u on a.user_id = u.id
+        WHERE a.id = #{id} AND a.status ='ACTIVE'
     </select>
 
     <update id="deleteAccounting" parameterType="String">
