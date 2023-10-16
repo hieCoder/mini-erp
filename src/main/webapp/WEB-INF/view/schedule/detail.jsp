@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <html>
 <head>
     <title>Schedule Detail</title>
@@ -33,7 +34,7 @@
             </div>
         </div>
         <div class="col-md-4 text-right">
-            <p>Username</p>
+            <p><%=Principal.getUserCurrent().getFullname()%></p>
         </div>
     </div>
 </div>

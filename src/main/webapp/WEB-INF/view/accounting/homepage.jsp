@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Management</title>
+    <link href="/assets/css/accounting/style.css" rel="stylesheet">
 </head>
 <body>
 <c:set var="totalExpense" value="0" scope="page"/>

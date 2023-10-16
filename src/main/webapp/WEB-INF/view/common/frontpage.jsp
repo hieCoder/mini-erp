@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Title</title>
+    <link href="/assets/css/common/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="front-card">WHAT ARE WE?</div>
