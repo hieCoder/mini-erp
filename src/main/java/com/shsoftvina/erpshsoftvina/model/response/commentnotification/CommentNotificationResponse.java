@@ -21,5 +21,6 @@ public class CommentNotificationResponse {
     private String avatarUser;
     private String parentId;
     private String userId;
+    private String clientId;
     private List<CommentNotificationResponse> childComments;
 }

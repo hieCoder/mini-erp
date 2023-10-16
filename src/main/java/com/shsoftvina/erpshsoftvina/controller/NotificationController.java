@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
-import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.SocketOption;
 import java.util.List;
 
 @Controller
