@@ -36,7 +36,7 @@ public class DateUtils {
 
     public static String formatDate(Date date) {
         if(date != null){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             return sdf.format(date);
         }
         return null;

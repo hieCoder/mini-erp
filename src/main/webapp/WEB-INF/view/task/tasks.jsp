@@ -74,7 +74,7 @@
                         </table>
                     </div>
                     <div>
-                        <ul id="pagination" class="pagination pagination-sm mt-2 justify-content-center"></ul>
+                        <ul id="pagination" class="pagination mt-2 justify-content-center"></ul>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
 
     <%-- modal register --%>
     <div class="modal fade" id="registerTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form id="registerTaskForm">
                     <div class="modal-header">
