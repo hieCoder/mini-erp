@@ -11,10 +11,12 @@ import java.util.List;
 public interface WeeklyReportMapper {
     List<WeeklyReport> getAllWeeklyReport(@Param("searchTerm") String searchTerm,
                                           @Param("userRole") String userRole,
+                                          @Param("userId") String userId,
                                           RowBounds rowBounds);
 
     long getTotalWeeklyReport(@Param("searchTerm") String searchTerm,
-                              @Param("userRole") String userRole);
+                              @Param("userRole") String userRole,
+                              @Param("userId") String userId);
 
     WeeklyReport findById(@Param("id") String id);
 

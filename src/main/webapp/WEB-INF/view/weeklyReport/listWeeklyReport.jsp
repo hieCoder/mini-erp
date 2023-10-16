@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 text-right"> <!-- Thêm class text-right để căn giữa phải -->
+            <div class="col-md-6 text-right">
                 <button type="button" class="btn btn-primary px-4 create-weeklyReport-button">Add Weekly Report</button>
             </div>
         </div>
@@ -119,7 +119,7 @@
 <!-- Modal Add Weekly Report -->
 <div class="modal fade" id="addWeeklyReportModal" tabindex="-1" role="dialog" aria-labelledby="addWeeklyReportModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Add Weekly Report</h4>
@@ -166,7 +166,7 @@
 <!-- Modal Weekly Report Detail -->
 <div class="modal fade" id="WeeklyReportDetailModal" tabindex="-1" role="dialog" aria-labelledby="WeeklyReportDetailModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Weekly Report Detail</h4>
@@ -191,7 +191,7 @@
                     <div class="form-group row">
                         <label for="contentWeeklyReport" class="col-sm-2 col-form-label">Content</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="contentWeeklyReport" rows="4" cols="50"></textarea>
+                            <div class="form-control" id="contentWeeklyReport" readonly></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -229,26 +229,26 @@
     </div>
 </div>
 
-
+<%-------------------------------- Code Javascript -------------------------------------%>
 <script>
     // Handle search
     document.addEventListener("DOMContentLoaded", function () {
-        // Lấy thẻ input bằng id
+        // Get input search
         var searchInput = document.getElementById("search");
 
-        // Kiểm tra giá trị của roleUser
+        // Check Role Of User
         var roleUser = "${user.getRole().getValue()}";
 
-        // Đặt giá trị placeholder tùy theo roleUser
+        // setup placeholder of input search flow Role User
         if (roleUser === "Owner") {
-            searchInput.placeholder = "Search";
+            searchInput.placeholder = "Search by Title or Author";
         } else {
-            searchInput.placeholder = "Search Title";
+            searchInput.placeholder = "Search by Title";
         }
 
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Add Weekly Report"
+    // Handle when user click button "Add Weekly Report"
     document.addEventListener("DOMContentLoaded", function () {
         var addButtons = document.querySelectorAll(".create-weeklyReport-button");
 
@@ -258,53 +258,86 @@
                 $("#addWeeklyReportModal").modal("show");
             });
         });
-    });
 
-    // Hiển thị dropdown khi người dùng sử dụng '#' trong trường content
-    document.addEventListener("DOMContentLoaded", function () {
+        // Show dropdown titles task when user used key '#' in content weeklyReport
+        // Get content and Get dropdown of tasks
         var contentContainer = document.getElementById("contentContainer");
         var mentionDropdown = document.getElementById("mentionDropdown");
 
+        // Handle when user used key "#" in content
         contentContainer.addEventListener("input", function () {
             var content = contentContainer.innerText;
 
             if (content.includes("#")) {
-                // Xử lý sự kiện gõ "#"
-                // Gửi yêu cầu API để lấy danh sách title
+                // Get titles form API
                 var userId = ${user.id};
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/api/v1/tasks/hashtag/" + userId, true);
                 xhr.onload = function () {
                     if (xhr.status === 200) {
+                        // Get Id and Title of Tasks From response Data API
                         var responseData = JSON.parse(xhr.responseText);
+                        var taskId = responseData.map(function (task) {
+                            return task.id;
+                        });
                         var titles = responseData.map(function (task) {
                             return task.title;
                         });
 
-                        // Hiển thị dropdown với danh sách title
+                        // Show dropdown titles tasks
                         mentionDropdown.innerHTML = "Task:";
                         titles.forEach(function (title) {
                             var mentionItem = document.createElement("div");
-                            mentionItem.textContent = title;
-
-                            // Thêm lớp "dropdown-item" cho thẻ div
                             mentionItem.classList.add("dropdown-item");
                             mentionItem.classList.add("border");
+                            mentionItem.textContent = title;
 
+                            // Handle when user choose one of the titles
                             mentionItem.addEventListener("click", function () {
-                                // Xử lý khi người dùng chọn một title
                                 var selectedTitle = mentionItem.textContent;
-                                contentContainer.innerHTML = content.replace("#", '<a href="/task/taskId">#' + selectedTitle + '</a>' + " ");
+                                var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
+                                contentContainer.innerHTML = content.replace("#", '<a href="/tasks/' + selectedTaskId + '">#' + selectedTitle + '</a>' + " ");
+
+                                var detailButtons = document.querySelectorAll(".weeklyReportDetail-button");
+
+                                // Show modal Edit Contract
+                                detailButtons.forEach(function (button) {
+                                    button.addEventListener("click", function (event) {
+                                        $("#WeeklyReportDetailModal").modal("show");
+
+                                        var id = button.getAttribute("href");
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open("GET", "/api/v1/weekly-reports/" + id, true);
+                                        xhr.onload = function () {
+                                            if (xhr.status === 200) {
+                                                var responseData = JSON.parse(xhr.responseText);
+                                                var content = responseData.content;
+                                                var modifiedContent = replaceHashtagsWithLinks(content, selectedTaskId);
+
+                                                // Assign response Data weekly report to fields
+                                                document.getElementById("titleWeeklyReport").value = responseData.title;
+                                                document.getElementById("contentWeeklyReport").innerHTML = modifiedContent;
+                                                document.getElementById("fullnameUser").value = responseData.fullnameUser;
+                                                document.getElementById("createDate").value = responseData.createdDate;
+                                            }
+                                        };
+                                        xhr.send();
+                                        event.preventDefault();
+                                    });
+                                });
+
+                                // assign tag a to "#**"
+                                function replaceHashtagsWithLinks(text, selectedTaskId) {
+                                    return text.replace(/#([a-zA-Z0-9]+)/g, '<a href="/tasks/' + selectedTaskId + '">#$1</a>');
+                                }
 
                                 mentionDropdown.style.display = "none";
                             });
                             mentionDropdown.appendChild(mentionItem);
                         });
-
                         mentionDropdown.style.display = "block";
                     }
                 };
-
                 xhr.send();
             } else {
                 mentionDropdown.style.display = "none";
@@ -312,10 +345,10 @@
         });
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Submit" trong modal Add Weekly Report
+    // Handle when user click button "Submit" in modal Add Weekly Report
     document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
 
-        // Lay du lieu trong the form
+        // Get Data in form
         var userId = this.value;
         var title = document.getElementById("title").value;
         var content = document.getElementById("contentContainer").textContent;
@@ -326,17 +359,14 @@
             userId: userId
         };
 
-        // Khởi tạo đối tượng XMLHttpRequest
         var xhr = new XMLHttpRequest();
         var url = '/api/v1/weekly-reports';
 
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    // Xử lý kết quả ở đây
                     sessionStorage.setItem('result', 'addWeeklyReportSuccess');
                     location.reload();
                 } else {
@@ -347,57 +377,43 @@
         xhr.send(JSON.stringify(data));
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn link Title
-    document.addEventListener("DOMContentLoaded", function () {
-        var addButtons = document.querySelectorAll(".weeklyReportDetail-button");
+    // // Handle when user click on link Title
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     var addButtons = document.querySelectorAll(".weeklyReportDetail-button");
+    //
+    //     // Show modal Edit Contract
+    //     addButtons.forEach(function (button) {
+    //         button.addEventListener("click", function (event) {
+    //             $("#WeeklyReportDetailModal").modal("show");
+    //
+    //             var id = button.getAttribute("href");
+    //             var xhr = new XMLHttpRequest();
+    //             xhr.open("GET", "/api/v1/weekly-reports/" + id, true);
+    //             xhr.onload = function () {
+    //                 if (xhr.status === 200) {
+    //                     var responseData = JSON.parse(xhr.responseText);
+    //                     var content = responseData.content;
+    //                     var modifiedContent = replaceHashtagsWithLinks(content);
+    //
+    //                     // Assign response Data weekly report to fields
+    //                     document.getElementById("titleWeeklyReport").value = responseData.title;
+    //                     document.getElementById("contentWeeklyReport").innerHTML = modifiedContent;
+    //                     document.getElementById("fullnameUser").value = responseData.fullnameUser;
+    //                     document.getElementById("createDate").value = responseData.createdDate;
+    //                 }
+    //             };
+    //             xhr.send();
+    //             event.preventDefault();
+    //         });
+    //     });
+    //
+    //     // assign tag a to "#**"
+    //     function replaceHashtagsWithLinks(text) {
+    //         return text.replace(/#([a-zA-Z0-9]+)/g, '<a href="/hashtag/$1">#$1</a>');
+    //     }
+    // });
 
-        // Show modal Edit Contract
-        addButtons.forEach(function (button) {
-            button.addEventListener("click", function (event) {
-                $("#WeeklyReportDetailModal").modal("show");
-                var id = button.getAttribute("href");
-
-                // Tạo một đối tượng XMLHttpRequest
-                var xhr = new XMLHttpRequest();
-
-                // Xác định phương thức và URL của API
-                xhr.open("GET", "/api/v1/weekly-reports/" + id, true);
-
-                // Đăng ký sự kiện "load" để xử lý khi API trả về dữ liệu
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        // Parse dữ liệu JSON từ API
-                        var responseData = JSON.parse(xhr.responseText);
-
-                        // Gán dữ liệu từ API vào modal
-                        document.getElementById("titleWeeklyReport").value = responseData.title;
-                        document.getElementById("contentWeeklyReport").value = responseData.content;
-                        document.getElementById("fullnameUser").value = responseData.fullnameUser;
-                        document.getElementById("createDate").value = responseData.createdDate;
-                    }
-                };
-
-                // Gửi yêu cầu API
-                xhr.send();
-                event.preventDefault();
-            });
-        });
-    });
-
-    // Lưu giá trị lựa chọn "Search" vào Local Storage khi thay đổi
-    document.getElementById("search").addEventListener("input", function () {
-        localStorage.setItem("selectedSearch", this.value);
-    });
-
-    // Khôi phục giá trị "Search" từ Local Storage khi trang được load
-    window.addEventListener("load", function () {
-        var selectedSearch = localStorage.getItem("selectedSearch");
-        if (selectedSearch) {
-            document.getElementById("search").value = selectedSearch;
-        }
-    });
-
-    // Notification Delete User Success
+    // Notification Add weekly Report Success
     document.addEventListener('DOMContentLoaded', function () {
         const result = sessionStorage.getItem('result');
         if (result) {
@@ -408,31 +424,23 @@
     });
 </script>
 
-<%-- Hiển thị khung nội dung theo content trong modal Add Weekly Report--%>
+<%-- Format content in modal Add Weekly Report--%>
 <script>
-    // Hàm để kiểm tra và mở rộng contentContainer khi người dùng thêm nội dung
     function expandContentContainer() {
         var contentContainer = document.getElementById("contentContainer");
-
-        // Lấy chiều cao thực tế của nội dung bên trong và chiều cao hiện tại của contentContainer
         var contentHeight = contentContainer.scrollHeight;
         var containerHeight = contentContainer.clientHeight;
 
-        // Nếu chiều cao thực tế của nội dung lớn hơn chiều cao hiện tại của contentContainer, thì mở rộng nó
         if (contentHeight > containerHeight) {
             contentContainer.style.height = contentHeight + "px";
         }
     }
 
-    // Lắng nghe sự kiện khi người dùng thay đổi nội dung
+    // Get event when user change content
     document.addEventListener("input", function () {
         expandContentContainer();
     });
 
-    // Gọi hàm expandContentContainer khi trang được load để điều chỉnh ban đầu
-    document.addEventListener("DOMContentLoaded", function () {
-        expandContentContainer();
-    });
 </script>
 </body>
 </html>

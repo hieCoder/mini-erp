@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.api;
 
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyReportRequest;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.PageWeeklyReportListRespone;
@@ -28,8 +29,8 @@ public class WeeklyReportApi {
     public ResponseEntity<?> getAllWeeklyReport(@RequestParam(name = "search", required = false, defaultValue = "") String search,
                                                 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        String userRole = Principal.getUserCurrent().getRole().getValue();
-        PageWeeklyReportListRespone weeklyReports = weeklyReportService.getAllWeeklyReport(search, userRole, page, pageSize);
+        User user = Principal.getUserCurrent();
+        PageWeeklyReportListRespone weeklyReports = weeklyReportService.getAllWeeklyReport(search, user.getRole().getValue(), user.getId(), page, pageSize);
 
 
         return new ResponseEntity<>(weeklyReports, HttpStatus.OK);

@@ -29,9 +29,7 @@ public class weeklyReportController {
         ModelAndView view = new ModelAndView("weeklyReport/listWeeklyReport");
 
         User user =  Principal.getUserCurrent();
-        System.out.println(user.getRole().getValue());
-        PageWeeklyReportListRespone weeklyReports = weeklyReportService.getAllWeeklyReport(search, user.getRole().getValue(), page, pageSize);
-
+        PageWeeklyReportListRespone weeklyReports = weeklyReportService.getAllWeeklyReport(search, user.getRole().getValue(), user.getId(), page, pageSize);
 
         view.addObject("user", user);
         view.addObject("weeklyReports", weeklyReports);
