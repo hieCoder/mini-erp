@@ -4,7 +4,7 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ScheduleMapper">
 
     <select id="getScheduleDetail" resultMap="scheduleDetailResultMap">
-        SELECT t.ID, t.STATUS_TASK, t.TITLE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE, t.USER_ID
+        SELECT t.ID, t.STATUS_TASK, t.TITLE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE, t.USER_ID, u.ID, u.FULLNAME
         FROM TASK t INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.USER_ID = #{userId}
         <choose>
@@ -27,5 +27,11 @@
         <result property="startDate" column="START_DATE"/>
         <result property="dueDate" column="DUE_DATE"/>
         <result property="closeDate" column="CLOSE_DATE"/>
+        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <result property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
     </resultMap>
 </mapper>

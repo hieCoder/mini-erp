@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +17,24 @@
         <div class="card-body" id="table-body">
             <h5 class="card-title">Title: ${account.title}</h5>
             <p class="card-text">Created date: ${account.createdDate}</p>
-            <p class="card-text">Revenue: ${account.revenue}</p>
-            <p class="card-text">Expense: ${account.expense}</p>
-            <p class="card-text">Remain: ${account.remain}</p>
+            <p class="card-text text-success">Revenue: ${account.revenue}</p>
+            <p class="card-text text-danger">Expense: ${account.expense}</p>
+            <p class="card-text text-primary">Remain: ${account.remain}</p>
             <p class="card-text">Username: ${account.user.fullname}</p>
-            <p class="card-text">Bill: <a href="${account.bill == null ? '#' : account.bill}" download=""
-                                          target="_blank" id="resumeLink">Download Bill</a></p>
+
+            <c:choose>
+                <c:when test="${not empty account.bill}">
+                    <p class="card-text">Bill:
+                        <c:forEach items="${account.bill}" var="file">
+                            <a href="${file}" download="" target="_blank">${file.substring(file.indexOf('-') + 1)}</a>
+                            <br>
+                        </c:forEach>
+                    </p>
+                </c:when>
+                <c:otherwise>
+                    <p class="card-text">Bill: </p>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="card-footer">
             <button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
@@ -59,11 +73,24 @@
                     <div class="form-group" id="amountGroup">
                         <label for="amount">Amount</label>
                         <input type="number" class="form-control" id="amount" step="1"
-                               value="${account.revenue > 0 ? account.revenue : -account.expense}" required pattern="[0-9]+">
+                               value="${account.revenue > 0 ? account.revenue : -account.expense}" required
+                               pattern="[0-9]+">
                     </div>
                     <div class="form-group">
                         <label for="editBill">Bill</label>
                         <input type="file" class="form-control" id="editBill" value="${account.bill}" multiple>
+                        <span id="editLink">
+                                 <c:choose>
+                                     <c:when test="${not empty account.bill}">
+                                         <c:forEach items="${account.bill}" var="file">
+                                    <a href="${file}" download="" target="_blank"
+                                       id="resumeLink">${file.substring(file.indexOf('-') + 1)}</a><br>
+                                         </c:forEach>
+                                     </c:when>
+                                     <c:otherwise>
+                                     </c:otherwise>
+                                 </c:choose>
+                        </span>
                     </div>
                 </form>
             </div>
@@ -178,11 +205,34 @@
         var amount = parseFloat(document.getElementById("amount").value);
         var billInput = document.getElementById("editBill");
         var billFiles = billInput.files;
-        console.log(transaction);
+
+        if (!title || !amount || isNaN(amount)) {
+            alert("Title and amount are required and amount must be a number.");
+            loading.style.display = "none";
+            return;
+        }
+
+        if (billFiles.length > 3) {
+            alert("You can't select more than 3 files.");
+            loading.style.display = "none";
+            return;
+        }
+
+        var validExtensions = ["xls", "xlsx", "pdf"];
+        for (var j = 0; j < billFiles.length; j++) {
+            var fileName = billFiles[j].name;
+            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+            if (!validExtensions.includes(fileExtension) || billFiles[j].size > 100 * 1024 * 1024) {
+                alert("File must be xls, xlsx, or pdf and not over 100mb.");
+                loading.style.display = "none";
+                return;
+            }
+        }
+
         if (transaction === 'expense') {
             amount = -amount;
         }
-        console.log(amount);
+
         var formData = new FormData();
 
         formData.append("title", title);
@@ -200,14 +250,22 @@
                     var responseData = JSON.parse(xhr.responseText);
                     console.log(responseData);
                     var tableBody = document.getElementById("table-body");
+                    var editLink = document.getElementById("editLink");
+                    var billContent = '';
+                    if (responseData.bill !== null && responseData.bill.length > 0) {
+                        responseData.bill.forEach(function (file) {
+                            billContent += '<a href="' + file + '" download="" target="_blank">' + file.substring(file.indexOf('-') + 1) + '</a><br>';
+                        });
+                    } else {
+                        billContent = '<p class="card-text">Bill: </p>';
+                    }
                     tableBody.innerHTML = '<h5 class="card-title">Title:' + responseData.title + '</h5>' + '<p class="card-text">Created date: ' + responseData.createdDate + '</p>'
                         + '<p class="card-text">Revenue: ' + responseData.revenue + '</p>'
                         + '<p class="card-text">Expense: ' + responseData.expense + '</p>'
                         + '<p class="card-text">Username: ' + responseData.user.fullname + '</p>'
-                        + '<p class="card-text">Bill: <a href="' + (responseData.bill === null ? '#' : responseData.bill) + '" download="" target="_blank" id="resumeLink">Download Bill</a></p>';
+                        + '<p class="card-text">Bill:<br>' + billContent + '</p>';
                     loading.style.display = "none";
-                    var responseData = xhr.responseText;
-                    console.log(responseData);
+                    editLink.innerHTML = billContent;
                     $('#editModal').modal('hide');
                     $('#successModal').modal('show');
                 } else {

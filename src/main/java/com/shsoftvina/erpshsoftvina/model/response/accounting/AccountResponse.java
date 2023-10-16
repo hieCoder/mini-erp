@@ -17,7 +17,7 @@ public class AccountResponse {
     private Long expense;
     private Long remain;
     private UserAccountingResponse user;
-    private String bill;
+    private String[] bill;
     private String title;
 }
 

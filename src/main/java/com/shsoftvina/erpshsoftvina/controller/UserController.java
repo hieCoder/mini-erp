@@ -32,8 +32,9 @@ public class UserController {
     ContractService contractService;
 
     @GetMapping("/home")
-    public String hello() {
-        return "auth/index";
+    public String getFrontPage() {
+        return "common/frontpage";
+
     }
 
     @GetMapping("/testUpdateProfile")

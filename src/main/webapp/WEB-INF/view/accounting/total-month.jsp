@@ -17,7 +17,8 @@
             <h3 class="mt-4">Years</h3>
             <ul class="list-group" id="yearList">
                 <c:forEach varStatus="loop" items="${monthList.monthList}" var="date">
-                    <li class="list-group-item year-item" data-toggle="collapse" href="#months${loop.index}">${date.year}</li>
+                    <li class="list-group-item year-item" data-toggle="collapse"
+                        href="#months${loop.index}">${date.year}</li>
                     <div class="collapse" id="months${loop.index}">
                         <ul class="list-group">
                             <c:forEach items="${date.month}" var="month">
@@ -36,7 +37,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -49,9 +51,21 @@
                     <!-- Your create form content goes here -->
                     <form enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="createTitle">Title</label>
-                            <input type="text" class="form-control" id="createTitle" required>
+                                <label for="createTitle">Title</label>
+                                <input type="text" class="form-control" id="createTitle" required>
+<%--                            <div id="createTitle">This is some sample content.</div>--%>
+<%--                            <script>--%>
+<%--                                ClassicEditor--%>
+<%--                                    .create(document.querySelector('#createTitle'))--%>
+<%--                                    .then(editor => {--%>
+<%--                                        console.log(editor);--%>
+<%--                                    })--%>
+<%--                                    .catch(error => {--%>
+<%--                                        console.error(error);--%>
+<%--                                    });--%>
+<%--                            </script>--%>
                         </div>
+
                         <div class="form-group">
                             <label for="transactionType">Transaction Type</label>
                             <select class="form-control" id="transactionType" required>
@@ -67,6 +81,7 @@
                         <div class="form-group">
                             <label for="createBill">Bill</label>
                             <input type="file" class="form-control" id="createBill" multiple>
+                            <span class="text-secondary">*File must be xls, xlsx or pdf, file not over 100mb and below 3 files</span>
                         </div>
                     </form>
                 </div>
@@ -78,7 +93,8 @@
         </div>
     </div>
     <!-- Modal HTML -->
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -98,7 +114,8 @@
     </div>
 
     <!-- Modal Error-->
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -117,8 +134,9 @@
         </div>
     </div>
 </div>
+
 <script>
-    document.getElementById('transactionType').addEventListener('change', function() {
+    document.getElementById('transactionType').addEventListener('change', function () {
         var selectedOption = this.value;
         var amountGroup = document.getElementById('amountGroup');
         var amountInput = document.getElementById('amount');
@@ -131,14 +149,14 @@
             amountGroup.style.display = 'block';
             amountInput.placeholder = 'Enter positive amount';
             amountInput.min = 0;
-        }  else {
+        } else {
             amountGroup.style.display = 'none';
         }
     });
 
-    document.getElementById('amount').addEventListener('input', function() {
+    document.getElementById('amount').addEventListener('input', function () {
         var amount = parseFloat(this.value);
-        if ( isNaN(amount) || amount.includes('-') ) {
+        if (isNaN(amount)) {
             this.value = '';
             alert('Amount must be within the specified range.');
         }
@@ -151,16 +169,42 @@
     }
 
     function sendCreateForm() {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
         var xhr = new XMLHttpRequest();
 
         xhr.open("POST", "/api/v1/accounts", true);
 
         var title = document.getElementById("createTitle").value;
+        console.log(title);
         var transaction = document.getElementById("transactionType").value;
         var amount = parseFloat(document.getElementById("amount").value);
         var billInput = document.getElementById("createBill");
         var billFiles = billInput.files;
-        console.log(transaction);
+
+        if (!title || !amount || isNaN(amount)) {
+            alert("Title and amount are required and amount must be a number.");
+            loading.style.display = "none";
+            return;
+        }
+
+        if (billFiles.length > 3) {
+            alert("You can't select more than 3 files.");
+            loading.style.display = "none";
+            return;
+        }
+
+        var validExtensions = ["xls", "xlsx", "pdf"];
+        for (var i = 0; i < billFiles.length; i++) {
+            var fileName = billFiles[i].name;
+            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+            if (!validExtensions.includes(fileExtension) || billFiles[i].size > 100 * 1024 * 1024) {
+                alert("File must be xls, xlsx, or pdf and not over 100mb.");
+                loading.style.display = "none";
+                return;
+            }
+        }
+
         if (transaction === 'expense') {
             amount = -amount;
         }
@@ -177,11 +221,13 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
+                    loading.style.display = "none";
                     var responseData = xhr.responseText;
                     console.log(responseData);
                     $('#createModal').modal('hide');
                     $('#successModal').modal('show');
                 } else {
+                    loading.style.display = "none";
                     $('#createModal').modal('hide');
                     $('#errorModal').modal('show');
                 }
@@ -190,5 +236,6 @@
         xhr.send(formData);
     }
 </script>
+<div id="loading" class="loading-spin">Loading...</div>
 </body>
 </html>
