@@ -31,7 +31,8 @@
         var userCurrent = {
             id: "<%=Principal.getUserCurrent().getId()%>",
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
-            role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>
+            role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
         };
     </script>
 </head>
