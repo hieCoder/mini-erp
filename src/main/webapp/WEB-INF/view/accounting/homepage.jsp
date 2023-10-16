@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,16 +55,31 @@
         </thead>
         <tbody id="table-body">
         <c:forEach varStatus="loop" var="a" items="${requestScope.list.accountResponseList}">
-            <tr>
-                <th scope="row">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
-                <td><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a></td>
-                <td><c:out value="${a.createdDate}"/></td>
-                <td><c:out value="${a.title}"/></td>
-                <td><c:out value="${a.revenue}"/></td>
-                <td><c:out value="${a.expense}"/></td>
-                <td><c:out value="${a.remain}"/></td>
-                <td><c:out value="${a.user.fullname}"/></td>
-                <td><a href="${a.bill}" download="" target="_blank" id="resumeLink">Download Bill</a></td>
+            <tr class="align-middle">
+                <th scope="row" class="align-middle">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
+                <td class="align-middle"><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a></td>
+                <td class="align-middle"><c:out value="${a.createdDate}"/></td>
+                <td class="align-middle"><c:out value="${a.title}"/></td>
+                <td class="align-middle ${a.revenue > 0 ? 'text-success' : ''}">
+                    <fmt:formatNumber type="number" value="${a.revenue}" pattern="#,##0 ₫" />
+                </td>
+                <td class="align-middle ${a.expense < 0 ? 'text-danger' : ''}">
+                    <fmt:formatNumber type="number" value="${a.expense}" pattern="#,##0 ₫" />
+                </td>
+                <td class="align-middle text-primary"><fmt:formatNumber type="number" value="${a.remain}" pattern="#,##0 ₫" /></td>
+                <td class="align-middle"><c:out value="${a.user.fullname}"/></td>
+                <td class="align-middle">
+                    <c:choose>
+                        <c:when test="${not empty a.bill}">
+                            <c:forEach items="${a.bill}" var="file">
+                                <a href="${file}" download="" target="_blank" id="resumeLink">${file.substring(file.indexOf('-') + 1)}</a>
+                                <hr>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
             <c:set var="totalExpense" value="${totalExpense + a.expense}" scope="page"/>
             <c:set var="totalRevenue" value="${totalRevenue + a.revenue}" scope="page"/>
@@ -133,15 +150,15 @@
         <tbody>
         <tr id="total">
             <th>Page ${list.pageNumber}</th>
-            <td><c:out value="${totalRevenue}"/></td>
-            <td><c:out value="${totalExpense}"/></td>
-            <td><c:out value="${totalRevenue + totalExpense}"/></td>
+            <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}" pattern="#,##0 ₫" /></td>
+            <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}" pattern="#,##0 ₫" /></td>
+            <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}" pattern="#,##0 ₫" /></td>
         </tr>
         <tr>
             <th>Total in Month</th>
-            <td><c:out value="${list.totalList.totalRevenue}"/></td>
-            <td><c:out value="${list.totalList.totalExpense}"/></td>
-            <td><c:out value="${list.totalList.totalRemain}"/></td>
+            <td class="text-success"><fmt:formatNumber type="number" value="${list.totalList.totalRevenue}" pattern="#,##0 ₫" /></td>
+            <td class="text-danger"><fmt:formatNumber type="number" value="${list.totalList.totalExpense}" pattern="#,##0 ₫" /></td>
+            <td class="text-primary"><fmt:formatNumber type="number" value="${list.totalList.totalRemain}" pattern="#,##0 ₫" /></td>
         </tr>
         </tbody>
     </table>
@@ -156,6 +173,9 @@
         localStorage.removeItem("selectedPageSize");
         localStorage.removeItem("selectedDateStart");
         localStorage.removeItem("selectedDateEnd");
+        document.getElementById("datePickerStart").value = "";
+        document.getElementById("datePickerEnd").value = "";
+        document.getElementById("pageCount").selectedIndex = 0;
     });
 
     document.getElementById("datePickerStart").addEventListener("input", function () {
@@ -205,12 +225,32 @@
                             + "<td>" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
                             + "<td>" + account.createdDate + "</td>"
                             + "<td>" + account.title + "</td>"
-                            + "<td>" + account.revenue + "</td>"
-                            + "<td>" + account.expense + "</td>"
-                            + "<td>" + account.remain + "</td>"
-                            + "<td>" + account.user.fullname + "</td>"
-                            + "<td>" + '<a href="' + account.bill + '" download="" target="_blank" id="resumeLink">Download Bill</a>' + "</td>"
-                        ;
+                            + "<td style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
+                            + "<td style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
+                            + "<td style='color: blue'>" + formatCurrency(account.remain) + "</td>"
+                            + "<td>" + account.user.fullname + "</td>";
+                        if (account.bill) {
+                            var cell = row.insertCell();
+
+                            var files = account.bill;
+
+                            for (var i = 0; i < files.length; i++) {
+                                var file = files[i];
+                                var downloadLink = document.createElement("a");
+                                downloadLink.href = file;
+                                downloadLink.setAttribute("download", "");
+                                downloadLink.target = "_blank";
+                                downloadLink.id = "resumeLink";
+                                downloadLink.textContent = file.substring(file.indexOf('-') + 1);
+                                cell.appendChild(downloadLink);
+
+                                if (i < files.length - 1) {
+                                    cell.appendChild(document.createElement("hr"));
+                                }
+                            }
+                        } else {
+                            row.insertCell();
+                        }
                         totalExpense += account.expense;
                         totalRevenue += account.revenue;
                         totalRemain = account.remain;
@@ -219,13 +259,17 @@
 
                 updatePagination(responseData);
 
-                totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td>' + totalRevenue + '</td>'
-                    + '<td>' + totalExpense + '</td>'
-                    + '<td>' + totalRemain + '</td>';
+                totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td class="text-success">' + formatCurrency(totalRevenue) + '</td>'
+                    + '<td class="text-danger">' + formatCurrency(totalExpense) + '</td>'
+                    + '<td class="text-primary">' + formatCurrency(totalRemain) + '</td>';
             }
         };
         xhr.open("GET", "/api/v1/accounts/" + month + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + selectedDateStart + "&endDate=" + selectedDateEnd, true);
         xhr.send();
+    }
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     }
 
     function updatePagination(responseData) {

@@ -90,7 +90,7 @@ public class AccountingServiceImpl implements AccountingService {
         if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
-            Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate);
+            Accounting accounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate, listFileNameSaveFileSuccess);
             try {
                 accountingMapper.createAccounting(accounting);
             } catch (Exception e) {
@@ -119,7 +119,7 @@ public class AccountingServiceImpl implements AccountingService {
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
-            Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser);
+            Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, listFileNameSaveFileSuccess);
             try {
                 accountingMapper.updateAccounting(updateAccounting);
                 if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
@@ -134,13 +134,13 @@ public class AccountingServiceImpl implements AccountingService {
                         accounting.setRemain(beforeRemain);
                     }
                     accountingMapper.updateRecordsBatch(remainRecordInMonthList);
+                    FileUtils.deleteMultipleFilesToServer(request, dir, currentAccounting.getBill());
                 }
             } catch (Exception e) {
                 FileUtils.deleteMultipleFilesToServer(request, dir, updateAccounting.getBill());
                 return null;
             }
-            Accounting newAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
-            return accountingConverter.convertToResponseDTO(newAccounting);
+            return findAccountingById(accountingUpdateRequest.getId());
         }
         return null;
     }

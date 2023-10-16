@@ -20,7 +20,6 @@ import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.TaskService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +59,14 @@ public class TaskServiceImpl implements TaskService {
 
         User user = userMapper.findById(userId);
         if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
-        if (!EnumUtils.isExistInEnum(PriorityTaskEnum.class, priority)) throw new NotFoundException(MessageErrorUtils.notFound("Priority"));
+        if (!EnumUtils.isExistInEnum(PriorityTaskEnum.class, priority))
+            throw new NotFoundException(MessageErrorUtils.notFound("Priority"));
 
-        try{
+        try {
             taskMapper.registerTask(taskConverter.toEntity(taskRegisterRequest));
             return 1;
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
         return 0;
     }
 
@@ -77,7 +78,7 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.findById(id);
         if (task == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
-        if(Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER) &&
+        if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER) &&
                 !task.getUser().getId().equals(Principal.getUserCurrent().getId()))
             throw new UnauthorizedException(MessageErrorUtils.unauthorized());
 
@@ -86,25 +87,26 @@ public class TaskServiceImpl implements TaskService {
 
         String action = taskUpdateRequest.getAction();
         boolean isActionValidForUpdateStatusTask = ApplicationUtils.isActionValidForUpdateStatusTask(task.getStatusTask(), action);
-        if(!isActionValidForUpdateStatusTask) throw new NotAllowException(MessageErrorUtils.notAllow("Action"));
+        if (!isActionValidForUpdateStatusTask) throw new NotAllowException(MessageErrorUtils.notAllow("Action"));
 
-        if(taskUpdateRequest.getProgress() != task.getProgress() &&
+        if (taskUpdateRequest.getProgress() != task.getProgress() &&
                 (task.getStatusTask().equals(StatusTaskEnum.REGISTERED) ||
-                        task.getStatusTask().equals(StatusTaskEnum.POSTPONSED) ||
+                        task.getStatusTask().equals(StatusTaskEnum.POSTPONED) ||
                         task.getStatusTask().equals(StatusTaskEnum.CLOSED))
         ) throw new NotAllowException(MessageErrorUtils.notAllow("Progress"));
 
-        try{
-            Task t =taskConverter.toEntity(taskUpdateRequest);
+        try {
+            Task t = taskConverter.toEntity(taskUpdateRequest);
             taskMapper.updateTask(t);
             return 1;
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
         return 0;
     }
 
     @Override
     public int deleteById(String id) {
-        if(taskMapper.findById(id) == null)
+        if (taskMapper.findById(id) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
         return taskMapper.changeStatusTask(id, StatusDeleteTaskEnum.INACTIVE.toString());
     }

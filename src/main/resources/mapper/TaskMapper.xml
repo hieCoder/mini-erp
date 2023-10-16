@@ -19,7 +19,7 @@
                u.ID AS user_id,
                u.FULLNAME AS user_fullname
         FROM TASK t
-        INNER JOIN user u ON t.USER_ID = u.ID
+        INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
         AND (
                 u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
@@ -33,7 +33,7 @@
     <select id="getTotalItem" resultType="long">
         SELECT COUNT(*)
         FROM TASK t
-        INNER JOIN user u ON t.user_id = u.id
+        INNER JOIN USER u ON t.user_id = u.id
         WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
         AND (
                 u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
@@ -130,9 +130,9 @@
                u.ID AS user_id,
                u.FULLNAME AS user_fullname,
                u.AVATAR AS user_avatar
-        FROM task t
+        FROM TASK t
             LEFT JOIN COMMENT_TASK c ON t.ID = c.TASK_ID AND c.PARENT_ID IS NULL
-            LEFT JOIN user u ON t.USER_ID = u.ID
+            LEFT JOIN USER u ON t.USER_ID = u.ID
         WHERE t.ID = #{id}
     </select>
 
@@ -179,8 +179,8 @@
                c.modified_by AS comment_modified_by,
                u.fullname AS user_fullname,
                u.avatar AS user_avatar
-        FROM comment_task c
-                 INNER JOIN user u ON c.user_id = u.id
+        FROM COMMENT_TASK c
+                 INNER JOIN USER u ON c.user_id = u.id
         WHERE c.parent_id = #{id}
     </select>
 
@@ -200,14 +200,14 @@
             u.ID AS comment_user_id,
             u.FULLNAME AS user_fullname,
             u.AVATAR AS user_avatar
-        FROM user u
+        FROM USER u
         WHERE u.ID = #{id}
     </select>
 
     <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
         SELECT t.id, t.title
-        FROM task t
-        INNER JOIN user u ON t.user_id = u.id
+        FROM TASK t
+        INNER JOIN USER u ON t.user_id = u.id
         WHERE t.status = 'ACTIVE' AND u.id = #{userId}
     </select>
 
