@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.enums.setting.CodeSettingEnum;
 import com.shsoftvina.erpshsoftvina.model.request.setting.SettingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.setting.SettingResponse;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
@@ -20,7 +21,7 @@ public class SettingConverter {
 
     public Setting toEntity(SettingUpdateRequest settingUpdateRequest) {
         return Setting.builder()
-                .id(settingUpdateRequest.getId())
+                .code(EnumUtils.getEnumFromValue(CodeSettingEnum.class, settingUpdateRequest.getCode()))
                 .imageType(settingUpdateRequest.getImageType())
                 .fileType(settingUpdateRequest.getFileType())
                 .fileSize(settingUpdateRequest.getFileSize()).build();

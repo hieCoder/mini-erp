@@ -13,7 +13,7 @@
         SET IMAGE_TYPE = #{imageType},
             FILE_TYPE = #{fileType},
             FILE_SIZE = #{fileSize}
-        WHERE ID = #{id}
+        WHERE CODE = 'USER'
     </update>
 
     <resultMap id="settingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Setting">
@@ -28,5 +28,11 @@
         SELECT *
         FROM SETTING
         WHERE ID = #{id}
+    </select>
+
+    <select id="findByCode" resultMap="settingResultMap">
+        SELECT *
+        FROM SETTING
+        WHERE CODE = #{code}
     </select>
 </mapper>

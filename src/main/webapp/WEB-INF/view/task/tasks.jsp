@@ -137,7 +137,9 @@
         page: 1,
         pageSize: $('#page-count-select').val(),
         statusTask: '',
-        search: ''
+        search: '',
+        userRole: userCurrent.role,
+        userId: userCurrent.id
     }
 
     var tableTask, tableStatus;
