@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="search">Search</label>
                     <div class="input-group">
-                        <input id="search" name="search" type="text" class="form-control" placeholder="Search">
+                        <input id="search" name="search" type="text" class="form-control" placeholder="Search By Username or User ID">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>

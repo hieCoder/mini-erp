@@ -462,7 +462,7 @@
                 if (xhr.status === 200) {
                     // Xử lý kết quả ở đây nếu cần
                     sessionStorage.setItem('result', 'updateSuccess');
-                    location.href = "/userDetail/" + ${user.getId()};
+                    location.href = "/users/" + ${user.getId()};
                 } else {
                     // Xử lý lỗi nếu có
                     var errorMessage = "Lỗi:\n";
