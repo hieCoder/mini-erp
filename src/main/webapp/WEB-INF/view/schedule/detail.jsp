@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>Schedule Detail</title>
+    <link rel="stylesheet" href="../../../assets/css/schedule/style.css">
 </head>
 <body>
 <div class="container text-center mt-5">
@@ -59,7 +60,7 @@
 %>
 <div class="container mt-4" style="overflow-x: auto; max-width: 100%;">
     <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
+        <thead class="thead-dark text-center">
         <tr id="taskTotalDate">
             <th>Task/Date</th>
             <%
@@ -76,7 +77,7 @@
         <tbody id="taskTotalElement">
         <c:forEach items="${requestScope.list}" var="s">
             <tr>
-                <th scope="col">${s.title}</th>
+                <th scope="col" class="bg-dark">${s.title}</th>
                 <c:set var="startDate" value="${s.startDate}"/>
                 <c:set var="dueOrCloseDate" value="${s.dueOrCloseDate}"/>
 
@@ -136,12 +137,10 @@
     function getScheduleByDate() {
         var choiceStartDate = localStorage.getItem("choiceStartDate") || "";
         var choiceEndDate = localStorage.getItem("choiceEndDate") || "";
-        console.log(choiceStartDate)
         var dateStart = new Date(choiceStartDate);
         dateStart = new Date(dateStart.getFullYear(), dateStart.getMonth(), dateStart.getDate());
         var dateEnd = new Date(choiceEndDate);
         dateEnd = new Date(dateEnd.getFullYear(), dateEnd.getMonth(), dateEnd.getDate());
-        console.log(dateStart)
         if (choiceStartDate === "") {
             dateStart = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), 1);
         }
@@ -158,47 +157,57 @@
                 if (xhr.status === 200) {
                     loading.style.display = "none";
                     var responseData = JSON.parse(xhr.responseText);
+                    console.log(responseData);
                     var taskTotalElement = document.getElementById("taskTotalElement");
                     taskTotalElement.innerHTML = "";
-                    responseData.forEach((task) => {
+                    if (dateStart > dateEnd || responseData.length === 0) {
                         let row = taskTotalElement.insertRow();
-                        let requestEndDate = dateEnd;
-                        let requestStartDate = dateStart;
-                        console.log(requestStartDate);
-                        let startDate = new Date(task.startDate);
-                        console.log(startDate);
-                        let dueOrCloseDate = new Date(task.dueOrCloseDate);
-                        let status = task.statusTask.name;
-                        let statusDuration = dueOrCloseDate - startDate;
+                        let statusDuration = dateEnd - dateStart;
                         let daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
-                        let color;
-                        if (status.toUpperCase() === 'OPENED') {
-                            color = 'bg-warning';
-                        } else if (status.toUpperCase() === 'REOPENED') {
-                            color = 'bg-primary';
-                        } else if (status.toUpperCase() === 'POSTPONED') {
-                            color = 'bg-danger';
-                        } else if (status.toUpperCase() === 'CLOSED') {
-                            color = 'bg-success';
-                        } else {
-                            color = 'bg-secondary';
-                        }
-                        row.innerHTML = '<th scope="col">' + task.title + '</th>';
-                        while (requestStartDate.getTime() <= requestEndDate.getTime()) {
-                            if (Math.abs(requestStartDate - startDate) < 1000) {
-                                row.innerHTML += '<a href="/tasks/"' + task.id + '>' + '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '">' + status + '</a></td>';
-                                requestStartDate = new Date(requestStartDate.getTime() + 86400000 * daysDiff);
+                        row.innerHTML = '<th scope="col"></th>' + '<td colspan="' + daysDiff + '" class="text-center font-weight-bold">NO RESULT IN THIS DURATION</td>';
+                    } else {
+                        responseData.forEach((task) => {
+                            let row = taskTotalElement.insertRow();
+                            let requestEndDate = dateEnd;
+                            let requestStartDate = dateStart;
+                            let startDate = new Date(task.startDate);
+                            let dueOrCloseDate = new Date(task.dueOrCloseDate);
+                            let status = task.statusTask.code;
+                            let statusDuration = dueOrCloseDate - startDate;
+                            let daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
+                            let color;
+                            if (status === 'OPENED') {
+                                color = 'bg-warning';
+                            } else if (status === 'REOPENED') {
+                                color = 'bg-primary';
+                            } else if (status === 'POSTPONED') {
+                                color = 'bg-danger';
+                            } else if (status === 'CLOSED') {
+                                color = 'bg-success';
                             } else {
-                                row.innerHTML += '<td style="width: auto"></td>';
-                                requestStartDate = new Date(requestStartDate.getTime() + 86400000);
+                                color = 'bg-secondary';
                             }
-                        }
-                    });
+                            row.innerHTML = '<th scope="col" class="bg-dark">' + task.title + '</th>';
+                            while (requestStartDate.getTime() <= requestEndDate.getTime()) {
+                                if (Math.abs(requestStartDate - startDate) < 1000) {
+                                    row.innerHTML += '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + task.id + '" class="btn font-weight-bold">' + status + '</a></td>';
+                                    requestStartDate = new Date(requestStartDate.getTime() + 86400000 * daysDiff);
+                                } else {
+                                    row.innerHTML += '<td style="width: auto"></td>';
+                                    requestStartDate = new Date(requestStartDate.getTime() + 86400000);
+                                }
+                            }
+                        });
+                    }
                     var taskTotalDate = document.getElementById("taskTotalDate");
-                    taskTotalDate.innerHTML = '<th>Task/Date</th>';
-                    while (dateStart.getTime() <= dateEnd.getTime()) {
-                        taskTotalDate.innerHTML += '<th>' + formatDate(dateStart) + '</th>';
-                        dateStart = new Date(dateStart.getTime() + 86400000);
+                    if (dateStart > dateEnd) {
+                        taskTotalDate.innerHTML = '<th>Task/Date</th>' + '<th>INVALID DATE</th>';
+                    } else {
+                        taskTotalDate.innerHTML = '<th>Task/Date</th>';
+                        while (dateStart.getTime() <= dateEnd.getTime()) {
+                            taskTotalDate.innerHTML += '<th>' + formatDate(dateStart) + '</th>';
+                            dateStart = new Date(dateStart.getTime() + 86400000);
+                        }
                     }
                 }
             }
