@@ -13,7 +13,7 @@
         SET IMAGE_TYPE = #{imageType},
             FILE_TYPE = #{fileType},
             FILE_SIZE = #{fileSize}
-        WHERE CODE = 'USER'
+        WHERE CODE = #{code}
     </update>
 
     <resultMap id="settingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Setting">

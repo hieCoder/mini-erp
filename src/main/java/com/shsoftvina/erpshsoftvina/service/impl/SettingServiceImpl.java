@@ -36,18 +36,22 @@ public class SettingServiceImpl implements SettingService {
     @Override
     public int updateSetting(SettingUpdateRequest[] settingUpdateRequests) {
 
-        for(SettingUpdateRequest settingUpdateRequest: settingUpdateRequests){
-            if(settingMapper.findByCode(settingUpdateRequest.getCode()) == null)
+        int updatedCount = 0;
+
+        for (SettingUpdateRequest settingUpdateRequest : settingUpdateRequests) {
+            if (settingMapper.findByCode(settingUpdateRequest.getCode()) == null)
                 throw new NotFoundException(MessageErrorUtils.notFound("code"));
 
             Setting setting = settingConverter.toEntity(settingUpdateRequest);
-            try{
-                settingMapper.updateSetting(setting);
-                Thread.sleep(1000);
-            }catch (Exception e){
-                return 0;
+            try {
+                int result = settingMapper.updateSetting(setting);
+                if (result > 0) {
+                    updatedCount++;
+                }
+            } catch (Exception e) {
             }
         }
-        return 1;
+
+        return updatedCount;
     }
 }
