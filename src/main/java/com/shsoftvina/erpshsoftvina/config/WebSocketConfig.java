@@ -14,14 +14,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // Cấu hình Message Broker (in-memory)
         config.enableSimpleBroker("/notification");
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Cấu hình Endpoint cho WebSocket
         registry.addEndpoint("/websocket").withSockJS();
     }
 }
