@@ -429,86 +429,6 @@
         }
     });
 
-    <%--// Lắng nghe sự kiện khi người dùng nhấn nút "Save User"--%>
-    <%--document.getElementById('updateUserButton').addEventListener('click', function () {--%>
-
-    <%--    // Lấy dữ liệu từ các trường trong form--%>
-    <%--    var id = this.value;--%>
-    <%--    var fullname = document.getElementById('fullname').value;--%>
-    <%--    var adderss = document.getElementById('address').value;--%>
-    <%--    var dobString = document.getElementById('dob').value;--%>
-    <%--    var jsDate = new Date(dobString);--%>
-    <%--    var dob = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date--%>
-    <%--    var phone = document.getElementById('phone').value;--%>
-    <%--    var emergencyPhone = document.getElementById('emergencyPhone').value;--%>
-    <%--    var fileAvatar = document.getElementById('avatar');--%>
-    <%--    var fileResume = document.getElementById('resume');--%>
-    <%--    var timeSheetsCode = document.getElementById('timeSheetsCode').value;--%>
-    <%--    var type = document.getElementById('type').value;--%>
-    <%--    var department = document.getElementById('department').value;--%>
-    <%--    var email = document.getElementById('userId').value;--%>
-    <%--    var atm = document.getElementById('atm').value;--%>
-    <%--    var password = document.getElementById('password').value;--%>
-    <%--    var role = document.getElementById('role').value;--%>
-    <%--    var position = document.getElementById('position').value;--%>
-
-    <%--    var user = new FormData();--%>
-    <%--    user.append('id', id);--%>
-    <%--    user.append('fullname', fullname);--%>
-    <%--    user.append('address', adderss);--%>
-    <%--    user.append('dateOfBirth', dob);--%>
-    <%--    user.append('phone', phone);--%>
-    <%--    user.append('emergencyPhone', emergencyPhone);--%>
-    <%--    user.append('timesheetsCode', timeSheetsCode);--%>
-    <%--    user.append('atm', atm);--%>
-    <%--    user.append('type', type);--%>
-    <%--    user.append('department', department);--%>
-    <%--    user.append('email', email);--%>
-    <%--    user.append('password', password);--%>
-    <%--    user.append('role', role);--%>
-    <%--    user.append('position', position);--%>
-
-    <%--    // Kiểm tra xem có tệp được chọn không--%>
-    <%--    if (fileAvatar.files.length > 0) {--%>
-    <%--        var fileAavar = fileAvatar.files[0];--%>
-    <%--        user.append('avatar', fileAavar);--%>
-
-    <%--    }--%>
-    <%--    if (fileResume.files.length > 0) {--%>
-    <%--        var fileResume = fileResume.files[0];--%>
-    <%--        user.append('resume', fileResume);--%>
-    <%--    }--%>
-
-    <%--    // Khởi tạo đối tượng XMLHttpRequest--%>
-    <%--    var xhr = new XMLHttpRequest();--%>
-    <%--    var url = '/api/v1/users/updation';--%>
-
-    <%--    // Thiết lập phương thức và URL cho yêu cầu--%>
-    <%--    xhr.open('POST', url, true);--%>
-
-    <%--    // Định nghĩa hàm xử lý kết quả trả về từ máy chủ--%>
-    <%--    xhr.onreadystatechange = function () {--%>
-    <%--        if (xhr.readyState === 4) {--%>
-    <%--            if (xhr.status === 200) {--%>
-    <%--                // Xử lý kết quả ở đây nếu cần--%>
-    <%--                sessionStorage.setItem('result', 'updateSuccess');--%>
-    <%--                location.href = "/users/" + ${user.getId()};--%>
-    <%--            } else {--%>
-    <%--                // Xử lý lỗi nếu có--%>
-    <%--                var errorMessage = "Lỗi:\n";--%>
-    <%--                errorMessage += "The file transfer is just under 100MB.\n";--%>
-    <%--                errorMessage += "Avatar: jpg, jpeg, png, svg.\n";--%>
-    <%--                errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";--%>
-    <%--                alert(errorMessage);--%>
-
-    <%--                console.log("Error File: " + xhr.status);--%>
-    <%--            }--%>
-    <%--        }--%>
-    <%--    };--%>
-    <%--    // Gửi yêu cầu với dữ liệu formData--%>
-    <%--    xhr.send(user);--%>
-    <%--});--%>
-
     // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete User"
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -534,22 +454,6 @@
                     sessionStorage.setItem('result', 'deleteSuccess');
                     window.location.href = "/users";
                 });
-
-                // var xhr = new XMLHttpRequest();
-                // xhr.open("DELETE", "/api/v1/users/" + userId, true);
-                // xhr.onreadystatechange = function () {
-                //     if (xhr.readyState === 4) {
-                //         if (xhr.status === 200) {
-                //             // Tải lại trang
-                //             sessionStorage.setItem('result', 'deleteSuccess');
-                //             window.location.href = "/users";
-                //         } else {
-                //             // Xử lý khi API gọi không thành công
-                //             console.log("Delete User is False: " + xhr.status);
-                //         }
-                //     }
-                // };
-                // xhr.send();
             }
         });
     });
@@ -602,31 +506,6 @@
             });
         });
 
-        // Sử dụng XMLHttpRequest để gọi API
-        <%--var xhr = new XMLHttpRequest();--%>
-        <%--xhr.open('GET', '/api/v1/timesheets/workingday/' + ${user.getId()}, true);--%>
-        <%--var data;--%>
-        <%--xhr.onload = function () {--%>
-        <%--    if (xhr.status === 200) {--%>
-        <%--        data = JSON.parse(xhr.responseText);--%>
-        <%--        // Xóa các option cũ trong dropdown year--%>
-        <%--        yearSelect.innerHTML = '<option value="">-- Select Year --</option>';--%>
-
-        <%--        // Thêm các option mới từ dữ liệu API--%>
-        <%--        data.forEach(function (entry) {--%>
-        <%--            var option = document.createElement('option');--%>
-        <%--            option.value = entry.year;--%>
-        <%--            option.textContent = entry.year;--%>
-        <%--            yearSelect.appendChild(option);--%>
-        <%--        });--%>
-        <%--    } else {--%>
-        <%--        console.error("Can't get year: " + xhr.status);--%>
-        <%--    }--%>
-        <%--};--%>
-        <%--xhr.send();--%>
-
-
-
         // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
         yearSelect.addEventListener('change', function () {
 
@@ -650,33 +529,6 @@
                     totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
                 });
             });
-
-            <%--xhr.open('GET', '/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, true);--%>
-            <%--xhr.onload = function () {--%>
-            <%--    if (xhr.status === 200) {--%>
-            <%--        var dataMonth = JSON.parse(xhr.responseText);--%>
-            <%--        // Xóa các option cũ trong dropdown year--%>
-            <%--        monthSelect.innerHTML = '<option value="">-- Select Month --</option>';--%>
-
-            <%--        // Thêm các option mới từ dữ liệu API--%>
-            <%--        dataMonth.forEach(function (entry) {--%>
-            <%--            var option = document.createElement('option');--%>
-            <%--            option.value = entry.month;--%>
-            <%--            option.textContent = entry.month;--%>
-            <%--            monthSelect.appendChild(option);--%>
-            <%--        });--%>
-            <%--        monthSelect.addEventListener('change', function () {--%>
-            <%--            var selectedMonth = monthSelect.value;--%>
-            <%--            var selectedData = dataMonth.find(function (entry) {--%>
-            <%--                return entry.month === parseInt(selectedMonth);--%>
-            <%--            });--%>
-            <%--            totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";--%>
-            <%--        });--%>
-            <%--    } else {--%>
-            <%--        console.error("Can't get month: " + xhr.status);--%>
-            <%--    }--%>
-            <%--};--%>
-            <%--xhr.send();--%>
 
             if (yearSelect.value != "") {
                 var selectedYear = yearSelect.value;
@@ -726,62 +578,6 @@
         }
     });
 
-    // // Lắng nghe sự kiện click trên nút "Confirm Add Contract"
-    // document.getElementById('addContractButton').addEventListener('click', function () {
-    //
-    //     // Lấy dữ liệu từ các trường trong form
-    //     var userId = this.value;
-    //     var basicSalary = document.getElementById('addBasicSalary').value;
-    //     var allowance = document.getElementById('addAllowance').value;
-    //     var insuranceType = document.getElementById('addInsuranceType').value;
-    //     var insuranceMoney = document.getElementById('addInsuranceMoney').value;
-    //     var fileInputContract = document.getElementById('newContract');
-    //
-    //
-    //     var contract = new FormData();
-    //     contract.append('basicSalary', basicSalary);
-    //     contract.append('allowance', allowance);
-    //     contract.append('insuranceType', insuranceType);
-    //     contract.append('insuranceMoney', insuranceMoney);
-    //     contract.append('userId', userId);
-    //
-    //     // Kiểm tra xem có tệp được chọn không
-    //     if (fileInputContract.files.length > 0) {
-    //         var file = fileInputContract.files[0];
-    //         contract.append('contract', file);
-    //     }
-    //
-    //     // Khởi tạo đối tượng XMLHttpRequest
-    //     var xhr = new XMLHttpRequest();
-    //     var url = '/api/v1/contracts';
-    //
-    //     // Thiết lập phương thức và URL cho yêu cầu
-    //     xhr.open('POST', url, true);
-    //
-    //     // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4) {
-    //             if (xhr.status === 200) {
-    //                 // Xử lý kết quả ở đây nếu cần
-    //                 sessionStorage.setItem('result', 'addContractSuccess');
-    //                 localStorage.setItem("showModal", "true");
-    //                 location.reload();
-    //             } else {
-    //                 // Xử lý lỗi nếu có
-    //                 var errorMessage = "Error:\n";
-    //                 errorMessage += "The file transfer is just under 100MB.\n";
-    //                 errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
-    //                 errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
-    //                 alert(errorMessage);
-    //
-    //                 console.log('Add Contract is False' + xhr.status);
-    //             }
-    //         }
-    //     };
-    //
-    //     // Gửi yêu cầu với dữ liệu formData
-    //     xhr.send(contract);
-    // });
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Edit Contract"
     document.addEventListener("DOMContentLoaded", function () {
@@ -817,40 +613,6 @@
                         document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;
                         document.getElementById("contractFile").setAttribute("href", responseData.contract);
                     });
-
-                    // var xhr = new XMLHttpRequest();
-                    // xhr.open("GET", "/api/v1/contracts/" + contractIdEdit, true);
-                    // xhr.onreadystatechange = function () {
-                    //     if (xhr.readyState === 4) {
-                    //         if (xhr.status === 200) {
-                    //             // Xử lý khi API gọi thành công
-                    //             var responseData = JSON.parse(xhr.responseText);// Dữ liệu JSON trả về từ API
-                    //
-                    //             // Đổ dữ liệu từ API vào các trường của modal
-                    //             document.getElementById("editBasicSalary").value = responseData.basicSalary;
-                    //             document.getElementById("editAllowance").value = responseData.allowance;
-                    //
-                    //             var selectElement = document.getElementById("editInsuranceType");
-                    //             var editInsuranceType = responseData.insuranceType.name;
-                    //             for (var i = 0; i < selectElement.options.length; i++) {
-                    //                 if (selectElement.options[i].text === editInsuranceType) {
-                    //                     // Option đã tồn tại, di chuyển option đó lên đầu
-                    //                     selectElement.insertBefore(selectElement.options[i], selectElement.options[0]);
-                    //                     break;
-                    //                 }
-                    //             }
-                    //             selectElement.selectedIndex = 0;
-                    //
-                    //             document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;
-                    //             document.getElementById("contractFile").setAttribute("href", responseData.contract);
-                    //
-                    //         } else {
-                    //             // Xử lý khi API gọi không thành công
-                    //             console.log("Get Detail Contract is False: " + xhr.status);
-                    //         }
-                    //     }
-                    // };
-                    // xhr.send();
                 }
             });
         });
@@ -885,62 +647,6 @@
                 });
             }
         });
-
-        // confirmButton.addEventListener('click', function () {
-        //
-        //
-        //     // // Lấy dữ liệu từ các trường trong form
-        //     // var basicSalary = document.getElementById('editBasicSalary').value;
-        //     // var allowance = document.getElementById('editAllowance').value;
-        //     // var insuranceType = document.getElementById('editInsuranceType').value;
-        //     // var insuranceMoney = document.getElementById('editInsuranceMoney').value;
-        //     // var fileContract = document.getElementById('contractUser');
-        //     //
-        //     // var contract = new FormData();
-        //     // contract.append('id', contractIdValue);
-        //     // contract.append('basicSalary', basicSalary);
-        //     // contract.append('allowance', allowance);
-        //     // contract.append('insuranceType', insuranceType);
-        //     // contract.append('insuranceMoney', insuranceMoney);
-        //     //
-        //     // // Kiểm tra xem có tệp được chọn không
-        //     // if (fileContract.files.length > 0) {
-        //     //     var contractFileName = fileContract.files[0];
-        //     //     contract.append('contract', contractFileName);
-        //     // }
-        //     //
-        //     // // Khởi tạo đối tượng XMLHttpRequest
-        //     // var xhr = new XMLHttpRequest();
-        //     // var url = '/api/v1/contracts/updation';
-        //     //
-        //     // // Thiết lập phương thức và URL cho yêu cầu
-        //     // xhr.open('POST', url, true);
-        //     //
-        //     // // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
-        //     // xhr.onreadystatechange = function () {
-        //     //     if (xhr.readyState === 4) {
-        //     //         if (xhr.status === 200) {
-        //     //             // Xử lý kết quả ở đây nếu cần
-        //     //             sessionStorage.setItem('result', 'editContractSuccess');
-        //     //             localStorage.setItem("showModal", "true");
-        //     //             location.reload();
-        //     //         } else {
-        //     //             // Xử lý lỗi nếu có
-        //     //             // Xử lý lỗi nếu có
-        //     //             var errorMessage = "Error:\n";
-        //     //             errorMessage += "The file transfer is just under 100MB.\n";
-        //     //             errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
-        //     //             errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
-        //     //             alert(errorMessage);
-        //     //             console.log('Edit Contract is False: ' + xhr.status);
-        //     //         }
-        //     //     }
-        //     // };
-        //     //
-        //     // // Gửi yêu cầu với dữ liệu formData
-        //     // xhr.send(contract);
-        // });
-
     });
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete Contract"
@@ -969,23 +675,6 @@
                     localStorage.setItem("showModal", "true");
                     location.reload();
                 });
-
-                // var xhr = new XMLHttpRequest();
-                // xhr.open("DELETE", "/api/v1/contracts/" + contractIdToDelete, true);
-                // xhr.onreadystatechange = function () {
-                //     if (xhr.readyState === 4) {
-                //         if (xhr.status === 200) {
-                //             // Tải lại trang
-                //             sessionStorage.setItem('result', 'deleteContractSuccess');
-                //             localStorage.setItem("showModal", "true");
-                //             location.reload();
-                //         } else {
-                //             // Xử lý khi API gọi không thành công
-                //             console.log("Delete False: " + xhr.status);
-                //         }
-                //     }
-                // };
-                // xhr.send();
             }
         });
     });
@@ -1014,7 +703,7 @@
         for (var i = 0; i < fieldsToHide.length; i++) {
             var div = fieldsToHide[i];
             if (div) {
-                if (roleUser === "Developer") {
+                if (roleUser === U_DEVELOPER) {
                     div.style.display = "none";
                 } else {
                     div.style.display = "block";
@@ -1026,7 +715,7 @@
         buttonsToHide.forEach(function (buttonName) {
             var button = document.getElementById(buttonName);
             if (button) {
-                if (roleUser === "Developer") {
+                if (roleUser === U_DEVELOPER) {
                     button.style.display = "none";
                 } else {
                     button.style.display = "inline-block";
@@ -1034,8 +723,6 @@
             }
         });
     });
-
 </script>
 </body>
 </html>
-

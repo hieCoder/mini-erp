@@ -298,39 +298,6 @@
                                 var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
                                 contentContainer.innerHTML = content.replace("#", '<a href="/tasks/' + selectedTaskId + '">#' + selectedTitle + '</a>' + " ");
 
-                                var detailButtons = document.querySelectorAll(".weeklyReportDetail-button");
-
-                                // Show modal Edit Contract
-                                detailButtons.forEach(function (button) {
-                                    button.addEventListener("click", function (event) {
-                                        $("#WeeklyReportDetailModal").modal("show");
-
-                                        var id = button.getAttribute("href");
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open("GET", "/api/v1/weekly-reports/" + id, true);
-                                        xhr.onload = function () {
-                                            if (xhr.status === 200) {
-                                                var responseData = JSON.parse(xhr.responseText);
-                                                var content = responseData.content;
-                                                var modifiedContent = replaceHashtagsWithLinks(content, selectedTaskId);
-
-                                                // Assign response Data weekly report to fields
-                                                document.getElementById("titleWeeklyReport").value = responseData.title;
-                                                document.getElementById("contentWeeklyReport").innerHTML = modifiedContent;
-                                                document.getElementById("fullnameUser").value = responseData.fullnameUser;
-                                                document.getElementById("createDate").value = responseData.createdDate;
-                                            }
-                                        };
-                                        xhr.send();
-                                        event.preventDefault();
-                                    });
-                                });
-
-                                // assign tag a to "#**"
-                                function replaceHashtagsWithLinks(text, selectedTaskId) {
-                                    return text.replace(/#([a-zA-Z0-9]+)/g, '<a href="/tasks/' + selectedTaskId + '">#$1</a>');
-                                }
-
                                 mentionDropdown.style.display = "none";
                             });
                             mentionDropdown.appendChild(mentionItem);
@@ -377,41 +344,41 @@
         xhr.send(JSON.stringify(data));
     });
 
-    // // Handle when user click on link Title
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var addButtons = document.querySelectorAll(".weeklyReportDetail-button");
-    //
-    //     // Show modal Edit Contract
-    //     addButtons.forEach(function (button) {
-    //         button.addEventListener("click", function (event) {
-    //             $("#WeeklyReportDetailModal").modal("show");
-    //
-    //             var id = button.getAttribute("href");
-    //             var xhr = new XMLHttpRequest();
-    //             xhr.open("GET", "/api/v1/weekly-reports/" + id, true);
-    //             xhr.onload = function () {
-    //                 if (xhr.status === 200) {
-    //                     var responseData = JSON.parse(xhr.responseText);
-    //                     var content = responseData.content;
-    //                     var modifiedContent = replaceHashtagsWithLinks(content);
-    //
-    //                     // Assign response Data weekly report to fields
-    //                     document.getElementById("titleWeeklyReport").value = responseData.title;
-    //                     document.getElementById("contentWeeklyReport").innerHTML = modifiedContent;
-    //                     document.getElementById("fullnameUser").value = responseData.fullnameUser;
-    //                     document.getElementById("createDate").value = responseData.createdDate;
-    //                 }
-    //             };
-    //             xhr.send();
-    //             event.preventDefault();
-    //         });
-    //     });
-    //
-    //     // assign tag a to "#**"
-    //     function replaceHashtagsWithLinks(text) {
-    //         return text.replace(/#([a-zA-Z0-9]+)/g, '<a href="/hashtag/$1">#$1</a>');
-    //     }
-    // });
+    // Handle when user click on link Title
+    document.addEventListener("DOMContentLoaded", function () {
+        var addButtons = document.querySelectorAll(".weeklyReportDetail-button");
+
+        // Show modal Edit Contract
+        addButtons.forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                $("#WeeklyReportDetailModal").modal("show");
+
+                var id = button.getAttribute("href");
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/api/v1/weekly-reports/" + id, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var responseData = JSON.parse(xhr.responseText);
+                        var content = responseData.content;
+                        var modifiedContent = replaceHashtagsWithLinks(content);
+
+                        // Assign response Data weekly report to fields
+                        document.getElementById("titleWeeklyReport").value = responseData.title;
+                        document.getElementById("contentWeeklyReport").innerHTML = modifiedContent;
+                        document.getElementById("fullnameUser").value = responseData.fullnameUser;
+                        document.getElementById("createDate").value = responseData.createdDate;
+                    }
+                };
+                xhr.send();
+                event.preventDefault();
+            });
+        });
+
+        // assign tag a to "#**"
+        function replaceHashtagsWithLinks(text) {
+            return text.replace(/#([a-zA-Z0-9]+)/g, '<a href="/tasks/taskId">#$1</a>');
+        }
+    });
 
     // Notification Add weekly Report Success
     document.addEventListener('DOMContentLoaded', function () {
