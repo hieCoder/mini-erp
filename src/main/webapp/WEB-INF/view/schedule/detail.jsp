@@ -85,24 +85,25 @@
 
                     var startDate = new Date("${startDate}");
                     var dueOrCloseDate = new Date("${dueOrCloseDate}");
-                    var status = "${s.statusTask.name}";
+                    var status = "${s.statusTask.code}";
+                    var id = "${s.id}";
                     var statusDuration = dueOrCloseDate - startDate;
                     var daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
                     var color;
-                    if (status.toUpperCase() === 'OPENED') {
+                    if (status === 'OPENED') {
                         color = 'bg-warning';
-                    } else if (status.toUpperCase() === 'REOPENED') {
+                    } else if (status === 'REOPENED') {
                         color = 'bg-primary';
-                    } else if (status.toUpperCase() === 'POSTPONED') {
+                    } else if (status === 'POSTPONED') {
                         color = 'bg-danger';
-                    } else if (status.toUpperCase() === 'CLOSED') {
+                    } else if (status === 'CLOSED') {
                         color = 'bg-success';
                     } else {
                         color = 'bg-secondary';
                     }
                     while (selectedStartDate.getTime() < selectedEndDate.getTime()) {
                         if (selectedStartDate.getTime() === startDate.getTime()) {
-                            document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '">' + status + '</td>');
+                            document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + id + '" class="btn font-weight-bold">' + status + '</a></td>');
                             selectedStartDate = new Date(selectedStartDate.getTime() + 86400000 * daysDiff);
                         } else {
                             document.write('<td style="width: auto"></td>');
@@ -184,7 +185,7 @@
                         row.innerHTML = '<th scope="col">' + task.title + '</th>';
                         while (requestStartDate.getTime() <= requestEndDate.getTime()) {
                             if (Math.abs(requestStartDate - startDate) < 1000) {
-                                row.innerHTML += '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '">' + status + '</td>';
+                                row.innerHTML += '<a href="/tasks/"' + task.id + '>' + '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '">' + status + '</a></td>';
                                 requestStartDate = new Date(requestStartDate.getTime() + 86400000 * daysDiff);
                             } else {
                                 row.innerHTML += '<td style="width: auto"></td>';
