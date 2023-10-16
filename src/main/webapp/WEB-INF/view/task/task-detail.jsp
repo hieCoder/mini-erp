@@ -273,10 +273,14 @@
                 formData.append('content', $('#yourCommentContent').summernote().summernote('code'));
                 formData.append('userId', userCurrent.id);
 
+                $('#yourCommentSubmitComment').after(createLoadingHtml());
+
                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
                     var liE = createCommentForm(rs);
                     liE.prependTo('#comment-list');
                     $('#yourCommentForm').find('*').prop('disabled', false);
+
+                    $('div.custom-spinner').parent().remove();
                 });
             }
         });
