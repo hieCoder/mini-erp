@@ -176,10 +176,10 @@ public class UserServiceImpl implements UserService {
 
             try{
                 if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
-                    if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
+                    if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
                     userMapper.updateUserProfile(userUpdate);
                 } else{
-                    if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
+                    if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
                     userMapper.updateUserDetail(userUpdate);
                 }
 

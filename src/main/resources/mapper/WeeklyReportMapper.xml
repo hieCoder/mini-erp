@@ -13,8 +13,8 @@
         FROM WEEKLY_REPORT w
                  INNER JOIN USER u ON w.user_id = u.id
         WHERE
-            ((#{userRole} = 'Owner' AND (w.title = #{title} OR SUBSTRING_INDEX(u.fullname, #{searchTerm}, -1) LIKE CONCAT('%', #{searchTerm}, '%')))
-                OR (#{userRole} != 'Owner' AND w.title = #{title}))
+            (#{userRole} = 'OWNER' AND (w.title LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%'))
+                OR (#{userRole} != 'OWNER' AND w.USER_ID = u.ID AND w.title LIKE '%' #{searchTerm} '%')
     </select>
 
     <select id="getTotalWeeklyReport" resultType="java.lang.Long">
@@ -22,8 +22,8 @@
         FROM WEEKLY_REPORT w
                  INNER JOIN USER u ON w.user_id = u.id
         WHERE
-            ((#{userRole} = 'Owner' AND (w.title = #{title} OR SUBSTRING_INDEX(u.fullname, #{searchTerm}, -1) LIKE CONCAT('%', #{searchTerm}, '%')))
-                OR (#{userRole} != 'Owner' AND w.title = #{title}))
+            (#{userRole} = 'Owner' AND (w.title LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%'))
+                OR (#{userRole} != 'Owner' AND w.title LIKE '%' #{searchTerm} '%')
     </select>
 
     <select id="getAllWeeklyReportByUserId" resultMap="weeklyReportResultMap">

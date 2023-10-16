@@ -187,10 +187,10 @@
     </div>
 </form>
 
-<!-- Modal Contract History -->
+<!-- Modal List Contract  -->
 <div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Contract history</h4>
@@ -240,58 +240,10 @@
     </div>
 </div>
 
-<!-- Modal Contract Edit -->
-<div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">Edit Contract</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editContractForm">
-                    <div class="form-group">
-                        <label for="editBasicSalary">Basic Salary:</label>
-                        <input type="text" class="form-control" id="editBasicSalary" name="editBasicSalary">
-                    </div>
-                    <div class="form-group">
-                        <label for="editAllowance">Allowance:</label>
-                        <input type="text" class="form-control" id="editAllowance" name="editAllowance">
-                    </div>
-                    <div class="form-group">
-                        <label for="editInsuranceType">Insurance Type:</label>
-                        <select class="form-control" id="editInsuranceType" name="editInsuranceType">
-                            <option value="HEALTH_INSURANCE">Health insurance</option>
-                            <option value="SOCIAL_INSURANCE">Social insurance</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editInsuranceMoney">Insurance Money:</label>
-                        <input type="text" class="form-control" id="editInsuranceMoney" name="editInsuranceMoney">
-                    </div>
-                    <div class="form-group">
-                        <label for="contractUser">Contract Files: </label>
-                        <a href="" download target="_blank" id="contractFile">Download Contract</a>
-                        <input type="file" class="form-control mt-2" id="contractUser">
-                        <small class="text-muted ml-2">Choose New Contract</small>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmContractButton">Confirm</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal ADD Contract  -->
 <div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Add Contract</h4>
@@ -336,6 +288,54 @@
     </div>
 </div>
 
+<!-- Modal Contract Edit -->
+<div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Edit Contract</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editContractForm">
+                    <div class="form-group">
+                        <label for="editBasicSalary">Basic Salary:</label>
+                        <input type="text" class="form-control" id="editBasicSalary" name="editBasicSalary">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAllowance">Allowance:</label>
+                        <input type="text" class="form-control" id="editAllowance" name="editAllowance">
+                    </div>
+                    <div class="form-group">
+                        <label for="editInsuranceType">Insurance Type:</label>
+                        <select class="form-control" id="editInsuranceType" name="editInsuranceType">
+                            <option value="HEALTH_INSURANCE">Health insurance</option>
+                            <option value="SOCIAL_INSURANCE">Social insurance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editInsuranceMoney">Insurance Money:</label>
+                        <input type="text" class="form-control" id="editInsuranceMoney" name="editInsuranceMoney">
+                    </div>
+                    <div class="form-group">
+                        <label for="contractUser">Contract Files: </label>
+                        <a href="" download target="_blank" id="contractFile">Download Contract</a>
+                        <input type="file" class="form-control mt-2" id="contractUser">
+                        <small class="text-muted ml-2">Choose New Contract</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmContractButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Delete Contract-->
 <div class="modal fade" id="deleteContractModal" tabindex="-1" role="dialog" aria-labelledby="deleteContractModalLabel"
      aria-hidden="true" style="z-index: 999999; margin-top: 235px">
@@ -355,7 +355,7 @@
 <!-- Modal Delete User -->
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 Are you sure to delete this user?
@@ -462,7 +462,7 @@
                 if (xhr.status === 200) {
                     // Xử lý kết quả ở đây nếu cần
                     sessionStorage.setItem('result', 'updateSuccess');
-                    location.href = "/userDetail/" + ${user.getId()};
+                    location.href = "/users/" + ${user.getId()};
                 } else {
                     // Xử lý lỗi nếu có
                     var errorMessage = "Lỗi:\n";
