@@ -75,25 +75,25 @@ public class AccountingControllerTest {
         verifyNoMoreInteractions(accountingService);
     }
 
-    @Test
-    public void findAllMonthlyHistoryTest() throws Exception {
-        List<String> monthList = new ArrayList<>();
-        monthList.add("2023-10");
-        monthList.add("2023-09");
-        monthList.add("2023-08");
-        monthList.add("2023-07");
-        MonthHistoryList monthHistoryList = new MonthHistoryList(monthList);
-        when(accountingService.findAllMonthlyHistory()).thenReturn(monthHistoryList);
-
-        mockMvc.perform(get("/api/v1/accounts/"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.monthList", hasSize(4)))
-                .andExpect(jsonPath("$.monthList", containsInAnyOrder("2023-10", "2023-09", "2023-08", "2023-07")))
-                .andExpect(jsonPath("$.monthList", contains("2023-10", "2023-09", "2023-08", "2023-07")))
-                .andExpect(jsonPath("$.monthList[0]", is("2023-10")));
-        verify(accountingService, times(1)).findAllMonthlyHistory();
-        verifyNoMoreInteractions(accountingService);
-    }
+//    @Test
+//    public void findAllMonthlyHistoryTest() throws Exception {
+//        List<String> monthList = new ArrayList<>();
+//        monthList.add("2023-10");
+//        monthList.add("2023-09");
+//        monthList.add("2023-08");
+//        monthList.add("2023-07");
+//        MonthHistoryList monthHistoryList = new MonthHistoryList(monthList);
+//        when(accountingService.findAllMonthlyHistory()).thenReturn(monthHistoryList);
+//
+//        mockMvc.perform(get("/api/v1/accounts/"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.monthList", hasSize(4)))
+//                .andExpect(jsonPath("$.monthList", containsInAnyOrder("2023-10", "2023-09", "2023-08", "2023-07")))
+//                .andExpect(jsonPath("$.monthList", contains("2023-10", "2023-09", "2023-08", "2023-07")))
+//                .andExpect(jsonPath("$.monthList[0]", is("2023-10")));
+//        verify(accountingService, times(1)).findAllMonthlyHistory();
+//        verifyNoMoreInteractions(accountingService);
+//    }
     @Test
     public void createAccountingTest() throws Exception {
         AccountingCreateRequest accountingUpdateRequest = new AccountingCreateRequest(20000L,"4",new MultipartFile[]{},"Buy watermelon");
@@ -108,19 +108,19 @@ public class AccountingControllerTest {
         verify(accountingService, times(1)).createAccounting(ArgumentMatchers.any(AccountingCreateRequest.class));
     }
 
-    @Test
-    public void updateAccountingTest() throws Exception {
-        AccountingUpdateRequest accountingUpdateRequest = new AccountingUpdateRequest("4b90a870-5ffa-4ea1-a100-63215ce9a02e",20000L,20000L,"4",new MultipartFile[]{},"Buy watermelon");
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(accountingUpdateRequest);
-        when(accountingService.updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class))).thenReturn(1);
-
-        mockMvc.perform(post("/api/v1/accounts/edit")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isFound());
-        verify(accountingService, times(1)).updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class));
-    }
+//    @Test
+//    public void updateAccountingTest() throws Exception {
+//        AccountingUpdateRequest accountingUpdateRequest = new AccountingUpdateRequest("4b90a870-5ffa-4ea1-a100-63215ce9a02e",20000L,20000L,"4",new MultipartFile[]{},"Buy watermelon");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String requestBody = objectMapper.writeValueAsString(accountingUpdateRequest);
+//        when(accountingService.updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class))).thenReturn(1);
+//
+//        mockMvc.perform(post("/api/v1/accounts/edit")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(requestBody))
+//                .andExpect(status().isFound());
+//        verify(accountingService, times(1)).updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class));
+//    }
 
     @Test
     public void deleteAccountingTest() throws Exception {

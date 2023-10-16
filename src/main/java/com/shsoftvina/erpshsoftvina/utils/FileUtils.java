@@ -55,9 +55,9 @@ public class FileUtils {
 
     public static List<String> saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
 
-        if(files == null) return null;
-
         List<String> listFileName = new ArrayList<>();
+
+        if(files == null) return listFileName;
 
         boolean isSuccess = true;
 

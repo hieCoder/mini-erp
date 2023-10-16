@@ -37,8 +37,8 @@ public class NotificationImpl implements NotificationService {
     private HttpServletRequest request;
 
     @Override
-    public List<NotificationShowResponse> getAllNoti(int start, int pageSize) {
-        List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize);
+    public List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search) {
+        List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize, search);
         return notificationConverter.toListShowResponse(notificationList);
     }
 
@@ -66,6 +66,7 @@ public class NotificationImpl implements NotificationService {
         if(listFileNameSaveFileSuccess != null){
             Notification notification = notificationConverter.toEntity(createNotificationRequest, listFileNameSaveFileSuccess);
             try{
+                System.out.println(notification);
                 notificationMapper.createNoti(notification);
                 return 1;
             } catch (Exception e){
@@ -87,7 +88,6 @@ public class NotificationImpl implements NotificationService {
         List<String> listFileNameSaveFileSuccess = null;
 
         Notification notification = notificationMapper.findById(id);
-
         if (files!= null){
             if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
                 throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
@@ -142,7 +142,7 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
-    public int countAll(){
-        return notificationMapper.countAll();
+    public int countAll(String search){
+        return notificationMapper.countAll(search);
     };
 }

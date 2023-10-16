@@ -13,35 +13,44 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link  text-light" href="#">Trang Chủ</a>
+                    <a class="nav-link  text-light" href="/tasks">Task</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  text-light" href="#">Danh Mục</a>
+                    <a class="nav-link  text-light" href="/schedules">Schedule</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  text-light" href="/notifications">Notification</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  text-light" href="/schedules">Well-being</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Menu
+                        Management
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Mục 1</a>
-                        <a class="dropdown-item" href="#">Mục 2</a>
+                        <a class="dropdown-item" href="/users">Human Resource</a>
+                        <a class="dropdown-item" href="/accounting">Accounting</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Mục 3</a>
+                        <a class="dropdown-item" href="/timesheets">Timesheets</a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  text-light" href="/settings">Setting</a>
                 </li>
             </ul>
         </div>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="avatar.jpg" alt="Avatar" width="30" height="30">
+                    <img src="<%=Principal.getUserCurrent().getAvatar()%>" alt="Avatar" width="50" height="50">
                     <%=Principal.getUserCurrent().getUsername()%>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="#">Thông Tin</a>
-                    <a class="dropdown-item" href="#">Cài Đặt</a>
+                    <a class="dropdown-item" href="/users">Profile</a>
+                    <a class="dropdown-item" href="/settings">Setting</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Đăng Xuất</a>
+                    <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </li>
         </ul>
