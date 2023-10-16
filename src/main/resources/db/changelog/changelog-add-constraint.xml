@@ -105,4 +105,13 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_MANAGEMENT_TIME_DAY_USER"/>
     </changeSet>
+
+    <changeSet id="13" author="team2">
+        <addForeignKeyConstraint baseTableName="NOTIFICATION"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_NOTIFICATION_USER"/>
+    </changeSet>
+
 </databaseChangeLog>
