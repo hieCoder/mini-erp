@@ -114,10 +114,10 @@
         <result property="insuranceMoney" column="insurance_money"/>
     </resultMap>
 
-    <select id="getAllFullname" resultType="java.lang.String">
+    <select id="getAllFullname" resultType="com.shsoftvina.erpshsoftvina.entity.User">
     <![CDATA[
-        SELECT fullname
-        FROM user;
+        SELECT id, fullname
+        FROM USER;
         ]]>
     </select>
 </mapper>

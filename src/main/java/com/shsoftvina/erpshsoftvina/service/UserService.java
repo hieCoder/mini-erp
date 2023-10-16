@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -20,5 +21,6 @@ public interface UserService {
     Boolean activeUserRegisterRequest(UserActiveRequest user);
     UserDetailResponse findByEmail(String email);
     int updateUserDetail(UserUpdateRequest userUpdateRequest);
-    List<String> getAllFullname();
+    List<Map<String, Object>> getAllFullname();
+
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -24,5 +25,5 @@ public interface UserMapper {
     int changeStatusUser(@Param("id") String id,@Param("status") String status);
     void activeUserRegister(User user);
     int deleteUser(String id);
-    List<String> getAllFullname();
+    List<Map<String, Object>> getAllFullname();
 }

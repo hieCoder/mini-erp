@@ -6,10 +6,8 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.task.PriorityTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
-import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
-import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
@@ -17,10 +15,8 @@ import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
-import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.TaskService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +81,7 @@ public class TaskServiceImpl implements TaskService {
 
         if(taskUpdateRequest.getProgress() != task.getProgress() &&
                 (task.getStatusTask().equals(StatusTaskEnum.REGISTERED) ||
-                        task.getStatusTask().equals(StatusTaskEnum.POSTPONSED))
+                        task.getStatusTask().equals(StatusTaskEnum.POSTPONED))
         ) throw new NotAllowException(MessageErrorUtils.notAllow("Progress"));
 
 //        if(!DateUtils.formatDate(taskUpdateRequest.getDueDate()).equals(

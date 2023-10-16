@@ -117,6 +117,15 @@ public class FileUtils {
         return null;
     }
 
+    public static String convertMultipartFileArrayToString(List<String> listFileNameSaveFileSuccess) {
+        if (!listFileNameSaveFileSuccess.isEmpty()) {
+            return listFileNameSaveFileSuccess.stream()
+                    .filter(file -> file != null && !file.isEmpty())
+                    .collect(Collectors.joining(","));
+        }
+        return null;
+    }
+
     public static String getPathUpload(Class<?> c, String fileName) {
         if(fileName != null){
             if (c == User.class) {

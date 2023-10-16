@@ -37,6 +37,7 @@ footer {
 
 a,ul:hover{
     cursor: pointer;
+    text-decoration: none;
 }
 
 li.disabled:hover {
@@ -44,7 +45,7 @@ li.disabled:hover {
 }
 
 h1,h3 {
-    background-color: #333 !important;
+    background-color: #333;
     color: #fff !important;
     padding: 15px !important;
     margin: 0 !important;
@@ -79,7 +80,7 @@ tr:hover {
 }
 
 td:nth-child(3) {
-    width: 40% !important;
+    width: 40%;
 }
 
 .button {
@@ -246,5 +247,60 @@ td:nth-child(3) {
     padding-top: 20%;
     font-size: 24px;
     z-index: 9999;
+}
+.front-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 320px;
+    background: mediumturquoise;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.front-card::before,
+.front-card::after {
+    position: absolute;
+    content: "";
+    width: 20%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: lightblue;
+    transition: all 0.5s;
+}
+
+.front-card::before {
+    top: 0;
+    right: 0;
+    border-radius: 0 15px 0 100%;
+}
+
+.front-card::after {
+    bottom: 0;
+    left: 0;
+    border-radius: 0 100%  0 15px;
+}
+
+.front-card:hover::before,
+.front-card:hover:after {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    transition: all 0.4s;
+}
+
+.front-card:hover:after {
+    content: "SH SOFT VINA";
 }
 

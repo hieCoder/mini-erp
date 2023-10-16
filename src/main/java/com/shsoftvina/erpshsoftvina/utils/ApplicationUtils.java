@@ -37,9 +37,9 @@ public class ApplicationUtils {
             case OPENED:
             case REOPENED:
                 if(action.equals(ActionChangeStatusTaskEnum.CLOSE.toString())) nextStatusTask = StatusTaskEnum.CLOSED;
-                else if (action.equals(ActionChangeStatusTaskEnum.POSTPONE.toString())) nextStatusTask = StatusTaskEnum.POSTPONSED;
+                else if (action.equals(ActionChangeStatusTaskEnum.POSTPONE.toString())) nextStatusTask = StatusTaskEnum.POSTPONED;
                 break;
-            case POSTPONSED:
+            case POSTPONED:
             case CLOSED:
                 if(action.equals(ActionChangeStatusTaskEnum.REOPEN.toString())) nextStatusTask = StatusTaskEnum.REOPENED;
                 break;

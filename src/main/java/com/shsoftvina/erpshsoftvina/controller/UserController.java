@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     @GetMapping("/home")
-    public String hello() {
-        System.out.println("01");
-        return "auth/index";
+    public String getFrontPage() {
+        return "common/frontpage";
     }
 
     @GetMapping("/testUpdateProfile")

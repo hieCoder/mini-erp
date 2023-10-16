@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -183,7 +184,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getAllFullname() {
+    public List<Map<String, Object>> getAllFullname() {
         return userMapper.getAllFullname();
     }
 
