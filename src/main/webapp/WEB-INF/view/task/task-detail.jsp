@@ -8,7 +8,7 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8">
-                <h2 class="text-center">Task detail</h2>
+                <h1 class="text-center">Task detail</h1>
                 <c:if test="${param.updateSuccess != null}">
                     <div class="alert alert-success">
                         Update success!
@@ -78,7 +78,7 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                <h2 class="text-center">Your comment</h2>
+                <h1 class="text-center">Your comment</h1>
                 <form id="yourCommentForm">
                     <div class="form-group">
                         <label for="yourCommentTitle">Title:</label>
@@ -102,7 +102,7 @@
 
         <div class="row">
             <div class="col-md-8">
-                <h2 class="text-center">List of comment</h2>
+                <h1 class="text-center">List of comment</h1>
                 <ul id="comment-list" class="list-group">
 <%--                    <li class="list-group-item">--%>
 <%--                        <div class="row">--%>
