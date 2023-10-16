@@ -34,12 +34,12 @@ public class WeeklyReportImpl implements WeeklyReportService {
     UserMapper userMapper;
 
     @Override
-    public PageWeeklyReportListRespone getAllWeeklyReport(String searchTerm, String userRole, int start, int pageSize) {
+    public PageWeeklyReportListRespone getAllWeeklyReport(String searchTerm, String userRole, String userId, int start, int pageSize) {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
-        List<WeeklyReport> listWeeklyReport = weeklyReportMapper.getAllWeeklyReport(searchTerm, userRole, rowBounds);
+        List<WeeklyReport> listWeeklyReport = weeklyReportMapper.getAllWeeklyReport(searchTerm, userRole, userId, rowBounds);
         List<WeeklyReportShowResponse> showWeeklyReport = weeklyReportConverter.toListShowWeeklyReportResponse(listWeeklyReport);
-        long totalRecordCount = weeklyReportMapper.getTotalWeeklyReport(searchTerm, userRole);
+        long totalRecordCount = weeklyReportMapper.getTotalWeeklyReport(searchTerm, userRole, userId);
         long totalPage = (long) Math.ceil((double) totalRecordCount / pageSize);
         boolean hasNext = start < totalPage;
         boolean hasPrevious = start > 1;

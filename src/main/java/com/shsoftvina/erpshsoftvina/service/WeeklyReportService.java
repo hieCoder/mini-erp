@@ -11,6 +11,7 @@ import java.util.List;
 public interface WeeklyReportService {
     PageWeeklyReportListRespone getAllWeeklyReport(String searchTerm,
                                            String userRole,
+                                           String userId,
                                            int start,
                                            int pageSize);
     WeeklyReportDetailResponse findById(String id);
