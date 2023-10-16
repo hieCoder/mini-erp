@@ -89,3 +89,13 @@ function getFileNameFromPath(path) {
 function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
+
+function createLoadingHtml() {
+    return `
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <div class="custom-spinner d-flex align-items-center justify-content-center">
+                    <div class="dot"></div>
+                </div>
+            </div>
+        `;
+}

@@ -4,7 +4,7 @@
 <head>
     <title>Title</title>
     <style>
-        .form-group {
+        .form-group-password {
             position: relative;
         }
 
@@ -16,181 +16,181 @@
     </style>
 </head>
 <body>
-<form action="" method="get">
     <div class="container">
-        <div class="row">
-            <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
-            <div class="col-md-4">
-                <div class="text-center">
-                    <img src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
-                    <input type="file" class="form-control mt-2" id="avatar">
-                    <small class="text-muted ml-2">Choose New Avatar</small>
-                    <h3 class="mt-2">${user.getFullname()}</h3>
-                </div>
-            </div>
-
-            <!-- Phần 2: Form thông tin người dùng -->
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="address">Address:</label>
-                    <input type="text" class="form-control" id="address" value="${user.getAddress()}">
-                </div>
-                <div class="form-group">
-                    <label for="fullname">Username:</label>
-                    <input type="text" class="form-control" id="fullname" value="${user.getFullname()}">
-                </div>
-                <div class="form-group">
-                    <label for="dob">Date of birth:</label>
-                    <input type="date" class="form-control" id="dob" value="${dateOfBirth}">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone number:</label>
-                    <input type="tel" class="form-control" id="phone" value="${user.getPhone()}">
-                </div>
-                <div class="form-group">
-                    <label for="emergencyPhone">Emergency phone:</label>
-                    <input type="tel" class="form-control" id="emergencyPhone" value="${user.getEmergencyPhone()}">
-                </div>
-                <div class="form-group">
-                    <label for="resume">Resume file:</label>
-                    <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
-                    <input type="file" class="form-control mt-2" id="resume">
-                    <small class="text-muted ml-2">Choose new resume</small>
-                </div>
-                <div class="form-group">
-                    <label for="timeSheetsCode">TimeSheets code:</label>
-                    <input type="text" class="form-control" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
-                </div>
-                <div class="form-group hide">
-                    <label for="type">Type:</label>
-                    <select class="form-control" id="type">
-                        <option value="OFFICIAL"
-                                <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
-                        >Official
-                        </option>
-                        <option value="PROBATION"
-                                <c:if test="${user.type.code.equals('PROBATION')}">selected</c:if>
-                        >Probation
-                        </option>
-                        <option value="PARTTIME"
-                                <c:if test="${user.type.code.equals('PARTTIME')}">selected</c:if>
-                        >Parttime
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group hide">
-                    <label for="department">Department:</label>
-                    <select class="form-control" id="department">
-                        <option value="ADMINISTRATION"
-                                <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
-                            Administration
-                        </option>
-                        <option value="MANAGEMENT"
-                                <c:if test="${user.department.code.equals('MANAGEMENT')}">selected</c:if>>
-                            Management
-                        </option>
-                        <option value="UI_UX" <c:if test="${user.department.code.equals('UI_UX')}">selected</c:if>>
-                            UI/UX
-                        </option>
-                        <option value="DEV1" <c:if test="${user.department.code.equals('DEV1')}">selected</c:if>>
-                            Dev1
-                        </option>
-                        <option value="DEV2" <c:if test="${user.department.code.equals('DEV2')}">selected</c:if>>
-                            Dev2
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group hide">
-                    <label for="userId">User ID:</label>
-                    <input type="email" class="form-control" id="userId" value="${user.getEmail()}">
-                </div>
-                <div class="form-group hide">
-                    <label for="password">Password: </label>
-                    <a id="change-password-button" class="text-primary" style="text-decoration: none">Change
-                        password</a>
-                    <div id="password-form" style="display: none;">
-                        <input type="password" class="form-control" id="password" value="" placeholder="New Password">
+        <form id="formUpdateUser">
+            <div class="row">
+                <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <img src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
+                        <input name="avatar" type="file" class="form-control mt-2" id="avatar">
+                        <small class="text-muted ml-2">Choose New Avatar</small>
+                        <h3 class="mt-2">${user.getFullname()}</h3>
                     </div>
                 </div>
-                <div class="form-group hide">
-                    <label for="atm">ATM:</label>
-                    <input type="text" class="form-control" id="atm" value="${user.getAtm()}">
-                </div>
-                <div class="form-group hide">
-                    <label for="role">Role:</label>
-                    <select class="form-control" id="role">
-                        <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
-                            Owner
-                        </option>
-                        <option value="MANAGER" <c:if test="${user.role.code.equals('MANAGER')}">selected</c:if>>
-                            Manager
-                        </option>
-                        <option value="DEVELOPER" <c:if test="${user.role.code.equals('DEVELOPER')}">selected</c:if>>
-                            Developer
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group hide">
-                    <label for="position">Position:</label>
-                    <select class="form-control" id="position">
-                        <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
-                            Inter
-                        </option>
-                        <option value="JUNIOR" <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
-                            Junior
-                        </option>
-                        <option value="SENIOR" <c:if test="${user.position.code.equals('SENIOR')}">selected</c:if>>
-                            Senior
-                        </option>
-                        <option value="MANAGER" <c:if test="${user.position.code.equals('MANAGER')}">selected</c:if>>
-                            Manager
-                        </option>
-                        <option value="SENIOR_MANAGER"
-                                <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
-                            Senior manager
-                        </option>
-                        <option value="OWNER" <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
-                            Owner
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group hide">
-                    <label for="contract">Contract:</label>
-                    <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
-                            data-target="#contractModal">
-                        View
-                    </button>
-                </div>
-                <div class="form-group hide">
-                    <label for="working-day">Working day:</label>
-                    <div class="input-group" id="working-day">
-                        <select class="form-control" id="working-year">
-                            <option value="">-- Select year --</option>
+                <div class="col-md-8">
+                    <!-- Phần 2: Form thông tin người dùng -->
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" name="address" class="form-control" id="address" value="${user.getAddress()}">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullname">Username:</label>
+                        <input type="text" class="form-control" name="fullname" id="fullname" value="${user.getFullname()}">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of birth:</label>
+                        <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone number:</label>
+                        <input type="tel" class="form-control" name="phone" id="phone" value="${user.getPhone()}">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyPhone">Emergency phone:</label>
+                        <input type="tel" class="form-control" name="emergencyPhone" id="emergencyPhone" value="${user.getEmergencyPhone()}">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="resume">Resume file:</label>
+                        <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
+                        <input type="file" class="form-control mt-2" name="resume" id="resume">
+                        <small class="text-muted ml-2">Choose new resume</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeSheetsCode">TimeSheets code:</label>
+                        <input type="text" class="form-control" name="timesheetsCode" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
+                    </div>
+                    <div class="form-group hide">
+                        <label for="type">Type:</label>
+                        <select name="type" class="form-control" id="type">
+                            <option value="OFFICIAL"
+                                    <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
+                            >Official
+                            </option>
+                            <option value="PROBATION"
+                                    <c:if test="${user.type.code.equals('PROBATION')}">selected</c:if>
+                            >Probation
+                            </option>
+                            <option value="PARTTIME"
+                                    <c:if test="${user.type.code.equals('PARTTIME')}">selected</c:if>
+                            >Parttime
+                            </option>
                         </select>
-                        <select class="form-control" id="working-month" style="display: none;">
-                            <option>-- Select month --</option>
+                    </div>
+                    <div class="form-group hide">
+                        <label for="department">Department:</label>
+                        <select name="department" class="form-control" id="department">
+                            <option value="ADMINISTRATION"
+                                    <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
+                                Administration
+                            </option>
+                            <option value="MANAGEMENT"
+                                    <c:if test="${user.department.code.equals('MANAGEMENT')}">selected</c:if>>
+                                Management
+                            </option>
+                            <option value="UI_UX" <c:if test="${user.department.code.equals('UI_UX')}">selected</c:if>>
+                                UI/UX
+                            </option>
+                            <option value="DEV1" <c:if test="${user.department.code.equals('DEV1')}">selected</c:if>>
+                                Dev1
+                            </option>
+                            <option value="DEV2" <c:if test="${user.department.code.equals('DEV2')}">selected</c:if>>
+                                Dev2
+                            </option>
                         </select>
-                        <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
+                    </div>
+                    <div class="form-group hide">
+                        <label for="userId">User ID:</label>
+                        <input name="email" type="email" class="form-control" id="userId" value="${user.getEmail()}">
+                    </div>
+                    <div class="form-group-password hide">
+                        <label for="password">Password: </label>
+                        <a id="change-password-button" class="text-primary text-decoration-none" style="cursor: pointer;">Change
+                            password</a>
+                        <div id="password-form" style="display: none;">
+                            <input name="password" type="password" class="form-control" id="password" value="" placeholder="New Password">
+                        </div>
+                    </div>
+                    <div class="form-group hide">
+                        <label for="atm">ATM:</label>
+                        <input name="atm" type="text" class="form-control" id="atm" value="${user.getAtm()}">
+                    </div>
+                    <div class="form-group hide">
+                        <label for="role">Role:</label>
+                        <select name="role" class="form-control" id="role">
+                            <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
+                                Owner
+                            </option>
+                            <option value="MANAGER" <c:if test="${user.role.code.equals('MANAGER')}">selected</c:if>>
+                                Manager
+                            </option>
+                            <option value="DEVELOPER" <c:if test="${user.role.code.equals('DEVELOPER')}">selected</c:if>>
+                                Developer
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group hide">
+                        <label for="position">Position:</label>
+                        <select name="position" class="form-control" id="position">
+                            <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
+                                Inter
+                            </option>
+                            <option value="JUNIOR" <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
+                                Junior
+                            </option>
+                            <option value="SENIOR" <c:if test="${user.position.code.equals('SENIOR')}">selected</c:if>>
+                                Senior
+                            </option>
+                            <option value="MANAGER" <c:if test="${user.position.code.equals('MANAGER')}">selected</c:if>>
+                                Manager
+                            </option>
+                            <option value="SENIOR_MANAGER"
+                                    <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
+                                Senior manager
+                            </option>
+                            <option value="OWNER" <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
+                                Owner
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group hide">
+                        <label for="contract">Contract:</label>
+                        <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
+                                data-target="#contractModal">
+                            View
+                        </button>
+                    </div>
+                    <div class="form-group hide">
+                        <label for="working-day">Working day:</label>
+                        <div class="input-group" id="working-day">
+                            <select class="form-control" id="working-year">
+                                <option value="">-- Select year --</option>
+                            </select>
+                            <select class="form-control" id="working-month" style="display: none;">
+                                <option>-- Select month --</option>
+                            </select>
+                            <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" id="delUser">Delete</button>
+                        <a class="btn btn-secondary" href="/users">Cancel</a>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button value="${user.getId()}" type="button" class="btn btn-primary" id="updateUserButton">Save
-                    </button>
-                    <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteUserModal"
-                            id="delUser">
-                        Delete
-                    </button>
-                    <a class="btn btn-secondary ml-2" href="/users">Cancel</a>
-                </div>
             </div>
-        </div>
+        </form>
     </div>
-</form>
 
-<!-- Modal Contract History -->
+<!-- Modal List Contract  -->
 <div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Contract history</h4>
@@ -211,7 +211,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="contract" items="${contractUser}">
+                    <c:forEach var="contract" items="${user.contracts}">
                         <tr>
                             <td>${contract.getBasicSalary()}$</td>
                             <td>${contract.getAllowance()}$</td>
@@ -221,7 +221,7 @@
                                 Files</a></td>
                             <td>
                                 <button value="${contract.getId()}" type="button"
-                                        class="btn btn-primary mb-3 edit-contract-button">Edit
+                                        class="btn btn-primary edit-contract-button">Edit
                                 </button>
                                 <button value="${contract.getId()}" type="button"
                                         class="btn btn-danger delete-contract-button">Delete
@@ -240,10 +240,60 @@
     </div>
 </div>
 
+<!-- Modal ADD Contract  -->
+<div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Add Contract</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formAddContract">
+                    <div class="form-group">
+                        <label for="editBasicSalary">Basic Salary:</label>
+                        <input type="number" class="form-control" id="addBasicSalary" name="basicSalary">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAllowance">Allowance:</label>
+                        <input type="number" class="form-control" id="addAllowance" name="allowance">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="editInsuranceType">Insurance Type:</label>
+                        <select class="form-control" id="addInsuranceType" name="insuranceType">
+                            <option value="HEALTH_INSURANCE">Health insurance</option>
+                            <option value="SOCIAL_INSURANCE">Social insurance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editInsuranceMoney">Insurance Money:</label>
+                        <input type="number" class="form-control" id="addInsuranceMoney" name="insuranceMoney">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="newContract">Contract</label>
+                        <input type="file" class="form-control mt-2" id="newContract" name="contract">
+                    </div>
+                    <div class="form-group">
+                        <button value="${user.getId()}" type="submit" class="btn btn-primary" id="addContractButton">Confirm
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Contract Edit -->
 <div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Edit Contract</h4>
@@ -255,82 +305,37 @@
                 <form id="editContractForm">
                     <div class="form-group">
                         <label for="editBasicSalary">Basic Salary:</label>
-                        <input type="text" class="form-control" id="editBasicSalary" name="editBasicSalary">
+                        <input type="number" class="form-control" id="editBasicSalary" name="basicSalary">
+                        <small class="form-message"></small>
                     </div>
                     <div class="form-group">
                         <label for="editAllowance">Allowance:</label>
-                        <input type="text" class="form-control" id="editAllowance" name="editAllowance">
+                        <input type="number" class="form-control" id="editAllowance" name="allowance">
+                        <small class="form-message"></small>
                     </div>
                     <div class="form-group">
                         <label for="editInsuranceType">Insurance Type:</label>
-                        <select class="form-control" id="editInsuranceType" name="editInsuranceType">
+                        <select class="form-control" id="editInsuranceType" name="insuranceType">
                             <option value="HEALTH_INSURANCE">Health insurance</option>
                             <option value="SOCIAL_INSURANCE">Social insurance</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="editInsuranceMoney">Insurance Money:</label>
-                        <input type="text" class="form-control" id="editInsuranceMoney" name="editInsuranceMoney">
+                        <input type="number" class="form-control" id="editInsuranceMoney" name="insuranceMoney">
+                        <small class="form-message"></small>
                     </div>
                     <div class="form-group">
                         <label for="contractUser">Contract Files: </label>
                         <a href="" download target="_blank" id="contractFile">Download Contract</a>
-                        <input type="file" class="form-control mt-2" id="contractUser">
+                        <input type="file" class="form-control mt-2" id="contractUser" name="contract">
                         <small class="text-muted ml-2">Choose New Contract</small>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmContractButton">Confirm</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal ADD Contract  -->
-<div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">Add Contract</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="/api/v1/contracts" method="post">
                     <div class="form-group">
-                        <label for="editBasicSalary">Basic Salary:</label>
-                        <input type="text" class="form-control" id="addBasicSalary" name="basicSalary">
-                    </div>
-                    <div class="form-group">
-                        <label for="editAllowance">Allowance:</label>
-                        <input type="text" class="form-control" id="addAllowance" name="allowance">
-                    </div>
-                    <div class="form-group">
-                        <label for="editInsuranceType">Insurance Type:</label>
-                        <select class="form-control" id="addInsuranceType" name="insuranceType">
-                            <option value="HEALTH_INSURANCE">Health insurance</option>
-                            <option value="SOCIAL_INSURANCE">Social insurance</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editInsuranceMoney">Insurance Money:</label>
-                        <input type="text" class="form-control" id="addInsuranceMoney" name="insuranceMoney">
-                    </div>
-                    <div class="form-group">
-                        <label for="newContract">Contract</label>
-                        <input type="file" class="form-control mt-2" id="newContract" name="contract">
-                        <small class="text-muted ml-2">Choose New Contract</small>
+                        <button type="submit" class="btn btn-primary" id="confirmContractButton">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button value="${user.getId()}" type="button" class="btn btn-primary" id="addContractButton">Confirm
-                </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -355,7 +360,7 @@
 <!-- Modal Delete User -->
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 Are you sure to delete this user?
@@ -399,84 +404,29 @@
         else inputPassword.style.display = "none";
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Save User"
-    document.getElementById('updateUserButton').addEventListener('click', function () {
+    Validator({
+        form:'#formUpdateUser',
+        errorSelector: '.form-message',
+        rules:[
+            Validator.isRequired('#address'),
+            Validator.isRequired('#fullname'),
+            Validator.isRequired('#dateOfBirth'),
+            Validator.isRequired('#phone'),
+            Validator.isRequired('#emergencyPhone')
+        ],
+        onSubmit: function (formData) {
 
-        // Lấy dữ liệu từ các trường trong form
-        var id = this.value;
-        var fullname = document.getElementById('fullname').value;
-        var adderss = document.getElementById('address').value;
-        var dobString = document.getElementById('dob').value;
-        var jsDate = new Date(dobString);
-        var dob = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
-        var phone = document.getElementById('phone').value;
-        var emergencyPhone = document.getElementById('emergencyPhone').value;
-        var fileAvatar = document.getElementById('avatar');
-        var fileResume = document.getElementById('resume');
-        var timeSheetsCode = document.getElementById('timeSheetsCode').value;
-        var type = document.getElementById('type').value;
-        var department = document.getElementById('department').value;
-        var email = document.getElementById('userId').value;
-        var atm = document.getElementById('atm').value;
-        var password = document.getElementById('password').value;
-        var role = document.getElementById('role').value;
-        var position = document.getElementById('position').value;
+            formData.append('id', ${user.id});
+            var dobString = document.getElementById('dateOfBirth').value;
+            var jsDate = new Date(dobString);
+            var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
+            formData.append('dateOfBirth', dateOfBirth);
 
-        var user = new FormData();
-        user.append('id', id);
-        user.append('fullname', fullname);
-        user.append('address', adderss);
-        user.append('dateOfBirth', dob);
-        user.append('phone', phone);
-        user.append('emergencyPhone', emergencyPhone);
-        user.append('timesheetsCode', timeSheetsCode);
-        user.append('atm', atm);
-        user.append('type', type);
-        user.append('department', department);
-        user.append('email', email);
-        user.append('password', password);
-        user.append('role', role);
-        user.append('position', position);
-
-        // Kiểm tra xem có tệp được chọn không
-        if (fileAvatar.files.length > 0) {
-            var fileAavar = fileAvatar.files[0];
-            user.append('avatar', fileAavar);
-
+            callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
+                sessionStorage.setItem('result', 'updateSuccess');
+                location.href = "/users/" + ${user.getId()};
+            });
         }
-        if (fileResume.files.length > 0) {
-            var fileResume = fileResume.files[0];
-            user.append('resume', fileResume);
-        }
-
-        // Khởi tạo đối tượng XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        var url = '/api/v1/users/updation';
-
-        // Thiết lập phương thức và URL cho yêu cầu
-        xhr.open('POST', url, true);
-
-        // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Xử lý kết quả ở đây nếu cần
-                    sessionStorage.setItem('result', 'updateSuccess');
-                    location.href = "/userDetail/" + ${user.getId()};
-                } else {
-                    // Xử lý lỗi nếu có
-                    var errorMessage = "Lỗi:\n";
-                    errorMessage += "The file transfer is just under 100MB.\n";
-                    errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
-                    errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
-                    alert(errorMessage);
-
-                    console.log("Error File: " + xhr.status);
-                }
-            }
-        };
-        // Gửi yêu cầu với dữ liệu formData
-        xhr.send(user);
     });
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete User"
@@ -499,21 +449,11 @@
         // Xử lý khi nút Delete được nhấn trong modal
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("DELETE", "/api/v1/users/" + userId, true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            // Tải lại trang
-                            sessionStorage.setItem('result', 'deleteSuccess');
-                            window.location.href = "/users";
-                        } else {
-                            // Xử lý khi API gọi không thành công
-                            console.log("Delete User is False: " + xhr.status);
-                        }
-                    }
-                };
-                xhr.send();
+
+                callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
+                    sessionStorage.setItem('result', 'deleteSuccess');
+                    window.location.href = "/users";
+                });
             }
         });
     });
@@ -554,57 +494,41 @@
         var monthSelect = document.getElementById('working-month');
         var totalWorkingDayInput = document.getElementById('totalWorkingDay');
 
-        // Sử dụng XMLHttpRequest để gọi API
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/api/v1/timesheets/workingday/' + ${user.getId()}, true);
         var data;
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                data = JSON.parse(xhr.responseText);
-                // Xóa các option cũ trong dropdown year
-                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
-
-                // Thêm các option mới từ dữ liệu API
-                data.forEach(function (entry) {
-                    var option = document.createElement('option');
-                    option.value = entry.year;
-                    option.textContent = entry.year;
-                    yearSelect.appendChild(option);
-                });
-            } else {
-                console.error("Can't get year: " + xhr.status);
-            }
-        };
-        xhr.send();
+        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()}, 'GET', null, function (rs) {
+            data = rs;
+            yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+            data.forEach(function (entry) {
+                var option = document.createElement('option');
+                option.value = entry.year;
+                option.textContent = entry.year;
+                yearSelect.appendChild(option);
+            });
+        });
 
         // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
         yearSelect.addEventListener('change', function () {
-            xhr.open('GET', '/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, true);
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var dataMonth = JSON.parse(xhr.responseText);
-                    // Xóa các option cũ trong dropdown year
-                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
 
-                    // Thêm các option mới từ dữ liệu API
-                    dataMonth.forEach(function (entry) {
-                        var option = document.createElement('option');
-                        option.value = entry.month;
-                        option.textContent = entry.month;
-                        monthSelect.appendChild(option);
+            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, 'GET', null, function (rs) {
+                var dataMonth = rs;
+                // Xóa các option cũ trong dropdown year
+                monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
+
+                // Thêm các option mới từ dữ liệu API
+                dataMonth.forEach(function (entry) {
+                    var option = document.createElement('option');
+                    option.value = entry.month;
+                    option.textContent = entry.month;
+                    monthSelect.appendChild(option);
+                });
+                monthSelect.addEventListener('change', function () {
+                    var selectedMonth = monthSelect.value;
+                    var selectedData = dataMonth.find(function (entry) {
+                        return entry.month === parseInt(selectedMonth);
                     });
-                    monthSelect.addEventListener('change', function () {
-                        var selectedMonth = monthSelect.value;
-                        var selectedData = dataMonth.find(function (entry) {
-                            return entry.month === parseInt(selectedMonth);
-                        });
-                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                    });
-                } else {
-                    console.error("Can't get month: " + xhr.status);
-                }
-            };
-            xhr.send();
+                    totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                });
+            });
 
             if (yearSelect.value != "") {
                 var selectedYear = yearSelect.value;
@@ -635,62 +559,25 @@
         });
     });
 
-    // Lắng nghe sự kiện click trên nút "Confirm Add Contract"
-    document.getElementById('addContractButton').addEventListener('click', function () {
+    Validator({
+        form:'#formAddContract',
+        errorSelector: '.form-message',
+        rules:[
+            Validator.isRequired('#addBasicSalary'),
+            Validator.isRequired('#addAllowance'),
+            Validator.isRequired('#addInsuranceMoney')
+        ],
+        onSubmit: function (formData) {
+            formData.append('userId', ${user.id});
 
-        // Lấy dữ liệu từ các trường trong form
-        var userId = this.value;
-        var basicSalary = document.getElementById('addBasicSalary').value;
-        var allowance = document.getElementById('addAllowance').value;
-        var insuranceType = document.getElementById('addInsuranceType').value;
-        var insuranceMoney = document.getElementById('addInsuranceMoney').value;
-        var fileInputContract = document.getElementById('newContract');
-
-
-        var contract = new FormData();
-        contract.append('basicSalary', basicSalary);
-        contract.append('allowance', allowance);
-        contract.append('insuranceType', insuranceType);
-        contract.append('insuranceMoney', insuranceMoney);
-        contract.append('userId', userId);
-
-        // Kiểm tra xem có tệp được chọn không
-        if (fileInputContract.files.length > 0) {
-            var file = fileInputContract.files[0];
-            contract.append('contract', file);
+            callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
+                sessionStorage.setItem('result', 'addContractSuccess');
+                localStorage.setItem("showModal", "true");
+                location.reload();
+            });
         }
-
-        // Khởi tạo đối tượng XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        var url = '/api/v1/contracts';
-
-        // Thiết lập phương thức và URL cho yêu cầu
-        xhr.open('POST', url, true);
-
-        // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Xử lý kết quả ở đây nếu cần
-                    sessionStorage.setItem('result', 'addContractSuccess');
-                    localStorage.setItem("showModal", "true");
-                    location.reload();
-                } else {
-                    // Xử lý lỗi nếu có
-                    var errorMessage = "Error:\n";
-                    errorMessage += "The file transfer is just under 100MB.\n";
-                    errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
-                    errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
-                    alert(errorMessage);
-
-                    console.log('Add Contract is False' + xhr.status);
-                }
-            }
-        };
-
-        // Gửi yêu cầu với dữ liệu formData
-        xhr.send(contract);
     });
+
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Edit Contract"
     document.addEventListener("DOMContentLoaded", function () {
@@ -704,39 +591,28 @@
                 $("#editContractModal").modal("show");
 
                 if (contractIdEdit) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/api/v1/contracts/" + contractIdEdit, true);
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                // Xử lý khi API gọi thành công
-                                var responseData = JSON.parse(xhr.responseText);// Dữ liệu JSON trả về từ API
 
-                                // Đổ dữ liệu từ API vào các trường của modal
-                                document.getElementById("editBasicSalary").value = responseData.basicSalary;
-                                document.getElementById("editAllowance").value = responseData.allowance;
+                    callAjaxByJsonWithData('/api/v1/contracts/' + contractIdEdit, 'GET', null, function (rs) {
+                        var responseData = rs
 
-                                var selectElement = document.getElementById("editInsuranceType");
-                                var editInsuranceType = responseData.insuranceType.name;
-                                for (var i = 0; i < selectElement.options.length; i++) {
-                                    if (selectElement.options[i].text === editInsuranceType) {
-                                        // Option đã tồn tại, di chuyển option đó lên đầu
-                                        selectElement.insertBefore(selectElement.options[i], selectElement.options[0]);
-                                        break;
-                                    }
-                                }
-                                selectElement.selectedIndex = 0;
+                        // Đổ dữ liệu từ API vào các trường của modal
+                        document.getElementById("editBasicSalary").value = responseData.basicSalary;
+                        document.getElementById("editAllowance").value = responseData.allowance;
 
-                                document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;
-                                document.getElementById("contractFile").setAttribute("href", responseData.contract);
-
-                            } else {
-                                // Xử lý khi API gọi không thành công
-                                console.log("Get Detail Contract is False: " + xhr.status);
+                        var selectElement = document.getElementById("editInsuranceType");
+                        var editInsuranceType = responseData.insuranceType.name;
+                        for (var i = 0; i < selectElement.options.length; i++) {
+                            if (selectElement.options[i].text === editInsuranceType) {
+                                // Option đã tồn tại, di chuyển option đó lên đầu
+                                selectElement.insertBefore(selectElement.options[i], selectElement.options[0]);
+                                break;
                             }
                         }
-                    };
-                    xhr.send();
+                        selectElement.selectedIndex = 0;
+
+                        document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;
+                        document.getElementById("contractFile").setAttribute("href", responseData.contract);
+                    });
                 }
             });
         });
@@ -754,59 +630,23 @@
             });
         });
 
-        confirmButton.addEventListener('click', function () {
-            // Lấy dữ liệu từ các trường trong form
-            var basicSalary = document.getElementById('editBasicSalary').value;
-            var allowance = document.getElementById('editAllowance').value;
-            var insuranceType = document.getElementById('editInsuranceType').value;
-            var insuranceMoney = document.getElementById('editInsuranceMoney').value;
-            var fileContract = document.getElementById('contractUser');
-
-            var contract = new FormData();
-            contract.append('id', contractIdValue);
-            contract.append('basicSalary', basicSalary);
-            contract.append('allowance', allowance);
-            contract.append('insuranceType', insuranceType);
-            contract.append('insuranceMoney', insuranceMoney);
-
-            // Kiểm tra xem có tệp được chọn không
-            if (fileContract.files.length > 0) {
-                var contractFileName = fileContract.files[0];
-                contract.append('contract', contractFileName);
+        Validator({
+            form:'#editContractForm',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#editBasicSalary'),
+                Validator.isRequired('#editAllowance'),
+                Validator.isRequired('#editInsuranceMoney')
+            ],
+            onSubmit: function (formData) {
+                formData.append('id', contractIdValue);
+                callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
+                    sessionStorage.setItem('result', 'editContractSuccess');
+                    localStorage.setItem("showModal", "true");
+                    location.reload();
+                });
             }
-
-            // Khởi tạo đối tượng XMLHttpRequest
-            var xhr = new XMLHttpRequest();
-            var url = '/api/v1/contracts/updation';
-
-            // Thiết lập phương thức và URL cho yêu cầu
-            xhr.open('POST', url, true);
-
-            // Định nghĩa hàm xử lý kết quả trả về từ máy chủ
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        // Xử lý kết quả ở đây nếu cần
-                        sessionStorage.setItem('result', 'editContractSuccess');
-                        localStorage.setItem("showModal", "true");
-                        location.reload();
-                    } else {
-                        // Xử lý lỗi nếu có
-                        // Xử lý lỗi nếu có
-                        var errorMessage = "Error:\n";
-                        errorMessage += "The file transfer is just under 100MB.\n";
-                        errorMessage += "Avatar: jpg, jpeg, png, svg.\n";
-                        errorMessage += "Resume, Contract: pdf, csv, xlsx, doc, xls, pptx.";
-                        alert(errorMessage);
-                        console.log('Edit Contract is False: ' + xhr.status);
-                    }
-                }
-            };
-
-            // Gửi yêu cầu với dữ liệu formData
-            xhr.send(contract);
         });
-
     });
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete Contract"
@@ -829,22 +669,12 @@
         // Xử lý khi nút Confirm được nhấn trong modal
         confirmButton.addEventListener("click", function () {
             if (contractIdToDelete) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("DELETE", "/api/v1/contracts/" + contractIdToDelete, true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            // Tải lại trang
-                            sessionStorage.setItem('result', 'deleteContractSuccess');
-                            localStorage.setItem("showModal", "true");
-                            location.reload();
-                        } else {
-                            // Xử lý khi API gọi không thành công
-                            console.log("Delete False: " + xhr.status);
-                        }
-                    }
-                };
-                xhr.send();
+                console.log(contractIdToDelete);
+                callAjaxByJsonWithData('/api/v1/contracts/' + contractIdToDelete, 'DELETE', null, function (rs) {
+                    sessionStorage.setItem('result', 'deleteContractSuccess');
+                    localStorage.setItem("showModal", "true");
+                    location.reload();
+                });
             }
         });
     });
@@ -863,7 +693,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Lấy vai trò của người dùng
-        var roleUser = "${roleUser}";
+        var roleUser = userCurrent.role;
 
         var fieldsToHide = document.getElementsByClassName("hide");
 
@@ -873,7 +703,7 @@
         for (var i = 0; i < fieldsToHide.length; i++) {
             var div = fieldsToHide[i];
             if (div) {
-                if (roleUser === "Developer") {
+                if (roleUser === U_DEVELOPER) {
                     div.style.display = "none";
                 } else {
                     div.style.display = "block";
@@ -885,7 +715,7 @@
         buttonsToHide.forEach(function (buttonName) {
             var button = document.getElementById(buttonName);
             if (button) {
-                if (roleUser === "Developer") {
+                if (roleUser === U_DEVELOPER) {
                     button.style.display = "none";
                 } else {
                     button.style.display = "inline-block";
@@ -893,8 +723,6 @@
             }
         });
     });
-
 </script>
 </body>
 </html>
-

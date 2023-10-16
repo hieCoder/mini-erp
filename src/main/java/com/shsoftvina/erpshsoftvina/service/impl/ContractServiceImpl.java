@@ -48,9 +48,15 @@ public class ContractServiceImpl implements ContractService {
             throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
 
         MultipartFile contract = createContractRequest.getContract();
-        String fileNameContract = FileUtils.formatNameImage(contract);
-        boolean isSaveContractSuccess = FileUtils.saveImageToServer(
-                request, ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getContract(), fileNameContract);
+        String fileNameContract = null;
+        boolean isSaveContractSuccess = true;
+
+        if(contract != null){
+            fileNameContract = FileUtils.formatNameImage(contract);
+            isSaveContractSuccess = FileUtils.saveImageToServer(
+                    request, ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getContract(), fileNameContract);
+        }
+
         if(isSaveContractSuccess){
             Contract c = contractConverter.toEntity(createContractRequest, fileNameContract);
             try {
@@ -80,9 +86,15 @@ public class ContractServiceImpl implements ContractService {
             throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
 
         MultipartFile contractFile = updateContractRequest.getContract();
-        String fileNameContract = FileUtils.formatNameImage(contractFile);
-        boolean isSaveContractSuccess = FileUtils.saveImageToServer(
-                request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getContract(), fileNameContract);
+        String fileNameContract = null;
+        boolean isSaveContractSuccess = true;
+
+        if(contractFile != null){
+            fileNameContract = FileUtils.formatNameImage(contractFile);
+            isSaveContractSuccess = FileUtils.saveImageToServer(
+                    request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getContract(), fileNameContract);
+        }
+
         Contract c;
         if(isSaveContractSuccess){
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);

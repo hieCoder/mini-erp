@@ -37,11 +37,6 @@ public class UserController {
 
     }
 
-    @GetMapping("/testUpdateProfile")
-    public String testUpdateProfile() {
-        return "user/testUpdateProfile";
-    }
-
     @GetMapping("/users")
     public ModelAndView showListUser(@RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
                                      @RequestParam(name = "search", required = false, defaultValue = "") String search,
@@ -62,17 +57,7 @@ public class UserController {
         ModelAndView view = new ModelAndView("user/userDetail");
 
         UserDetailResponse user = userService.findUserDetail(id);
-        String roleUser =  Principal.getUserCurrent().getRole().getValue();
-        List<ContractResponse> contractUser = contractService.getContractByUser(id);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dateOfBirth = sdf.format(user.getDateOfBirth());
-
         view.addObject("user", user);
-        view.addObject("roleUser", roleUser);
-        view.addObject("dateOfBirth", dateOfBirth);
-        view.addObject("contractUser", contractUser);
-
         return view;
     }
 
