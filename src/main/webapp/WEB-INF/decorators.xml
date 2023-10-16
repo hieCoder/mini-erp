@@ -6,11 +6,14 @@
         <pattern>/404-page.html</pattern>
         <pattern>/api*</pattern>
         <pattern>/logout</pattern>
-        <pattern>/login*</pattern>
-        <pattern>/register*</pattern>
     </excludes>
 
     <decorator name="base" page="base.jsp">
         <pattern>/*</pattern>
+    </decorator>
+
+    <decorator name="auth" page="auth.jsp">
+        <pattern>/login</pattern>
+        <pattern>/register</pattern>
     </decorator>
 </decorators>

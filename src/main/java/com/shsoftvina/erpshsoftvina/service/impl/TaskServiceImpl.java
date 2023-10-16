@@ -43,8 +43,13 @@ public class TaskServiceImpl implements TaskService {
     private UserMapper userMapper;
 
     @Override
-    public List<TaskShowResponse> findAll(int start, int pageSize, String status, String search) {
-        return taskMapper.findAll(start, pageSize, status, search).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search) {
+        return taskMapper.findAll(start, pageSize, statusTask, search).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+    }
+
+    @Override
+    public long getTotalItem(int start, int pageSize, String statusTask, String search) {
+        return taskMapper.getTotalItem(start, pageSize, statusTask, search);
     }
 
     @Override
@@ -72,9 +77,9 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.findById(id);
         if (task == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
-//        if(Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER) &&
-//                !task.getUser().getId().equals(Principal.getUserCurrent().getId()))
-//            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
+        if(Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER) &&
+                !task.getUser().getId().equals(Principal.getUserCurrent().getId()))
+            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
 
         if (!EnumUtils.isExistInEnum(PriorityTaskEnum.class, taskUpdateRequest.getPriority()))
             throw new NotFoundException(MessageErrorUtils.notFound("Priority"));
@@ -85,16 +90,9 @@ public class TaskServiceImpl implements TaskService {
 
         if(taskUpdateRequest.getProgress() != task.getProgress() &&
                 (task.getStatusTask().equals(StatusTaskEnum.REGISTERED) ||
-                        task.getStatusTask().equals(StatusTaskEnum.POSTPONSED))
+                        task.getStatusTask().equals(StatusTaskEnum.POSTPONSED) ||
+                        task.getStatusTask().equals(StatusTaskEnum.CLOSED))
         ) throw new NotAllowException(MessageErrorUtils.notAllow("Progress"));
-
-//        if(!DateUtils.formatDate(taskUpdateRequest.getDueDate()).equals(
-//                DateUtils.formatDate(task.getDueDate()))) {
-//            if(Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)
-//                    && !task.getStatusTask().equals(StatusTaskEnum.REGISTERED)) {
-//                throw new UnauthorizedException(MessageErrorUtils.notAllow("dueDate"));
-//            }
-//        }
 
         try{
             Task t =taskConverter.toEntity(taskUpdateRequest);
@@ -122,7 +120,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Map<String, Object>> getTaskByHashtag(String userId, String hashtag) {
-        return taskMapper.getTaskByHashtag(userId, hashtag);
+    public List<Map<String, Object>> getTaskByHashtag(String userId) {
+        return taskMapper.getTaskByHashtag(userId);
     }
 }

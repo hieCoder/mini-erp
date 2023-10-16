@@ -22,12 +22,18 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 
     @Override
     public List<TimesheetsResponse> findAll(int start, int pageSize) {
-        return timesheetsMapper.findAll(start, pageSize).stream().map(timesheets -> timesheetsConverter.toResponse(timesheets)).collect(Collectors.toList());
+        return timesheetsMapper.findAll(start, pageSize).stream().map(timesheets ->
+                timesheetsConverter.toResponse(timesheets)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Map<String, ?>> getTotalWorkingDate(String userID, String year) {
-        if (year!=null)  return timesheetsMapper.totalWorkingDateByMonth(userID, year);
+    public List<Map<String, ?>> getTotalWorkDayByYear(String userID) {
         return timesheetsMapper.totalWorkingDateByYear(userID);
     }
+
+    @Override
+    public List<Map<String, ?>> getTotalWorkDayByMonth(String userID, String year) {
+        return timesheetsMapper.totalWorkingDateByMonth(userID, year);
+    }
+
 }

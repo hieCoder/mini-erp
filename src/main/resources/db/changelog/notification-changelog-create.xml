@@ -13,6 +13,7 @@
             <column name="CONTENT" type="VARCHAR(255)"/>
             <column name="FILES" type="VARCHAR(255)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
+            <column name="USER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 

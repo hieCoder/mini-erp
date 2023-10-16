@@ -76,6 +76,13 @@ public class CustomExceptionHandler {
                 e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
+    // Handle ErrorConvertJsonException and return an ErrorResponse with HTTP status 400 (Bad Request).
+    @ExceptionHandler(ErrorConvertJsonException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleErrorConvertJsonException(ErrorConvertJsonException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
     // Handle generic Exception and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

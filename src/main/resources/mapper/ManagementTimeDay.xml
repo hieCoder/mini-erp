@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper">
+
+    <insert id="createDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID)
+        VALUES (#{id}, #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id})
+    </insert>
+
+    <select id="findById" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY
+        WHERE ID = #{id}
+    </select>
+
+    <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        <id property="id" column="ID"/>
+        <result property="oneThingCalendar" column="ONE_THING_CALENDAR"/>
+        <result property="toDoList" column="TO_DO_LIST"/>
+        <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
+        <result property="affirmation" column="AFFIRMATION"/>
+        <result property="day" column="DAY"/>
+    </resultMap>
+
+    <update id="updateDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        UPDATE MANAGEMENT_TIME_DAY SET
+        ONE_THING_CALENDAR = #{oneThingCalendar},
+        TO_DO_LIST = #{toDoList},
+        GRATITUDE_DIARY = #{gratitudeDiary},
+        AFFIRMATION = #{affirmation}
+        WHERE ID = #{id};
+    </update>
+
+    <select id="findAllByMonthYear" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId} AND YEAR(DAY) = #{year} AND MONTH(DAY) = #{month}
+    </select>
+</mapper>

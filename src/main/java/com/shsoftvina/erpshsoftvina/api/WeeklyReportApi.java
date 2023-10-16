@@ -1,12 +1,18 @@
 package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyReportRequest;
+import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
+import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.PageWeeklyReportListRespone;
+import com.shsoftvina.erpshsoftvina.security.Principal;
+import com.shsoftvina.erpshsoftvina.service.TaskService;
 import com.shsoftvina.erpshsoftvina.service.WeeklyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/weekly-reports")
@@ -15,10 +21,18 @@ public class WeeklyReportApi {
     @Autowired
     WeeklyReportService weeklyReportService;
 
+    @Autowired
+    TaskService taskService;
+
     @GetMapping
-    public ResponseEntity<?> getAll(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(weeklyReportService.getAllWeeklyReport((page-  1) * pageSize, pageSize));
+    public ResponseEntity<?> getAllWeeklyReport(@RequestParam(name = "search", required = false, defaultValue = "") String search,
+                                                @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        String userRole = Principal.getUserCurrent().getRole().getValue();
+        PageWeeklyReportListRespone weeklyReports = weeklyReportService.getAllWeeklyReport(search, userRole, page, pageSize);
+
+
+        return new ResponseEntity<>(weeklyReports, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

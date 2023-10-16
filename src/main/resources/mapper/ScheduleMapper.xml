@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ScheduleMapper">
+
+    <select id="getScheduleDetail" resultMap="scheduleDetailResultMap">
+        SELECT t.ID, t.STATUS_TASK, t.TITLE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE, t.USER_ID
+        FROM TASK t INNER JOIN USER u ON t.USER_ID = u.ID
+        WHERE t.USER_ID = #{userId}
+        <choose>
+            <when test="startDate != null and endDate != null">
+                AND t.START_DATE BETWEEN #{startDate} AND #{endDate}
+            </when>
+            <when test="startDate != null">
+                AND t.START_DATE >= #{startDate}
+            </when>
+            <when test="endDate != null">
+                AND t.START_DATE &lt;= #{endDate}
+            </when>
+        </choose>
+    </select>
+
+    <resultMap id="scheduleDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">
+        <id property="id" column="ID"/>
+        <result property="statusTask" column="STATUS_TASK"/>
+        <result property="title" column="TITLE"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="dueDate" column="DUE_DATE"/>
+        <result property="closeDate" column="CLOSE_DATE"/>
+    </resultMap>
+</mapper>

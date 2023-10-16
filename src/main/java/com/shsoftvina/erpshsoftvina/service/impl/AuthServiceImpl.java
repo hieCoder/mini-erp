@@ -16,9 +16,6 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     UserConverter userConverter;
 
     @Autowired
@@ -34,12 +31,11 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String email = userRegisterRequest.getEmail();
-        UserDetailResponse userDetailResponse = userService.findByEmail(email);
+        User user = userMapper.findByEmail(email);
 
-        if(userDetailResponse != null) throw new DuplicateException("UserID is existed in the system");
+        if(user != null) throw new DuplicateException("UserID is existed in the system");
 
-        User user = userConverter.toEntity(userRegisterRequest);
+        user = userConverter.toEntity(userRegisterRequest);
         return userMapper.registerUser(user);
-
     }
 }
