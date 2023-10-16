@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <label for="search">Search</label>
                     <div class="input-group">
-                        <input id="search" name="search" type="text" class="form-control" placeholder="Search Author">
+                        <input id="search" name="search" type="text" class="form-control" placeholder="Search">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>
@@ -255,7 +255,6 @@
         // Show modal Edit Contract
         addButtons.forEach(function (button) {
             button.addEventListener("click", function () {
-
                 $("#addWeeklyReportModal").modal("show");
             });
         });

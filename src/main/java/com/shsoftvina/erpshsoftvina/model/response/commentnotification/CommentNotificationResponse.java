@@ -19,5 +19,7 @@ public class CommentNotificationResponse {
     private String modifiedDate;
     private String fullnameUser;
     private String avatarUser;
+    private String parentId;
+    private String userId;
     private List<CommentNotificationResponse> childComments;
 }

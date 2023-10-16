@@ -5,7 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <html>
 <head>
     <title>Schedule Detail</title>
@@ -29,13 +28,14 @@
                     <input type="date" id="datePickerEnd" class="form-control">
                 </div>
                 <div class="col">
-                    <h1 style="background-color: #fff"></h1>
+                    <p class="margin-filter"></p>
                     <button class="btn btn-primary" onclick="getScheduleByDate()">Filter</button>
                 </div>
             </div>
         </div>
         <div class="col-md-4 text-right">
-            <p><%=Principal.getUserCurrent().getFullname()%></p>
+            <p class="margin-filter"></p>
+            <p>${schedule.user.fullname}</p>
         </div>
     </div>
 </div>
@@ -49,11 +49,12 @@
     String endDateStr = sdf.format(new Date());
     Date startDate = null;
     Date endDate = null;
-    long day;
+    long day,daydiff;
     try {
         startDate = sdf.parse(startDateStr);
         endDate = sdf.parse(endDateStr);
         day = startDate.getTime();
+        daydiff =((endDate.getTime()-startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     } catch (ParseException e) {
         throw new RuntimeException(e);
     }
@@ -74,48 +75,60 @@
             %>
         </tr>
         </thead>
-        <tbody id="taskTotalElement">
-        <c:forEach items="${requestScope.list}" var="s">
-            <tr>
-                <th scope="col" class="bg-dark">${s.title}</th>
-                <c:set var="startDate" value="${s.startDate}"/>
-                <c:set var="dueOrCloseDate" value="${s.dueOrCloseDate}"/>
+        <tbody id="taskTotalElement" class="width-auto text-center">
+        <c:choose>
+            <c:when test="${not empty requestScope.schedule.list}">
+                <c:forEach items="${requestScope.schedule.list}" var="s">
+                    <tr>
+                        <th scope="col" class="bg-dark align-middle">${s.title}</th>
+                        <c:set var="startDate" value="${s.startDate}"/>
+                        <c:set var="dueOrCloseDate" value="${s.dueOrCloseDate}"/>
 
-                <script>
-                    var selectedEndDate = new Date();
-                    var selectedStartDate = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), 1);
+                        <script>
+                            var selectedEndDate = new Date();
+                            var selectedStartDate = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), 1);
 
-                    var startDate = new Date("${startDate}");
-                    var dueOrCloseDate = new Date("${dueOrCloseDate}");
-                    var status = "${s.statusTask.code}";
-                    var id = "${s.id}";
-                    var statusDuration = dueOrCloseDate - startDate;
-                    var daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
-                    var color;
-                    if (status === 'OPENED') {
-                        color = 'bg-warning';
-                    } else if (status === 'REOPENED') {
-                        color = 'bg-primary';
-                    } else if (status === 'POSTPONED') {
-                        color = 'bg-danger';
-                    } else if (status === 'CLOSED') {
-                        color = 'bg-success';
-                    } else {
-                        color = 'bg-secondary';
-                    }
-                    while (selectedStartDate.getTime() < selectedEndDate.getTime()) {
-                        if (selectedStartDate.getTime() === startDate.getTime()) {
-                            document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + id + '" class="btn font-weight-bold">' + status + '</a></td>');
-                            selectedStartDate = new Date(selectedStartDate.getTime() + 86400000 * daysDiff);
-                        } else {
-                            document.write('<td style="width: auto"></td>');
-                            selectedStartDate = new Date(selectedStartDate.getTime() + 86400000);
-                        }
-                    }
-
-                </script>
-            </tr>
-        </c:forEach>
+                            var startDate = new Date("${startDate}");
+                            var dueOrCloseDate = new Date("${dueOrCloseDate}");
+                            var status = "${s.statusTask.code}";
+                            var id = "${s.id}";
+                            var statusDuration = dueOrCloseDate - startDate;
+                            var daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
+                            var color;
+                            if (status === 'OPENED') {
+                                color = 'bg-warning';
+                            } else if (status === 'REOPENED') {
+                                color = 'bg-primary';
+                            } else if (status === 'POSTPONED') {
+                                color = 'bg-danger';
+                            } else if (status === 'CLOSED') {
+                                color = 'bg-success';
+                            } else {
+                                color = 'bg-secondary';
+                            }
+                            while (selectedStartDate.getTime() < selectedEndDate.getTime()) {
+                                if (selectedStartDate.getTime() === startDate.getTime()) {
+                                    document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + id + '" class="btn font-weight-bold">' + status + '</a></td>');
+                                    selectedStartDate = new Date(selectedStartDate.getTime() + 86400000 * daysDiff);
+                                } else {
+                                    document.write('<td></td>');
+                                    selectedStartDate = new Date(selectedStartDate.getTime() + 86400000);
+                                }
+                            }
+                        </script>
+                    </tr>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <th scope="col" class="bg-dark align-middle"></th>
+                    <td class="text-center font-weight-bold" colspan="<%= daydiff %>">NO RESULT IN THIS DURATION</td>
+                    <script>
+                        var selectedEndDate = new Date();
+                    </script>
+                </tr>
+            </c:otherwise>
+        </c:choose>
         </tbody>
     </table>
 </div>
@@ -135,6 +148,7 @@
     });
 
     function getScheduleByDate() {
+        let userId = "${schedule.user.id}";
         var choiceStartDate = localStorage.getItem("choiceStartDate") || "";
         var choiceEndDate = localStorage.getItem("choiceEndDate") || "";
         var dateStart = new Date(choiceStartDate);
@@ -157,16 +171,15 @@
                 if (xhr.status === 200) {
                     loading.style.display = "none";
                     var responseData = JSON.parse(xhr.responseText);
-                    console.log(responseData);
                     var taskTotalElement = document.getElementById("taskTotalElement");
                     taskTotalElement.innerHTML = "";
-                    if (dateStart > dateEnd || responseData.length === 0) {
+                    if (dateStart > dateEnd || responseData.list.length === 0) {
                         let row = taskTotalElement.insertRow();
                         let statusDuration = dateEnd - dateStart;
                         let daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
-                        row.innerHTML = '<th scope="col"></th>' + '<td colspan="' + daysDiff + '" class="text-center font-weight-bold">NO RESULT IN THIS DURATION</td>';
+                        row.innerHTML = '<th scope="col" class="bg-dark"></th>' + '<td colspan="' + daysDiff + '" class="text-center font-weight-bold">NO RESULT IN THIS DURATION</td>';
                     } else {
-                        responseData.forEach((task) => {
+                        responseData.list.forEach((task) => {
                             let row = taskTotalElement.insertRow();
                             let requestEndDate = dateEnd;
                             let requestStartDate = dateStart;
@@ -193,7 +206,7 @@
                                     row.innerHTML += '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + task.id + '" class="btn font-weight-bold">' + status + '</a></td>';
                                     requestStartDate = new Date(requestStartDate.getTime() + 86400000 * daysDiff);
                                 } else {
-                                    row.innerHTML += '<td style="width: auto"></td>';
+                                    row.innerHTML += '<td></td>';
                                     requestStartDate = new Date(requestStartDate.getTime() + 86400000);
                                 }
                             }
@@ -212,7 +225,7 @@
                 }
             }
         }
-        xhr.open("GET", "/api/v1/schedules/2?" + "startDate=" + choiceStartDate + "&endDate=" + choiceEndDate, true);
+        xhr.open("GET", "/api/v1/schedules/" + userId + "?startDate=" + choiceStartDate + "&endDate=" + choiceEndDate, true);
         xhr.send();
     }
 

@@ -1,6 +1,9 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
+import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -43,13 +47,24 @@ public class NotificationController {
             return "common/error-404";
         }
     }
-    @GetMapping("/create")
-    public String getCreate(){
-        return "notification/create";
-    }
 
     @GetMapping("/{id}")
-    public String getDetail(){
-        return "notification/detail";
+    public String getDetail(@PathVariable String id,
+                            Model model){
+            NotificationDetailResponse notification = notificationService.findById(id);
+            model.addAttribute("notification", notification);
+            model.addAttribute("user", Principal.getUserCurrent());
+            model.addAttribute("maxFileSize", ApplicationConstant.MAX_FILE_SIZE);
+            model.addAttribute("listTypeFile", ApplicationConstant.LIST_TYPE_FILE);
+            model.addAttribute("uploadFileLimit", ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT);
+            return "notification/detail";
+    }
+
+    @GetMapping("/create")
+    public String getCreate( Model model){
+        model.addAttribute("maxFileSize", ApplicationConstant.MAX_FILE_SIZE);
+        model.addAttribute("listTypeFile", ApplicationConstant.LIST_TYPE_FILE);
+        model.addAttribute("uploadFileLimit", ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT);
+        return "notification/create";
     }
 }

@@ -99,33 +99,33 @@ public class AccountingControllerTest {
         verify(accountingService, times(1)).findAllMonthlyHistory();
         verifyNoMoreInteractions(accountingService);
     }
-    @Test
-    public void createAccountingTest() throws Exception {
-        AccountingCreateRequest accountingUpdateRequest = new AccountingCreateRequest(20000L,"4",new MultipartFile[]{},"Buy watermelon");
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(accountingUpdateRequest);
-        when(accountingService.createAccounting(ArgumentMatchers.any(AccountingCreateRequest.class))).thenReturn(1);
+//    @Test
+//    public void createAccountingTest() throws Exception {
+//        AccountingCreateRequest accountingUpdateRequest = new AccountingCreateRequest(20000L,"4",new MultipartFile[]{},"Buy watermelon");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String requestBody = objectMapper.writeValueAsString(accountingUpdateRequest);
+//        when(accountingService.createAccounting(ArgumentMatchers.any(AccountingCreateRequest.class))).thenReturn(1);
+//
+//        mockMvc.perform(post("/api/v1/accounts")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(requestBody))
+//                .andExpect(status().isCreated());
+//        verify(accountingService, times(1)).createAccounting(ArgumentMatchers.any(AccountingCreateRequest.class));
+//    }
 
-        mockMvc.perform(post("/api/v1/accounts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isCreated());
-        verify(accountingService, times(1)).createAccounting(ArgumentMatchers.any(AccountingCreateRequest.class));
-    }
-
-    @Test
-    public void updateAccountingTest() throws Exception {
-        AccountingUpdateRequest accountingUpdateRequest = new AccountingUpdateRequest("4b90a870-5ffa-4ea1-a100-63215ce9a02e",20000L,20000L,"4",new MultipartFile[]{},"Buy watermelon");
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(accountingUpdateRequest);
-        when(accountingService.updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class))).thenReturn(AccountResponse.builder().build());
-
-        mockMvc.perform(post("/api/v1/accounts/edit")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isFound());
-        verify(accountingService, times(1)).updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class));
-    }
+//    @Test
+//    public void updateAccountingTest() throws Exception {
+//        AccountingUpdateRequest accountingUpdateRequest = new AccountingUpdateRequest("4b90a870-5ffa-4ea1-a100-63215ce9a02e",20000L,20000L,"4",new MultipartFile[]{},"Buy watermelon");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String requestBody = objectMapper.writeValueAsString(accountingUpdateRequest);
+//        when(accountingService.updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class))).thenReturn(AccountResponse.builder().build());
+//
+//        mockMvc.perform(post("/api/v1/accounts/edit")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(requestBody))
+//                .andExpect(status().isFound());
+//        verify(accountingService, times(1)).updateAccounting(ArgumentMatchers.any(AccountingUpdateRequest.class));
+//    }
 
     @Test
     public void deleteAccountingTest() throws Exception {

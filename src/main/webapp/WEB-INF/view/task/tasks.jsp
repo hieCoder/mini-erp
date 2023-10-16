@@ -9,22 +9,24 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <h1 class="text-center">Status</h1>
+            <h1>Status</h1>
             <div class="row">
-                <div class="table-responsive">
-                    <table id="data-table-status" class="table">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="data-table-status" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-9">
-            <h1 class="text-center">List task</h1>
+            <h1>List task</h1>
             <c:if test="${param.registerSuccess != null}">
                 <div class="alert alert-success">
                     Register success!
@@ -35,7 +37,7 @@
                     Delete success!
                 </div>
             </c:if>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-md-8">
                     <div class="d-flex justify-content-center">
                         <input class="form-control mr-1" id="search-input" type="text" placeholder="Title, username, hashtag">
