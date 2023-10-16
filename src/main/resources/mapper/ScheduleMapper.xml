@@ -18,7 +18,6 @@
                 AND t.START_DATE &lt;= #{endDate}
             </when>
         </choose>
-
     </select>
 
     <resultMap id="scheduleDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">

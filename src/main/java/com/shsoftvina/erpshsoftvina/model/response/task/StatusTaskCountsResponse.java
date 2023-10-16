@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.model.response.task;
 
-import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class StatusTaskCountsResponse {
-    private EnumDto status;
-    private long totolTask;
+    private EnumDto statusTask;
+    private long taskCount;
 }

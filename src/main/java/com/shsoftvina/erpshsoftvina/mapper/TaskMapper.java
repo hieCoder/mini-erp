@@ -12,8 +12,12 @@ public interface TaskMapper {
 
     List<Task> findAll(@Param("start") int start,
                        @Param("pageSize") int pageSize,
-                       @Param("status") String status,
+                       @Param("statusTask") String statusTask,
                        @Param("search") String search);
+    long getTotalItem(@Param("start") int start,
+                      @Param("pageSize") int pageSize,
+                      @Param("statusTask") String statusTask,
+                      @Param("search") String search);
     int registerTask(Task task);
     int updateTask(Task task);
     int changeStatusTask(@Param("id") String id,
@@ -21,6 +25,5 @@ public interface TaskMapper {
     List<Map<String, Object>> getStatusTaskCounts();
     Task findById(String id);
     List<Map<String, Object>> getTaskByHashtag(
-            @Param("userId") String userId,
-            @Param("hashtag") String hashtag);
+            @Param("userId") String userId);
 }

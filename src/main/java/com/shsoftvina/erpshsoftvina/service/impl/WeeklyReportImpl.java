@@ -2,16 +2,19 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.converter.WeeklyReportConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.entity.WeeklyReport;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyReportMapper;
 import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyReportRequest;
+import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.PageWeeklyReportListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.WeeklyReportService;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +34,17 @@ public class WeeklyReportImpl implements WeeklyReportService {
     UserMapper userMapper;
 
     @Override
-    public List<WeeklyReportShowResponse> getAllWeeklyReport(int page, int pageSize) {
+    public PageWeeklyReportListRespone getAllWeeklyReport(String searchTerm, String userRole, int start, int pageSize) {
+        int offset = (start - 1) * pageSize;
+        RowBounds rowBounds = new RowBounds(offset, pageSize);
+        List<WeeklyReport> listWeeklyReport = weeklyReportMapper.getAllWeeklyReport(searchTerm, userRole, rowBounds);
+        List<WeeklyReportShowResponse> showWeeklyReport = weeklyReportConverter.toListShowWeeklyReportResponse(listWeeklyReport);
+        long totalRecordCount = weeklyReportMapper.getTotalWeeklyReport(searchTerm, userRole);
+        long totalPage = (long) Math.ceil((double) totalRecordCount / pageSize);
+        boolean hasNext = start < totalPage;
+        boolean hasPrevious = start > 1;
 
-        User currentUser = Principal.getUserCurrent();
-        if(currentUser.getRole().equals(RoleEnum.DEVELOPER)){
-            return weeklyReportMapper.getAllWeeklyReportByUserId(page, pageSize, currentUser.getId())
-                    .stream().map(weeklyReport -> weeklyReportConverter.toShowResponse(weeklyReport)).collect(Collectors.toList());
-        }
-
-        return weeklyReportMapper.getAllWeeklyReport(page, pageSize)
-                .stream().map(weeklyReport -> weeklyReportConverter.toShowResponse(weeklyReport)).collect(Collectors.toList());
+        return new PageWeeklyReportListRespone(showWeeklyReport, start, totalPage, pageSize, hasNext, hasPrevious);
     }
 
     @Override

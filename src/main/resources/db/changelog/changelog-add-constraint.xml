@@ -56,38 +56,6 @@
     </changeSet>
 
     <changeSet id="7" author="team2">
-        <addForeignKeyConstraint baseTableName="TODO_MANAGEMENT_TIME"
-                                 baseColumnNames="USER_ID"
-                                 referencedTableName="USER"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_TODO_MANAGEMENT_TIME_USER"/>
-    </changeSet>
-
-    <changeSet id="8" author="team2">
-        <addForeignKeyConstraint baseTableName="TODO_MANAGEMENT_TIME"
-                                 baseColumnNames="CATEGORY_MANAGEMENT_TIME_ID"
-                                 referencedTableName="CATEGORY_MANAGEMENT_TIME"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_TODO_MANAGEMENT_TIME_CATEGORY_MANAGEMENT_TIME"/>
-    </changeSet>
-
-    <changeSet id="9" author="team2">
-        <addForeignKeyConstraint baseTableName="CATEGORY_MANAGEMENT_TIME"
-                                 baseColumnNames="MANAGEMENT_TIME_ID"
-                                 referencedTableName="MANAGEMENT_TIME"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_CATEGORY_MANAGEMENT_TIME_MANAGEMENT_TIME"/>
-    </changeSet>
-
-    <changeSet id="10" author="team2">
-        <addForeignKeyConstraint baseTableName="TODO_MANAGEMENT_TIME"
-                                 baseColumnNames="MANAGEMENT_TIME_ID"
-                                 referencedTableName="MANAGEMENT_TIME"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_TODO_MANAGEMENT_TIME_MANAGEMENT_TIME"/>
-    </changeSet>
-
-    <changeSet id="11" author="team2">
         <addForeignKeyConstraint baseTableName="TASK"
                                  baseColumnNames="USER_ID"
                                  referencedTableName="USER"
@@ -95,7 +63,7 @@
                                  constraintName="FK_TASK_USER"/>
     </changeSet>
 
-    <changeSet id="12" author="team2">
+    <changeSet id="8" author="team2">
         <addForeignKeyConstraint baseTableName="COMMENT_TASK"
                                  baseColumnNames="USER_ID"
                                  referencedTableName="USER"
@@ -103,7 +71,7 @@
                                  constraintName="FK_COMMENT_TASK_USER"/>
     </changeSet>
 
-    <changeSet id="13" author="team2">
+    <changeSet id="9" author="team2">
         <addForeignKeyConstraint baseTableName="COMMENT_TASK"
                                  baseColumnNames="TASK_ID"
                                  referencedTableName="TASK"
@@ -112,7 +80,7 @@
                                  onDelete="CASCADE"/>
     </changeSet>
 
-    <changeSet id="14" author="team2">
+    <changeSet id="10" author="team2">
         <addForeignKeyConstraint
                 baseTableName="COMMENT_TASK"
                 baseColumnNames="PARENT_ID"
@@ -122,7 +90,7 @@
                 onDelete="CASCADE"/>
     </changeSet>
 
-    <changeSet id="15" author="team2">
+    <changeSet id="11" author="team2">
         <addForeignKeyConstraint baseTableName="WEEKLY_REPORT"
                                  baseColumnNames="USER_ID"
                                  referencedTableName="USER"
@@ -130,35 +98,20 @@
                                  constraintName="FK_WEEKLY_REPORT_USER"/>
     </changeSet>
 
-    <changeSet id="16" author="team2">
-        <addForeignKeyConstraint baseTableName="ONETHING_CALENDAR"
+    <changeSet id="12" author="team2">
+        <addForeignKeyConstraint baseTableName="MANAGEMENT_TIME_DAY"
                                  baseColumnNames="USER_ID"
                                  referencedTableName="USER"
                                  referencedColumnNames="ID"
-                                 constraintName="FK_ONETHING_CALENDAR_USER"/>
+                                 constraintName="FK_MANAGEMENT_TIME_DAY_USER"/>
     </changeSet>
 
-    <changeSet id="17" author="team2">
-        <addForeignKeyConstraint baseTableName="TODO_LIST"
+    <changeSet id="13" author="team2">
+        <addForeignKeyConstraint baseTableName="NOTIFICATION"
                                  baseColumnNames="USER_ID"
                                  referencedTableName="USER"
                                  referencedColumnNames="ID"
-                                 constraintName="FK_TODO_LIST_USER"/>
+                                 constraintName="FK_NOTIFICATION_USER"/>
     </changeSet>
 
-    <changeSet id="18" author="team2">
-        <addForeignKeyConstraint baseTableName="TODO_LIST_DETAIL"
-                                 baseColumnNames="TODO_LIST_ID"
-                                 referencedTableName="TODO_LIST"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_TODO_LIST_DETAIL_TODO_LIST"/>
-    </changeSet>
-
-    <changeSet id="19" author="team2">
-        <addForeignKeyConstraint baseTableName="AFFIRMATION"
-                                 baseColumnNames="USER_ID"
-                                 referencedTableName="USER"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_AFFIRMATION_USER"/>
-    </changeSet>
 </databaseChangeLog>

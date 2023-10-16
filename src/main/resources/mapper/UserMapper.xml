@@ -11,12 +11,12 @@
 
     <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         SELECT *
-        FROM user
-        where email = #{email}
+        FROM USER
+        where EMAIL = #{email}
     </select>
 
     <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user
+        UPDATE USER
         SET
             fullname = #{fullname},
             date_of_birth = #{dateOfBirth},
@@ -32,42 +32,54 @@
             position = #{position},
             resume = #{resume},
             address = #{address},
+            is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
         WHERE id = #{id}
     </update>
 
-    <select id="getAllUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+    <select id="getAllUser" parameterType="org.apache.ibatis.session.RowBounds" resultMap="userResultMap">
          <![CDATA[
         SELECT u.fullname, u.id, u.email , u.department, u.position
         FROM USER AS u
         WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
-        LIMIT #{start}, #{pageSize};
         ]]>
+    </select>
+
+    <select id="getTotalUser" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM USER AS u
+        WHERE u.status = #{status}
+          AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
+        ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
         SELECT u.*, c.id AS contract_id, c.*
         FROM USER u
-                 LEFT JOIN CONTRACT c ON u.id = c.user_id
+        LEFT JOIN CONTRACT c ON u.id = c.user_id
         WHERE u.id = #{id}
     </select>
 
     <update id="changeStatusUser" parameterType="String" >
-        UPDATE user SET status = #{status} WHERE id = #{id}
+        UPDATE USER SET status = #{status} WHERE id = #{id}
     </update>
 
+    <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
+        INSERT INTO USER (ID, FULLNAME, STATUS, EMAIL, PASSWORD) VALUES (#{id}, #{fullname}, #{status}, #{email}, #{password});
+    </insert>
+
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
+        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
-        DELETE from user where id = #{id}
+        DELETE from USER where id = #{id}
     </delete>
 
     <update id="updateUserProfile" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE user
+        UPDATE USER
         SET
             fullname = #{fullname},
             date_of_birth = #{dateOfBirth},
@@ -76,7 +88,6 @@
             avatar = #{avatar},
             address = #{address},
             resume = #{resume},
-            avatar = #{avatar},
             is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode}
         WHERE id = #{id};
@@ -84,40 +95,43 @@
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="id"/>
-        <result property="fullname" column="fullname"/>
-        <result property="address" column="address"/>
-        <result property="dateOfBirth" column="date_of_birth"/>
-        <result property="phone" column="phone"/>
-        <result property="emergencyPhone" column="emergency_phone"/>
-        <result property="avatar" column="avatar"/>
-        <result property="type" column="type"/>
-        <result property="department" column="department"/>
-        <result property="atm" column="atm"/>
-        <result property="email" column="email"/>
-        <result property="password" column="password"/>
-        <result property="role" column="role"/>
-        <result property="status" column="status"/>
-        <result property="position" column="position"/>
-        <result property="resume" column="resume"/>
-        <result property="isFirstUpdateProfile" column="is_first_update_profile"/>
-        <result property="timesheetsCode" column="timesheets_code"/>
+        <result property="fullname" column="FULLNAME"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
+        <result property="phone" column="PHONE"/>
+        <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
+        <result property="avatar" column="AVATAR"/>
+        <result property="type" column="TYPE"/>
+        <result property="department" column="DEPARTMENT"/>
+        <result property="atm" column="ATM"/>
+        <result property="email" column="EMAIL"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="role" column="ROLE"/>
+        <result property="status" column="STATUS"/>
+        <result property="position" column="POSITION"/>
+        <result property="resume" column="RESUME"/>
+        <result property="isFirstUpdateProfile" column="IS_FIRST_UPDATE_PROFILE"/>
+        <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
         <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
     </resultMap>
 
     <resultMap id="listContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract" >
         <id property="id" column="contract_id"/>
-        <result property="basicSalary" column="basic_salary"/>
-        <result property="allowance" column="allowance"/>
-        <result property="contract" column="contract"/>
-        <result property="createdDate" column="created_date"/>
-        <result property="insuranceType" column="insurance_type"/>
-        <result property="insuranceMoney" column="insurance_money"/>
+        <result property="basicSalary" column="BASIC_SALARY"/>
+        <result property="allowance" column="ALLOWANCE"/>
+        <result property="contract" column="CONTRACT"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="insuranceType" column="INSURANCE_TYPE"/>
+        <result property="insuranceMoney" column="INSURANCE_MONEY"/>
     </resultMap>
 
-    <select id="getAllFullname" resultType="com.shsoftvina.erpshsoftvina.entity.User">
-    <![CDATA[
-        SELECT id, fullname
+    <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">
+        SELECT ID, FULLNAME
         FROM USER;
-        ]]>
     </select>
+
+    <resultMap id="fullnameResultMap" type="java.util.Map">
+        <result property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
+    </resultMap>
 </mapper>

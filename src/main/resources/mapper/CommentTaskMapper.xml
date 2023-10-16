@@ -4,40 +4,40 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentTaskMapper">
 
     <insert id="createCommentTask" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentTask" >
-        insert into comment_task (id, content, files, created_date, task_id, user_id, parent_id, title)
+        insert into COMMENT_TASK (ID, CONTENT, FILES, CREATED_DATE, TASK_ID, USER_ID, PARENT_ID, TITLE)
             value(#{id}, #{content}, #{files}, NOW(), #{task.id}, #{user.id}, #{parentComment.id}, #{title})
     </insert>
 
     <select id="findById" resultMap="commentTaskResultMap">
         SELECT
-            c.id AS comment_id,
-            c.title AS comment_title,
-            c.content AS comment_content,
-            c.files AS comment_files,
-            c.created_date AS comment_created_date,
-            c.user_id AS comment_user_id,
-            c.parent_id AS comment_parent_id,
-            c.modified_date AS comment_modified_date,
-            c.modified_by AS comment_modified_by,
-            u.fullname AS user_fullname,
-            u.avatar AS user_avatar
-        FROM comment_task c LEFT JOIN user u ON c.user_id = u.id OR c.parent_id IS NOT NULL
-        WHERE c.id = #{id}
+            c.ID AS comment_id,
+            c.TITLE AS comment_title,
+            c.CONTENT AS comment_content,
+            c.FILES AS comment_files,
+            c.CREATED_DATE AS comment_created_date,
+            c.USER_ID AS comment_user_id,
+            c.PARENT_ID AS comment_parent_id,
+            c.MODIFIED_DATE AS comment_modified_date,
+            c.MODIFIED_BY AS comment_modified_by,
+            u.FULLNAME AS user_fullname,
+            u.AVATAR AS user_avatar
+        FROM COMMENT_TASK c LEFT JOIN USER u ON c.user_id = u.id OR c.parent_id IS NOT NULL
+        WHERE c.ID = #{id}
     </select>
 
     <update id="updateCommentTask" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentTask">
-        UPDATE comment_task
+        UPDATE COMMENT_TASK
         SET
-            title = #{title},
-            content = #{content},
-            files = #{files},
-            modified_by = #{modifiedBy},
-            modified_date = NOW()
-        WHERE id = #{id}
+            TITLE = #{title},
+            CONTENT = #{content},
+            FILES = #{files},
+            MODIFIED_BY = #{modifiedBy},
+            MODIFIED_DATE = NOW()
+        WHERE ID = #{id}
     </update>
 
     <delete id="deleteById" parameterType="java.lang.String">
-        DELETE FROM comment_task WHERE id = #{id}
+        DELETE FROM COMMENT_TASK WHERE ID = #{id}
     </delete>
 
     <resultMap id="commentTaskResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
@@ -48,8 +48,20 @@
         <result property="createdDate" column="comment_created_date" />
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
+        <association property="parentComment" column="comment_parent_id" javaType="com.shsoftvina.erpshsoftvina.entity.CommentTask" select="getParentComment"/>
         <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
         <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentTask" select="getChildComments" />
+    </resultMap>
+
+    <select id="getParentComment" resultMap="parentCommentResultMap">
+        SELECT ID AS comment_parent_id
+        FROM COMMENT_TASK
+        WHERE ID = #{id}
+    </select>
+
+    <resultMap id="parentCommentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
+        <id property="id" column="comment_parent_id" />
+        <result property="id" column="PARENT_ID" />
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">

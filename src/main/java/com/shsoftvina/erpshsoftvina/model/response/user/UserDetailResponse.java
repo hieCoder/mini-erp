@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.List;
 public class UserDetailResponse{
     private String id;
     private String fullname;
-    private String dateOfBirth;
+    private Date dateOfBirth;
     private String address;
     private String phone;
     private String emergencyPhone;

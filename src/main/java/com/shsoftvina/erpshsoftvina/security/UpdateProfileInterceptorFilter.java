@@ -1,7 +1,7 @@
 package com.shsoftvina.erpshsoftvina.security;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
-import lombok.SneakyThrows;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,24 +17,41 @@ import java.io.IOException;
 @Component
 public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             try {
-//                updateProfileFirstInterceptor.preHandle(request, response, null);
                 User currentUser = Principal.getUserCurrent();
                 if(currentUser == null) {
                     response.sendRedirect("/login");
                 }
-                System.out.println(request.getRequestURI());
-                if(!currentUser.isFirstUpdateProfile() && !request.getRequestURI().startsWith("/assets/")) {
-                    request.getRequestDispatcher("/testUpdateProfile").forward(request, response);
+                User user = userMapper.findById(currentUser.getId());
+                if(!user.isFirstUpdateProfile() && !urlsAllow(request.getRequestURI())) {
+
+                    response.sendRedirect("/users/" + currentUser.getId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean urlsAllow(String u){
+        String[] urls = new String[]{
+                "/assets/",
+                "/upload/",
+                "/login", "/users/",
+                "/api/"
+        };
+
+        for(String url: urls){
+            if(u.startsWith(url)) return true;
+        }
+        return false;
     }
 }

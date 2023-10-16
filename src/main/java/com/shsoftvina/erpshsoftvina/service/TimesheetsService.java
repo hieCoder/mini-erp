@@ -8,5 +8,6 @@ import java.util.Map;
 
 public interface TimesheetsService {
     List<TimesheetsResponse> findAll(int start, int pageSize);
-    List<Map<String, ?>> getTotalWorkingDate(String userID, String year);
+    List<Map<String, ?>> getTotalWorkDayByYear(String userID);
+    List<Map<String, ?>> getTotalWorkDayByMonth(String userID, String year);
 }

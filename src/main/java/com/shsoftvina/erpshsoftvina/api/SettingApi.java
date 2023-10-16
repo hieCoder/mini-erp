@@ -21,7 +21,7 @@ public class SettingApi {
         return ResponseEntity.ok(settingService.findAll());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id) {
         return ResponseEntity.ok(settingService.findById(id));
     }

@@ -11,4 +11,3 @@ import java.util.List;
 public interface ScheduleMapper {
     List<Task> getScheduleDetail(@Param("userId") String userId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }
-

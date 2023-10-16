@@ -1,12 +1,10 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Task;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.task.ActionChangeStatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.PriorityTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
-import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
@@ -17,8 +15,6 @@ import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
-import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
-import liquibase.pro.packaged.D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,7 +51,7 @@ public class TaskConverter {
                 .id(task.getId())
                 .statusTask(EnumUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
-                .fullnameUser(task.getUser().getFullname())
+                .fullnameUser(task.getUser()!=null?task.getUser().getFullname():null)
                 .startDate(DateUtils.formatDate(task.getStartDate()))
                 .dueOrCloseDate(dueOrCloseDate)
                 .progress(task.getProgress())
@@ -97,8 +93,9 @@ public class TaskConverter {
 
         return TaskDetailResponse.builder()
                 .id(task.getId())
-                .statusTask(EnumUtils.instance(task.getStatusTask()))
+                .statusTask(ApplicationUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
+                .idUser(task.getUser().getId())
                 .fullnameUser(task.getUser().getFullname())
                 .createdDate(DateUtils.formatDate(task.getCreatedDate()))
                 .startDate(DateUtils.formatDate(task.getStartDate()))

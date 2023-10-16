@@ -8,5 +8,3 @@ import java.util.List;
 public interface ScheduleService {
     List<TaskShowResponse> getScheduleDetail(String userId, Date startDate, Date endDate);
 }
-
-

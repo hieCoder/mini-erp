@@ -4,8 +4,10 @@ public enum StatusTaskEnum {
 
     REGISTERED("Registered", new ActionChangeStatusTaskEnum[] {ActionChangeStatusTaskEnum.OPEN}),
     OPENED("Opened", new ActionChangeStatusTaskEnum[] {ActionChangeStatusTaskEnum.POSTPONE, ActionChangeStatusTaskEnum.CLOSE}),
+
     POSTPONED("Postponed", new ActionChangeStatusTaskEnum[] {ActionChangeStatusTaskEnum.REOPEN}),
-    REOPENED("Reopened", new ActionChangeStatusTaskEnum[] {ActionChangeStatusTaskEnum.CLOSE}),
+    REOPENED("Reopened", new ActionChangeStatusTaskEnum[] {ActionChangeStatusTaskEnum.POSTPONE, ActionChangeStatusTaskEnum.CLOSE}),
+
     CLOSED("Closed", new ActionChangeStatusTaskEnum[] {ActionChangeStatusTaskEnum.REOPEN});
 
     private String value;

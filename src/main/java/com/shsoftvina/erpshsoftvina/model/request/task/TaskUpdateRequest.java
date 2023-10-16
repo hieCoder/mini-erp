@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -26,7 +27,8 @@ public class TaskUpdateRequest {
     @NotBlank(message = "Field priority is not filled")
     private String priority;
 
-    @Min(value = 0, message = "Field progress must > 0")
+    @Min(value = 0, message = "Field progress must >= 0")
+    @Max(value = 100, message = "Field progress must <= 100")
     private Integer progress;
 
     @NotBlank(message = "Field content is not filled")

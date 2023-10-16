@@ -17,6 +17,7 @@ import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskRespon
 import com.shsoftvina.erpshsoftvina.service.CommentTaskService;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,7 +51,7 @@ public class CommentTaskImpl implements CommentTaskService {
     }
 
     @Override
-    public int createCommentTask(CreateCommentTaskRequest createCommentTaskRequest) {
+    public CommentTaskResponse createCommentTask(CreateCommentTaskRequest createCommentTaskRequest) {
 
         String taskId = createCommentTaskRequest.getTaskId();
         Task task = taskMapper.findById(taskId);
@@ -88,53 +89,65 @@ public class CommentTaskImpl implements CommentTaskService {
         if(listFileNameSaveFileSuccess != null){
             CommentTask ct = commentTaskConverter.toEntity(createCommentTaskRequest, listFileNameSaveFileSuccess);
             try{
-                return commentTaskMapper.createCommentTask(ct);
+                commentTaskMapper.createCommentTask(ct);
+                return commentTaskConverter.toResponse(ct);
             } catch (Exception e){
                 FileUtils.deleteMultipleFilesToServer(request,dir, ct.getFiles());
-                return 0;
+                return null;
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
-    public int updateCommentTask(UpdateCommentTaskRequest updateCommentTaskRequest) {
+    public CommentTaskResponse updateCommentTask(UpdateCommentTaskRequest updateCommentTaskRequest) {
         CommentTask commentTask = commentTaskMapper.findById(updateCommentTaskRequest.getId());
-        if(commentTask == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+        if(commentTask == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
-        MultipartFile[] files = updateCommentTaskRequest.getFiles();
+        MultipartFile[] newFiles = updateCommentTaskRequest.getNewFiles();
+        String remainFiles = updateCommentTaskRequest.getRemainFiles();
 
         String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
-        List<String> listFileNameSaveFileSuccess = null;
+        List<String> listFileNameSaveFileSuccess = new ArrayList<>();
 
-        String listFileNameOld = null;
-
-        if (files!= null){
-            if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
+        if (newFiles!= null){
+            if(!StringUtils.isBlank(remainFiles)){
+                if((remainFiles.split(",").length + newFiles.length) > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
+                    throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
+                }
+            } else if(newFiles.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT){
                 throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
             }
-            if(!FileUtils.isAllowedFileType(files, ApplicationConstant.LIST_TYPE_FILE)){
+
+            if(!FileUtils.isAllowedFileType(newFiles, ApplicationConstant.LIST_TYPE_FILE)){
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
             }
 
-            listFileNameOld = commentTask.getFiles();
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
-        } else{
-            listFileNameSaveFileSuccess = new ArrayList<>();
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, newFiles);
         }
 
         if(listFileNameSaveFileSuccess != null){
             try{
-                commentTaskMapper.updateCommentTask(commentTaskConverter.toEntity(updateCommentTaskRequest, listFileNameSaveFileSuccess));
-                FileUtils.deleteMultipleFilesToServer(request, dir, listFileNameOld);
-                return 1;
+                String newFilesToDB = null;
+                if(StringUtils.isBlank(remainFiles)){
+                   newFilesToDB =  String.join(",", listFileNameSaveFileSuccess);
+                } else{
+                    if(!listFileNameSaveFileSuccess.isEmpty()){
+                        newFilesToDB = remainFiles + "," + String.join(",", listFileNameSaveFileSuccess);
+                    } else newFilesToDB = remainFiles;
+                }
+
+                CommentTask ct= commentTaskConverter.toEntity(updateCommentTaskRequest, newFilesToDB);
+                commentTaskMapper.updateCommentTask(ct);
+                String deleteFiles = StringUtils.getDifference(commentTask.getFiles(), remainFiles);
+                FileUtils.deleteMultipleFilesToServer(request, dir, deleteFiles);
+                return commentTaskConverter.toResponse(ct);
             } catch (Exception e){
-                FileUtils.deleteMultipleFilesToServer(request,dir, commentTask.getFiles());
-                return 0;
+                FileUtils.deleteMultipleFilesToServer(request,dir, String.join(",", listFileNameSaveFileSuccess));
+                return null;
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
