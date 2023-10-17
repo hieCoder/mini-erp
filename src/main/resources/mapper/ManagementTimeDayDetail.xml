@@ -1,0 +1,18 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayDetailMapper">
+    <insert id="createTimeDayDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
+        insert into MANAGEMENT_TIME_DAY_DETAIL (ID, MANAGEMENT_TIME_DAY_ID, SIX_TO_TWELVE_PM, TWELVE_TO_SIX_PM,
+                                                SIX_TO_TWELVE_AM)
+            value (#{id}, #{managementTimeDay.id}, #{sixToTwelvePM}, #{twelveToSixPM}, #{sixToTwelveAM});
+    </insert>
+    <update id="updateTimeDayDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
+        UPDATE MANAGEMENT_TIME_DAY_DETAIL
+        SET
+            SIX_TO_TWELVE_PM = #{sixToTwelvePM},
+            TWELVE_TO_SIX_PM = #{twelveToSixPM},
+            SIX_TO_TWELVE_AM = #{sixToTwelveAM}
+        WHERE ID = #{id}
+    </update>
+</mapper>
