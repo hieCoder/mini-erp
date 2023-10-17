@@ -122,4 +122,19 @@
                                  constraintName="FK_MANAGEMENT_TIME_DAY_DETAIL_MANAGEMENT_TIME_DAY"/>
     </changeSet>
 
+    <changeSet id="15" author="team2">
+        <addForeignKeyConstraint baseTableName="FEELING_OF_BOOK"
+                                 baseColumnNames="BOOK_ID"
+                                 referencedTableName="BOOK"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_FEELING_OF_BOOK_BOOK"/>
+    </changeSet>
+
+    <changeSet id="16" author="team2">
+        <addForeignKeyConstraint baseTableName="FEELING_OF_BOOK"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_FEELING_OF_BOOK_USER"/>
+    </changeSet>
 </databaseChangeLog>
