@@ -26,6 +26,8 @@ public class AccountingUpdateRequest {
     @NotBlank(message = "Field is not filled")
     private String userId;
 
+    private String[] oldFile;
+
     private MultipartFile[] bill;
 
     @NotBlank(message = "Field is not filled")

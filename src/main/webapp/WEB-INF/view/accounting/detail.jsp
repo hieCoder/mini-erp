@@ -15,21 +15,22 @@
             Accounting Detail
         </div>
         <div class="card-body" id="table-body">
-            <h5 class="card-title">Title: ${account.title}</h5>
-            <p class="card-text">Created date: ${account.createdDate}</p>
-            <p class="card-text text-success">Revenue: ${account.revenue}</p>
-            <p class="card-text text-danger">Expense: ${account.expense}</p>
-            <p class="card-text text-primary">Remain: ${account.remain}</p>
-            <p class="card-text">Username: ${account.user.fullname}</p>
-            <p class="card-text">Note: ${account.note}</p>
+            <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
+            <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
+            <p class="card-text text-success">Revenue: <span id="revenueAccount">${account.revenue}</span></p>
+            <p class="card-text text-danger">Expense: <span id="expenseAccount">${account.expense}</span></p>
+            <p class="card-text text-primary">Remain: <span id="remainAccount">${account.remain}</span></p>
+            <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
+            <p class="card-text">Note: <span id="noteAccount">${account.note}</span></p>
 
             <c:choose>
                 <c:when test="${not empty account.bill}">
-                    <p class="card-text">Bill:
+                    <p class="card-text">Bill: <span id="attachedFilesNotification">
                         <c:forEach items="${account.bill}" var="file">
                             <a href="${file}" download="" target="_blank">${file.substring(file.indexOf('-') + 1)}</a>
                             <br>
                         </c:forEach>
+                        </span>
                     </p>
                 </c:when>
                 <c:otherwise>
@@ -78,7 +79,7 @@
                                pattern="[0-9]+">
                     </div>
                     <div class="form-group">
-                        <label for="editNote">Title</label>
+                        <label for="editNote">Note</label>
                         <input type="text" class="form-control" id="editNote" value="${account.note}" required>
                     </div>
                     <div class="form-group">
@@ -166,13 +167,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Success!</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                The request has been completed successfully.
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -180,7 +181,25 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                An error occurred while sending the request. Please try again.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).on("click", ".listFilesEdit button", function (e) {
         $("#deleteConfirmationModalFile #deleteFileButton").attr("data-name", $(this).attr("data-name"))
@@ -248,8 +267,6 @@
         $("li.listFilesEdit").each(function() {
             oldFile.push($(this).attr("data-name"));
         });
-        console.log(oldFile);
-
 
         if (!title || !note || !amount || isNaN(amount)) {
             alert("Title and amount are required and amount must be a number.");
@@ -279,7 +296,6 @@
         }
 
         var formData = new FormData();
-
         formData.append("title", title);
         formData.append("note", note);
         formData.append("id", accountId);
@@ -295,27 +311,41 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 302) {
                     var responseData = JSON.parse(xhr.responseText);
-                    console.log(responseData);
-                    var tableBody = document.getElementById("table-body");
+                    $("#titleAccount").text(responseData.title);
+                    $("#createdDateAccount").text(responseData.createdDate);
+                    $("#revenueAccount").text(responseData.revenue);
+                    $("#expenseAccount").text(responseData.expense);
+                    $("#remainAccount").text(responseData.remain);
+                    $("#fullnameAccount").text(responseData.user.fullname);
+                    $("#noteAccount").text(responseData.note);
+                    var xhtml = ''
+                    if(responseData.bill != null && responseData.bill.length > 0){
+                        responseData.bill.forEach((e)=>{
+                            xhtml += '<a href="'+ e +'" download target="_blank">'+e.substring(e.indexOf('-') + 1)+'</a><br>'
+                        })
+                    }
+                    $("#attachedFilesNotification").html(xhtml)
                     var editLink = document.getElementById("editLink");
                     var billContent = '';
                     if (responseData.bill !== null && responseData.bill.length > 0) {
                         responseData.bill.forEach(function (file) {
-                            billContent += '<a href="' + file + '" download="" target="_blank">' + file.substring(file.indexOf('-') + 1) + '</a><br>';
+                            billContent += '<li class="list-group-item listFilesEdit" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
+                            billContent += '<a href="' + file + '" download="" target="_blank" id="resumeLink">' + file.substring(file.indexOf('-') + 1) + '</a>';
+                            billContent += '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
+                            billContent += '<span>×</span>';
+                            billContent += '</button>';
+                            billContent += '</li>';
                         });
                     }
-                    tableBody.innerHTML = '<h5 class="card-title">Title:' + responseData.title + '</h5>' + '<p class="card-text">Created date: ' + responseData.createdDate + '</p>'
-                        + '<p class="card-text text-success">Revenue: ' + responseData.revenue + '</p>'
-                        + '<p class="card-text text-danger">Expense: ' + responseData.expense + '</p>'
-                        + '<p class="card-text text-primary">Username: ' + responseData.user.fullname + '</p>'
-                        + '<p class="card-text">Note: ' + responseData.note + '</p>'
-                        + '<p class="card-text">Bill:<br>' + billContent + '</p>';
-                    loading.style.display = "none";
-                    editLink.innerHTML = billContent;
                     $('#editModal').modal('hide');
+                    loading.style.display = "none";
+                    $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
+                    editLink.innerHTML = billContent;
                 } else {
-                    console.error("Requirement Error: " + xhr.status);
+                    loading.style.display = "none";
+                    $('#editModal').modal('hide');
+                    $('#errorModal').modal('show');
                 }
             }
         };
