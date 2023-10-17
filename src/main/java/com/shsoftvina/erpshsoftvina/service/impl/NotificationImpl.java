@@ -130,6 +130,9 @@ public class NotificationImpl implements NotificationService {
         }
         String dir = NotificationConstant.UPLOAD_FILE_DIR;
         String fileList = notificationDb.getFiles();
+        if(fileList == null){
+            fileList="";
+        }
         List<String> files = Arrays.asList(fileList.split(","));
         List<String> oldFile = Arrays.asList(updateNotificationRequest2.getOldFile());
         List<String> removeFiles = new ArrayList<>();
