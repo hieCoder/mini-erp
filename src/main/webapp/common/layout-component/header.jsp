@@ -48,7 +48,7 @@
                         <%=Principal.getUserCurrent().getFullname()%>
                     </span>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="/users">Profile</a>
+                        <a class="dropdown-item" id="avatar-user" href="">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout">Logout</a>
                     </div>

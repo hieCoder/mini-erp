@@ -29,10 +29,14 @@
             display: none;
         }
 
+        #contentContainer a:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-<form id="form" action="/weeklyReports" method="GET">
+<form id="form" action="/weekly-report" method="GET">
     <div class="container">
         <h1 class="mt-4">LIST WEEKLY REPORT</h1>
         <div class="row mt-4">
@@ -66,7 +70,8 @@
                 <tr>
                     <th scope="row">${(weeklyReports.pageNumber - 1) * weeklyReports.pageSize + loop.index + 1}</th>
                     <td>${weeklyReport.getId()}</td>
-                    <td><a href="${weeklyReport.getId()}" class="weeklyReportDetail-button">${weeklyReport.getTitle()}</a></td>
+                    <td><a href="${weeklyReport.getId()}"
+                           class="weeklyReportDetail-button">${weeklyReport.getTitle()}</a></td>
                     <td>${weeklyReport.getFullnameUser()}</td>
                     <td>${weeklyReport.getCreatedDate()}</td>
                 </tr>
@@ -117,7 +122,8 @@
 </form>
 
 <!-- Modal Add Weekly Report -->
-<div class="modal fade" id="addWeeklyReportModal" tabindex="-1" role="dialog" aria-labelledby="addWeeklyReportModalLabel"
+<div class="modal fade" id="addWeeklyReportModal" tabindex="-1" role="dialog"
+     aria-labelledby="addWeeklyReportModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -132,20 +138,22 @@
                     <div class="form-group row">
                         <label for="fullname" class="col-sm-2 col-form-label">Username</label>
                         <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext" id="fullname" value="${user.fullname}">
+                            <input type="text" readonly class="form-control-plaintext" id="fullname"
+                                   value="${user.fullname}">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label">Title</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="title" placeholder="Enter here">
+                            <input type="text" class="form-control" id="title" placeholder="Enter here" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label  class="col-sm-2 col-form-label">Content</label>
+                        <label class="col-sm-2 col-form-label">Content</label>
                         <div class="col-sm-10">
-                            <div id="contentContainer" contenteditable="true" class="form-control mention-container">
+                            <div id="contentContainer" contenteditable="true" class="form-control mention-container ">
                                 <!-- Content will be edited here -->
+
                             </div>
                         </div>
                     </div>
@@ -164,7 +172,8 @@
 </div>
 
 <!-- Modal Weekly Report Detail -->
-<div class="modal fade" id="WeeklyReportDetailModal" tabindex="-1" role="dialog" aria-labelledby="WeeklyReportDetailModalLabel"
+<div class="modal fade" id="WeeklyReportDetailModal" tabindex="-1" role="dialog"
+     aria-labelledby="WeeklyReportDetailModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -190,8 +199,8 @@
                     </div>
                     <div class="form-group row">
                         <label for="contentWeeklyReport" class="col-sm-2 col-form-label">Content</label>
-                        <div class="col-sm-10">
-                            <div class="form-control" id="contentWeeklyReport" readonly></div>
+                        <div class="col-sm-10" id="contentWeeklyReport">
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -210,7 +219,8 @@
 </div>
 
 <!-- Modal Notification Success -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -263,12 +273,17 @@
         // Get content and Get dropdown of tasks
         var contentContainer = document.getElementById("contentContainer");
         var mentionDropdown = document.getElementById("mentionDropdown");
-
+        var hashPressed = false;
         // Handle when user used key "#" in content
         contentContainer.addEventListener("input", function () {
             var content = contentContainer.innerText;
 
+            // check content contain '#'
             if (content.includes("#")) {
+                hashPressed = true;
+            }
+
+            if (hashPressed && content.charAt(content.length - 1) === "#") {
                 // Get titles form API
                 var userId = ${user.id};
                 var xhr = new XMLHttpRequest();
@@ -296,8 +311,15 @@
                             mentionItem.addEventListener("click", function () {
                                 var selectedTitle = mentionItem.textContent;
                                 var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
-                                contentContainer.innerHTML = content.replace("#", '<a href="/tasks/' + selectedTaskId + '">#' + selectedTitle + '</a>' + " ");
-
+                                var updatedContent = contentContainer.innerHTML + '<a href="/tasks/' + selectedTaskId + '">' + selectedTitle + '</a> ';
+                                contentContainer.innerHTML = updatedContent;
+                                var divs = contentContainer.querySelectorAll("div");
+                                divs.forEach(function (div) {
+                                    var span = document.createElement("span");
+                                    span.textContent = div.textContent;
+                                    contentContainer.replaceChild(span, div);
+                                    contentContainer.insertBefore(document.createElement("br"), span);
+                                });
                                 mentionDropdown.style.display = "none";
                             });
                             mentionDropdown.appendChild(mentionItem);
@@ -307,6 +329,7 @@
                 };
                 xhr.send();
             } else {
+                hashPressed = false;
                 mentionDropdown.style.display = "none";
             }
         });
@@ -318,7 +341,7 @@
         // Get Data in form
         var userId = this.value;
         var title = document.getElementById("title").value;
-        var content = document.getElementById("contentContainer").textContent;
+        var content = document.getElementById("contentContainer").outerHTML;
 
         var data = {
             title: title,
@@ -359,12 +382,22 @@
                 xhr.onload = function () {
                     if (xhr.status === 200) {
                         var responseData = JSON.parse(xhr.responseText);
-                        var content = responseData.content;
-                        var modifiedContent = replaceHashtagsWithLinks(content);
 
                         // Assign response Data weekly report to fields
                         document.getElementById("titleWeeklyReport").value = responseData.title;
-                        document.getElementById("contentWeeklyReport").innerHTML = modifiedContent;
+                        var contentWeeklyReport = document.getElementById("contentWeeklyReport");
+                        contentWeeklyReport.innerHTML = responseData.content;
+
+                        // Attach click event to anchor tags
+                        var anchorTags = contentWeeklyReport.querySelectorAll("a");
+                        anchorTags.forEach(function (anchor) {
+                            anchor.addEventListener("click", function (event) {
+                                // Handle click event for anchor tags here
+                                // For example, you can open the link in a new tab:
+                                window.open(anchor.getAttribute("href"));
+                                event.preventDefault(); // Prevent the default behavior of the anchor
+                            });
+                        });
                         document.getElementById("fullnameUser").value = responseData.fullnameUser;
                         document.getElementById("createDate").value = responseData.createdDate;
                     }
@@ -374,10 +407,6 @@
             });
         });
 
-        // assign tag a to "#**"
-        function replaceHashtagsWithLinks(text) {
-            return text.replace(/#([a-zA-Z0-9]+)/g, '<a href="/tasks/taskId">#$1</a>');
-        }
     });
 
     // Notification Add weekly Report Success

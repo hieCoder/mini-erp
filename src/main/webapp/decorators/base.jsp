@@ -51,5 +51,8 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <%-- sweetalert --%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('avatar-user').setAttribute('href', '/users/' + userCurrent.id);
+</script>
 </body>
 </html>
