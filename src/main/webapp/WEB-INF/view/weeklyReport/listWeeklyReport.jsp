@@ -155,6 +155,7 @@
                                 <!-- Content will be edited here -->
 
                             </div>
+                            <p id="errorMessage" style="color: red;"></p>
                         </div>
                     </div>
                     <div id="mentionDropdown" class="mention-dropdown">
@@ -284,6 +285,7 @@
             }
 
             if (hashPressed && content.charAt(content.length - 1) === "#") {
+                $('.modal-footer').after(createLoadingHtml());
                 // Get titles form API
                 var userId = ${user.id};
                 var xhr = new XMLHttpRequest();
@@ -306,7 +308,7 @@
                             mentionItem.classList.add("dropdown-item");
                             mentionItem.classList.add("border");
                             mentionItem.textContent = title;
-
+                            $('div.custom-spinner').parent().remove();
                             // Handle when user choose one of the titles
                             mentionItem.addEventListener("click", function () {
                                 var selectedTitle = mentionItem.textContent;
@@ -337,35 +339,43 @@
 
     // Handle when user click button "Submit" in modal Add Weekly Report
     document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
-        $('.modal-footer').after(createLoadingHtml());
-        // Get Data in form
-        var userId = this.value;
-        var title = document.getElementById("title").value;
-        var content = document.getElementById("contentContainer").outerHTML;
 
-        var data = {
-            title: title,
-            content: content,
-            userId: userId
-        };
+        var contentContainer = document.getElementById("contentContainer").innerText;
+        const errorMessage = document.getElementById("errorMessage");
+        // Kiểm tra nếu nội dung là rỗng
+        if (contentContainer.trim() === "") {
+            errorMessage.textContent = "Vui lòng điền thông tin vào ô này!";
+        } else {
+            errorMessage.textContent = "";
+            $('.modal-footer').after(createLoadingHtml());
+            // Get Data in form
+            var userId = this.value;
+            var title = document.getElementById("title").value;
+            var content = document.getElementById("contentContainer").outerHTML;
+            var data = {
+                title: title,
+                content: content,
+                userId: userId
+            };
 
-        var xhr = new XMLHttpRequest();
-        var url = '/api/v1/weekly-reports';
+            var xhr = new XMLHttpRequest();
+            var url = '/api/v1/weekly-reports';
 
-        xhr.open('POST', url, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    sessionStorage.setItem('result', 'addWeeklyReportSuccess');
-                    $('div.custom-spinner').parent().remove();
-                    location.reload();
-                } else {
-                    console.log('Add Weekly Report is False' + xhr.status);
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        sessionStorage.setItem('result', 'addWeeklyReportSuccess');
+                        $('div.custom-spinner').parent().remove();
+                        location.reload();
+                    } else {
+                        console.log('Add Weekly Report is False' + xhr.status);
+                    }
                 }
-            }
-        };
-        xhr.send(JSON.stringify(data));
+            };
+            xhr.send(JSON.stringify(data));
+        }
     });
 
     // Handle when user click on link Title

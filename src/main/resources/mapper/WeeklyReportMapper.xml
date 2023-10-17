@@ -78,6 +78,6 @@
 
     <insert id="createWeeklyReport" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyReport">
         insert into WEEKLY_REPORT (id, title, content, created_date, user_id)
-            value (#{id}, #{title}, #{content}, NOW(), #{user.id})
+            value (#{id}, #{title}, #{content}, #{createdDate}, #{user.id})
     </insert>
 </mapper>
