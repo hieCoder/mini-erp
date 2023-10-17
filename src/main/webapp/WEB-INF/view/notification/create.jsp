@@ -77,13 +77,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var dot = `
-            <div class="text-center d-flex align-items-center justify-content-center">
-                <div class="custom-spinner d-flex align-items-center justify-content-center">
-                    <div class="dot"></div>
-                </div>
-            </div>
-        `
+        var dot = createLoadingHtml()
+
         var submitButton = document.getElementById("submitButton")
         submitButton.addEventListener("click", function () {
             $("#submitButton").prop("disabled", true);
