@@ -105,9 +105,22 @@ public class FileUtils {
         String basePath = request.getSession().getServletContext().getRealPath("/");
         String grandparentPath = Paths.get(basePath).getParent().getParent().toString();
         Path deletePath = Paths.get(grandparentPath + dir + fileName);
+
+        String[] parts = dir.split("upload");
+        String destinationFolder = parts[parts.length-1];
+        Path deletePathTarget = Paths.get(basePath + "/upload/" + destinationFolder + "/" + fileName);
+
         if (Files.exists(deletePath)) {
             try {
                 Files.delete(deletePath);
+                if (Files.exists(deletePathTarget)) {
+                    try {
+                        Files.delete(deletePathTarget);
+                        return true;
+                    } catch (IOException e) {
+                        return false;
+                    }
+                }
                 return true;
             } catch (IOException e) {
                 return false;
@@ -115,6 +128,7 @@ public class FileUtils {
         }
         return false;
     }
+
 
     public static String convertMultipartFileArrayToString(MultipartFile[] files) {
         if (files != null) {

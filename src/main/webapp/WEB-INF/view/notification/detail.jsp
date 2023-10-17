@@ -47,11 +47,11 @@
                         </tr>
                     </table>
                     <div class="d-flex justify-content-end">
-                        <a href="${pathMain}" class="btn btn-secondary ml-2">Back to list</a>
+                        <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
                         <c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
-                        <c:if test="${userRole.equals(RoleEnum.MANAGER) or userRole.equals(RoleEnum.OWNER)}">
-                            <button type="button" class="btn btn-danger ml-3" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
-                            <button id="editButtonNotification" class="btn btn-primary ml-3">Edit</button>
+                        <c:if test="${!userRole.equals(RoleEnum.DEVELOPER)}">
+                            <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
                         </c:if>
                     </div>
                 </div>
@@ -98,10 +98,10 @@
                                             </div>
                                             <p class="comment-content" data-id="${childComment.id}">${childComment.content}</p>
                                             <div class="ml-auto">
-                                                <c:if test="${childComment.userId.equals(Principal.getUserCurrent().getId())}">
+                                                <div class="group-button-admin-noti">
                                                     <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
                                                     <button type="button" class="btn btn-sm btn-danger" data-id="${childComment.id}" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
-                                                </c:if>
+                                                </div>
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -258,6 +258,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script>
+    if(isAdminOrUserLogin('${notification.idUser}')){
+        $('.group-button-admin-noti').remove();
+    }
+</script>
 <script>
     function generateClientID() {
         const timestamp = new Date().getTime();

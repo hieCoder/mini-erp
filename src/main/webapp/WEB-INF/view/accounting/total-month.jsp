@@ -74,10 +74,17 @@
                                 <option value="expense">Expense</option>
                             </select>
                         </div>
+
                         <div class="form-group" id="amountGroup" style="display: none;">
                             <label for="amount">Amount</label>
                             <input type="number" class="form-control" id="amount" step="1" required pattern="[0-9]+">
                         </div>
+
+                        <div class="form-group">
+                            <label for="createNote">Note</label>
+                            <input type="text" class="form-control" id="createNote" required>
+                        </div>
+
                         <div class="form-group">
                             <label for="createBill">Bill</label>
                             <input type="file" class="form-control" id="createBill" multiple>
@@ -176,14 +183,14 @@
         xhr.open("POST", "/api/v1/accounts", true);
 
         var title = document.getElementById("createTitle").value;
-        console.log(title);
+        var note = document.getElementById("createNote").value;
         var transaction = document.getElementById("transactionType").value;
         var amount = parseFloat(document.getElementById("amount").value);
         var billInput = document.getElementById("createBill");
         var billFiles = billInput.files;
 
-        if (!title || !amount || isNaN(amount)) {
-            alert("Title and amount are required and amount must be a number.");
+        if (!title || !note || !amount || isNaN(amount)) {
+            alert("Title, note and amount are required and amount must be a number.");
             loading.style.display = "none";
             return;
         }
@@ -211,19 +218,17 @@
         var formData = new FormData();
 
         formData.append("title", title);
-        formData.append("userId", '3');
+        formData.append("note", note);
+        formData.append("userId", userCurrent.id);
         formData.append("expense", amount);
 
         for (var i = 0; i < billFiles.length; i++) {
             formData.append("bill", billFiles[i]);
         }
-        // Xử lý phản hồi từ máy chủ
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
                     loading.style.display = "none";
-                    var responseData = xhr.responseText;
-                    console.log(responseData);
                     $('#createModal').modal('hide');
                     $('#successModal').modal('show');
                 } else {

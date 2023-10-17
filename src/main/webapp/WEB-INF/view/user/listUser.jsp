@@ -7,7 +7,7 @@
 <body>
 <form id="form" action="/users" method="GET">
     <div class="container">
-        <h1 class="mt-4">LIST USER</h1>
+        <h1 class="mt-4">List User</h1>
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="form-group">
