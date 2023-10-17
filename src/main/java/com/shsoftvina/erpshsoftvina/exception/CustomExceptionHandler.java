@@ -61,6 +61,13 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
+    // Handle FileLimitNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
+    @ExceptionHandler(FileLimitNotAllowException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileLimitNotAllowException(FileLimitNotAllowException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
     // Handle NotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(NotAllowException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

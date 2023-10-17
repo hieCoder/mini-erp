@@ -13,11 +13,15 @@ public interface TaskMapper {
     List<Task> findAll(@Param("start") int start,
                        @Param("pageSize") int pageSize,
                        @Param("statusTask") String statusTask,
-                       @Param("search") String search);
+                       @Param("search") String search,
+                       @Param("userRole") String userRole,
+                       @Param("userId") String userId);
     long getTotalItem(@Param("start") int start,
                       @Param("pageSize") int pageSize,
                       @Param("statusTask") String statusTask,
-                      @Param("search") String search);
+                      @Param("search") String search,
+                      @Param("userRole") String userRole,
+                      @Param("userId") String userId);
     int registerTask(Task task);
     int updateTask(Task task);
     int changeStatusTask(@Param("id") String id,

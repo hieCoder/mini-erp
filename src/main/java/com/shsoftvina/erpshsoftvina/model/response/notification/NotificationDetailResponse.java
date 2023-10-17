@@ -18,5 +18,6 @@ public class NotificationDetailResponse {
     private String title;
     private String[] files;
     private String createdDate;
+    private String fullnameUser;
     private List<CommentNotificationResponse> comments;
 }

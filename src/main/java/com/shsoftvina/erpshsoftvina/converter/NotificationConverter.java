@@ -1,6 +1,8 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Notification;
+import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class NotificationConverter {
     @Autowired
     CommentNotificationConverter commentNotificationConverter;
+    @Autowired
+    UserMapper userMapper;
 
     public NotificationShowResponse toShowResponse(Notification notification) {
         return NotificationShowResponse.builder()
@@ -44,6 +48,7 @@ public class NotificationConverter {
         }
 
         return Notification.builder()
+                .user(userMapper.findById(createNotificationRequest.getUserId()))
                 .id(UUID.randomUUID().toString())
                 .title(createNotificationRequest.getTitle())
                 .content(createNotificationRequest.getContent())
@@ -73,10 +78,16 @@ public class NotificationConverter {
     }
 
     public NotificationDetailResponse toNotificationDetailResponse(Notification notification) {
+        User user = notification.getUser();
+        String fullnameUser = null;
+        if(user != null){
+            fullnameUser = user.getFullname();
+        }
         return NotificationDetailResponse.builder()
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .content(notification.getContent())
+                .fullnameUser(fullnameUser)
                 .files(FileUtils.getPathUploadList(Notification.class, notification.getFiles()))
                 .createdDate(DateUtils.formatDateTime(notification.getCreatedDate()))
                 .comments(commentNotificationConverter.toListResponse(notification.getComments()))

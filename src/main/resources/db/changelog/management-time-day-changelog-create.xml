@@ -18,4 +18,11 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <modifyDataType tableName="MANAGEMENT_TIME_DAY" columnName="ONE_THING_CALENDAR" newDataType="TEXT"/>
+        <modifyDataType tableName="MANAGEMENT_TIME_DAY" columnName="TO_DO_LIST" newDataType="TEXT"/>
+        <modifyDataType tableName="MANAGEMENT_TIME_DAY" columnName="GRATITUDE_DIARY" newDataType="TEXT"/>
+        <modifyDataType tableName="MANAGEMENT_TIME_DAY" columnName="AFFIRMATION" newDataType="TEXT"/>
+    </changeSet>
+
 </databaseChangeLog>

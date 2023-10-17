@@ -3,18 +3,22 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.CommentTaskConstant;
 import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.converter.CommentTaskConverter;
 import com.shsoftvina.erpshsoftvina.entity.*;
+import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.CommentTaskMapper;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.CreateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.UpdateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.service.CommentTaskService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
@@ -43,6 +47,12 @@ public class CommentTaskImpl implements CommentTaskService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ApplicationUtils applicationUtils;
+
+    @Autowired
+    private SettingMapper settingMapper;
 
     @Override
     public CommentTaskResponse findById(String id) {
@@ -74,12 +84,7 @@ public class CommentTaskImpl implements CommentTaskService {
         List<String> listFileNameSaveFileSuccess = null;
 
         if (files!= null){
-            if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
-                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
-            }
-            if(!FileUtils.isAllowedFileType(files, ApplicationConstant.LIST_TYPE_FILE)){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            }
+            applicationUtils.checkValidateFile(CommentTask.class, files);
 
             listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
         } else{
@@ -105,22 +110,29 @@ public class CommentTaskImpl implements CommentTaskService {
         if(commentTask == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile[] newFiles = updateCommentTaskRequest.getNewFiles();
+
+        Setting setting = settingMapper.findByCode(SettingConstant.TASK_COMMENT_CODE);
+
+        for(MultipartFile file: newFiles){
+            if (!FileUtils.isAllowedFileSize(file)) throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+        }
+        if(!FileUtils.isAllowedFileType(newFiles, setting.getFileType())){
+            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
+        }
+
         String remainFiles = updateCommentTaskRequest.getRemainFiles();
 
         String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = new ArrayList<>();
 
         if (newFiles!= null){
-            if(!StringUtils.isBlank(remainFiles)){
-                if((remainFiles.split(",").length + newFiles.length) > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
-                    throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
-                }
-            } else if(newFiles.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT){
-                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
-            }
 
-            if(!FileUtils.isAllowedFileType(newFiles, ApplicationConstant.LIST_TYPE_FILE)){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
+            if(!StringUtils.isBlank(remainFiles)){
+                if((remainFiles.split(",").length + newFiles.length) > setting.getFileSize()) {
+                    throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileSize()));
+                }
+            } else if(newFiles.length > setting.getFileSize()){
+                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileSize()));
             }
 
             listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, newFiles);

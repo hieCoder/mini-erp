@@ -29,9 +29,10 @@
     <script src="/assets/js/validation.js"></script>
     <script>
         var userCurrent = {
-            id: <%=Principal.getUserCurrent().getId()%>,
+            id: "<%=Principal.getUserCurrent().getId()%>",
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
-            role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>
+            role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
         };
     </script>
 </head>

@@ -16,4 +16,6 @@ public class UpdateCommentNotificationRequest {
     private String content;
     @NotBlank(message = "Field id is not filled")
     private String id;
+
+    private String userId;
 }

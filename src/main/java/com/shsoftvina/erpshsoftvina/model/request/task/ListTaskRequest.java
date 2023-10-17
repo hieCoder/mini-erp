@@ -20,4 +20,6 @@ public class ListTaskRequest {
     private Integer pageSize;
     private String statusTask;
     private String search;
+    private String userRole;
+    private String userId;
 }

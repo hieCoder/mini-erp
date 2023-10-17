@@ -29,15 +29,20 @@
                             Management
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/users">Human Resource</a>
+                            <a class="dropdown-item" href="/users">Human</a>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/accounting">Accounting</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/timesheets">Timesheets</a>
-                            <a class="dropdown-item" href="/notifications">Notification</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link  text-light" href="/settings">Setting</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Setting
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <a class="dropdown-item" href="/settings/file">File</a>
+                        </div>
                     </li>
                 </ul>
             </div>

@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface TaskService {
-    List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search);
-    long getTotalItem(int start, int pageSize, String statusTask, String search);
+    List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search, String userRole, String userId);
+    long getTotalItem(int start, int pageSize, String statusTask, String search, String userRole, String userId);
     int registerTask(TaskRegisterRequest taskRegisterRequest);
     int updateTask(TaskUpdateRequest taskUpdateRequest);
     int deleteById(String id);

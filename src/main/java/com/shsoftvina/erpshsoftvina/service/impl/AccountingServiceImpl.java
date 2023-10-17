@@ -16,6 +16,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
@@ -40,6 +41,8 @@ public class AccountingServiceImpl implements AccountingService {
     private UserMapper userMapper;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private ApplicationUtils applicationUtils;
 
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
@@ -83,7 +86,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         if (billFile != null) {
-            FileUtils.validateFiles(billFile);
+            applicationUtils.checkValidateFile(Accounting.class, billFile);
         }
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
@@ -114,7 +117,7 @@ public class AccountingServiceImpl implements AccountingService {
         if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
         if (billFile != null) {
-            FileUtils.validateFiles(billFile);
+            applicationUtils.checkValidateFile(Accounting.class, billFile);
         }
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);

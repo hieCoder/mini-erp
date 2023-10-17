@@ -26,6 +26,7 @@
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
+        AND ( #{userRole} = 'OWNER' OR t.USER_ID = #{userId})
         ORDER BY t.CREATED_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>
@@ -33,13 +34,14 @@
     <select id="getTotalItem" resultType="long">
         SELECT COUNT(*)
         FROM TASK t
-        INNER JOIN USER u ON t.user_id = u.id
+        INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
         AND (
                 u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
+        AND ( #{userRole} = 'OWNER' OR t.USER_ID = #{userId})
         ORDER BY t.START_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>

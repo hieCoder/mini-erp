@@ -12,4 +12,5 @@ public interface SettingMapper {
     List<Setting> findAll();
     int updateSetting(Setting setting);
     Setting findById(String id);
+    Setting findByCode(String code);
 }

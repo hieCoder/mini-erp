@@ -11,16 +11,20 @@ public class MessageErrorUtils {
         return s.concat(" already exists");
     }
 
-    public static String notAllowImageType(){
-        return "Image type is not allowed! (jpg, jpeg, png, svg)";
+    public static String notAllowImageType(String imageTypes){
+        return "Image type is not allowed! (" + imageTypes + ")";
     }
 
-    public static String notAllowFileType(){
-        return "File type is not allowed (pdf, csv, xlsx, doc, xls, pptx)";
+    public static String notAllowFileType(String fileTypes){
+        return "File type is not allowed (" + fileTypes + ")";
+    }
+
+    public static String notAllowFileLimit(int fileLimit){
+        return "File count must <= " + fileLimit;
     }
 
     public static String notAllowFileSize(){
-        return "File count must < " + ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT;
+        return "File size must <= " + ApplicationConstant.MAX_FILE_SIZE;
     }
 
     public static String unauthorized(){

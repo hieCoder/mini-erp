@@ -24,7 +24,8 @@ public class TaskApi {
     public ResponseEntity<?> findAll(@RequestBody ListTaskRequest listTaskRequest) {
         Integer page = listTaskRequest.getPage() != null?listTaskRequest.getPage():1;
         int pageSize = listTaskRequest.getPageSize() != null?listTaskRequest.getPageSize(): TaskConstant.pageSizeDefault;
-        return ResponseEntity.ok(taskService.findAll((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
+        return ResponseEntity.ok(taskService.findAll((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch(),
+                listTaskRequest.getUserRole(), listTaskRequest.getUserId()));
     }
 
     @PostMapping("/register")
@@ -61,6 +62,7 @@ public class TaskApi {
     public ResponseEntity<?> getTotalItem(@RequestBody ListTaskRequest listTaskRequest){
         Integer page = listTaskRequest.getPage() != null?listTaskRequest.getPage():1;
         int pageSize = listTaskRequest.getPageSize() != null?listTaskRequest.getPageSize():TaskConstant.pageSizeDefault;
-        return ResponseEntity.ok(taskService.getTotalItem((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
+        return ResponseEntity.ok(taskService.getTotalItem((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch(),
+                listTaskRequest.getUserRole(), listTaskRequest.getUserId()));
     }
 }

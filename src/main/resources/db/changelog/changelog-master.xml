@@ -18,4 +18,6 @@
     <include file="db/changelog/management-time-day-changelog-create.xml" />
 
     <include file="db/changelog/changelog-add-constraint.xml" />
+
+    <include file="db/changelog/add-data-changelog-create.xml" />
 </databaseChangeLog>
