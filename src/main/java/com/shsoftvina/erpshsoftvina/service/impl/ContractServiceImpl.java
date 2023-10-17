@@ -12,6 +12,7 @@ import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
@@ -37,6 +38,9 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private ApplicationUtils applicationUtils;
+
     @Override
     public int addContract(CreateContractRequest createContractRequest) {
 
@@ -48,6 +52,9 @@ public class ContractServiceImpl implements ContractService {
             throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
 
         MultipartFile contract = createContractRequest.getContract();
+
+        if(contract!=null) applicationUtils.checkValidateFile(Contract.class, contract);
+
         String fileNameContract = null;
         boolean isSaveContractSuccess = true;
 
@@ -86,6 +93,9 @@ public class ContractServiceImpl implements ContractService {
             throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
 
         MultipartFile contractFile = updateContractRequest.getContract();
+
+        if(contract!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
+
         String fileNameContract = null;
         boolean isSaveContractSuccess = true;
 

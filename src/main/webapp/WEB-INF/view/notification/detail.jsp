@@ -454,38 +454,6 @@
                 });
                 $("#popupFormEditNotification").modal("hide");
             });
-
-            // xhttp.open("POST", apiUrlNotification + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            // xhttp.onreadystatechange  = function () {
-            //     if (xhttp.status === 200 && xhttp.readyState === 4) {
-            //         var data = JSON.parse(xhttp.responseText);
-            //         $("#titleNotification").text(data.title)
-            //         $("#contentNotification").text(data.content)
-            //         $("#authorNotification").text(data.title)
-            //         $("#createdDateNotification").text(data.createdDate)
-            //         var xhtml = ''
-            //         if(data.files!=null){
-            //             data.files.forEach((e)=>{
-            //                 xhtml += '<a href="'+ e +'" download class="btn btn-link text-primary">'+e.split("-")[1]+'</a>'
-            //             })
-            //         }
-            //         $("#attachedFilesNotification").html(xhtml)
-            //         var modal = `
-            //             <strong class="btn-success rounded-circle p-2">Success!</strong>  Notification Updated successfully.
-            //             `
-            //         $("#successModal div.modal-body").html(modal)
-            //         $("#successModal").modal("show");
-            //     }else{
-            //         console.error("Request failed with status: " + xhttp.status);
-            //     }
-            //     $('div.custom-spinner').parent().remove()
-            //     $("#popupFormEditNotification .modal-footer button").each(function() {
-            //         $(this).prop("disabled", false);
-            //     });
-            //     $("#popupFormEditNotification").modal("hide");
-            // }
-            //
-            // xhttp.send(formData);
         });
 
         $(document).on("click", ".listFilesEdit button", function (e) {
@@ -503,22 +471,16 @@
             $('#popupFormEditNotification div.modal-content').append(dot)
             $("#deleteConfirmationModalNotification").modal("hide");
             var notificationId = $("table#tableNotification").attr("data-id");
-            var apiUrlNotification = baseUrlNotification
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("DELETE", apiUrlNotification + "/" + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.onreadystatechange  = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    $("#deleteNotificationModal").modal("show");
-                }else{
-                    console.error("Request failed with status: " + xhttp.status);
-                }
+            var apiUrlNotification = baseUrlNotification;
+
+            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
+                $("#deleteNotificationModal").modal("show");
                 $('div.custom-spinner').parent().remove()
                 $("#popupFormEditNotification .modal-footer button").each(function() {
                     $(this).prop("disabled", false);
                 });
-            }
-            xhttp.send();
-        })
+            });
+        });
 
         $(document).on("change", "#editNotificationFile", function (event) {
             const selectedFiles = event.target.files;
@@ -595,69 +557,6 @@
                 $('div.custom-spinner').parent().remove()
                 $('button#editButtonNotification').prop("disabled", false);
             });
-
-            <%--var xhttp = new XMLHttpRequest();--%>
-            <%--xhttp.open("GET", apiUrlNotification + "/" + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL--%>
-            <%--xhttp.onreadystatechange  = function () {--%>
-            <%--    if (xhttp.status === 200 && xhttp.readyState === 4) {--%>
-            <%--        var data = JSON.parse(xhttp.responseText);--%>
-            <%--        var fileList = data.files--%>
-            <%--        var fileListHTML = '<ul class="list-group">';--%>
-            <%--        if (fileList != null) {--%>
-            <%--            for (var i = 0; i < fileList.length; i++) {--%>
-            <%--                var fileName = fileList[i].trim();--%>
-            <%--                fileListHTML += '<li class="list-group-item listFilesEdit" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +--%>
-            <%--                    '<a href="' + fileName + '" class="btn btn-link" download>' +--%>
-            <%--                    fileName.split("-")[1] +--%>
-            <%--                    '</a>' +--%>
-            <%--                    '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +--%>
-            <%--                    '<span>×</span>' +--%>
-            <%--                    '</button>' +--%>
-            <%--                    '</li>';--%>
-            <%--            }--%>
-            <%--        }--%>
-            <%--        fileListHTML += '<label for="file">Attached Files:</label>'--%>
-            <%--                +'<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'--%>
-            <%--                +'</ul>'--%>
-            <%--                +'<table class="table table-bordered text-center">'--%>
-            <%--                +'<thead>'--%>
-            <%--                +'<tr>'--%>
-            <%--                +' <th class="text-center col-6">File Format</th>'--%>
-            <%--                +' <th class="text-center col-3">Maximum Size</th>'--%>
-            <%--                +' <th class="text-center col-3">Maximum Files</th>'--%>
-            <%--                +'</tr>'--%>
-            <%--                +'</thead>'--%>
-            <%--                +'<tbody>'--%>
-            <%--                +'<tr>'--%>
-            <%--                +'<td class="text-center col-6">${listTypeFile}</td>'--%>
-            <%--                +'<td class="text-center col-3">${maxFileSize}</td>'--%>
-            <%--                +'<td class="text-center col-3">${uploadFileLimit}</td>'--%>
-            <%--                +'</tr>'--%>
-            <%--                +'</tbody>'--%>
-            <%--                +' </table>';--%>
-            <%--        var xhtml = '<form id="editNotificationForm">'--%>
-            <%--            +'<div class="form-group">'--%>
-            <%--            +'<label for="title">Title:</label>'--%>
-            <%--            +'<input type="text" id="editNotificationTitle" name="title" value="'+data.title+'" class="form-control">'--%>
-            <%--            +'</div>'--%>
-            <%--            +'<div class="form-group">'--%>
-            <%--            +'<label for="content">Content:</label>'--%>
-            <%--            +'<textarea id="editNotificationContent" name="content" class="form-control">'+data.content+'</textarea>'--%>
-            <%--            +'</div>'--%>
-            <%--            +'<div class="form-group">'--%>
-            <%--            + fileListHTML--%>
-            <%--            +'</div>'--%>
-            <%--            +'</form>';--%>
-            <%--        $("#popupFormEditNotification div.modal-body").html(xhtml)--%>
-            <%--        $("#popupFormEditNotification").modal("show");--%>
-            <%--    }else{--%>
-            <%--        console.error("Request failed with status: " + xhttp.status);--%>
-            <%--    }--%>
-            <%--    $('div.custom-spinner').parent().remove()--%>
-            <%--    $('button#editButtonNotification').prop("disabled", false);--%>
-            <%--}--%>
-            <%--xhttp.send();--%>
-
         });
 
         $("ul#commentList").on("click", ".edit-button", function() {

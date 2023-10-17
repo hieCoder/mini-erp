@@ -2,18 +2,22 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.converter.NotificationConverter;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import liquibase.pro.packaged.A;
@@ -30,13 +34,19 @@ import java.util.List;
 public class NotificationImpl implements NotificationService {
 
     @Autowired
-    NotificationMapper notificationMapper;
+    private NotificationMapper notificationMapper;
 
     @Autowired
-    NotificationConverter notificationConverter;
+    private NotificationConverter notificationConverter;
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private ApplicationUtils applicationUtils;
+
+    @Autowired
+    private SettingMapper settingMapper;
 
     @Override
     public List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search) {
@@ -53,12 +63,7 @@ public class NotificationImpl implements NotificationService {
         List<String> listFileNameSaveFileSuccess = null;
 
         if (files!= null){
-            if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
-                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
-            }
-            if(!FileUtils.isAllowedFileType(files, ApplicationConstant.LIST_TYPE_FILE)){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            }
+            applicationUtils.checkValidateFile(Notification.class, files);
 
             listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
         } else{
@@ -90,12 +95,8 @@ public class NotificationImpl implements NotificationService {
 
         Notification notification = notificationMapper.findById(id);
         if (files!= null){
-            if(files.length > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
-                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
-            }
-            if(!FileUtils.isAllowedFileType(files, ApplicationConstant.LIST_TYPE_FILE)){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            }
+            applicationUtils.checkValidateFile(Notification.class, files);
+
             if(notification == null){
                 throw new NotFoundException(MessageErrorUtils.notFound("Id"));
             }
@@ -143,11 +144,14 @@ public class NotificationImpl implements NotificationService {
         MultipartFile[] upFiles = updateNotificationRequest2.getFiles();
         List<String> newFilesUpdate = new ArrayList<>();
         if (upFiles!= null){
-            if((upFiles.length + oldFile.size()) > ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT) {
+
+            Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
+
+            if((upFiles.length + oldFile.size()) > setting.getFileSize()) {
                 throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
             }
-            if(!FileUtils.isAllowedFileType(upFiles, ApplicationConstant.LIST_TYPE_FILE)){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
+            if(!FileUtils.isAllowedFileType(upFiles, setting.getFileType())){
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
             }
             newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, upFiles);
             newFiles.addAll(newFilesUpdate);

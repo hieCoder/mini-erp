@@ -203,15 +203,4 @@ public class FileUtils {
 
         return fileSizeInBytes <= maxFileSizeInBytes && fileSizeInBytes <= maxRequestSizeInBytes;
     }
-
-    public static void validateFiles(MultipartFile[] files) {
-        for (MultipartFile file : files) {
-            if (!isAllowedFileType(file, ApplicationConstant.LIST_TYPE_FILE)) {
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            }
-            if (!isAllowedFileSize(file)) {
-                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-            }
-        }
-    }
 }

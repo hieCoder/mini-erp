@@ -12,20 +12,21 @@
                 <div class="col-md-12">
                     <form id="setting-file-form">
                         <div class="table-responsive">
-                        <table id="datatable-setting-file" class="table">
-                            <thead>
+                            <table id="datatable-setting-file" class="table">
+                                <thead>
                                 <tr>
                                     <th>Component</th>
                                     <th>Image type</th>
                                     <th>File type</th>
                                     <th>File size</th>
                                 </tr>
-                            </thead>
-                        </table>
-                        <div class="mt-2 text-right">
-                            <button type="button" class="btn btn-primary">Update</button>
+                                </thead>
+                            </table>
+                            <div class="mt-2 text-right">
+                                <b class="message-noti mr-2"></b>
+                                <button id="update-button" type="button" class="btn btn-primary">Update</button>
+                            </div>
                         </div>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -33,6 +34,9 @@
     </div>
 </div>
 <script>
+
+    var object = [];
+
     var table;
     $(document).ready(function (){
 
@@ -43,23 +47,28 @@
                 dataSrc: ''
             },
             columns: [
-                { data: 'code.name' },
+                {
+                    data: 'code',
+                    render: function(data, type, row) {
+                        return '<p data-code="' + row.code.code + '">' + data.name +'</p>';
+                    }
+                },
                 {
                     data: 'imageType',
                     render: function(data, type, row) {
-                        return '<div class="form-group"><input id="imageType" name="imageType" type="text" value="' + data + '"/><small class="form-message"></small></div>';
+                        return '<input name="imageType" type="text" value="' + data + '"/>';
                     }
                 },
                 {
                     data: 'fileType',
                     render: function(data, type, row) {
-                        return '<input name="fileType" type="text" value="' + data + '"/><small class="form-message"></small>';
+                        return '<input name="fileType" type="text" value="' + data + '"/>';
                     }
                 },
                 {
                     data: 'fileSize',
                     render: function(data, type, row) {
-                        return '<input name="fileSize" type="number" value="' + data + '"/><small class="form-message"></small>';
+                        return '<input name="fileSize" type="number" value="' + data + '"/>';
                     }
                 }
             ],
@@ -70,14 +79,45 @@
             info: false
         });
 
-        Validator({
-            form:'#setting-file-form',
-            errorSelector: '.form-message',
-            rules:[
-                Validator.isRequired('#imageType')
-            ],
-            onSubmit: function (formData) {
+        $('#update-button').on('click', function () {
+            object = [];
 
+            var isValidate = true;
+
+            $('#datatable-setting-file tbody tr').each(function () {
+
+                if (!isValidate) {
+                    return false;
+                }
+
+                var code = $(this).find('p').data('code');
+                var imageType = $(this).find('input[name="imageType"]').val();
+                var fileType = $(this).find('input[name="fileType"]').val();
+                var fileSize = $(this).find('input[name="fileSize"]').val();
+
+                if(isBlank(imageType) || isBlank(fileType) || isBlank(fileSize)){
+                    isValidate = false;
+                    $('.message-noti').text('All field is not empty');
+                    $('.message-noti').css('color', 'red');
+                    object = null;
+                } else{
+                    var obj = {
+                        code: code,
+                        imageType: imageType,
+                        fileType: fileType,
+                        fileSize: fileSize
+                    };
+                    object.push(obj);
+                }
+            });
+
+            if(isValidate){
+                callAjaxByJsonWithData('/api/v1/settings', 'PUT', object, function (rs) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Update success'
+                    });
+                });
             }
         });
     });
