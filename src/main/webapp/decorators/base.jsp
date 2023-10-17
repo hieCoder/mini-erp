@@ -29,10 +29,10 @@
     <script src="/assets/js/validation.js"></script>
     <script>
         var userCurrent = {
-            id: "<%=Principal.getUserCurrent().getId()%>",
+            id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
-            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+            avatar: <%=Principal.getUserCurrent().getAvatar() != null?"'/upload/user/"+Principal.getUserCurrent().getAvatar() + "'":"''"%>
         };
     </script>
 </head>
@@ -52,5 +52,19 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <%-- sweetalert --%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $('.avatar-login').attr('src', userCurrent.avatar);
+    $('.fullname-login').text(userCurrent.fullname);
+    $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
+    var scheduleLink = '';
+    if(userCurrent.role != U_DEVELOPER) scheduleLink = '/schedules';
+    else scheduleLink = '/schedules/detail/'+userCurrent.id;
+    $('.schedule-login').attr('href', scheduleLink);
+    if(userCurrent.role == U_DEVELOPER){
+        $('.human-login').remove();
+        $('.setting-login').remove();
+    }
+</script>
 </body>
 </html>

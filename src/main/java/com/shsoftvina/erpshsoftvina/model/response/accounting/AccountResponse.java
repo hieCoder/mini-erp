@@ -19,5 +19,6 @@ public class AccountResponse {
     private UserAccountingResponse user;
     private String[] bill;
     private String title;
+    private String note;
 }
 
