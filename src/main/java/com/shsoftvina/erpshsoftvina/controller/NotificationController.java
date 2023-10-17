@@ -1,10 +1,14 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +24,10 @@ import java.util.List;
 public class NotificationController {
 
     @Autowired
-    NotificationService notificationService;
+    private NotificationService notificationService;
+
+    @Autowired
+    private SettingMapper settingMapper;
 
     @GetMapping
     public String getList(
@@ -51,17 +58,23 @@ public class NotificationController {
             NotificationDetailResponse notification = notificationService.findById(id);
             model.addAttribute("notification", notification);
             model.addAttribute("user", Principal.getUserCurrent());
+
+            Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
+
             model.addAttribute("maxFileSize", ApplicationConstant.MAX_FILE_SIZE);
-            model.addAttribute("listTypeFile", ApplicationConstant.LIST_TYPE_FILE);
-            model.addAttribute("uploadFileLimit", ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT);
+            model.addAttribute("listTypeFile", setting.getFileType());
+            model.addAttribute("uploadFileLimit", setting.getFileSize());
             return "notification/detail";
     }
 
     @GetMapping("/create")
     public String getCreate( Model model){
+
+        Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
+
         model.addAttribute("maxFileSize", ApplicationConstant.MAX_FILE_SIZE);
-        model.addAttribute("listTypeFile", ApplicationConstant.LIST_TYPE_FILE);
-        model.addAttribute("uploadFileLimit", ApplicationConstant.NUMBER_UPLOAD_FILE_LIMIT);
+        model.addAttribute("listTypeFile", setting.getFileType());
+        model.addAttribute("uploadFileLimit", setting.getFileSize());
         return "notification/create";
     }
 }

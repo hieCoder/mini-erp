@@ -492,22 +492,16 @@
             $('#popupFormEditNotification div.modal-content').append(dot)
             $("#deleteConfirmationModalNotification").modal("hide");
             var notificationId = $("table#tableNotification").attr("data-id");
-            var apiUrlNotification = baseUrlNotification
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("DELETE", apiUrlNotification + "/" + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.onreadystatechange  = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    $("#deleteNotificationModal").modal("show");
-                }else{
-                    console.error("Request failed with status: " + xhttp.status);
-                }
+            var apiUrlNotification = baseUrlNotification;
+
+            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
+                $("#deleteNotificationModal").modal("show");
                 $('div.custom-spinner').parent().remove()
                 $("#popupFormEditNotification .modal-footer button").each(function() {
                     $(this).prop("disabled", false);
                 });
-            }
-            xhttp.send();
-        })
+            });
+        });
 
         $(document).on("change", "#editNotificationFile", function (event) {
             const selectedFiles = event.target.files;
