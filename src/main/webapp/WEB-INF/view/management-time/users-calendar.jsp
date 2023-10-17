@@ -22,10 +22,10 @@
         <%--                </div>--%>
         <%--            </div>--%>
         <%--        </div>--%>
-        <table class="table mt-4 table-bordered">ádasdas
+        <table class="table mt-4 table-bordered">
             <thead>
             <tr>
-                <th>NO.1231</th>
+                <th>NO.</th>
                 <th class="sortable-header">Fullname</th>
             </tr>
             </thead>
