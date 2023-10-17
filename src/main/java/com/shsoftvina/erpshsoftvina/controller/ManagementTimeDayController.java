@@ -10,20 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/todo")
-public class ToDoController {
+@RequestMapping("/management-time")
+public class ManagementTimeDayController {
+
     @Autowired
     ManagementTimeDayService managementTimeDayService;
 
-    @GetMapping
-    public String getCalendar() {
-        return "todo/calendar";
+    @GetMapping("/{idUser}")
+    public String getCalendarDetail(@PathVariable String idUser) {
+        return "management-time/calendar-detail";
     }
 
     @GetMapping("/day/{id}")
     public ModelAndView getDetailDay(@PathVariable("id") String id) {
         DayResponse dayResponse = managementTimeDayService.findById(id);
-        ModelAndView mav = new ModelAndView("todo/detail");
+        ModelAndView mav = new ModelAndView("management-time/day/detail");
         mav.addObject("dayResponse", dayResponse);
         return mav;
     }
