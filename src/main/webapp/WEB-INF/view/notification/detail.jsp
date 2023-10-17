@@ -1,3 +1,5 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
@@ -46,7 +48,11 @@
                     </table>
                     <div class="d-flex justify-content-end">
                         <a href="${pathMain}" class="btn btn-secondary ml-2">Back to list</a>
-                        <button id="editButtonNotification" class="btn btn-primary ml-3">Edit</button>
+                        <c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
+                        <c:if test="${userRole.equals(RoleEnum.MANAGER) or userRole.equals(RoleEnum.OWNER)}">
+                            <button type="button" class="btn btn-danger ml-3" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
+                            <button id="editButtonNotification" class="btn btn-primary ml-3">Edit</button>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -73,7 +79,10 @@
                             </div>
                             <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
                             <div class="ml-auto">
-                                <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
+                                <c:if test="${comment.userId.equals(Principal.getUserCurrent().getId())}">
+                                    <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete</button>
+                                </c:if>
                                 <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply</button>
                             </div>
                                 <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
@@ -89,7 +98,10 @@
                                             </div>
                                             <p class="comment-content" data-id="${childComment.id}">${childComment.content}</p>
                                             <div class="ml-auto">
-                                                <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
+                                                <c:if test="${childComment.userId.equals(Principal.getUserCurrent().getId())}">
+                                                    <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
+                                                    <button type="button" class="btn btn-sm btn-danger" data-id="${childComment.id}" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
+                                                </c:if>
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -123,7 +135,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                 <button type="button" id="saveChangesButton" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -146,7 +157,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
                 <button type="button" id="saveChangesButtonNotification" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -262,6 +272,12 @@
             var data = JSON.parse(comment.body);
             if (data != null) {
                 if ($('li.list-group-item[data-id="' + data.id + '"]').length <= 0) {
+                    var buttonHtml = ""
+                    if(userCurrent.id == data.userId){
+                        buttonHtml =
+                            '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                            '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
+                    }
                     $("textarea#newComment").val('');
                     var html = '<li class="list-group-item" data-id="' + data.id + '">' +
                         '<div class="comment-header d-flex align-items-center">' +
@@ -272,8 +288,7 @@
                         '</div>' +
                         '</div>' +
                         '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                        '<div class="ml-auto">' +
-                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                        '<div class="ml-auto">' + buttonHtml +
                         '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
                         '</div>' +
                         '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
@@ -337,6 +352,12 @@
         stompClient.subscribe("/notification/replycomments", function (comment) {
             var data = JSON.parse(comment.body);
             if (data != null) {
+                var buttonHtml = ""
+                if(userCurrent.id == data.userId){
+                    buttonHtml =
+                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                        '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
+                }
                         var html = '<li class="list-group-item" data-id="' + data.id + '">' +
                             '<div class="comment-header d-flex align-items-center">' +
                             '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
@@ -346,8 +367,7 @@
                             '</div>' +
                             '</div>' +
                             '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                            '<div class="ml-auto">' +
-                            '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                            '<div class="ml-auto">' + buttonHtml +
                             '</div>' +
                             '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
                             '</li>'
@@ -454,38 +474,6 @@
                 });
                 $("#popupFormEditNotification").modal("hide");
             });
-
-            // xhttp.open("POST", apiUrlNotification + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            // xhttp.onreadystatechange  = function () {
-            //     if (xhttp.status === 200 && xhttp.readyState === 4) {
-            //         var data = JSON.parse(xhttp.responseText);
-            //         $("#titleNotification").text(data.title)
-            //         $("#contentNotification").text(data.content)
-            //         $("#authorNotification").text(data.title)
-            //         $("#createdDateNotification").text(data.createdDate)
-            //         var xhtml = ''
-            //         if(data.files!=null){
-            //             data.files.forEach((e)=>{
-            //                 xhtml += '<a href="'+ e +'" download class="btn btn-link text-primary">'+e.split("-")[1]+'</a>'
-            //             })
-            //         }
-            //         $("#attachedFilesNotification").html(xhtml)
-            //         var modal = `
-            //             <strong class="btn-success rounded-circle p-2">Success!</strong>  Notification Updated successfully.
-            //             `
-            //         $("#successModal div.modal-body").html(modal)
-            //         $("#successModal").modal("show");
-            //     }else{
-            //         console.error("Request failed with status: " + xhttp.status);
-            //     }
-            //     $('div.custom-spinner').parent().remove()
-            //     $("#popupFormEditNotification .modal-footer button").each(function() {
-            //         $(this).prop("disabled", false);
-            //     });
-            //     $("#popupFormEditNotification").modal("hide");
-            // }
-            //
-            // xhttp.send(formData);
         });
 
         $(document).on("click", ".listFilesEdit button", function (e) {
@@ -497,9 +485,10 @@
         });
 
         $(document).on("click","#deleteNotificationButton",function (e){
-            $("#popupFormEditNotification .modal-footer button").each(function() {
+            $("div.card-body button").each(function() {
                 $(this).prop("disabled", true);
             });
+            $("#editButtonNotification").parent().append(dot);
             $('#popupFormEditNotification div.modal-content').append(dot)
             $("#deleteConfirmationModalNotification").modal("hide");
             var notificationId = $("table#tableNotification").attr("data-id");
@@ -595,69 +584,6 @@
                 $('div.custom-spinner').parent().remove()
                 $('button#editButtonNotification').prop("disabled", false);
             });
-
-            <%--var xhttp = new XMLHttpRequest();--%>
-            <%--xhttp.open("GET", apiUrlNotification + "/" + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL--%>
-            <%--xhttp.onreadystatechange  = function () {--%>
-            <%--    if (xhttp.status === 200 && xhttp.readyState === 4) {--%>
-            <%--        var data = JSON.parse(xhttp.responseText);--%>
-            <%--        var fileList = data.files--%>
-            <%--        var fileListHTML = '<ul class="list-group">';--%>
-            <%--        if (fileList != null) {--%>
-            <%--            for (var i = 0; i < fileList.length; i++) {--%>
-            <%--                var fileName = fileList[i].trim();--%>
-            <%--                fileListHTML += '<li class="list-group-item listFilesEdit" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +--%>
-            <%--                    '<a href="' + fileName + '" class="btn btn-link" download>' +--%>
-            <%--                    fileName.split("-")[1] +--%>
-            <%--                    '</a>' +--%>
-            <%--                    '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +--%>
-            <%--                    '<span>×</span>' +--%>
-            <%--                    '</button>' +--%>
-            <%--                    '</li>';--%>
-            <%--            }--%>
-            <%--        }--%>
-            <%--        fileListHTML += '<label for="file">Attached Files:</label>'--%>
-            <%--                +'<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'--%>
-            <%--                +'</ul>'--%>
-            <%--                +'<table class="table table-bordered text-center">'--%>
-            <%--                +'<thead>'--%>
-            <%--                +'<tr>'--%>
-            <%--                +' <th class="text-center col-6">File Format</th>'--%>
-            <%--                +' <th class="text-center col-3">Maximum Size</th>'--%>
-            <%--                +' <th class="text-center col-3">Maximum Files</th>'--%>
-            <%--                +'</tr>'--%>
-            <%--                +'</thead>'--%>
-            <%--                +'<tbody>'--%>
-            <%--                +'<tr>'--%>
-            <%--                +'<td class="text-center col-6">${listTypeFile}</td>'--%>
-            <%--                +'<td class="text-center col-3">${maxFileSize}</td>'--%>
-            <%--                +'<td class="text-center col-3">${uploadFileLimit}</td>'--%>
-            <%--                +'</tr>'--%>
-            <%--                +'</tbody>'--%>
-            <%--                +' </table>';--%>
-            <%--        var xhtml = '<form id="editNotificationForm">'--%>
-            <%--            +'<div class="form-group">'--%>
-            <%--            +'<label for="title">Title:</label>'--%>
-            <%--            +'<input type="text" id="editNotificationTitle" name="title" value="'+data.title+'" class="form-control">'--%>
-            <%--            +'</div>'--%>
-            <%--            +'<div class="form-group">'--%>
-            <%--            +'<label for="content">Content:</label>'--%>
-            <%--            +'<textarea id="editNotificationContent" name="content" class="form-control">'+data.content+'</textarea>'--%>
-            <%--            +'</div>'--%>
-            <%--            +'<div class="form-group">'--%>
-            <%--            + fileListHTML--%>
-            <%--            +'</div>'--%>
-            <%--            +'</form>';--%>
-            <%--        $("#popupFormEditNotification div.modal-body").html(xhtml)--%>
-            <%--        $("#popupFormEditNotification").modal("show");--%>
-            <%--    }else{--%>
-            <%--        console.error("Request failed with status: " + xhttp.status);--%>
-            <%--    }--%>
-            <%--    $('div.custom-spinner').parent().remove()--%>
-            <%--    $('button#editButtonNotification').prop("disabled", false);--%>
-            <%--}--%>
-            <%--xhttp.send();--%>
-
         });
 
         $("ul#commentList").on("click", ".edit-button", function() {
@@ -694,8 +620,17 @@
             $(this).prop("disabled", true);
             $(this).parent().append(dot);
             $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", true);
-            var apiUrl = baseUrlComment
-            var xhttp = new XMLHttpRequest();
+            if(content == ""){
+                var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
+                        `
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+                $(this).prop("disabled", false);
+                $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", false);
+                $('div.custom-spinner').parent().remove()
+                return
+            }
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -712,6 +647,17 @@
             $("button#newCommentBtn").parent().append(dot);
 
             var content = $("textarea#newComment").val()
+            if(content == ""){
+                var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
+                        `
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+                $("button#newCommentBtn").prop("disabled", false);
+                $("textarea#newComment").prop("disabled", false);
+                $('div.custom-spinner').parent().remove()
+                return
+            }
             var notificationId = $("table#tableNotification").attr("data-id")
             var data = {
                 content: content,
@@ -722,12 +668,18 @@
             var jsonData = JSON.stringify(data);
             sendComment(jsonData)
             })
+
+        $(document).on("click", "#commentList button.btn-danger", function(e) {
+            var commentId = $(this).data("id");
+            $("#deleteConfirmationModal").attr("data-id",commentId)
+        });
+
         document.getElementById("deleteButton").addEventListener("click", function () {
             $("#deleteConfirmationModal").modal("hide");
-            $(".modal-footer button").each(function() {
+            var id= $("#deleteConfirmationModal").attr("data-id")
+            $('li.list-group-item[data-id="' + id + '"] > div.ml-auto button').each(function() {
                 $(this).prop("disabled", true);
             });
-            var id= $("div.modal-content").attr("data-id")
             var data = {
                 id: id,
                 userId: userCurrent.id
