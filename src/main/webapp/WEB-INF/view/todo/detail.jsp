@@ -83,7 +83,9 @@
         </div>
         <div class="col-md-6">
             <h3>To-Do List</h3>
-            <h5>Six to Twelve PM</h5>
+            <h5>Six to Twelve PM
+                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelvePm">Show Detail</button>
+            </h5>
             <table class="table table-bordered sixToTwelvePm">
                 <thead>
                 <tr>
@@ -108,7 +110,9 @@
                 </c:if>
                 </tbody>
             </table>
-            <h5>Twelve to Six PM</h5>
+            <h5>Twelve to Six PM
+                <button class="btn btn-sm btn-primary showDetail" data-name="twelveToSixPm">Show Detail</button>
+            </h5>
             <table class="table table-bordered twelveToSixPm">
                 <thead>
                 <tr>
@@ -133,7 +137,9 @@
                 </c:if>
                 </tbody>
             </table>
-            <h5>Six to Twelve AM</h5>
+            <h5>Six to Twelve AM
+                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelveAm">Show Detail</button>
+            </h5>
             <table class="table table-bordered sixToTwelveAm">
                 <thead>
                 <tr>
@@ -177,10 +183,40 @@
                 </button>
             </div>
             <div class="modal-body">
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="margin-top: 30%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="align-middle">Q</th>
+                        <th class="align-middle">Time Slot</th>
+                        <th class="align-middle">Input target...</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -197,7 +233,76 @@
     }
 </style>
 <script>
+        let qresult = (name)=>{
+            let array = {
+                sixToTwelvePm: "6~12pm",
+                twelveToSixPm: "12~6pm",
+                sixToTwelveAm: "6pm~12am",
+            }
+            return array[name]
+        }
+        let interval = (name) =>{
+            let intervalResult = []
+            if(name == "sixToTwelvePm"){
+                for (var i = 6; i < 12; i++) {
+                    if (i === 11) {
+                        intervalResult.push(i + "~" + (i + 1) + "pm");
+                    } else {
+                        intervalResult.push(i + "~" + (i + 1) + "am");
+                    }
+                }
+            }else if(name == "twelveToSixPm"){
+                for (var i = 0; i <= 5; i++) {
+                    if (i === 0) {
+                        intervalResult.push(12 + "~" + (i+1) + "pm");
+                    } else {
+                        intervalResult.push(i + "~" + (i + 1) + "pm");
+                    }
+                }
+            }else{
+                for (var i = 6; i < 12; i++) {
+                    if (i == 11) {
+                        intervalResult.push(i + "~" + (i + 1) + "am");
+                    } else {
+                        intervalResult.push(i + "~" + (i + 1) + "pm");
+                    }
+                }
+            }
+            return intervalResult
+        }
+
     var dot = createLoadingHtml();
+    $("button.showDetail").click(function (){
+        var modal = $("#detailModal")
+        var name = $(this).attr("data-name")
+        var nameDisplay = $(this).parent().text()
+        $("button").each(function (){
+            $(this).prop("disabled",true)
+        })
+        $(this).after(dot)
+        modal.modal("show")
+        modal.attr("data-name",name )
+        $("#detailModalLabel").text(nameDisplay)
+        let arrayTime = interval(name)
+        let html = ""
+        if(arrayTime){
+            arrayTime.forEach((e, index)=>{
+                let xhtml = (index==0) ? '<td rowspan="6" class="align-middle text-center">'+ qresult(name) +'</td>' : ""
+                html+=
+                    '<tr>'+
+                         xhtml+
+                        '<td class="align-middle">'+ e +'</td>'+
+                        '<td><input type="text" class="form-control" placeholder="Input target..."></td>'+
+                    '</tr>'
+            })
+        }
+        $("#detailModal tbody").html(html)
+        $("button").each(function (){
+            $(this).prop("disabled",false)
+        })
+        $('div.custom-spinner').parent().remove();
+    })
+
     $("#updateButton").click(function() {
         $("button").each(function (){
             $(this).prop("disabled",true)
