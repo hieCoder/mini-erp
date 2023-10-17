@@ -448,6 +448,7 @@
             contractLink.textContent = contractfileName;
         }
 
+
         // Xử lý khi nút Delete được nhấn trong modal
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {

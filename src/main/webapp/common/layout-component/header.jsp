@@ -12,11 +12,17 @@
             </button>
             <div class="collapse navbar-collapse justify-content-around align-items-center ml-5 pl-5" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link  text-light" href="/tasks">Task</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  text-light" href="/schedules">Schedule</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Task
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <a class="dropdown-item" href="/tasks">Task</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/weekly-reports">Weekly report</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/schedules">Schedule</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link  text-light" href="/notifications">Notification</a>

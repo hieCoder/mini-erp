@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/weeklyReports")
-public class weeklyReportController {
+@RequestMapping("/weekly-reports")
+public class WeeklyReportController {
 
     @Autowired
     WeeklyReportService weeklyReportService;
@@ -26,7 +26,7 @@ public class weeklyReportController {
     public ModelAndView showListWeeklyReport(@RequestParam(name = "search", required = false, defaultValue = "") String search,
                                              @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                              @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        ModelAndView view = new ModelAndView("weeklyReport/listWeeklyReport");
+        ModelAndView view = new ModelAndView("weekly-report/list-weekly-report");
 
         User user =  Principal.getUserCurrent();
         PageWeeklyReportListRespone weeklyReports = weeklyReportService.getAllWeeklyReport(search, user.getRole().getValue(), user.getId(), page, pageSize);
