@@ -1,0 +1,11 @@
+div.modal-content {
+    margin-top: 20%;
+}
+
+#successModal div.modal-content{
+    margin-top: 50%;
+}
+
+#deleteAccountModal div.modal-content{
+    margin-top: 50%;
+}

@@ -22,7 +22,7 @@
                         <a class="nav-link  text-light" href="/notifications">Notification</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  text-light" href="/schedules">Well-being</a>
+                        <a class="nav-link  text-light" href="/management-time">Well-being</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
