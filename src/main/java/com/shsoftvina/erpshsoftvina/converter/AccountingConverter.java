@@ -46,6 +46,7 @@ public class AccountingConverter {
                 .revenue(revenue)
                 .user(userConverter.toAccountResponse(accounting.getUser()))
                 .title(accounting.getTitle())
+                .note(accounting.getNote())
                 .build();
     }
 
@@ -64,6 +65,7 @@ public class AccountingConverter {
                 .id(UUID.randomUUID().toString())
                 .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .status(StatusAccountingEnum.ACTIVE)
+                .note(accountingCreateRequest.getNote())
                 .build();
     }
 
@@ -75,6 +77,7 @@ public class AccountingConverter {
                 .expense(accountingUpdateRequest.getExpense())
                 .id(accountingUpdateRequest.getId())
                 .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
+                .note(accountingUpdateRequest.getNote())
                 .build();
     }
 
