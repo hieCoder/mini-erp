@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.feelingofbook.FeelingOfBookCreateRequest;
@@ -31,6 +32,12 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     @Autowired
     private FeelingOfBookConverter feelingOfBookConverter;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private BookMapper bookMapper;
+
     @Override
     public List<FeelingOfBookResponse> findAll() {
         return feelingOfBookMapper.findAll().stream().map(f->feelingOfBookConverter.toResponse(f)).collect(Collectors.toList());
@@ -38,6 +45,13 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
 
     @Override
     public FeelingOfBookResponse createFeelingOfBook(FeelingOfBookCreateRequest feelingOfBookCreateRequest) {
+
+        if(userMapper.findById(feelingOfBookCreateRequest.getUserId())== null)
+            throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+
+        if(bookMapper.findById(feelingOfBookCreateRequest.getBookId())== null)
+            throw new NotFoundException(MessageErrorUtils.notFound("bookId"));
+
         FeelingOfBook feelingOfBook = feelingOfBookConverter.toEntity(feelingOfBookCreateRequest);
         try{
             feelingOfBookMapper.createFeelingOfBook(feelingOfBook);
@@ -54,8 +68,8 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
 
     @Override
     public FeelingOfBookResponse updateFeelingOfBook(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest) {
-        FeelingOfBook x= feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId());
-        if(x == null)
+
+        if(feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId()) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("id"));
 
         FeelingOfBook feelingOfBook = feelingOfBookConverter.toEntity(feelingOfBookUpdateRequest);

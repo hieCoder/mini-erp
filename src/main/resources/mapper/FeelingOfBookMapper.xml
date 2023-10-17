@@ -39,7 +39,7 @@
     <insert id="createFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         INSERT
         INTO FEELING_OF_BOOK (ID, USER_ID, QUOTE, CREATED_DATE, BOOK_ID)
-        VALUES (#{id}, #{user.id}, #{quote}, #{createdDate}, #{book.id});
+        VALUES (#{id}, #{user.id}, #{quote}, #{createdDate}, #{book.id})
     </insert>
 
     <delete id="deleteFeelingOfBook" parameterType="String">

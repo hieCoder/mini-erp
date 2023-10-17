@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
+import com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.feelingofbook.FeelingOfBookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.feelingofbook.FeelingOfBookUpdateRequest;
@@ -23,6 +24,9 @@ public class FeelingOfBookConverter {
 
     @Autowired
     private BookMapper bookMapper;
+
+    @Autowired
+    private FeelingOfBookMapper feelingOfBookMapper;
 
     public FeelingOfBookResponse toResponse(FeelingOfBook feelingOfBook) {
         return FeelingOfBookResponse.builder()
@@ -45,8 +49,9 @@ public class FeelingOfBookConverter {
     }
 
     public FeelingOfBook toEntity(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest){
-        return FeelingOfBook.builder()
-                .id(feelingOfBookUpdateRequest.getId())
-                .quote(feelingOfBookUpdateRequest.getQuote()).build();
+
+        FeelingOfBook feelingOfBook = feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId());
+        feelingOfBook.setQuote(feelingOfBookUpdateRequest.getQuote());
+        return feelingOfBook;
     }
 }
