@@ -512,7 +512,7 @@
 
         // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
         yearSelect.addEventListener('change', function () {
-
+            $('#working-day').after(createLoadingHtml());
             callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, 'GET', null, function (rs) {
                 var dataMonth = rs;
                 // Xóa các option cũ trong dropdown year
@@ -532,6 +532,7 @@
                     });
                     totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
                 });
+                $('div.custom-spinner').parent().remove();
             });
 
             if (yearSelect.value != "") {
