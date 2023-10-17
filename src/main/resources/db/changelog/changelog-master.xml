@@ -14,10 +14,12 @@
     <include file="db/changelog/comment_task-changelog-create.xml" />
     <include file="db/changelog/weekly-report-changelog-create.xml" />
     <include file="db/changelog/setting-changelog-create.xml" />
-
     <include file="db/changelog/management-time-day-changelog-create.xml" />
+    <include file="db/changelog/management-time-day-detail-changelog-create.xml" />
 
     <include file="db/changelog/changelog-add-constraint.xml" />
 
     <include file="db/changelog/add-data-changelog-create.xml" />
+
+
 </databaseChangeLog>

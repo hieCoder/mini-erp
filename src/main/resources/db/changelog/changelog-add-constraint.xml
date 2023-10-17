@@ -114,4 +114,12 @@
                                  constraintName="FK_NOTIFICATION_USER"/>
     </changeSet>
 
+    <changeSet id="14" author="team2">
+        <addForeignKeyConstraint baseTableName="MANAGEMENT_TIME_DAY_DETAIL"
+                                 baseColumnNames="MANAGEMENT_TIME_DAY_ID"
+                                 referencedTableName="MANAGEMENT_TIME_DAY"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_MANAGEMENT_TIME_DAY_DETAIL_MANAGEMENT_TIME_DAY"/>
+    </changeSet>
+
 </databaseChangeLog>
