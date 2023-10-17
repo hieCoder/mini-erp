@@ -94,7 +94,7 @@ public class ContractServiceImpl implements ContractService {
 
         MultipartFile contractFile = updateContractRequest.getContract();
 
-        if(contract!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
+        if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
 
         String fileNameContract = null;
         boolean isSaveContractSuccess = true;

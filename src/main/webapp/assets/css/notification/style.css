@@ -18,3 +18,17 @@ div.modal-content {
  #createNotificationModal div.modal-content{
      margin-top: 50%;
  }
+
+ .user-info p{
+     margin: 0;
+ }
+
+.user-info p.user-name{
+    font-weight: bold;
+    font-size: 17px
+}
+
+.user-info p.comment-date{
+    font-style: italic;
+    font-size:12px;
+}

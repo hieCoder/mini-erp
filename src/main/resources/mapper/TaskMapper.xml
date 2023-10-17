@@ -208,8 +208,8 @@
 
     <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
         SELECT t.id, t.title
-        FROM task t
-        INNER JOIN user u ON t.user_id = u.id
+        FROM TASK t
+        INNER JOIN USER u ON t.user_id = u.id
         WHERE u.id = #{userId}
     </select>
 

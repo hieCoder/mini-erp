@@ -260,10 +260,10 @@
 
     // Handle when user click button "Add Weekly Report"
     document.addEventListener("DOMContentLoaded", function () {
-        var addButtons = document.querySelectorAll(".create-weeklyReport-button");
+        var createButtons = document.querySelectorAll(".create-weeklyReport-button");
 
         // Show modal Edit Contract
-        addButtons.forEach(function (button) {
+        createButtons.forEach(function (button) {
             button.addEventListener("click", function () {
                 $("#addWeeklyReportModal").modal("show");
             });
@@ -337,7 +337,7 @@
 
     // Handle when user click button "Submit" in modal Add Weekly Report
     document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
-
+        $('.modal-footer').after(createLoadingHtml());
         // Get Data in form
         var userId = this.value;
         var title = document.getElementById("title").value;
@@ -358,6 +358,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     sessionStorage.setItem('result', 'addWeeklyReportSuccess');
+                    $('div.custom-spinner').parent().remove();
                     location.reload();
                 } else {
                     console.log('Add Weekly Report is False' + xhr.status);
@@ -369,12 +370,13 @@
 
     // Handle when user click on link Title
     document.addEventListener("DOMContentLoaded", function () {
-        var addButtons = document.querySelectorAll(".weeklyReportDetail-button");
+        var detailButtons = document.querySelectorAll(".weeklyReportDetail-button");
 
         // Show modal Edit Contract
-        addButtons.forEach(function (button) {
+        detailButtons.forEach(function (button) {
             button.addEventListener("click", function (event) {
                 $("#WeeklyReportDetailModal").modal("show");
+                $('.modal-footer').after(createLoadingHtml());
 
                 var id = button.getAttribute("href");
                 var xhr = new XMLHttpRequest();
@@ -400,13 +402,13 @@
                         });
                         document.getElementById("fullnameUser").value = responseData.fullnameUser;
                         document.getElementById("createDate").value = responseData.createdDate;
+                        $('div.custom-spinner').parent().remove();
                     }
                 };
                 xhr.send();
                 event.preventDefault();
             });
         });
-
     });
 
     // Notification Add weekly Report Success
