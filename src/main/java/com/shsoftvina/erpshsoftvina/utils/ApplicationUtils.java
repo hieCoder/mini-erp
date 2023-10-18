@@ -96,6 +96,23 @@ public class ApplicationUtils {
         return setting;
     }
 
+    public void checkValidateImage(Class<?> c, MultipartFile file){
+
+        Setting setting = getSetting(c);
+
+        String imageTypes = setting.getImageType();
+        int fileLimit = setting.getFileSize();
+
+        if (!FileUtils.isAllowedFileSize(file))
+            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+
+        if (fileLimit < 1)
+            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+        if (!FileUtils.isAllowedFileType(file, imageTypes))
+            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageTypes));
+    }
+
     public void checkValidateFile(Class<?> c, MultipartFile file){
 
         Setting setting = getSetting(c);
@@ -106,7 +123,7 @@ public class ApplicationUtils {
         if (!FileUtils.isAllowedFileSize(file))
             throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
 
-        if (setting.getFileSize() < 0)
+        if (fileLimit < 1)
             throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
 
         if (!FileUtils.isAllowedFileType(file, fileTypes))

@@ -25,7 +25,7 @@
                         <img src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
                         <input name="avatar" type="file" class="form-control mt-2" id="avatar">
                         <small class="text-muted ml-2">Choose New Avatar</small>
-                        <h3 class="mt-2">${user.getFullname()}</h3>
+                        <h4 class="mt-2">${user.getFullname()}</h4>
                     </div>
                 </div>
                 <div class="col-md-8">
