@@ -8,5 +8,5 @@ import java.util.List;
 public interface SettingService {
     List<SettingResponse> findAll();
     SettingResponse findById(String id);
-    int updateSetting(SettingUpdateRequest settingUpdateRequest);
+    int updateSetting(SettingUpdateRequest[] settingUpdateRequests);
 }

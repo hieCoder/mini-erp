@@ -7,6 +7,6 @@ import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNo
 public interface CommentNotificationService {
     CommentNotificationResponse findById(String id);
     CommentNotificationResponse createCommentNotification(CreateCommentNotificationRequest createCommentNotificationRequest);
-    int updateCommentNotification(UpdateCommentNotificationRequest updateCommentNotificationRequest);
+    CommentNotificationResponse updateCommentNotification(UpdateCommentNotificationRequest updateCommentNotificationRequest);
     int deleteCommentNotification(String id);
 }

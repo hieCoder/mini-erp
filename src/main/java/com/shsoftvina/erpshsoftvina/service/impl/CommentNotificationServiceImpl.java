@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.converter.CommentNotificationConverter;
 import com.shsoftvina.erpshsoftvina.entity.CommentNotification;
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.CommentNotificationMapper;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentNotificationRequest;
@@ -12,6 +13,7 @@ import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.CommentNotificationService;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,19 +33,21 @@ public class CommentNotificationServiceImpl implements CommentNotificationServic
 
     @Override
     public CommentNotificationResponse createCommentNotification(CreateCommentNotificationRequest createCommentNotificationRequest){
-        String id = Principal.getUserCurrent().getId();
-        createCommentNotificationRequest.setUserId(id);
         CommentNotification commentNotification = commentNotificationConverter.toEntity(createCommentNotificationRequest);
         commentNotificationMapper.createCommentNotification(commentNotification);
         return commentNotificationConverter.toResponse(commentNotification);
     }
 
     @Override
-    public int updateCommentNotification(UpdateCommentNotificationRequest updateCommentNotificationRequest){
+    public CommentNotificationResponse updateCommentNotification(UpdateCommentNotificationRequest updateCommentNotificationRequest){
         if(commentNotificationMapper.findById(updateCommentNotificationRequest.getId()) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
         CommentNotification commentNotification = commentNotificationConverter.toEntity(updateCommentNotificationRequest);
-        return commentNotificationMapper.updateCommentNotification(commentNotification);
+        int rs = commentNotificationMapper.updateCommentNotification(commentNotification);
+        if(rs>0){
+            return commentNotificationConverter.toResponse(commentNotification);
+        }
+        return null;
     }
 
     @Override

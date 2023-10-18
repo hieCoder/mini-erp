@@ -54,7 +54,6 @@ public class WeeklyReportImpl implements WeeklyReportService {
 
     @Override
     public int createWeeklyReport(CreateWeeklyReportRequest createWeeklyReportRequest) {
-
         User user = userMapper.findById(createWeeklyReportRequest.getUserId());
         if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 

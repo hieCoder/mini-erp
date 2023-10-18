@@ -42,13 +42,13 @@ public class TaskServiceImpl implements TaskService {
     private UserMapper userMapper;
 
     @Override
-    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search) {
-        return taskMapper.findAll(start, pageSize, statusTask, search).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search, String userRole, String userId) {
+        return taskMapper.findAll(start, pageSize, statusTask, search, userRole, userId).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
     }
 
     @Override
-    public long getTotalItem(int start, int pageSize, String statusTask, String search) {
-        return taskMapper.getTotalItem(start, pageSize, statusTask, search);
+    public long getTotalItem(int start, int pageSize, String statusTask, String search, String userRole, String userId) {
+        return taskMapper.getTotalItem(start, pageSize, statusTask, search, userRole, userId);
     }
 
     @Override

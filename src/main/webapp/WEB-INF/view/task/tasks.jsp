@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col-md-9">
-            <h1>List task</h1>
+            <h1>List Task</h1>
             <c:if test="${param.registerSuccess != null}">
                 <div class="alert alert-success">
                     Register success!
@@ -137,7 +137,9 @@
         page: 1,
         pageSize: $('#page-count-select').val(),
         statusTask: '',
-        search: ''
+        search: '',
+        userRole: userCurrent.role,
+        userId: userCurrent.id
     }
 
     var tableTask, tableStatus;

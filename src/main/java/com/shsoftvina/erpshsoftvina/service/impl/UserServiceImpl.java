@@ -1,28 +1,22 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.MailConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.converter.UserConverter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
-import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.UserService;
-import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
-import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
-import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
+import com.shsoftvina.erpshsoftvina.utils.*;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +40,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private ApplicationUtils applicationUtils;
 
     @Override
     public PageUserListRespone getAllUser(String searchTerm, String sortDirection, int start, int pageSize, String status) {
@@ -128,18 +125,8 @@ public class UserServiceImpl implements UserService {
         MultipartFile avatarFile = userUpdateRequest.getAvatar();
         MultipartFile resumeFile = userUpdateRequest.getResume();
 
-        if (avatarFile != null) {
-            if (!FileUtils.isAllowedFileType(avatarFile, ApplicationConstant.LIST_TYPE_IMAGE))
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowImageType());
-            if (!FileUtils.isAllowedFileSize(avatarFile))
-                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-        }
-        if (resumeFile != null) {
-            if (!FileUtils.isAllowedFileType(resumeFile, ApplicationConstant.LIST_TYPE_FILE))
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType());
-            if (!FileUtils.isAllowedFileSize(resumeFile))
-                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-        }
+        if (avatarFile != null) applicationUtils.checkValidateImage(User.class, avatarFile);
+        if (resumeFile != null) applicationUtils.checkValidateFile(User.class, resumeFile);
 
         String uploadDir = UserConstant.UPLOAD_FILE_DIR;
         List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request,

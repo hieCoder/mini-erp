@@ -28,8 +28,8 @@
 
     <!--    Create new Notification-->
     <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
-        INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE)
-        VALUES (#{id}, #{title}, #{content}, #{files}, #{createdDate})
+        INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE, USER_ID)
+        VALUES (#{id}, #{title}, #{content}, #{files}, #{createdDate}, #{user.id})
     </select>
 
     <!--    Update Notification-->
@@ -63,6 +63,7 @@
         <result property="content" column="content"/>
         <result property="file" column="file"/>
         <result property="createdDate" column="created_date"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser"/>
     </resultMap>
 
     <select id="findById" resultMap="notificationResultMap">
@@ -72,6 +73,7 @@
             n.content AS notification_content,
             n.files AS notification_file,
             n.created_date AS notification_created_date,
+            n.user_id AS notification_user_id,
             c.id AS comment_id,
             c.user_id AS comment_user_id,
             c.content AS comment_content,
@@ -95,6 +97,7 @@
         <result property="content" column="notification_content" />
         <result property="files" column="notification_file" />
         <result property="createdDate" column="notification_created_date" />
+        <association property="user" column="notification_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser"/>
         <collection property="comments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" resultMap="commentResultMap" />
     </resultMap>
 
@@ -105,8 +108,18 @@
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
         <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-
         <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="getChildComments" />
+    </resultMap>
+
+    <select id="getUser" resultMap="userNotiResultMap">
+        SELECT *
+        FROM USER
+        WHERE id = #{id}
+    </select>
+
+    <resultMap id="userNotiResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="ID" />
+        <result property="fullname" column="FULLNAME" />
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
@@ -131,4 +144,5 @@
         WHERE c.parent_id = #{id}
         ORDER BY c.created_date DESC;
     </select>
+
 </mapper>

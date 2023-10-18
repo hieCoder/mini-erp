@@ -1,19 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 9/25/2023
-  Time: 11:46 AM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
     session.setAttribute("pathMain", "/notifications/");
     session.setAttribute("apiURL", "/api/v1");
 %>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
+<c:set var="userId" value="${Principal.getUserCurrent().getId()}" />
 <html>
 <head>
     <title>Notification</title>
+    <link rel="stylesheet" href="/assets/css/notification/style.css">
 </head>
 <body>
 <div class="container mt-4">
@@ -21,7 +19,7 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header font-weight-bold">
-                    Notification Details
+                    <h1>Notification Details</h1>
                 </div>
                 <div class="card-body">
                     <table id="tableNotification" data-id="${notification.id}" class="table table-bordered">
@@ -35,7 +33,7 @@
                         </tr>
                         <tr>
                             <th class="text-center align-middle">Author</th>
-                            <td id="authorNotification">${notification.title}</td>
+                            <td id="authorNotification">${notification.fullnameUser}</td>
                         </tr>
                         <tr>
                             <th class="text-center align-middle">Created Date</th>
@@ -51,15 +49,18 @@
                         </tr>
                     </table>
                     <div class="d-flex justify-content-end">
-                        <a href="${pathMain}" class="btn btn-secondary ml-2">Back to list</a>
-                        <button id="editButtonNotification" class="btn btn-primary ml-3">Edit</button>
+                        <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
+                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                            <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
+                        </c:if>
                     </div>
                 </div>
             </div>
             <div class="mb-3 mt-2">
                 <div class="row mb-4 mt-4">
                     <div class="col-md-10 d-flex">
-                        <img src="/assets/avatars/231003123245-Cat03.jpg" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">
+                        <img id="avatar-user-login" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">
                         <textarea id="newComment" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>
                     </div>
                     <div class="col-md-2">
@@ -71,7 +72,7 @@
                     <c:forEach items="${notification.comments}" var="comment">
                         <li class="list-group-item" data-id="${comment.id}">
                             <div class="comment-header d-flex align-items-center">
-                                <img src="/assets/avatars/${comment.avatarUser}" alt="Avatar" class="avatar rounded-circle img-thumbnail">
+                                <img src="${comment.avatarUser}" alt="Avatar" class="avatar rounded-circle img-thumbnail">
                                 <div class="user-info">
                                     <p class="user-name">${comment.fullnameUser}</p>
                                     <p class="comment-date">${comment.createdDate}</p>
@@ -79,7 +80,10 @@
                             </div>
                             <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
                             <div class="ml-auto">
+                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
                                 <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete</button>
+                                </c:if>
                                 <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply</button>
                             </div>
                                 <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
@@ -87,7 +91,7 @@
                                     <c:forEach items="${comment.childComments}" var="childComment">
                                         <li class="list-group-item" data-id="${childComment.id}">
                                             <div class="comment-header d-flex align-items-center">
-                                                <img src="/assets/avatars/${childComment.avatarUser}" alt="Avatar" class="avatar rounded-circle img-thumbnail">
+                                                <img src="${childComment.avatarUser}" alt="Avatar" class="avatar rounded-circle img-thumbnail">
                                                 <div class="user-info">
                                                     <p class="user-name">${childComment.fullnameUser}</p>
                                                     <p class="comment-date">${childComment.createdDate}</p>
@@ -95,7 +99,10 @@
                                             </div>
                                             <p class="comment-content" data-id="${childComment.id}">${childComment.content}</p>
                                             <div class="ml-auto">
-                                                <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
+                                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || childComment.userId.equals(userId)}">
+                                                    <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
+                                                    <button type="button" class="btn btn-sm btn-danger" data-id="${childComment.id}" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
+                                                </c:if>
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -129,7 +136,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                 <button type="button" id="saveChangesButton" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -152,7 +158,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
                 <button type="button" id="saveChangesButtonNotification" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -252,45 +257,33 @@
     </div>
 </div>
 
-<style>
-    div.modal-content {
-            margin-top: 20%;
-    }
-
-    #successModal div.modal-content{
-        margin-top: 50%;
-    }
-
-    #deleteNotificationModal div.modal-content{
-        margin-top: 50%;
-    }
-</style>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<%--<script>--%>
+<%--    if(!isAdminOrUserLogin()){--%>
+<%--        $('.group-button-admin-noti').remove();--%>
+<%--    }--%>
+<%--</script>--%>
 <script>
+    function generateClientID() {
+        const timestamp = new Date().getTime();
+        const random = Math.floor(Math.random() * 1000);
+        return 'client-'+timestamp+'-'+random
+    }
+    const clientID = generateClientID();
     var stompClient = Stomp.over(new SockJS("/websocket"));
 
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/notification/comments", function (comment) {
-            if(comment.body!=null) {
-                            var data = JSON.parse(comment.body);
-
-                    } else{
-                        console.log("Error")
+            var data = JSON.parse(comment.body);
+            if (data != null) {
+                if ($('li.list-group-item[data-id="' + data.id + '"]').length <= 0) {
+                    var buttonHtml = ""
+                    if(userCurrent.id == data.userId){
+                        buttonHtml =
+                            '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                            '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
                     }
-                    $("button#newCommentBtn").prop("disabled", false);
-                    $("textarea#newComment").prop("disabled", false);
-                    $('div.custom-spinner').parent().remove()
-        });
-    });
-
-    function sendComment(data) {
-
-        return new Promise(function(resolve, reject) {
-            stompClient.send("/app/comment", {}, data);
-            stompClient.subscribe("/notification/comments", function (comment) {
-                var data = JSON.parse(comment.body);
-                if (data != null) {
                     $("textarea#newComment").val('');
                     var html = '<li class="list-group-item" data-id="' + data.id + '">' +
                         '<div class="comment-header d-flex align-items-center">' +
@@ -301,44 +294,140 @@
                         '</div>' +
                         '</div>' +
                         '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                        '<div class="ml-auto">' +
-                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                        '<div class="ml-auto">' + buttonHtml +
                         '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
                         '</div>' +
-                        '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
-                        '</li>'
+                        '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
+                        '</li>';
 
-                    if( $("ul#commentList li.list-group-item:first").length >0){
-                        $("ul#commentList li.list-group-item:first").before(html)
-                    }else{
-                        $("ul#commentList").html(html)
+                    if ($("ul#commentList li.list-group-item:first").length > 0) {
+                        $("ul#commentList li.list-group-item:first").before(html);
+                    } else {
+                        $("ul#commentList").html(html);
                     }
-                    resolve(data);
-                } else {
-                    reject(new Error("Failed to send comment"));
+                    if(data.clientId == clientID){
+                        var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
+                            `
+                        $("#successModal div.modal-body").html(modal)
+                        $("#successModal").modal("show");
+                        $("button#newCommentBtn").prop("disabled", false);
+                        $("textarea#newComment").prop("disabled", false);
+                        $('div.custom-spinner').parent().remove()
+                    }
                 }
-            });
+            }
         });
-    }
+        stompClient.subscribe("/notification/editcomments", function (comment) {
+            var data = JSON.parse(comment.body);
+            if (data != null) {
+                var $pElement = $('p.comment-content[data-id="' + data.id + '"]');
+                $pElement.text(data.content)
+                if(data.clientId == clientID){
+                    $("#popupForm").modal("hide");
+                    var modal = `
+                               <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment update successfully.
+                                `
+                    $("#successModal div.modal-body").html(modal)
+                    $("#successModal").modal("show");
+                    $(".modal-footer button").each(function() {
+                            $(this).prop("disabled", false);
+                    });
+                    $('div.custom-spinner').parent().remove()
+                }
+            }
+        });
+        stompClient.subscribe("/notification/deletecomments", function (comment) {
+            var data = JSON.parse(comment.body);
+            if (data != null) {
+                $('li.list-group-item[data-id="'+data.id+'"]').remove()
+                if(data.clientId == clientID){
+                    var modal = `
+                <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment delete successfully.
+                `
+                    $("#successModal div.modal-body").html(modal)
+                    $("#popupForm").modal("hide");
+                    $("#successModal").modal("show");
+                        $(".modal-footer button").each(function() {
+                            $(this).prop("disabled", false);
+                        });
+                        $('div.custom-spinner').parent().remove()
+                }
+            }
+        });
 
+        stompClient.subscribe("/notification/replycomments", function (comment) {
+            var data = JSON.parse(comment.body);
+            if (data != null) {
+                var buttonHtml = ""
+                if(userCurrent.id == data.userId){
+                    buttonHtml =
+                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
+                        '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
+                }
+                        var html = '<li class="list-group-item" data-id="' + data.id + '">' +
+                            '<div class="comment-header d-flex align-items-center">' +
+                            '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
+                            '<div class="user-info">' +
+                            '<p class="user-name">' + data.fullnameUser + '</p>' +
+                            '<p class="comment-date">' + data.createdDate + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
+                            '<div class="ml-auto">' + buttonHtml +
+                            '</div>' +
+                            '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
+                            '</li>'
+                        var inputReply = $('#commentList #commentChildList-'+data.parentId+' > div.row')
+                        var listChild = $('#commentList #commentChildList-'+data.parentId+' > li.list-group-item:first')
+                        if(inputReply.length>0){
+                            inputReply.after(html)
+                        }else if(listChild.length>0){
+                            listChild.before(html)
+                        } else{
+                            $('#commentList #commentChildList-'+data.parentId).html(html)
+                        }
+                if(data.clientId == clientID){
+                            var modal = `
+                                <strong class="btn-success rounded-circle p-2">Success!</strong>  Reply successfully.
+                                `
+                            $('textarea#replyComment[data-id='+ data.parentId +']').val('');
+                            $("#successModal div.modal-body").html(modal)
+                            $("#successModal").modal("show");
+                            $('div.custom-spinner').parent().remove()
+                            $('textarea#replyComment[data-id='+ data.parentId +']').prop("disabled", false);
+                            $('button#replyCommentBtn[data-id='+ data.parentId +']').prop("disabled", false);
+                }
+            }
+        });
+    });
+    function sendComment(data) {
+            stompClient.send("/app/comment", {
+                clientID: clientID
+            }, data);
+    }
     function editComment(data) {
-        stompClient.send("/app/editcomment", {}, data);
+        stompClient.send("/app/editcomment", {
+            clientID: clientID
+        }, data);
     }
 
     function deleteComment(data) {
-        stompClient.send("/app/deletecomment", {},data);
+        stompClient.send("/app/deletecomment", {
+            clientID: clientID
+        },data);
+    }
+
+    function replyComment(data) {
+        stompClient.send("/app/replycomment", {
+            clientID: clientID
+        },data);
     }
 </script>
 <script>
     const baseUrlComment = "/api/v1/comment-notification";
     const baseUrlNotification = "/api/v1/notifications";
-    var dot = `
-            <div class="text-center d-flex align-items-center justify-content-center">
-                <div class="custom-spinner d-flex align-items-center justify-content-center">
-                    <div class="dot"></div>
-                </div>
-            </div>
-        `
+    var dot = createLoadingHtml();
+
     document.addEventListener("DOMContentLoaded", function() {
 
         $(document).on("click", "#saveChangesButtonNotification", function (e) {
@@ -365,37 +454,32 @@
             for (var i = 0; i < files.length; i++) {
                 formData.append("files", files[i]);
             }
-            xhttp.open("POST", apiUrlNotification + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.onreadystatechange  = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    var data = JSON.parse(xhttp.responseText);
-                    $("#titleNotification").text(data.title)
-                    $("#contentNotification").text(data.content)
-                    $("#authorNotification").text(data.title)
-                    $("#createdDateNotification").text(data.createdDate)
-                    var xhtml = ''
-                    if(data.files!=null){
-                        data.files.forEach((e)=>{
-                            xhtml += '<a href="'+ e +'" download class="btn btn-link text-primary">'+e.split("-")[1]+'</a>'
-                        })
-                    }
-                    $("#attachedFilesNotification").html(xhtml)
-                    var modal = `
+
+            callAjaxByDataFormWithDataForm(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
+                var data = rs;
+                $("#titleNotification").text(data.title)
+                $("#contentNotification").text(data.content)
+                $("#authorNotification").text(data.title)
+                $("#createdDateNotification").text(data.createdDate)
+                var xhtml = ''
+                if(data.files!=null){
+                    data.files.forEach((e)=>{
+                        xhtml += '<a href="'+ e +'" download class="btn btn-link text-primary">'+e.split("-")[1]+'</a>'
+                    })
+                }
+                $("#attachedFilesNotification").html(xhtml)
+                var modal = `
                         <strong class="btn-success rounded-circle p-2">Success!</strong>  Notification Updated successfully.
                         `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successModal").modal("show");
-                }else{
-                    console.error("Request failed with status: " + xhttp.status);
-                }
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+
                 $('div.custom-spinner').parent().remove()
                 $("#popupFormEditNotification .modal-footer button").each(function() {
                     $(this).prop("disabled", false);
                 });
                 $("#popupFormEditNotification").modal("hide");
-            }
-
-            xhttp.send(formData);
+            });
         });
 
         $(document).on("click", ".listFilesEdit button", function (e) {
@@ -407,28 +491,23 @@
         });
 
         $(document).on("click","#deleteNotificationButton",function (e){
-            $("#popupFormEditNotification .modal-footer button").each(function() {
+            $("div.card-body button").each(function() {
                 $(this).prop("disabled", true);
             });
+            $("#editButtonNotification").parent().append(dot);
             $('#popupFormEditNotification div.modal-content').append(dot)
             $("#deleteConfirmationModalNotification").modal("hide");
             var notificationId = $("table#tableNotification").attr("data-id");
-            var apiUrlNotification = baseUrlNotification
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("DELETE", apiUrlNotification + "/" + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.onreadystatechange  = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    $("#deleteNotificationModal").modal("show");
-                }else{
-                    console.error("Request failed with status: " + xhttp.status);
-                }
+            var apiUrlNotification = baseUrlNotification;
+
+            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
+                $("#deleteNotificationModal").modal("show");
                 $('div.custom-spinner').parent().remove()
                 $("#popupFormEditNotification .modal-footer button").each(function() {
                     $(this).prop("disabled", false);
                 });
-            }
-            xhttp.send();
-        })
+            });
+        });
 
         $(document).on("change", "#editNotificationFile", function (event) {
             const selectedFiles = event.target.files;
@@ -448,73 +527,63 @@
             $(this).prop("disabled", true);
             $(this).parent().append(dot);
             var notificationId = $("table#tableNotification").attr("data-id");
-            var apiUrlNotification = baseUrlNotification
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", apiUrlNotification + "/" + notificationId, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.onreadystatechange  = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    var data = JSON.parse(xhttp.responseText);
-                    var fileList = data.files
-                    var fileListHTML = '<ul class="list-group">';
-                    if (fileList != null) {
-                        for (var i = 0; i < fileList.length; i++) {
-                            var fileName = fileList[i].trim();
-                            fileListHTML += '<li class="list-group-item listFilesEdit" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +
-                                '<a href="' + fileName + '" class="btn btn-link" download>' +
-                                fileName.split("-")[1] +
-                                '</a>' +
-                                '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +
-                                '<span>×</span>' +
-                                '</button>' +
-                                '</li>';
-                        }
+            var apiUrlNotification = baseUrlNotification;
+
+            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null, function (rs) {
+                var data = rs;
+                var fileList = data.files;
+                var fileListHTML = '<ul class="list-group">';
+                if (fileList != null) {
+                    for (var i = 0; i < fileList.length; i++) {
+                        var fileName = fileList[i].trim();
+                        fileListHTML += '<li class="list-group-item listFilesEdit" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +
+                            '<a href="' + fileName + '" class="btn btn-link" download>' +
+                            fileName.split("-")[1] +
+                            '</a>' +
+                            '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + fileName.split("/")[fileName.split("/").length - 1] + '">' +
+                            '<span>×</span>' +
+                            '</button>' +
+                            '</li>';
                     }
-                    fileListHTML += '<label for="file">Attached Files:</label>'
-                            +'<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'
-                            +'</ul>'
-                            +'<table class="table table-bordered text-center">'
-                            +'<thead>'
-                            +'<tr>'
-                            +' <th class="text-center col-6">File Format</th>'
-                            +' <th class="text-center col-3">Maximum Size</th>'
-                            +' <th class="text-center col-3">Maximum Files</th>'
-                            +'</tr>'
-                            +'</thead>'
-                            +'<tbody>'
-                            +'<tr>'
-                            +'<td class="text-center col-6">${listTypeFile}</td>'
-                            +'<td class="text-center col-3">${maxFileSize}</td>'
-                            +'<td class="text-center col-3">${uploadFileLimit}</td>'
-                            +'</tr>'
-                            +'</tbody>'
-                            +' </table>';
-                    var xhtml = '<form id="editNotificationForm">'
-                        +'<div class="form-group">'
-                        +'<label for="title">Title:</label>'
-                        +'<input type="text" id="editNotificationTitle" name="title" value="'+data.title+'" class="form-control">'
-                        +'</div>'
-                        +'<div class="form-group">'
-                        +'<label for="content">Content:</label>'
-                        +'<textarea id="editNotificationContent" name="content" class="form-control">'+data.content+'</textarea>'
-                        +'</div>'
-                        +'<div class="form-group">'
-                        +'<label for="author">Author:</label>'
-                        +'<input type="text" id="editNotificationAuthor" name="author" value="'+data.title+'" class="form-control">'
-                        +'</div>'
-                        +'<div class="form-group">'
-                        + fileListHTML
-                        +'</div>'
-                        +'</form>';
-                    $("#popupFormEditNotification div.modal-body").html(xhtml)
-                    $("#popupFormEditNotification").modal("show");
-                }else{
-                    console.error("Request failed with status: " + xhttp.status);
                 }
+                fileListHTML += '<label for="file">Attached Files:</label>'
+                    +'<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'
+                    +'</ul>'
+                    +'<table class="table table-bordered text-center">'
+                    +'<thead>'
+                    +'<tr>'
+                    +' <th class="text-center col-6">File Format</th>'
+                    +' <th class="text-center col-3">Maximum Size</th>'
+                    +' <th class="text-center col-3">Maximum Files</th>'
+                    +'</tr>'
+                    +'</thead>'
+                    +'<tbody>'
+                    +'<tr>'
+                    +'<td class="text-center col-6">${listTypeFile}</td>'
+                    +'<td class="text-center col-3">${maxFileSize}</td>'
+                    +'<td class="text-center col-3">${uploadFileLimit}</td>'
+                    +'</tr>'
+                    +'</tbody>'
+                    +' </table>';
+                var xhtml = '<form id="editNotificationForm">'
+                    +'<div class="form-group">'
+                    +'<label for="title">Title:</label>'
+                    +'<input type="text" id="editNotificationTitle" name="title" value="'+data.title+'" class="form-control">'
+                    +'</div>'
+                    +'<div class="form-group">'
+                    +'<label for="content">Content:</label>'
+                    +'<textarea id="editNotificationContent" name="content" class="form-control">'+data.content+'</textarea>'
+                    +'</div>'
+                    +'<div class="form-group">'
+                    + fileListHTML
+                    +'</div>'
+                    +'</form>';
+                $("#popupFormEditNotification div.modal-body").html(xhtml)
+                $("#popupFormEditNotification").modal("show");
+
                 $('div.custom-spinner').parent().remove()
                 $('button#editButtonNotification').prop("disabled", false);
-            }
-            xhttp.send();
-
+            });
         });
 
         $("ul#commentList").on("click", ".edit-button", function() {
@@ -530,7 +599,7 @@
             var html =
                 '<div class="row mb-4 mt-4">'
                     +'<div class="col-md-10 d-flex">'
-                    +'<img src="/assets/avatars/${user.avatar}" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
+                    +'<img src="' + userCurrent.avatar + '" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
                     +'<textarea id="replyComment" data-id="'+parentId+'" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>'
                     +'</div>'
                     +'<div class="col-md-2">'
@@ -551,50 +620,26 @@
             $(this).prop("disabled", true);
             $(this).parent().append(dot);
             $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", true);
-            var apiUrl = baseUrlComment
-            var xhttp = new XMLHttpRequest();
+            if(content == ""){
+                var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
+                        `
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+                $(this).prop("disabled", false);
+                $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", false);
+                $('div.custom-spinner').parent().remove()
+                return
+            }
             var data = {
                 content: content,
                 notificationId: notificationId,
-                parentId: parentId
+                parentId: parentId,
+                userId: userCurrent.id
                 // Add any other data you want to send to the server
             };
             var jsonData = JSON.stringify(data);
-            xhttp.open("POST", apiUrl, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.onreadystatechange  = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    var data = JSON.parse(xhttp.responseText);
-                    $('textarea#replyComment[data-id='+ parentId +']').val('');
-                    var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-                        '<div class="comment-header d-flex align-items-center">' +
-                        '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-                        '<div class="user-info">' +
-                        '<p class="user-name">' + data.fullnameUser + '</p>' +
-                        '<p class="comment-date">' + data.createdDate + '</p>' +
-                        '</div>' +
-                        '</div>' +
-                        '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                        '<div class="ml-auto">' +
-                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
-                        '</div>' +
-                        '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
-                        '</li>'
-                    $('#commentList #commentChildList-'+data.parentId+' > div.row').after(html)
-                    var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Reply successfully.
-                        `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successModal").modal("show");
-
-                } else{
-                    console.error("Request failed with status: " + xhttp.status);
-                }
-                $('div.custom-spinner').parent().remove()
-                $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", false);
-                $('button#replyCommentBtn[data-id='+ parentId +']').prop("disabled", false);
-            }
-            xhttp.send(jsonData);
+            replyComment(jsonData)
         });
         document.getElementById("newCommentBtn").addEventListener("click", function () {
             $("button#newCommentBtn").prop("disabled", true);
@@ -602,108 +647,52 @@
             $("button#newCommentBtn").parent().append(dot);
 
             var content = $("textarea#newComment").val()
+            if(content == ""){
+                var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
+                        `
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+                $("button#newCommentBtn").prop("disabled", false);
+                $("textarea#newComment").prop("disabled", false);
+                $('div.custom-spinner').parent().remove()
+                return
+            }
             var notificationId = $("table#tableNotification").attr("data-id")
-            var apiUrl = baseUrlComment
-            var xhttp = new XMLHttpRequest();
             var data = {
                 content: content,
                 notificationId: notificationId,
-                // Add any other data you want to send to the server
+                userId: userCurrent.id
             };
-            // Gửi comment
 
             var jsonData = JSON.stringify(data);
             sendComment(jsonData)
-                .then(function (){
-                    var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
-                            `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successModal").modal("show");
-                    $("button#newCommentBtn").prop("disabled", false);
-                    $("textarea#newComment").prop("disabled", false);
-                    $('div.custom-spinner').parent().remove()
             })
-                .catch(function (error) {
-                   console.log(error)
-                });
 
-            // xhttp.open("POST", apiUrl, true); // Replace "/your-api-endpoint" with your actual API URL
-            // xhttp.setRequestHeader("Content-Type", "application/json");
-            // xhttp.onreadystatechange  = function () {
-            //         if (xhttp.status === 200 && xhttp.readyState === 4) {
-            //             var data = JSON.parse(xhttp.responseText);
-            //             $("textarea#newComment").val('');
-            //             var modal = `
-            //             <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
-            //             `
-            //             $("#successModal div.modal-body").html(modal)
-            //             $("#successModal").modal("show");
-            //             var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-            //                 '<div class="comment-header d-flex align-items-center">' +
-            //                 '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-            //                 '<div class="user-info">' +
-            //                 '<p class="user-name">' + data.fullnameUser + '</p>' +
-            //                 '<p class="comment-date">' + data.createdDate + '</p>' +
-            //                 '</div>' +
-            //                 '</div>' +
-            //                 '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-            //                 '<div class="ml-auto">' +
-            //                 '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
-            //                 '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
-            //                 '</div>' +
-            //                 '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
-            //                 '</li>'
-            //
-            //                  if( $("ul#commentList li.list-group-item:first").length >0){
-            //                      $("ul#commentList li.list-group-item:first").before(html)
-            //                  }else{
-            //                      $("ul#commentList").html(html)
-            //                  }
-            //         } else {
-            //             // Request failed, handle errors or display a message to the user
-            //             console.error("Request failed with status: " + xhttp.status);
-            //         }
-            //         $("button#newCommentBtn").prop("disabled", false);
-            //         $("textarea#newComment").prop("disabled", false);
-            //         $('div.custom-spinner').parent().remove()
-            // };
-            // // Send the request with the JSON data
-            // xhttp.send(jsonData);
-            })
+        $(document).on("click", "#commentList button.btn-danger", function(e) {
+            var commentId = $(this).data("id");
+            $("#deleteConfirmationModal").attr("data-id",commentId)
+        });
+
         document.getElementById("deleteButton").addEventListener("click", function () {
             $("#deleteConfirmationModal").modal("hide");
-            $(".modal-footer button").each(function() {
+            var id= $("#deleteConfirmationModal").attr("data-id")
+            $('li.list-group-item[data-id="' + id + '"] > div.ml-auto button').each(function() {
                 $(this).prop("disabled", true);
             });
-            var id= $("div.modal-content").attr("data-id")
-            var apiUrl = baseUrlComment + "/" + id
-            $('div.modal-content[data-id="'+id+'"]').append(dot)
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("DELETE", apiUrl, true); // Replace "/your-api-endpoint" with your actual API URL
-            // Set up the callback function to handle the response
-            xhttp.onload = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    $('li.list-group-item[data-id="'+id+'"]').remove()
-                    var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment delete successfully.
-                        `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#popupForm").modal("hide");
-                    $("#successModal").modal("show");
-                } else {
-                    // Request failed, handle errors or display a message to the user
-                    console.error("Request failed with status: " + xhttp.status);
-                }
-                $(".modal-footer button").each(function() {
-                    $(this).prop("disabled", false);
-                });
-                $('div.custom-spinner').parent().remove()
+            var data = {
+                id: id,
+                userId: userCurrent.id
             };
-            // Send the request with the JSON data
-            xhttp.send();
+            var jsonData = JSON.stringify(data);
+            deleteComment(jsonData)
         })
 
         document.getElementById("saveChangesButton").addEventListener("click", function () {
+            $('div.modal-content[data-id="'+id+'"]').append(dot)
+            $(".modal-footer button").each(function() {
+                $(this).prop("disabled", true);
+            });
             // Create an XMLHttpRequest object
             var xhttp = new XMLHttpRequest();
             var apiUrl = baseUrlComment
@@ -716,45 +705,17 @@
             var content =  $("#contentCommentEdit").val()
             var data = {
                 id: id,
-                content: content
-                // Add any other data you want to send to the server
+                content: content,
+                userId: userCurrent.id
             };
-
             // Convert the data to JSON
             var jsonData = JSON.stringify(data);
-            $(".modal-footer button").each(function() {
-                $(this).prop("disabled", true);
-            });
-            $('div.modal-content[data-id="'+id+'"]').append(dot)
-
-            // Set up the callback function to handle the response
-            xhttp.onload = function () {
-                if (xhttp.status === 200 && xhttp.readyState === 4) {
-                    $("#popupForm").modal("hide");
-                    // Request was successful, handle the response data here
-                    var $pElement = $('p.comment-content[data-id="' + id + '"]');
-                    $pElement.text(content)
-                    var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment update successfully.
-                        `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successModal").modal("show");
-                    // You can update the UI or perform other actions with the response data
-                } else {
-                    // Request failed, handle errors or display a message to the user
-                    console.error("Request failed with status: " + xhttp.status);
-                }
-                $(".modal-footer button").each(function() {
-                    $(this).prop("disabled", false);
-                });
-                $('div.custom-spinner').parent().remove()
-            };
-            // Send the request with the JSON data
-            xhttp.send(jsonData);
+            editComment(jsonData);
         });
-
-
-    })
+    });
+</script>
+<script>
+    document.getElementById('avatar-user-login').setAttribute('src', userCurrent.avatar);
 </script>
 </body>
 </html>

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 9/25/2023
-  Time: 11:46 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
@@ -13,9 +6,11 @@
 <html>
 <head>
     <title>Notifications List</title>
+    <link rel="stylesheet" href="/assets/css/notification/style.css">
 </head>
 <body>
-<div class="container mt-4">
+<div class="container">
+    <h1>Notification list</h1>
 <div class="row">
     <div class="col-md-6">
         <input type="text" value ="${search}" id="searchInput" class="form-control" placeholder="Search...">
@@ -24,7 +19,9 @@
         <button class="btn btn-primary" id="searchButton">Search</button>
     </div>
     <div class="col-md-2">
-        <a href="${pathMain}create"><button class="btn btn-success">Create</button></a>
+        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+            <a href="${pathMain}create"><button class="btn btn-success">Create</button></a>
+        </c:if>
     </div>
     <div class="col-md-2">
         <select id="pageSizeSelect" class="form-control">
@@ -84,10 +81,7 @@
             </ul>
         </nav>
 
-
-
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const baseUrl = "/api/v1/notifications";
