@@ -14,12 +14,7 @@
             <column name="LINK" type="VARCHAR(255)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="CREATED_BY" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <addColumn tableName="BOOK">
             <column name="IMAGE" type="VARCHAR(255)"/>
-        </addColumn>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

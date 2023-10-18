@@ -63,11 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/accounting/**").access("hasAnyRole('OWNER', 'MANAGER')")
                     // timesheets
                     .antMatchers("/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                    // management-time
-                    //.antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
-
                     // setting
                     .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // management-time
+                    //.antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
 
                 .anyRequest().authenticated()
                 .and()
