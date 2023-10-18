@@ -39,10 +39,10 @@ public class ManagementTimeDayController {
         return view;
     }
 
-//    @GetMapping("/{idUser}")
-//    public String getCalendarDetail(@PathVariable String idUser) {
-//        return "management-time/calendar-detail";
-//    }
+    @GetMapping("/test")
+    public String getCalendarDetail() {
+        return "todo/test";
+    }
 
     @GetMapping("/day")
     public ModelAndView getDetailDay(
