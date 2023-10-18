@@ -15,6 +15,6 @@ public interface BookService {
                               int pageSize);
     int createBook(BookCreateRequest bookCreateRequest);
     BookDetailResponse findById(String id);
-    ShowBookResponse updateBook(BookUpdateRequest bookUpdateRequest);
+    int updateBook(BookUpdateRequest bookUpdateRequest);
     int deleteBook(String id);
 }

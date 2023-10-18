@@ -34,7 +34,7 @@ h1,h3{
     text-align: center;
 }
 
-a,ul:hover{
+a,li:hover{
     cursor: pointer;
     text-decoration: none;
 }

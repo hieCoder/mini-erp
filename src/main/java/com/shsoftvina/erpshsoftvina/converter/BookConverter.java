@@ -34,6 +34,7 @@ public class BookConverter {
                 .author(book.getAuthor())
                 .createdDate(DateUtils.formatDateTime(book.getCreatedDate()))
                 .createdBy(book.getCreatedBy())
+                .link(book.getLink())
                 .image(FileUtils.getPathUpload(Book.class, book.getImage()))
                 .build();
     }
@@ -60,11 +61,13 @@ public class BookConverter {
                 .build();
     }
 
-    public Book toEntity(BookUpdateRequest bookUpdateRequest){
+    public Book toEntity(BookUpdateRequest bookUpdateRequest, String bookImageFileName){
         return Book.builder()
                 .id(bookUpdateRequest.getId())
                 .title(bookUpdateRequest.getTitle())
                 .author(bookUpdateRequest.getAuthor())
-                .link(bookUpdateRequest.getLink()).build();
+                .link(bookUpdateRequest.getLink())
+                .image(bookImageFileName)
+                .build();
     }
 }

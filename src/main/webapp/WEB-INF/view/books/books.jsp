@@ -41,7 +41,7 @@
                 <tr>
                     <th scope="row">${(books.pageNumber - 1) * books.pageSize + loop.index + 1}</th>
                     <td><img src="${book.image}" alt="Book Image" width="100" height="100"></td>
-                    <td><a href="/users/${book.id}" class="text-decoration-none">${book.title}</a></td>
+                    <td><a href="/books/${book.id}" class="text-decoration-none">${book.title}</a></td>
                     <td>${book.author}</td>
                     <td>${book.createdBy}</td>
                     <td>${book.createdDate}</td>
@@ -136,6 +136,7 @@
                         <label for="image" class="col-sm-2 col-form-label">Image Book:</label>
                         <div class="col-sm-10">
                             <input type="file" class="form-control" id="image" required>
+                            <span class="errorMessage" style="color: red;"></span>
                         </div>
                     </div>
                 </form>
@@ -178,6 +179,13 @@
                         <label for="editLink" class="col-sm-2 col-form-label">Link:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="editLink">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editImage" class="col-sm-2 col-form-label">Image Book:</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="editImage" required>
+                            <span class="errorMessage" style="color: red;"></span>
                         </div>
                     </div>
                 </form>
@@ -277,20 +285,29 @@
                 errorMessageSpan.textContent = '';
             }
 
+            errorMessageSpan = image.nextElementSibling;
+            if (image.files.length === 0) {
+                errorMessageSpan.textContent = "This filed is not filled";
+                isValidate = false;
+            } else {
+                errorMessageSpan.textContent = '';
+            }
+
             if (isValidate) {
-                var data = {
-                    title: valueTitle,
-                    author: valueAuthor,
-                    link: valueLink,
-                    image : image.files[0].name,
-                    fullnameUser: userCurrent.fullname
-                };
+                var formData = new FormData
+                formData.append('title', valueTitle);
+                formData.append('author', valueAuthor);
+                formData.append('link', valueLink);
+                formData.append('fullnameUser', userCurrent.fullname);
 
-                var xhr = new XMLHttpRequest();
-                var method = 'POST';
-                var url = '/api/v1/books';
-                
+                if (image.files.length > 0) {
+                    formData.append('image', image.files[0]);
+                }
 
+                callAjaxByDataFormWithDataForm('/api/v1/books', 'POST', formData, function (rs) {
+                    sessionStorage.setItem('result', 'addBookSuccess');
+                    location.reload();
+                })
             };
         });
     });
@@ -340,13 +357,16 @@
                         var title = document.getElementById('editTitle').value;
                         var author = document.getElementById('editAuthor').value;
                         var link = document.getElementById('editLink').value;
-                        var data = {
-                            id: bookId,
-                            title: title,
-                            author: author,
-                            link: link
-                        };
-                        callAjaxByJsonWithData('/api/v1/books', 'PUT', data, function (rs) {
+                        var image = document.getElementById('editImage');
+
+                        var formData = new FormData
+                        formData.append('id', bookId);
+                        formData.append('title', title);
+                        formData.append('author', author);
+                        formData.append('image', image.files[0]);
+                        formData.append('link', link);
+
+                        callAjaxByDataFormWithDataForm('/api/v1/books/update', 'POST', formData, function (rs) {
                             sessionStorage.setItem('result', 'updateBookSuccess');
                             location.reload();
                         })

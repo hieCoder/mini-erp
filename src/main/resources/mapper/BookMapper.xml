@@ -19,7 +19,8 @@
         UPDATE BOOK
         SET TITLE = #{title},
             AUTHOR = #{author},
-            LINK = #{link}
+            LINK = #{link},
+            IMAGE = #{image}
         WHERE ID = #{id}
     </update>
 

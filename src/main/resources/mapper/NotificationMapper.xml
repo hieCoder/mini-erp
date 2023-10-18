@@ -63,6 +63,7 @@
         <result property="content" column="content"/>
         <result property="file" column="file"/>
         <result property="createdDate" column="created_date"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser"/>
     </resultMap>
 
     <select id="findById" resultMap="notificationResultMap">

@@ -6,6 +6,8 @@
     session.setAttribute("pathMain", "/notifications/");
     session.setAttribute("apiURL", "/api/v1");
 %>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
+<c:set var="userId" value="${Principal.getUserCurrent().getId()}" />
 <html>
 <head>
     <title>Notification</title>
@@ -48,8 +50,7 @@
                     </table>
                     <div class="d-flex justify-content-end">
                         <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
-                        <c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
-                        <c:if test="${!userRole.equals(RoleEnum.DEVELOPER)}">
+                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
                             <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
                         </c:if>
@@ -79,8 +80,8 @@
                             </div>
                             <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
                             <div class="ml-auto">
-                                <c:if test="${comment.userId.equals(Principal.getUserCurrent().getId())}">
-                                    <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
+                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
+                                <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
                                     <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete</button>
                                 </c:if>
                                 <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply</button>
@@ -98,10 +99,10 @@
                                             </div>
                                             <p class="comment-content" data-id="${childComment.id}">${childComment.content}</p>
                                             <div class="ml-auto">
-                                                <div class="group-button-admin-noti">
+                                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || childComment.userId.equals(userId)}">
                                                     <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
                                                     <button type="button" class="btn btn-sm btn-danger" data-id="${childComment.id}" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
-                                                </div>
+                                                </c:if>
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -258,11 +259,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-<script>
-    if(isAdminOrUserLogin('${notification.idUser}')){
-        $('.group-button-admin-noti').remove();
-    }
-</script>
+<%--<script>--%>
+<%--    if(!isAdminOrUserLogin()){--%>
+<%--        $('.group-button-admin-noti').remove();--%>
+<%--    }--%>
+<%--</script>--%>
 <script>
     function generateClientID() {
         const timestamp = new Date().getTime();

@@ -19,7 +19,8 @@ public class BookApi {
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(name = "search", required = false, defaultValue = "") String search,
                                      @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                     @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                     @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize) {
+
         return ResponseEntity.ok(bookService.fillAll(search, page, pageSize));
     }
 
@@ -29,12 +30,12 @@ public class BookApi {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBook(@Valid BookCreateRequest bookCreateRequest) {
+    public ResponseEntity<?> createBook(BookCreateRequest bookCreateRequest) {
         return ResponseEntity.ok(bookService.createBook(bookCreateRequest));
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateBook(@Valid @RequestBody BookUpdateRequest bookUpdateRequest) {
+    @PostMapping("/update")
+    public ResponseEntity<?> updateBook(BookUpdateRequest bookUpdateRequest) {
         return ResponseEntity.ok(bookService.updateBook(bookUpdateRequest));
     }
 

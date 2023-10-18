@@ -39,8 +39,9 @@ public class TaskApi {
     }
 
     @GetMapping("/status-task-count")
-    public ResponseEntity<?> getStatusTaskCount(){
-        return ResponseEntity.ok(taskService.getStatusTaskCount());
+    public ResponseEntity<?> getStatusTaskCount(@RequestParam String userRole,
+                                                @RequestParam String userId){
+        return ResponseEntity.ok(taskService.getStatusTaskCount(userRole, userId));
     }
 
     @GetMapping("/{id}")

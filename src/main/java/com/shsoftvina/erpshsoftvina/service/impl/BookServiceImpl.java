@@ -84,18 +84,40 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ShowBookResponse updateBook(BookUpdateRequest bookUpdateRequest) {
+    public int updateBook(BookUpdateRequest bookUpdateRequest) {
 
-        if (bookMapper.findById(bookUpdateRequest.getId()) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("id"));
+        Book book = bookMapper.findById(bookUpdateRequest.getId());
 
-        Book book = bookConverter.toEntity(bookUpdateRequest);
-        try {
-            bookMapper.updateBook(book);
-        } catch (Exception e) {
-            return null;
+        if(book == null) throw new NotFoundException("id");
+
+        MultipartFile bookFile = bookUpdateRequest.getImage();
+
+        String fileNameBook = null;
+        boolean isSaveBookSuccess = true;
+
+        if(bookFile != null){
+            fileNameBook = FileUtils.formatNameImage(bookFile);
+            isSaveBookSuccess = FileUtils.saveImageToServer(
+                    request, BookConstant.UPLOAD_FILE_DIR, bookUpdateRequest.getImage(), fileNameBook);
         }
-        return bookConverter.toShowBookResponse(book);
+
+        Book b;
+        if(isSaveBookSuccess){
+            b = bookConverter.toEntity(bookUpdateRequest, fileNameBook);
+            try {
+                bookMapper.updateBook(b);
+                FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, book.getImage());
+                return 1;
+            } catch (Exception e){
+                FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, fileNameBook);
+                return 0;
+            }
+        } else {
+            fileNameBook = book.getImage();
+            b = bookConverter.toEntity(bookUpdateRequest, fileNameBook);
+            bookMapper.updateBook(b);
+            return 1;
+        }
     }
 
     @Override
