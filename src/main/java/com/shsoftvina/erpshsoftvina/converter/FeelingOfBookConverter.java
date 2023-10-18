@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class FeelingOfBookConverter {
@@ -37,6 +39,10 @@ public class FeelingOfBookConverter {
                 .fullnameUser(feelingOfBook.getUser().getFullname())
                 .avatarUser(FileUtils.getPathUpload(User.class,feelingOfBook.getUser().getAvatar()))
                 .build();
+    }
+
+    public List<FeelingOfBookResponse> toListResponse(List<FeelingOfBook> feelingOfBooks){
+        return feelingOfBooks.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     public FeelingOfBook toEntity(FeelingOfBookCreateRequest feelingOfBookCreateRequest){

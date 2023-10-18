@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,6 @@ public class Book {
     private String title;
     private String author;
     private String link;
+    private User user;
+    private List<FeelingOfBook> feelingOfBooks;
 }

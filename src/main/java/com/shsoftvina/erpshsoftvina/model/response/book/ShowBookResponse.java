@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookResponse {
+public class ShowBookResponse {
 
     private String id;
     private String title;

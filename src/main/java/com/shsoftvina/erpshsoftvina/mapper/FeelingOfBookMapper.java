@@ -1,7 +1,6 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 
-import com.shsoftvina.erpshsoftvina.entity.Book;
 import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,4 +13,5 @@ public interface FeelingOfBookMapper {
     FeelingOfBook findById(String id);
     int updateFeelingOfBook(FeelingOfBook feelingOfBook);
     int deleteFeelingOfBook(String id);
+    List<FeelingOfBook> findAllByBook(String id);
 }

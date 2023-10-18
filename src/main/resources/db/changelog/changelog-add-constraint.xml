@@ -137,4 +137,12 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_FEELING_OF_BOOK_USER"/>
     </changeSet>
+
+    <changeSet id="17" author="team2">
+        <addForeignKeyConstraint baseTableName="BOOK"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_BOOK_USER"/>
+    </changeSet>
 </databaseChangeLog>

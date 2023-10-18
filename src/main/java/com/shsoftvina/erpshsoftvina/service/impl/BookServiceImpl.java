@@ -6,7 +6,8 @@ import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.book.BookResponse;
+import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
 import com.shsoftvina.erpshsoftvina.service.BookService;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,28 +26,28 @@ public class BookServiceImpl implements BookService {
     private BookConverter bookConverter;
 
     @Override
-    public List<BookResponse> findAll() {
-        return bookMapper.findAll().stream().map(book -> bookConverter.toResponse(book)).collect(Collectors.toList());
+    public List<ShowBookResponse> findAll() {
+        return bookMapper.findAll().stream().map(book -> bookConverter.toShowResponse(book)).collect(Collectors.toList());
     }
 
     @Override
-    public BookResponse createBook(BookCreateRequest bookCreateRequest) {
+    public ShowBookResponse createBook(BookCreateRequest bookCreateRequest) {
         Book book = bookConverter.toEntity(bookCreateRequest);
         try{
             bookMapper.createBook(book);
         } catch (Exception e){
             return null;
         }
-        return bookConverter.toResponse(book);
+        return bookConverter.toShowResponse(book);
     }
 
     @Override
-    public BookResponse findById(String id) {
-        return bookConverter.toResponse(bookMapper.findById(id));
+    public BookDetailResponse findById(String id) {
+        return bookConverter.toDetailResponse(bookMapper.findById(id));
     }
 
     @Override
-    public BookResponse updateBook(BookUpdateRequest bookUpdateRequest) {
+    public ShowBookResponse updateBook(BookUpdateRequest bookUpdateRequest) {
 
         if(bookMapper.findById(bookUpdateRequest.getId()) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("id"));
@@ -57,7 +58,7 @@ public class BookServiceImpl implements BookService {
         } catch (Exception e){
             return null;
         }
-        return bookConverter.toResponse(book);
+        return bookConverter.toShowResponse(book);
     }
 
     @Override
