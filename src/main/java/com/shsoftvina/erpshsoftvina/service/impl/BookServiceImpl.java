@@ -26,9 +26,6 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookConverter bookConverter;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @Override
     public List<ShowBookResponse> findAll() {
         return bookMapper.findAll().stream().map(book -> bookConverter.toShowResponse(book)).collect(Collectors.toList());

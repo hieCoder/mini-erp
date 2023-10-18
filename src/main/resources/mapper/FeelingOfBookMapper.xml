@@ -47,4 +47,19 @@
         FROM FEELING_OF_BOOK
         WHERE ID = #{id}
     </delete>
+
+    <select id="findAllByBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook" resultMap="feelingOfBookDetailResultMap">
+        SELECT *
+        FROM FEELING_OF_BOOK f
+                 INNER JOIN USER u ON f.USER_ID = u.ID
+                 INNER JOIN BOOK b ON f.BOOK_ID = b.ID
+        WHERE b.ID = #{id}
+    </select>
+
+    <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+        <id property="id" column="id"/>
+        <result property="quote" column="QUOTE"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>
+    </resultMap>
 </mapper>
