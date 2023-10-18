@@ -65,12 +65,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     }
 
     @Override
-    public List<DayResponse> findAllByMonthYear(String userId, String month, String year) {
+    public List<DayResponse> findAllByMonthYear(String userId, String startDate, String endDate) {
 
         if(userMapper.findById(userId) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
-        return managementTimeDayMapper.findAllByMonthYear(userId, month, year)
+        return managementTimeDayMapper.findAllByMonthYear(userId, startDate, endDate)
                 .stream().map(day -> managementTimeConvert.toResponse(day))
                 .collect(Collectors.toList());
     }

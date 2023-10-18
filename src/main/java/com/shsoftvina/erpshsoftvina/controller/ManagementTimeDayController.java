@@ -8,8 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -33,16 +39,31 @@ public class ManagementTimeDayController {
         return view;
     }
 
-    @GetMapping("/{idUser}")
-    public String getCalendarDetail(@PathVariable String idUser) {
-        return "management-time/calendar-detail";
-    }
+//    @GetMapping("/{idUser}")
+//    public String getCalendarDetail(@PathVariable String idUser) {
+//        return "management-time/calendar-detail";
+//    }
 
-    @GetMapping("/day/{id}")
-    public ModelAndView getDetailDay(@PathVariable("id") String id) {
-        DayResponse dayResponse = managementTimeDayService.findById(id);
+    @GetMapping("/day")
+    public ModelAndView getDetailDay(
+            @RequestParam(name = "id", required = false, defaultValue = "") String id,
+            @RequestParam(name = "day", required = false, defaultValue = "") String day
+    ) {
         ModelAndView mav = new ModelAndView("management-time/day/detail");
-        mav.addObject("dayResponse", dayResponse);
-        return mav;
+        try {
+            DayResponse dayResponse = managementTimeDayService.findById(id);
+            mav.addObject("dayResponse", dayResponse);
+            return mav;
+        }catch(Exception e){
+            mav.addObject("day", day);
+        } finally {
+            return mav;
+        }
+    }
+    @GetMapping("/{userId}")
+    public ModelAndView getCalendar(@PathVariable("userId") String userId) {
+        ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
+        modelAndView.addObject("userId",userId);
+        return modelAndView;
     }
 }

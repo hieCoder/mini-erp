@@ -67,8 +67,7 @@
                 <td class="align-middle ${a.expense < 0 ? 'text-danger' : ''}">
                     <fmt:formatNumber type="number" value="${a.expense}" pattern="#,##0 ₫"/>
                 </td>
-                <td class="align-middle text-primary"><fmt:formatNumber type="number" value="${a.remain}"
-                                                                        pattern="#,##0 ₫"/></td>
+                <td class="align-middle text-primary"><fmt:formatNumber type="number" value="${a.remain}" pattern="#,##0 ₫"/></td>
                 <td class="align-middle"><c:out value="${a.user.fullname}"/></td>
                 <td class="align-middle"><c:if test="${a.note != null}"><c:out value="${a.note}"/></c:if></td>
                 <td class="align-middle">

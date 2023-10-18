@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DayDetailUpdateRequest {
     private String id;
-
     private String code;
     private String[] data;
 }
