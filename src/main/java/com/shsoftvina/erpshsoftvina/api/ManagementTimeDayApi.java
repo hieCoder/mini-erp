@@ -30,9 +30,9 @@ public class ManagementTimeDayApi {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getDaysByMonthAndYear(@RequestParam String month,
-                                                   @RequestParam String year,
+    public ResponseEntity<?> getDaysByMonthAndYear(@RequestParam String endDate,
+                                                   @RequestParam String startDate,
                                                    @PathVariable String userId) {
-        return ResponseEntity.ok(managementTimeDayService.findAllByMonthYear(userId, month, year));
+        return ResponseEntity.ok(managementTimeDayService.findAllByMonthYear(userId, startDate, endDate));
     }
 }

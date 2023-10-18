@@ -39,10 +39,10 @@ public class ManagementTimeDayController {
         return view;
     }
 
-    @GetMapping("/{idUser}")
-    public String getCalendarDetail(@PathVariable String idUser) {
-        return "management-time/calendar-detail";
-    }
+//    @GetMapping("/{idUser}")
+//    public String getCalendarDetail(@PathVariable String idUser) {
+//        return "management-time/calendar-detail";
+//    }
 
     @GetMapping("/day")
     public ModelAndView getDetailDay(
@@ -61,18 +61,9 @@ public class ManagementTimeDayController {
         }
     }
     @GetMapping("/{userId}")
-    public ModelAndView getCalendar(@PathVariable("userId") String userId,
-                                    @RequestParam(value = "year", required = false) String year,
-                                    @RequestParam(value = "month",required = false) String month) {
+    public ModelAndView getCalendar(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
-        if (year == null && month == null) {
-            LocalDateTime dateTime = LocalDateTime.now();
-            List<DayResponse> responses = managementTimeDayService.findAllByMonthYear(userId, String.valueOf(dateTime.getYear()), String.valueOf(dateTime.getMonth()));
-        }
-        List<DayResponse> responses = managementTimeDayService.findAllByMonthYear(userId, year,month);
-        modelAndView.addObject("list",responses);
         modelAndView.addObject("userId",userId);
         return modelAndView;
     }
-
 }

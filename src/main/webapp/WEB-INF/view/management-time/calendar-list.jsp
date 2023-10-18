@@ -64,8 +64,11 @@
     let currentDate = new Date();
 
     function populateCalendar(year, month) {
+        const result = getFirstSundayLastSaturday(year, month);
+        const formattedLastSaturday = formatDate(result.lastSaturday);
+        const formattedFirstSunday = formatDate(result.firstSunday);
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.userId}" + "?year=" + year + "&month=" + (month + 1), true);
+        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.userId}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastSaturday, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -196,6 +199,31 @@
             month--;
         }
         return new Date(year, month + 1, 0).getDate();
+    }
+
+    function getFirstSundayLastSaturday(year, month) {
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0); // Là ngày cuối cùng của tháng
+
+        // Tính toán ngày đầu tiên của chủ nhật
+        const firstSunday = new Date(firstDay);
+        firstSunday.setDate(firstSunday.getDate() + (7 - firstDay.getDay())); // Tìm ngày đầu tiên của chủ nhật
+
+        // Tính toán ngày cuối cùng của thứ bảy
+        const lastSaturday = new Date(lastDay);
+        lastSaturday.setDate(lastSaturday.getDate() - (lastDay.getDay() + 1)); // Tìm ngày cuối cùng của thứ bảy
+
+        return {
+            firstSunday,
+            lastSaturday
+        };
+    }
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Thêm 1 và định dạng số với 2 chữ số (01-12)
+        const day = date.getDate().toString().padStart(2, '0'); // Định dạng số với 2 chữ số (01-31)
+        return `${year}-${month}-${day}`;
     }
 </script>
 </body>
