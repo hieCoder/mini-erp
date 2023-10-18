@@ -16,7 +16,7 @@ public interface TaskService {
     int registerTask(TaskRegisterRequest taskRegisterRequest);
     int updateTask(TaskUpdateRequest taskUpdateRequest);
     int deleteById(String id);
-    List<StatusTaskCountsResponse> getStatusTaskCount();
+    List<StatusTaskCountsResponse> getStatusTaskCount(String userRole, String userId);
     TaskDetailResponse findById(String id);
     List<Map<String, Object>> getTaskByHashtag(String userId);
 }

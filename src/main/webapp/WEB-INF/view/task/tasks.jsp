@@ -214,10 +214,10 @@
         });
 
         loadPaging();
-
+console.log('/api/v1/tasks/status-task-count?userRole=' + userCurrent.role+'&userId='+userCurrent.id);
         tableStatus = $('#data-table-status').DataTable({
             ajax: {
-                url: '/api/v1/tasks/status-task-count',
+                url: '/api/v1/tasks/status-task-count?userRole=' + userCurrent.role+'&userId='+userCurrent.id,
                 contentType: 'application/json',
                 method: 'GET',
                 dataSrc: ''
