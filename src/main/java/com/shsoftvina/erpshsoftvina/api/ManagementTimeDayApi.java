@@ -1,5 +1,7 @@
 package com.shsoftvina.erpshsoftvina.api;
 
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +15,13 @@ public class ManagementTimeDayApi {
     private ManagementTimeDayService managementTimeDayService;
 
     @PostMapping("/day")
-    public ResponseEntity<?> createDay(@RequestBody String jsonDay) {
-        return ResponseEntity.ok(managementTimeDayService.createDay(jsonDay));
+    public ResponseEntity<?> createDay(@RequestBody DayCreateRequest dayCreateRequest) {
+        return ResponseEntity.ok(managementTimeDayService.createDay(dayCreateRequest));
     }
 
     @PutMapping("/day")
-    public ResponseEntity<?> updateDay(@RequestBody String jsonDay) {
-        return ResponseEntity.ok(managementTimeDayService.updateDay(jsonDay));
+    public ResponseEntity<?> updateDay(@RequestBody DayUpdateRequest updateRequest) {
+        return ResponseEntity.ok(managementTimeDayService.updateDay(updateRequest));
     }
 
     @GetMapping("/day/{id}")

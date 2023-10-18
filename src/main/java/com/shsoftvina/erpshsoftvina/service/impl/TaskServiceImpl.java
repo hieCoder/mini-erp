@@ -41,14 +41,17 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private ApplicationUtils applicationUtils;
+
     @Override
-    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search) {
-        return taskMapper.findAll(start, pageSize, statusTask, search).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search, String userRole, String userId) {
+        return taskMapper.findAll(start, pageSize, statusTask, search, userRole, userId).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
     }
 
     @Override
-    public long getTotalItem(int start, int pageSize, String statusTask, String search) {
-        return taskMapper.getTotalItem(start, pageSize, statusTask, search);
+    public long getTotalItem(int start, int pageSize, String statusTask, String search, String userRole, String userId) {
+        return taskMapper.getTotalItem(start, pageSize, statusTask, search, userRole, userId);
     }
 
     @Override
@@ -77,10 +80,6 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskMapper.findById(id);
         if (task == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
-
-        if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER) &&
-                !task.getUser().getId().equals(Principal.getUserCurrent().getId()))
-            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
 
         if (!EnumUtils.isExistInEnum(PriorityTaskEnum.class, taskUpdateRequest.getPriority()))
             throw new NotFoundException(MessageErrorUtils.notFound("Priority"));
@@ -112,13 +111,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<StatusTaskCountsResponse> getStatusTaskCount() {
-        return taskConverter.toListStatusTaskCountsResponse(taskMapper.getStatusTaskCounts());
+    public List<StatusTaskCountsResponse> getStatusTaskCount(String userRole, String userId) {
+        return taskConverter.toListStatusTaskCountsResponse(taskMapper.getStatusTaskCounts(userRole, userId));
     }
 
     @Override
     public TaskDetailResponse findById(String id) {
-        return taskConverter.toDetailResponse(taskMapper.findById(id));
+        Task task = taskMapper.findById(id);
+        applicationUtils.checkUserAllow(task.getUser().getId());
+        return taskConverter.toDetailResponse(task);
     }
 
     @Override

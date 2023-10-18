@@ -25,7 +25,7 @@
                         <img src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
                         <input name="avatar" type="file" class="form-control mt-2" id="avatar">
                         <small class="text-muted ml-2">Choose New Avatar</small>
-                        <h3 class="mt-2">${user.getFullname()}</h3>
+                        <h4 class="mt-2">${user.getFullname()}</h4>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -177,7 +177,7 @@
                             <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group container-button">
                         <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" id="delUser">Delete</button>
                         <a class="btn btn-secondary" href="/users">Cancel</a>
@@ -279,7 +279,7 @@
                         <label for="newContract">Contract</label>
                         <input type="file" class="form-control mt-2" id="newContract" name="contract">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group container-button-add-contract">
                         <button value="${user.getId()}" type="submit" class="btn btn-primary" id="addContractButton">Confirm
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -331,7 +331,7 @@
                         <input type="file" class="form-control mt-2" id="contractUser" name="contract">
                         <small class="text-muted ml-2">Choose New Contract</small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group container-button-edit-contract">
                         <button type="submit" class="btn btn-primary" id="confirmContractButton">Confirm</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
@@ -349,7 +349,7 @@
             <div class="modal-body">
                 Are you sure to delete this contract?
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer container-button-delete-contract">
                 <button type="button" class="btn btn-info confirm-delete-button">Confirm</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
@@ -365,7 +365,7 @@
             <div class="modal-body">
                 Are you sure to delete this user?
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer container-button-delete-user">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button value="${user.getId()}" type="button" class="btn btn-danger" id="deleteUser">Delete</button>
             </div>
@@ -416,6 +416,8 @@
         ],
         onSubmit: function (formData) {
 
+            $('.container-button').after(createLoadingHtml());
+
             formData.append('id', ${user.id});
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
@@ -446,9 +448,12 @@
             contractLink.textContent = contractfileName;
         }
 
+
         // Xử lý khi nút Delete được nhấn trong modal
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {
+
+                $('.container-button-delete-user').after(createLoadingHtml());
 
                 callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
                     sessionStorage.setItem('result', 'deleteSuccess');
@@ -508,7 +513,7 @@
 
         // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
         yearSelect.addEventListener('change', function () {
-
+            $('#working-day').after(createLoadingHtml());
             callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, 'GET', null, function (rs) {
                 var dataMonth = rs;
                 // Xóa các option cũ trong dropdown year
@@ -528,6 +533,7 @@
                     });
                     totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
                 });
+                $('div.custom-spinner').parent().remove();
             });
 
             if (yearSelect.value != "") {
@@ -568,6 +574,9 @@
             Validator.isRequired('#addInsuranceMoney')
         ],
         onSubmit: function (formData) {
+
+            $('.container-button-add-contract').after(createLoadingHtml());
+
             formData.append('userId', ${user.id});
 
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
@@ -639,6 +648,9 @@
                 Validator.isRequired('#editInsuranceMoney')
             ],
             onSubmit: function (formData) {
+
+                $('.container-button-edit-contract').after(createLoadingHtml());
+
                 formData.append('id', contractIdValue);
                 callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'editContractSuccess');
@@ -669,7 +681,7 @@
         // Xử lý khi nút Confirm được nhấn trong modal
         confirmButton.addEventListener("click", function () {
             if (contractIdToDelete) {
-                console.log(contractIdToDelete);
+                $('.container-button-delete-contract').after(createLoadingHtml());
                 callAjaxByJsonWithData('/api/v1/contracts/' + contractIdToDelete, 'DELETE', null, function (rs) {
                     sessionStorage.setItem('result', 'deleteContractSuccess');
                     localStorage.setItem("showModal", "true");

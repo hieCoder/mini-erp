@@ -16,6 +16,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
@@ -27,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +43,8 @@ public class AccountingServiceImpl implements AccountingService {
     private UserMapper userMapper;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private ApplicationUtils applicationUtils;
 
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
@@ -83,7 +88,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         if (billFile != null) {
-            FileUtils.validateFiles(billFile);
+            applicationUtils.checkValidateFile(Accounting.class, billFile);
         }
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
@@ -105,44 +110,59 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public AccountResponse updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
-        if (accountingUpdateRequest.getBill() != null && accountingUpdateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
-            throw new FileTooLimitedException("Max file is 3");
-        }
         Accounting currentAccounting = accountingMapper.findAccountingById(accountingUpdateRequest.getId());
         if (currentAccounting == null) throw new NotFoundException(MessageErrorUtils.notFound("Account id"));
         User currentUser = userMapper.findById(accountingUpdateRequest.getUserId());
         if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
+        String dir = AccountingConstant.UPLOAD_FILE_DIR;
+        String fileList = currentAccounting.getBill();
+        if (fileList == null) {
+            fileList ="";
+        }
+        List<String> files = Arrays.asList(fileList.split(","));
+        List<String> oldFile = Arrays.asList(accountingUpdateRequest.getOldFile());
+        List<String> removeFiles = new ArrayList<>();
+        List<String> newFiles    = new ArrayList<>();
+        for (String file : files) {
+            if (!oldFile.contains(file)) {
+                removeFiles.add(file);
+            }else{
+                newFiles.add(file);
+            }
+        }
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
         if (billFile != null) {
-            FileUtils.validateFiles(billFile);
+            applicationUtils.checkValidateFile(Accounting.class, billFile);
         }
-        String dir = AccountingConstant.UPLOAD_FILE_DIR;
-        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
-        if (listFileNameSaveFileSuccess != null) {
-            Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, listFileNameSaveFileSuccess);
-            try {
-                accountingMapper.updateAccounting(updateAccounting);
-                if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
-                    Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(currentAccounting);
-                    List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(currentAccounting);
-                    Long beforeRemain = 0L;
-                    if (beforeCurrentAccounting != null) {
-                        beforeRemain = beforeCurrentAccounting.getRemain();
-                    }
-                    for (Accounting accounting : remainRecordInMonthList) {
-                        beforeRemain += accounting.getExpense();
-                        accounting.setRemain(beforeRemain);
-                    }
-                    accountingMapper.updateRecordsBatch(remainRecordInMonthList);
-                    FileUtils.deleteMultipleFilesToServer(request, dir, currentAccounting.getBill());
+        List<String> newFilesUpdate;
+        if (accountingUpdateRequest.getBill() != null && (billFile.length + oldFile.size()) > AccountingConstant.NUMBER_FILE_LIMIT) {
+            throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
+        }
+        newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
+        assert newFilesUpdate != null;
+        newFiles.addAll(newFilesUpdate);
+        Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, newFiles);
+        try {
+            accountingMapper.updateAccounting(updateAccounting);
+            if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
+                Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(currentAccounting);
+                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(currentAccounting);
+                Long beforeRemain = 0L;
+                if (beforeCurrentAccounting != null) {
+                    beforeRemain = beforeCurrentAccounting.getRemain();
                 }
-            } catch (Exception e) {
-                FileUtils.deleteMultipleFilesToServer(request, dir, updateAccounting.getBill());
-                return null;
+                for (Accounting accounting : remainRecordInMonthList) {
+                    beforeRemain += accounting.getExpense();
+                    accounting.setRemain(beforeRemain);
+                }
+                accountingMapper.updateRecordsBatch(remainRecordInMonthList);
             }
-            return findAccountingById(accountingUpdateRequest.getId());
+            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+        } catch (Exception e) {
+            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+            return null;
         }
-        return null;
+        return findAccountingById(accountingUpdateRequest.getId());
     }
 
     @Override

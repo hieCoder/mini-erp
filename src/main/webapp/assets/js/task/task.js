@@ -26,7 +26,7 @@ function getStatusColor(code){
         case 'OPENED':
             colorClass = 'bg-warning';
             break;
-        case 'POSTPONSED':
+        case 'POSTPONED':
             colorClass = 'bg-danger';
             break;
         case 'REOPENED':

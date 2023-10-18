@@ -34,16 +34,24 @@ public class SettingServiceImpl implements SettingService {
     }
 
     @Override
-    public int updateSetting(SettingUpdateRequest settingUpdateRequest) {
+    public int updateSetting(SettingUpdateRequest[] settingUpdateRequests) {
 
-        if(settingMapper.findById(settingUpdateRequest.getId()) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("id"));
+        int updatedCount = 0;
 
-        Setting setting = settingConverter.toEntity(settingUpdateRequest);
-        try{
-            settingMapper.updateSetting(setting);
-            return 1;
-        }catch (Exception e){}
-        return 0;
+        for (SettingUpdateRequest settingUpdateRequest : settingUpdateRequests) {
+            if (settingMapper.findByCode(settingUpdateRequest.getCode()) == null)
+                throw new NotFoundException(MessageErrorUtils.notFound("code"));
+
+            Setting setting = settingConverter.toEntity(settingUpdateRequest);
+            try {
+                int result = settingMapper.updateSetting(setting);
+                if (result > 0) {
+                    updatedCount++;
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        return updatedCount;
     }
 }

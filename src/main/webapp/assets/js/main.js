@@ -75,7 +75,7 @@ function isBlank(a){
 }
 
 function formatDateValueToValueOfInputDate(s) {
-    var dateArray = s.split('/');
+    var dateArray = s.split('-');
     var date = new Date(Date.UTC(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])));
     return date.toISOString().slice(0, 10);
 }

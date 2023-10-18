@@ -26,6 +26,7 @@
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
+        AND ( #{userRole} = 'OWNER' OR t.USER_ID = #{userId})
         ORDER BY t.CREATED_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>
@@ -33,13 +34,14 @@
     <select id="getTotalItem" resultType="long">
         SELECT COUNT(*)
         FROM TASK t
-        INNER JOIN USER u ON t.user_id = u.id
+        INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
         AND (
                 u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
+        AND ( #{userRole} = 'OWNER' OR t.USER_ID = #{userId})
         ORDER BY t.START_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>
@@ -96,6 +98,7 @@
         SELECT STATUS_TASK, COUNT(*) as taskCount
         FROM TASK
         WHERE STATUS = 'ACTIVE'
+        AND ( #{userRole} = 'OWNER' OR USER_ID = #{userId})
         GROUP BY STATUS_TASK
     </select>
 
@@ -206,8 +209,8 @@
 
     <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
         SELECT t.id, t.title
-        FROM task t
-        INNER JOIN user u ON t.user_id = u.id
+        FROM TASK t
+        INNER JOIN USER u ON t.user_id = u.id
         WHERE u.id = #{userId}
     </select>
 

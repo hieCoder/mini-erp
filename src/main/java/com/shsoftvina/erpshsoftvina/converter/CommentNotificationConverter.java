@@ -10,7 +10,9 @@ import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateComm
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -31,15 +33,15 @@ public class CommentNotificationConverter {
     public CommentNotificationResponse toResponse(CommentNotification commentNotification) {
 
         User user = commentNotification.getUser();
-        String avatarUser = null, fullnameUser = null, userId = null,parentCommentId = null;
-        if(user != null){
-            avatarUser = user.getAvatar();
-            fullnameUser = user.getFullname();
-            userId = user.getId();
-        }
-        CommentNotification parentComment = commentNotification.getParentComment();
-        if(parentComment != null){
-            parentCommentId = parentComment.getId();
+            String avatarUser = null, fullnameUser = null, userId = null,parentCommentId = null;
+            if(user != null){
+                avatarUser = FileUtils.getPathUpload(User.class, user.getAvatar());
+                fullnameUser = user.getFullname();
+                userId = user.getId();
+            }
+            CommentNotification parentComment = commentNotification.getParentComment();
+            if(parentComment != null){
+                parentCommentId = parentComment.getId();
         }
         return CommentNotificationResponse.builder()
                 .id(commentNotification.getId())
@@ -75,7 +77,7 @@ public class CommentNotificationConverter {
         return CommentNotification.builder()
                 .content(updateCommentNotificationRequest.getContent())
                 .id(updateCommentNotificationRequest.getId())
-                .modifiedBy(Principal.getUserCurrent().getFullname())
+                .modifiedBy(userMapper.findById(updateCommentNotificationRequest.getUserId()).getFullname())
                 .modifiedDate(new Date())
                 .build();
     }

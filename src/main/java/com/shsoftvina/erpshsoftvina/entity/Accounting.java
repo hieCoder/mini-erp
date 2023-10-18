@@ -22,5 +22,6 @@ public class Accounting {
     private String bill;
     private String title;
     private StatusAccountingEnum status;
+    private String note;
 }
 

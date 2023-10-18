@@ -43,11 +43,11 @@ public class UserApi {
     public ResponseEntity<?> findUserDetail(@PathVariable("id") String id) {
         return new ResponseEntity<>(userService.findUserDetail(id), HttpStatus.OK);
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
         return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
     }
+
 
     @PutMapping("/register/approval")
     public ResponseEntity<Boolean> activeUserRegisterRequest(@Valid @RequestBody UserActiveRequest user) {

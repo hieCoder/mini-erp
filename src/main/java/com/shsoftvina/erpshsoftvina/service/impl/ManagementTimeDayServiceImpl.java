@@ -30,8 +30,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     private UserMapper userMapper;
 
     @Override
-    public DayResponse createDay(String jsonDay) {
-        DayCreateRequest dayCreateRequest = JsonUtils.jsonToObject(jsonDay, DayCreateRequest.class);
+    public DayResponse createDay(DayCreateRequest dayCreateRequest) {
 
         if(userMapper.findById(dayCreateRequest.getUserId()) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
@@ -46,13 +45,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     }
 
     @Override
-    public DayResponse updateDay(String jsonDay) {
-        DayUpdateRequest updateRequest = JsonUtils.jsonToObject(jsonDay, DayUpdateRequest.class);
+    public DayResponse updateDay(DayUpdateRequest dayUpdateRequest) {
 
-        if(managementTimeDayMapper.findById(updateRequest.getId()) == null)
+        if(managementTimeDayMapper.findById(dayUpdateRequest.getId()) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("id"));
 
-        ManagementTimeDay day = managementTimeConvert.toEntity(updateRequest);
+        ManagementTimeDay day = managementTimeConvert.toEntity(dayUpdateRequest);
         try{
             managementTimeDayMapper.updateDayInfo(day);
             return managementTimeConvert.toResponse(day);

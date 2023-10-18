@@ -9,7 +9,9 @@
             <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="CODE" type="VARCHAR(255)"/>
+            <column name="CODE" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
             <column name="IMAGE_TYPE" type="VARCHAR(255)"/>
             <column name="FILE_TYPE" type="VARCHAR(255)"/>
             <column name="FILE_SIZE" type="INT"/>
