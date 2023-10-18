@@ -21,4 +21,7 @@ public class BookCreateRequest {
 
     @NotBlank(message = "Field link is not filled")
     private String link;
+
+    @NotBlank(message = "Field fullnameUser is not filled")
+    private String fullnameUser;
 }

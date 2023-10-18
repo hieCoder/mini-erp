@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.converter.BookConverter;
 import com.shsoftvina.erpshsoftvina.entity.Book;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
@@ -25,6 +26,9 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookConverter bookConverter;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public List<ShowBookResponse> findAll() {
         return bookMapper.findAll().stream().map(book -> bookConverter.toShowResponse(book)).collect(Collectors.toList());
@@ -32,6 +36,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public ShowBookResponse createBook(BookCreateRequest bookCreateRequest) {
+
         Book book = bookConverter.toEntity(bookCreateRequest);
         try{
             bookMapper.createBook(book);

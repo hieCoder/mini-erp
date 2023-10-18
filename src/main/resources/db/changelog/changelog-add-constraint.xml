@@ -127,7 +127,8 @@
                                  baseColumnNames="BOOK_ID"
                                  referencedTableName="BOOK"
                                  referencedColumnNames="ID"
-                                 constraintName="FK_FEELING_OF_BOOK_BOOK"/>
+                                 constraintName="FK_FEELING_OF_BOOK_BOOK"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="16" author="team2">
@@ -136,13 +137,5 @@
                                  referencedTableName="USER"
                                  referencedColumnNames="ID"
                                  constraintName="FK_FEELING_OF_BOOK_USER"/>
-    </changeSet>
-
-    <changeSet id="17" author="team2">
-        <addForeignKeyConstraint baseTableName="BOOK"
-                                 baseColumnNames="USER_ID"
-                                 referencedTableName="USER"
-                                 referencedColumnNames="ID"
-                                 constraintName="FK_BOOK_USER"/>
     </changeSet>
 </databaseChangeLog>
