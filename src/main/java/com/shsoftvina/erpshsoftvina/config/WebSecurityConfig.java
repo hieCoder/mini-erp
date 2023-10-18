@@ -1,11 +1,14 @@
 package com.shsoftvina.erpshsoftvina.config;
 
 
+import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,12 +26,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+//        User user = Principal.getUserCurrent();
+//        String roleCurrent = user.getRole().toString();
+//
+//        boolean isAllowAccess = true;
+//
+//        if(roleCurrent.equals("DEVELOPER"))
+
+        String[] apiManagerOrOwner = new String[]{
+                ,
+
+        };
+
+
         http
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
                 .antMatchers("/api/**").permitAll() // api
                 .antMatchers("/login", "/register").permitAll()// controller
+
+//                // api
+//                    // auth
+//                    .antMatchers("/api/v1/auth/**").permitAll()
+//                    // accounting
+//                    .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // timesheets
+//                    .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // book
+//                    .antMatchers(HttpMethod.GET, "/api/v1/books/**").authenticated()
+//                    .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // task
+//                    .antMatchers(HttpMethod.POST, "/api/v1/tasks").authenticated()
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
