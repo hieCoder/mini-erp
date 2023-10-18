@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DayDetailCreateRequest {
-    private String dayId;
+public class DayDetailUpdateRequest {
+    private String id;
 
     private String code;
     private String[] data;
