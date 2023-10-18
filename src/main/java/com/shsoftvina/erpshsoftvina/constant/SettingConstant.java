@@ -9,8 +9,4 @@ public class SettingConstant {
     public static String NOTIFICAITON_COMMENT_CODE = "NOTIFICAITON_COMMENT";
     public static String TASK_CODE = "TASK";
     public static String TASK_COMMENT_CODE = "TASK_COMMENT";
-
-    public static String TYPE_IMAGE = "TYPE_IMAGE";
-    public static String TYPE_FILE = "TYPE_FILE";
-    public static String FILE_LIMIT = "FILE_LIMIT";
 }

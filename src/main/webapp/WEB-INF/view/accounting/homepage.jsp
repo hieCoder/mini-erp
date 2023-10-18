@@ -50,6 +50,7 @@
             <th scope="col">EXPENSE</th>
             <th scope="col">BALANCE</th>
             <th scope="col">CREATED BY</th>
+            <th scope="col">NOTE</th>
             <th scope="col">BILL</th>
         </tr>
         </thead>
@@ -61,18 +62,21 @@
                 <td class="align-middle"><c:out value="${a.createdDate}"/></td>
                 <td class="align-middle"><c:out value="${a.title}"/></td>
                 <td class="align-middle ${a.revenue > 0 ? 'text-success' : ''}">
-                    <fmt:formatNumber type="number" value="${a.revenue}" pattern="#,##0 ₫" />
+                    <fmt:formatNumber type="number" value="${a.revenue}" pattern="#,##0 ₫"/>
                 </td>
                 <td class="align-middle ${a.expense < 0 ? 'text-danger' : ''}">
-                    <fmt:formatNumber type="number" value="${a.expense}" pattern="#,##0 ₫" />
+                    <fmt:formatNumber type="number" value="${a.expense}" pattern="#,##0 ₫"/>
                 </td>
-                <td class="align-middle text-primary"><fmt:formatNumber type="number" value="${a.remain}" pattern="#,##0 ₫" /></td>
+                <td class="align-middle text-primary"><fmt:formatNumber type="number" value="${a.remain}"
+                                                                        pattern="#,##0 ₫"/></td>
                 <td class="align-middle"><c:out value="${a.user.fullname}"/></td>
+                <td class="align-middle"><c:if test="${a.note != null}"><c:out value="${a.note}"/></c:if></td>
                 <td class="align-middle">
                     <c:choose>
                         <c:when test="${not empty a.bill}">
                             <c:forEach items="${a.bill}" var="file">
-                                <a href="${file}" download="" target="_blank" id="resumeLink">${file.substring(file.indexOf('-') + 1)}</a>
+                                <a href="${file}" download="" target="_blank"
+                                   id="resumeLink">${file.substring(file.indexOf('-') + 1)}</a>
                                 <hr>
                             </c:forEach>
                         </c:when>
@@ -150,15 +154,19 @@
         <tbody>
         <tr id="total">
             <th>Page ${list.pageNumber}</th>
-            <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}" pattern="#,##0 ₫" /></td>
-            <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}" pattern="#,##0 ₫" /></td>
-            <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}" pattern="#,##0 ₫" /></td>
+            <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}" pattern="#,##0 ₫"/></td>
+            <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}" pattern="#,##0 ₫"/></td>
+            <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}"
+                                                       pattern="#,##0 ₫"/></td>
         </tr>
         <tr>
             <th>Total in Month</th>
-            <td class="text-success"><fmt:formatNumber type="number" value="${list.totalList.totalRevenue}" pattern="#,##0 ₫" /></td>
-            <td class="text-danger"><fmt:formatNumber type="number" value="${list.totalList.totalExpense}" pattern="#,##0 ₫" /></td>
-            <td class="text-primary"><fmt:formatNumber type="number" value="${list.totalList.totalRemain}" pattern="#,##0 ₫" /></td>
+            <td class="text-success"><fmt:formatNumber type="number" value="${list.totalList.totalRevenue}"
+                                                       pattern="#,##0 ₫"/></td>
+            <td class="text-danger"><fmt:formatNumber type="number" value="${list.totalList.totalExpense}"
+                                                      pattern="#,##0 ₫"/></td>
+            <td class="text-primary"><fmt:formatNumber type="number" value="${list.totalList.totalRemain}"
+                                                       pattern="#,##0 ₫"/></td>
         </tr>
         </tbody>
     </table>
@@ -228,7 +236,8 @@
                             + "<td style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
                             + "<td style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
                             + "<td style='color: blue'>" + formatCurrency(account.remain) + "</td>"
-                            + "<td>" + account.user.fullname + "</td>";
+                            + "<td>" + account.user.fullname + "</td>"
+                            + "<td>" + (account.note !== null ? account.note : '') + "</td>";
                         if (account.bill) {
                             var cell = row.insertCell();
 
@@ -269,7 +278,7 @@
     }
 
     function formatCurrency(amount) {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
     }
 
     function updatePagination(responseData) {

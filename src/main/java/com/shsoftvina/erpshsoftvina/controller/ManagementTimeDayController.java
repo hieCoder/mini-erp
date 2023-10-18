@@ -15,14 +15,15 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 
 @Controller
-@RequestMapping("/todo")
-public class ToDoController {
+@RequestMapping("/management-time")
+public class ManagementTimeDayController {
+
     @Autowired
     ManagementTimeDayService managementTimeDayService;
 
-    @GetMapping
-    public String getCalendar() {
-        return "todo/calendar";
+    @GetMapping("/{idUser}")
+    public String getCalendarDetail(@PathVariable String idUser) {
+        return "management-time/calendar-detail";
     }
 
     @GetMapping("/day")
@@ -30,7 +31,7 @@ public class ToDoController {
             @RequestParam(name = "id", required = false, defaultValue = "") String id,
             @RequestParam(name = "day", required = false, defaultValue = "") String day
     ) {
-        ModelAndView mav = new ModelAndView("todo/detail");
+        ModelAndView mav = new ModelAndView("management-time/day/detail");
         try {
             DayResponse dayResponse = managementTimeDayService.findById(id);
             mav.addObject("dayResponse", dayResponse);

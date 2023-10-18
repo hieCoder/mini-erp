@@ -1,10 +1,4 @@
-<%@ page import="com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse" %><%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 9/25/2023
-  Time: 11:46 AM
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
@@ -18,7 +12,7 @@
 
 <html>
 <head>
-    <title>To Do Detail</title>
+    <title>Detail of day</title>
 </head>
 <body>
 <div class="container mt-4 calendar-container" data-date="${day}" data-id="${dayResponse.id}">
@@ -274,9 +268,9 @@
         }
         let getCodeTime = (code)=>{
             let arr = {
-                sixToTwelvePm: "SIX_TO_TWELVE_PM",
-                twelveToSixPm: "TWELVE_TO_SIX_PM",
-                sixToTwelveAm: "SIX_TO_TWELVE_AM",
+                sixToTwelvePm: M_SIX_TO_TWELVE_PM,
+                twelveToSixPm: M_TWELVE_TO_SIX_PM,
+                sixToTwelveAm: M_SIX_TO_TWELVE_AM,
             }
             return arr[code]
         }
@@ -295,7 +289,7 @@
                 code: code,
                 data:targetArr
             }
-            console.log(data)
+            callAjaxByJsonWithData('/')
         })
     $("button.showDetail").click(function (){
         var modal = $("#detailModal")

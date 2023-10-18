@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.service.ScheduleService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
@@ -42,8 +43,8 @@ public class ScheduleController {
         if (endDate == null) {
             endDate = new Date();
         }
-        List<TaskShowResponse> list = scheduleService.getScheduleDetail(userId, startDate, endDate);
-        modelAndView.addObject("list",list);
+        ScheduleListResponse list = scheduleService.getScheduleDetail(userId, startDate, endDate);
+        modelAndView.addObject("schedule",list);
         return modelAndView;
     }
 }

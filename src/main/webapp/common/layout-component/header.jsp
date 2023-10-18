@@ -12,31 +12,37 @@
             </button>
             <div class="collapse navbar-collapse justify-content-around align-items-center ml-5 pl-5" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link  text-light" href="/tasks">Task</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  text-light" href="/schedules">Schedule</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Task
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <a class="dropdown-item" href="/tasks">Task</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/weekly-reports">Weekly report</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item schedule-login">Schedule</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link  text-light" href="/notifications">Notification</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link  text-light" href="/schedules">Well-being</a>
-                    </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown human-login">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Management
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/users">Human</a>
+                            <a class="dropdown-item human-login" href="/users">Human</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/accounting">Accounting</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/timesheets">Timesheets</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
+                        <a class="nav-link  text-light" href="/management-time">Management time</a>
+                    </li>
+                    <li class="nav-item dropdown setting-login">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Setting
                         </a>
@@ -49,11 +55,11 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <span class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/upload/user/<%=Principal.getUserCurrent().getAvatar()%>" alt="Avatar" width="40" height="40" class="img-thumbnail">
-                        <%=Principal.getUserCurrent().getFullname()%>
+                        <img alt="Avatar" width="40" height="40" class="img-thumbnail avatar-login">
+                        <span class="fullname-login"></span>
                     </span>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="/users">Profile</a>
+                        <a class="dropdown-item profile-user-login">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout">Logout</a>
                     </div>

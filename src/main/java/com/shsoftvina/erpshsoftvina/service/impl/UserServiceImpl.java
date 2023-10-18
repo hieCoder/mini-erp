@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
         MultipartFile avatarFile = userUpdateRequest.getAvatar();
         MultipartFile resumeFile = userUpdateRequest.getResume();
 
-        if (avatarFile != null) applicationUtils.checkValidateFile(User.class, avatarFile);
+        if (avatarFile != null) applicationUtils.checkValidateImage(User.class, avatarFile);
         if (resumeFile != null) applicationUtils.checkValidateFile(User.class, resumeFile);
 
         String uploadDir = UserConstant.UPLOAD_FILE_DIR;

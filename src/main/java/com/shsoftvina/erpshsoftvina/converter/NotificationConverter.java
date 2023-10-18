@@ -88,6 +88,7 @@ public class NotificationConverter {
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .fullnameUser(fullnameUser)
+                .idUser(notification.getUser().getId())
                 .files(FileUtils.getPathUploadList(Notification.class, notification.getFiles()))
                 .createdDate(DateUtils.formatDateTime(notification.getCreatedDate()))
                 .comments(commentNotificationConverter.toListResponse(notification.getComments()))

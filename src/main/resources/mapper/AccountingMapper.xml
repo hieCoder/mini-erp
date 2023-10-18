@@ -38,8 +38,8 @@
 
     <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         INSERT
-        INTO ACCOUNTING (id,created_date,spending,remain, user_id, bill, title, status)
-        VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status});
+        INTO ACCOUNTING (id,created_date,spending,remain, user_id, bill, title, status, note)
+        VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status}, #{note});
     </insert>
 
     <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
@@ -47,7 +47,8 @@
         SET spending = #{expense},
         user_id = #{user.id},
         bill = #{bill},
-        title = #{title}
+        title = #{title},
+        note = #{note}
         WHERE id = #{id}
     </update>
 
@@ -140,6 +141,7 @@
         <result property="bill" column="bill"/>
         <result property="title" column="title"/>
         <result property="status" column="status"/>
+        <result property="note" column="note"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         </association>
     </resultMap>
