@@ -13,6 +13,7 @@ import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportDeta
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.WeeklyReportService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class WeeklyReportImpl implements WeeklyReportService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    private ApplicationUtils applicationUtils;
+
     @Override
     public PageWeeklyReportListRespone getAllWeeklyReport(String searchTerm, String userRole, String userId, int start, int pageSize) {
         int offset = (start - 1) * pageSize;
@@ -49,7 +53,9 @@ public class WeeklyReportImpl implements WeeklyReportService {
 
     @Override
     public WeeklyReportDetailResponse findById(String id) {
-        return weeklyReportConverter.toDetailResponse(weeklyReportMapper.findById(id));
+        WeeklyReport weeklyReport = weeklyReportMapper.findById(id);
+        applicationUtils.checkUserAllow(weeklyReport.getUser().getId());
+        return weeklyReportConverter.toDetailResponse(weeklyReport);
     }
 
     @Override

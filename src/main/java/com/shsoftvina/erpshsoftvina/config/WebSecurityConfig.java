@@ -1,8 +1,5 @@
 package com.shsoftvina.erpshsoftvina.config;
 
-
-import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +49,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // setting
                     .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
                     // user
+                    .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
                     .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
                     .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
                 // controller
                     // auth
                     .antMatchers("/login", "/register").permitAll()
+                    // user
+                    .antMatchers(HttpMethod.GET, "/users").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // schedule
+                    .antMatchers(HttpMethod.GET, "/schedules").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // accounting
+                    .antMatchers("/accounting/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // timesheets
+                    .antMatchers("/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // setting
+                    .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // management-time
+                    //.antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

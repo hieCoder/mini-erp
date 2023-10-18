@@ -26,7 +26,8 @@ public interface TaskMapper {
     int updateTask(Task task);
     int changeStatusTask(@Param("id") String id,
                          @Param("status") String status);
-    List<Map<String, Object>> getStatusTaskCounts();
+    List<Map<String, Object>> getStatusTaskCounts(@Param("userRole") String userRole,
+                                                  @Param("userId") String userId);
     Task findById(String id);
     List<Map<String, Object>> getTaskByHashtag(
             @Param("userId") String userId);
