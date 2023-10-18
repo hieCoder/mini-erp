@@ -28,7 +28,7 @@
             <thead>
             <tr>
                 <th scope="col">NO.</th>
-                <th scope="col">ID</th>
+                <th scope="col">Book</th>
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Link</th>
@@ -41,7 +41,7 @@
             <c:forEach var="book" items="${books}" varStatus="loop">
                 <tr>
                     <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>
-                    <td>${book.id}</td>
+                    <td><img src="/upload/user/231018130731-ce9b659cbdb7562ecfe3f3362dd0d323.jpg" alt="Book Image" width="100" height="100"></td>
                     <td>${book.title}</td>
                     <td>${book.author}</td>
                     <td><a href="" target="_blank" class="bookLink text-decoration-none">${book.link}</a></td>
@@ -51,7 +51,7 @@
                         <button value="${book.id}" type="button"
                                 class="btn btn-primary mb-2 edit-book-button">Edit
                         </button>
-                        <button value="${book.id}" type="button" class="btn btn-danger del-book-button"
+                        <button value="${book.id}" type="button" class="btn btn-danger mb-2 del-book-button"
                                 data-toggle="modal" data-target="#deleteBookModal">Delete
                         </button>
                     </td>
@@ -137,8 +137,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="addBookButton">Submit
-                </button>
+                <button type="button" class="btn btn-primary" id="addBookButton">Submit</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -168,7 +167,7 @@
                     <div class="form-group row">
                         <label for="editAuthor" class="col-sm-2 col-form-label">Author:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editAuthor" >
+                            <input type="text" class="form-control" id="editAuthor">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -274,31 +273,17 @@
             }
 
             if (isValidate) {
-                var xhr = new XMLHttpRequest();
-                var method = 'POST';
-                var url = '/api/v1/books';
-                xhr.open(method, url, true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-
                 var data = {
                     title: valueTitle,
                     author: valueAuthor,
                     link: valueLink,
                     fullnameUser: userCurrent.fullname
                 };
-
-                var jsonData = JSON.stringify(data);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        sessionStorage.setItem('result', 'addBookSuccess');
-                        location.reload();
-                    } else {
-                        console.log(xhr.status);
-                    }
-                }
-                xhr.send(jsonData);
-            }
-            ;
+                callAjaxByJsonWithData('/api/v1/books', 'POST', data, function (rs) {
+                    sessionStorage.setItem('result', 'addBookSuccess');
+                    location.reload();
+                });
+            };
         });
     });
 
@@ -314,20 +299,10 @@
                 bookId = button.value;
                 confirmDelButton.addEventListener('click', function () {
                     if (bookId) {
-                        var xhr = new XMLHttpRequest();
-                        var method = 'DELETE';
-                        var url = '/api/v1/books/' + bookId;
-                        xhr.open(method, url, true);
-
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                sessionStorage.setItem('result', 'delBookSuccess');
-                                location.reload();
-                            } else {
-                                console.log(xhr.status);
-                            }
-                        }
-                        xhr.send();
+                        callAjaxByJsonWithData('/api/v1/books/' + bookId, 'DELETE', null, function (rs) {
+                            sessionStorage.setItem('result', 'delBookSuccess');
+                            location.reload();
+                        })
                     }
                 })
             });
@@ -344,24 +319,33 @@
                 bookId = button.value;
                 $('#editBookModal').modal('show');
 
-                if (bookId) {
-                    var xhr = new XMLHttpRequest();
-                    var method = 'GET';
-                    var url = '/api/v1/books/' + bookId;
-                    xhr.open(method, url, true);
+                callAjaxByJsonWithData('/api/v1/books/' + bookId, 'GET', null, function (rs) {
+                    var responseData = rs;
 
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var responseData = xhr.responseXML;
-                             document.getElementById('editTitle').value = responseData.title;
-                             document.getElementById('editAuthor').value = responseData.author;
-                             document.getElementById('editLink').value = responseData.link;
-                        } else console.log(xhr.status);
-                    }
-                }
-            })
-        })
+                    // Đổ dữ liệu từ API vào các trường của modal
+                    document.getElementById('editTitle').value = responseData.book.title;
+                    document.getElementById('editAuthor').value = responseData.book.author;
+                    document.getElementById('editLink').value = responseData.book.link;
 
+                    var submitButton = document.getElementById('editBookButton');
+                    submitButton.addEventListener('click', function () {
+                        var title = document.getElementById('editTitle').value;
+                        var author = document.getElementById('editAuthor').value;
+                        var link = document.getElementById('editLink').value;
+                        var data = {
+                            id : bookId,
+                            title: title,
+                            author: author,
+                            link: link
+                        };
+                       callAjaxByJsonWithData('/api/v1/books', 'PUT', data, function (rs) {
+                           sessionStorage.setItem('result', 'updateBookSuccess');
+                           location.reload();
+                       })
+                    });
+                });
+            });
+        });
     });
 
     // Notification
@@ -372,6 +356,9 @@
             switch (result) {
                 case 'addBookSuccess':
                     message = 'Add Book Success';
+                    break;
+                case 'updateBookSuccess':
+                    message = 'Update Book Success';
                     break;
                 case 'delBookSuccess':
                     message = 'Delete Book Success';

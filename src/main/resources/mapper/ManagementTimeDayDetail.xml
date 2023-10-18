@@ -5,9 +5,9 @@
     <insert id="createTimeDayDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
         insert into MANAGEMENT_TIME_DAY_DETAIL (ID, MANAGEMENT_TIME_DAY_ID, SIX_TO_TWELVE_PM, TWELVE_TO_SIX_PM,
                                                 SIX_TO_TWELVE_AM)
-            value (#{id}, #{managementTimeDay.id}, #{sixToTwelvePM}, #{twelveToSixPM}, #{sixToTwelveAM});
+            value (#{id}, #{managementTimeDay.id}, #{sixToTwelvePM}, #{twelveToSixPM}, #{sixToTwelveAM})
     </insert>
-    
+
     <update id="updateTimeDayDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
         UPDATE MANAGEMENT_TIME_DAY_DETAIL
         SET
@@ -16,4 +16,17 @@
             SIX_TO_TWELVE_AM = #{sixToTwelveAM}
         WHERE ID = #{id}
     </update>
+
+    <select id="findById" resultMap="dayDetailResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY_DETAIL
+        WHERE ID = #{id}
+    </select>
+
+    <resultMap id="dayDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
+        <id property="id" column="ID"/>
+        <result property="sixToTwelvePM" column="SIX_TO_TWELVE_PM"/>
+        <result property="twelveToSixPM" column="TWELVE_TO_SIX_PM"/>
+        <result property="sixToTwelveAM" column="SIX_TO_TWELVE_AM"/>
+    </resultMap>
 </mapper>

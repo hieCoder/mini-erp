@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.enums.managementtime_daydetail.DayDetailCode
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDetailCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDetailUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtimedetail.DayDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -68,4 +69,20 @@ public class ManagementTimeDayDetailConverter {
                 .build();
     }
 
-}
+    public DayDetailResponse toResponse(ManagementTimeDayDetail managementTimeDayDetail, String code) {
+
+        String data = null;
+
+        if (code.equals(DayDetailCodeEnum.SIX_TO_TWELVE_PM.toString())) {
+            data = managementTimeDayDetail.getSixToTwelvePM();
+        } else if (code.equals(DayDetailCodeEnum.TWELVE_TO_SIX_PM.toString())) {
+            data = managementTimeDayDetail.getTwelveToSixPM();
+        } else data = managementTimeDayDetail.getSixToTwelveAM();
+            return DayDetailResponse.builder()
+                    .id(managementTimeDayDetail.getId())
+                    .data(new String[] {data})
+                    .build();
+        }
+    }
+
+
