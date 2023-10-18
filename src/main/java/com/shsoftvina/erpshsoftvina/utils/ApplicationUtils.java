@@ -95,6 +95,8 @@ public class ApplicationUtils {
             setting = settingMapper.findByCode(SettingConstant.TASK_CODE);
         } else if(c == CommentTask.class){
             setting = settingMapper.findByCode(SettingConstant.TASK_COMMENT_CODE);
+        } else if(c == Book.class){
+            setting = settingMapper.findByCode(SettingConstant.BOOK);
         }
         return setting;
     }

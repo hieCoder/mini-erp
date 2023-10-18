@@ -211,8 +211,9 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <p class="mr-4 message-noti-day-detail" style="color:green;"></p>
                 <button type="button" class="btn btn-primary" id="showDetailSubmit">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -289,28 +290,23 @@
                 code: code,
                 data:targetArr
             }
-            console.log(data);
 
             callAjaxByJsonWithData('/api/v1/management-time-detail/exist/' + dayId, 'GET', null, function (rs) {
-                console.log(rs);
-                if(rs == true){ // update
-                    callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
-                        console.log(rs)
-                        if(rs>0){
-                            console.log(rs)
-                        }
-                     })
-                } else{ // create
+                if(rs){ // update
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
-                        console.log(rs)
-                        if(rs>0){
-                            console.log(rs)
-                        }
+                        $('.message-noti-day-detail').text('Update success');
+                     });
+                } else{ // create
+                    callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
+                        $('.message-noti-day-detail').text('Update success');
                     });
                 }
             });
         })
     $("button.showDetail").click(function (){
+
+        $('.message-noti-day-detail').text('');
+
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
         var nameDisplay = $(this).parent().text()
@@ -327,14 +323,16 @@
             '</tr>'
         callAjaxByJsonWithData('/api/v1/management-time-detail/${dayResponse.id}/'+code, 'GET', null, function (rs) {
             if(rs.id != null) {
-                if(rs.data[0] != null) {
-                    let data = JSON.parse(rs.data)
+                if(rs.data != null) {
+                    let data = rs.data;
                     if(arrayTime){
                         arrayTime.forEach((e, index)=>{
+                            var dataOfArray = data[index];
+                            if (data[index] == '' || data[index] == undefined) dataOfArray = '';
                             html+=
                                 '<tr>'+
                                 '<td class="align-middle">'+ e +'</td>'+
-                                '<td><input type="text" class="form-control inputTarget" value="'+ data[index] + '" placeholder="Input target..."></td>'+
+                                '<td><input type="text" class="form-control inputTarget" value="'+ dataOfArray + '" placeholder="Input target..."></td>'+
                                 '</tr>'
                         })
                     }
