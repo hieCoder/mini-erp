@@ -90,7 +90,11 @@ function getFileNameFromPath(path) {
     return lastPart;
 }
 
-function isAdminOrUserLogin(idUser) {
+function isAdminOrUserLogin() {
+    return userCurrent.role != U_DEVELOPER;
+}
+
+function isUser(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
 

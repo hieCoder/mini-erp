@@ -19,7 +19,9 @@
         <button class="btn btn-primary" id="searchButton">Search</button>
     </div>
     <div class="col-md-2">
-        <a href="${pathMain}create"><button class="btn btn-success">Create</button></a>
+        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+            <a href="${pathMain}create"><button class="btn btn-success">Create</button></a>
+        </c:if>
     </div>
     <div class="col-md-2">
         <select id="pageSizeSelect" class="form-control">
@@ -79,10 +81,7 @@
             </ul>
         </nav>
 
-
-
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const baseUrl = "/api/v1/notifications";

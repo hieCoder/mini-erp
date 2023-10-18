@@ -197,7 +197,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered text-center">
                     <thead>
                     <tr>
                         <th class="align-middle">Q</th>
@@ -233,7 +233,7 @@
             let array = {
                 sixToTwelvePm: "6~12pm",
                 twelveToSixPm: "12~6pm",
-                sixToTwelveAm: "6pm~12am",
+                sixToTwelveAm: "6~12am",
             }
             return array[name]
         }
@@ -302,13 +302,13 @@
         modal.attr("data-code",name )
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
-        let html = ""
+        let html = '<tr>' +
+            '<td rowspan="7" class="align-middle text-center">'+ qresult(name) +'</td>'+
+            '</tr>'
         if(arrayTime){
-            arrayTime.forEach((e, index)=>{
-                let xhtml = (index==0) ? '<td rowspan="6" class="align-middle text-center">'+ qresult(name) +'</td>' : ""
+            arrayTime.forEach((e)=>{
                 html+=
                     '<tr>'+
-                         xhtml+
                         '<td class="align-middle">'+ e +'</td>'+
                         '<td><input type="text" class="form-control inputTarget" placeholder="Input target..."></td>'+
                     '</tr>'

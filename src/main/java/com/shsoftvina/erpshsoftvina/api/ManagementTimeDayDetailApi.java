@@ -16,13 +16,11 @@ public class ManagementTimeDayDetailApi {
 
     @PostMapping("/day")
     public ResponseEntity<?> createDay(@RequestBody DayDetailCreateRequest dayDetailCreateRequest) {
-
         return ResponseEntity.ok(managementTimeDayDetailService.createTimeDayDetail(dayDetailCreateRequest));
     }
 
     @PutMapping
     public ResponseEntity<?> updateDay(@RequestBody DayDetailUpdateRequest dayDetailUpdateRequest) {
-
         return ResponseEntity.ok(managementTimeDayDetailService.updateTimeDayDetail(dayDetailUpdateRequest));
     }
 }

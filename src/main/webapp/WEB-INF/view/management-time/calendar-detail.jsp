@@ -13,6 +13,7 @@
 <div class="container mt-4 calendar-container">
     <h2 class="text-center">Calendar of September, 2023</h2>
     <table class="table table-bordered" id="managementTimeTable">
+
     </table>
 </div>
 <style>
@@ -33,6 +34,7 @@
     }
 </style>
 <script>
+    let monthNow = "09"
     let dayOfWeek = [
         "Sun",
         "Mon",
@@ -212,9 +214,6 @@
                 }
             }
         ]
-        console.log(dayOfMonth)
-        console.log(jsonData)
-
     let generate = (start, end) =>{
         let html =""
         for(let i=0; i<4;i++){
@@ -245,7 +244,6 @@
 
             if(i==0){
                 xhtml= '</th>'
-                console.log(dayOfWeek.length)
                 for(let i = 0; i< dayOfWeek.length; i++){
                     xhtml+= ' <th scope="col">'
                             +' <div class="text-center" style="border-bottom: #cccccc 1px solid">'+ dayOfWeek[i] +'</div>'
@@ -318,7 +316,6 @@
         }
         $("#managementTimeTable").html(html)
     }
-    generate()
 </script>
 </body>
 </html>

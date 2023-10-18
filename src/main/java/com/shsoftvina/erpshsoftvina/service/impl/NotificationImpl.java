@@ -118,7 +118,7 @@ public class NotificationImpl implements NotificationService {
             newFiles.addAll(newFilesUpdate);
         }
         List<String> listFileNameSaveFileSuccess = newFiles;
-        Notification notificationUpdate =  notificationConverter.toEntity2(updateNotificationRequest, id, listFileNameSaveFileSuccess);
+        Notification notificationUpdate =  notificationConverter.toEntity(updateNotificationRequest, id, listFileNameSaveFileSuccess);
         int rs = notificationMapper.updateNotification(notificationUpdate);
         if(rs > 0){
             NotificationDetailResponse updateNotification = notificationConverter.toNotificationDetailResponse(notificationMapper.getNotificationById(id));
