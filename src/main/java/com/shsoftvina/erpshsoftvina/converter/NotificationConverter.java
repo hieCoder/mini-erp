@@ -66,16 +66,6 @@ public class NotificationConverter {
                 .build();
     }
 
-    public Notification toEntity2(UpdateNotificationRequest updateNotificationRequest, String id, List<String> listFileNameSaveFileSuccess) {
-        return Notification.builder()
-                .id(id)
-                .createdDate(new Date())
-                .title(updateNotificationRequest.getTitle())
-                .content(updateNotificationRequest.getContent())
-                .files(String.join(",", listFileNameSaveFileSuccess))
-                .build();
-    }
-
     public NotificationDetailResponse toNotificationDetailResponse(Notification notification) {
         User user = notification.getUser();
         String fullnameUser = null;

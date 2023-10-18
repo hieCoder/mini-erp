@@ -5,6 +5,10 @@ const T_REGISTERED = 'REGISTERED';
 const T_POSTPONSED = 'POSTPONSED';
 const T_CLOSED = 'CLOSED';
 
+const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
+const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
+const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
+
 // FUNCTION
 
 function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback) {
@@ -86,7 +90,11 @@ function getFileNameFromPath(path) {
     return lastPart;
 }
 
-function isAdminOrUserLogin(idUser) {
+function isAdminOrUserLogin() {
+    return userCurrent.role != U_DEVELOPER;
+}
+
+function isUser(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
 
