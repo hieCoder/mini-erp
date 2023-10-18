@@ -105,7 +105,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Success!</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -169,9 +169,22 @@
         }
     });
 
+    $(document).on("change", "#createBill", function (event) {
+        const selectedFiles = event.target.files;
+        var countFile = selectedFiles.length;
+        var countCurrentFile = $("li.listFilesEdit").length;
+        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
+            var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+            $(this).val('')
+        }
+    });
+
     function redirectToAccounting(month) {
         const trimmedMonth = month.replace(/\s/g, '');
-        console.log(trimmedMonth);
         window.location.href = '/accounting/' + trimmedMonth;
     }
 
@@ -191,12 +204,6 @@
 
         if (!title || !note || !amount || isNaN(amount)) {
             alert("Title, note and amount are required and amount must be a number.");
-            loading.style.display = "none";
-            return;
-        }
-
-        if (billFiles.length > 3) {
-            alert("You can't select more than 3 files.");
             loading.style.display = "none";
             return;
         }
@@ -229,6 +236,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
                     loading.style.display = "none";
+                    $('#createBill').val("");
                     $('#createModal').modal('hide');
                     $('#successModal').modal('show');
                 } else {

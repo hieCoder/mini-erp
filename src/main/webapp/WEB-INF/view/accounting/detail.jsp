@@ -36,7 +36,7 @@
                     </p>
                 </c:when>
                 <c:otherwise>
-                    <p class="card-text">Bill: </p>
+                    <p class="card-text">Bill: <span id="attachedFilesNotification"></span></p>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -216,9 +216,10 @@
         const selectedFiles = event.target.files;
         var countFile = selectedFiles.length;
         var countCurrentFile = $("li.listFilesEdit").length;
-        <%--if ((countFile + countCurrentFile) >${uploadFileLimit}) {--%>
-        if ((countFile + countCurrentFile) > 3) {
-            var modal = `<strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is 3.`
+        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
+            var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
             $("#successModal div.modal-body").html(modal)
             $("#successModal").modal("show");
             $(this).val('')
@@ -252,6 +253,10 @@
         }
     });
 
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
+    }
+
     function editAccount(accountId) {
         var loading = document.getElementById("loading");
         loading.style.display = "block";
@@ -276,18 +281,12 @@
             return;
         }
 
-        if (billFiles.length > 3) {
-            alert("You can't select more than 3 files.");
-            loading.style.display = "none";
-            return;
-        }
-
-        var validExtensions = ["xls", "xlsx", "pdf"];
+        var validExtensions = ["xls", "xlsx", "pdf", "pptx"];
         for (var j = 0; j < billFiles.length; j++) {
             var fileName = billFiles[j].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[j].size > 100 * 1024 * 1024) {
-                alert("File must be xls, xlsx, or pdf and not over 100mb.");
+                alert("File must be xls, xlsx, pptx or pdf and not over 100mb.");
                 loading.style.display = "none";
                 return;
             }
@@ -315,9 +314,9 @@
                     var responseData = JSON.parse(xhr.responseText);
                     $("#titleAccount").text(responseData.title);
                     $("#createdDateAccount").text(responseData.createdDate);
-                    $("#revenueAccount").text(responseData.revenue);
-                    $("#expenseAccount").text(responseData.expense);
-                    $("#remainAccount").text(responseData.remain);
+                    $("#revenueAccount").text(formatCurrency(responseData.revenue));
+                    $("#expenseAccount").text(formatCurrency(responseData.expense));
+                    $("#remainAccount").text(formatCurrency(responseData.remain));
                     $("#fullnameAccount").text(responseData.user.fullname);
                     $("#noteAccount").text(responseData.note);
                     var xhtml = ''
@@ -344,6 +343,7 @@
                     $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
                     editLink.innerHTML = billContent;
+                    $('#editBill').val("");
                 } else {
                     loading.style.display = "none";
                     $('#editModal').modal('hide');
