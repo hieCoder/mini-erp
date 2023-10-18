@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 9/25/2023
@@ -13,15 +13,17 @@
 <c:set var="data" value="${dayResponse.data}" />
 <c:set var="oneThingCalendar" value="${data.oneThingCalendar}" />
 <c:set var="toDoList" value="${data.toDoList}" />
+<c:set var="showButtonResult" value='${dayResponse!=null ? "" : "disabled"}'/>
+<c:set var="infoButtonResult" value='${dayResponse!=null ? "Update" : "Create"}'/>
 
 <html>
 <head>
     <title>To Do Detail</title>
 </head>
 <body>
-<div class="container mt-4 calendar-container" data-id="${dayResponse.id}">
+<div class="container mt-4 calendar-container" data-date="${day}" data-id="${dayResponse.id}">
     <h1>Management Time Day</h1>
-    <h5 class="font-italic font-bold text-center">${dayResponse.day}</h5>
+    <h5 class="font-italic font-bold text-center">${dayResponse != null ? dayResponse.day : day}</h5>
     <div class="row">
         <div class="col-md-6">
             <h3>One Thing Calendar</h3>
@@ -84,7 +86,7 @@
         <div class="col-md-6">
             <h3>To-Do List</h3>
             <h5>Six to Twelve PM
-                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelvePm">Show Detail</button>
+                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelvePm" ${showButtonResult}>Show Detail</button>
             </h5>
             <table class="table table-bordered sixToTwelvePm">
                 <thead>
@@ -111,7 +113,7 @@
                 </tbody>
             </table>
             <h5>Twelve to Six PM
-                <button class="btn btn-sm btn-primary showDetail" data-name="twelveToSixPm">Show Detail</button>
+                <button class="btn btn-sm btn-primary showDetail" data-name="twelveToSixPm" ${showButtonResult}>Show Detail</button>
             </h5>
             <table class="table table-bordered twelveToSixPm">
                 <thead>
@@ -138,7 +140,7 @@
                 </tbody>
             </table>
             <h5>Six to Twelve AM
-                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelveAm">Show Detail</button>
+                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelveAm" ${showButtonResult}>Show Detail</button>
             </h5>
             <table class="table table-bordered sixToTwelveAm">
                 <thead>
@@ -169,7 +171,7 @@
     <div class="row">
         <div class="col-md-12 mt-4 text-center">
             <button class="btn btn-primary mr-2" id="backButton" onclick="window.history.back();">Back</button>
-            <button class="btn btn-success ml-2" id="updateButton">Update</button>
+            <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
         </div>
     </div>
 </div>
@@ -206,7 +208,7 @@
                     <tr>
                         <th class="align-middle">Q</th>
                         <th class="align-middle">Time Slot</th>
-                        <th class="align-middle">Input target...</th>
+                        <th class="align-middle">Target</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -216,7 +218,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="showDetailSubmit">Save changes</button>
             </div>
         </div>
     </div>
@@ -270,8 +272,31 @@
             }
             return intervalResult
         }
-
+        let getCodeTime = (code)=>{
+            let arr = {
+                sixToTwelvePm: "SIX_TO_TWELVE_PM",
+                twelveToSixPm: "TWELVE_TO_SIX_PM",
+                sixToTwelveAm: "SIX_TO_TWELVE_AM",
+            }
+            return arr[code]
+        }
     var dot = createLoadingHtml();
+        $("#showDetailSubmit").click(function (){
+            var dayId = $("div.calendar-container").attr("data-id")
+            var codeData = $("#detailModal").attr("data-code")
+            var code = getCodeTime(codeData)
+            var targetArr = []
+            $("#detailModal tr input.inputTarget").each(function() {
+                let target = $(this).val()
+                targetArr.push(target)
+            })
+            var data = {
+                dayId: dayId,
+                code: code,
+                data:targetArr
+            }
+            console.log(data)
+        })
     $("button.showDetail").click(function (){
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
@@ -280,8 +305,7 @@
             $(this).prop("disabled",true)
         })
         $(this).after(dot)
-        modal.modal("show")
-        modal.attr("data-name",name )
+        modal.attr("data-code",name )
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
         let html = ""
@@ -292,11 +316,12 @@
                     '<tr>'+
                          xhtml+
                         '<td class="align-middle">'+ e +'</td>'+
-                        '<td><input type="text" class="form-control" placeholder="Input target..."></td>'+
+                        '<td><input type="text" class="form-control inputTarget" placeholder="Input target..."></td>'+
                     '</tr>'
             })
         }
         $("#detailModal tbody").html(html)
+        modal.modal("show")
         $("button").each(function (){
             $(this).prop("disabled",false)
         })
@@ -381,25 +406,58 @@
             gratitudeDiary: gratitudeDiary,
             affirmation: affirmation
         }
+        let rsSuccess = (text) =>{
+            $("button").each(function () {
+                $(this).prop("disabled", false)
+            })
+            $('div.custom-spinner').parent().remove();
+            var modal = '<strong class="btn-success rounded-circle p-2">Success!</strong>  '+text+' successfully.'
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+        }
 
-        var data = {
-            id: id,
-            userId: userCurrent.id,
-            data: dataInfor
-        };
-        var apiUrlManagementTimeDayApi = "/api/v1/management-time/day"
-        callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'PUT', data, function (rs) {
-            if(rs!=null){
-                $("button").each(function (){
-                    $(this).prop("disabled",false)
-                })
-                $('div.custom-spinner').parent().remove();
-                var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
+        let rsUnSuccess = () =>{
+            $("button").each(function () {
+                $(this).prop("disabled", false)
+            })
+            $('div.custom-spinner').parent().remove();
+            var modal = `<strong class="btn-danger rounded-circle p-2">Unsuccessful!</strong>  Updated unsuccessfully.
                             `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+        }
+        var apiUrlManagementTimeDayApi = "/api/v1/management-time/day"
+        if("${day}" != ""){
+            dataCreate = {
+                day: "${day}",
+                userId: userCurrent.id,
+                data: dataInfor
             }
-        })
+            console.log(dataCreate)
+            callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'POST', dataCreate, function (rs) {
+                if(rs!=null){
+                    rsSuccess("Create")
+                    $("#updateButton").text("Update")
+                    $("button.showDetail").prop("disabled",false)
+                    $("div.calendar-container").attr("data-id", rs.id)
+                    return
+                }
+                rsUnSuccess()
+            })
+        }else if(id != "") {
+            var dataUpdate = {
+                id: id,
+                userId: userCurrent.id,
+                data: dataInfor
+            };
+            callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'PUT', dataUpdate, function (rs) {
+                if (rs != null) {
+                    rsSuccess("Update")
+                    return
+                }
+                rsUnSuccess()
+            })
+        }
     })
 </script>
 </body>

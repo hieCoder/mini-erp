@@ -7,7 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 
 @Controller
 @RequestMapping("/todo")
@@ -20,11 +25,20 @@ public class ToDoController {
         return "todo/calendar";
     }
 
-    @GetMapping("/day/{id}")
-    public ModelAndView getDetailDay(@PathVariable("id") String id) {
-        DayResponse dayResponse = managementTimeDayService.findById(id);
+    @GetMapping("/day")
+    public ModelAndView getDetailDay(
+            @RequestParam(name = "id", required = false, defaultValue = "") String id,
+            @RequestParam(name = "day", required = false, defaultValue = "") String day
+    ) {
         ModelAndView mav = new ModelAndView("todo/detail");
-        mav.addObject("dayResponse", dayResponse);
-        return mav;
+        try {
+            DayResponse dayResponse = managementTimeDayService.findById(id);
+            mav.addObject("dayResponse", dayResponse);
+            return mav;
+        }catch(Exception e){
+            mav.addObject("day", day);
+        } finally {
+            return mav;
+        }
     }
 }
