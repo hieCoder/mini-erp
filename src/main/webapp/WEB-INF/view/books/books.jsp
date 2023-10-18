@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form id="form" action="" method="GET">
+<form id="form" action="/books" method="GET">
     <div class="container">
         <h1 class="mt-4">BOOKS</h1>
         <div class="row mt-4">
@@ -29,17 +29,21 @@
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Link</th>
+                <th scope="col">FullName</th>
+                <th scope="col">Created Date</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
-            <%--<c:forEach var="contract" items="${user.contracts}">--%>
+            <c:forEach var="book" items="${books}" varStatus="loop">
                 <tr>
                     <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>
-                    <td>1123</td>
-                    <td>conchimnon</td>
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td><a href="" target="_blank" class="contractLink text-decoration-none">${book.link}</a></td>
                     <td>trung hieu</td>
-                    <td><a href="" target="_blank" class="contractLink text-decoration-none">Book Link</a></td>
+                    <td>18/10/2023</td>
                     <td>
                         <button value="" type="button"
                                 class="btn btn-primary edit-contract-button">Edit
@@ -49,7 +53,7 @@
                         </button>
                     </td>
                 </tr>
-            <%--</c:forEach>--%>
+            </c:forEach>
             </tbody>
         </table>
         <!-- Pagination -->
