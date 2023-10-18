@@ -2,15 +2,12 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/notifications")
@@ -36,16 +33,10 @@ public class NotificationApi {
     }
 
     //    Update Notification
-    @PostMapping("/{id}")
-    public ResponseEntity<?> updateNoti(@Valid UpdateNotificationRequest updateNotificationRequest,
-                                        @PathVariable("id") String id) {
-        return ResponseEntity.ok(notificationService.updateNoti(updateNotificationRequest, id));
-    }
-
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateNotification(@Valid UpdateNotificationRequest2 updateNotificationRequest2,
+    public ResponseEntity<?> updateNotification(@Valid UpdateNotificationRequest updateNotificationRequest,
                                                 @PathVariable("id") String id) {
-        return ResponseEntity.ok(notificationService.updateNotification(updateNotificationRequest2, id));
+        return ResponseEntity.ok(notificationService.updateNotification(updateNotificationRequest, id));
     }
 
     //    Delete Notification

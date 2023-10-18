@@ -32,8 +32,8 @@
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Link</th>
-                <th scope="col">FullName</th>
-                <th scope="col">Created Date</th>
+                <th scope="col">Created by</th>
+                <th scope="col">Created date</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>

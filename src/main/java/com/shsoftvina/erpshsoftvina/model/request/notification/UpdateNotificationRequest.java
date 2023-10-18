@@ -20,5 +20,7 @@ public class UpdateNotificationRequest {
     @NotBlank(message = "Field content is not filled")
     private String content;
 
-    private MultipartFile[] file;
+    private String[] oldFile;
+
+    private MultipartFile[] files;
 }

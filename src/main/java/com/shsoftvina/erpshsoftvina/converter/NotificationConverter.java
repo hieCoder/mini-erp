@@ -5,7 +5,6 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -67,12 +66,12 @@ public class NotificationConverter {
                 .build();
     }
 
-    public Notification toEntity2(UpdateNotificationRequest2 updateNotificationRequest2, String id, List<String> listFileNameSaveFileSuccess) {
+    public Notification toEntity2(UpdateNotificationRequest updateNotificationRequest, String id, List<String> listFileNameSaveFileSuccess) {
         return Notification.builder()
                 .id(id)
                 .createdDate(new Date())
-                .title(updateNotificationRequest2.getTitle())
-                .content(updateNotificationRequest2.getContent())
+                .title(updateNotificationRequest.getTitle())
+                .content(updateNotificationRequest.getContent())
                 .files(String.join(",", listFileNameSaveFileSuccess))
                 .build();
     }
