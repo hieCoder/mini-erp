@@ -11,6 +11,7 @@ import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -142,5 +143,10 @@ public class ApplicationUtils {
         for(MultipartFile file: files){
             checkValidateFile(c, file);
         }
+    }
+
+    public void checkUserCurrentAllow(String id){
+
+
     }
 }

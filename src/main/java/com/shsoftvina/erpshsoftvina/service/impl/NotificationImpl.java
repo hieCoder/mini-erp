@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
 import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.converter.NotificationConverter;
@@ -13,14 +12,12 @@ import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
-import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest2;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
-import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,46 +81,7 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
-    public int updateNoti(UpdateNotificationRequest updateNotificationRequest, String id) {
-
-        MultipartFile[] files = updateNotificationRequest.getFile();
-
-        String dir = NotificationConstant.UPLOAD_FILE_DIR;
-
-        String listFileNameOld = null;
-        List<String> listFileNameSaveFileSuccess = null;
-
-        Notification notification = notificationMapper.findById(id);
-        if (files!= null){
-            applicationUtils.checkValidateFile(Notification.class, files);
-
-            if(notification == null){
-                throw new NotFoundException(MessageErrorUtils.notFound("Id"));
-            }
-
-            listFileNameOld = notification.getFiles();
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
-
-        } else{
-            listFileNameSaveFileSuccess = new ArrayList<>();
-        }
-
-        if(listFileNameSaveFileSuccess != null){
-            try{
-                notification = notificationConverter.toEntity(updateNotificationRequest, id, listFileNameSaveFileSuccess);
-                notificationMapper.updateNoti(notification);
-                FileUtils.deleteMultipleFilesToServer(request, dir, listFileNameOld);
-                return 1;
-            } catch (Exception e){
-                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", listFileNameSaveFileSuccess));
-                return 0;
-            }
-        }
-        return 0;
-    }
-
-    @Override
-    public NotificationDetailResponse updateNotification(UpdateNotificationRequest2 updateNotificationRequest2, String id){
+    public NotificationDetailResponse updateNotification(UpdateNotificationRequest updateNotificationRequest, String id){
         Notification notificationDb = notificationMapper.getNotificationById(id);
         if(notificationDb == null){
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
@@ -134,7 +92,7 @@ public class NotificationImpl implements NotificationService {
             fileList="";
         }
         List<String> files = Arrays.asList(fileList.split(","));
-        List<String> oldFile = Arrays.asList(updateNotificationRequest2.getOldFile());
+        List<String> oldFile = Arrays.asList(updateNotificationRequest.getOldFile());
         List<String> removeFiles = new ArrayList<>();
         List<String> newFiles    = new ArrayList<>();
         for (String file : files) {
@@ -144,7 +102,7 @@ public class NotificationImpl implements NotificationService {
                 newFiles.add(file);
             }
         }
-        MultipartFile[] upFiles = updateNotificationRequest2.getFiles();
+        MultipartFile[] upFiles = updateNotificationRequest.getFiles();
         List<String> newFilesUpdate = new ArrayList<>();
         if (upFiles!= null){
 
@@ -160,7 +118,7 @@ public class NotificationImpl implements NotificationService {
             newFiles.addAll(newFilesUpdate);
         }
         List<String> listFileNameSaveFileSuccess = newFiles;
-        Notification notificationUpdate =  notificationConverter.toEntity2(updateNotificationRequest2, id, listFileNameSaveFileSuccess);
+        Notification notificationUpdate =  notificationConverter.toEntity2(updateNotificationRequest, id, listFileNameSaveFileSuccess);
         int rs = notificationMapper.updateNotification(notificationUpdate);
         if(rs > 0){
             NotificationDetailResponse updateNotification = notificationConverter.toNotificationDetailResponse(notificationMapper.getNotificationById(id));
