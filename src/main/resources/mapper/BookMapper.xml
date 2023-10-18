@@ -29,12 +29,14 @@
         <result property="title" column="TITLE"/>
         <result property="author" column="AUTHOR"/>
         <result property="link" column="LINK"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="createdBy" column="CREATED_BY"/>
     </resultMap>
 
     <insert id="createBook" parameterType="com.shsoftvina.erpshsoftvina.entity.Book">
         INSERT
-        INTO BOOK (ID, TITLE, AUTHOR, LINK)
-        VALUES (#{id}, #{title}, #{author}, #{link});
+        INTO BOOK (ID, TITLE, AUTHOR, LINK, CREATED_DATE, CREATED_BY)
+        VALUES (#{id}, #{title}, #{author}, #{link}, #{createdDate}, #{createdBy});
     </insert>
 
     <delete id="deleteBook" parameterType="String">

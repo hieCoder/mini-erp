@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,6 @@ public class ShowBookResponse {
     private String title;
     private String author;
     private String link;
+    private String createdDate;
+    private String createdBy;
 }
