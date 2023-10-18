@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,9 +19,9 @@
         <div class="card-body" id="table-body">
             <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
             <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
-            <p class="card-text text-success">Revenue: <span id="revenueAccount">${account.revenue}</span></p>
-            <p class="card-text text-danger">Expense: <span id="expenseAccount">${account.expense}</span></p>
-            <p class="card-text text-primary">Remain: <span id="remainAccount">${account.remain}</span></p>
+            <p class="card-text text-success">Revenue: <span id="revenueAccount"><fmt:formatNumber type="number" value="${account.revenue}" pattern="#,##0 ₫"/></span></p>
+            <p class="card-text text-danger">Expense: <span id="expenseAccount"><fmt:formatNumber type="number" value="${account.expense}" pattern="#,##0 ₫"/></span></p>
+            <p class="card-text text-primary">Balance: <span id="remainAccount"><fmt:formatNumber type="number" value="${account.remain}" pattern="#,##0 ₫"/></span></p>
             <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
             <p class="card-text">Note: <span id="noteAccount">${account.note}</span></p>
 
@@ -165,7 +166,7 @@
 
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
@@ -184,7 +185,7 @@
 </div>
 <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
@@ -269,7 +270,7 @@
             oldFile.push($(this).attr("data-name"));
         });
 
-        if (!title || !note || !amount || isNaN(amount)) {
+        if (!title || !amount || isNaN(amount)) {
             alert("Title and amount are required and amount must be a number.");
             loading.style.display = "none";
             return;
@@ -364,6 +365,7 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 loading.style.display = "none";
+                $('#successModal div.modal-body').text("The request has been completed successfully.")
                 $('#successModal').modal('show');
                 window.location.replace(document.referrer);
             }

@@ -3,7 +3,12 @@
 <html>
 <head>
   <style>
-    .calendar {
+    .calendar{
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      text-align: center;
+    }
+    .seven_day {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       text-align: center;
@@ -12,11 +17,16 @@
       border: 1px solid #ccc;
       padding: 5px;
     }
+    .seven_day .day {
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
 <div id="currentMonthYear"></div>
-<div class="calendar">
+<div class="seven_day">
+  <div class="day"></div>
   <div class="day">Sun</div>
   <div class="day">Mon</div>
   <div class="day">Tue</div>
@@ -24,10 +34,78 @@
   <div class="day">Thu</div>
   <div class="day">Fri</div>
   <div class="day">Sat</div>
-  <div class="weekly-todo">Weekly Todo</div>
-
   <!-- JavaScript will populate the days -->
 </div>
+<div class="calendar">
+  <!-- JavaScript will populate the days -->
+</div>
+<table id="todoTable">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Sun</th>
+    <th>Mon</th>
+    <th>Tue</th>
+    <th>Wed</th>
+    <th>Thu</th>
+    <th>Fri</th>
+    <th>Sat</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Rows for 5 to-dos for each day -->
+  <tr>
+    <td></td>
+    <td class="day"></td>
+    <td class="day"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
 <button id="prevMonth">Previous Month</button>
 <button id="nextMonth">Next Month</button>
 <script>

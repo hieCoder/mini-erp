@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-4 text-right">
             <p class="margin-filter"></p>
-            <p>${schedule.user.fullname}</p>
+            <p>Username: ${schedule.user.fullname}</p>
         </div>
     </div>
 </div>
