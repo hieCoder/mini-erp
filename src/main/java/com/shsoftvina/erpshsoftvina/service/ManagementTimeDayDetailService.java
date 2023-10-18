@@ -6,5 +6,6 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDe
 
 public interface ManagementTimeDayDetailService {
     int createTimeDayDetail(DayDetailCreateRequest dayDetailCreateRequest);
+
     int updateTimeDayDetail(DayDetailUpdateRequest dayDetailUpdateRequest);
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ManagementTimeDayDetailImp implements ManagementTimeDayDetailService {
+public class ManagementTimeDayDetailServiceImp implements ManagementTimeDayDetailService {
 
     @Autowired
     ManagementTimeDayDetailConverter managementTimeDayDetailConverter;

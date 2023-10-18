@@ -23,6 +23,8 @@ public class ManagementTimeDayDetailConverter {
 
     public ManagementTimeDayDetail toEntity(DayDetailCreateRequest dayDetailCreateRequest) {
 
+
+
         String sixToTwelvePM = null;
         String twelveToSixPM = null;
         String sixToTwelveAM = null;

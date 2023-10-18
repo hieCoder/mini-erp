@@ -15,6 +15,10 @@ public class ManagementTimeDayDetail {
     private ManagementTimeDay managementTimeDay;
     private String sixToTwelvePM;
     private String twelveToSixPM;
+
     private String sixToTwelveAM;
+
+
+
 
 }

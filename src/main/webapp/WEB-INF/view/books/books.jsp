@@ -48,10 +48,12 @@
                     <td>${book.createdBy}</td>
                     <td>${book.createdDate}</td>
                     <td>
-                        <button value="" type="button"
-                                class="btn btn-primary mb-2">Edit
+                        <button value="${book.id}" type="button"
+                                class="btn btn-primary mb-2 edit-book-button">Edit
                         </button>
-                        <button value="${book.id}" type="button" class="btn btn-danger del-book-button" data-toggle="modal" data-target="#deleteBookModal">Delete</button>
+                        <button value="${book.id}" type="button" class="btn btn-danger del-book-button"
+                                data-toggle="modal" data-target="#deleteBookModal">Delete
+                        </button>
                     </td>
                 </tr>
             </c:forEach>
@@ -136,6 +138,49 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="addBookButton">Submit
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Book -->
+<div class="modal fade" id="editBookModal" tabindex="-1" role="dialog"
+     aria-labelledby="editBookModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Edit Book</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <div class="form-group row">
+                        <label for="editTitle" class="col-sm-2 col-form-label">Title:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="editTitle">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editAuthor" class="col-sm-2 col-form-label">Author:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="editAuthor" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editLink" class="col-sm-2 col-form-label">Link:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="editLink">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editBookButton">Submit
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
@@ -252,11 +297,12 @@
                     }
                 }
                 xhr.send(jsonData);
-            };
+            }
+            ;
         });
     });
 
-    // Handle when user click button 'Delete Book' in modal Delete Book
+    // Handle when user click button 'Delete Book'
     document.addEventListener('DOMContentLoaded', function () {
         var delButtons = document.querySelectorAll(".del-book-button");
         var confirmDelButton = document.querySelector(".confirm-del-button");
@@ -286,6 +332,36 @@
                 })
             });
         });
+    });
+
+    // Handle when user click button 'Edit Book'
+    document.addEventListener('DOMContentLoaded', function () {
+        var editButton = document.querySelectorAll('.edit-book-button');
+        var bookId;
+
+        editButton.forEach(function (button) {
+            button.addEventListener('click', function () {
+                bookId = button.value;
+                $('#editBookModal').modal('show');
+
+                if (bookId) {
+                    var xhr = new XMLHttpRequest();
+                    var method = 'GET';
+                    var url = '/api/v1/books/' + bookId;
+                    xhr.open(method, url, true);
+
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var responseData = xhr.responseXML;
+                             document.getElementById('editTitle').value = responseData.title;
+                             document.getElementById('editAuthor').value = responseData.author;
+                             document.getElementById('editLink').value = responseData.link;
+                        } else console.log(xhr.status);
+                    }
+                }
+            })
+        })
+
     });
 
     // Notification

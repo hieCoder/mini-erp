@@ -7,6 +7,7 @@
                                                 SIX_TO_TWELVE_AM)
             value (#{id}, #{managementTimeDay.id}, #{sixToTwelvePM}, #{twelveToSixPM}, #{sixToTwelveAM});
     </insert>
+    
     <update id="updateTimeDayDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
         UPDATE MANAGEMENT_TIME_DAY_DETAIL
         SET

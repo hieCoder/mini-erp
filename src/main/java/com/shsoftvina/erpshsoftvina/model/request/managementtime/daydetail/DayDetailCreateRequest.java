@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DayDetailCreateRequest {
     private String dayId;
+
     private String code;
     private String[] data;
 }
