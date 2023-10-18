@@ -16,7 +16,8 @@ public class ShowBookResponse {
     private String id;
     private String title;
     private String author;
-    private String link;
     private String createdDate;
     private String createdBy;
+    private String image;
+
 }

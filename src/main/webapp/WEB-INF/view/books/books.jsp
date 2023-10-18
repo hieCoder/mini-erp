@@ -9,17 +9,17 @@
     <div class="container">
         <h1 class="mt-4">BOOKS</h1>
         <div class="row mt-4">
-            <%--                        <div class="col-md-6">--%>
-            <%--                            <div class="form-group">--%>
-            <%--                                <label for="search">Search</label>--%>
-            <%--                                <div class="input-group">--%>
-            <%--                                    <input id="search" name="search" type="text" class="form-control" placeholder="Search">--%>
-            <%--                                    <div class="input-group-append">--%>
-            <%--                                        <button class="btn btn-primary" type="submit">Search</button>--%>
-            <%--                                    </div>--%>
-            <%--                                </div>--%>
-            <%--                            </div>--%>
-            <%--                        </div>--%>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="search">Search</label>
+                    <div class="input-group">
+                        <input id="search" name="search" type="text" class="form-control" placeholder="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12 mb-2 text-right">
                 <button type="button" class="btn btn-success px-4 add-book-button">Add Book</button>
             </div>
@@ -31,20 +31,18 @@
                 <th scope="col">Book</th>
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
-                <th scope="col">Link</th>
                 <th scope="col">FullName</th>
                 <th scope="col">Created Date</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="book" items="${books}" varStatus="loop">
+            <c:forEach var="book" items="${books.books}" varStatus="loop">
                 <tr>
-                    <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>
-                    <td><img src="/upload/user/231018130731-ce9b659cbdb7562ecfe3f3362dd0d323.jpg" alt="Book Image" width="100" height="100"></td>
-                    <td>${book.title}</td>
+                    <th scope="row">${(books.pageNumber - 1) * books.pageSize + loop.index + 1}</th>
+                    <td><img src="${book.image}" alt="Book Image" width="100" height="100"></td>
+                    <td><a href="/users/${book.id}" class="text-decoration-none">${book.title}</a></td>
                     <td>${book.author}</td>
-                    <td><a href="" target="_blank" class="bookLink text-decoration-none">${book.link}</a></td>
                     <td>${book.createdBy}</td>
                     <td>${book.createdDate}</td>
                     <td>
@@ -60,42 +58,42 @@
             </tbody>
         </table>
         <!-- Pagination -->
-        <%--        <div class="row justify-content-center">--%>
-        <%--            <ul class="pagination">--%>
-        <%--                <li class="page-item">--%>
-        <%--                    <c:if test="${users.hasPrevious}">--%>
-        <%--                        <button class="page-link" type="submit" name="page" value="1"><<</button>--%>
-        <%--                    </c:if>--%>
-        <%--                </li>--%>
-        <%--                <li class="page-item">--%>
-        <%--                    <c:if test="${users.hasPrevious}">--%>
-        <%--                        <button class="page-link" type="submit" name="page" value="${users.pageNumber - 1}"><</button>--%>
-        <%--                    </c:if>--%>
-        <%--                </li>--%>
-        <%--                <c:forEach var="page" begin="1" end="${users.totalPages}">--%>
-        <%--                    <c:choose>--%>
-        <%--                        <c:when test="${page == users.pageNumber}">--%>
-        <%--                            <li class="page-item active"><a class="page-link" href="#">${page}</a></li>--%>
-        <%--                        </c:when>--%>
-        <%--                        <c:otherwise>--%>
-        <%--                            <li class="page-item">--%>
-        <%--                                <button class="page-link" type="submit" name="page" value="${page}">${page}</button>--%>
-        <%--                            </li>--%>
-        <%--                        </c:otherwise>--%>
-        <%--                    </c:choose>--%>
-        <%--                </c:forEach>--%>
-        <%--                <li class="page-item">--%>
-        <%--                    <c:if test="${users.hasNext}">--%>
-        <%--                        <button class="page-link" type="submit" name="page" value="${users.pageNumber + 1}">></button>--%>
-        <%--                    </c:if>--%>
-        <%--                </li>--%>
-        <%--                <li class="page-item">--%>
-        <%--                    <c:if test="${users.hasNext}">--%>
-        <%--                        <button class="page-link" type="submit" name="page" value="${users.totalPages}">>></button>--%>
-        <%--                    </c:if>--%>
-        <%--                </li>--%>
-        <%--            </ul>--%>
-        <%--        </div>--%>
+        <div class="row justify-content-center">
+            <ul class="pagination">
+                <li class="page-item">
+                    <c:if test="${books.hasPrevious}">
+                        <button class="page-link" type="submit" name="page" value="1"><<</button>
+                    </c:if>
+                </li>
+                <li class="page-item">
+                    <c:if test="${books.hasPrevious}">
+                        <button class="page-link" type="submit" name="page" value="${books.pageNumber - 1}"><</button>
+                    </c:if>
+                </li>
+                <c:forEach var="page" begin="1" end="${books.totalPages}">
+                    <c:choose>
+                        <c:when test="${page == books.pageNumber}">
+                            <li class="page-item active"><a class="page-link" href="#">${page}</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item">
+                                <button class="page-link" type="submit" name="page" value="${page}">${page}</button>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                <li class="page-item">
+                    <c:if test="${books.hasNext}">
+                        <button class="page-link" type="submit" name="page" value="${books.pageNumber + 1}">></button>
+                    </c:if>
+                </li>
+                <li class="page-item">
+                    <c:if test="${books.hasNext}">
+                        <button class="page-link" type="submit" name="page" value="${books.totalPages}">>></button>
+                    </c:if>
+                </li>
+            </ul>
+        </div>
     </div>
 </form>
 
@@ -132,6 +130,12 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="link" placeholder="Link here" required>
                             <span class="errorMessage" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="image" class="col-sm-2 col-form-label">Image Book:</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="image" required>
                         </div>
                     </div>
                 </form>
@@ -241,6 +245,7 @@
             var titleE = document.getElementById('title');
             var authorE = document.getElementById('author');
             var linkE = document.getElementById('link');
+            var image = document.getElementById('image');
 
             var valueTitle = titleE.value;
             var valueAuthor = authorE.value;
@@ -277,12 +282,15 @@
                     title: valueTitle,
                     author: valueAuthor,
                     link: valueLink,
+                    image : image.files[0].name,
                     fullnameUser: userCurrent.fullname
                 };
-                callAjaxByJsonWithData('/api/v1/books', 'POST', data, function (rs) {
-                    sessionStorage.setItem('result', 'addBookSuccess');
-                    location.reload();
-                });
+
+                var xhr = new XMLHttpRequest();
+                var method = 'POST';
+                var url = '/api/v1/books';
+                
+
             };
         });
     });
@@ -333,15 +341,15 @@
                         var author = document.getElementById('editAuthor').value;
                         var link = document.getElementById('editLink').value;
                         var data = {
-                            id : bookId,
+                            id: bookId,
                             title: title,
                             author: author,
                             link: link
                         };
-                       callAjaxByJsonWithData('/api/v1/books', 'PUT', data, function (rs) {
-                           sessionStorage.setItem('result', 'updateBookSuccess');
-                           location.reload();
-                       })
+                        callAjaxByJsonWithData('/api/v1/books', 'PUT', data, function (rs) {
+                            sessionStorage.setItem('result', 'updateBookSuccess');
+                            location.reload();
+                        })
                     });
                 });
             });
@@ -372,18 +380,18 @@
         }
     });
 
-    // // Get value Search save to Local Storage
-    // document.getElementById("search").addEventListener("input", function () {
-    //     localStorage.setItem("selectedSearch", this.value);
-    // });
-    //
-    // // Restore "Search" value from Local Storage
-    // window.addEventListener("load", function () {
-    //     var selectedSearch = localStorage.getItem("selectedSearch");
-    //     if (selectedSearch) {
-    //         document.getElementById("search").value = selectedSearch;
-    //     }
-    // });
+    // Get value Search save to Local Storage
+    document.getElementById("search").addEventListener("input", function () {
+        localStorage.setItem("selectedSearch", this.value);
+    });
+
+    // Restore "Search" value from Local Storage
+    window.addEventListener("load", function () {
+        var selectedSearch = localStorage.getItem("selectedSearch");
+        if (selectedSearch) {
+            document.getElementById("search").value = selectedSearch;
+        }
+    });
 
 </script>
 

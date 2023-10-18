@@ -1,10 +1,7 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.constant.*;
-import com.shsoftvina.erpshsoftvina.entity.Accounting;
-import com.shsoftvina.erpshsoftvina.entity.Contract;
-import com.shsoftvina.erpshsoftvina.entity.Notification;
-import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import org.springframework.beans.factory.annotation.Value;
@@ -162,6 +159,9 @@ public class FileUtils {
             }
             else if (c == Contract.class) {
                 return ContractConstant.PATH_FILE + fileName;
+            }
+            else if (c == Book.class) {
+                return BookConstant.PATH_FILE + fileName;
             }
         }
         return null;
