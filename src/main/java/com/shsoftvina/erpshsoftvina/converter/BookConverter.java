@@ -23,7 +23,7 @@ public class BookConverter {
     private FeelingOfBookConverter feelingOfBookConverter;
 
     @Autowired
-    private UserMapper userMapper;
+    private FeelingOfBookMapper feelingOfBookMapper;
 
     public ShowBookResponse toShowResponse(Book book) {
         return ShowBookResponse.builder()
@@ -39,7 +39,7 @@ public class BookConverter {
     public BookDetailResponse toDetailResponse(Book book) {
         return BookDetailResponse.builder()
                 .book(toShowResponse(book))
-                .feelingOfBooks(feelingOfBookConverter.toListResponse(book.getFeelingOfBooks())).build();
+                .feelingOfBooks(feelingOfBookConverter.toListResponse(feelingOfBookMapper.findAllByBook(book.getId()))).build();
     }
 
     public Book toEntity(BookCreateRequest bookCreateRequest){

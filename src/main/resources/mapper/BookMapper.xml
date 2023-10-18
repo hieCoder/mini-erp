@@ -16,16 +16,8 @@
         WHERE ID = #{id}
     </update>
 
-    <select id="findById" resultMap="bookDetailResultMap">
-        SELECT *
-        FROM BOOK b
-            INNER JOIN USER u ON b.USER_ID = u.ID
-            INNER JOIN FEELING_OF_BOOK f ON FEELING_OF_BOOK.BOOK_ID = b.ID
-        WHERE b.ID = #{id}
-    </select>
-
     <resultMap id="bookResultMap" type="com.shsoftvina.erpshsoftvina.entity.Book">
-        <id property="id" column="id"/>
+        <id property="id" column="ID"/>
         <result property="title" column="TITLE"/>
         <result property="author" column="AUTHOR"/>
         <result property="link" column="LINK"/>
@@ -45,38 +37,9 @@
         WHERE ID = #{id}
     </delete>
 
-    <resultMap id="bookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Book">
-        <id property="id" column="id"/>
-        <result property="title" column="TITLE"/>
-        <result property="author" column="AUTHOR"/>
-        <result property="link" column="LINK"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-<!--        <collection property="feelingOfBooks" column="FEELING_OF_BOOK_ID" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="feelingOfBooksSelect" />-->
-    </resultMap>
-
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="USER_ID" />
-        <result property="fullname" column="FULLNAME" />
-        <result property="avatar" column="AVATAR" />
-    </resultMap>
-
-<!--    <select id="feelingOfBooksSelect" resultMap="feelingOfBookResultMap">-->
-<!--        SELECT *-->
-<!--        FROM FEELING_OF_BOOK f INNER JOIN USER u ON f.USER_ID = u.ID-->
-<!--        WHERE f.ID = #{id}-->
-<!--    </select>-->
-
-<!--    <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">-->
-<!--        <id property="id" column="id"/>-->
-<!--        <result property="quote" column="QUOTE"/>-->
-<!--        <result property="createdDate" column="CREATED_DATE"/>-->
-<!--        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>-->
-<!--    </resultMap>-->
-
-<!--    <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">-->
-<!--        <id property="id" column="id"/>-->
-<!--        <result property="quote" column="QUOTE"/>-->
-<!--        <result property="createdDate" column="CREATED_DATE"/>-->
-<!--        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>-->
-<!--    </resultMap>-->
+    <select id="findById" resultMap="bookResultMap">
+        SELECT *
+        FROM BOOK
+        WHERE ID = #{id}
+    </select>
 </mapper>
