@@ -285,11 +285,27 @@
                 targetArr.push(target)
             })
             var data = {
-                dayId: dayId,
+                id: dayId,
                 code: code,
                 data:targetArr
             }
-            callAjaxByJsonWithData('/')
+            console.log(data)
+            var process = $("#detailModal").attr("data-process")
+            if(process == "CREATE"){
+                callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
+                    console.log("CREATE" + rs)
+                    if(rs>0){
+                        console.log(rs)
+                    }
+                })
+            } else{
+                callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
+                    console.log(rs)
+                    if(rs>0){
+                        console.log(rs)
+                    }
+                })
+            }
         })
     $("button.showDetail").click(function (){
         var modal = $("#detailModal")
@@ -302,19 +318,41 @@
         modal.attr("data-code",name )
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
+        var code = getCodeTime(name)
         let html = '<tr>' +
             '<td rowspan="7" class="align-middle text-center">'+ qresult(name) +'</td>'+
             '</tr>'
-        if(arrayTime){
-            arrayTime.forEach((e)=>{
-                html+=
-                    '<tr>'+
-                        '<td class="align-middle">'+ e +'</td>'+
-                        '<td><input type="text" class="form-control inputTarget" placeholder="Input target..."></td>'+
-                    '</tr>'
-            })
-        }
-        $("#detailModal tbody").html(html)
+        callAjaxByJsonWithData('/api/v1/management-time-detail/${dayResponse.id}?code='+code, 'GET', null, function (rs) {
+            console.log(rs)
+            if(rs.id != null) {
+                if(rs.data[0] != null) {
+                    let data = JSON.parse(rs.data)
+                    if(arrayTime){
+                        arrayTime.forEach((e, index)=>{
+                            html+=
+                                '<tr>'+
+                                '<td class="align-middle">'+ e +'</td>'+
+                                '<td><input type="text" class="form-control inputTarget" value="'+ data[index] + '" placeholder="Input target..."></td>'+
+                                '</tr>'
+                        })
+                    }
+                }
+            }else{
+                $("#detailModal").attr("data-process","CREATE")
+            }
+                    if (arrayTime) {
+                        arrayTime.forEach((e) => {
+                            html +=
+                                '<tr>' +
+                                '<td class="align-middle">' + e + '</td>' +
+                                '<td><input type="text" class="form-control inputTarget" value="" placeholder="Input target..."></td>' +
+                                '</tr>'
+                        })
+                    }
+                $("#detailModal tbody").html(html)
+            }
+        )
+
         modal.modal("show")
         $("button").each(function (){
             $(this).prop("disabled",false)
@@ -427,7 +465,6 @@
                 userId: userCurrent.id,
                 data: dataInfor
             }
-            console.log(dataCreate)
             callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'POST', dataCreate, function (rs) {
                 if(rs!=null){
                     rsSuccess("Create")
