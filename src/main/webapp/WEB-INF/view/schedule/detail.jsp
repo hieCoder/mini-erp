@@ -137,6 +137,14 @@
     </table>
 </div>
 <script>
+    var defaultDate = new Date();
+    var year = defaultDate.getFullYear();
+    var month = defaultDate.getMonth() + 1;
+    var formattedDate = year + '-' + (month < 10 ? '0' : '') + month + '-01';
+    document.getElementById("datePickerStart").value = formattedDate;
+
+    document.getElementById("datePickerEnd").value = year + '-' + (month < 10 ? '0' : '') + month + '-' + defaultDate.getDate();
+
     document.getElementById("datePickerStart").addEventListener("input", function () {
         localStorage.setItem("choiceStartDate", this.value);
     });

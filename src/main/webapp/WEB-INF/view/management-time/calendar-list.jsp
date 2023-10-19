@@ -82,6 +82,7 @@
             justify-content: center;
         }
     </style>
+    <title>Calendars</title>
 </head>
 <body>
 <div class="loading">
