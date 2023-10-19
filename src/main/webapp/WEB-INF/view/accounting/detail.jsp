@@ -76,10 +76,49 @@
                     </div>
                     <div class="form-group" id="amountGroup">
                         <label for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" step="1"
+                        <input type="text" class="form-control" id="amount" step="1"
                                value="${account.revenue > 0 ? account.revenue : -account.expense}" required
                                pattern="[0-9]+">
                     </div>
+                    <script>
+                        var amount = $('input#amount').val()
+                        $('input#amount').val(formatNumberToVND(amount));
+                        function formatNumberToVND(number) {
+                            var parts = number.toString().split('.');
+
+                            var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+                            var formattedNumber = integerPart;
+                            if (parts.length > 1) {
+                                formattedNumber += '.' + parts[1];
+                            }
+                            return formattedNumber;
+                        }
+                        $(document).ready(function () {
+                            $(document).ready(function () {
+                                var input = $('#amount');
+                                input.on('keydown', function (event) {
+                                    var value = input.val();
+                                    var charCode = event.which;
+                                    if (charCode === 190 || charCode === 110){
+                                        if (value.indexOf('.') !== -1) {
+                                            event.preventDefault();
+                                        }
+                                    }
+                                    if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
+                                        if (charCode !== 8 && charCode !== 46) {
+                                            event.preventDefault();
+                                        }
+                                    }
+                                });
+
+                                input.on('keyup', function () {
+                                    var value = input.val().replace(/[^0-9.]/g, '');
+                                    input.val(formatNumberToVND(value));
+                                });
+                            });
+                        })
+                    </script>
                     <div class="form-group">
                         <label for="editNote">Note</label>
                         <input type="text" class="form-control" id="editNote" value="${account.note}" required>
@@ -245,14 +284,6 @@
         }
     });
 
-    document.getElementById('amount').addEventListener('input', function () {
-        var amount = parseFloat(this.value);
-        if (isNaN(amount) || amount.includes('-')) {
-            this.value = '';
-            alert('Amount must be within the specified range.');
-        }
-    });
-
     function formatCurrency(amount) {
         return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
     }
@@ -267,7 +298,10 @@
         var title = document.getElementById("editTitle").value;
         var note = document.getElementById("editNote").value;
         var transaction = document.getElementById("transactionType").value;
-        var amount = parseFloat(document.getElementById("amount").value);
+        var input = document.getElementById("amount").value;
+        var amount = Number(input.replace(/[^0-9.]/g, ''))
+        console.log(amount)
+
         var billInput = document.getElementById("editBill");
         var billFiles = billInput.files;
         var oldFile = []
@@ -355,7 +389,7 @@
     }
 
     function goBack() {
-        window.history.back();
+        window.location.replace(document.referrer);
     }
 
     function deleteAccount(accountId) {
@@ -363,11 +397,17 @@
         loading.style.display = "block";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                loading.style.display = "none";
-                $('#successModal div.modal-body').text("The request has been completed successfully.")
-                $('#successModal').modal('show');
-                window.location.replace(document.referrer);
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    loading.style.display = "none";
+                    $('#successModal div.modal-body').text("The request has been completed successfully.")
+                    $('#successModal').modal('show');
+                    window.location.replace(document.referrer);
+                } else {
+                    loading.style.display = "none";
+                    $('#deleteModal').modal('hide');
+                    $('#errorModal').modal('show');
+                }
             }
         }
         xhr.open("DELETE", "/api/v1/accounts/" + accountId, true);

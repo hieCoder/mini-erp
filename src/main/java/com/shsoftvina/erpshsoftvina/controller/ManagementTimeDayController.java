@@ -1,8 +1,8 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
-import com.shsoftvina.erpshsoftvina.security.Principal;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
@@ -13,14 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +60,8 @@ public class ManagementTimeDayController {
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
-        modelAndView.addObject("userId",userId);
+        UserAccountingResponse user = userService.findUserIdFullName(userId);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
 }

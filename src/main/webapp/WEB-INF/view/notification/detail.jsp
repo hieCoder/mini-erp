@@ -455,7 +455,6 @@
             }
 
             callAjaxByDataFormWithDataForm2(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
-                console.log(rs)
                 var data = rs;
                 $("#titleNotification").text(data.title)
                 $("#contentNotification").text(data.content)

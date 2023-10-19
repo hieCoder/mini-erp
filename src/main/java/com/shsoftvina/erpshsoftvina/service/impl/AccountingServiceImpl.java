@@ -77,9 +77,6 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
-        if (accountingCreateRequest.getBill() != null && accountingCreateRequest.getBill().length > AccountingConstant.NUMBER_FILE_LIMIT) {
-            throw new FileTooLimitedException("Max file is 3");
-        }
         LocalDateTime newDate = LocalDateTime.now();
         String formattedMonthYear = DateUtils.formatMonthYear(newDate);
         Long latestRemain = accountingMapper.getLatestRemain(formattedMonthYear);

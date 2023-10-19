@@ -77,9 +77,47 @@
 
                         <div class="form-group" id="amountGroup" style="display: none;">
                             <label for="amount">Amount</label>
-                            <input type="number" class="form-control" id="amount" step="1" required pattern="[0-9]+">
+                            <input type="text" class="form-control" id="amount" step="1" required pattern="[0-9]+">
                         </div>
+                        <script>
+                            var amount = $('input#amount').val()
+                            $('input#amount').val(formatNumberToVND(amount));
+                            function formatNumberToVND(number) {
+                                var parts = number.toString().split('.');
 
+                                var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+                                var formattedNumber = integerPart;
+                                if (parts.length > 1) {
+                                    formattedNumber += '.' + parts[1];
+                                }
+                                return formattedNumber;
+                            }
+                            $(document).ready(function () {
+                                $(document).ready(function () {
+                                    var input = $('#amount');
+                                    input.on('keydown', function (event) {
+                                        var value = input.val();
+                                        var charCode = event.which;
+                                        if (charCode === 190 || charCode === 110){
+                                            if (value.indexOf('.') !== -1) {
+                                                event.preventDefault();
+                                            }
+                                        }
+                                        if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
+                                            if (charCode !== 8 && charCode !== 46) {
+                                                event.preventDefault();
+                                            }
+                                        }
+                                    });
+
+                                    input.on('keyup', function () {
+                                        var value = input.val().replace(/[^0-9.]/g, '');
+                                        input.val(formatNumberToVND(value));
+                                    });
+                                });
+                            })
+                        </script>
                         <div class="form-group">
                             <label for="createNote">Note</label>
                             <input type="text" class="form-control" id="createNote" required>
@@ -198,7 +236,8 @@
         var title = document.getElementById("createTitle").value;
         var note = document.getElementById("createNote").value;
         var transaction = document.getElementById("transactionType").value;
-        var amount = parseFloat(document.getElementById("amount").value);
+        var input = document.getElementById("amount").value;
+        var amount = Number(input.replace(/[^0-9.]/g, ''));
         var billInput = document.getElementById("createBill");
         var billFiles = billInput.files;
 
@@ -238,6 +277,7 @@
                     loading.style.display = "none";
                     $('#createBill').val("");
                     $('#createModal').modal('hide');
+                    $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
                 } else {
                     loading.style.display = "none";

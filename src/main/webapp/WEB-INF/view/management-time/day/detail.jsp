@@ -164,7 +164,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 mt-4 text-center">
-            <button class="btn btn-primary mr-2" id="backButton" onclick="window.history.back();">Back</button>
+            <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">Back</button>
             <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
         </div>
     </div>
@@ -298,19 +298,29 @@
             callAjaxByJsonWithData('/api/v1/management-time-detail/exist/' + dayId, 'GET', null, function (rs) {
                 if(rs){ // update
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
-                        $('.message-noti-day-detail').text('Update success');
                         $("button").each(function (){
                             $(this).prop("disabled",false)
                         })
                         $('div.custom-spinner').parent().remove();
+                        $("#detailModal").modal("hide");
+                        var modal = `
+                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
+                        `
+                        $("#successModal div.modal-body").html(modal)
+                        $("#successModal").modal("show");
                      });
                 } else{ // create
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
-                        $('.message-noti-day-detail').text('Update success');
                         $("button").each(function (){
                             $(this).prop("disabled",false)
                         })
                         $('div.custom-spinner').parent().remove();
+                        $("#detailModal").modal("hide");
+                        var modal = `
+                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
+                        `
+                        $("#successModal div.modal-body").html(modal)
+                        $("#successModal").modal("show");
                     });
                 }
             });

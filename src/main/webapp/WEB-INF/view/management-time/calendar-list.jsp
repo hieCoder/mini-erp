@@ -24,31 +24,36 @@
             border: 1px solid #ccc;
             padding: 5px;
         }
+
         td {
             max-width: 40px;
         }
+
         tr td:first-child {
             max-width: 80px;
         }
 
-        tr.theSingleMostImportantThing{
+        tr.theSingleMostImportantThing {
             background-color: white;
         }
 
-        tr.lecture{
+        tr.lecture {
             background-color: #fcecec;
         }
-        tr.dailyEvaluation{
+
+        tr.dailyEvaluation {
             background-color: #e6f0e2;
         }
-        tr.work{
+
+        tr.work {
             background-color: #fff9e6;
         }
-        tr.reading{
+
+        tr.reading {
             background-color: #e9e4f5;
         }
 
-        th{
+        th {
             background-color: #f3f3f3;
         }
 
@@ -56,6 +61,7 @@
             color: #333333;
             font-size: 20px;
         }
+
     </style>
     <style>
         /* Tùy chỉnh kiểu của trang loading */
@@ -71,6 +77,7 @@
             justify-content: center;
         }
     </style>
+    <title>Calendars</title>
 </head>
 <body>
 <div class="loading">
@@ -110,12 +117,13 @@
 
     // Get the current date
     let currentDate = new Date();
+
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
         const formattedLastSaturday = formatDate(result.lastSaturday);
         const formattedFirstSunday = formatDate(result.firstSunday);
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.userId}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastSaturday, true);
+        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastSaturday, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -129,6 +137,14 @@
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + currentDate.toLocaleDateString('en-US', options);
+                    currentMonthYear.classList.add('font-italic','underline-text');
+                    var fullName = "${requestScope.user.fullname}";
+                    var span = document.createElement("span");
+                    span.textContent = "Username: " + fullName;
+                    span.style.fontSize = "20px";
+                    span.classList.add("normal-text");
+                    currentMonthYear.appendChild(document.createElement("br"));
+                    currentMonthYear.appendChild(span);
 
                     // Calculate the starting day (Sunday to Saturday: 0 to 6)
                     const startDay = currentDate.getDay();
@@ -156,8 +172,8 @@
                                     const dayNumber = count * 7 + j - startDay;
                                     if (dayNumber < 1) {
                                         let found = false;
-                                        if(responseData != null && responseData.length > 0){
-                                            responseData.forEach((e)=>{
+                                        if (responseData != null && responseData.length > 0) {
+                                            responseData.forEach((e) => {
                                                 const dateInResponse = new Date(e.day);
                                                 if (
                                                     currentDate.getFullYear() === dateInResponse.getFullYear() &&
@@ -175,19 +191,20 @@
 
                                         if (!found) {
                                             const link = document.createElement('a');
-                                            link.textContent = lastDayOfPreviousMonth - startDay + j;;
+                                            link.textContent = lastDayOfPreviousMonth - startDay + j;
+                                            ;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
+
                                             var day = lastDayOfPreviousMonth - startDay + j
                                             var dayData = (day<10) ? "0"+day : day
-                                            link.href = "day/?day=" + year + "-" + month + "-" + dayData;
+                                            link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + dayData;
                                             cell.appendChild(link);
                                         }
-                                    } else
-                                    if (dayNumber > 0 && dayNumber <= daysInMonth) {
+                                    } else if (dayNumber > 0 && dayNumber <= daysInMonth) {
                                         let found = false;
-                                        if(responseData != null && responseData.length > 0){
-                                            responseData.forEach((e)=>{
+                                        if (responseData != null && responseData.length > 0) {
+                                            responseData.forEach((e) => {
                                                 const dateInResponse = new Date(e.day);
                                                 if (
                                                     currentDate.getFullYear() === dateInResponse.getFullYear() &&
@@ -196,7 +213,7 @@
                                                 ) {
                                                     const link = document.createElement('a');
                                                     link.textContent = dayNumber;
-                                                    link.href = 'day/?id=' + e.id;
+                                                    link.href = "${user.id}" + '/day/?id=' + e.id;
                                                     cell.appendChild(link);
                                                     found = true;
                                                 }
@@ -208,8 +225,7 @@
                                             link.textContent = dayNumber;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
-                                            var dayData = (dayNumber<10) ? "0"+dayNumber : dayNumber
-                                            link.href = "day/?day=" + year + "-" + month + "-" + dayData;
+                                            link.href = "${user.id}" + "/day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                             cell.appendChild(link);
                                         }
                                     }
@@ -221,15 +237,15 @@
                                     // Đây là hàng đầu tiên của ngày trong tuần, có thể thêm tên thích hợp
                                     const dayNames = ['The Single Most Important Thing', 'Lecture', 'Daily Evaluation', 'Work', 'Reading'];
                                     const dayNamesCode = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                    row.classList.add(dayNamesCode[(i%6)-1])
-                                    cell.textContent = dayNames[(i%6)-1];
+                                    row.classList.add(dayNamesCode[(i % 6) - 1])
+                                    cell.textContent = dayNames[(i % 6) - 1];
                                     cell.classList.add("text-wrap")
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
                                 } else {
-                                    if(responseData != null && responseData.length > 0){
+                                    if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("font-italic")
-                                        responseData.forEach((e)=>{
+                                        responseData.forEach((e) => {
                                             const dateInResponse = new Date(e.day);
                                             const currentDay = count * 7 + j - startDay;
                                             const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
@@ -238,7 +254,7 @@
                                                 currentDate.getMonth() === dateInResponse.getMonth() &&
                                                 currentDay === dateInResponse.getDate()
                                             ) {
-                                                const dayTodo = dayNames[(i%6)-1];
+                                                const dayTodo = dayNames[(i % 6) - 1];
                                                 const targetTodo = e.data.oneThingCalendar[dayTodo];
                                                 if (targetTodo != null) {
                                                     cell.textContent = targetTodo.target;
@@ -254,9 +270,9 @@
                         }
                         tbody.appendChild(row);
                         $('div.custom-spinner').parent().remove()
-                        if(button){
-                            button.prop("disabled",false)
-                        }else{
+                        if (button) {
+                            button.prop("disabled", false)
+                        } else {
                             $("div.loading").hide()
                             $("div.calendar-container").removeClass("d-none")
                         }
@@ -279,7 +295,7 @@
 
     nextMonthBtn.addEventListener('click', () => {
         var button = $("#nextMonth")
-            button.after(dot)
+        button.after(dot)
         button.prop("disabled", true)
         currentDate.setMonth(currentDate.getMonth() + 1);
         populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);

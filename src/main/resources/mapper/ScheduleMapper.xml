@@ -6,7 +6,7 @@
     <select id="getScheduleDetail" resultMap="scheduleDetailResultMap">
         SELECT t.ID, t.STATUS_TASK, t.TITLE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE, t.USER_ID, u.ID, u.FULLNAME
         FROM TASK t INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.USER_ID = #{userId}
+        WHERE t.USER_ID = #{userId} AND t.STATUS = 'ACTIVE'
         <choose>
             <when test="startDate != null and endDate != null">
                 AND t.START_DATE BETWEEN #{startDate} AND #{endDate}
