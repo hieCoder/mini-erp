@@ -11,7 +11,7 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="search">Search</label>
+                    <label for="search">Search:</label>
                     <div class="input-group">
                         <input id="search" name="search" type="text" class="form-control" placeholder="Search By Username or User ID">
                         <div class="input-group-append">
@@ -20,9 +20,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <label for="status">Status</label>
+                    <label for="status">Status:</label>
                     <div class="input-group">
                         <select id="status" name="status" class="form-control" onchange="this.form.submit()">
                             <option value="ACTIVE">ACTIVE</option>
@@ -32,15 +32,23 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <label for="pageSize">Page Count</label>
+                    <label for="pageSize">Page Count:</label>
                     <div class="input-group">
                         <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="pageSize">Account pending:</label>
+                    <div class="input-group text-right">
+                        <button data-toggle="modal" data-target="#modal-account-pending" type="button" class="btn btn-warning">View</button>
                     </div>
                 </div>
             </div>
@@ -135,6 +143,81 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-account-pending" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">List account pending</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="datatable-account-pending" class="table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>User ID</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function (){
+        tableStatus = $('#datatable-account-pending').DataTable({
+            ajax: {
+                url: '/api/v1/users?status=PENDING',
+                contentType: 'application/json',
+                method: 'GET',
+                dataSrc: 'listUser'
+            },
+            columns: [
+                {data: 'fullname'},
+                {data: 'email'},
+                {
+                    render: function(data, type, row) {
+                        return '<select class="form-control" id="exampleFormControlSelect1" name="role">' +
+                            '<option value="">-- Select role --</option>' +
+                            '<option value="OWNER">Owner</option>' +
+                            '<option value="MANAGER">Manager</option>' +
+                            '<option value="DEVELOPER">Developer</option>' +
+                            '</select>';
+                    }
+                },
+                {
+                    render: function(data, type, row) {
+                        return '<button type="button" class="approval-btn btn btn-primary mr-1" data-status="APPROVAL" data-id="'+ row.id +'">Approval</button>' +
+                            '<button type="button" class="reject-btn btn btn-danger mr-1" data-status="REJECT" data-id="'+ row.id +'">Reject</button>';
+                    }
+                }
+            ],
+            ordering: false,
+            searching: false,
+            lengthChange: false,
+            paging: false,
+            info: false
+        });
+
+        $('#datatable-account-pending').on('click', '.approval-btn', function () {
+            var data = tableStatus.row($(this).parents('tr')).data();
+            var email = data.email;
+            var role = $(this).closest('tr').find('select[name="role"]').val();
+            var status = $(this).data('status');
+            var id = $(this).data('id');
+        });
+    });
+</script>
 
 <script>
     // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi

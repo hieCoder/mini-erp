@@ -41,7 +41,7 @@
                     </li>
                     <li class="nav-item dropdown human-login">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Management
+                            Management time
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
                             <a class="dropdown-item human-login" href="/management-time">Management day</a>
