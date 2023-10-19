@@ -35,9 +35,8 @@ public class ManagementTimeDayDetailServiceImp implements ManagementTimeDayDetai
 
     @Override
     public int updateTimeDayDetail(DayDetailUpdateRequest dayDetailUpdateRequest) {
-        ManagementTimeDayDetail dayDetail = managementTimeDayDetailConverter.toUpdateEntity(dayDetailUpdateRequest);
-
         try{
+            ManagementTimeDayDetail dayDetail = managementTimeDayDetailConverter.toUpdateEntity(dayDetailUpdateRequest);
             managementTimeDayDetailMapper.updateTimeDayDetail(dayDetail);
         } catch (Exception e){
             return 0;
@@ -46,8 +45,20 @@ public class ManagementTimeDayDetailServiceImp implements ManagementTimeDayDetai
     }
 
     @Override
-    public DayDetailResponse findById(String id, String code) {
-        ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findById(id);
-        return managementTimeDayDetailConverter.toResponse(managementTimeDayDetail, code);
+    public DayDetailResponse findByManagementTimeDayId(String dayId, String code) {
+        try{
+            ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findByManagementTimeDayId(dayId);
+            return managementTimeDayDetailConverter.toResponse(managementTimeDayDetail, code);
+        }catch(Exception e){
+            return new DayDetailResponse();
+        }
+    }
+
+    @Override
+    public boolean findByManagementTimeDayId(String dayId) {
+
+        ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findByManagementTimeDayId(dayId);
+        if(managementTimeDayDetail == null) return false;
+        return true;
     }
 }

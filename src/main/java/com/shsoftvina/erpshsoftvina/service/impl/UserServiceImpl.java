@@ -78,31 +78,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean activeUserRegisterRequest(UserActiveRequest userActiveRequest) {
 
-        if (!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
-            throw new NotFoundException(MessageErrorUtils.notFound("Role"));
+        if(userActiveRequest.getStatus().equals(StatusUserEnum.ACTIVE)){
+            if (!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
+                throw new NotFoundException(MessageErrorUtils.notFound("Role"));
+        }
+
         if (!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus()))
             throw new NotFoundException(MessageErrorUtils.notFound("Status"));
 
-        if (userActiveRequest.getStatus().equals(StatusUserEnum.REJECT)) {
-            try {
-                userMapper.deleteUser(userActiveRequest.getId());
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        } else {
-            User user = userConverter.toEntity(userActiveRequest);
+        User user = userConverter.toEntity(userActiveRequest);
 
-            try {
-                userMapper.activeUserRegister(user);
+        try {
+            userMapper.activeUserRegister(user);
 
-                DataMailDto dataMailDto = new DataMailDto();
-                dataMailDto.setTo(userActiveRequest.getEmail());
-                dataMailDto.setSubject(MailConstant.REGISTER_SUBJECT);
-                dataMailDto.setContent(MailConstant.REGISTER_CONTENT);
-                return sendMailUtils.sendEmail(dataMailDto);
-            } catch (Exception e) {
-            }
+            DataMailDto dataMailDto = new DataMailDto();
+            dataMailDto.setTo(userActiveRequest.getEmail());
+            dataMailDto.setSubject(MailConstant.REGISTER_SUBJECT);
+            dataMailDto.setContent(MailConstant.REGISTER_CONTENT);
+            return sendMailUtils.sendEmail(dataMailDto);
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean rejectUserRegisterRequest(String id) {
+
+        User user = userMapper.findById(id);
+        if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+
+        try {
+            userMapper.deleteUser(id);
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }

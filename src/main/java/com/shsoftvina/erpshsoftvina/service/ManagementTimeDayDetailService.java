@@ -8,5 +8,6 @@ import com.shsoftvina.erpshsoftvina.model.response.managementtimedetail.DayDetai
 public interface ManagementTimeDayDetailService {
     int createTimeDayDetail(DayDetailCreateRequest dayDetailCreateRequest);
     int updateTimeDayDetail(DayDetailUpdateRequest dayDetailUpdateRequest);
-    DayDetailResponse findById(String id, String code);
+    DayDetailResponse findByManagementTimeDayId(String id, String code);
+    boolean findByManagementTimeDayId(String id);
 }

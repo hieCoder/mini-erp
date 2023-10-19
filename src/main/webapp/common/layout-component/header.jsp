@@ -13,10 +13,10 @@
             <div class="collapse navbar-collapse justify-content-around align-items-center ml-5 pl-5" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Task
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
                             <a class="dropdown-item" href="/tasks">Task</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/weekly-reports">Weekly report</a>
@@ -28,10 +28,10 @@
                         <a class="nav-link  text-light" href="/notifications">Notification</a>
                     </li>
                     <li class="nav-item dropdown human-login">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Management
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
                             <a class="dropdown-item human-login" href="/users">Human</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/accounting">Accounting</a>
@@ -39,14 +39,21 @@
                             <a class="dropdown-item" href="/timesheets">Timesheets</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link  text-light" href="/management-time">Management time</a>
+                    <li class="nav-item dropdown human-login">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Management time
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <a class="dropdown-item human-login" href="/management-time">Management day</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/books">Reading book</a>
+                        </div>
                     </li>
                     <li class="nav-item dropdown setting-login">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown4" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Setting
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown4">
                             <a class="dropdown-item" href="/settings/file">File</a>
                         </div>
                     </li>

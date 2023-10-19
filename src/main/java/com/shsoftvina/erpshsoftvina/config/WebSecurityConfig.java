@@ -28,7 +28,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
+
                 .antMatchers("/api/**").permitAll()
+
+
 //                // api
 //                    // auth
 //                    .antMatchers("/api/v1/auth/**").permitAll()
@@ -56,18 +59,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // controller
                     // auth
                     .antMatchers("/login", "/register").permitAll()
-                    // user
-                    .antMatchers(HttpMethod.GET, "/users").access("hasAnyRole('OWNER', 'MANAGER')")
-                    // schedule
-                    .antMatchers(HttpMethod.GET, "/schedules").access("hasAnyRole('OWNER', 'MANAGER')")
-                    // accounting
-                    .antMatchers("/accounting/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                    // timesheets
-                    .antMatchers("/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                    // setting
-                    .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                    // management-time
-                    //.antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // user
+//                    .antMatchers(HttpMethod.GET, "/users").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // schedule
+//                    .antMatchers(HttpMethod.GET, "/schedules").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // accounting
+//                    .antMatchers("/accounting/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // timesheets
+//                    .antMatchers("/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // setting
+//                    .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                    // management-time
+//                    .antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
 
                 .anyRequest().authenticated()
                 .and()
