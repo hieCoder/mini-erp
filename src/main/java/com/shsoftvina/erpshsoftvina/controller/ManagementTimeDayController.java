@@ -61,6 +61,7 @@ public class ManagementTimeDayController {
             return mav;
         }
     }
+
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
@@ -69,3 +70,4 @@ public class ManagementTimeDayController {
         return modelAndView;
     }
 }
+

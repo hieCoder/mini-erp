@@ -11,10 +11,7 @@ import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
-import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -126,7 +123,7 @@ public class UserConverter {
         return User.builder()
                 .fullname(userRegisterRequest.getFullname())
                 .status(StatusUserEnum.PENDING)
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .email(userRegisterRequest.getEmail())
                 .password(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()))
                 .build();

@@ -5,7 +5,7 @@
     <title>Task detail</title>
 </head>
 <body>
-    <div class="container mt-4">
+    <div class="container mt-4" id="content-container">
         <div class="row">
             <div class="col-md-8">
                 <h1 class="text-center">Task detail</h1>
@@ -134,7 +134,7 @@
 
         <%-- modal confirm delete task --%>
         <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Confirm delete task</h5>
@@ -155,7 +155,7 @@
 
         <%-- modal confirm delete comment --%>
         <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Confirm delete comment</h5>
@@ -185,6 +185,9 @@
         };
 
         $(document).ready(function() {
+
+            showLoading('content-container');
+
             callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
 
                 // TASK DETAIL
@@ -239,6 +242,8 @@
                 comments.forEach(function (comment) {
                     $('#comment-list').append(createCommentForm(comment));
                 });
+
+                hideLoading('content-container');
             });
         });
 
@@ -257,7 +262,7 @@
 
                 callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {
                     window.location.href = "/tasks/"+idTask + "?updateSuccess";
-                });
+                }, 'taskDetailForm');
             }
         });
 
@@ -278,24 +283,29 @@
                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
                     var liE = createCommentForm(rs);
                     liE.prependTo('#comment-list');
-                    $('#yourCommentForm').find('*').prop('disabled', false);
 
                     $('div.custom-spinner').parent().remove();
-                });
+                }, 'yourCommentForm');
             }
         });
 
         $('#delete-task').click(function() {
+            $('#deleteTaskModal .modal-footer').after(createLoadingHtml());
             callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
                 window.location.href = "/tasks?deleteSuccess";
-            });
+            }, 'deleteTaskModal');
         });
 
         $('#delete-comment').click(function() {
+
+            $('#deleteCommentModal .modal-footer').after(createLoadingHtml());
+
             callAjaxByJsonWithData("/api/v1/comment-task/" + commentObj.idComment, "DELETE", null, function (rs) {
                 commentObj.liEComment.remove();
                 $('#deleteCommentModal').modal('hide');
-            });
+
+                $('div.custom-spinner').parent().remove();
+            }, 'deleteCommentModal');
         });
 
         $(document).on('click','.btn-modify-comment',function(){
@@ -323,13 +333,10 @@
                     formData.append('remainFiles', oldFiles);
                     formData.append('content', $('#updateCommentContent'+id).summernote().summernote('code'));
 
-                    $(idForm).find('*').prop('disabled', false);
-
+                    $(idForm+' .list-button').after(createLoadingHtml());
                     callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
-                        var isReply = true;
-                        //if(rs.parentId)
                         closestLI.replaceWith(createCommentForm(rs));
-                    });
+                    }, 'updateCommentForm'+id);
                 }
             });
         });
@@ -337,9 +344,10 @@
             var idComment = $(this).data('comment-id');
             var closestLI = $(this).closest('li');
 
+            $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());
             callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
                 closestLI.replaceWith(createCommentForm(rs));
-            });
+            }, 'updateCommentForm'+idComment);
         });
         $(document).on('click','.btn-delete-comment',function(){
             commentObj.idComment = $(this).data('comment-id');
@@ -367,15 +375,15 @@
                     formData.append('userId', userCurrent.id);
                     formData.append('parentId', parentId);
 
+                    $('#replyCommentForm'+ parentId +' .list-button').after(createLoadingHtml());
                     callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
                         var liE = createCommentForm(rs);
                         var ulChildsComment = closestLI.find('.childs-comment-list').first();
                         liE.prependTo(ulChildsComment);
-                        $('#replyCommentForm'+parentId).find('*').prop('disabled', false);
 
                         closestLI.find('.reply-form-container form').first().remove();
                         closestLI.find('.list-button').first().show();
-                    });
+                    }, replyCommentForm+parentId);
                 }
             });
         });
@@ -519,7 +527,7 @@
             var fileInput = $('<input type="file" name="files" class="form-control attract-update-comment" multiple>');
             fileInputContainer.append(fileInput);
 
-            var buttonContainer = $('<div class="col-md-6 text-right"></div>');
+            var buttonContainer = $('<div class="col-md-6 text-right list-button"></div>');
             var replyButton = $('<button type="submit" class="btn btn-info mr-1">Reply</button>');
             var cancelButton = $('<button type="button"class="btn btn-secondary btn-cancel-reply-comment" >Cancel</button>');
             buttonContainer.append(replyButton);

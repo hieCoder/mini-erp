@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDe
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDetailUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtimedetail.DayDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -41,7 +42,7 @@ public class ManagementTimeDayDetailConverter {
         }
 
         return ManagementTimeDayDetail.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .managementTimeDay(managementTimeDayMapper.findById(dayDetailCreateRequest.getDayId()))
                 .sixToTwelvePM(sixToTwelvePM)
                 .twelveToSixPM(twelveToSixPM)

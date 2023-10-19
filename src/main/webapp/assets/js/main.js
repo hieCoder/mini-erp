@@ -11,7 +11,7 @@ const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
 
 // FUNCTION
 
-function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback) {
+function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
     $.ajax({
         url: urlAPI,
         type: methodType,
@@ -23,6 +23,7 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback) 
             callback(response);
         },
         error: function (xhr, status, error) {
+            resetForm(formId);
             Swal.fire({
                 icon: 'error',
                 text: JSON.parse(xhr.responseText).message
@@ -31,7 +32,7 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback) 
     });
 }
 
-function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback) {
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
 
     var data = {};
     formData.forEach((value, key) => data[key] = value);
@@ -46,6 +47,7 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback) {
             callback(response);
         },
         error: function (xhr, status, error) {
+            resetForm(formId);
             Swal.fire({
                 icon: 'error',
                 text: JSON.parse(xhr.responseText).message
@@ -54,7 +56,7 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback) {
     });
 }
 
-function callAjaxByJsonWithData(urlAPI, methodType, data, callback) {
+function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
 
     $.ajax({
         url: urlAPI,
@@ -66,6 +68,7 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback) {
             callback(response);
         },
         error: function (xhr, status, error) {
+            resetForm(formId);
             Swal.fire({
                 icon: 'error',
                 text: JSON.parse(xhr.responseText).message
@@ -109,6 +112,49 @@ function createLoadingHtml() {
 }
 
 function resetForm(idForm){
+
     $('#'+idForm).find('*').prop('disabled', false);
     $('div.custom-spinner').parent().remove();
+}
+
+function createLoadingIndicator() {
+    if ($('#loading-indicator').length === 0) {
+        var loadingIndicator = $('<div>', {
+            id: 'loading-indicator',
+            class: 'text-center',
+            css: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        });
+
+        var spinnerIcon = $('<i>', {
+            class: 'fa fa-spinner fa-spin fa-3x'
+        });
+
+        var loadingText = $('<p>', {
+            text: 'Loading...'
+        });
+
+        loadingIndicator.append(spinnerIcon, loadingText);
+
+        $('body').append(loadingIndicator);
+    }
+}
+
+function showLoading(contentId) {
+    if ($('#loading-indicator').length === 0) {
+        createLoadingIndicator();
+    } else {
+        $('#loading-indicator').show();
+    }
+
+    $('#' + contentId).hide();
+}
+
+function hideLoading(contentId) {
+    $('#loading-indicator').hide();
+    $('#' + contentId).show();
 }

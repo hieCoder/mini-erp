@@ -54,6 +54,11 @@ public class UserApi {
         return ResponseEntity.ok(userService.activeUserRegisterRequest(user));
     }
 
+    @DeleteMapping("/register/reject/{id}")
+    public ResponseEntity<Boolean> rejectUserRegisterRequest(@PathVariable String id) {
+        return ResponseEntity.ok(userService.rejectUserRegisterRequest(id));
+    }
+
     @GetMapping("/usernames")
     public ResponseEntity<?> getAllFullname() {
         return new ResponseEntity<>(userService.getAllFullname(), HttpStatus.OK);

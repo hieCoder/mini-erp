@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRe
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ApplicationUtils applicationUtils;
 
     @Override
     public DayResponse createDay(DayCreateRequest dayCreateRequest) {
@@ -61,11 +65,15 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
     @Override
     public DayResponse findById(String id) {
-        return managementTimeConvert.toResponse(managementTimeDayMapper.findById(id));
+        ManagementTimeDay managementTimeDay = managementTimeDayMapper.findById(id);
+        applicationUtils.checkUserAllow(managementTimeDay.getUser().getId());
+        return managementTimeConvert.toResponse(managementTimeDay);
     }
 
     @Override
     public List<DayResponse> findAllByMonthYear(String userId, String startDate, String endDate) {
+
+        applicationUtils.checkUserAllow(userId);
 
         if(userMapper.findById(userId) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 
@@ -24,4 +25,6 @@ public class BookUpdateRequest {
 
     @NotBlank(message = "Field link is not filled")
     private String link;
+
+    private MultipartFile image;
 }

@@ -2,9 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.setting.SettingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.service.BookService;
-import com.shsoftvina.erpshsoftvina.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +17,11 @@ public class BookApi {
     private BookService bookService;
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(bookService.findAll());
+    public ResponseEntity<?> findAll(@RequestParam(name = "search", required = false, defaultValue = "") String search,
+                                     @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                                     @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize) {
+
+        return ResponseEntity.ok(bookService.fillAll(search, page, pageSize));
     }
 
     @GetMapping("/{id}")
@@ -29,12 +30,12 @@ public class BookApi {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBook(@Valid @RequestBody BookCreateRequest bookCreateRequest) {
+    public ResponseEntity<?> createBook(BookCreateRequest bookCreateRequest) {
         return ResponseEntity.ok(bookService.createBook(bookCreateRequest));
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateBook(@Valid @RequestBody BookUpdateRequest bookUpdateRequest) {
+    @PostMapping("/update")
+    public ResponseEntity<?> updateBook(BookUpdateRequest bookUpdateRequest) {
         return ResponseEntity.ok(bookService.updateBook(bookUpdateRequest));
     }
 

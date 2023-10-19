@@ -49,7 +49,7 @@
                 <div class="col-md-4 d-flex align-items-end justify-content-end">
                     <label for="page-count-select" class="mr-2">Page count:</label>
                     <select class="form-control w-auto" id="page-count-select">
-                        <option value="3">3</option>
+                        <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                     </select>
@@ -214,7 +214,6 @@
         });
 
         loadPaging();
-console.log('/api/v1/tasks/status-task-count?userRole=' + userCurrent.role+'&userId='+userCurrent.id);
         tableStatus = $('#data-table-status').DataTable({
             ajax: {
                 url: '/api/v1/tasks/status-task-count?userRole=' + userCurrent.role+'&userId='+userCurrent.id,
