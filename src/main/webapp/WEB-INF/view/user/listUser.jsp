@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="search">Search:</label>
                     <div class="input-group">
-                        <input id="search" name="search" type="text" class="form-control" placeholder="Search By Username or User ID">
+                        <input id="search" name="search" type="text" class="form-control" placeholder="Search by username or userid">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>
@@ -208,7 +208,7 @@
                 {data: 'email'},
                 {
                     render: function(data, type, row) {
-                        return '<select class="form-control" id="exampleFormControlSelect1" name="role">' +
+                        return '<select style="width: 150px;" class="form-control" id="exampleFormControlSelect1" name="role">' +
                             '<option value="">-- Select role --</option>' +
                             '<option value="OWNER">Owner</option>' +
                             '<option value="MANAGER">Manager</option>' +

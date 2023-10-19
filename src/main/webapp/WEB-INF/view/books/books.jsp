@@ -183,7 +183,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="editImage" class="col-sm-2 col-form-label">Image Book:</label>
-                        <img class="img-edit-book" height="200" alt="img view">
+                        <img style="margin-left: 15px;" class="img-edit-book" height="200" alt="img view">
                         <div class="col-sm-10">
                             <input type="file" class="form-control mt-2" id="editImage" required>
                             <small class="text-muted ml-2">Choose New Image For Book</small>
