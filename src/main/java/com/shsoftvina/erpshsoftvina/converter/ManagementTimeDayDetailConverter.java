@@ -28,18 +28,16 @@ public class ManagementTimeDayDetailConverter {
 
     public ManagementTimeDayDetail toEntity(DayDetailCreateRequest dayDetailCreateRequest) {
 
-
-
         String sixToTwelvePM = null;
         String twelveToSixPM = null;
         String sixToTwelveAM = null;
 
         if (dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_PM.toString())) {
-            sixToTwelvePM = JsonUtils.objectToJson(dayDetailCreateRequest.getData());
+            sixToTwelvePM = String.join(",", dayDetailCreateRequest.getData());
         } else if(dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.TWELVE_TO_SIX_PM.toString())){
-            twelveToSixPM = JsonUtils.objectToJson(dayDetailCreateRequest.getData());
+            twelveToSixPM = String.join(",", dayDetailCreateRequest.getData());
         } else if(dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_AM.toString())){
-            sixToTwelveAM = JsonUtils.objectToJson(dayDetailCreateRequest.getData());
+            sixToTwelveAM = String.join(",", dayDetailCreateRequest.getData());
         }
 
         return ManagementTimeDayDetail.builder()
@@ -53,16 +51,14 @@ public class ManagementTimeDayDetailConverter {
 
     public ManagementTimeDayDetail toUpdateEntity(DayDetailUpdateRequest dayDetailUpdateRequest) {
 
-        ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findById(dayDetailUpdateRequest.getId());
-        System.out.println(managementTimeDayDetail);
+        ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findByManagementTimeDayId(dayDetailUpdateRequest.getDayId());
         if (dayDetailUpdateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_PM.toString())) {
-            managementTimeDayDetail.setSixToTwelvePM(JsonUtils.objectToJson(dayDetailUpdateRequest.getData()));
+            managementTimeDayDetail.setSixToTwelvePM(String.join(",", dayDetailUpdateRequest.getData()));
         } else if(dayDetailUpdateRequest.getCode().equals(DayDetailCodeEnum.TWELVE_TO_SIX_PM.toString())){
-            managementTimeDayDetail.setTwelveToSixPM(JsonUtils.objectToJson(dayDetailUpdateRequest.getData()));
+            managementTimeDayDetail.setTwelveToSixPM(String.join(",", dayDetailUpdateRequest.getData()));
         } else if(dayDetailUpdateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_AM.toString())){
-            managementTimeDayDetail.setSixToTwelveAM(JsonUtils.objectToJson(dayDetailUpdateRequest.getData()));
+            managementTimeDayDetail.setSixToTwelveAM(String.join(",", dayDetailUpdateRequest.getData()));
         }
-        System.out.println(managementTimeDayDetail);
         return managementTimeDayDetail;
     }
 
@@ -77,9 +73,7 @@ public class ManagementTimeDayDetailConverter {
         } else data = managementTimeDayDetail.getSixToTwelveAM();
             return DayDetailResponse.builder()
                     .id(managementTimeDayDetail.getId())
-                    .data(new String[] {data})
+                    .data(data.split(","))
                     .build();
         }
-    }
-
-
+}

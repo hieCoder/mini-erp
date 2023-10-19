@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center mt-4">Register</h2>
-            <form id="loginForm">
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="fullname">Username:</label>
                     <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Username" value="canh2@gmail.com">
@@ -38,7 +38,7 @@
 <script>
 
     Validator({
-        form:'#loginForm',
+        form:'#registerForm',
         errorSelector: '.form-message',
         rules:[
             Validator.isRequired('#fullname'),
@@ -49,13 +49,15 @@
             Validator.isRequired('#confirmPassword'),
             Validator.isFormatPassword('#confirmPassword'),
             Validator.isConfirmed('#confirmPassword',function () {
-                return document.querySelector('#loginForm #password').value;
+                return document.querySelector('#registerForm #password').value;
             }, 'Password is not macth')
         ],
         onSubmit: function (formData) {
             callAjaxByJsonWithDataForm("/api/v1/auth/register", "POST", formData, function (rs) {
                 window.location.href = "/login?registerSuccess";
             });
+
+            $('#registerForm').find('*').prop('disabled', false);
         }
     });
 </script>

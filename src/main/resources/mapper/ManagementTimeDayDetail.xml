@@ -14,13 +14,13 @@
             SIX_TO_TWELVE_PM = #{sixToTwelvePM},
             TWELVE_TO_SIX_PM = #{twelveToSixPM},
             SIX_TO_TWELVE_AM = #{sixToTwelveAM}
-        WHERE MANAGEMENT_TIME_DAY_ID = #{id}
+        WHERE MANAGEMENT_TIME_DAY_ID = #{managementTimeDay.id}
     </update>
 
-    <select id="findById" resultMap="dayDetailResultMap">
-        SELECT *
-        FROM MANAGEMENT_TIME_DAY_DETAIL
-        WHERE MANAGEMENT_TIME_DAY_ID = #{id}
+    <select id="findByManagementTimeDayId" resultMap="dayDetailResultMap">
+        SELECT mtdd.*, mtd.*
+        FROM MANAGEMENT_TIME_DAY_DETAIL mtdd INNER JOIN MANAGEMENT_TIME_DAY mtd ON mtdd.MANAGEMENT_TIME_DAY_ID = mtd.ID
+        WHERE mtdd.MANAGEMENT_TIME_DAY_ID = #{dayId}
     </select>
 
     <resultMap id="dayDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail">
@@ -28,5 +28,12 @@
         <result property="sixToTwelvePM" column="SIX_TO_TWELVE_PM"/>
         <result property="twelveToSixPM" column="TWELVE_TO_SIX_PM"/>
         <result property="sixToTwelveAM" column="SIX_TO_TWELVE_AM"/>
+        <association property="managementTimeDay" column="MANAGEMENT_TIME_DAY_ID" javaType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay" resultMap="managementTimeDayResultMap">
+        </association>
+    </resultMap>
+
+    <resultMap id="managementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        <id property="id" column="MANAGEMENT_TIME_DAY_ID" />
+        <result property="id" column="MANAGEMENT_TIME_DAY_ID" />
     </resultMap>
 </mapper>

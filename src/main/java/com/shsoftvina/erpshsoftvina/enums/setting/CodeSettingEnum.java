@@ -8,7 +8,8 @@ public enum CodeSettingEnum {
     NOTIFICAITON("Notification"),
     NOTIFICAITON_COMMENT("Notificaiton comment"),
     TASK("Task"),
-    TASK_COMMENT("Task comment");
+    TASK_COMMENT("Task comment"),
+    BOOK("Book");
 
     private String value;
 
