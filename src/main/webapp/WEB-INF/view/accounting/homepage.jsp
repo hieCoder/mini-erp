@@ -57,7 +57,7 @@
         <tbody id="table-body">
         <c:forEach varStatus="loop" var="a" items="${requestScope.list.accountResponseList}">
             <tr class="align-middle">
-                <th scope="row" class="align-middle">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
+                <th scope="row" class="align-middle text-center">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
                 <td class="align-middle"><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a></td>
                 <td class="align-middle"><c:out value="${a.createdDate}"/></td>
                 <td class="align-middle"><c:out value="${a.title}"/></td>
@@ -253,20 +253,20 @@
                     if (responseData.accountResponseList.length === 0) {
                         tableBody.innerHTML = "";
                         var row = tableBody.insertRow();
-                        row.innerHTML = "<td colspan='9' class='center'>NOT FOUND DATA IN THIS DURATION</td>";
+                        row.innerHTML = "<td colspan='10' class='text-center'>NOT FOUND DATA IN THIS DURATION</td>";
                     } else {
                         tableBody.innerHTML = "";
                         responseData.accountResponseList.forEach((account, index) => {
                             var row = tableBody.insertRow();
-                            row.innerHTML = "<th scope='row'>" + ((page - 1) * selectedPageSize + index + 1) + "</th>"
-                                + "<td>" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
-                                + "<td>" + account.createdDate + "</td>"
-                                + "<td>" + account.title + "</td>"
-                                + "<td style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
-                                + "<td style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
-                                + "<td style='color: blue'>" + formatCurrency(account.remain) + "</td>"
-                                + "<td>" + account.user.fullname + "</td>"
-                                + "<td>" + (account.note !== null ? account.note : '') + "</td>";
+                            row.innerHTML = "<th scope='row' class='align-middle text-center'>" + ((page - 1) * selectedPageSize + index + 1) + "</th>"
+                                + "<td class='align-middle' >" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
+                                + "<td class='align-middle' >" + account.createdDate + "</td>"
+                                + "<td class='align-middle' >" + account.title + "</td>"
+                                + "<td class='align-middle' style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
+                                + "<td class='align-middle' style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
+                                + "<td class='align-middle' style='color: blue'>" + formatCurrency(account.remain) + "</td>"
+                                + "<td class='align-middle'>" + account.user.fullname + "</td>"
+                                + "<td class='align-middle'>" + (account.note !== null ? account.note : '') + "</td>";
                             if (account.bill) {
                                 var cell = row.insertCell();
 
