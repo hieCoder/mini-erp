@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.feelingofbook.FeelingOfBookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.feelingofbook.FeelingOfBookUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class FeelingOfBookConverter {
 
     public FeelingOfBook toEntity(FeelingOfBookCreateRequest feelingOfBookCreateRequest){
         return FeelingOfBook.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .user(userMapper.findById(feelingOfBookCreateRequest.getUserId()))
                 .quote(feelingOfBookCreateRequest.getQuote())
                 .createdDate(new Date())

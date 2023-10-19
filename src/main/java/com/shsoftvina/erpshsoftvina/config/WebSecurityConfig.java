@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.config;
 
+import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UpdateProfileInterceptorFilter updateProfileInterceptorFilter;
 
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -28,49 +32,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
-
-                .antMatchers("/api/**").permitAll()
-
-
-//                // api
-//                    // auth
-//                    .antMatchers("/api/v1/auth/**").permitAll()
-//                    // accounting
-//                    .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // timesheets
-//                    .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // book
-//                    .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // contract
-//                    .antMatchers("/api/v1/contracts/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // notification
-//                    .antMatchers(HttpMethod.POST, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // setting
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // user
-//                    .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
+                // api
+                    // auth
+                    .antMatchers("/api/v1/auth/**").permitAll()
+                    // accounting
+                    .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // timesheets
+                    .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // book
+                    .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // contract
+                    .antMatchers("/api/v1/contracts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // notification
+                    .antMatchers(HttpMethod.POST, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.PUT, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // setting
+                    .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // user
+                    .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
                 // controller
                     // auth
                     .antMatchers("/login", "/register").permitAll()
-//                    // user
-//                    .antMatchers(HttpMethod.GET, "/users").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // schedule
-//                    .antMatchers(HttpMethod.GET, "/schedules").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // accounting
-//                    .antMatchers("/accounting/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // timesheets
-//                    .antMatchers("/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // setting
-//                    .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                    // management-time
-//                    .antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // user
+                    .antMatchers(HttpMethod.GET, "/users").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // schedule
+                    .antMatchers(HttpMethod.GET, "/schedules").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // accounting
+                    .antMatchers("/accounting/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // timesheets
+                    .antMatchers("/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // setting
+                    .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                    // management-time
+                    .antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
 
                 .anyRequest().authenticated()
                 .and()
@@ -78,8 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/home")
                 .loginProcessingUrl("/j_spring_security_check").permitAll()
+                .successHandler(customSuccessHandler)
                 .failureUrl("/login?incorrectAccount")
                 .and()
                 .logout()

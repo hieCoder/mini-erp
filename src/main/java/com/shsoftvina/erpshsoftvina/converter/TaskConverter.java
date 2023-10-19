@@ -62,7 +62,7 @@ public class TaskConverter {
     public Task toEntity(TaskRegisterRequest taskRegisterRequest) {
 
         return Task.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .statusTask(StatusTaskEnum.REGISTERED)
                 .title(taskRegisterRequest.getTitle())
                 .content(taskRegisterRequest.getContent())

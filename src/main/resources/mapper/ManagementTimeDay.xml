@@ -9,9 +9,17 @@
     </insert>
 
     <select id="findById" resultMap="dayResultMap">
+        SELECT *,u.fullname
+        FROM MANAGEMENT_TIME_DAY m
+                 INNER JOIN USER u ON m.user_id = u.id
+        WHERE m.ID = #{id}
+    </select>
+
+    <select id="findByDay" resultMap="dayResultMap">
         SELECT *
-        FROM MANAGEMENT_TIME_DAY
-        WHERE ID = #{id}
+        FROM MANAGEMENT_TIME_DAY m
+                 INNER JOIN USER u ON m.user_id = u.id
+        WHERE m.USER_ID = #{userId} AND m.DAY = #{day}
     </select>
 
     <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
@@ -21,6 +29,13 @@
         <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
         <result property="affirmation" column="AFFIRMATION"/>
         <result property="day" column="DAY"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+        </association>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="user_id" />
+        <result property="fullname" column="fullname" />
     </resultMap>
 
     <update id="updateDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">

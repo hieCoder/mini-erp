@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDe
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDetailUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtimedetail.DayDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -41,7 +42,7 @@ public class ManagementTimeDayDetailConverter {
         }
 
         return ManagementTimeDayDetail.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .managementTimeDay(managementTimeDayMapper.findById(dayDetailCreateRequest.getDayId()))
                 .sixToTwelvePM(sixToTwelvePM)
                 .twelveToSixPM(twelveToSixPM)
@@ -52,7 +53,6 @@ public class ManagementTimeDayDetailConverter {
     public ManagementTimeDayDetail toUpdateEntity(DayDetailUpdateRequest dayDetailUpdateRequest) {
 
         ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findByManagementTimeDayId(dayDetailUpdateRequest.getDayId());
-        System.out.println(managementTimeDayDetail);
         if (dayDetailUpdateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_PM.toString())) {
             managementTimeDayDetail.setSixToTwelvePM(String.join(",", dayDetailUpdateRequest.getData()));
         } else if(dayDetailUpdateRequest.getCode().equals(DayDetailCodeEnum.TWELVE_TO_SIX_PM.toString())){

@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class ApplicationUtils {
 
@@ -77,6 +80,10 @@ public class ApplicationUtils {
             }
         }
         return false;
+    }
+
+    public static String generateId(){
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
     }
 
     private Setting getSetting(Class<?> c){

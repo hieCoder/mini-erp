@@ -32,8 +32,28 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, 
     });
 }
 
-function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
+function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        processData: false,
+        contentType: false,
+        data: formData,
+        enctype: 'multipart/form-data',
+        success: function(response) {
+            callback(response);
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                text: JSON.parse(xhr.responseText).message
+            });
+            callBackError();
+        }
+    });
+}
 
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
 
@@ -77,6 +97,7 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
     });
 }
 
+
 function isBlank(a){
     return a === '' || a===null;
 }
@@ -115,4 +136,46 @@ function resetForm(idForm){
 
     $('#'+idForm).find('*').prop('disabled', false);
     $('div.custom-spinner').parent().remove();
+}
+
+function createLoadingIndicator() {
+    if ($('#loading-indicator').length === 0) {
+        var loadingIndicator = $('<div>', {
+            id: 'loading-indicator',
+            class: 'text-center',
+            css: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        });
+
+        var spinnerIcon = $('<i>', {
+            class: 'fa fa-spinner fa-spin fa-3x'
+        });
+
+        var loadingText = $('<p>', {
+            text: 'Loading...'
+        });
+
+        loadingIndicator.append(spinnerIcon, loadingText);
+
+        $('body').append(loadingIndicator);
+    }
+}
+
+function showLoading(contentId) {
+    if ($('#loading-indicator').length === 0) {
+        createLoadingIndicator();
+    } else {
+        $('#loading-indicator').show();
+    }
+
+    $('#' + contentId).hide();
+}
+
+function hideLoading(contentId) {
+    $('#loading-indicator').hide();
+    $('#' + contentId).show();
 }

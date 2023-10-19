@@ -14,7 +14,6 @@ public interface NotificationMapper {
                                   @Param("pageSize") int pageSize,
                                   @Param("search") String search);
     Notification createNoti(Notification notification);
-    Notification updateNoti(Notification notification);
     boolean delNoti(String id);
     Notification findById(String id);
     int countAll(@Param("search") String search);

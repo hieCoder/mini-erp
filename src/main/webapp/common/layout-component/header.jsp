@@ -27,7 +27,7 @@
                     <li class="nav-item">
                         <a class="nav-link  text-light" href="/notifications">Notification</a>
                     </li>
-                    <li class="nav-item dropdown human-login">
+                    <li class="nav-item dropdown management-login">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Management
                         </a>
@@ -39,12 +39,12 @@
                             <a class="dropdown-item" href="/timesheets">Timesheets</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown human-login">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Management time
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
-                            <a class="dropdown-item human-login" href="/management-time">Management day</a>
+                            <a class="dropdown-item management-time-day-login">Management day</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/books">Reading book</a>
                         </div>

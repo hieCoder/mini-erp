@@ -434,7 +434,9 @@
 
             $('.container-button').after(createLoadingHtml());
 
+
             formData.append('id', '${user.id}');
+
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
             var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
@@ -667,7 +669,7 @@
 
                 $('.container-button-edit-contract').after(createLoadingHtml());
 
-                formData.append('id', contractIdValue);
+                formData.append('id', '"'+contractIdValue+'"');
                 callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'editContractSuccess');
                     localStorage.setItem("showModal", "true");

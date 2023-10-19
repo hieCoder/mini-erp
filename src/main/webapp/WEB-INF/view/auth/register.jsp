@@ -55,9 +55,7 @@
         onSubmit: function (formData) {
             callAjaxByJsonWithDataForm("/api/v1/auth/register", "POST", formData, function (rs) {
                 window.location.href = "/login?registerSuccess";
-            });
-
-            $('#registerForm').find('*').prop('disabled', false);
+            }, 'registerForm');
         }
     });
 </script>

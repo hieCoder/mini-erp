@@ -58,11 +58,19 @@
     $('.fullname-login').text(userCurrent.fullname);
     $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
     var scheduleLink = '';
-    if(userCurrent.role != U_DEVELOPER) scheduleLink = '/schedules';
-    else scheduleLink = '/schedules/detail/'+userCurrent.id;
+    var managementTime = ''
+    if(userCurrent.role != U_DEVELOPER) {
+        scheduleLink = '/schedules';
+        managementTime = '/management-time'
+    }
+    else {
+        scheduleLink = '/schedules/detail/'+userCurrent.id;
+        managementTime = '/management-time/'+userCurrent.id;
+    }
     $('.schedule-login').attr('href', scheduleLink);
+    $('.management-time-day-login').attr('href', managementTime);
     if(userCurrent.role == U_DEVELOPER){
-        $('.human-login').remove();
+        $('.management-login').remove();
         $('.setting-login').remove();
     }
 </script>

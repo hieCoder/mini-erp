@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
 import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class BookConverter {
 
     public Book toEntity(BookCreateRequest bookCreateRequest, String bookImageFileName){
         return Book.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .title(bookCreateRequest.getTitle())
                 .author(bookCreateRequest.getAuthor())
                 .link(bookCreateRequest.getLink())

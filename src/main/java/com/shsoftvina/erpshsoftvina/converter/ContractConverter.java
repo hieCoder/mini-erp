@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -26,7 +27,7 @@ public class ContractConverter {
 
     public Contract toEntity(CreateContractRequest createContractRequest, String contractFileName){
         return Contract.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .basicSalary(createContractRequest.getBasicSalary())
                 .allowance(createContractRequest.getAllowance())
                 .contract(contractFileName)
