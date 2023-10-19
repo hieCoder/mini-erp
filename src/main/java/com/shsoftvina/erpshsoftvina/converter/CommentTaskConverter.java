@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.commenttask.CreateCommentTaskR
 import com.shsoftvina.erpshsoftvina.model.request.commenttask.UpdateCommentTaskRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
@@ -65,7 +66,7 @@ public class CommentTaskConverter {
             files = String.join(",", listFileNameSaveFileSuccess);
         }
         return CommentTask.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .title(createCommentTaskRequest.getTitle())
                 .content(createCommentTaskRequest.getContent())
                 .files(files)

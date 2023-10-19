@@ -20,5 +20,6 @@ public class Book {
     private String link;
     private Date createdDate;
     private String createdBy;
+    private String image;
     private List<FeelingOfBook> feelingOfBooks;
 }

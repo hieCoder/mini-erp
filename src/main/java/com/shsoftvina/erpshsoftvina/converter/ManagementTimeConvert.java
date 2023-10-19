@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class ManagementTimeConvert {
         DataOfDayDto dataRequest = dayCreateRequest.getData();
 
         return ManagementTimeDay.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .day(dayCreateRequest.getDay())
                 .oneThingCalendar(JsonUtils.objectToJson(dataRequest.getOneThingCalendar()))
                 .toDoList(JsonUtils.objectToJson(dataRequest.getToDoList()))

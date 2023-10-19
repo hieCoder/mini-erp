@@ -26,6 +26,8 @@ public interface UserService {
 
     Boolean activeUserRegisterRequest(UserActiveRequest user);
 
+    Boolean rejectUserRegisterRequest(String id);
+
     UserDetailResponse findByEmail(String email);
 
     int updateUserDetail(UserUpdateRequest userUpdateRequest);

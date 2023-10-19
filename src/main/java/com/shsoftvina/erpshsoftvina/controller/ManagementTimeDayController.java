@@ -36,7 +36,6 @@ public class ManagementTimeDayController {
         view.addObject("users", users);
         return view;
     }
-
     @GetMapping("/{userId}/day")
     public ModelAndView getDetailDay(
             @PathVariable("userId") String userId,
@@ -65,3 +64,4 @@ public class ManagementTimeDayController {
         return modelAndView;
     }
 }
+
