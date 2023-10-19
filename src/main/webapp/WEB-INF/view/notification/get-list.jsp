@@ -5,7 +5,7 @@
 <%
     session.setAttribute("pathMain", "/notifications/");
 %>
-<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />git
 <html>
 <head>
     <title>Notifications List</title>
