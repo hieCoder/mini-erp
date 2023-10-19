@@ -178,7 +178,9 @@
                                             link.textContent = lastDayOfPreviousMonth - startDay + j;;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
-                                            link.href = "day/?day=" + year + "-" + month + "-" + (lastDayOfPreviousMonth - startDay + j);
+                                            var day = lastDayOfPreviousMonth - startDay + j
+                                            var dayData = (day<10) ? "0"+day : day
+                                            link.href = "day/?day=" + year + "-" + month + "-" + dayData;
                                             cell.appendChild(link);
                                         }
                                     } else
@@ -206,7 +208,8 @@
                                             link.textContent = dayNumber;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
-                                            link.href = "day/?day=" + year + "-" + month + "-" + dayNumber;
+                                            var dayData = (dayNumber<10) ? "0"+dayNumber : dayNumber
+                                            link.href = "day/?day=" + year + "-" + month + "-" + dayData;
                                             cell.appendChild(link);
                                         }
                                     }
