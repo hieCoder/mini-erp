@@ -107,8 +107,32 @@
                                 } else {
                                     const dayNumber = count * 7 + j - startDay;
                                     if (dayNumber < 1) {
-                                        // Display the last days of the previous month
-                                        cell.textContent = lastDayOfPreviousMonth - startDay + j;
+                                        let found = false;
+                                        if(responseData != null && responseData.length > 0){
+                                            responseData.forEach((e)=>{
+                                                const dateInResponse = new Date(e.day);
+                                                if (
+                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                    (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
+                                                ) {
+                                                    const link = document.createElement('a');
+                                                    link.textContent = lastDayOfPreviousMonth - startDay + j;
+                                                    link.href = 'day/?id=' + e.id;
+                                                    cell.appendChild(link);
+                                                    found = true;
+                                                }
+                                            });
+                                        }
+
+                                        if (!found) {
+                                            const link = document.createElement('a');
+                                            link.textContent = lastDayOfPreviousMonth - startDay + j;;
+                                            const year = currentDate.getFullYear();
+                                            const month = currentDate.getMonth() + 1;
+                                            link.href = "day/?day=" + year + "-" + month + "-" + (lastDayOfPreviousMonth - startDay + j);
+                                            cell.appendChild(link);
+                                        }
                                     } else
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
                                         let found = false;
@@ -207,7 +231,9 @@
 
         // Tính toán ngày đầu tiên của chủ nhật
         const firstSunday = new Date(firstDay);
-        firstSunday.setDate(firstSunday.getDate() + (7 - firstDay.getDay())); // Tìm ngày đầu tiên của chủ nhật
+        if (firstDay.getDay() !== 0) {
+            firstSunday.setDate(firstSunday.getDate() + (7 - firstDay.getDay()));
+        } // Tìm ngày đầu tiên của chủ nhật
 
         // Tính toán ngày cuối cùng của thứ bảy
         const lastSaturday = new Date(lastDay);
@@ -223,7 +249,7 @@
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Thêm 1 và định dạng số với 2 chữ số (01-12)
         const day = date.getDate().toString().padStart(2, '0'); // Định dạng số với 2 chữ số (01-31)
-        return `${year}-${month}-${day}`;
+        return year + '-' + month + '-' + day;
     }
 </script>
 </body>
