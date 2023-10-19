@@ -76,6 +76,11 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     }
 
     @Override
+    public FeelingOfBookResponse findFeelingByUser(String bookId, String userId) {
+        return feelingOfBookConverter.toResponse(feelingOfBookMapper.findFeelingByUser(bookId, userId));
+    }
+
+    @Override
     public int deleteFeelingOfBook(String id) {
         if(feelingOfBookMapper.findById(id) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("id"));

@@ -26,6 +26,12 @@ public class FeelingOfBookApi {
         return ResponseEntity.ok(feelingOfBookService.findById(id));
     }
 
+    @GetMapping("/{bookId}/{userId}")
+    public ResponseEntity<?> findByUser(@PathVariable("bookId") String bookId,
+                                        @PathVariable("userId") String userId) {
+        return ResponseEntity.ok(feelingOfBookService.findFeelingByUser(bookId,userId));
+    }
+
     @PostMapping
     public ResponseEntity<?> createFeelingOfBook(@Valid @RequestBody FeelingOfBookCreateRequest feelingOfBookCreateRequest) {
         return ResponseEntity.ok(feelingOfBookService.createFeelingOfBook(feelingOfBookCreateRequest));

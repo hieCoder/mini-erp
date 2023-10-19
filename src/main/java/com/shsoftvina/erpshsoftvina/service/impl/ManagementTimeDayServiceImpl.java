@@ -66,9 +66,36 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Override
     public DayResponse findById(String id) {
         ManagementTimeDay managementTimeDay = managementTimeDayMapper.findById(id);
-        applicationUtils.checkUserAllow(managementTimeDay.getUser().getId());
-        return managementTimeConvert.toResponse(managementTimeDay);
+        if(managementTimeDay!= null){
+            applicationUtils.checkUserAllow(managementTimeDay.getUser().getId());
+            return managementTimeConvert.toResponse(managementTimeDay);
+        }
+        return null;
     }
+
+    @Override
+    public DayResponse findByDay(String userId, String day) {
+        ManagementTimeDay managementTimeDay = managementTimeDayMapper.findByDay(userId, day);
+        if(managementTimeDay!= null){
+            applicationUtils.checkUserAllow(managementTimeDay.getUser().getId());
+            return managementTimeConvert.toResponse(managementTimeDay);
+        }
+        return null;
+    }
+
+    @Override
+    public DayResponse findDayResponse(String userId, String day, String id) {
+        DayResponse dayResponseId = findById(id);
+        if(dayResponseId == null){
+            DayResponse dayResponseDay = findByDay(userId, day);
+            if(dayResponseDay == null){
+                return null;
+            }
+            return dayResponseDay;
+        }
+        return dayResponseId;
+    }
+
 
     @Override
     public List<DayResponse> findAllByMonthYear(String userId, String startDate, String endDate) {

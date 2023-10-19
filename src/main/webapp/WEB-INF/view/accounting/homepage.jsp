@@ -57,7 +57,7 @@
         <tbody id="table-body">
         <c:forEach varStatus="loop" var="a" items="${requestScope.list.accountResponseList}">
             <tr class="align-middle">
-                <th scope="row" class="align-middle">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
+                <th scope="row" class="align-middle text-center">${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</th>
                 <td class="align-middle"><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a></td>
                 <td class="align-middle"><c:out value="${a.createdDate}"/></td>
                 <td class="align-middle"><c:out value="${a.title}"/></td>
@@ -170,7 +170,36 @@
         </tbody>
     </table>
 </div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-center" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                An error occurred while sending the request. Please try again.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    var defaultDate = new Date('${month}');
+    var year = defaultDate.getFullYear();
+    var month = defaultDate.getMonth() + 1;
+    var formattedDate = year + '-' + (month < 10 ? '0' : '') + month + '-01';
+    document.getElementById("datePickerStart").value = formattedDate;
+
+    var lastDay = new Date(year, month, 0);
+    var lastDayOfMonth = lastDay.getDate();
+    document.getElementById("datePickerEnd").value = year + '-' + (month < 10 ? '0' : '') + month + '-' + lastDayOfMonth;
+
     document.getElementById("pageCount").addEventListener("change", function () {
         localStorage.setItem("selectedPageSize", this.value);
         loadPage(1);
@@ -208,68 +237,73 @@
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                loading.style.display = "none";
-                var responseData = JSON.parse(xhr.responseText);
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    loading.style.display = "none";
+                    var responseData = JSON.parse(xhr.responseText);
 
-                var tableBody = document.getElementById("table-body");
+                    var tableBody = document.getElementById("table-body");
 
-                var totalSpend = document.getElementById("total");
+                    var totalSpend = document.getElementById("total");
 
-                var totalExpense = 0;
-                var totalRevenue = 0;
-                var totalRemain = 0;
+                    var totalExpense = 0;
+                    var totalRevenue = 0;
+                    var totalRemain = 0;
 
-                if (responseData.accountResponseList.length === 0) {
-                    tableBody.innerHTML = "";
-                    var row = tableBody.insertRow();
-                    row.innerHTML = "<td colspan='9' class='center'>NOT FOUND DATA IN THIS DURATION</td>";
-                } else {
-                    tableBody.innerHTML = "";
-                    responseData.accountResponseList.forEach((account, index) => {
+                    if (responseData.accountResponseList.length === 0) {
+                        tableBody.innerHTML = "";
                         var row = tableBody.insertRow();
-                        row.innerHTML = "<th scope='row'>" + ((page - 1) * selectedPageSize + index + 1) + "</th>"
-                            + "<td>" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
-                            + "<td>" + account.createdDate + "</td>"
-                            + "<td>" + account.title + "</td>"
-                            + "<td style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
-                            + "<td style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
-                            + "<td style='color: blue'>" + formatCurrency(account.remain) + "</td>"
-                            + "<td>" + account.user.fullname + "</td>"
-                            + "<td>" + (account.note !== null ? account.note : '') + "</td>";
-                        if (account.bill) {
-                            var cell = row.insertCell();
+                        row.innerHTML = "<td colspan='10' class='text-center'>NOT FOUND DATA IN THIS DURATION</td>";
+                    } else {
+                        tableBody.innerHTML = "";
+                        responseData.accountResponseList.forEach((account, index) => {
+                            var row = tableBody.insertRow();
+                            row.innerHTML = "<th scope='row' class='align-middle text-center'>" + ((page - 1) * selectedPageSize + index + 1) + "</th>"
+                                + "<td class='align-middle' >" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
+                                + "<td class='align-middle' >" + account.createdDate + "</td>"
+                                + "<td class='align-middle' >" + account.title + "</td>"
+                                + "<td class='align-middle' style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
+                                + "<td class='align-middle' style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
+                                + "<td class='align-middle' style='color: blue'>" + formatCurrency(account.remain) + "</td>"
+                                + "<td class='align-middle'>" + account.user.fullname + "</td>"
+                                + "<td class='align-middle'>" + (account.note !== null ? account.note : '') + "</td>";
+                            if (account.bill) {
+                                var cell = row.insertCell();
 
-                            var files = account.bill;
+                                var files = account.bill;
 
-                            for (var i = 0; i < files.length; i++) {
-                                var file = files[i];
-                                var downloadLink = document.createElement("a");
-                                downloadLink.href = file;
-                                downloadLink.setAttribute("download", "");
-                                downloadLink.target = "_blank";
-                                downloadLink.id = "resumeLink";
-                                downloadLink.textContent = file.substring(file.indexOf('-') + 1);
-                                cell.appendChild(downloadLink);
+                                for (var i = 0; i < files.length; i++) {
+                                    var file = files[i];
+                                    var downloadLink = document.createElement("a");
+                                    downloadLink.href = file;
+                                    downloadLink.setAttribute("download", "");
+                                    downloadLink.target = "_blank";
+                                    downloadLink.id = "resumeLink";
+                                    downloadLink.textContent = file.substring(file.indexOf('-') + 1);
+                                    cell.appendChild(downloadLink);
 
-                                if (i < files.length - 1) {
-                                    cell.appendChild(document.createElement("hr"));
+                                    if (i < files.length - 1) {
+                                        cell.appendChild(document.createElement("hr"));
+                                    }
                                 }
+                            } else {
+                                row.insertCell();
                             }
-                        } else {
-                            row.insertCell();
-                        }
-                        totalExpense += account.expense;
-                        totalRevenue += account.revenue;
-                        totalRemain = account.remain;
-                    });
+                            totalExpense += account.expense;
+                            totalRevenue += account.revenue;
+                            totalRemain = account.remain;
+                        });
+                    }
+
+                    updatePagination(responseData);
+
+                    totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td class="text-success">' + formatCurrency(totalRevenue) + '</td>'
+                        + '<td class="text-danger">' + formatCurrency(totalExpense) + '</td>'
+                        + '<td class="text-primary">' + formatCurrency(totalRemain) + '</td>';
+                } else {
+                    loading.style.display = "none";
+                    $('#errorModal').modal('show');
                 }
-
-                updatePagination(responseData);
-
-                totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td class="text-success">' + formatCurrency(totalRevenue) + '</td>'
-                    + '<td class="text-danger">' + formatCurrency(totalExpense) + '</td>'
-                    + '<td class="text-primary">' + formatCurrency(totalRemain) + '</td>';
             }
         };
         xhr.open("GET", "/api/v1/accounts/" + month + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + selectedDateStart + "&endDate=" + selectedDateEnd, true);

@@ -1,9 +1,15 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
+import com.shsoftvina.erpshsoftvina.model.response.setting.SettingAllowanceResponse;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
+import com.shsoftvina.erpshsoftvina.service.SettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -20,6 +26,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class AccountingController {
     private final AccountingService accountingService;
+    private final SettingMapper settingMapper;
     @GetMapping("/{monthId}")
     public ModelAndView showAccountingList(@PathVariable("monthId") String monthId,
                                            @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
@@ -37,7 +44,10 @@ public class AccountingController {
     public ModelAndView showAllMonthlyHistory() {
         ModelAndView modelAndView = new ModelAndView("accounting/total-month");
         MonthHistoryList monthHistoryList = accountingService.findAllMonthlyHistory();
+        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
+        SettingAllowanceResponse settings = new SettingAllowanceResponse(ApplicationConstant.MAX_FILE_SIZE,setting.getFileType(),setting.getFileSize());
         modelAndView.addObject("monthList",monthHistoryList);
+        modelAndView.addObject("setting",settings);
         return modelAndView;
     }
 
@@ -45,8 +55,10 @@ public class AccountingController {
     public ModelAndView showAccountingDetail(@PathVariable("id") String id) {
         ModelAndView modelAndView = new ModelAndView("accounting/detail");
         AccountResponse accountingResponse = accountingService.findAccountingById(id);
+        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
+        SettingAllowanceResponse settings = new SettingAllowanceResponse(ApplicationConstant.MAX_FILE_SIZE,setting.getFileType(),setting.getFileSize());
         modelAndView.addObject("account",accountingResponse);
+        modelAndView.addObject("setting",settings);
         return modelAndView;
     }
-
 }
