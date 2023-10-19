@@ -277,8 +277,11 @@
                             $("div.calendar-container").removeClass("d-none")
                         }
                     }
+                } else {
+                    window.location.href = "/management-time/";
                 }
             }
+
         }
         xhr.send();
     }

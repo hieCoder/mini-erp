@@ -1,10 +1,13 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
 
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +30,12 @@ public class ManagementTimeDayController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ApplicationUtils applicationUtils;
+
     @GetMapping
     public ModelAndView getUser() {
+        applicationUtils.checkUserAllow();
         ModelAndView view = new ModelAndView("management-time/users-calendar");
 
         List<Map<String, Object>> users = userService.getAllFullname();
@@ -36,6 +43,7 @@ public class ManagementTimeDayController {
         view.addObject("users", users);
         return view;
     }
+
     @GetMapping("/{userId}/day")
     public ModelAndView getDetailDay(
             @PathVariable("userId") String userId,
@@ -54,8 +62,10 @@ public class ManagementTimeDayController {
                 mav.addObject("day", day);
             }
             mav.setViewName("management-time/day/detail");
+            mav.addObject("userId",userId);
             return mav;
     }
+
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");

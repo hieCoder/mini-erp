@@ -481,7 +481,7 @@
         if("${day}" != "" && $("div.calendar-container").attr("data-id") == ""){
             dataCreate = {
                 day: "${day}",
-                userId: userCurrent.id,
+                userId: "${userId}",
                 data: dataInfor
             }
             callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'POST', dataCreate, function (rs) {

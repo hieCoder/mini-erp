@@ -126,7 +126,7 @@
                         <div class="form-group">
                             <label for="createBill">Bill</label>
                             <input type="file" class="form-control" id="createBill" multiple>
-                            <span class="text-secondary">*File must be xls, xlsx or pdf, file not over 100mb and below 3 files</span>
+                            <span class="text-secondary">*File must be ${setting.listTypeFile}, file not over ${setting.maxFileSize} and below ${setting.uploadFileLimit} files</span>
                         </div>
                     </form>
                 </div>
@@ -221,6 +221,27 @@
         }
     });
 
+    $(document).on("change", "#createBill", function (event) {
+        const billFiles = event.target.files;
+        for (var i = 0; i < billFiles.length; i++) {
+            var fileName = billFiles[i].name;
+            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+            if (!validExtensions.includes(fileExtension) || billFiles[i].size > ${setting.maxFileSize}) {
+                alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
+                loading.style.display = "none";
+                return;
+            }
+        }
+        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
+            var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+            $(this).val('')
+        }
+    });
+
     function redirectToAccounting(month) {
         const trimmedMonth = month.replace(/\s/g, '');
         window.location.href = '/accounting/' + trimmedMonth;
@@ -241,18 +262,18 @@
         var billInput = document.getElementById("createBill");
         var billFiles = billInput.files;
 
-        if (!title || !note || !amount || isNaN(amount)) {
+        if (!title || !amount || isNaN(amount)) {
             alert("Title, note and amount are required and amount must be a number.");
             loading.style.display = "none";
             return;
         }
 
-        var validExtensions = ["xls", "xlsx", "pdf"];
+        var validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
         for (var i = 0; i < billFiles.length; i++) {
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[i].size > 100 * 1024 * 1024) {
-                alert("File must be xls, xlsx, or pdf and not over 100mb.");
+                alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
                 loading.style.display = "none";
                 return;
             }

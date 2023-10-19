@@ -75,7 +75,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
     @Override
     public DayResponse findByDay(String userId, String day) {
-        return managementTimeConvert.toResponse(managementTimeDayMapper.findByDay(userId, day));
+        ManagementTimeDay managementTimeDay = managementTimeDayMapper.findByDay(userId, day);
+        if(managementTimeDay!= null){
+            applicationUtils.checkUserAllow(managementTimeDay.getUser().getId());
+            return managementTimeConvert.toResponse(managementTimeDay);
+        }
+        return null;
     }
 
     @Override

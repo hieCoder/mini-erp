@@ -300,7 +300,6 @@
         var transaction = document.getElementById("transactionType").value;
         var input = document.getElementById("amount").value;
         var amount = Number(input.replace(/[^0-9.]/g, ''))
-        console.log(amount)
 
         var billInput = document.getElementById("editBill");
         var billFiles = billInput.files;
@@ -315,12 +314,12 @@
             return;
         }
 
-        var validExtensions = ["xls", "xlsx", "pdf", "pptx"];
+        var validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
         for (var j = 0; j < billFiles.length; j++) {
             var fileName = billFiles[j].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[j].size > 100 * 1024 * 1024) {
-                alert("File must be xls, xlsx, pptx or pdf and not over 100mb.");
+                alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
                 loading.style.display = "none";
                 return;
             }
