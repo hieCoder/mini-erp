@@ -5,8 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-<div class="container">
-    <form id="formBookDetail">
+
+<form id="formYourFeeling">
+    <div class="container">
         <div class="row">
             <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
             <div class="col-md-4">
@@ -23,25 +24,27 @@
                     <h3 class="mt-2 font-weight-bold">Your Feelings</h3>
                     <div class="col-md-12">
                         <div class="p-3 border">
-                            <form id="addFeelingBook">
-                                <div class="form-group">
-                                    <label for="quotes1">Feel 1:</label>
-                                    <input type="text" class="form-control" id="quotes1" name="quotes1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="quotes2">Feel 2:</label>
-                                    <input type="text" class="form-control" id="quotes2" name="quotes2">
-                                </div>
-                                <div class="form-group">
-                                    <label for="quotes3">Feel 3:</label>
-                                    <input type="text" class="form-control" id="quotes3" name="quotes3">
-                                </div>
-                                <button value="${bookDetail.book.id}" type="submit" class="btn btn-primary" id="submit">Submit</button>
+                            <form>
+                            <div class="form-group">
+                                <label for="quotes1">Feel 1:</label>
+                                <input type="text" class="form-control" id="quotes1">
+                            </div>
+                            <div class="form-group">
+                                <label for="quotes2">Feel 2:</label>
+                                <input type="text" class="form-control" id="quotes2">
+                            </div>
+                            <div class="form-group">
+                                <label for="quotes3">Feel 3:</label>
+                                <input type="text" class="form-control" id="quotes3">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="submit">
+                                Submit
+                            </button>
                             </form>
                         </div>
                     </div>
                     <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
-                    <div class="col-md-12 mt-2">
+                    <div class="col-md-12 mt-2" id="reload">
                         <div class="p-3 border">
                             <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">
                                 <div class="p-3 ">
@@ -52,8 +55,9 @@
                                             <p class="text-muted">${feeling.fullnameUser}</p>
                                         </div>
                                         <div class="col-md-10">
-                                            <p>- ${feeling}</p>
-                                            <p>Phần 2 - Thẻ p 2</p>
+                                            <p class="mb-1">- ${feeling.quotes[0]}</p>
+                                            <p class="mb-1">- ${feeling.quotes[1]}</p>
+                                            <p class="mb-1">- ${feeling.quotes[2]}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -63,10 +67,10 @@
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
-<!-- Modal Notification  -->
+<!-- Modal Notification Success -->
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -90,41 +94,84 @@
 
 <%--Handle when user click button submit--%>
 <script>
+    var isCreate = true;
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('submit').addEventListener('click', function (e) {
-            var quotes1 = document.getElementById('quotes1').value;
-            var quotes2 = document.getElementById('quotes2').value;
-            var quotes3 = document.getElementById('quotes3').value;
+        callAjaxByJsonWithData('/api/v1/feeling-of-book/' + '${bookDetail.book.id}' + '/' + userCurrent.id
+            , 'GET', null, function (rs) {
+                if (rs != null && rs.quotes.length != 0) {
+                    isCreate = false;
+                    document.getElementById("quotes1").value = rs.quotes[0]?rs.quotes[0]:'';
+                    document.getElementById("quotes2").value = rs.quotes[1]?rs.quotes[1]:'';
+                    document.getElementById("quotes3").value = rs.quotes[2]?rs.quotes[2]:'';
 
-            var data = {
-                userId: userCurrent.id,
-                quote: quotes1 + '---' + quotes2 + '---' + quotes3,
-                bookId: this.value
-            };
-            $('#submit').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/feeling-of-book', 'POST', data, function () {
-                sessionStorage.setItem('result', 'addFeelSuccess');
-                location.reload();
-            }, 'addFeelingBook')
+                    var submitButton = document.getElementById('submit');
+                    submitButton.textContent = "Update";
+                    submitButton.classList.remove("btn-primary");
+                    submitButton.classList.add("btn-success");
+
+                    document.getElementById('submit').addEventListener('click', function () {
+                        var quotes1 = document.getElementById('quotes1').value;
+                        var quotes2 = document.getElementById('quotes2').value;
+                        var quotes3 = document.getElementById('quotes3').value;
+                        var data = {
+                            id: rs.id,
+                            quote: quotes1 + '---' + quotes2 + '---' + quotes3
+                        };
+                        $('#submit').after(createLoadingHtml());
+                        callAjaxByJsonWithData('/api/v1/feeling-of-book', 'PUT', data, function () {
+                            sessionStorage.setItem('result', 'updateSuccess');
+                            location.reload();
+                        }, 'formYourFeeling');
+                    });
+                };
+            });
+    });
+
+    // Handle when user click submit
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('submit').addEventListener('click', function () {
+            var bookId = '${bookDetail.book.id}';
+            if (isCreate) {
+                var quotes1 = document.getElementById('quotes1').value;
+                var quotes2 = document.getElementById('quotes2').value;
+                var quotes3 = document.getElementById('quotes3').value;
+                if (isCreate) {
+                    var data = {
+                        userId: userCurrent.id,
+                        quote: quotes1 + '---' + quotes2 + '---' + quotes3,
+                        bookId: bookId
+                    };
+                    $('#submit').after(createLoadingHtml());
+                    callAjaxByJsonWithData('/api/v1/feeling-of-book', 'POST', data, function () {
+                        sessionStorage.setItem('result', 'addSuccess');
+                        location.reload();
+                    }, 'formYourFeeling')
+                }
+            }
         });
     });
 
-    // Notification
+
+    // Notification Success
     document.addEventListener('DOMContentLoaded', function () {
         const result = sessionStorage.getItem('result');
         if (result) {
             let message;
             switch (result) {
-                case 'addFeelSuccess':
-                    message = 'Add Feel Success';
+                case 'addSuccess':
+                    message = 'Add Feeling Success';
+                    break;
+                case 'updateSuccess':
+                    message = 'Update Feeling Success';
                     break;
                 default:
                     message = 'Unknown Result';
             }
+            ;
             $('#resultMessage').text(message);
             $('#resultModal').modal('show');
             sessionStorage.clear();
-        }
+        };
     });
 </script>
 </body>

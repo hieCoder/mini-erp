@@ -11,5 +11,6 @@ public interface FeelingOfBookService {
     FeelingOfBookResponse createFeelingOfBook(FeelingOfBookCreateRequest feelingOfBookCreateRequest);
     FeelingOfBookResponse findById(String id);
     FeelingOfBookResponse updateFeelingOfBook(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest);
+    FeelingOfBookResponse findFeelingByUser(String bookId, String userId);
     int deleteFeelingOfBook(String id);
 }

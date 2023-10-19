@@ -45,7 +45,7 @@
                     <td>${book.author}</td>
                     <td>${book.createdBy}</td>
                     <td>${book.createdDate}</td>
-                    <td>
+                    <td class="action">
                         <button value="${book.id}" type="button"
                                 class="btn btn-primary mb-2 edit-book-button">Edit
                         </button>
@@ -397,6 +397,20 @@
             $('#resultMessage').text(message);
             $('#resultModal').modal('show');
             sessionStorage.clear();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var addButton = document.querySelector('.add-book-button');
+        var actionColumn = document.querySelectorAll('th')[6];
+        var actionValue = document.querySelectorAll('.action');
+
+        if (userCurrent.role === 'DEVELOPER') {
+            addButton.remove();
+            actionColumn.remove();
+            actionValue.forEach(function (element) {
+                element.remove();
+            });
         }
     });
 

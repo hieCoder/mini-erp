@@ -57,7 +57,18 @@
                     </div>
                     <div class="form-group">
                         <label for="resume">Resume file:</label>
-                        <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
+                        <c:choose>
+                            <c:when test="${empty user.getResume()}">
+                                <div id="resumeContainer" style="display: none;">
+                                    <a href="#" style="display: none;">Download Resume</a>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div id="resumeContainer">
+                                    <a href="${user.getResume()}" download target="_blank">Download Resume</a>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                         <input type="file" class="form-control mt-2" name="resume" id="resume">
                         <small class="text-muted ml-2">Choose new resume</small>
                     </div>
@@ -180,7 +191,7 @@
                     <div class="form-group container-button">
                         <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" id="delUser">Delete</button>
-                        <a class="btn btn-secondary" href="/users">Cancel</a>
+                        <a class="btn btn-secondary cancle-button">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -397,6 +408,11 @@
 
 <%--Handle User--%>
 <script>
+
+    var linkCancle = '/users';
+    if(userCurrent.role == U_DEVELOPER) linkCancle = '/home';
+    $('.cancle-button').attr('href', linkCancle);
+
     // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
     document.getElementById("change-password-button").addEventListener("click", function () {
         var inputPassword = document.getElementById("password-form");
@@ -418,7 +434,7 @@
 
             $('.container-button').after(createLoadingHtml());
 
-            formData.append('id', ${user.id});
+            formData.append('id', '${user.id}');
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
             var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
@@ -426,7 +442,7 @@
 
             callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'updateSuccess');
-                location.href = "/users/" + ${user.getId()};
+                location.href = "/users/" + '${user.getId()}';
             }, 'formUpdateUser');
         }
     });
@@ -500,7 +516,7 @@
         var totalWorkingDayInput = document.getElementById('totalWorkingDay');
 
         var data;
-        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()}, 'GET', null, function (rs) {
+        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}', 'GET', null, function (rs) {
             data = rs;
             yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
             data.forEach(function (entry) {
@@ -514,7 +530,7 @@
         // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
         yearSelect.addEventListener('change', function () {
             $('#working-day').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, 'GET', null, function (rs) {
+            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
                 var dataMonth = rs;
                 // Xóa các option cũ trong dropdown year
                 monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
@@ -577,7 +593,7 @@
 
             $('.container-button-add-contract').after(createLoadingHtml());
 
-            formData.append('userId', ${user.id});
+            formData.append('userId', '${user.id}');
 
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'addContractSuccess');
