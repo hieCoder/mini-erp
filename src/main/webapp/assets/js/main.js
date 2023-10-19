@@ -116,3 +116,45 @@ function resetForm(idForm){
     $('#'+idForm).find('*').prop('disabled', false);
     $('div.custom-spinner').parent().remove();
 }
+
+function createLoadingIndicator() {
+    if ($('#loading-indicator').length === 0) {
+        var loadingIndicator = $('<div>', {
+            id: 'loading-indicator',
+            class: 'text-center',
+            css: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        });
+
+        var spinnerIcon = $('<i>', {
+            class: 'fa fa-spinner fa-spin fa-3x'
+        });
+
+        var loadingText = $('<p>', {
+            text: 'Loading...'
+        });
+
+        loadingIndicator.append(spinnerIcon, loadingText);
+
+        $('body').append(loadingIndicator);
+    }
+}
+
+function showLoading(contentId) {
+    if ($('#loading-indicator').length === 0) {
+        createLoadingIndicator();
+    } else {
+        $('#loading-indicator').show();
+    }
+
+    $('#' + contentId).hide();
+}
+
+function hideLoading(contentId) {
+    $('#loading-indicator').hide();
+    $('#' + contentId).show();
+}

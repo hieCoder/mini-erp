@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyRepor
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShowResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,7 +51,7 @@ public class WeeklyReportConverter {
     public WeeklyReport toEntity(CreateWeeklyReportRequest createWeeklyReportRequest) {
         if (createWeeklyReportRequest == null) return null;
         return WeeklyReport.builder()
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .title(createWeeklyReportRequest.getTitle())
                 .content(createWeeklyReportRequest.getContent())
                 .createdDate(new Date())

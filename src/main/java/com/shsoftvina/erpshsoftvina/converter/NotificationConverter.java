@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificatio
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class NotificationConverter {
 
         return Notification.builder()
                 .user(userMapper.findById(createNotificationRequest.getUserId()))
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .title(createNotificationRequest.getTitle())
                 .content(createNotificationRequest.getContent())
                 .files(files)

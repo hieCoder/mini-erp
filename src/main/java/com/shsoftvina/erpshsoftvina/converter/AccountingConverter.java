@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
+import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.accounting.StatusAccountingEnum;
@@ -8,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRe
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,7 @@ public class AccountingConverter {
                 .remain(newRemain)
                 .expense(accountingCreateRequest.getExpense())
                 .createdDate(newDate)
-                .id(UUID.randomUUID().toString())
+                .id(ApplicationUtils.generateId())
                 .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .status(StatusAccountingEnum.ACTIVE)
                 .note(accountingCreateRequest.getNote())

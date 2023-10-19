@@ -113,11 +113,13 @@ public class CommentTaskImpl implements CommentTaskService {
 
         Setting setting = settingMapper.findByCode(SettingConstant.TASK_COMMENT_CODE);
 
-        for(MultipartFile file: newFiles){
-            if (!FileUtils.isAllowedFileSize(file)) throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-        }
-        if(!FileUtils.isAllowedFileType(newFiles, setting.getFileType())){
-            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
+        if(newFiles != null){
+            for(MultipartFile file: newFiles){
+                if (!FileUtils.isAllowedFileSize(file)) throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+            }
+            if(!FileUtils.isAllowedFileType(newFiles, setting.getFileType())){
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
+            }
         }
 
         String remainFiles = updateCommentTaskRequest.getRemainFiles();
