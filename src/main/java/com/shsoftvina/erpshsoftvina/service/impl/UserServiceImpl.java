@@ -78,31 +78,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean activeUserRegisterRequest(UserActiveRequest userActiveRequest) {
 
-        if (!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
-            throw new NotFoundException(MessageErrorUtils.notFound("Role"));
+        if(userActiveRequest.getStatus().equals(StatusUserEnum.ACTIVE)){
+            if (!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
+                throw new NotFoundException(MessageErrorUtils.notFound("Role"));
+        }
+
         if (!EnumUtils.isExistInEnum(StatusUserEnum.class, userActiveRequest.getStatus()))
             throw new NotFoundException(MessageErrorUtils.notFound("Status"));
 
-        if (userActiveRequest.getStatus().equals(StatusUserEnum.REJECT)) {
-            try {
-                userMapper.deleteUser(userActiveRequest.getId());
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        } else {
-            User user = userConverter.toEntity(userActiveRequest);
+        User user = userConverter.toEntity(userActiveRequest);
 
-            try {
-                userMapper.activeUserRegister(user);
+        try {
+            userMapper.activeUserRegister(user);
 
-                DataMailDto dataMailDto = new DataMailDto();
-                dataMailDto.setTo(userActiveRequest.getEmail());
-                dataMailDto.setSubject(MailConstant.REGISTER_SUBJECT);
-                dataMailDto.setContent(MailConstant.REGISTER_CONTENT);
-                return sendMailUtils.sendEmail(dataMailDto);
-            } catch (Exception e) {
-            }
+            DataMailDto dataMailDto = new DataMailDto();
+            dataMailDto.setTo(userActiveRequest.getEmail());
+            dataMailDto.setSubject(MailConstant.REGISTER_SUBJECT);
+            dataMailDto.setContent(MailConstant.REGISTER_CONTENT);
+            return sendMailUtils.sendEmail(dataMailDto);
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean rejectUserRegisterRequest(String id) {
+
+        User user = userMapper.findById(id);
+        if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+
+        try {
+            userMapper.deleteUser(id);
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
@@ -117,8 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUserDetail(UserUpdateRequest userUpdateRequest) {
 
-        String id = userUpdateRequest.getId();
-        User user = userMapper.findById(id);
+        User user = userMapper.findById(userUpdateRequest.getId());
 
         if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
@@ -132,56 +139,61 @@ public class UserServiceImpl implements UserService {
         List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request,
                 uploadDir, avatarFile, resumeFile);
 
-        if (newFileNameList != null) {
-            String avatarNameOld = user.getAvatar();
-            String resumeNameOld = user.getResume();
 
-            User userUpdate = null;
-            if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
-                if(newFileNameList.size() == 1){
-                    if(avatarFile != null) userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
-                    else if(resumeFile != null) userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, newFileNameList.get(0));
-                } else if(newFileNameList.size() == 2){
-                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
-                } else{ // = 0, no avatar and resume
-                    userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
-                    userUpdate.setAvatar(user.getAvatar());
-                    userUpdate.setResume(user.getResume());
-                }
-            } else{
-                if(newFileNameList.size() == 1){
-                    if(avatarFile != null) userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
-                    else if(resumeFile != null) userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, newFileNameList.get(0));
-                } else if(newFileNameList.size() == 2){
-                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
-                } else{ // = 0, no avatar and resume
-                    userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
-                    userUpdate.setAvatar(user.getAvatar());
-                    userUpdate.setResume(user.getResume());
-                }
+        String avatarNameOld = user.getAvatar();
+        String resumeNameOld = user.getResume();
+
+        User userUpdate = null;
+        if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+            if (newFileNameList.size() == 0) {// = 0, no avatar and resume
+                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
+                userUpdate.setAvatar(user.getAvatar());
+                userUpdate.setResume(user.getResume());
+            }  else if (newFileNameList.size() == 2){
+                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
+                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+            } else if (avatarFile != null) {
+                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
+                userUpdate.setResume(user.getResume());
+            } else if (resumeFile != null) {
+                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
+                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, newFileNameList.get(0));
+                userUpdate.setAvatar(user.getAvatar());
             }
-
-            try{
-                if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
-                    if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
-                    userMapper.updateUserProfile(userUpdate);
-                } else{
-                    if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
-                    userMapper.updateUserDetail(userUpdate);
-                }
-
-                if(avatarNameOld != null){
-                    FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
-                }
-                if(resumeNameOld != null){
-                    FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                }
-                return 1;
-            } catch (Exception e){
-                return 0;
+        } else {
+            if (newFileNameList.size() == 0) {// = 0, no avatar and resume
+                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
+                userUpdate.setAvatar(user.getAvatar());
+                userUpdate.setResume(user.getResume());
+            } else if (newFileNameList.size() == 2){
+                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
+                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
+            } else if (avatarFile != null) {
+                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
+                userUpdate.setResume(user.getResume());
+            } else if (resumeFile != null) {
+                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
+                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, newFileNameList.get(0));
+                userUpdate.setAvatar(user.getAvatar());
             }
         }
-        return 0;
+
+        try {
+            if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
+                if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
+                userMapper.updateUserProfile(userUpdate);
+            } else {
+                if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
+                userMapper.updateUserDetail(userUpdate);
+            }
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     @Override

@@ -138,7 +138,7 @@
                         <label for="position">Position:</label>
                         <select name="position" class="form-control" id="position">
                             <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
-                                Inter
+                                Intern
                             </option>
                             <option value="JUNIOR" <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
                                 Junior
@@ -427,7 +427,7 @@
             callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'updateSuccess');
                 location.href = "/users/" + ${user.getId()};
-            });
+            }, 'formUpdateUser');
         }
     });
 
@@ -583,7 +583,7 @@
                 sessionStorage.setItem('result', 'addContractSuccess');
                 localStorage.setItem("showModal", "true");
                 location.reload();
-            });
+            }, 'formAddContract');
         }
     });
 
@@ -656,7 +656,7 @@
                     sessionStorage.setItem('result', 'editContractSuccess');
                     localStorage.setItem("showModal", "true");
                     location.reload();
-                });
+                }, 'editContractForm');
             }
         });
     });

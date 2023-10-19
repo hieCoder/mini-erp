@@ -35,6 +35,6 @@
     <select id="findAllByMonthYear" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY
-        WHERE USER_ID = #{userId} AND YEAR(DAY) = #{year} AND MONTH(DAY) = #{month}
+        WHERE USER_ID = #{userId} AND DAY between #{startDate} AND #{endDate}
     </select>
 </mapper>

@@ -172,10 +172,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Confirm Reject</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to reject this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="confirmReject">Reject</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     $(document).ready(function (){
-        tableStatus = $('#datatable-account-pending').DataTable({
+        table = $('#datatable-account-pending').DataTable({
             ajax: {
                 url: '/api/v1/users?status=PENDING',
                 contentType: 'application/json',
@@ -197,7 +217,7 @@
                 },
                 {
                     render: function(data, type, row) {
-                        return '<button type="button" class="approval-btn btn btn-primary mr-1" data-status="APPROVAL" data-id="'+ row.id +'">Approval</button>' +
+                        return '<button type="button" class="approval-btn btn btn-primary mr-1" data-status="ACTIVE" data-id="'+ row.id +'">Approval</button>' +
                             '<button type="button" class="reject-btn btn btn-danger mr-1" data-status="REJECT" data-id="'+ row.id +'">Reject</button>';
                     }
                 }
@@ -210,11 +230,38 @@
         });
 
         $('#datatable-account-pending').on('click', '.approval-btn', function () {
-            var data = tableStatus.row($(this).parents('tr')).data();
-            var email = data.email;
-            var role = $(this).closest('tr').find('select[name="role"]').val();
-            var status = $(this).data('status');
-            var id = $(this).data('id');
+            var data = table.row($(this).parents('tr')).data();
+            var obj = {
+                email: data.email,
+                role: $(this).closest('tr').find('select[name="role"]').val(),
+                status: $(this).data('status'),
+                id: $(this).data('id')
+            };
+
+            callAjaxByJsonWithData('/api/v1/users/register/approval', 'PUT', obj, function (rs) {
+                if(rs){
+                    table.ajax.reload();
+                }
+            });
+        });
+
+
+        $('#datatable-account-pending').on('click', '.reject-btn', function () {
+
+            $('#confirmModal').modal('show');
+
+            var id =  $(this).data('id');
+
+            $('#confirmReject').on('click', function () {
+                callAjaxByJsonWithData('/api/v1/users/register/reject/'+ id, 'DELETE', null, function (rs) {
+                    if(rs){
+                        table.ajax.reload();
+                    }
+                });
+
+                $('#confirmModal').modal('hide');
+            });
+
         });
     });
 </script>

@@ -34,7 +34,7 @@
                 <tr>
                         <%--          <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>&ndash;%&gt;--%>
                     <td>${loop.index + 1}</td>
-                    <td><a href="/schedules/detail/${user.id}" class="text-decoration-none">
+                    <td><a href="/management-time/${user.id}" class="text-decoration-none">
                         <c:out value="${user.fullname}"/></a>
                     </td>
                 </tr>
