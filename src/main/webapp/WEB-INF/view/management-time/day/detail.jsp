@@ -331,7 +331,8 @@
         let html = '<tr>' +
             '<td rowspan="7" class="align-middle text-center">'+ qresult(name) +'</td>'+
             '</tr>'
-        callAjaxByJsonWithData('/api/v1/management-time-detail/${dayResponse.id}/'+code, 'GET', null, function (rs) {
+        let idResponse = $(".calendar-container").attr("data-id")
+        callAjaxByJsonWithData('/api/v1/management-time-detail/'+ idResponse +'/'+code, 'GET', null, function (rs) {
             if(rs.id != null) {
                 if(rs.data != null) {
                     let data = rs.data;

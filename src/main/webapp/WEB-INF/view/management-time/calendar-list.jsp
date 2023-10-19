@@ -61,6 +61,12 @@
             color: #333333;
             font-size: 20px;
         }
+        .underline-text {
+            text-decoration: underline;
+        }
+        .normal-text {
+            text-decoration: none;
+        }
     </style>
     <style>
         /* Tùy chỉnh kiểu của trang loading */
@@ -121,7 +127,7 @@
         const formattedLastSaturday = formatDate(result.lastSaturday);
         const formattedFirstSunday = formatDate(result.firstSunday);
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.userId}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastSaturday, true);
+        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastSaturday, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -135,6 +141,14 @@
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + currentDate.toLocaleDateString('en-US', options);
+                    currentMonthYear.classList.add('font-italic','underline-text');
+                    var fullName = "${requestScope.user.fullname}";
+                    var span = document.createElement("span");
+                    span.textContent = fullName;
+                    span.style.fontSize = "30px";
+                    span.classList.add("normal-text");
+                    currentMonthYear.appendChild(document.createElement("br"));
+                    currentMonthYear.appendChild(span);
 
                     // Calculate the starting day (Sunday to Saturday: 0 to 6)
                     const startDay = currentDate.getDay();
@@ -185,9 +199,10 @@
                                             ;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
-                                            link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + ((lastDayOfPreviousMonth - startDay + j) < 10
-                                                ? '0' + (lastDayOfPreviousMonth - startDay + j)
-                                                : (lastDayOfPreviousMonth - startDay + j));
+
+                                            var day = lastDayOfPreviousMonth - startDay + j
+                                            var dayData = (day<10) ? "0"+day : day
+                                            link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + dayData;
                                             cell.appendChild(link);
                                         }
                                     } else if (dayNumber > 0 && dayNumber <= daysInMonth) {
@@ -202,7 +217,7 @@
                                                 ) {
                                                     const link = document.createElement('a');
                                                     link.textContent = dayNumber;
-                                                    link.href = 'day/?id=' + e.id;
+                                                    link.href = "${user.id}" + '/day/?id=' + e.id;
                                                     cell.appendChild(link);
                                                     found = true;
                                                 }
@@ -214,7 +229,7 @@
                                             link.textContent = dayNumber;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
-                                            link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
+                                            link.href = "${user.id}" + "/day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                             cell.appendChild(link);
                                         }
                                     }

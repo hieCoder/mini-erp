@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,8 @@ public class ManagementTimeDayController {
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
-        modelAndView.addObject("userId",userId);
+        UserAccountingResponse user = userService.findUserIdFullName(userId);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
 }

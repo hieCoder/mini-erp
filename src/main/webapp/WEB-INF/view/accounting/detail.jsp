@@ -389,7 +389,7 @@
     }
 
     function goBack() {
-        window.history.back();
+        window.location.replace(document.referrer);
     }
 
     function deleteAccount(accountId) {
