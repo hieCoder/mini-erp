@@ -34,10 +34,6 @@ public class BooksController {
 
         BookDetailResponse bookDetail = bookService.findById(id);
 
-        for (FeelingOfBookResponse feelingOfBookResponse : bookDetail.getFeelingOfBooks()) {
-            feelingOfBookResponse.getFullnameUser();
-        };
-
         view.addObject("bookDetail", bookDetail);
 
         return view;

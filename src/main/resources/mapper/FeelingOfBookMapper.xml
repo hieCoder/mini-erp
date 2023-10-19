@@ -56,6 +56,13 @@
         WHERE b.ID = #{id}
     </select>
 
+    <select id="findFeelingByUser" parameterType="String" resultMap="feelingOfBookDetailResultMap">
+        SELECT fb.*
+        FROM FEELING_OF_BOOK AS fb
+        where fb.book_id = #{bookId}
+        and fb.user_id = #{userId};
+    </select>
+
     <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         <id property="id" column="id"/>
         <result property="quote" column="QUOTE"/>

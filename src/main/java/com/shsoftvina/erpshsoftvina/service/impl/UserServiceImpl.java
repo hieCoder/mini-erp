@@ -189,11 +189,10 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
+            if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
             if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
-                if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
                 userMapper.updateUserProfile(userUpdate);
             } else {
-                if (userUpdateRequest.getPassword().isEmpty()) userUpdate.setPassword(user.getPassword());
                 userMapper.updateUserDetail(userUpdate);
             }
             return 1;
