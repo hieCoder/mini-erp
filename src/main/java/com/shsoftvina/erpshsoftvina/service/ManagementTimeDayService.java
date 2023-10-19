@@ -10,5 +10,7 @@ public interface ManagementTimeDayService {
     DayResponse createDay(DayCreateRequest dayCreateRequest);
     DayResponse updateDay(DayUpdateRequest dayUpdateRequest);
     DayResponse findById(String id);
+    DayResponse findByDay(String userId, String day);
+    DayResponse findDayResponse(String userId, String day, String id);
     List<DayResponse> findAllByMonthYear(String userId, String startDate, String endDate);
 }

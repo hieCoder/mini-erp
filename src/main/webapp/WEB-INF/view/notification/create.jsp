@@ -104,7 +104,7 @@
                 } else {
                     if (xhr.response) {
                         document.getElementById("errorAlert").style.display = "block";
-                        document.getElementById("errorAlert").innerHTML = JSON.parse(xhr.response).message
+                        document.getElementById("errorAlert").innerHTML = "Failed to create notification"
                         submitButton.disabled = false;
                     }
                 }

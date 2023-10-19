@@ -14,6 +14,12 @@
         WHERE ID = #{id}
     </select>
 
+    <select id="findByDay" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId} AND DAY = #{day}
+    </select>
+
     <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="oneThingCalendar" column="ONE_THING_CALENDAR"/>

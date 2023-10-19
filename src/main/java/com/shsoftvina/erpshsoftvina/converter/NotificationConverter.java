@@ -27,6 +27,7 @@ public class NotificationConverter {
     public NotificationShowResponse toShowResponse(Notification notification) {
         return NotificationShowResponse.builder()
                 .id(notification.getId())
+                .user(notification.getUser())
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .files(FileUtils.getPathUploadList(Notification.class, notification.getFiles()))
