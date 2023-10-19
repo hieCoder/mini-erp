@@ -418,7 +418,7 @@
 
             $('.container-button').after(createLoadingHtml());
 
-            formData.append('id', ${user.id});
+            formData.append('id', "${user.id}");
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
             var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
@@ -426,7 +426,7 @@
 
             callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'updateSuccess');
-                location.href = "/users/" + ${user.getId()};
+                location.href = "/users/" + "${user.getId()}";
             });
         }
     });
@@ -500,7 +500,7 @@
         var totalWorkingDayInput = document.getElementById('totalWorkingDay');
 
         var data;
-        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()}, 'GET', null, function (rs) {
+        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}', 'GET', null, function (rs) {
             data = rs;
             yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
             data.forEach(function (entry) {
@@ -514,7 +514,7 @@
         // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
         yearSelect.addEventListener('change', function () {
             $('#working-day').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + ${user.getId()} +"?year=" + yearSelect.value, 'GET', null, function (rs) {
+            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
                 var dataMonth = rs;
                 // Xóa các option cũ trong dropdown year
                 monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
@@ -577,7 +577,7 @@
 
             $('.container-button-add-contract').after(createLoadingHtml());
 
-            formData.append('userId', ${user.id});
+            formData.append('userId', "${user.id}");
 
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'addContractSuccess');
@@ -651,7 +651,7 @@
 
                 $('.container-button-edit-contract').after(createLoadingHtml());
 
-                formData.append('id', contractIdValue);
+                formData.append('id', '"'+contractIdValue+'"');
                 callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'editContractSuccess');
                     localStorage.setItem("showModal", "true");

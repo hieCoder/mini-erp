@@ -89,7 +89,11 @@
                             var selectedStartDate = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), 1);
 
                             var startDate = new Date("${startDate}");
-                            var dueOrCloseDate = new Date("${dueOrCloseDate}");
+                            startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+                            var subStringDueOrCloseDate = "${dueOrCloseDate}";
+                            subStringDueOrCloseDate = subStringDueOrCloseDate.replace("~ ", "");
+                            var dueOrCloseDate = new Date(subStringDueOrCloseDate);
+                            dueOrCloseDate = new Date(dueOrCloseDate.getFullYear(), dueOrCloseDate.getMonth(), dueOrCloseDate.getDate());
                             var status = "${s.statusTask.code}";
                             var id = "${s.id}";
                             var statusDuration = dueOrCloseDate - startDate;
@@ -184,7 +188,11 @@
                             let requestEndDate = dateEnd;
                             let requestStartDate = dateStart;
                             let startDate = new Date(task.startDate);
-                            let dueOrCloseDate = new Date(task.dueOrCloseDate);
+                            startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+                            let subStringDueOrCloseDate = task.dueOrCloseDate;
+                            subStringDueOrCloseDate = subStringDueOrCloseDate.replace("~ ", "");
+                            let dueOrCloseDate = new Date(subStringDueOrCloseDate);
+                            dueOrCloseDate = new Date(dueOrCloseDate.getFullYear(), dueOrCloseDate.getMonth(), dueOrCloseDate.getDate());
                             let status = task.statusTask.code;
                             let statusDuration = dueOrCloseDate - startDate;
                             let daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;

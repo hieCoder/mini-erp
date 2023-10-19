@@ -5,9 +5,11 @@ import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.enums.task.ActionChangeStatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
+import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.exception.FileLimitNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
@@ -145,8 +147,22 @@ public class ApplicationUtils {
         }
     }
 
-    public void checkUserCurrentAllow(String id){
+    public void checkUserAllow(){
+        User userCurrent = Principal.getUserCurrent();
+        RoleEnum roleCurrent = userCurrent.getRole();
 
+        if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER))){
+            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
+        }
+    }
 
+    public void checkUserAllow(String idUser){
+        User userCurrent = Principal.getUserCurrent();
+        RoleEnum roleCurrent = userCurrent.getRole();
+        String idUserCurrent = userCurrent.getId();
+
+        if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER) || idUserCurrent.equals(idUser))){
+            throw new UnauthorizedException(MessageErrorUtils.unauthorized());
+        }
     }
 }

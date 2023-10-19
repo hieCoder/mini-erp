@@ -98,6 +98,7 @@
         SELECT STATUS_TASK, COUNT(*) as taskCount
         FROM TASK
         WHERE STATUS = 'ACTIVE'
+        AND ( #{userRole} = 'OWNER' OR USER_ID = #{userId})
         GROUP BY STATUS_TASK
     </select>
 
