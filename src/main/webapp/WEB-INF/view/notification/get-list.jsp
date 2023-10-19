@@ -50,7 +50,7 @@
                 <td>
                     <a href="<c:url value='/notifications/${notification.id}'/>">${notification.title}</a>
                 </td>
-                <td>${notification.title}</td>
+                <td>${notification.user.fullname}</td>
                 <td>${notification.createdDate}</td>
             </tr>
         </c:forEach>

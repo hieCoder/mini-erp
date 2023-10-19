@@ -61,12 +61,7 @@
             color: #333333;
             font-size: 20px;
         }
-        .underline-text {
-            text-decoration: underline;
-        }
-        .normal-text {
-            text-decoration: none;
-        }
+
     </style>
     <style>
         /* Tùy chỉnh kiểu của trang loading */
@@ -145,8 +140,8 @@
                     currentMonthYear.classList.add('font-italic','underline-text');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
-                    span.textContent = fullName;
-                    span.style.fontSize = "30px";
+                    span.textContent = "Username: " + fullName;
+                    span.style.fontSize = "20px";
                     span.classList.add("normal-text");
                     currentMonthYear.appendChild(document.createElement("br"));
                     currentMonthYear.appendChild(span);
@@ -282,8 +277,11 @@
                             $("div.calendar-container").removeClass("d-none")
                         }
                     }
+                } else {
+                    window.location.href = "/management-time/";
                 }
             }
+
         }
         xhr.send();
     }

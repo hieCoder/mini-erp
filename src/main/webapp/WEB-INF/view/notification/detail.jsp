@@ -436,7 +436,6 @@
             });
             $("#popupFormEditNotification .modal-footer button:first-child").before(dot)
             var apiUrlNotification = baseUrlNotification + "/update/"
-            var xhttp = new XMLHttpRequest();
             var notificationId = $("table#tableNotification").attr("data-id");
             var title = document.getElementById("editNotificationTitle").value;
             var content = document.getElementById("editNotificationContent").value;
@@ -455,7 +454,7 @@
                 formData.append("files", files[i]);
             }
 
-            callAjaxByDataFormWithDataForm(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
+            callAjaxByDataFormWithDataForm2(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
                 var data = rs;
                 $("#titleNotification").text(data.title)
                 $("#contentNotification").text(data.content)
@@ -479,6 +478,11 @@
                     $(this).prop("disabled", false);
                 });
                 $("#popupFormEditNotification").modal("hide");
+            }, function (){
+                $('div.custom-spinner').parent().remove()
+                $("#popupFormEditNotification .modal-footer button").each(function() {
+                    $(this).prop("disabled", false);
+                });
             });
         });
 
@@ -595,9 +599,12 @@
         });
 
         $("ul#commentList").on("click", ".reply-button", function() {
+            $("div.inputReply").each(function(){
+                $(this).remove()
+            })
             var parentId = $(this).attr("data-id");
             var html =
-                '<div class="row mb-4 mt-4">'
+                '<div class="row mb-4 mt-4 inputReply">'
                     +'<div class="col-md-10 d-flex">'
                     +'<img src="' + userCurrent.avatar + '" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
                     +'<textarea id="replyComment" data-id="'+parentId+'" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>'

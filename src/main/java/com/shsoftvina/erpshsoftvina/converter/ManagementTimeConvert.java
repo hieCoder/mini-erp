@@ -28,7 +28,7 @@ public class ManagementTimeConvert {
     private ManagementTimeDayMapper managementTimeDayMapper;
 
     public DayResponse toResponse(ManagementTimeDay day){
-
+        if(day == null) return null;
         DataOfDayDto data = new DataOfDayDto();
         data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), OneThingCalendarDto.class));
         data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));

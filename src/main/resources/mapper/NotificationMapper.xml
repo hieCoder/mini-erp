@@ -8,12 +8,12 @@
         <![CDATA[
         SELECT *
         FROM NOTIFICATION n
-        WHERE (n.title LIKE '%' #{search} '%' OR n.files LIKE '%' #{search} '%')
+                 INNER JOIN USER u ON n.user_id = u.id
+        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%')
         ORDER BY created_date DESC
             LIMIT #{start}, #{pageSize}
         ]]>
     </select>
-
     <select id="getNotificationById" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
         FROM NOTIFICATION n
@@ -23,7 +23,8 @@
     <select id="countAll" resultType="int">
         SELECT COUNT(*)
         FROM NOTIFICATION n
-        WHERE (n.title LIKE '%' #{search} '%' OR n.files LIKE '%' #{search} '%');
+                 INNER JOIN USER u ON n.user_id = u.id
+        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%')
     </select>
 
     <!--    Create new Notification-->
