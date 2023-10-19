@@ -21,6 +21,7 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, 
         enctype: 'multipart/form-data',
         success: function(response) {
             callback(response);
+            resetForm(formId);
         },
         error: function (xhr, status, error) {
             resetForm(formId);
@@ -65,6 +66,7 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, form
         dataType: 'json',
         success: function(response) {
             callback(response);
+            resetForm(formId);
         },
         error: function (xhr, status, error) {
             resetForm(formId);
@@ -86,6 +88,7 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
         dataType: 'json',
         success: function(response) {
             callback(response);
+            resetForm(formId);
         },
         error: function (xhr, status, error) {
             resetForm(formId);
@@ -96,7 +99,6 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
         }
     });
 }
-
 
 function isBlank(a){
     return a === '' || a===null;
@@ -114,12 +116,12 @@ function getFileNameFromPath(path) {
     return lastPart;
 }
 
-function isAdminOrUserLogin() {
-    return userCurrent.role != U_DEVELOPER;
+function isAdminOrUserLogin(idUser) {
+    return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
 
-function isUser(idUser) {
-    return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
+function isDeleveloper() {
+    return userCurrent.role == U_DEVELOPER;
 }
 
 function createLoadingHtml() {
@@ -133,7 +135,6 @@ function createLoadingHtml() {
 }
 
 function resetForm(idForm){
-
     $('#'+idForm).find('*').prop('disabled', false);
     $('div.custom-spinner').parent().remove();
 }

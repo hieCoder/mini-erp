@@ -10,7 +10,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="CONTENT" type="VARCHAR(255)"/>
-            <column name="FILES" type="VARCHAR(255)"/>
+            <column name="FILES" type="NVARCHAR(255)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="TASK_ID" type="VARCHAR(255)"/>
             <column name="USER_ID" type="VARCHAR(255)"/>

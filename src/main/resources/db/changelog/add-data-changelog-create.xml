@@ -73,9 +73,7 @@
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
             <column name="FILE_SIZE" value="3"/>
         </insert>
-    </changeSet>
 
-    <changeSet id="3" author="team2">
         <insert tableName="SETTING">
             <column name="ID" value="8"/>
             <column name="CODE" value="BOOK"/>
