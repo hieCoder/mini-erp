@@ -43,11 +43,19 @@
                     <div class="col-md-12 mt-2">
                         <div class="p-3 border">
                             <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">
-                            <div class="p-3 border">
-                                        <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"
-                                             alt="User Avatar" width="50px">
-                                        <p class="text-muted">${feeling.fullnameUser}</p>
-                            </div>
+                                <div class="p-3 ">
+                                    <div class="row border">
+                                        <div class="col-md-2 border-right">
+                                            <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"
+                                                 alt="User Avatar" width="50px">
+                                            <p class="text-muted">${feeling.fullnameUser}</p>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <p>Phần 2 - Thẻ p 1</p>
+                                            <p>Phần 2 - Thẻ p 2</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </c:forEach>
                         </div>
                     </div>

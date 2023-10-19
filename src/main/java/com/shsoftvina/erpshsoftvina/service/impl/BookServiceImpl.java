@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.constant.BookConstant;
 import com.shsoftvina.erpshsoftvina.converter.BookConverter;
 import com.shsoftvina.erpshsoftvina.entity.Book;
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
@@ -91,6 +92,8 @@ public class BookServiceImpl implements BookService {
         if(book == null) throw new NotFoundException("id");
 
         MultipartFile bookFile = bookUpdateRequest.getImage();
+
+//        if (bookFile != null) applicationUtils.checkValidateImage(Book.class, bookFile);
 
         String fileNameBook = null;
         boolean isSaveBookSuccess = true;
