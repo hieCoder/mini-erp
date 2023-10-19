@@ -40,6 +40,7 @@
                             <button type="button" class="btn btn-primary" id="submit">
                                 Submit
                             </button>
+                                <a href="/books" type="button" class="btn btn-secondary">Back</a>
                             </form>
                         </div>
                     </div>

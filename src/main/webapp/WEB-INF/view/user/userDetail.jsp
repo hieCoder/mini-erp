@@ -235,7 +235,7 @@
                                         class="btn btn-primary edit-contract-button">Edit
                                 </button>
                                 <button value="${contract.getId()}" type="button"
-                                        class="btn btn-danger delete-contract-button">Delete
+                                        class="btn btn-danger delete-contract-button mt-2">Delete
                                 </button>
                             </td>
                         </tr>
@@ -669,7 +669,7 @@
 
                 $('.container-button-edit-contract').after(createLoadingHtml());
 
-                formData.append('id', '"'+contractIdValue+'"');
+                formData.append('id', contractIdValue);
                 callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'editContractSuccess');
                     localStorage.setItem("showModal", "true");
