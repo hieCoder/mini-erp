@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDayDetail;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayDetailMapper;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDetailCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail.DayDetailUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtimedetail.DayDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,30 @@ public class ManagementTimeDayDetailServiceImp implements ManagementTimeDayDetai
 
     @Override
     public int updateTimeDayDetail(DayDetailUpdateRequest dayDetailUpdateRequest) {
-        ManagementTimeDayDetail dayDetail = managementTimeDayDetailConverter.toUpdateEntity(dayDetailUpdateRequest);
-
         try{
+            ManagementTimeDayDetail dayDetail = managementTimeDayDetailConverter.toUpdateEntity(dayDetailUpdateRequest);
             managementTimeDayDetailMapper.updateTimeDayDetail(dayDetail);
         } catch (Exception e){
             return 0;
         }
         return 1;
+    }
+
+    @Override
+    public DayDetailResponse findByManagementTimeDayId(String dayId, String code) {
+        try{
+            ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findByManagementTimeDayId(dayId);
+            return managementTimeDayDetailConverter.toResponse(managementTimeDayDetail, code);
+        }catch(Exception e){
+            return new DayDetailResponse();
+        }
+    }
+
+    @Override
+    public boolean findByManagementTimeDayId(String dayId) {
+
+        ManagementTimeDayDetail managementTimeDayDetail = managementTimeDayDetailMapper.findByManagementTimeDayId(dayId);
+        if(managementTimeDayDetail == null) return false;
+        return true;
     }
 }

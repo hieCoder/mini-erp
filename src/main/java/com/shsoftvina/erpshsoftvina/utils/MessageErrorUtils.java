@@ -12,11 +12,11 @@ public class MessageErrorUtils {
     }
 
     public static String notAllowImageType(String imageTypes){
-        return "Image type is not allowed! (" + imageTypes + ")";
+        return "Image type is allowed! (" + imageTypes + ")";
     }
 
     public static String notAllowFileType(String fileTypes){
-        return "File type is not allowed (" + fileTypes + ")";
+        return "File type is allowed (" + fileTypes + ")";
     }
 
     public static String notAllowFileLimit(int fileLimit){

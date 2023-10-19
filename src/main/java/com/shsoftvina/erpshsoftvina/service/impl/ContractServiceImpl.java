@@ -97,13 +97,13 @@ public class ContractServiceImpl implements ContractService {
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
 
         String fileNameContract = null;
-        boolean isSaveContractSuccess = true;
+        boolean isSaveContractSuccess;
 
         if(contractFile != null){
             fileNameContract = FileUtils.formatNameImage(contractFile);
             isSaveContractSuccess = FileUtils.saveImageToServer(
                     request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getContract(), fileNameContract);
-        }
+        } else isSaveContractSuccess = false;
 
         Contract c;
         if(isSaveContractSuccess){

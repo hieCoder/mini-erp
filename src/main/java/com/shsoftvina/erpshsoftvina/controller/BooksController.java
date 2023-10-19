@@ -1,15 +1,13 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.entity.Book;
-import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
+import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
+import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.book.PageBookListRespone;
+import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookResponse;
 import com.shsoftvina.erpshsoftvina.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -19,12 +17,29 @@ public class BooksController {
     BookService bookService;
 
     @GetMapping
-    public ModelAndView books() {
+    public ModelAndView books(@RequestParam(name = "search", required = false, defaultValue = "") String search,
+                              @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                              @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize) {
         ModelAndView view = new ModelAndView("/books/books");
 
-        List<ShowBookResponse> books = bookService.findAll();
+        PageBookListRespone books = bookService.fillAll(search, page, pageSize);
 
         view.addObject("books", books);
+        return view;
+    }
+
+    @GetMapping("/{id}")
+    public ModelAndView bookDetail(@PathVariable("id") String id) {
+        ModelAndView view = new ModelAndView("/books/bookDetail");
+
+        BookDetailResponse bookDetail = bookService.findById(id);
+
+        for (FeelingOfBookResponse feelingOfBookResponse : bookDetail.getFeelingOfBooks()) {
+            feelingOfBookResponse.getFullnameUser();
+        };
+
+        view.addObject("bookDetail", bookDetail);
+
         return view;
     }
 

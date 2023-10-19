@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateComm
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class CommentNotificationConverter {
 
     public CommentNotification toEntity(CreateCommentNotificationRequest createCommentNotificationRequest) {
 
-        return CommentNotification.builder().id(UUID.randomUUID().toString())
+        return CommentNotification.builder().id(ApplicationUtils.generateId())
                 .content(createCommentNotificationRequest.getContent())
                 .createdDate(new Date())
                 .notification(notificationMapper.findById(createCommentNotificationRequest.getNotificationId()))

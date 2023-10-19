@@ -21,7 +21,7 @@
             c.MODIFIED_BY AS comment_modified_by,
             u.FULLNAME AS user_fullname,
             u.AVATAR AS user_avatar
-        FROM COMMENT_TASK c LEFT JOIN USER u ON c.user_id = u.id OR c.parent_id IS NOT NULL
+        FROM COMMENT_TASK c LEFT JOIN USER u ON c.USER_ID = u.ID OR c.PARENT_ID IS NOT NULL
         WHERE c.ID = #{id}
     </select>
 
@@ -82,9 +82,9 @@
                c.modified_by AS comment_modified_by,
                u.fullname AS user_fullname,
                u.avatar AS user_avatar
-        FROM comment_task c
-                 INNER JOIN user u ON c.user_id = u.id
-        WHERE c.parent_id = #{id}
+        FROM COMMENT_TASK c
+                 INNER JOIN USER u ON c.USER_ID = u.id
+        WHERE c.PARENT_ID = #{id}
     </select>
 
 </mapper>

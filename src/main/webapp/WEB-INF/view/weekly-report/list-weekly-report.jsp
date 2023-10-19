@@ -16,6 +16,7 @@
             position: absolute;
             background-color: white;
             border: 1px solid #ccc;
+            margin-left: 134px;
             max-height: 150px;
             overflow-y: auto;
             cursor: pointer;

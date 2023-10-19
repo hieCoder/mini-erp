@@ -14,7 +14,17 @@ public class ManagementTimeDayDetailApi {
     @Autowired
     ManagementTimeDayDetailService managementTimeDayDetailService;
 
-    @PostMapping("/day")
+    @GetMapping("/{id}/{code}")
+    public ResponseEntity<?> findByManagementTimeDayId(@PathVariable("id") String id,@PathVariable("code") String code) {
+        return ResponseEntity.ok(managementTimeDayDetailService.findByManagementTimeDayId(id, code));
+    }
+
+    @GetMapping("/exist/{id}")
+    public ResponseEntity<?> isExist(@PathVariable("id") String id) {
+        return ResponseEntity.ok(managementTimeDayDetailService.findByManagementTimeDayId(id));
+    }
+
+    @PostMapping
     public ResponseEntity<?> createDay(@RequestBody DayDetailCreateRequest dayDetailCreateRequest) {
         return ResponseEntity.ok(managementTimeDayDetailService.createTimeDayDetail(dayDetailCreateRequest));
     }

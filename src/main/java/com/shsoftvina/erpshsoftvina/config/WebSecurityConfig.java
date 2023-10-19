@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.config;
 
+import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UpdateProfileInterceptorFilter updateProfileInterceptorFilter;
 
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -28,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
-                .antMatchers("/api/v1/management-time/**").permitAll()
+
                 // api
                     // auth
                     .antMatchers("/api/v1/auth/**").permitAll()
@@ -67,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // setting
                     .antMatchers("/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
                     // management-time
-                    //.antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
+                    .antMatchers("/management-time").access("hasAnyRole('OWNER', 'MANAGER')")
 
                 .anyRequest().authenticated()
                 .and()
@@ -75,8 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/tasks")
                 .loginProcessingUrl("/j_spring_security_check").permitAll()
+                .successHandler(customSuccessHandler)
                 .failureUrl("/login?incorrectAccount")
                 .and()
                 .logout()
