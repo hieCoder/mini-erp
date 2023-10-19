@@ -107,3 +107,8 @@ function createLoadingHtml() {
             </div>
         `;
 }
+
+function resetForm(idForm){
+    $('#'+idForm).find('*').prop('disabled', false);
+    $('div.custom-spinner').parent().remove();
+}

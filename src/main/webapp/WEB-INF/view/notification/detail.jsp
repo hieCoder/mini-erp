@@ -279,7 +279,7 @@
             if (data != null) {
                 if ($('li.list-group-item[data-id="' + data.id + '"]').length <= 0) {
                     var buttonHtml = ""
-                    if(userCurrent.id == data.userId){
+                    if(userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}){
                         buttonHtml =
                             '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
                             '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
@@ -359,7 +359,7 @@
             var data = JSON.parse(comment.body);
             if (data != null) {
                 var buttonHtml = ""
-                if(userCurrent.id == data.userId){
+                if(userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}){
                     buttonHtml =
                         '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
                         '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'

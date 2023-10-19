@@ -211,8 +211,9 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <p class="mr-4 message-noti-day-detail" style="color:green;"></p>
                 <button type="button" class="btn btn-primary" id="showDetailSubmit">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -274,8 +275,12 @@
             }
             return arr[code]
         }
-    var dot = createLoadingHtml();
+        var dot = createLoadingHtml();
         $("#showDetailSubmit").click(function (){
+            $(this).before(dot)
+            $("button").each(function (){
+                $(this).prop("disabled",true)
+            })
             var dayId = $("div.calendar-container").attr("data-id")
             var codeData = $("#detailModal").attr("data-code")
             var code = getCodeTime(codeData)
@@ -289,9 +294,29 @@
                 code: code,
                 data:targetArr
             }
-            callAjaxByJsonWithData('/')
+
+            callAjaxByJsonWithData('/api/v1/management-time-detail/exist/' + dayId, 'GET', null, function (rs) {
+                if(rs){ // update
+                    callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
+                        $('.message-noti-day-detail').text('Update success');
+                        $("button").each(function (){
+                            $(this).prop("disabled",false)
+                        })
+                        $('div.custom-spinner').parent().remove();
+                     });
+                } else{ // create
+                    callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
+                        $('.message-noti-day-detail').text('Update success');
+                        $("button").each(function (){
+                            $(this).prop("disabled",false)
+                        })
+                        $('div.custom-spinner').parent().remove();
+                    });
+                }
+            });
         })
     $("button.showDetail").click(function (){
+        $('.message-noti-day-detail').text('');
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
         var nameDisplay = $(this).parent().text()
@@ -302,24 +327,44 @@
         modal.attr("data-code",name )
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
+        var code = getCodeTime(name)
         let html = '<tr>' +
             '<td rowspan="7" class="align-middle text-center">'+ qresult(name) +'</td>'+
             '</tr>'
-        if(arrayTime){
-            arrayTime.forEach((e)=>{
-                html+=
-                    '<tr>'+
-                        '<td class="align-middle">'+ e +'</td>'+
-                        '<td><input type="text" class="form-control inputTarget" placeholder="Input target..."></td>'+
-                    '</tr>'
+        callAjaxByJsonWithData('/api/v1/management-time-detail/${dayResponse.id}/'+code, 'GET', null, function (rs) {
+            if(rs.id != null) {
+                if(rs.data != null) {
+                    let data = rs.data;
+                    if(arrayTime){
+                        arrayTime.forEach((e, index)=>{
+                            var dataOfArray = data[index];
+                            if (data[index] == '' || data[index] == undefined) dataOfArray = '';
+                            html+=
+                                '<tr>'+
+                                '<td class="align-middle">'+ e +'</td>'+
+                                '<td><input type="text" class="form-control inputTarget" value="'+ dataOfArray + '" placeholder="Input target..."></td>'+
+                                '</tr>'
+                        })
+                    }
+                }
+            }else{
+                if (arrayTime) {
+                    arrayTime.forEach((e) => {
+                        html +=
+                            '<tr>' +
+                            '<td class="align-middle">' + e + '</td>' +
+                            '<td><input type="text" class="form-control inputTarget" value="" placeholder="Input target..."></td>' +
+                            '</tr>'
+                    })
+                }
+            }
+            $("#detailModal tbody").html(html)
+            modal.modal("show")
+            $("button").each(function (){
+                $(this).prop("disabled",false)
             })
-        }
-        $("#detailModal tbody").html(html)
-        modal.modal("show")
-        $("button").each(function (){
-            $(this).prop("disabled",false)
+            $('div.custom-spinner').parent().remove();
         })
-        $('div.custom-spinner').parent().remove();
     })
 
     $("#updateButton").click(function() {
@@ -421,13 +466,13 @@
             $("#successModal").modal("show");
         }
         var apiUrlManagementTimeDayApi = "/api/v1/management-time/day"
-        if("${day}" != ""){
+
+        if("${day}" != "" && $("div.calendar-container").attr("data-id") == ""){
             dataCreate = {
                 day: "${day}",
                 userId: userCurrent.id,
                 data: dataInfor
             }
-            console.log(dataCreate)
             callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'POST', dataCreate, function (rs) {
                 if(rs!=null){
                     rsSuccess("Create")
@@ -438,9 +483,9 @@
                 }
                 rsUnSuccess()
             })
-        }else if(id != "") {
+        }else if($("div.calendar-container").attr("data-id") != "") {
             var dataUpdate = {
-                id: id,
+                id: $("div.calendar-container").attr("data-id"),
                 userId: userCurrent.id,
                 data: dataInfor
             };
@@ -451,6 +496,8 @@
                 }
                 rsUnSuccess()
             })
+        } else if("${day}" == ''){
+            console.log("Error")
         }
     })
 </script>

@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime.daydetail;
+package com.shsoftvina.erpshsoftvina.model.response.managementtimedetail;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DayDetailUpdateRequest {
-    private String dayId;
-    private String code;
+public class DayDetailResponse {
+    private String id;
     private String[] data;
 }
