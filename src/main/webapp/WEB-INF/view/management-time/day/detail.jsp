@@ -164,7 +164,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 mt-4 text-center">
-            <button class="btn btn-primary mr-2" id="backButton" onclick="window.history.back();">Back</button>
+            <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">Back</button>
             <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
         </div>
     </div>
@@ -277,6 +277,10 @@
         }
         var dot = createLoadingHtml();
         $("#showDetailSubmit").click(function (){
+            $(this).before(dot)
+            $("button").each(function (){
+                $(this).prop("disabled",true)
+            })
             var dayId = $("div.calendar-container").attr("data-id")
             var codeData = $("#detailModal").attr("data-code")
             var code = getCodeTime(codeData)
@@ -294,19 +298,35 @@
             callAjaxByJsonWithData('/api/v1/management-time-detail/exist/' + dayId, 'GET', null, function (rs) {
                 if(rs){ // update
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
-                        $('.message-noti-day-detail').text('Update success');
+                        $("button").each(function (){
+                            $(this).prop("disabled",false)
+                        })
+                        $('div.custom-spinner').parent().remove();
+                        $("#detailModal").modal("hide");
+                        var modal = `
+                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
+                        `
+                        $("#successModal div.modal-body").html(modal)
+                        $("#successModal").modal("show");
                      });
                 } else{ // create
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
-                        $('.message-noti-day-detail').text('Update success');
+                        $("button").each(function (){
+                            $(this).prop("disabled",false)
+                        })
+                        $('div.custom-spinner').parent().remove();
+                        $("#detailModal").modal("hide");
+                        var modal = `
+                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
+                        `
+                        $("#successModal div.modal-body").html(modal)
+                        $("#successModal").modal("show");
                     });
                 }
             });
         })
     $("button.showDetail").click(function (){
-
         $('.message-noti-day-detail').text('');
-
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
         var nameDisplay = $(this).parent().text()
@@ -321,7 +341,8 @@
         let html = '<tr>' +
             '<td rowspan="7" class="align-middle text-center">'+ qresult(name) +'</td>'+
             '</tr>'
-        callAjaxByJsonWithData('/api/v1/management-time-detail/${dayResponse.id}/'+code, 'GET', null, function (rs) {
+        let idResponse = $(".calendar-container").attr("data-id")
+        callAjaxByJsonWithData('/api/v1/management-time-detail/'+ idResponse +'/'+code, 'GET', null, function (rs) {
             if(rs.id != null) {
                 if(rs.data != null) {
                     let data = rs.data;
@@ -349,13 +370,12 @@
                 }
             }
             $("#detailModal tbody").html(html)
+            modal.modal("show")
+            $("button").each(function (){
+                $(this).prop("disabled",false)
+            })
+            $('div.custom-spinner').parent().remove();
         })
-
-        modal.modal("show")
-        $("button").each(function (){
-            $(this).prop("disabled",false)
-        })
-        $('div.custom-spinner').parent().remove();
     })
 
     $("#updateButton").click(function() {
@@ -457,7 +477,8 @@
             $("#successModal").modal("show");
         }
         var apiUrlManagementTimeDayApi = "/api/v1/management-time/day"
-        if("${day}" != ""){
+
+        if("${day}" != "" && $("div.calendar-container").attr("data-id") == ""){
             dataCreate = {
                 day: "${day}",
                 userId: userCurrent.id,
@@ -473,9 +494,9 @@
                 }
                 rsUnSuccess()
             })
-        }else if(id != "") {
+        }else if($("div.calendar-container").attr("data-id") != "") {
             var dataUpdate = {
-                id: id,
+                id: $("div.calendar-container").attr("data-id"),
                 userId: userCurrent.id,
                 data: dataInfor
             };
@@ -486,6 +507,8 @@
                 }
                 rsUnSuccess()
             })
+        } else if("${day}" == ''){
+            console.log("Error")
         }
     })
 </script>

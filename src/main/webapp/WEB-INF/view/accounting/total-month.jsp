@@ -77,9 +77,47 @@
 
                         <div class="form-group" id="amountGroup" style="display: none;">
                             <label for="amount">Amount</label>
-                            <input type="number" class="form-control" id="amount" step="1" required pattern="[0-9]+">
+                            <input type="text" class="form-control" id="amount" step="1" required pattern="[0-9]+">
                         </div>
+                        <script>
+                            var amount = $('input#amount').val()
+                            $('input#amount').val(formatNumberToVND(amount));
+                            function formatNumberToVND(number) {
+                                var parts = number.toString().split('.');
 
+                                var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+                                var formattedNumber = integerPart;
+                                if (parts.length > 1) {
+                                    formattedNumber += '.' + parts[1];
+                                }
+                                return formattedNumber;
+                            }
+                            $(document).ready(function () {
+                                $(document).ready(function () {
+                                    var input = $('#amount');
+                                    input.on('keydown', function (event) {
+                                        var value = input.val();
+                                        var charCode = event.which;
+                                        if (charCode === 190 || charCode === 110){
+                                            if (value.indexOf('.') !== -1) {
+                                                event.preventDefault();
+                                            }
+                                        }
+                                        if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
+                                            if (charCode !== 8 && charCode !== 46) {
+                                                event.preventDefault();
+                                            }
+                                        }
+                                    });
+
+                                    input.on('keyup', function () {
+                                        var value = input.val().replace(/[^0-9.]/g, '');
+                                        input.val(formatNumberToVND(value));
+                                    });
+                                });
+                            })
+                        </script>
                         <div class="form-group">
                             <label for="createNote">Note</label>
                             <input type="text" class="form-control" id="createNote" required>
@@ -105,7 +143,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Success!</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -169,9 +207,22 @@
         }
     });
 
+    $(document).on("change", "#createBill", function (event) {
+        const selectedFiles = event.target.files;
+        var countFile = selectedFiles.length;
+        var countCurrentFile = $("li.listFilesEdit").length;
+        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
+            var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+            $(this).val('')
+        }
+    });
+
     function redirectToAccounting(month) {
         const trimmedMonth = month.replace(/\s/g, '');
-        console.log(trimmedMonth);
         window.location.href = '/accounting/' + trimmedMonth;
     }
 
@@ -185,18 +236,13 @@
         var title = document.getElementById("createTitle").value;
         var note = document.getElementById("createNote").value;
         var transaction = document.getElementById("transactionType").value;
-        var amount = parseFloat(document.getElementById("amount").value);
+        var input = document.getElementById("amount").value;
+        var amount = Number(input.replace(/[^0-9.]/g, ''));
         var billInput = document.getElementById("createBill");
         var billFiles = billInput.files;
 
         if (!title || !note || !amount || isNaN(amount)) {
             alert("Title, note and amount are required and amount must be a number.");
-            loading.style.display = "none";
-            return;
-        }
-
-        if (billFiles.length > 3) {
-            alert("You can't select more than 3 files.");
             loading.style.display = "none";
             return;
         }
@@ -229,7 +275,9 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
                     loading.style.display = "none";
+                    $('#createBill').val("");
                     $('#createModal').modal('hide');
+                    $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
                 } else {
                     loading.style.display = "none";

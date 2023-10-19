@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.notification;
 
+import com.shsoftvina.erpshsoftvina.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class NotificationShowResponse {
     private String title;
     private String[] files;
     private String createdDate;
+    private User user;
 }

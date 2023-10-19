@@ -32,8 +32,28 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, 
     });
 }
 
-function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
+function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        processData: false,
+        contentType: false,
+        data: formData,
+        enctype: 'multipart/form-data',
+        success: function(response) {
+            callback(response);
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                text: JSON.parse(xhr.responseText).message
+            });
+            callBackError();
+        }
+    });
+}
 
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
 
@@ -76,6 +96,7 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
         }
     });
 }
+
 
 function isBlank(a){
     return a === '' || a===null;

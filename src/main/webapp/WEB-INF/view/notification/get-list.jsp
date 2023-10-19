@@ -1,8 +1,11 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
     session.setAttribute("pathMain", "/notifications/");
 %>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />git
 <html>
 <head>
     <title>Notifications List</title>
@@ -47,7 +50,7 @@
                 <td>
                     <a href="<c:url value='/notifications/${notification.id}'/>">${notification.title}</a>
                 </td>
-                <td>${notification.title}</td>
+                <td>${notification.user.fullname}</td>
                 <td>${notification.createdDate}</td>
             </tr>
         </c:forEach>

@@ -58,9 +58,7 @@ public class NotificationController {
             NotificationDetailResponse notification = notificationService.findById(id);
             model.addAttribute("notification", notification);
             model.addAttribute("user", Principal.getUserCurrent());
-
             Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
-
             model.addAttribute("maxFileSize", ApplicationConstant.MAX_FILE_SIZE);
             model.addAttribute("listTypeFile", setting.getFileType());
             model.addAttribute("uploadFileLimit", setting.getFileSize());
