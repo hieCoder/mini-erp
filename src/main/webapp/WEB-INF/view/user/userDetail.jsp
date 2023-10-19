@@ -443,6 +443,7 @@
             formData.append('dateOfBirth', dateOfBirth);
 
             callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
+
                 sessionStorage.setItem('result', 'updateSuccess');
                 location.href = "/users/" + '${user.getId()}';
             }, 'formUpdateUser');
