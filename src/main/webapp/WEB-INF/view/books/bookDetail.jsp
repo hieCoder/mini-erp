@@ -56,9 +56,9 @@
                                             <p class="text-muted">${feeling.fullnameUser}</p>
                                         </div>
                                         <div class="col-md-10">
-                                            <p class="mb-1">- ${feeling.quotes[0]}</p>
-                                            <p class="mb-1">- ${feeling.quotes[1]}</p>
-                                            <p class="mb-1">- ${feeling.quotes[2]}</p>
+                                            <c:forEach var="quote" items="${feeling.quotes}">
+                                                <p class="mb-1">- ${quote}</p>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
