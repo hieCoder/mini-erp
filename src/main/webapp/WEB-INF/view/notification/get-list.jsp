@@ -1,8 +1,12 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
     session.setAttribute("pathMain", "/notifications/");
 %>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
+
 <html>
 <head>
     <title>Notifications List</title>
