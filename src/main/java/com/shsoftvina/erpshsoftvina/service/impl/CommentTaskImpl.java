@@ -1,11 +1,12 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.CommentTaskConstant;
-import com.shsoftvina.erpshsoftvina.constant.NotificationConstant;
 import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.converter.CommentTaskConverter;
-import com.shsoftvina.erpshsoftvina.entity.*;
+import com.shsoftvina.erpshsoftvina.entity.CommentTask;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.entity.Task;
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;

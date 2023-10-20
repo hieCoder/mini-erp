@@ -209,21 +209,18 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void testUpdateTask_InvalidProgressForPostponedOrClosed() {
+    public void testUpdateTask_InvalidStatusForProgressUpdate() {
         TaskUpdateRequest request = new TaskUpdateRequest();
         request.setId("validTaskId");
         request.setPriority(PriorityTaskEnum.LOW.name());
-        request.setAction("ValidAction"); // Valid action
-        request.setProgress(50); // Invalid progress value
+        request.setAction("ValidAction");
+        request.setProgress(50);
 
         Task mockTask = new Task();
-        mockTask.setStatusTask(StatusTaskEnum.CLOSED); // Set the status to one of the invalid values
+        mockTask.setStatusTask(StatusTaskEnum.CLOSED);
 
-        // Mock the necessary dependencies.
         when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
-        when(taskMapper.updateTask(any())).thenReturn(1);
 
-        // Expect a NotAllowException when updating with an invalid progress.
         assertThrows(NotAllowException.class, () -> taskService.updateTask(request));
     }
 
