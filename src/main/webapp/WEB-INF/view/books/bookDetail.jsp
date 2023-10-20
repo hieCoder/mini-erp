@@ -40,7 +40,7 @@
                             <button type="button" class="btn btn-primary" id="submit">
                                 Submit
                             </button>
-                                <a href="/books" type="button" class="btn btn-secondary">Back</a>
+                                <a href="/books" type="button" class="btn btn-secondary" id="back-button">Back</a>
                             </form>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                             id: rs.id,
                             quote: quotes1 + '---' + quotes2 + '---' + quotes3
                         };
-                        $('#submit').after(createLoadingHtml());
+                        $('#back-button').after(createLoadingHtml());
                         callAjaxByJsonWithData('/api/v1/feeling-of-book', 'PUT', data, function () {
                             sessionStorage.setItem('result', 'updateSuccess');
                             location.reload();
