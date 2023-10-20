@@ -4,11 +4,11 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.NotificationMapper">
 
     <!--    Get All Notification-->
-    <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
+    <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
-        SELECT *
+        SELECT n.*,u.id,u.fullname
         FROM NOTIFICATION n
-                 INNER JOIN USER u ON n.user_id = u.id
+                 LEFT JOIN USER u ON n.user_id = u.id
         WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%')
         ORDER BY created_date DESC
             LIMIT #{start}, #{pageSize}
@@ -64,7 +64,21 @@
         <result property="content" column="content"/>
         <result property="file" column="file"/>
         <result property="createdDate" column="created_date"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser" />
+    </resultMap>
+
+    <resultMap id="notiListShowResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="file" column="file"/>
+        <result property="createdDate" column="created_date"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userSimpleResultMap"/>
+    </resultMap>
+
+    <resultMap id="userSimpleResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="user_id" />
+        <result property="fullname" column="FULLNAME" />
     </resultMap>
 
     <select id="findById" resultMap="notificationResultMap">
