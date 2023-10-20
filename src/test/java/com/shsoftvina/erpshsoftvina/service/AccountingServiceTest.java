@@ -151,52 +151,6 @@ public class AccountingServiceTest {
         assertEquals(1, result); // Assuming successful creation
     }
 
-//    @Test
-//    public void testUpdateAccounting() {
-//        String input = "231002121630-Accounting Management Interface.xlsx,231002121635-Accounting Management Interface.xlsx";
-//        String[] result = input.split(",");
-//        HttpSession session = mock(HttpSession.class);
-//        ServletContext servletContext = mock(ServletContext.class);
-//        when(request.getSession()).thenReturn(session);
-//        when(session.getServletContext()).thenReturn(servletContext);
-//        AccountingUpdateRequest updateRequest = new AccountingUpdateRequest("1",30000L,50000L,"3",result,new MultipartFile[]{},"abc","xyz");
-//        when(accountingMapper.findAccountingById(updateRequest.getId())).thenReturn(new Accounting());
-//        when(userMapper.findById(updateRequest.getUserId())).thenReturn(new User());
-//        when(fileUtils.saveMultipleFilesToServer(eq(request), anyString(), any(MultipartFile[].class)))
-//                .thenReturn(Arrays.asList("newFile1", "newFile2"));
-//        when(accountingConverter.convertToEntity(eq(updateRequest), any(User.class), anyList()))
-//                .thenReturn(new Accounting());
-//
-//        // Act
-//        AccountResponse response = accountingService.updateAccounting(updateRequest);
-//
-//        // Assert
-//        assertNotNull(response);
-//        // Kiểm tra rằng các phương thức của accountingMapper, fileUtils đã được gọi đúng cách
-//        verify(accountingMapper).updateAccounting(any(Accounting.class));
-//    }
-//
-//    @Test
-//    public void testUpdateAccountingWithException() {
-//        FileUtils fileUtils = mock(FileUtils.class);
-//        // Arrange
-//        AccountingUpdateRequest updateRequest = new AccountingUpdateRequest();
-//        when(accountingMapper.findAccountingById(updateRequest.getId())).thenReturn(new Accounting());
-//        when(userMapper.findById(updateRequest.getUserId())).thenReturn(new User());
-//        when(fileUtils.saveMultipleFilesToServer(eq(request), anyString(), any(MultipartFile[].class)))
-//                .thenReturn(Arrays.asList("newFile1", "newFile2"));
-//        when(accountingConverter.convertToEntity(eq(updateRequest), any(User.class), anyList()))
-//                .thenReturn(new Accounting());
-//        doThrow(new Exception()).when(accountingMapper).updateAccounting(any(Accounting.class));
-//
-//        // Act
-//        AccountResponse response = accountingService.updateAccounting(updateRequest);
-//
-//        // Assert
-//        assertNull(response);
-//        // Kiểm tra rằng deleteMultipleFilesToServer đã được gọi khi có lỗi
-//        verify(fileUtils).deleteMultipleFilesToServer(eq(request), anyString(), anyString());
-//    }
 
     @Test
     public void testDeleteAccounting() {
