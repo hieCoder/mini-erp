@@ -293,31 +293,33 @@
         $('#registerTaskModal').on('shown.bs.modal', function() {
 
             // username
-            if (isFirstTime) {
+            var selectElement = $('#selectUsername');
+            selectElement.empty();
 
-                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
-
-                    var selectElement = $('#selectUsername');
-                    selectElement.empty();
-
-                    rs.forEach(function(user) {
-                        var option = $('<option></option>');
-                        option.attr('value', user.id);
-                        option.text(user.fullname);
-
-                        if (user.id == userCurrent.id) {
-                            option.attr('selected', 'selected');
-                        }
-
-                        selectElement.append(option);
-                    });
-
-                    isFirstTime = false;
-                });
-            }
-            if (userCurrent.role == U_DEVELOPER) {
+            if(isDeleveloper()){
+                selectElement.append('<option value="'+ userCurrent.id+'">'+userCurrent.fullname+"</option>");
                 $('#selectUsername').prop('disabled', true);
+            } else{
+                if (isFirstTime) {
+
+                    callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
+                        rs.forEach(function(user) {
+                            var option = $('<option></option>');
+                            option.attr('value', user.id);
+                            option.text(user.fullname);
+
+                            if (user.id == userCurrent.id) {
+                                option.attr('selected', 'selected');
+                            }
+
+                            selectElement.append(option);
+                        });
+
+                        isFirstTime = false;
+                    });
+                }
             }
+
 
             // content
             $('#content').summernote();

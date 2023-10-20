@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.service.accounting;
+package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.converter.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;

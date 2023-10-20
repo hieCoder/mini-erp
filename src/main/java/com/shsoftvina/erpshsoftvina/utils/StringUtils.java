@@ -75,21 +75,4 @@ public class StringUtils {
         }
         return false;
     }
-
-    public static boolean isValidDate(String dateStr) {
-        String regex = "\\d{4}-\\d{2}-\\d{2}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(dateStr);
-        if (!matcher.matches()) {
-            return false;
-        }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(dateStr);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
