@@ -1,13 +1,9 @@
 package com.shsoftvina.erpshsoftvina.service;
-import com.shsoftvina.erpshsoftvina.api.ManagementTimeDayApi;
+
 import com.shsoftvina.erpshsoftvina.converter.TimesheetsConverter;
 import com.shsoftvina.erpshsoftvina.entity.Timesheets;
 import com.shsoftvina.erpshsoftvina.mapper.TimesheetsMapper;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.timesheets.TimesheetsResponse;
-import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.service.impl.TimesheetsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -35,6 +28,35 @@ public class TimesheetsServiceTest {
 
     @Mock
     private TimesheetsConverter timesheetsConverter;
+
+    @Test
+    public void testFindAll() {
+        int start = 0;
+        int pageSize = 10;
+
+        List<Timesheets> mockData = new ArrayList<>();
+        for (int i = 0; i < pageSize; i++) {
+            mockData.add(new Timesheets());
+        }
+
+        when(timesheetsMapper.findAll(start, pageSize)).thenReturn(mockData);
+
+        when(timesheetsConverter.toResponse(Mockito.any())).thenAnswer(invocation -> {
+            Timesheets timesheets = invocation.getArgument(0);
+
+            TimesheetsResponse response = new TimesheetsResponse();
+
+            return response;
+        });
+
+        List<TimesheetsResponse> result = timesheetsService.findAll(start, pageSize);
+
+        Mockito.verify(timesheetsMapper).findAll(start, pageSize);
+
+        Mockito.verify(timesheetsConverter, Mockito.times(mockData.size())).toResponse(Mockito.any());
+
+        assertEquals(mockData.size(), result.size());
+    }
 
     @BeforeEach
     public void init() {
