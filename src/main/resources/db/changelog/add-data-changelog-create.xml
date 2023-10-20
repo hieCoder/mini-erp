@@ -83,4 +83,47 @@
         </insert>
     </changeSet>
 
+    <!-- TIMESHEETS -->
+    <changeSet id="3" author="team2">
+        <insert tableName="TIMESHEETS">
+            <column name="ID" value="1" />
+            <column name="WORK_DATE" value="2023-10-16" />
+            <column name="CHECKIN" value="08:00:00" />
+            <column name="CHECKOUT" value="17:00:00" />
+            <column name="OT" valueBoolean="false" />
+            <column name="USER_ID" value="1" />
+        </insert>
+        <insert tableName="TIMESHEETS">
+            <column name="ID" value="2" />
+            <column name="WORK_DATE" value="2023-10-17" />
+            <column name="CHECKIN" value="07:45:00" />
+            <column name="CHECKOUT" value="17:15:00" />
+            <column name="OT" valueBoolean="false" />
+            <column name="USER_ID" value="1" />
+        </insert>
+        <insert tableName="TIMESHEETS">
+            <column name="ID" value="3" />
+            <column name="WORK_DATE" value="2023-10-18" />
+            <column name="CHECKIN" value="07:30:00" />
+            <column name="CHECKOUT" value="17:30:00" />
+            <column name="OT" valueBoolean="false" />
+            <column name="USER_ID" value="1" />
+        </insert>
+        <insert tableName="TIMESHEETS">
+            <column name="ID" value="4" />
+            <column name="WORK_DATE" value="2023-10-19" />
+            <column name="CHECKIN" value="07:30:00" />
+            <column name="CHECKOUT" value="17:30:00" />
+            <column name="OT" valueBoolean="true" />
+            <column name="USER_ID" value="1" />
+        </insert>
+        <insert tableName="TIMESHEETS">
+            <column name="ID" value="5" />
+            <column name="WORK_DATE" value="2023-10-20" />
+            <column name="CHECKIN" value="07:30:00" />
+            <column name="CHECKOUT" value="20:30:00" />
+            <column name="OT" valueBoolean="true" />
+            <column name="USER_ID" value="1" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
