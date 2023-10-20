@@ -58,6 +58,7 @@
     var avatarLink = localStorage.getItem("avatarLink");
     if(avatarLink){
         $('.avatar-login').attr('src', avatarLink);
+        userCurrent.avatar = avatarLink;
     } else{
         $('.avatar-login').attr('src', userCurrent.avatar);
     }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Settings</title>
 </head>
 <body>
 <div class="container">
@@ -112,11 +112,14 @@
             });
 
             if(isValidate){
+
+                $('#update-button').after(createLoadingHtml());
+
                 callAjaxByJsonWithData('/api/v1/settings', 'PUT', object, function (rs) {
                     Swal.fire({
                         icon: 'success',
                         text: 'Update success'
-                    });
+                    }, 'setting-file-form');
                 });
             }
         });

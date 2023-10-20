@@ -5,7 +5,7 @@
 
     <insert id="createCommentTask" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentTask" >
         insert into COMMENT_TASK (ID, CONTENT, FILES, CREATED_DATE, TASK_ID, USER_ID, PARENT_ID, TITLE)
-            value(#{id}, #{content}, #{files}, NOW(), #{task.id}, #{user.id}, #{parentComment.id}, #{title})
+            value(#{id}, #{content}, #{files}, #{createdDate}, #{task.id}, #{user.id}, #{parentComment.id}, #{title})
     </insert>
 
     <select id="findById" resultMap="commentTaskResultMap">

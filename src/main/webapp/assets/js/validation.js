@@ -129,7 +129,34 @@ Validator.isConfirmed=function(selector, getConfirmValue, message){
         }
     };
 }
+Validator.isDayAfterToday=function(selector, message){
+    return {
+        selector: selector,
+        test: function (value) {
+            var date = new Date(value);
+            var dateValue = date.setHours(0, 0, 0, 0);
 
+            var currentDate = new Date();
+            var currentDateValue = currentDate.setHours(0, 0, 0, 0);
+
+            return (dateValue>=currentDateValue)?undefined: message||'The day is not before day of today';
+        }
+    };
+}
+Validator.isDayBeforeToday=function(selector, message){
+    return {
+        selector: selector,
+        test: function (value) {
+            var date = new Date(value);
+            var dateValue = date.setHours(0, 0, 0, 0);
+
+            var currentDate = new Date();
+            var currentDateValue = currentDate.setHours(0, 0, 0, 0);
+
+            return (dateValue<currentDateValue)?undefined: message||'The day is not after day of today';
+        }
+    };
+}
 
 
 // Validator.isNumberGreaterEqualThan=function(selector, min){

@@ -293,15 +293,15 @@
         $('#registerTaskModal').on('shown.bs.modal', function() {
 
             // username
-            var selectElement = $('#selectUsername');
-            selectElement.empty();
-
             if(isDeleveloper()){
+                var selectElement = $('#selectUsername');
+                selectElement.empty();
                 selectElement.append('<option value="'+ userCurrent.id+'">'+userCurrent.fullname+"</option>");
                 $('#selectUsername').prop('disabled', true);
             } else{
                 if (isFirstTime) {
-
+                    var selectElement = $('#selectUsername');
+                    selectElement.empty();
                     callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
                         rs.forEach(function(user) {
                             var option = $('<option></option>');
@@ -330,7 +330,8 @@
                 rules:[
                     Validator.isRequired('#title'),
                     Validator.isRequired('#dueDate'),
-                    Validator.isRequired('#content')
+                    Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),
+                    Validator.isRequired('#content'),
                 ],
                 onSubmit: function (formData) {
                     formData.append('content', $('#content').summernote().summernote('code'));

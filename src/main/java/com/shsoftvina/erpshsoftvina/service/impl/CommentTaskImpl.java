@@ -79,15 +79,15 @@ public class CommentTaskImpl implements CommentTaskService {
             if (commentTask==null) throw new NotFoundException(MessageErrorUtils.notFound("parentId"));
         }
 
-        MultipartFile[] files = createCommentTaskRequest.getFiles();
+        MultipartFile[] fileList = createCommentTaskRequest.getFileList();
 
         String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = null;
 
-        if (files!= null){
-            applicationUtils.checkValidateFile(CommentTask.class, files);
+        if (fileList!= null){
+            applicationUtils.checkValidateFile(CommentTask.class, fileList);
 
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, fileList);
         } else{
             listFileNameSaveFileSuccess = new ArrayList<>();
         }
