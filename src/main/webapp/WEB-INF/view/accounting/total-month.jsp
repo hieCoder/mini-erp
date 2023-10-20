@@ -51,19 +51,19 @@
                     <!-- Your create form content goes here -->
                     <form enctype="multipart/form-data">
                         <div class="form-group">
-                                <label for="createTitle">Title</label>
-                                <input type="text" class="form-control" id="createTitle" required>
-<%--                            <div id="createTitle">This is some sample content.</div>--%>
-<%--                            <script>--%>
-<%--                                ClassicEditor--%>
-<%--                                    .create(document.querySelector('#createTitle'))--%>
-<%--                                    .then(editor => {--%>
-<%--                                        console.log(editor);--%>
-<%--                                    })--%>
-<%--                                    .catch(error => {--%>
-<%--                                        console.error(error);--%>
-<%--                                    });--%>
-<%--                            </script>--%>
+                            <label for="createTitle">Title</label>
+                            <input type="text" class="form-control" id="createTitle" required>
+                            <%--                            <div id="createTitle">This is some sample content.</div>--%>
+                            <%--                            <script>--%>
+                            <%--                                ClassicEditor--%>
+                            <%--                                    .create(document.querySelector('#createTitle'))--%>
+                            <%--                                    .then(editor => {--%>
+                            <%--                                        console.log(editor);--%>
+                            <%--                                    })--%>
+                            <%--                                    .catch(error => {--%>
+                            <%--                                        console.error(error);--%>
+                            <%--                                    });--%>
+                            <%--                            </script>--%>
                         </div>
 
                         <div class="form-group">
@@ -82,6 +82,7 @@
                         <script>
                             var amount = $('input#amount').val()
                             $('input#amount').val(formatNumberToVND(amount));
+
                             function formatNumberToVND(number) {
                                 var parts = number.toString().split('.');
 
@@ -93,13 +94,14 @@
                                 }
                                 return formattedNumber;
                             }
+
                             $(document).ready(function () {
                                 $(document).ready(function () {
                                     var input = $('#amount');
                                     input.on('keydown', function (event) {
                                         var value = input.val();
                                         var charCode = event.which;
-                                        if (charCode === 190 || charCode === 110){
+                                        if (charCode === 190 || charCode === 110) {
                                             if (value.indexOf('.') !== -1) {
                                                 event.preventDefault();
                                             }
@@ -181,6 +183,7 @@
 </div>
 
 <script>
+    const validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
     document.getElementById('transactionType').addEventListener('change', function () {
         var selectedOption = this.value;
         var amountGroup = document.getElementById('amountGroup');
@@ -208,10 +211,28 @@
     });
 
     $(document).on("change", "#createBill", function (event) {
-        const selectedFiles = event.target.files;
-        var countFile = selectedFiles.length;
+        const billFiles = event.target.files;
+        var countFile = billFiles.length;
         var countCurrentFile = $("li.listFilesEdit").length;
-        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
+        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
+            var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+            $(this).val('')
+        }
+        for (var i = 0; i < billFiles.length; i++) {
+            var fileName = billFiles[i].name;
+            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
+                alert(`File must ${setting.listTypeFile} and not over 100MB.`);
+                loading.style.display = "none";
+                $(this).val('')
+                return;
+            }
+        }
+        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
             var modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
                         `
@@ -221,26 +242,10 @@
         }
     });
 
-    $(document).on("change", "#createBill", function (event) {
-        const billFiles = event.target.files;
-        for (var i = 0; i < billFiles.length; i++) {
-            var fileName = billFiles[i].name;
-            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
-            if (!validExtensions.includes(fileExtension) || billFiles[i].size > ${setting.maxFileSize}) {
-                alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
-                loading.style.display = "none";
-                return;
-            }
-        }
-        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
-            var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
-                        `
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
-            $(this).val('')
-        }
-    });
+    function convertMaxFileSize(string) {
+        var maxFileSizeWithoutMB = string.replace("MB", "");
+        return parseFloat(maxFileSizeWithoutMB)*1024*1024;
+    }
 
     function redirectToAccounting(month) {
         const trimmedMonth = month.replace(/\s/g, '');
@@ -268,11 +273,10 @@
             return;
         }
 
-        var validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
         for (var i = 0; i < billFiles.length; i++) {
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
-            if (!validExtensions.includes(fileExtension) || billFiles[i].size > 100 * 1024 * 1024) {
+            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
                 alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
                 loading.style.display = "none";
                 return;
@@ -296,7 +300,12 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
                     loading.style.display = "none";
+                    $('#createNote').val("");
                     $('#createBill').val("");
+                    $('#createTitle').val("");
+                    $('#amount').val("");
+                    $('#amountGroup').css('display', 'none');
+                    $('#transactionType').val("");
                     $('#createModal').modal('hide');
                     $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
