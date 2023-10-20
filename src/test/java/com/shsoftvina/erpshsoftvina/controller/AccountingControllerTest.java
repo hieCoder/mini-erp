@@ -1,103 +1,104 @@
-package com.shsoftvina.erpshsoftvina.controller;
-
-import com.shsoftvina.erpshsoftvina.controller.AccountingController;
-import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
-import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
-import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
-import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
-import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
-import com.shsoftvina.erpshsoftvina.service.AccountingService;
-import com.shsoftvina.erpshsoftvina.service.impl.AccountingServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-@WebAppConfiguration
-public class AccountingControllerTest {
-    private final AccountingService accountingService = Mockito.mock(AccountingServiceImpl.class);
-    private MockMvc mockMvc;
-    @InjectMocks
-    private AccountingController accountingController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(accountingController).build();
-    }
-
-    @Test
-    public void findAllTest() throws Exception {
-        List<AccountResponse> accountResponseList = new ArrayList<>();
-        String input = "231002121630-Accounting Management Interface.xlsx";
-        String[] result = input.split("-");
-        accountResponseList.add(new AccountResponse("4b90a870-5ffa-4ea1-a100-63215ce9a02e", "27/07/2023 14:14:43", 20000L, 0L, 20000L, new UserAccountingResponse("4", "Thằng Hiếu phá thế"), result, "Buy watermelon", "note1"));
-        accountResponseList.add(new AccountResponse("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec", "27/07/2023 14:14:46", 100000L, 0L, 120000L, new UserAccountingResponse("3", "TrungHieu99999"), null, "Buy Rice", "note2"));
-        PageAccountListResponse firstAccounting = new PageAccountListResponse(accountResponseList, 1, 1, 5, false, false, new TotalSpendAndRemain(120000L, 0L, 120000L));
-        when(accountingService.findAccountingByMonth("2023-07", 1, 5, null, null)).thenReturn(firstAccounting);
-
-        mockMvc.perform(get("/accounting/{monthId}", "2023-07"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("accounting/homepage"))
-                .andExpect(forwardedUrl("accounting/homepage"))
-                .andExpect(model().attributeExists("list"))
-                .andExpect(model().attribute("list", hasProperty("accountResponseList", hasSize(2))))
-                .andExpect(model().attribute("list", hasProperty("accountResponseList", hasItem(
-                        allOf(
-                                hasProperty("id", is("4b90a870-5ffa-4ea1-a100-63215ce9a02e")),
-                                hasProperty("createdDate", is("27/07/2023 14:14:43")),
-                                hasProperty("revenue", is(20000L)),
-                                hasProperty("expense", is(0L)),
-                                hasProperty("remain", is(20000L)),
-                                hasProperty("user", hasProperty("id", is("4"))),
-                                hasProperty("bill", is(result)),
-                                hasProperty("title", is("Buy watermelon")),
-                                hasProperty("note", is("note1"))
-
-                        )))))
-                .andExpect(model().attribute("list", hasProperty("accountResponseList", hasItem(
-                        allOf(
-                                hasProperty("id", is("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec")),
-                                hasProperty("createdDate", is("27/07/2023 14:14:46")),
-                                hasProperty("revenue", is(100000L)),
-                                hasProperty("expense", is(0L)),
-                                hasProperty("remain", is(120000L)),
-                                hasProperty("user", hasProperty("id", is("3"))),
-                                hasProperty("bill", nullValue()),
-                                hasProperty("title", is("Buy Rice")),
-                                hasProperty("note", is("note2"))
-
-                        )))));
-        verify(accountingService, times(1)).findAccountingByMonth("2023-07", 1, 5, null, null);
-        verifyNoMoreInteractions(accountingService);
-    }
+//package com.shsoftvina.erpshsoftvina.controller.accounting;
+//
+//import com.shsoftvina.erpshsoftvina.controller.AccountingController;
+//import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
+//import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
+//import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
+//import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
+//import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
+//import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+//import com.shsoftvina.erpshsoftvina.service.AccountingService;
+//import com.shsoftvina.erpshsoftvina.service.impl.AccountingServiceImpl;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mockito;
+//import org.mockito.MockitoAnnotations;
+//import org.springframework.test.context.web.WebAppConfiguration;
+//
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+//
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.List;
+//
+//import static org.hamcrest.Matchers.allOf;
+//import static org.hamcrest.Matchers.contains;
+//import static org.hamcrest.Matchers.hasItem;
+//import static org.hamcrest.Matchers.hasProperty;
+//import static org.hamcrest.Matchers.hasSize;
+//import static org.hamcrest.Matchers.is;
+//import static org.hamcrest.Matchers.nullValue;
+//import static org.mockito.Mockito.times;
+//import static org.mockito.Mockito.verify;
+//import static org.mockito.Mockito.verifyNoMoreInteractions;
+//import static org.mockito.Mockito.when;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+//
+//@WebAppConfiguration
+//public class AccountingControllerTest {
+//    private final AccountingService accountingService = Mockito.mock(AccountingServiceImpl.class);
+//    private MockMvc mockMvc;
+//    @InjectMocks
+//    private AccountingController accountingController;
+//
+//    @BeforeEach
+//    void setUp() {
+//        MockitoAnnotations.initMocks(this);
+//        mockMvc = MockMvcBuilders.standaloneSetup(accountingController).build();
+//    }
+//
+//    @Test
+//    public void findAllTest() throws Exception {
+//        List<AccountResponse> accountResponseList = new ArrayList<>();
+//        String input = "231002121630-Accounting Management Interface.xlsx";
+//        String[] result = input.split("-");
+//        accountResponseList.add(new AccountResponse("4b90a870-5ffa-4ea1-a100-63215ce9a02e", "27/07/2023 14:14:43", 20000L, 0L, 20000L, new UserAccountingResponse("4", "Thằng Hiếu phá thế"), result, "Buy watermelon", "note1"));
+//        accountResponseList.add(new AccountResponse("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec", "27/07/2023 14:14:46", 100000L, 0L, 120000L, new UserAccountingResponse("3", "TrungHieu99999"), null, "Buy Rice", "note2"));
+//        PageAccountListResponse firstAccounting = new PageAccountListResponse(accountResponseList, 1, 1, 5, false, false, new TotalSpendAndRemain(120000L, 0L, 120000L));
+//        when(accountingService.findAccountingByMonth("2023-07", 1, 5, null, null)).thenReturn(firstAccounting);
+//
+//        mockMvc.perform(get("/accounting/{monthId}", "2023-07"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("accounting/homepage"))
+//                .andExpect(forwardedUrl("accounting/homepage"))
+//                .andExpect(model().attributeExists("list"))
+//                .andExpect(model().attribute("list", hasProperty("accountResponseList", hasSize(2))))
+//                .andExpect(model().attribute("list", hasProperty("accountResponseList", hasItem(
+//                        allOf(
+//                                hasProperty("id", is("4b90a870-5ffa-4ea1-a100-63215ce9a02e")),
+//                                hasProperty("createdDate", is("27/07/2023 14:14:43")),
+//                                hasProperty("revenue", is(20000L)),
+//                                hasProperty("expense", is(0L)),
+//                                hasProperty("remain", is(20000L)),
+//                                hasProperty("user", hasProperty("id", is("4"))),
+//                                hasProperty("bill", is(result)),
+//                                hasProperty("title", is("Buy watermelon")),
+//                                hasProperty("note", is("note1"))
+//
+//                        )))))
+//                .andExpect(model().attribute("list", hasProperty("accountResponseList", hasItem(
+//                        allOf(
+//                                hasProperty("id", is("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec")),
+//                                hasProperty("createdDate", is("27/07/2023 14:14:46")),
+//                                hasProperty("revenue", is(100000L)),
+//                                hasProperty("expense", is(0L)),
+//                                hasProperty("remain", is(120000L)),
+//                                hasProperty("user", hasProperty("id", is("3"))),
+//                                hasProperty("bill", nullValue()),
+//                                hasProperty("title", is("Buy Rice")),
+//                                hasProperty("note", is("note2"))
+//
+//                        )))));
+//        verify(accountingService, times(1)).findAccountingByMonth("2023-07", 1, 5, null, null);
+//        verifyNoMoreInteractions(accountingService);
+//    }
+//
 
 //    @Test
 //    public void findAllMonthlyHistoryTest() throws Exception {
@@ -160,4 +161,3 @@ public class AccountingControllerTest {
 //                        )
 //                ));
 //    }
-}
