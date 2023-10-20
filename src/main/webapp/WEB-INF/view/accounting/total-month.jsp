@@ -299,16 +299,43 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
-                    loading.style.display = "none";
-                    $('#createNote').val("");
-                    $('#createBill').val("");
-                    $('#createTitle').val("");
-                    $('#amount').val("");
-                    $('#amountGroup').css('display', 'none');
-                    $('#transactionType').val("");
-                    $('#createModal').modal('hide');
-                    $('#successModal div.modal-body').text("The request has been completed successfully.")
-                    $('#successModal').modal('show');
+                    $.ajax({
+                        url: "/api/v1/accounts",
+                        beforeSend: function( xhr ) {
+                            xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+                        }
+                    })
+                        .done(function(data) {
+                            var responseData = JSON.parse(data);
+                            $('#yearList').html('');
+                            $.each(responseData.monthList, function(index, date) {
+                                var yearItem = $('<li/>').addClass('list-group-item year-item').attr('data-toggle', 'collapse').attr('href', '#months' + index).text(date.year);
+                                $('#yearList').append(yearItem);
+
+                                var monthsContainer = $('<div/>').addClass('collapse').attr('id', 'months' + index);
+                                var monthList = $('<ul/>').addClass('list-group');
+
+                                $.each(date.month, function(index, month) {
+                                    var monthItem = $('<li/>').addClass('list-group-item').text(month).on('click', function() {
+                                        redirectToAccounting(month);
+                                    });
+                                    monthList.append(monthItem);
+                                });
+
+                                monthsContainer.append(monthList);
+                                $('#yearList').append(monthsContainer);
+                            });
+                            loading.style.display = "none";
+                            $('#createNote').val("");
+                            $('#createBill').val("");
+                            $('#createTitle').val("");
+                            $('#amount').val("");
+                            $('#amountGroup').css('display', 'none');
+                            $('#transactionType').val("");
+                            $('#createModal').modal('hide');
+                            $('#successModal div.modal-body').text("The request has been completed successfully.")
+                            $('#successModal').modal('show');
+                        });
                 } else {
                     loading.style.display = "none";
                     $('#createModal').modal('hide');
