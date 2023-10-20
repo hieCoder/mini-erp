@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.enums.accounting.StatusAccountingEnum;
 import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
@@ -31,19 +32,28 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,12 +65,12 @@ public class AccountingServiceTest {
     @Mock
     private HttpServletRequest request;
     @Mock
-    private ApplicationUtils applicationUtils;
-    @Mock
     private FileUtils fileUtils;
     @Mock
+    private ApplicationUtils applicationUtils;
+    @Mock
     private AccountingMapper accountingMapper;
-    private final AccountingConverter accountingConverter = Mockito.mock(AccountingConverter.class);
+    private final AccountingConverter accountingConverter = mock(AccountingConverter.class);
     private MockMvc mockMvc;
     @InjectMocks
     private AccountingServiceImpl accountingService;
@@ -124,35 +134,94 @@ public class AccountingServiceTest {
         assertEquals(5L, result.getTotalPages()); // Assuming size=10 and totalRecordCount=50
     }
 
+    @Test
+    void createAccounting() {
+        AccountingCreateRequest accountingCreateRequest = mock(AccountingCreateRequest.class);
+        User currentUser = mock(User.class);
+        MultipartFile[] billFile = new MultipartFile[] {};
+
+        when(accountingCreateRequest.getUserId()).thenReturn("1");
+        when(userMapper.findById("1")).thenReturn(currentUser);
+        when(accountingMapper.getLatestRemain(anyString())).thenReturn(100L);
+        doNothing().when(applicationUtils).checkValidateFile(eq(Accounting.class), eq(billFile));
+
+        int result = accountingService.createAccounting(accountingCreateRequest);
+
+        // Assert
+        assertEquals(1, result); // Assuming successful creation
+    }
+
 //    @Test
-//    void createAccounting() {
-//        // Arrange
-//        AccountingCreateRequest accountingCreateRequest = new AccountingCreateRequest(); // Mock your request
-//        User currentUser = new User(); // Mock the current user
-//        MultipartFile[] billFile = new MultipartFile[] {}; // Mock your bill files
-//
-//        when(accountingCreateRequest.getUserId()).thenReturn("1");
-//        when(userMapper.findById("1")).thenReturn(currentUser);
-//        when(accountingMapper.getLatestRemain(anyString())).thenReturn(100L);
-//        when(applicationUtils.checkValidateFile(Accounting.class, billFile)).thenReturn(true);
-//        when(fileUtils.saveMultipleFilesToServer(request, AccountingConstant.UPLOAD_FILE_DIR, billFile))
-//                .thenReturn(new ArrayList<>()); // Mock an empty list for successful file saving
+//    public void testUpdateAccounting() {
+//        String input = "231002121630-Accounting Management Interface.xlsx,231002121635-Accounting Management Interface.xlsx";
+//        String[] result = input.split(",");
+//        HttpSession session = mock(HttpSession.class);
+//        ServletContext servletContext = mock(ServletContext.class);
+//        when(request.getSession()).thenReturn(session);
+//        when(session.getServletContext()).thenReturn(servletContext);
+//        AccountingUpdateRequest updateRequest = new AccountingUpdateRequest("1",30000L,50000L,"3",result,new MultipartFile[]{},"abc","xyz");
+//        when(accountingMapper.findAccountingById(updateRequest.getId())).thenReturn(new Accounting());
+//        when(userMapper.findById(updateRequest.getUserId())).thenReturn(new User());
+//        when(fileUtils.saveMultipleFilesToServer(eq(request), anyString(), any(MultipartFile[].class)))
+//                .thenReturn(Arrays.asList("newFile1", "newFile2"));
+//        when(accountingConverter.convertToEntity(eq(updateRequest), any(User.class), anyList()))
+//                .thenReturn(new Accounting());
 //
 //        // Act
-//        int result = accountingService.createAccounting(accountingCreateRequest);
+//        AccountResponse response = accountingService.updateAccounting(updateRequest);
 //
 //        // Assert
-//        assertEquals(1, result); // Assuming successful creation
+//        assertNotNull(response);
+//        // Kiểm tra rằng các phương thức của accountingMapper, fileUtils đã được gọi đúng cách
+//        verify(accountingMapper).updateAccounting(any(Accounting.class));
+//    }
+//
+//    @Test
+//    public void testUpdateAccountingWithException() {
+//        FileUtils fileUtils = mock(FileUtils.class);
+//        // Arrange
+//        AccountingUpdateRequest updateRequest = new AccountingUpdateRequest();
+//        when(accountingMapper.findAccountingById(updateRequest.getId())).thenReturn(new Accounting());
+//        when(userMapper.findById(updateRequest.getUserId())).thenReturn(new User());
+//        when(fileUtils.saveMultipleFilesToServer(eq(request), anyString(), any(MultipartFile[].class)))
+//                .thenReturn(Arrays.asList("newFile1", "newFile2"));
+//        when(accountingConverter.convertToEntity(eq(updateRequest), any(User.class), anyList()))
+//                .thenReturn(new Accounting());
+//        doThrow(new Exception()).when(accountingMapper).updateAccounting(any(Accounting.class));
+//
+//        // Act
+//        AccountResponse response = accountingService.updateAccounting(updateRequest);
+//
+//        // Assert
+//        assertNull(response);
+//        // Kiểm tra rằng deleteMultipleFilesToServer đã được gọi khi có lỗi
+//        verify(fileUtils).deleteMultipleFilesToServer(eq(request), anyString(), anyString());
 //    }
 
     @Test
-    void updateAccounting() {
+    public void testDeleteAccounting() {
+        String accountingId = "123";
+        Accounting deleteAccounting = new Accounting();
+        deleteAccounting.setId(accountingId);
+        List<Accounting> remainRecordInMonthList = new ArrayList<>();
 
+        when(accountingMapper.findAccountingById(accountingId)).thenReturn(deleteAccounting);
+        when(accountingMapper.findBeforeCurrentAccounting(deleteAccounting)).thenReturn(null);
+        when(accountingMapper.getRemainRecordInMonth(deleteAccounting)).thenReturn(remainRecordInMonthList);
+
+        int result = accountingService.deleteAccounting(accountingId);
+
+        assertEquals(1, result);
+        verify(accountingMapper).deleteAccounting(accountingId);
+        verify(accountingMapper, times(0)).updateRecordsBatch(anyList());
     }
 
     @Test
-    void deleteAccounting() {
-
+    public void testDeleteAccountingNotFound() {
+        String accountingId = "123";
+        when(accountingMapper.findAccountingById(accountingId)).thenReturn(null);
+        int result = accountingService.deleteAccounting(accountingId);
+        assertEquals(0, result);
     }
 
     @Test
