@@ -284,7 +284,6 @@
                     var liE = createCommentForm(rs);
                     liE.prependTo('#comment-list');
 
-                    $('div.custom-spinner').parent().remove();
                 }, 'yourCommentForm');
             }
         });
@@ -304,7 +303,6 @@
                 commentObj.liEComment.remove();
                 $('#deleteCommentModal').modal('hide');
 
-                $('div.custom-spinner').parent().remove();
             }, 'deleteCommentModal');
         });
 
@@ -357,6 +355,7 @@
             var parentId = $(this).data('comment-id');
             var closestLI = $(this).closest('li');
             var containerReplyForm = closestLI.find('.reply-form-container').first();
+
             replyCommentForm(parentId).appendTo(containerReplyForm);
             var contentEditor = closestLI.find('#replyCommentForm'+parentId+' .summernote').first();
             contentEditor.summernote();
@@ -383,7 +382,7 @@
 
                         closestLI.find('.reply-form-container form').first().remove();
                         closestLI.find('.list-button').first().show();
-                    }, replyCommentForm+parentId);
+                    }, 'replyCommentForm'+parentId);
                 }
             });
         });

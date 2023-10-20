@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.constant.BookConstant;
 import com.shsoftvina.erpshsoftvina.converter.BookConverter;
 import com.shsoftvina.erpshsoftvina.entity.Book;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
@@ -61,6 +62,9 @@ public class BookServiceImpl implements BookService {
         boolean isSaveImageSuccess = true;
 
         if(bookImage != null){
+
+            applicationUtils.checkValidateImage(Book.class, bookImage);
+
             bookImageFileName = FileUtils.formatNameImage(bookImage);
             isSaveImageSuccess = FileUtils.saveImageToServer(
                     request, BookConstant.UPLOAD_FILE_DIR, bookCreateRequest.getImage(), bookImageFileName);
@@ -93,16 +97,16 @@ public class BookServiceImpl implements BookService {
 
         MultipartFile bookFile = bookUpdateRequest.getImage();
 
-//        if (bookFile != null) applicationUtils.checkValidateImage(Book.class, bookFile);
-
         String fileNameBook = null;
         boolean isSaveBookSuccess = true;
 
         if(bookFile != null){
+            applicationUtils.checkValidateImage(Book.class, bookFile);
+
             fileNameBook = FileUtils.formatNameImage(bookFile);
             isSaveBookSuccess = FileUtils.saveImageToServer(
                     request, BookConstant.UPLOAD_FILE_DIR, bookUpdateRequest.getImage(), fileNameBook);
-        }
+        }else isSaveBookSuccess = false;
 
         Book b;
         if(isSaveBookSuccess){

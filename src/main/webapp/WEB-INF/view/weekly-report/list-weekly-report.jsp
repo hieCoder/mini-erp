@@ -247,9 +247,9 @@
 
         // setup placeholder of input search flow Role User
         if (roleUser === "Owner") {
-            searchInput.placeholder = "Search by Title or Author";
+            searchInput.placeholder = "Search by title or author";
         } else {
-            searchInput.placeholder = "Search by Title";
+            searchInput.placeholder = "Search by title";
         }
 
     });
@@ -293,7 +293,7 @@
                     var titles = responseData.map(function (task) {
                         return task.title;
                     });
-
+                    if (titles.length == 0)  $('div.custom-spinner').parent().remove();
                     // Show dropdown titles tasks
                     mentionDropdown.innerHTML = "Task:";
                     titles.forEach(function (title) {

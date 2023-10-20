@@ -14,7 +14,7 @@
             <column name="LINK" type="VARCHAR(255)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="CREATED_BY" type="VARCHAR(255)"/>
-            <column name="IMAGE" type="VARCHAR(255)"/>
+            <column name="IMAGE" type="TEXT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

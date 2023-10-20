@@ -16,7 +16,7 @@
     <h1>Notification list</h1>
 <div class="row">
     <div class="col-md-6">
-        <input type="text" value ="${search}" id="searchInput" class="form-control" placeholder="Search...">
+        <input type="text" value ="${search}" id="searchInput" class="form-control" placeholder="Title or username">
     </div>
     <div class="col-md-2">
         <button class="btn btn-primary" id="searchButton">Search</button>

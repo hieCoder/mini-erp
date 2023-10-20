@@ -45,7 +45,7 @@
                     <td>${book.author}</td>
                     <td>${book.createdBy}</td>
                     <td>${book.createdDate}</td>
-                    <td>
+                    <td class="action">
                         <button value="${book.id}" type="button"
                                 class="btn btn-primary mb-2 edit-book-button">Edit
                         </button>
@@ -183,8 +183,10 @@
                     </div>
                     <div class="form-group row">
                         <label for="editImage" class="col-sm-2 col-form-label">Image Book:</label>
+                        <img style="margin-left: 15px;" class="img-edit-book" height="200" alt="img view">
                         <div class="col-sm-10">
-                            <input type="file" class="form-control" id="editImage" required>
+                            <input type="file" class="form-control mt-2" id="editImage" required>
+                            <small class="text-muted ml-2">Choose New Image For Book</small>
                             <span class="errorMessage" style="color: red;"></span>
                         </div>
                     </div>
@@ -351,6 +353,7 @@
                     document.getElementById('editTitle').value = responseData.book.title;
                     document.getElementById('editAuthor').value = responseData.book.author;
                     document.getElementById('editLink').value = responseData.book.link;
+                    $('.img-edit-book').attr('src', responseData.book.image);
 
                     var submitButton = document.getElementById('editBookButton');
                     submitButton.addEventListener('click', function () {
@@ -363,8 +366,11 @@
                         formData.append('id', bookId);
                         formData.append('title', title);
                         formData.append('author', author);
-                        formData.append('image', image.files[0]);
                         formData.append('link', link);
+
+                        if (image.files.length != 0) {
+                            formData.append('image', image.files[0]);
+                        }
 
                         callAjaxByDataFormWithDataForm('/api/v1/books/update', 'POST', formData, function (rs) {
                             sessionStorage.setItem('result', 'updateBookSuccess');
@@ -397,6 +403,20 @@
             $('#resultMessage').text(message);
             $('#resultModal').modal('show');
             sessionStorage.clear();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var addButton = document.querySelector('.add-book-button');
+        var actionColumn = document.querySelectorAll('th')[6];
+        var actionValue = document.querySelectorAll('.action');
+
+        if (userCurrent.role === 'DEVELOPER') {
+            addButton.remove();
+            actionColumn.remove();
+            actionValue.forEach(function (element) {
+                element.remove();
+            });
         }
     });
 

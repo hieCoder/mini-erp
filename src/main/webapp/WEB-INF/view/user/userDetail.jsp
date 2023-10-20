@@ -22,7 +22,7 @@
                 <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
                 <div class="col-md-4">
                     <div class="text-center">
-                        <img src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
+                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
                         <input name="avatar" type="file" class="form-control mt-2" id="avatar">
                         <small class="text-muted ml-2">Choose New Avatar</small>
                         <h4 class="mt-2">${user.getFullname()}</h4>
@@ -57,7 +57,18 @@
                     </div>
                     <div class="form-group">
                         <label for="resume">Resume file:</label>
-                        <a href="${user.getResume()}" download target="_blank" id="resumeLink">Download Resume</a>
+                        <c:choose>
+                            <c:when test="${empty user.getResume()}">
+                                <div id="resumeContainer" style="display: none;">
+                                    <a href="#" style="display: none;">Download Resume</a>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div id="resumeContainer">
+                                    <a href="${user.getResume()}" download target="_blank">Download Resume</a>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                         <input type="file" class="form-control mt-2" name="resume" id="resume">
                         <small class="text-muted ml-2">Choose new resume</small>
                     </div>
@@ -114,6 +125,7 @@
                             password</a>
                         <div id="password-form" style="display: none;">
                             <input name="password" type="password" class="form-control" id="password" value="" placeholder="New Password">
+                            <span id="messageNewPassword"  class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group hide">
@@ -180,7 +192,7 @@
                     <div class="form-group container-button">
                         <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" id="delUser">Delete</button>
-                        <a class="btn btn-secondary" href="/users">Cancel</a>
+                        <a class="btn btn-secondary cancle-button">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -224,7 +236,7 @@
                                         class="btn btn-primary edit-contract-button">Edit
                                 </button>
                                 <button value="${contract.getId()}" type="button"
-                                        class="btn btn-danger delete-contract-button">Delete
+                                        class="btn btn-danger delete-contract-button mt-2">Delete
                                 </button>
                             </td>
                         </tr>
@@ -397,11 +409,37 @@
 
 <%--Handle User--%>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var srcAvatar = $('#avatar-user').attr('src');
+        localStorage.setItem('avatarLink', srcAvatar);
+
+        var avatarLink = localStorage.getItem("avatarLink");
+        if(avatarLink){
+            $('.avatar-login').attr('src', avatarLink);
+        } else{
+            $('.avatar-login').attr('src', userCurrent.avatar);
+        }
+    });
+
+    var isNewPassword = false;
+    var linkCancle = '/users';
+    if(userCurrent.role == U_DEVELOPER) linkCancle = '/home';
+    $('.cancle-button').attr('href', linkCancle);
+
     // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
     document.getElementById("change-password-button").addEventListener("click", function () {
         var inputPassword = document.getElementById("password-form");
-        if (inputPassword.style.display == "none") inputPassword.style.display = "block";
-        else inputPassword.style.display = "none";
+        if (inputPassword.style.display == "none") {
+            inputPassword.style.display = "block";
+            isNewPassword = true;
+        }
+        else {
+            inputPassword.style.display = "none";
+            isNewPassword = false;
+        }
+
+
     });
 
     Validator({
@@ -418,16 +456,44 @@
 
             $('.container-button').after(createLoadingHtml());
 
-            formData.append('id', "${user.id}");
+
+            formData.append('id', '${user.id}');
+
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
             var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
             formData.append('dateOfBirth', dateOfBirth);
 
-            callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-                sessionStorage.setItem('result', 'updateSuccess');
-                location.href = "/users/" + ${user.getId()};
-            }, 'formUpdateUser');
+            var newPassword = document.getElementById('password').value;
+
+
+            if (isNewPassword) {
+                var regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/;
+                var message = regex.test(newPassword)?undefined:'Password must have at least 6 characters and include letters, numbers and special characters';
+                if (newPassword != '') {
+                    if (message == undefined) {
+                        callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
+
+                            localStorage.setItem('avatarLink', )
+
+                            sessionStorage.setItem('result', 'updateSuccess');
+                            location.href = "/users/" + '${user.getId()}';
+                        }, 'formUpdateUser');
+                    } else {
+                        document.getElementById('messageNewPassword').textContent = message;
+                        resetForm('formUpdateUser');
+                    }
+                } else {
+                    document.getElementById('messageNewPassword').textContent = message;
+                    resetForm('formUpdateUser');
+                }
+            } else {
+                callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
+                    sessionStorage.setItem('result', 'updateSuccess');
+                    location.href = "/users/" + '${user.getId()}';
+                }, 'formUpdateUser');
+            }
+
         }
     });
 
@@ -577,7 +643,7 @@
 
             $('.container-button-add-contract').after(createLoadingHtml());
 
-            formData.append('userId', "${user.id}");
+            formData.append('userId', '${user.id}');
 
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'addContractSuccess');
@@ -651,7 +717,7 @@
 
                 $('.container-button-edit-contract').after(createLoadingHtml());
 
-                formData.append('id', '"'+contractIdValue+'"');
+                formData.append('id', contractIdValue);
                 callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'editContractSuccess');
                     localStorage.setItem("showModal", "true");

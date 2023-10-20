@@ -1,13 +1,11 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
-
-import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
+import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +53,7 @@ public class ManagementTimeDayController {
             if(dayResponse!=null){
                 mav.addObject("dayResponse", dayResponse);
             } else{
-                if(!StringUtils.isValidDate(day)){
+                if(!DateUtils.isValidDate(day)){
                     mav.setViewName("redirect:/management-time/"+ userId);
                     return mav;
                 }

@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="search">Search:</label>
                     <div class="input-group">
-                        <input id="search" name="search" type="text" class="form-control" placeholder="Search By Username or User ID">
+                        <input id="search" name="search" type="text" class="form-control" placeholder="Search by username or userid">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>
@@ -124,7 +124,7 @@
     </div>
 </form>
 
-<!-- Modal Notification Success -->
+<!-- Modal Notification -->
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -144,8 +144,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-account-pending" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 1900px;">
+<!-- Modal  approval -->
+<div class="modal fade" id="modal-account-pending" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1300px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">List account pending</h5>
@@ -154,7 +155,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table id="datatable-account-pending" class="table">
+                <table id="datatable-account-pending" class="table-bordered">
                     <thead>
                     <tr>
                         <th>Username</th>
@@ -207,7 +208,7 @@
                 {data: 'email'},
                 {
                     render: function(data, type, row) {
-                        return '<select class="form-control" id="exampleFormControlSelect1" name="role">' +
+                        return '<select style="width: 150px;" class="form-control" id="exampleFormControlSelect1" name="role">' +
                             '<option value="">-- Select role --</option>' +
                             '<option value="OWNER">Owner</option>' +
                             '<option value="MANAGER">Manager</option>' +
@@ -238,10 +239,12 @@
                 id: $(this).data('id')
             };
 
+            $('#datatable-account-pending').after(createLoadingHtml());
             callAjaxByJsonWithData('/api/v1/users/register/approval', 'PUT', obj, function (rs) {
                 if(rs){
                     table.ajax.reload();
                 }
+                location.reload();
             });
         });
 
@@ -253,10 +256,12 @@
             var id =  $(this).data('id');
 
             $('#confirmReject').on('click', function () {
+                $('#datatable-account-pending').after(createLoadingHtml());
                 callAjaxByJsonWithData('/api/v1/users/register/reject/'+ id, 'DELETE', null, function (rs) {
                     if(rs){
                         table.ajax.reload();
                     }
+                    location.reload();
                 });
 
                 $('#confirmModal').modal('hide');

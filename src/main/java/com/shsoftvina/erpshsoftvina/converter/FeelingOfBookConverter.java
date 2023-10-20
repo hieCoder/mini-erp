@@ -32,6 +32,7 @@ public class FeelingOfBookConverter {
     private FeelingOfBookMapper feelingOfBookMapper;
 
     public FeelingOfBookResponse toResponse(FeelingOfBook feelingOfBook) {
+        if(feelingOfBook == null) return null;
         return FeelingOfBookResponse.builder()
                 .id(feelingOfBook.getId())
                 .quotes(feelingOfBook.getQuote().split("---"))
