@@ -1,32 +1,17 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.constant.TaskConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.model.request.task.ListTaskRequest;
-import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
-import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
-import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
-import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
-import com.shsoftvina.erpshsoftvina.service.TaskService;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class NotificationApiTest {

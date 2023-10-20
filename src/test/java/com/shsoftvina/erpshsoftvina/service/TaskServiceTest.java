@@ -192,6 +192,42 @@ public class TaskServiceTest {
     }
 
     @Test
+    public void testUpdateTask_InvalidProgress() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+        request.setAction("ValidAction");
+        request.setProgress(50);
+
+        Task mockTask = new Task();
+        mockTask.setStatusTask(StatusTaskEnum.REGISTERED);
+
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+        when(taskMapper.updateTask(any())).thenReturn(1);
+
+        assertThrows(NotAllowException.class, () -> taskService.updateTask(request));
+    }
+
+    @Test
+    public void testUpdateTask_InvalidProgressForPostponedOrClosed() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+        request.setAction("ValidAction"); // Valid action
+        request.setProgress(50); // Invalid progress value
+
+        Task mockTask = new Task();
+        mockTask.setStatusTask(StatusTaskEnum.CLOSED); // Set the status to one of the invalid values
+
+        // Mock the necessary dependencies.
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+        when(taskMapper.updateTask(any())).thenReturn(1);
+
+        // Expect a NotAllowException when updating with an invalid progress.
+        assertThrows(NotAllowException.class, () -> taskService.updateTask(request));
+    }
+
+    @Test
     public void testFindAll() {
         int start = 0;
         int pageSize = 10;
