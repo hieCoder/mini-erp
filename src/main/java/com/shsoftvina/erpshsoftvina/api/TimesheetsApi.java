@@ -17,7 +17,7 @@ public class TimesheetsApi {
 
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                     @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
+                                     @RequestParam(name = "pageSize", required = false, defaultValue = "50") int pageSize
     ) {
         return ResponseEntity.ok(timesheetsService.findAll((page - 1) * pageSize, pageSize));
     }
