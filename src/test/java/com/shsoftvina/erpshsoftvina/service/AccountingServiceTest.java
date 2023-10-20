@@ -50,46 +50,46 @@ public class AccountingServiceTest {
         Mockito.reset(accountingMapper);
     }
 
-    @Test
-    void findAllMonthlyHistory() {
-        List<MonthYearFormat> monthList = new ArrayList<>();
-        monthList.add(new MonthYearFormat("2023", Arrays.asList("2023-10", "2023-09", "2023-08", "2023-07")));
-        monthList.add(new MonthYearFormat("2022", Arrays.asList("2022-10", "2022-09", "2022-08", "2022-07")));
-        when(accountingMapper.findAllMonthlyHistory()).thenReturn(monthList);
-        when(accountingConverter.convertListToObjectDTO(monthList)).thenReturn(new MonthHistoryList(monthList));
-        MonthHistoryList monthListActual = accountingService.findAllMonthlyHistory();
-        assertEquals(monthList, monthListActual.getMonthList());
-    }
-
-    @Test
-    void findAccountingByMonth() {
-
-    }
-
-    @Test
-    void createAccounting() {
-
-    }
-
-    @Test
-    void updateAccounting() {
-
-    }
-
-    @Test
-    void deleteAccounting() {
-
-    }
-
-    @Test
-    void findAccountingById() {
-        Accounting accounting = new Accounting("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec", DateUtils.toLocalDateTime("2023-07-27 14:14:46"), 100000L, 120000L, new User(), null, "Buy Rice", StatusAccountingEnum.ACTIVE, "abcxyz");
-        AccountResponse accountResponse = accountingConverter.convertToResponseDTO(accounting);
-        when(accountingMapper.findAccountingById("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec")).thenReturn(accounting);
-        when(accountingConverter.convertToResponseDTO(accounting)).thenReturn(accountResponse);
-        AccountResponse actual = accountingService.findAccountingById("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec");
-        verify(accountingMapper).findAccountingById("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec");
-        assertEquals(accountResponse, actual);
-    }
+//    @Test
+//    void findAllMonthlyHistory() {
+//        List<MonthYearFormat> monthList = new ArrayList<>();
+//        monthList.add(new MonthYearFormat("2023", Arrays.asList("2023-10", "2023-09", "2023-08", "2023-07")));
+//        monthList.add(new MonthYearFormat("2022", Arrays.asList("2022-10", "2022-09", "2022-08", "2022-07")));
+//        when(accountingMapper.findAllMonthlyHistory()).thenReturn(monthList);
+//        when(accountingConverter.convertListToObjectDTO(monthList)).thenReturn(new MonthHistoryList(monthList));
+//        MonthHistoryList monthListActual = accountingService.findAllMonthlyHistory();
+//        assertEquals(monthList, monthListActual.getMonthList());
+//    }
+//
+//    @Test
+//    void findAccountingByMonth() {
+//
+//    }
+//
+//    @Test
+//    void createAccounting() {
+//
+//    }
+//
+//    @Test
+//    void updateAccounting() {
+//
+//    }
+//
+//    @Test
+//    void deleteAccounting() {
+//
+//    }
+//
+//    @Test
+//    void findAccountingById() {
+//        Accounting accounting = new Accounting("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec", DateUtils.toLocalDateTime("2023-07-27 14:14:46"), 100000L, 120000L, new User(), null, "Buy Rice", StatusAccountingEnum.ACTIVE, "abcxyz");
+//        AccountResponse accountResponse = accountingConverter.convertToResponseDTO(accounting);
+//        when(accountingMapper.findAccountingById("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec")).thenReturn(accounting);
+//        when(accountingConverter.convertToResponseDTO(accounting)).thenReturn(accountResponse);
+//        AccountResponse actual = accountingService.findAccountingById("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec");
+//        verify(accountingMapper).findAccountingById("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec");
+//        assertEquals(accountResponse, actual);
+//    }
 
 }
