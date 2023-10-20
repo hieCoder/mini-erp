@@ -409,6 +409,7 @@
                     document.getElementById("fullnameUser").value = responseData.fullnameUser;
                     document.getElementById("createDate").value = responseData.createdDate;
                     $('div.custom-spinner').parent().remove();
+                    $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
                 });
 
                 event.preventDefault();
@@ -456,6 +457,7 @@
     document.addEventListener("input", function () {
         expandContentContainer();
     });
+    $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
 
 </script>
 </body>
