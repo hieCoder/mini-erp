@@ -3,6 +3,11 @@
 <html>
 <head>
     <title>Task detail</title>
+    <style>
+        .summernote p img{
+            width: 100% !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4" id="content-container">
@@ -71,7 +76,7 @@
                             <button type="submit" class="btn btn-primary">Update</button>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal">Delete</button>
                         </span>
-                        <a href="/tasks" class="btn btn-secondary">Cancel</a>
+                        <a href="/tasks" class="btn btn-secondary" id="btn-cancel-task-detail">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -91,7 +96,7 @@
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group">
-                        <input name="files" type="file" class="form-control" id="yourCommentFiles" multiple>
+                        <input name="fileList" type="file" class="form-control" id="yourCommentFiles" multiple>
                     </div>
                     <div class="form-group text-right">
                         <button id="yourCommentSubmitComment" type="submit" class="btn btn-success">Comment</button>
@@ -113,7 +118,7 @@
 <%--                                        <input type="text" class="form-control fw-bold" placeholder="Title">--%>
 <%--                                    </div>--%>
 <%--                                    <div class="form-group mt-2">--%>
-<%--                                        <div class="form-control summernote" style="min-height: 110px;"></div>--%>
+<%--                                        <div class="form-control summernote" style="height: auto;"></div>--%>
 <%--                                    </div>--%>
 <%--                                    <div class="form-group mt-2 row">--%>
 <%--                                        <div class="col-md-6">--%>
@@ -257,6 +262,9 @@
                 Validator.isRequired('#progress')
             ],
             onSubmit: function (formData) {
+
+                $('#btn-cancel-task-detail').after(createLoadingHtml());
+
                 formData.append('id', idTask);
                 formData.append('content', $('#content').summernote().summernote('code'));
 
@@ -278,11 +286,15 @@
                 formData.append('content', $('#yourCommentContent').summernote().summernote('code'));
                 formData.append('userId', userCurrent.id);
 
+                // var data = {};
+                // formData.forEach((value, key) => data[key] = value);
+                // console.log(data.files.file.);
+
                 $('#yourCommentSubmitComment').after(createLoadingHtml());
 
-                callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
-                    var liE = createCommentForm(rs);
-                    liE.prependTo('#comment-list');
+                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                     var liE = createCommentForm(rs);
+                     liE.prependTo('#comment-list');
 
                 }, 'yourCommentForm');
             }
@@ -405,7 +417,7 @@
             var commentForm = $('<form id="updateCommentForm'+comment.id+'">');
 
             commentForm.append('<div class="form-group"><input id="updateCommentTitle'+comment.id+'" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
-            commentForm.append('<div class="form-group"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="min-height: 110px;">' + comment.content + '</div><small class="form-message"></small></div>');
+            commentForm.append('<div class="form-group"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="height: auto;">' + comment.content + '</div><small class="form-message"></small></div>');
 
             var fileLinksCol = $('<div class="col-md-6">');
             var buttonCol = $('<div class="col-md-6 text-right list-button">');
@@ -517,13 +529,13 @@
             titleFormGroup.append(titleInput);
 
             var contentFormGroup = $('<div class="form-group"></div>');
-            var contentTextarea = $('<div id="contentReply'+parentId+'" class="form-control summernote" style="min-height: 110px;"></div><small class="form-message"></small>');
+            var contentTextarea = $('<div id="contentReply'+parentId+'" class="form-control summernote" style="height: auto;"></div><small class="form-message"></small>');
             contentFormGroup.append(contentTextarea);
 
             var buttonFormGroup = $('<div class="form-group row"></div>');
 
             var fileInputContainer = $('<div class="col-md-6"></div>');
-            var fileInput = $('<input type="file" name="files" class="form-control attract-update-comment" multiple>');
+            var fileInput = $('<input type="file" name="fileList" class="form-control attract-update-comment" multiple>');
             fileInputContainer.append(fileInput);
 
             var buttonContainer = $('<div class="col-md-6 text-right list-button"></div>');

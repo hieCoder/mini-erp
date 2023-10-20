@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Register</title>
 </head>
 <body>
 <div class="container">
@@ -11,22 +11,22 @@
             <form id="registerForm">
                 <div class="form-group">
                     <label for="fullname">Username:</label>
-                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Username" value="canh2@gmail.com">
+                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Username">
                     <small class="form-message"></small>
                 </div>
                 <div class="form-group">
                     <label for="email">User ID:</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="User ID" value="n18dccn107@student.ptithcm.edu.vn">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="User ID">
                     <small class="form-message"></small>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="Canh123456$">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                     <small class="form-message"></small>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password:</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value="Canh123456$">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
                     <small class="form-message"></small>
                 </div>
                 <button id="registerBtn" type="submit" class="btn btn-primary btn-block">Register</button>

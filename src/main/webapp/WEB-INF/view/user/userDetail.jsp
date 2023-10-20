@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>User detail</title>
     <style>
         .form-group-password {
             position: relative;
@@ -47,12 +47,12 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone number:</label>
-                        <input type="tel" class="form-control" name="phone" id="phone" value="${user.getPhone()}">
+                        <input type="number" class="form-control" name="phone" id="phone" value="${user.getPhone()}">
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group">
                         <label for="emergencyPhone">Emergency phone:</label>
-                        <input type="tel" class="form-control" name="emergencyPhone" id="emergencyPhone" value="${user.getEmergencyPhone()}">
+                        <input type="number" class="form-control" name="emergencyPhone" id="emergencyPhone" value="${user.getEmergencyPhone()}">
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group">
@@ -417,6 +417,7 @@
         var avatarLink = localStorage.getItem("avatarLink");
         if(avatarLink){
             $('.avatar-login').attr('src', avatarLink);
+            userCurrent.avatar = avatarLink;
         } else{
             $('.avatar-login').attr('src', userCurrent.avatar);
         }
@@ -449,6 +450,7 @@
             Validator.isRequired('#address'),
             Validator.isRequired('#fullname'),
             Validator.isRequired('#dateOfBirth'),
+            Validator.isDayBeforeToday('#dateOfBirth'),
             Validator.isRequired('#phone'),
             Validator.isRequired('#emergencyPhone')
         ],
@@ -770,36 +772,14 @@
 <%--Handle Role--%>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Lấy vai trò của người dùng
-        var roleUser = userCurrent.role;
 
-        var fieldsToHide = document.getElementsByClassName("hide");
-
-        // Danh sách các trường và nút cần ẩn
-        var buttonsToHide = ["delUser"];
-
-        for (var i = 0; i < fieldsToHide.length; i++) {
-            var div = fieldsToHide[i];
-            if (div) {
-                if (roleUser === U_DEVELOPER) {
-                    div.style.display = "none";
-                } else {
-                    div.style.display = "block";
-                }
-            }
+        if(isDeleveloper()){
+            $('.hide').remove();
+            $('#updateUserButton').remove();
+            $('#delUser').remove();
+        } else{
+            $('.hide').css('display', 'block');
         }
-
-        // Ẩn các nút
-        buttonsToHide.forEach(function (buttonName) {
-            var button = document.getElementById(buttonName);
-            if (button) {
-                if (roleUser === U_DEVELOPER) {
-                    button.style.display = "none";
-                } else {
-                    button.style.display = "inline-block";
-                }
-            }
-        });
     });
 </script>
 </body>

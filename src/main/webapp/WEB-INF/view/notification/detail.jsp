@@ -717,7 +717,13 @@
     });
 </script>
 <script>
-    document.getElementById('avatar-user-login').setAttribute('src', userCurrent.avatar);
+    var avatarLink = localStorage.getItem("avatarLink");
+    if(avatarLink){
+        document.getElementById('avatar-user-login').setAttribute('src', avatarLink);
+    } else{
+        document.getElementById('avatar-user-login').setAttribute('src', userCurrent.avatar);
+    }
+
 </script>
 </body>
 </html>

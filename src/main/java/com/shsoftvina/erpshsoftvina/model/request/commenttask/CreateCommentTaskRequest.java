@@ -23,7 +23,7 @@ public class CreateCommentTaskRequest {
     @NotBlank(message = "Field content is not filled")
     private String content;
 
-    private MultipartFile[] files;
+    private MultipartFile[] fileList;
     private String parentId;
 
     @NotBlank(message = "Field userId is not filled")
