@@ -45,8 +45,9 @@
     // Lấy ngày đầu tiên của tháng hiện tại
     calendar.set(Calendar.DAY_OF_MONTH, 1);
     String startDateStr = sdf.format(calendar.getTime());
-    // Lấy ngày hiện tại
-    String endDateStr = sdf.format(new Date());
+    calendar.add(Calendar.MONTH, 1);
+    calendar.add(Calendar.DATE, -1);
+    String endDateStr = sdf.format(calendar.getTime());
     Date startDate = null;
     Date endDate = null;
     long day,daydiff;
@@ -85,8 +86,9 @@
                         <c:set var="dueOrCloseDate" value="${s.dueOrCloseDate}"/>
 
                         <script>
-                            var selectedEndDate = new Date();
-                            var selectedStartDate = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), 1);
+                            var currentDay = new Date();
+                            var selectedStartDate = new Date(currentDay.getFullYear(), currentDay.getMonth(), 1);
+                            var selectedEndDate = new Date(currentDay.getFullYear(), currentDay.getMonth() + 1, 0);
 
                             var startDate = new Date("${startDate}");
                             startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
@@ -110,7 +112,7 @@
                             } else {
                                 color = 'bg-secondary';
                             }
-                            while (selectedStartDate.getTime() < selectedEndDate.getTime()) {
+                            while (selectedStartDate.getTime() <= selectedEndDate.getTime()) {
                                 if (selectedStartDate.getTime() === startDate.getTime()) {
                                     document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + id + '" class="btn font-weight-bold">' + status + '</a></td>');
                                     selectedStartDate = new Date(selectedStartDate.getTime() + 86400000 * daysDiff);
@@ -140,10 +142,12 @@
     var defaultDate = new Date();
     var year = defaultDate.getFullYear();
     var month = defaultDate.getMonth() + 1;
-    var formattedDate = year + '-' + (month < 10 ? '0' : '') + month + '-01';
-    document.getElementById("datePickerStart").value = formattedDate;
+    var lastDay = new Date(year, month, 0).getDate();
+    var formattedDateStart = year + '-' + (month < 10 ? '0' : '') + month + '-01';
+    var formattedDateEnd = year + '-' + (month < 10 ? '0' : '') + month + '-' + lastDay;
 
-    document.getElementById("datePickerEnd").value = year + '-' + (month < 10 ? '0' : '') + month + '-' + defaultDate.getDate();
+    document.getElementById("datePickerStart").value = formattedDateStart;
+    document.getElementById("datePickerEnd").value = formattedDateEnd;
 
     document.getElementById("datePickerStart").addEventListener("input", function () {
         localStorage.setItem("choiceStartDate", this.value);
