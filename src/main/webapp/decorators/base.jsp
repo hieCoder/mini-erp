@@ -54,7 +54,14 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $('.avatar-login').attr('src', userCurrent.avatar);
+
+    var avatarLink = localStorage.getItem("avatarLink");
+    if(avatarLink){
+        $('.avatar-login').attr('src', avatarLink);
+    } else{
+        $('.avatar-login').attr('src', userCurrent.avatar);
+    }
+
     $('.fullname-login').text(userCurrent.fullname);
     $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
     var scheduleLink = '';
