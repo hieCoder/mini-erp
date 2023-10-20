@@ -1,6 +1,9 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.controller.AccountingController;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
@@ -43,6 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class AccountingControllerTest {
     private final AccountingService accountingService = Mockito.mock(AccountingServiceImpl.class);
+    private final SettingMapper settingMapper = Mockito.mock(SettingMapper.class);
     private MockMvc mockMvc;
     @InjectMocks
     private AccountingController accountingController;
@@ -99,65 +103,70 @@ public class AccountingControllerTest {
         verifyNoMoreInteractions(accountingService);
     }
 
-//    @Test
-//    public void findAllMonthlyHistoryTest() throws Exception {
-//        List<MonthYearFormat> monthList = new ArrayList<>();
-//        monthList.add(new MonthYearFormat("2023", Arrays.asList("2023-10", "2023-09", "2023-08", "2023-07")));
-//        monthList.add(new MonthYearFormat("2022", Arrays.asList("2022-10", "2022-09", "2022-08", "2022-07")));
-//        MonthHistoryList monthHistoryList = new MonthHistoryList(monthList);
-//        when(accountingService.findAllMonthlyHistory()).thenReturn(monthHistoryList);
-//
-//        mockMvc.perform(get("/accounting"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("accounting/total-month"))
-//                .andExpect(forwardedUrl("accounting/total-month"))
-//                .andExpect(model().attributeExists("monthList"))
-//                .andExpect(model().attribute("monthList", allOf(
-//                        hasProperty("monthList", hasSize(2)),
-//                        hasProperty("monthList", hasItem(
-//                                allOf(
-//                                        hasProperty("year", is("2023")),
-//                                        hasProperty("month", contains("2023-10", "2023-09", "2023-08", "2023-07"))
-//                                )
-//                        )),
-//                        hasProperty("monthList", hasItem(
-//                                allOf(
-//                                        hasProperty("year", is("2022")),
-//                                        hasProperty("month", contains("2022-10", "2022-09", "2022-08", "2022-07"))
-//                                )
-//                        ))
-//                )));
-//
-//        verify(accountingService, times(1)).findAllMonthlyHistory();
-//        verifyNoMoreInteractions(accountingService);
-//    }
-//
-//    @Test
-//    public void showAccountingDetail() throws Exception {
-//        String input = "231013144551-휴가 신청서_VONG_TUYEN_LAM.xlsx";
-//        String[] result = input.split("-");
-//        AccountResponse accountResponse = new AccountResponse("0aa291bc-1e67-4df8-b83d-158e159de09e", "2023-10-13 14:45:51", 0L, -4254L, -389123L, new UserAccountingResponse("3", "TrungHieu99999"), result, "test", "abcxyz");
-//        when(accountingService.findAccountingById("0aa291bc-1e67-4df8-b83d-158e159de09e")).thenReturn(accountResponse);
-//
-//        mockMvc.perform(get("/accounting/detail/{id}", "0aa291bc-1e67-4df8-b83d-158e159de09e"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("accounting/detail"))
-//                .andExpect(forwardedUrl("accounting/detail"))
-//                .andExpect(model().attributeExists("account"))
-//                .andExpect(model().attribute("account",
-//                        allOf(
-//                                hasProperty("id", is("0aa291bc-1e67-4df8-b83d-158e159de09e")),
-//                                hasProperty("createdDate", is("2023-10-13 14:45:51")),
-//                                hasProperty("revenue", is(0L)),
-//                                hasProperty("expense", is(-4254L)),
-//                                hasProperty("remain", is(-389123L)),
-//                                hasProperty("user", allOf(
-//                                        hasProperty("id", is("3")),
-//                                        hasProperty("fullname", is("TrungHieu99999"))
-//                                )),                                hasProperty("bill", is(result)),
-//                                hasProperty("title", is("test")),
-//                                hasProperty("note", is("abcxyz"))
-//                        )
-//                ));
-//    }
+    @Test
+    public void findAllMonthlyHistoryTest() throws Exception {
+        List<MonthYearFormat> monthList = new ArrayList<>();
+        monthList.add(new MonthYearFormat("2023", Arrays.asList("2023-10", "2023-09", "2023-08", "2023-07")));
+        monthList.add(new MonthYearFormat("2022", Arrays.asList("2022-10", "2022-09", "2022-08", "2022-07")));
+        MonthHistoryList monthHistoryList = new MonthHistoryList(monthList);
+        when(accountingService.findAllMonthlyHistory()).thenReturn(monthHistoryList);
+        when(settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE)).thenReturn(new Setting());
+
+        mockMvc.perform(get("/accounting"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("accounting/total-month"))
+                .andExpect(forwardedUrl("accounting/total-month"))
+                .andExpect(model().attributeExists("monthList"))
+                .andExpect(model().attributeExists("setting"))
+                .andExpect(model().attribute("monthList", allOf(
+                        hasProperty("monthList", hasSize(2)),
+                        hasProperty("monthList", hasItem(
+                                allOf(
+                                        hasProperty("year", is("2023")),
+                                        hasProperty("month", contains("2023-10", "2023-09", "2023-08", "2023-07"))
+                                )
+                        )),
+                        hasProperty("monthList", hasItem(
+                                allOf(
+                                        hasProperty("year", is("2022")),
+                                        hasProperty("month", contains("2022-10", "2022-09", "2022-08", "2022-07"))
+                                )
+                        ))
+                )));
+
+        verify(accountingService, times(1)).findAllMonthlyHistory();
+        verifyNoMoreInteractions(accountingService);
+    }
+
+    @Test
+    public void showAccountingDetail() throws Exception {
+        String input = "231013144551-휴가 신청서_VONG_TUYEN_LAM.xlsx";
+        String[] result = input.split("-");
+        AccountResponse accountResponse = new AccountResponse("0aa291bc-1e67-4df8-b83d-158e159de09e", "2023-10-13 14:45:51", 0L, -4254L, -389123L, new UserAccountingResponse("3", "TrungHieu99999"), result, "test", "abcxyz");
+        when(accountingService.findAccountingById("0aa291bc-1e67-4df8-b83d-158e159de09e")).thenReturn(accountResponse);
+        when(settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE)).thenReturn(new Setting());
+
+        mockMvc.perform(get("/accounting/detail/{id}", "0aa291bc-1e67-4df8-b83d-158e159de09e"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("accounting/detail"))
+                .andExpect(forwardedUrl("accounting/detail"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("setting"))
+                .andExpect(model().attribute("account",
+                        allOf(
+                                hasProperty("id", is("0aa291bc-1e67-4df8-b83d-158e159de09e")),
+                                hasProperty("createdDate", is("2023-10-13 14:45:51")),
+                                hasProperty("revenue", is(0L)),
+                                hasProperty("expense", is(-4254L)),
+                                hasProperty("remain", is(-389123L)),
+                                hasProperty("user", allOf(
+                                        hasProperty("id", is("3")),
+                                        hasProperty("fullname", is("TrungHieu99999"))
+                                )),                                hasProperty("bill", is(result)),
+                                hasProperty("title", is("test")),
+                                hasProperty("note", is("abcxyz"))
+                        )
+                ));
+    }
 }
+
