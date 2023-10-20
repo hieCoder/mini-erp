@@ -72,5 +72,10 @@ public class AccountingApi {
     public ResponseEntity<?> deleteAccounting(@PathVariable("id") String id) {
         return ResponseEntity.ok(accountingService.deleteAccounting(id));
     }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> detailAccounting(@PathVariable("id") String id) {
+        return ResponseEntity.ok(accountingService.findAccountingById(id));
+    }
 }
 
