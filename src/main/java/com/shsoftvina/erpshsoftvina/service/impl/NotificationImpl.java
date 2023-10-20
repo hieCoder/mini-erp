@@ -152,11 +152,6 @@ public class NotificationImpl implements NotificationService {
     }
 
     @Override
-    public NotificationShowResponse getNotification(String id){
-        return notificationConverter.toShowResponse(notificationMapper.getNotificationById(id));
-    }
-
-    @Override
     public int countAll(String search){
         return notificationMapper.countAll(search);
     };

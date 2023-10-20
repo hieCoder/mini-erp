@@ -1,9 +1,7 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
 import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.book.PageBookListRespone;
-import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookResponse;
 import com.shsoftvina.erpshsoftvina.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +36,4 @@ public class BooksController {
 
         return view;
     }
-
 }

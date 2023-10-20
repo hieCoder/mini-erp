@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.controller.accounting;
+package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.controller.AccountingController;
