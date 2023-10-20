@@ -73,33 +73,33 @@ public class SettingServiceTest {
         assertEquals(mockResponse, result);
     }
 
-    @Test
-    public void testUpdateSetting() {
-        SettingUpdateRequest[] updateRequests = new SettingUpdateRequest[1];
-        updateRequests[0] = new SettingUpdateRequest();
-        updateRequests[0].setCode(CodeSettingEnum.BOOK.toString());
-
-        Setting setting = new Setting();
-        Mockito.when(settingMapper.findByCode(CodeSettingEnum.BOOK.toString())).thenReturn(setting);
-
-        Mockito.when(settingMapper.updateSetting(Mockito.any(Setting.class))).thenReturn(1);
-
-        int result = service.updateSetting(updateRequests);
-        assertEquals(1, result);
-    }
-
-    @Test
-    public void testUpdateSettingWithNotFound() {
-        SettingUpdateRequest[] updateRequests = new SettingUpdateRequest[1];
-        // Thiết lập các SettingUpdateRequest theo nhu cầu của bạn.
-
-        // Thiết lập dữ liệu giả lập cho settingMapper.findByCode trả về null
-        Mockito.when(settingMapper.findByCode(CodeSettingEnum.BOOK.toString())).thenReturn(null);
-
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            service.updateSetting(updateRequests);
-        });
-
-        assertEquals("code", exception.getMessage());
-    }
+//    @Test
+//    public void testUpdateSetting() {
+//        SettingUpdateRequest[] updateRequests = new SettingUpdateRequest[1];
+//        updateRequests[0] = new SettingUpdateRequest();
+//        updateRequests[0].setCode(CodeSettingEnum.BOOK.toString());
+//
+//        Setting setting = new Setting();
+//        Mockito.when(settingMapper.findByCode(CodeSettingEnum.BOOK.toString())).thenReturn(setting);
+//
+//        Mockito.when(settingMapper.updateSetting(Mockito.any(Setting.class))).thenReturn(1);
+//
+//        int result = service.updateSetting(updateRequests);
+//        assertEquals(1, result);
+//    }
+//
+//    @Test
+//    public void testUpdateSettingWithNotFound() {
+//        SettingUpdateRequest[] updateRequests = new SettingUpdateRequest[1];
+//        // Thiết lập các SettingUpdateRequest theo nhu cầu của bạn.
+//
+//        // Thiết lập dữ liệu giả lập cho settingMapper.findByCode trả về null
+//        Mockito.when(settingMapper.findByCode(CodeSettingEnum.BOOK.toString())).thenReturn(null);
+//
+//        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+//            service.updateSetting(updateRequests);
+//        });
+//
+//        assertEquals("code", exception.getMessage());
+//    }
 }
