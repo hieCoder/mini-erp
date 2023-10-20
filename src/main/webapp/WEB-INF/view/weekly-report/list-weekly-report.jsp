@@ -293,7 +293,7 @@
                     var titles = responseData.map(function (task) {
                         return task.title;
                     });
-
+                    if (titles.length == 0)  $('div.custom-spinner').parent().remove();
                     // Show dropdown titles tasks
                     mentionDropdown.innerHTML = "Task:";
                     titles.forEach(function (title) {

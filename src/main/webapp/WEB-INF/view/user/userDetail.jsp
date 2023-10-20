@@ -125,6 +125,7 @@
                             password</a>
                         <div id="password-form" style="display: none;">
                             <input name="password" type="password" class="form-control" id="password" value="" placeholder="New Password">
+                            <span id="messageNewPassword"  class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group hide">
@@ -408,7 +409,7 @@
 
 <%--Handle User--%>
 <script>
-
+    var isNewPassword = false;
     var linkCancle = '/users';
     if(userCurrent.role == U_DEVELOPER) linkCancle = '/home';
     $('.cancle-button').attr('href', linkCancle);
@@ -416,8 +417,16 @@
     // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
     document.getElementById("change-password-button").addEventListener("click", function () {
         var inputPassword = document.getElementById("password-form");
-        if (inputPassword.style.display == "none") inputPassword.style.display = "block";
-        else inputPassword.style.display = "none";
+        if (inputPassword.style.display == "none") {
+            inputPassword.style.display = "block";
+            isNewPassword = true;
+        }
+        else {
+            inputPassword.style.display = "none";
+            isNewPassword = false;
+        }
+
+
     });
 
     Validator({
@@ -442,10 +451,33 @@
             var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
             formData.append('dateOfBirth', dateOfBirth);
 
-            callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-                sessionStorage.setItem('result', 'updateSuccess');
-                location.href = "/users/" + '${user.getId()}';
-            }, 'formUpdateUser');
+            var newPassword = document.getElementById('password').value;
+
+
+            if (isNewPassword) {
+                var regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/;
+                var message = regex.test(newPassword)?undefined:'Password must have at least 6 characters and include letters, numbers and special characters';
+                if (newPassword != '') {
+                    if (message == undefined) {
+                        callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
+                            sessionStorage.setItem('result', 'updateSuccess');
+                            location.href = "/users/" + '${user.getId()}';
+                        }, 'formUpdateUser');
+                    } else {
+                        document.getElementById('messageNewPassword').textContent = message;
+                        resetForm('formUpdateUser');
+                    }
+                } else {
+                    document.getElementById('messageNewPassword').textContent = message;
+                    resetForm('formUpdateUser');
+                }
+            } else {
+                callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
+                    sessionStorage.setItem('result', 'updateSuccess');
+                    location.href = "/users/" + '${user.getId()}';
+                }, 'formUpdateUser');
+            }
+
         }
     });
 
