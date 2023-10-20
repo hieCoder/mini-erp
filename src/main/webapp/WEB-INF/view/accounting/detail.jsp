@@ -19,9 +19,18 @@
         <div class="card-body" id="table-body">
             <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
             <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
-            <p class="card-text text-success">Revenue: <span id="revenueAccount"><fmt:formatNumber type="number" value="${account.revenue}" pattern="#,##0 ₫"/></span></p>
-            <p class="card-text text-danger">Expense: <span id="expenseAccount"><fmt:formatNumber type="number" value="${account.expense}" pattern="#,##0 ₫"/></span></p>
-            <p class="card-text text-primary">Balance: <span id="remainAccount"><fmt:formatNumber type="number" value="${account.remain}" pattern="#,##0 ₫"/></span></p>
+            <p class="card-text text-success">Revenue: <span id="revenueAccount"><fmt:formatNumber type="number"
+                                                                                                   value="${account.revenue}"
+                                                                                                   pattern="#,##0 ₫"/></span>
+            </p>
+            <p class="card-text text-danger">Expense: <span id="expenseAccount"><fmt:formatNumber type="number"
+                                                                                                  value="${account.expense}"
+                                                                                                  pattern="#,##0 ₫"/></span>
+            </p>
+            <p class="card-text text-primary">Balance: <span id="remainAccount"><fmt:formatNumber type="number"
+                                                                                                  value="${account.remain}"
+                                                                                                  pattern="#,##0 ₫"/></span>
+            </p>
             <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
             <p class="card-text">Note: <span id="noteAccount">${account.note}</span></p>
 
@@ -41,7 +50,7 @@
             </c:choose>
         </div>
         <div class="card-footer">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" id="editBtn">Edit</button>
             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
             <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelModal" onclick="goBack()">Cancel
             </button>
@@ -83,6 +92,7 @@
                     <script>
                         var amount = $('input#amount').val()
                         $('input#amount').val(formatNumberToVND(amount));
+
                         function formatNumberToVND(number) {
                             var parts = number.toString().split('.');
 
@@ -94,13 +104,14 @@
                             }
                             return formattedNumber;
                         }
+
                         $(document).ready(function () {
                             $(document).ready(function () {
                                 var input = $('#amount');
                                 input.on('keydown', function (event) {
                                     var value = input.val();
                                     var charCode = event.which;
-                                    if (charCode === 190 || charCode === 110){
+                                    if (charCode === 190 || charCode === 110) {
                                         if (value.indexOf('.') !== -1) {
                                             event.preventDefault();
                                         }
@@ -127,24 +138,6 @@
                         <label for="editBill">Bill</label>
                         <input type="file" class="form-control form-control-file" id="editBill" name="files" multiple>
                         <ul id="editLink" class="list-group">
-                            <c:choose>
-                                <c:when test="${not empty account.bill}">
-                                    <c:forEach items="${account.bill}" var="file">
-                                        <li class="list-group-item listFilesEdit"
-                                            data-name="${file.substring(file.lastIndexOf('/') + 1)}">
-                                            <a href="${file}" download="" target="_blank"
-                                               id="resumeLink">${file.substring(file.indexOf('-') + 1)}</a>
-                                            <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#deleteConfirmationModalFile"
-                                                    data-name="${file.substring(file.lastIndexOf('/') + 1)}">
-                                                <span>×</span>
-                                            </button>
-                                        </li>
-                                    </c:forEach>
-                                </c:when>
-                                <c:otherwise>
-                                </c:otherwise>
-                            </c:choose>
                         </ul>
                     </div>
                 </form>
@@ -242,6 +235,13 @@
     </div>
 </div>
 <script>
+    var validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
+
+    function convertMaxFileSize(string) {
+        var maxFileSizeWithoutMB = string.replace("MB", "");
+        return parseFloat(maxFileSizeWithoutMB) * 1024 * 1024;
+    }
+
     $(document).on("click", ".listFilesEdit button", function (e) {
         $("#deleteConfirmationModalFile #deleteFileButton").attr("data-name", $(this).attr("data-name"))
     });
@@ -252,10 +252,28 @@
     });
 
     $(document).on("change", "#editBill", function (event) {
-        const selectedFiles = event.target.files;
-        var countFile = selectedFiles.length;
+        const billFiles = event.target.files;
+        var countFile = billFiles.length;
         var countCurrentFile = $("li.listFilesEdit").length;
-        if((countFile+countCurrentFile)>${setting.uploadFileLimit}){
+        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
+            var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+            $(this).val('')
+        }
+        for (var i = 0; i < billFiles.length; i++) {
+            var fileName = billFiles[i].name;
+            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
+                alert(`File must ${setting.listTypeFile} and not over 100MB.`);
+                loading.style.display = "none";
+                $(this).val('')
+                return;
+            }
+        }
+        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
             var modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
                         `
@@ -288,6 +306,60 @@
         return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
     }
 
+    document.getElementById('editBtn').addEventListener('click', function () {
+            var loading = document.getElementById("loading");
+            loading.style.display = "block";
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/v1/accounts/detail/" + "${account.id}", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var responseData = JSON.parse(xhr.responseText);
+                        $("#editBill").val('');
+                        var editLink = $('#editLink');
+                        var accountBill = responseData.bill;
+                        if (accountBill.length > 0) {
+                            editLink.html('')
+                            $.each(accountBill, function (index, file) {
+                                var fileName = file.substring(file.lastIndexOf('/') + 1);
+                                var linkText = file.substring(file.indexOf('-') + 1);
+
+                                var listItem = $('<li>', {
+                                    class: 'list-group-item listFilesEdit',
+                                    'data-name': fileName
+                                });
+
+                                var link = $('<a>', {
+                                    href: file,
+                                    download: '',
+                                    target: '_blank',
+                                    id: 'resumeLink'
+                                }).text(linkText);
+
+                                var deleteButton = $('<button>', {
+                                    type: 'button',
+                                    class: 'btn btn-danger',
+                                    'data-toggle': 'modal',
+                                    'data-target': '#deleteConfirmationModalFile',
+                                    'data-name': fileName
+                                }).html('<span>×</span>');
+                                listItem.append(link, deleteButton);
+                                editLink.append(listItem);
+                            });
+                        }
+                        $('#editModal').modal('show');
+                        loading.style.display = "none";
+                    } else {
+                        $('#editModal').modal('hide');
+                        $('#errorModal').modal('show');
+                        loading.style.display = "none";
+                    }
+                }
+            }
+            xhr.send();
+        }
+    );
+
     function editAccount(accountId) {
         var loading = document.getElementById("loading");
         loading.style.display = "block";
@@ -304,7 +376,7 @@
         var billInput = document.getElementById("editBill");
         var billFiles = billInput.files;
         var oldFile = []
-        $("li.listFilesEdit").each(function() {
+        $("li.listFilesEdit").each(function () {
             oldFile.push($(this).attr("data-name"));
         });
 
@@ -312,17 +384,6 @@
             alert("Title and amount are required and amount must be a number.");
             loading.style.display = "none";
             return;
-        }
-
-        var validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
-        for (var j = 0; j < billFiles.length; j++) {
-            var fileName = billFiles[j].name;
-            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
-            if (!validExtensions.includes(fileExtension) || billFiles[j].size > 100 * 1024 * 1024) {
-                alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
-                loading.style.display = "none";
-                return;
-            }
         }
 
         if (transaction === 'expense') {
@@ -353,9 +414,9 @@
                     $("#fullnameAccount").text(responseData.user.fullname);
                     $("#noteAccount").text(responseData.note);
                     var xhtml = ''
-                    if(responseData.bill != null && responseData.bill.length > 0){
-                        responseData.bill.forEach((e)=>{
-                            xhtml += '<a href="'+ e +'" download target="_blank">'+e.substring(e.indexOf('-') + 1)+'</a><br>'
+                    if (responseData.bill != null && responseData.bill.length > 0) {
+                        responseData.bill.forEach((e) => {
+                            xhtml += '<a href="' + e + '" download target="_blank">' + e.substring(e.indexOf('-') + 1) + '</a><br>'
                         })
                     }
                     $("#attachedFilesNotification").html(xhtml)

@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.task.PriorityTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
+import com.shsoftvina.erpshsoftvina.exception.NotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
@@ -54,8 +55,177 @@ public class TaskServiceTest {
     }
 
     @Test
+    public void testRegisterTask_Success() {
+        TaskRegisterRequest request = new TaskRegisterRequest();
+        request.setUserId("validUserId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+
+        User mockUser = new User();
+
+        when(userMapper.findById("validUserId")).thenReturn(mockUser);
+
+        when(taskMapper.registerTask(any())).thenReturn(1);
+
+        int result = taskService.registerTask(request);
+
+        verify(userMapper).findById("validUserId");
+
+        verify(taskMapper).registerTask(any());
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testRegisterTask_UserNotFound() {
+        TaskRegisterRequest request = new TaskRegisterRequest();
+        request.setUserId("nonExistentUserId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+
+        when(userMapper.findById("nonExistentUserId")).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> taskService.registerTask(request));
+
+        verify(userMapper).findById("nonExistentUserId");
+    }
+
+    @Test
+    public void testRegisterTask_PriorityNotFound() {
+        TaskRegisterRequest request = new TaskRegisterRequest();
+        request.setUserId("validUserId");
+        request.setPriority("InvalidPriority");
+
+        User mockUser = new User();
+
+        when(userMapper.findById("validUserId")).thenReturn(mockUser);
+
+        when(taskMapper.registerTask(any())).thenReturn(1);
+
+        assertThrows(NotFoundException.class, () -> taskService.registerTask(request));
+
+        verify(userMapper).findById("validUserId");
+    }
+
+    @Test
+    public void testRegisterTask_ExceptionDuringRegistration() {
+        TaskRegisterRequest request = new TaskRegisterRequest();
+        request.setUserId("validUserId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+
+        User mockUser = new User();
+
+        when(userMapper.findById("validUserId")).thenReturn(mockUser);
+
+        when(taskMapper.registerTask(any())).thenThrow(new RuntimeException("Registration failed"));
+
+        int result = taskService.registerTask(request);
+
+        verify(userMapper).findById("validUserId");
+
+        verify(taskMapper).registerTask(any());
+
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testUpdateTask_Success() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+
+        Task mockTask = new Task();
+
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+        when(taskMapper.updateTask(any())).thenReturn(1);
+
+        int result = taskService.updateTask(request);
+
+        verify(taskMapper).findById("validTaskId");
+        verify(taskMapper).updateTask(any());
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testUpdateTask_TaskNotFound() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("nonExistentTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+
+        when(taskMapper.findById("nonExistentTaskId")).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> taskService.updateTask(request));
+    }
+
+    @Test
+    public void testUpdateTask_InvalidPriority() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority("InvalidPriority");
+
+        Task mockTask = new Task();
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+
+        assertThrows(NotFoundException.class, () -> taskService.updateTask(request));
+    }
+
+    @Test
+    public void testUpdateTask_ExceptionDuringUpdate() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+        request.setAction("ValidAction"); // Valid action
+        // Other valid fields
+
+        Task mockTask = new Task();
+        // Mock the necessary dependencies.
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+        // Mock taskMapper.updateTask to throw an exception.
+        when(taskMapper.updateTask(any())).thenThrow(new RuntimeException("Update error"));
+
+        // Expect that an exception during update results in returning 0.
+        int result = taskService.updateTask(request);
+
+        verify(taskMapper).findById("validTaskId");
+        verify(taskMapper).updateTask(any());
+
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testUpdateTask_InvalidProgress() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+        request.setAction("ValidAction");
+        request.setProgress(50);
+
+        Task mockTask = new Task();
+        mockTask.setStatusTask(StatusTaskEnum.REGISTERED);
+
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+        when(taskMapper.updateTask(any())).thenReturn(1);
+
+        assertThrows(NotAllowException.class, () -> taskService.updateTask(request));
+    }
+
+    @Test
+    public void testUpdateTask_InvalidStatusForProgressUpdate() {
+        TaskUpdateRequest request = new TaskUpdateRequest();
+        request.setId("validTaskId");
+        request.setPriority(PriorityTaskEnum.LOW.name());
+        request.setAction("ValidAction");
+        request.setProgress(50);
+
+        Task mockTask = new Task();
+        mockTask.setStatusTask(StatusTaskEnum.CLOSED);
+
+        when(taskMapper.findById("validTaskId")).thenReturn(mockTask);
+
+        assertThrows(NotAllowException.class, () -> taskService.updateTask(request));
+    }
+
+    @Test
     public void testFindAll() {
-        // Create sample input parameters
         int start = 0;
         int pageSize = 10;
         String statusTask = "REGISTER";
