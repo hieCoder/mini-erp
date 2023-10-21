@@ -12,7 +12,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserAccountingResponse findUserIdFullName(String id) {
-        return userConverter.toAccountResponse(userMapper.findById(id));
+    public IdAndFullnameUserResponse findIdAndFullNameOfUser(String id) {
+        return userConverter.toIdAndFullnameUserResponse(userMapper.findById(id));
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,11 +38,14 @@ public class ScheduleController {
                                           @RequestParam(required = false) Date startDate,
                                           @RequestParam(required = false) Date endDate) {
         ModelAndView modelAndView = new ModelAndView("schedule/detail");
-        if (startDate == null) {
-            startDate = DateUtils.getDefaultStartDate();
-        }
-        if (endDate == null) {
-            endDate = new Date();
+
+        if (startDate == null && endDate == null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            startDate = calendar.getTime();
+
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            endDate = calendar.getTime();
         }
         ScheduleListResponse list = scheduleService.getScheduleDetail(userId, startDate, endDate);
         modelAndView.addObject("schedule",list);

@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
@@ -18,10 +19,7 @@ import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -57,6 +55,37 @@ public class TaskConverter {
                 .progress(task.getProgress())
                 .priority(EnumUtils.instance(task.getPriority()))
                 .build();
+    }
+
+    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks){
+        List<ScheduleListResponse.TaskResponse> rs = new ArrayList<>();
+
+        String createdOrStartDate = null;
+        String dueOrCloseDate = null;
+        for (Task task: tasks){
+            if (task != null){
+
+                Date createdDate = task.getCreatedDate();
+                Date startDate = task.getStartDate();
+                if (startDate == null) createdOrStartDate =  DateUtils.formatDate(createdDate);
+                else createdOrStartDate = DateUtils.formatDate(startDate);
+
+                Date dueDate = task.getDueDate();
+                if(dueDate != null){
+                    if(!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) dueOrCloseDate = "~ " + DateUtils.formatDate(task.getDueDate());
+                    else dueOrCloseDate = DateUtils.formatDate(task.getCloseDate());
+                }
+
+                ScheduleListResponse.TaskResponse taskResponse = ScheduleListResponse.TaskResponse.builder()
+                        .id(task.getId())
+                        .title(task.getTitle())
+                        .startDate(createdOrStartDate)
+                        .dueOrCloseDate(dueOrCloseDate)
+                        .statusTask(EnumUtils.instance(task.getStatusTask())).build();
+                rs.add(taskResponse);
+            }
+        }
+        return rs;
     }
 
     public Task toEntity(TaskRegisterRequest taskRegisterRequest) {

@@ -46,7 +46,7 @@ public class AccountingConverter {
                 .expense(expense)
                 .remain(accounting.getRemain())
                 .revenue(revenue)
-                .user(userConverter.toAccountResponse(accounting.getUser()))
+                .user(userConverter.toIdAndFullnameUserResponse(accounting.getUser()))
                 .title(accounting.getTitle())
                 .note(accounting.getNote())
                 .build();

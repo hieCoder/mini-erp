@@ -76,8 +76,7 @@ public class DateUtils {
     }
 
     public static String timeWork(Time startDate, Time endDate) {
-
-        if(startDate == null || endDate == null) return null;
+        if (startDate == null || endDate == null) return null;
 
         LocalTime localStartTime = startDate.toLocalTime();
         LocalTime localEndTime = endDate.toLocalTime();
@@ -85,8 +84,8 @@ public class DateUtils {
         Duration duration = Duration.between(localStartTime, localEndTime);
 
         long hours = duration.toHours();
-        long minutes = duration.toMinutesPart();
-        long seconds = duration.toSecondsPart();
+        long minutes = (duration.toMinutes() % 60);
+        long seconds = duration.getSeconds() % 60;
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
