@@ -38,4 +38,8 @@ public class MessageErrorUtils {
     public static String notAllow(String s){
         return s.concat(" is not allow");
     }
+
+    public static String invalid(){
+        return "Data is invalid";
+    }
 }

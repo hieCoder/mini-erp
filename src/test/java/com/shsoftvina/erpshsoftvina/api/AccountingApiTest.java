@@ -2,7 +2,6 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shsoftvina.erpshsoftvina.api.AccountingApi;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
@@ -10,7 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import com.shsoftvina.erpshsoftvina.service.impl.AccountingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,8 +60,8 @@ public class AccountingApiTest {
         List<AccountResponse> accountResponseList = new ArrayList<>();
         String input = "231002121630-Accounting Management Interface.xlsx";
         String[] result = input.split("-");
-        accountResponseList.add(new AccountResponse("4b90a870-5ffa-4ea1-a100-63215ce9a02e", "27/07/2023 14:14:43", 20000L, 0L, 20000L, new UserAccountingResponse("4", "Thằng Hiếu phá thế"), result, "Buy watermelon", "note1"));
-        accountResponseList.add(new AccountResponse("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec", "27/07/2023 14:14:46", 100000L, 0L, 120000L, new UserAccountingResponse("3", "TrungHieu99999"), null, "Buy Rice", "note2"));
+        accountResponseList.add(new AccountResponse("4b90a870-5ffa-4ea1-a100-63215ce9a02e", "27/07/2023 14:14:43", 20000L, 0L, 20000L, new IdAndFullnameUserResponse("4", "Thằng Hiếu phá thế"), result, "Buy watermelon", "note1"));
+        accountResponseList.add(new AccountResponse("111ec17d-3921-4bf7-8fcd-283d2fc8d0ec", "27/07/2023 14:14:46", 100000L, 0L, 120000L, new IdAndFullnameUserResponse("3", "TrungHieu99999"), null, "Buy Rice", "note2"));
         PageAccountListResponse firstAccounting = new PageAccountListResponse(accountResponseList, 1, 1, 5, false, false, new TotalSpendAndRemain(120000L, 0L, 120000L));
         when(accountingService.findAccountingByMonth("2023-07", 1, 5, null, null)).thenReturn(firstAccounting);
 

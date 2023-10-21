@@ -5,7 +5,7 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.service.impl.UserServiceImpl;
@@ -90,8 +90,8 @@ public class UserServiceTest {
 
         when(userMapper.findById(userId)).thenReturn(expectedUser);
 
-        UserAccountingResponse expectedResponse = userConverter.toAccountResponse(expectedUser);
-        UserAccountingResponse response = userServiceImpl.findUserIdFullName(userId);
+        IdAndFullnameUserResponse expectedResponse = userConverter.toIdAndFullnameUserResponse(expectedUser);
+        IdAndFullnameUserResponse response = userServiceImpl.findIdAndFullNameOfUser(userId);
 
         verify(userMapper).findById(userId);
         assertEquals(expectedResponse, response);

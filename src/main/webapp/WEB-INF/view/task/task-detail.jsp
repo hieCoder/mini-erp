@@ -12,7 +12,7 @@
 <body>
     <div class="container mt-4" id="content-container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <h1 class="text-center">Task detail</h1>
                 <c:if test="${param.updateSuccess != null}">
                     <div class="alert alert-success">
@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <h1 class="text-center">Your comment</h1>
                 <form id="yourCommentForm">
                     <div class="form-group">
@@ -106,7 +106,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <h1 class="text-center">List of comment</h1>
                 <ul id="comment-list" class="list-group">
 <%--                    <li class="list-group-item">--%>
@@ -182,7 +182,6 @@
     <script src="/assets/js/task/task.js"></script>
     <script>
 
-        //id
         var idTask = '${id}';
         var commentObj = {
             idComment: null,
@@ -285,10 +284,6 @@
                 formData.append('taskId', idTask);
                 formData.append('content', $('#yourCommentContent').summernote().summernote('code'));
                 formData.append('userId', userCurrent.id);
-
-                // var data = {};
-                // formData.forEach((value, key) => data[key] = value);
-                // console.log(data.files.file.);
 
                 $('#yourCommentSubmitComment').after(createLoadingHtml());
 

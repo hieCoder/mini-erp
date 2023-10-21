@@ -4,34 +4,57 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ScheduleMapper">
 
     <select id="getScheduleDetail" resultMap="scheduleDetailResultMap">
-        SELECT t.ID, t.STATUS_TASK, t.TITLE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE, t.USER_ID, u.ID, u.FULLNAME
+        SELECT t.ID, t.TITLE, t.STATUS_TASK, t.CREATED_DATE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE
         FROM TASK t INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.USER_ID = #{userId} AND t.STATUS = 'ACTIVE'
         <choose>
             <when test="startDate != null and endDate != null">
-                AND t.START_DATE BETWEEN #{startDate} AND #{endDate}
+                AND ((t.START_DATE IS NOT NULL AND
+                        (
+                            (t.START_DATE BETWEEN #{startDate} AND #{endDate})
+                            OR (#{startDate} > t.START_DATE AND #{startDate} &lt;=
+                                (CASE
+                                    WHEN t.STATUS != 'CLOSE' THEN t.DUE_DATE
+                                    WHEN t.STATUS = 'CLOSE' THEN t.CLOSE_DATE
+                                END))
+                        )
+                    )
+                    OR (t.START_DATE IS NULL AND
+                        ((t.CREATED_DATE BETWEEN #{startDate} AND #{endDate})
+                             OR (#{startDate} > t.CREATED_DATE AND #{startDate} &lt;= t.DUE_DATE)
+                    )))
             </when>
             <when test="startDate != null">
-                AND t.START_DATE >= #{startDate}
+                AND ((t.START_DATE IS NOT NULL AND
+                        (
+                            t.START_DATE >= #{startDate}
+                            OR (#{startDate} > t.START_DATE AND #{startDate} &lt;=
+                                    (CASE
+                                        WHEN t.STATUS != 'CLOSE' THEN t.DUE_DATE
+                                        WHEN t.STATUS = 'CLOSE' THEN t.CLOSE_DATE
+                                    END)
+                            )
+                        ))
+                        OR (t.START_DATE IS NULL AND
+                            (t.CREATED_DATE >= #{startDate}
+                            OR (#{startDate} > t.CREATED_DATE AND #{startDate} &lt;= t.DUE_DATE)
+                        )))
             </when>
             <when test="endDate != null">
-                AND t.START_DATE &lt;= #{endDate}
+                AND ((t.START_DATE IS NOT NULL AND t.START_DATE &lt;= #{endDate})
+                        OR (t.START_DATE IS NULL AND t.CREATED_DATE &lt;= #{endDate})
+                )
             </when>
         </choose>
     </select>
 
     <resultMap id="scheduleDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">
         <id property="id" column="ID"/>
-        <result property="statusTask" column="STATUS_TASK"/>
         <result property="title" column="TITLE"/>
+        <result property="statusTask" column="STATUS_TASK"/>
+        <result property="createdDate" column="CREATED_DATE"/>
         <result property="startDate" column="START_DATE"/>
         <result property="dueDate" column="DUE_DATE"/>
         <result property="closeDate" column="CLOSE_DATE"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-    </resultMap>
-
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <result property="id" column="ID"/>
-        <result property="fullname" column="FULLNAME"/>
     </resultMap>
 </mapper>

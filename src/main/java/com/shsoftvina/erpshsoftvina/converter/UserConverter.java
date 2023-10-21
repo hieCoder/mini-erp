@@ -8,7 +8,7 @@ import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.utils.*;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -129,8 +128,8 @@ public class UserConverter {
                 .build();
     }
 
-    public UserAccountingResponse toAccountResponse(User user) {
-        return UserAccountingResponse.builder()
+    public IdAndFullnameUserResponse toIdAndFullnameUserResponse(User user) {
+        return IdAndFullnameUserResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
                 .build();

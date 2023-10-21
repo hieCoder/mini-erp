@@ -21,12 +21,6 @@ public class ScheduleApi {
     public ResponseEntity<?> getScheduleDetail(@PathVariable String userId,
                                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        if (startDate == null) {
-            startDate = DateUtils.getDefaultStartDate();
-        }
-        if (endDate == null) {
-            endDate = new Date();
-        }
         return new ResponseEntity<>(scheduleService.getScheduleDetail(userId, startDate, endDate), HttpStatus.OK);
     }
 }

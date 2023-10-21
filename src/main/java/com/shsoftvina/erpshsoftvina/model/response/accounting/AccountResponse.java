@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.accounting;
 
-import com.shsoftvina.erpshsoftvina.model.response.user.UserAccountingResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class AccountResponse {
     private Long revenue;
     private Long expense;
     private Long remain;
-    private UserAccountingResponse user;
+    private IdAndFullnameUserResponse user;
     private String[] bill;
     private String title;
     private String note;
