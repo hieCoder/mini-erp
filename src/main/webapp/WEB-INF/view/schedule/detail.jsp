@@ -89,6 +89,7 @@
                             var currentDay = new Date();
                             var selectedStartDate = new Date(currentDay.getFullYear(), currentDay.getMonth(), 1);
                             var selectedEndDate = new Date(currentDay.getFullYear(), currentDay.getMonth() + 1, 0);
+                            console.log(selectedStartDate);
 
                             var startDate = new Date("${startDate}");
                             startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
@@ -98,7 +99,14 @@
                             dueOrCloseDate = new Date(dueOrCloseDate.getFullYear(), dueOrCloseDate.getMonth(), dueOrCloseDate.getDate());
                             var status = "${s.statusTask.code}";
                             var id = "${s.id}";
-                            var statusDuration = dueOrCloseDate - startDate;
+                            var statusDuration;
+                            console.log(startDate);
+                            if (startDate < selectedStartDate) {
+                                console.log("A")
+                                statusDuration = dueOrCloseDate - selectedStartDate;
+                            } else {
+                                statusDuration = dueOrCloseDate - startDate;
+                            }
                             var daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
                             var color;
                             if (status === 'OPENED') {
@@ -112,10 +120,16 @@
                             } else {
                                 color = 'bg-secondary';
                             }
+                            var checkStartDateIsBefore = true;
                             while (selectedStartDate.getTime() <= selectedEndDate.getTime()) {
-                                if (selectedStartDate.getTime() === startDate.getTime()) {
+                                if (selectedStartDate.getTime() > startDate.getTime() && checkStartDateIsBefore) {
                                     document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + id + '" class="btn font-weight-bold">' + status + '</a></td>');
                                     selectedStartDate = new Date(selectedStartDate.getTime() + 86400000 * daysDiff);
+                                    checkStartDateIsBefore = false;
+                                } else if (selectedStartDate.getTime() === startDate.getTime()) {
+                                    document.write('<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + id + '" class="btn font-weight-bold">' + status + '</a></td>');
+                                    selectedStartDate = new Date(selectedStartDate.getTime() + 86400000 * daysDiff);
+                                    checkStartDateIsBefore = false;
                                 } else {
                                     document.write('<td></td>');
                                     selectedStartDate = new Date(selectedStartDate.getTime() + 86400000);
@@ -206,7 +220,13 @@
                             let dueOrCloseDate = new Date(subStringDueOrCloseDate);
                             dueOrCloseDate = new Date(dueOrCloseDate.getFullYear(), dueOrCloseDate.getMonth(), dueOrCloseDate.getDate());
                             let status = task.statusTask.code;
-                            let statusDuration = dueOrCloseDate - startDate;
+                            let statusDuration;
+                            if (startDate < requestStartDate) {
+                                console.log("A")
+                                statusDuration = dueOrCloseDate - requestStartDate;
+                            } else {
+                                statusDuration = dueOrCloseDate - startDate;
+                            }
                             let daysDiff = (statusDuration / (1000 * 60 * 60 * 24)) + 1;
                             let color;
                             if (status === 'OPENED') {
@@ -220,11 +240,18 @@
                             } else {
                                 color = 'bg-secondary';
                             }
+                            let checkStartDateIsBefore = true;
                             row.innerHTML = '<th scope="col" class="bg-dark">' + task.title + '</th>';
                             while (requestStartDate.getTime() <= requestEndDate.getTime()) {
+                                if (checkStartDateIsBefore && requestStartDate.getTime() > startDate.getTime()) {
+                                    row.innerHTML += '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + task.id + '" class="btn font-weight-bold">' + status + '</a></td>';
+                                    requestStartDate = new Date(requestStartDate.getTime() + 86400000 * daysDiff);
+                                    checkStartDateIsBefore = false;
+                                } else
                                 if (Math.abs(requestStartDate - startDate) < 1000) {
                                     row.innerHTML += '<td colspan="' + daysDiff + '" class="rounded-pill text-center align-middle ' + color + '"><a href="/tasks/' + task.id + '" class="btn font-weight-bold">' + status + '</a></td>';
                                     requestStartDate = new Date(requestStartDate.getTime() + 86400000 * daysDiff);
+                                    checkStartDateIsBefore = false;
                                 } else {
                                     row.innerHTML += '<td></td>';
                                     requestStartDate = new Date(requestStartDate.getTime() + 86400000);
