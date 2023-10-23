@@ -138,7 +138,7 @@
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + currentDate.toLocaleDateString('en-US', options);
-                    currentMonthYear.classList.add('font-italic','underline-text');
+                    currentMonthYear.classList.add('font-italic', 'underline-text');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
                     span.textContent = "Username: " + fullName;
@@ -200,7 +200,7 @@
                                             const month = currentDate.getMonth() + 1;
 
                                             var day = lastDayOfPreviousMonth - startDay + j
-                                            var dayData = (day<10) ? "0"+day : day
+                                            var dayData = (day < 10) ? "0" + day : day
                                             link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + dayData;
                                             cell.appendChild(link);
                                         }
@@ -237,7 +237,23 @@
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
                                 } else {
-                                    cell.textContent = '';
+                                    if (responseData != null && responseData.length > 0) {
+                                        responseData.forEach((e) => {
+                                            const startDate = new Date(e.startDate);
+                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
+                                            const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            if (weekNumber === ((i/6) + 1)) {
+                                                const link = document.createElement('button');
+                                                link.textContent = "Edit";
+                                                link.classList.add("btn");
+                                                link.classList.add("btn-primary");
+                                                link.classList.add("showWeeklyUpdate");
+                                                link.setAttribute("data-id", e.weeklyId);
+                                                cell.appendChild(link);
+                                            }
+                                        })
+                                    }
                                 }
                             } else {
                                 if (j === 0) {
@@ -249,7 +265,7 @@
                                     cell.classList.add("text-wrap")
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
-                                } else if (j < 8)  {
+                                } else if (j < 8) {
                                     if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("font-italic")
                                         responseData.forEach((e) => {
@@ -277,7 +293,17 @@
                                     if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("font-italic")
                                         responseData.forEach((e) => {
-                                            cell.textContent = e.weeklyContents[(i % 6) - 1];
+                                            if (e.weeklyContents === null) {
+                                                return;
+                                            }
+                                            const startDate = new Date(e.startDate);
+                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
+                                            const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            if (weekNumber === ((i/6) + 1)) {
+                                                console.log("A" + ((i/6) + 1));
+                                                cell.textContent = e.weeklyContents[(i % 6) - 1];
+                                            }
                                         });
                                     }
                                 }
