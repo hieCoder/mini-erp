@@ -2,19 +2,26 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.converter.ManagementTimeConvert;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +40,21 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private ApplicationUtils applicationUtils;
 
+    @Autowired
+    private WeeklyManagementTimeDayMapper weeklyManagementTimeDayMapper;
+
+    private LocalDate getFisrtDateOfWeek(Date currentDate){
+        Instant instant = currentDate.toInstant();
+        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        return currentLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+    }
+
+    private LocalDate getLastDateOfWeek(Date currentDate){
+        Instant instant = currentDate.toInstant();
+        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        return currentLocalDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+    }
+
     @Override
     public DayResponse createDay(DayCreateRequest dayCreateRequest) {
 
@@ -42,6 +64,19 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         ManagementTimeDay day = managementTimeConvert.toEntity(dayCreateRequest);
         try{
             managementTimeDayMapper.createDayInfo(day);
+
+
+            Date currentDate = dayCreateRequest.getDay();
+            LocalDate firstDayOfWeek = getFisrtDateOfWeek(currentDate);
+            LocalDate lastDayOfWeek = getLastDateOfWeek(currentDate);
+            String userId = dayCreateRequest.getUserId();
+
+//            WeeklyManagementTimeDay weeklyManagementTimeDay =
+//                    weeklyManagementTimeDayMapper.findByStartDateAndEndDateOfUser(userId, firstDayOfWeek, lastDayOfWeek);
+//            System.out.println(weeklyManagementTimeDay);
+
+
+
             return managementTimeConvert.toResponse(day);
         }catch (Exception e){
             return null;

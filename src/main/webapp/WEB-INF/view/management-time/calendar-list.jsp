@@ -155,10 +155,10 @@
                     // Calculate the last day of the previous month
                     const lastDayOfPreviousMonth = getLastDayOfPreviousMonth(year, month);
 
-                    var count = -1;
+                    var countLine = -1;
                     // Populate the calendar
                     const tbody = table.querySelector('tbody');
-                    for (let i = 0; i < 24; i++) {
+                    for (let i = 0; i < 30; i++) {
                         const row = document.createElement('tr');
                         for (let j = 0; j < 8; j++) {
                             const cell = document.createElement('td');
@@ -166,10 +166,10 @@
                             cell.classList.add("align-middle")
                             if (i % 6 === 0) {
                                 if (j === 0) {
-                                    count += 1;
+                                    countLine += 1;
                                     cell.textContent = '';
                                 } else {
-                                    const dayNumber = count * 7 + j - startDay;
+                                    const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber < 1) {
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
@@ -247,7 +247,7 @@
                                         cell.classList.add("font-italic")
                                         responseData.forEach((e) => {
                                             const dateInResponse = new Date(e.day);
-                                            const currentDay = count * 7 + j - startDay;
+                                            const currentDay = countLine * 7 + j - startDay;
                                             const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
                                             if (
                                                 currentDate.getFullYear() === dateInResponse.getFullYear() &&
