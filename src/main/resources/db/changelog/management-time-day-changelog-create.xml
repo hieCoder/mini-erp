@@ -15,6 +15,7 @@
             <column name="AFFIRMATION" type="TEXT"/>
             <column name="DAY" type="DATE"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
+            <column name="WEEKLY_CODE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
