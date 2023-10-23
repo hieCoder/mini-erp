@@ -146,7 +146,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Content:</label>
                         <div class="col-sm-10">
-                            <div id="contentContainer" contenteditable="true" class="form-control mention-container ">
+                            <div id="contentContainer" contenteditable="true" class="form-control mention-container overflow-auto" style="min-height: 100px">
                                 <!-- Content will be edited here -->
 
                             </div>
@@ -439,26 +439,9 @@
             document.getElementById("search").value = selectedSearch;
         }
     });
-</script>
 
-<%-- Format content in modal Add Weekly Report--%>
-<script>
-    function expandContentContainer() {
-        var contentContainer = document.getElementById("contentContainer");
-        var contentHeight = contentContainer.scrollHeight;
-        var containerHeight = contentContainer.clientHeight;
-
-        if (contentHeight > containerHeight) {
-            contentContainer.style.height = contentHeight + "px";
-        }
-    }
-
-    // Get event when user change content
-    document.addEventListener("input", function () {
-        expandContentContainer();
-    });
-    $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
 
 </script>
+
 </body>
 </html>

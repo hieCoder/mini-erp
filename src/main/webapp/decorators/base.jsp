@@ -63,7 +63,7 @@
         $('.avatar-login').attr('src', userCurrent.avatar);
     }
 
-    $('.fullname-login').text(userCurrent.fullname);
+    $('.fullname-login').text(localStorage.getItem('fullname'));
     $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
     var scheduleLink = '';
     var managementTime = ''
