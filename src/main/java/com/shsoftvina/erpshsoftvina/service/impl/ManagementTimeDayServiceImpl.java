@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.converter.ManagementTimeConvert;
+import com.shsoftvina.erpshsoftvina.converter.WeeklyManagementTimeDayConverter;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
@@ -10,6 +11,7 @@ import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
@@ -43,6 +45,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private WeeklyManagementTimeDayMapper weeklyManagementTimeDayMapper;
 
+    @Autowired
+    private WeeklyManagementTimeDayConverter weeklyManagementTimeDayConverter;
+
     private LocalDate getFisrtDateOfWeek(Date currentDate){
         Instant instant = currentDate.toInstant();
         LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
@@ -63,19 +68,31 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         ManagementTimeDay day = managementTimeConvert.toEntity(dayCreateRequest);
         try{
-            managementTimeDayMapper.createDayInfo(day);
-
-
             Date currentDate = dayCreateRequest.getDay();
             LocalDate firstDayOfWeek = getFisrtDateOfWeek(currentDate);
             LocalDate lastDayOfWeek = getLastDateOfWeek(currentDate);
             String userId = dayCreateRequest.getUserId();
 
-//            WeeklyManagementTimeDay weeklyManagementTimeDay =
-//                    weeklyManagementTimeDayMapper.findByStartDateAndEndDateOfUser(userId, firstDayOfWeek, lastDayOfWeek);
-//            System.out.println(weeklyManagementTimeDay);
+            WeeklyManagementTimeDay weeklyManagementTimeDay =
+                    weeklyManagementTimeDayMapper.findByStartDateAndEndDateOfUser(userId, firstDayOfWeek, lastDayOfWeek);
+            if(weeklyManagementTimeDay == null){
 
+                String generateCodeWeekly = "WEEKLY_CODE_" + ApplicationUtils.generateId();
 
+                WeeklyManagementTimeDay w = weeklyManagementTimeDayConverter.createWeeklyManagementTimeDay(
+                        generateCodeWeekly,
+                        firstDayOfWeek,
+                        lastDayOfWeek,
+                        dayCreateRequest.getUserId()
+                );
+                weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(w);
+
+                day.setWeeklyCode(generateCodeWeekly);
+            }else{
+                day.setWeeklyCode(weeklyManagementTimeDay.getCode());
+            }
+
+            managementTimeDayMapper.createDayInfo(day);
 
             return managementTimeConvert.toResponse(day);
         }catch (Exception e){
@@ -131,17 +148,17 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return dayResponseId;
     }
 
-
     @Override
-    public List<DayResponse> findAllByMonthYear(String userId, String startDate, String endDate) {
+    public List<WeeklyManagementTimeDayResponse> getDays(String userId, String startDate, String endDate) {
 
         applicationUtils.checkUserAllow(userId);
 
         if(userMapper.findById(userId) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
-        return managementTimeDayMapper.findAllByMonthYear(userId, startDate, endDate)
-                .stream().map(day -> managementTimeConvert.toResponse(day))
-                .collect(Collectors.toList());
+        List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findAllByMonthYear(userId, startDate, endDate);
+        List<WeeklyManagementTimeDayResponse> rs = weeklyManagementTimeDayConverter.toListWeeklyResponse(userId, managementTimeDays);
+
+        return rs;
     }
 }

@@ -12,5 +12,15 @@ import java.util.List;
 @Mapper
 public interface WeeklyManagementTimeDayMapper {
 
-    WeeklyManagementTimeDay findByStartDateAndEndDateOfUser(String userId, LocalDate firstDayOfWeek, LocalDate lastDayOfWeek);
+    WeeklyManagementTimeDay findByStartDateAndEndDateOfUser(@Param("userId") String userId,
+                                                            @Param("firstDayOfWeek") LocalDate firstDayOfWeek,
+                                                            @Param("lastDayOfWeek") LocalDate lastDayOfWeek);
+    int createWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
+
+    WeeklyManagementTimeDay findByCodeOfUser(@Param("userId") String userId,
+                                             @Param("code") String code);
+
+    int updateWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
+
+    WeeklyManagementTimeDay findById(@Param("id") String id);
 }

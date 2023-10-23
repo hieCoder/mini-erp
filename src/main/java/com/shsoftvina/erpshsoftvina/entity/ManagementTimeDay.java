@@ -19,4 +19,5 @@ public class ManagementTimeDay {
     private String affirmation;
     private Date day;
     private User user;
+    private String weeklyCode;
 }

@@ -12,11 +12,11 @@
     <select id="findByStartDateAndEndDateOfUser" resultMap="weeklyManagementTimeDayResultMap">
         SELECT *
         FROM WEEKLY_MANAGEMENT_TIME_DAY w
-                 INNER JOIN USER u ON w.user_id = u.id
+                 INNER JOIN USER u ON w.USER_ID = u.ID
         WHERE w.USER_ID = #{userId} AND w.START_DATE = #{firstDayOfWeek} AND w.END_DATE = #{lastDayOfWeek}
     </select>
 
-    <resultMap id="weeklyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyReport">
+    <resultMap id="weeklyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="content" column="CONTENT"/>
@@ -25,4 +25,28 @@
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap"/>
     </resultMap>
+
+    <insert id="createWeeklyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
+        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, START_DATE, END_DATE, USER_ID)
+        VALUES (#{id}, #{code}, #{content}, #{startDate}, #{endDate}, #{user.id})
+    </insert>
+
+    <select id="findByCodeOfUser" resultMap="weeklyManagementTimeDayResultMap">
+        SELECT *
+        FROM WEEKLY_MANAGEMENT_TIME_DAY w
+                 INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.USER_ID = #{userId} AND w.CODE = #{code}
+    </select>
+
+    <select id="findById" resultMap="weeklyManagementTimeDayResultMap">
+        SELECT *
+        FROM WEEKLY_MANAGEMENT_TIME_DAY w
+                 INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.ID = #{id}
+    </select>
+
+    <update id="updateWeeklyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
+        UPDATE WEEKLY_MANAGEMENT_TIME_DAY SET CONTENT = #{content}
+        WHERE ID = #{id};
+    </update>
 </mapper>
