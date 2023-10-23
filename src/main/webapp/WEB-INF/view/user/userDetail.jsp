@@ -480,9 +480,6 @@
                 if (newPassword != '') {
                     if (message == undefined) {
                         callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-
-                            localStorage.setItem('avatarLink', )
-
                             sessionStorage.setItem('result', 'updateSuccess');
                             location.href = "/users/" + '${user.getId()}';
                         }, 'formUpdateUser');
