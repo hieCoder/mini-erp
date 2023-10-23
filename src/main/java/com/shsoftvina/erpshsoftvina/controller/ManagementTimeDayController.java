@@ -63,9 +63,17 @@ public class ManagementTimeDayController {
             return mav;
     }
 
+//    @GetMapping("/{userId}")
+//    public ModelAndView getCalendar(@PathVariable("userId") String userId) {
+//        ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
+//        IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
+//        modelAndView.addObject("user",user);
+//        return modelAndView;
+//    }
+
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
-        ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
+        ModelAndView modelAndView = new ModelAndView("management-time/test");
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
         modelAndView.addObject("user",user);
         return modelAndView;
