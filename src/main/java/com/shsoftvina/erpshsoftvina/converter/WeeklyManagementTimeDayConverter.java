@@ -70,7 +70,8 @@ public class WeeklyManagementTimeDayConverter {
 
             WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCodeOfUser(userId, weeklyCode);
             if (weeklyManagementTimeDay != null) {
-                weeklyManagementTimeDayResponse.setWeeklyCode(weeklyCode);
+                weeklyManagementTimeDayResponse.setWeeklyId(weeklyManagementTimeDay.getId());
+                weeklyManagementTimeDayResponse.setStartDate(DateUtils.formatDate(weeklyManagementTimeDay.getStartDate()));
                 String contentOfWeekly = weeklyManagementTimeDay.getContent();
                 if(!StringUtils.isBlank(contentOfWeekly)){
                     weeklyManagementTimeDayResponse.setWeeklyContents(contentOfWeekly.split(","));

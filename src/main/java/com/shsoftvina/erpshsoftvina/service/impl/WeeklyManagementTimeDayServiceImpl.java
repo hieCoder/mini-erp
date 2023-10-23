@@ -33,9 +33,6 @@ public class WeeklyManagementTimeDayServiceImpl implements WeeklyManagementTimeD
     @Autowired
     private WeeklyManagementTimeDayConverter weeklyManagementTimeDayConverter;
 
-    @Autowired
-    private ApplicationUtils applicationUtils;
-
     @Override
     public int updateWeekly(WeeklyManagementTimeDayUpdateRequest weeklyManagementTimeDayUpdateRequest) {
 

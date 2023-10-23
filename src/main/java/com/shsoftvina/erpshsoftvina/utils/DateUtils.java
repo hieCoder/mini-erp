@@ -4,6 +4,7 @@ package com.shsoftvina.erpshsoftvina.utils;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +41,14 @@ public class DateUtils {
         if(date != null){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             return sdf.format(date);
+        }
+        return null;
+    }
+
+    public static String formatDate(LocalDate localDate) {
+        if (localDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return localDate.format(formatter);
         }
         return null;
     }

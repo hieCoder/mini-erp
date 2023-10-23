@@ -10,7 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeeklyManagementTimeDayResponse {
-    private String weeklyCode;
+    private String weeklyId;
+    private String startDate;
     private String[] weeklyContents;
     private List<DayResponse> listDayOfWeek;
 }
