@@ -22,7 +22,7 @@
                 <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
                 <div class="col-md-4">
                     <div class="text-center">
-                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
+                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="thayTheHinhAnh()">
                         <input name="avatar" type="file" class="form-control mt-2" id="avatar">
                         <small class="text-muted ml-2">Choose New Avatar</small>
                         <h4 class="mt-2">${user.getFullname()}</h4>
@@ -409,6 +409,11 @@
 
 <%--Handle User--%>
 <script>
+
+    <%-- avatar default --%>
+    function thayTheHinhAnh() {
+        document.getElementById("avatar-user").src = "/upload/user/avatar-default.jpg";
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
         var srcAvatar = $('#avatar-user').attr('src');
