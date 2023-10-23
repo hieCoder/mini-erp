@@ -138,4 +138,12 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_FEELING_OF_BOOK_USER"/>
     </changeSet>
+
+    <changeSet id="17" author="team2">
+        <addForeignKeyConstraint baseTableName="WEEKLY_MANAGEMENT_TIME_DAY"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_WEEKLY_MANAGEMENT_TIME_DAY_USER"/>
+    </changeSet>
 </databaseChangeLog>
