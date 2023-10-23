@@ -45,11 +45,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-12 text-right">
                 <button type="button" class="btn btn-success px-4 create-weeklyReport-button">Add Weekly Report</button>
             </div>
         </div>
-        <table class="table mt-4 table-bordered">
+        <table class="table mt-2 table-bordered">
             <thead>
             <tr>
                 <th>NO.</th>
@@ -146,7 +146,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Content:</label>
                         <div class="col-sm-10">
-                            <div id="contentContainer" contenteditable="true" class="form-control mention-container ">
+                            <div id="contentContainer" contenteditable="true" class="form-control mention-container overflow-auto" style="min-height: 100px">
                                 <!-- Content will be edited here -->
 
                             </div>
@@ -330,7 +330,7 @@
 
     // Handle when user click button "Submit" in modal Add Weekly Report
     document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
-
+        $(this).prop("disabled", true)
         var contentContainerE = document.getElementById("contentContainer");
         var valuaContent = contentContainerE.innerText;
 
@@ -348,7 +348,7 @@
         }
 
         errorMessageSpan = titleE.nextElementSibling;
-        if(valueTitle === ""){
+        if(valueTitle.trim() === ""){
             errorMessageSpan.textContent = "This filed is not filled";
             isValidate = false;
         }else{
@@ -371,8 +371,11 @@
             callAjaxByJsonWithData('/api/v1/weekly-reports', 'POST', data, function (rs){
                 sessionStorage.setItem('result', 'addWeeklyReportSuccess');
                 $('div.custom-spinner').parent().remove();
+                $(this).prop("disabled", false)
                 location.reload();
             });
+        } else{
+            $(this).prop("disabled", false)
         }
     });
 
@@ -439,26 +442,7 @@
             document.getElementById("search").value = selectedSearch;
         }
     });
-</script>
-
-<%-- Format content in modal Add Weekly Report--%>
-<script>
-    function expandContentContainer() {
-        var contentContainer = document.getElementById("contentContainer");
-        var contentHeight = contentContainer.scrollHeight;
-        var containerHeight = contentContainer.clientHeight;
-
-        if (contentHeight > containerHeight) {
-            contentContainer.style.height = contentHeight + "px";
-        }
-    }
-
-    // Get event when user change content
-    document.addEventListener("input", function () {
-        expandContentContainer();
-    });
     $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
-
 </script>
 </body>
 </html>
