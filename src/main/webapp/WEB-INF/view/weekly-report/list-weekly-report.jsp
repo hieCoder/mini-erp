@@ -45,11 +45,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-12 text-right">
                 <button type="button" class="btn btn-success px-4 create-weeklyReport-button">Add Weekly Report</button>
             </div>
         </div>
-        <table class="table mt-4 table-bordered">
+        <table class="table mt-2 table-bordered">
             <thead>
             <tr>
                 <th>NO.</th>
@@ -132,8 +132,8 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Username:</label>
                         <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext font-weight-bold"
-                                   value="${user.fullname}" disabled>
+                            <input type="text" readonly id="fullname" class="form-control-plaintext font-weight-bold"
+                                   value='' disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -237,6 +237,9 @@
 
 <%-------------------------------- Code Javascript -------------------------------------%>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+       $('#fullname').val(userCurrent.fullname);
+    });
     // Handle search
     document.addEventListener("DOMContentLoaded", function () {
         // Get input search
@@ -330,7 +333,7 @@
 
     // Handle when user click button "Submit" in modal Add Weekly Report
     document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
-
+        $(this).prop("disabled", true)
         var contentContainerE = document.getElementById("contentContainer");
         var valuaContent = contentContainerE.innerText;
 
@@ -348,7 +351,7 @@
         }
 
         errorMessageSpan = titleE.nextElementSibling;
-        if(valueTitle === ""){
+        if(valueTitle.trim() === ""){
             errorMessageSpan.textContent = "This filed is not filled";
             isValidate = false;
         }else{
@@ -371,8 +374,11 @@
             callAjaxByJsonWithData('/api/v1/weekly-reports', 'POST', data, function (rs){
                 sessionStorage.setItem('result', 'addWeeklyReportSuccess');
                 $('div.custom-spinner').parent().remove();
+                $(this).prop("disabled", false)
                 location.reload();
             });
+        } else{
+            $(this).prop("disabled", false)
         }
     });
 
@@ -440,7 +446,8 @@
         }
     });
 
-
+    // Disable Modify Content Weekly Report
+    $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
 </script>
 
 </body>

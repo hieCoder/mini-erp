@@ -22,7 +22,7 @@
                 <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
                 <div class="col-md-4">
                     <div class="text-center">
-                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="thayTheHinhAnh()">
+                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="avatarDefault()">
                         <input name="avatar" type="file" class="form-control mt-2" id="avatar">
                         <small class="text-muted ml-2">Choose New Avatar</small>
                         <h4 class="mt-2">${user.getFullname()}</h4>
@@ -410,24 +410,9 @@
 <%--Handle User--%>
 <script>
 
-    function thayTheHinhAnh() {
+    function avatarDefault() {
         document.getElementById("avatar-user").src = "/upload/user/avatar-default.jpg";
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var srcAvatar = $('#avatar-user').attr('src');
-
-        localStorage.setItem('avatarLink', srcAvatar);
-
-        var avatarLink = localStorage.getItem("avatarLink");
-
-        if(avatarLink){
-            $('.avatar-login').attr('src', avatarLink);
-            userCurrent.avatar = avatarLink;
-        } else{
-            $('.avatar-login').attr('src', userCurrent.avatar);
-        }
-    });
 
     var isNewPassword = false;
     var linkCancle = '/users';
@@ -472,17 +457,13 @@
             var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
             formData.append('dateOfBirth', dateOfBirth);
 
-            var newPassword = document.getElementById('password').value;
-
-
             if (isNewPassword) {
+                var newPassword = document.getElementById('password').value;
                 var regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/;
                 var message = regex.test(newPassword)?undefined:'Password must have at least 6 characters and include letters, numbers and special characters';
                 if (newPassword != '') {
                     if (message == undefined) {
                         callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-                            localStorage.setItem('fullname', $('#fullname').val());
-
                             sessionStorage.setItem('result', 'updateSuccess');
                             location.href = "/users/" + '${user.getId()}';
                         }, 'formUpdateUser');
@@ -496,7 +477,6 @@
                 }
             } else {
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-                    localStorage.setItem('fullname', $('#fullname').val());
                     sessionStorage.setItem('result', 'updateSuccess');
                     location.href = "/users/" + '${user.getId()}';
                 }, 'formUpdateUser');
@@ -568,60 +548,62 @@
 <%--Handle WorkingDay--%>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Lấy tham chiếu đến các phần tử HTML
-        var yearSelect = document.getElementById('working-year');
-        var monthSelect = document.getElementById('working-month');
-        var totalWorkingDayInput = document.getElementById('totalWorkingDay');
+        if (!isDeleveloper()) {
+            // Lấy tham chiếu đến các phần tử HTML
+            var yearSelect = document.getElementById('working-year');
+            var monthSelect = document.getElementById('working-month');
+            var totalWorkingDayInput = document.getElementById('totalWorkingDay');
 
-        var data;
-        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}', 'GET', null, function (rs) {
-            data = rs;
-            yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
-            data.forEach(function (entry) {
-                var option = document.createElement('option');
-                option.value = entry.year;
-                option.textContent = entry.year;
-                yearSelect.appendChild(option);
-            });
-        });
-
-        // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
-        yearSelect.addEventListener('change', function () {
-            $('#working-day').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
-                var dataMonth = rs;
-                // Xóa các option cũ trong dropdown year
-                monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
-
-                // Thêm các option mới từ dữ liệu API
-                dataMonth.forEach(function (entry) {
+            var data;
+            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}', 'GET', null, function (rs) {
+                data = rs;
+                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+                data.forEach(function (entry) {
                     var option = document.createElement('option');
-                    option.value = entry.month;
-                    option.textContent = entry.month;
-                    monthSelect.appendChild(option);
+                    option.value = entry.year;
+                    option.textContent = entry.year;
+                    yearSelect.appendChild(option);
                 });
-                monthSelect.addEventListener('change', function () {
-                    var selectedMonth = monthSelect.value;
-                    var selectedData = dataMonth.find(function (entry) {
-                        return entry.month === parseInt(selectedMonth);
+            });
+
+            // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
+            yearSelect.addEventListener('change', function () {
+                $('#working-day').after(createLoadingHtml());
+                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
+                    var dataMonth = rs;
+                    // Xóa các option cũ trong dropdown year
+                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
+
+                    // Thêm các option mới từ dữ liệu API
+                    dataMonth.forEach(function (entry) {
+                        var option = document.createElement('option');
+                        option.value = entry.month;
+                        option.textContent = entry.month;
+                        monthSelect.appendChild(option);
+                    });
+                    monthSelect.addEventListener('change', function () {
+                        var selectedMonth = monthSelect.value;
+                        var selectedData = dataMonth.find(function (entry) {
+                            return entry.month === parseInt(selectedMonth);
+                        });
+                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                    });
+                    $('div.custom-spinner').parent().remove();
+                });
+
+                if (yearSelect.value != "") {
+                    var selectedYear = yearSelect.value;
+                    var selectedData = data.find(function (entry) {
+                        return entry.year === parseInt(selectedYear);
                     });
                     totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                });
-                $('div.custom-spinner').parent().remove();
+                    monthSelect.style.display = 'block';
+                } else {
+                    totalWorkingDayInput.value = null;
+                    monthSelect.style.display = 'none';
+                }
             });
-
-            if (yearSelect.value != "") {
-                var selectedYear = yearSelect.value;
-                var selectedData = data.find(function (entry) {
-                    return entry.year === parseInt(selectedYear);
-                });
-                totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                monthSelect.style.display = 'block';
-            } else {
-                totalWorkingDayInput.value = null;
-                monthSelect.style.display = 'none';
-            }
-        });
+        }
     });
 </script>
 
@@ -781,7 +763,6 @@
 
         if(isDeleveloper()){
             $('.hide').remove();
-            $('#updateUserButton').remove();
             $('#delUser').remove();
         } else{
             $('.hide').css('display', 'block');
