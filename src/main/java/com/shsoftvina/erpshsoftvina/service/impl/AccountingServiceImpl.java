@@ -85,7 +85,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         if (billFile != null) {
-            applicationUtils.checkValidateFile(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
         }
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
