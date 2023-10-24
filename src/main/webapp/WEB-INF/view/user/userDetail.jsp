@@ -22,174 +22,188 @@
                 <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
                 <div class="col-md-4">
                     <div class="text-center">
-                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="thayTheHinhAnh()">
-                        <input name="avatar" type="file" class="form-control mt-2" id="avatar">
-                        <small class="text-muted ml-2">Choose New Avatar</small>
-                        <h4 class="mt-2">${user.getFullname()}</h4>
+                        <div id="avatar-container" style="position: relative;">
+                            <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="avatarDefault()">
+                            <input name="avatar" type="file" class="form-control mt-2" id="avatar" accept="image/*">
+                            <small class="text-muted ml-2">Choose New Avatar</small>
+                            <h4 class="mt-2">${user.getFullname()}</h4>
+                            <div id="delete-avatar-button" style="position: absolute; top: 0; right: 0; color: black; padding: 5px; cursor: pointer; display: none;">X</div>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-md-8">
                     <!-- Phần 2: Form thông tin người dùng -->
-                    <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input type="text" name="address" class="form-control" id="address" value="${user.getAddress()}">
-                        <small class="form-message"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="fullname">Username:</label>
-                        <input type="text" class="form-control" name="fullname" id="fullname" value="${user.getFullname()}">
-                        <small class="form-message"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateOfBirth">Date of birth:</label>
-                        <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
-                        <small class="form-message"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone number:</label>
-                        <input type="number" class="form-control" name="phone" id="phone" value="${user.getPhone()}">
-                        <small class="form-message"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="emergencyPhone">Emergency phone:</label>
-                        <input type="number" class="form-control" name="emergencyPhone" id="emergencyPhone" value="${user.getEmergencyPhone()}">
-                        <small class="form-message"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="resume">Resume file:</label>
-                        <c:choose>
-                            <c:when test="${empty user.getResume()}">
-                                <div id="resumeContainer" style="display: none;">
-                                    <a href="#" style="display: none;">Download Resume</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div id="resumeContainer">
-                                    <a href="${user.getResume()}" download target="_blank">Download Resume</a>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-                        <input type="file" class="form-control mt-2" name="resume" id="resume">
-                        <small class="text-muted ml-2">Choose new resume</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="timeSheetsCode">TimeSheets code:</label>
-                        <input type="text" class="form-control" name="timesheetsCode" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
-                    </div>
-                    <div class="form-group hide">
-                        <label for="type">Type:</label>
-                        <select name="type" class="form-control" id="type">
-                            <option value="OFFICIAL"
-                                    <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
-                            >Official
-                            </option>
-                            <option value="PROBATION"
-                                    <c:if test="${user.type.code.equals('PROBATION')}">selected</c:if>
-                            >Probation
-                            </option>
-                            <option value="PARTTIME"
-                                    <c:if test="${user.type.code.equals('PARTTIME')}">selected</c:if>
-                            >Parttime
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group hide">
-                        <label for="department">Department:</label>
-                        <select name="department" class="form-control" id="department">
-                            <option value="ADMINISTRATION"
-                                    <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
-                                Administration
-                            </option>
-                            <option value="MANAGEMENT"
-                                    <c:if test="${user.department.code.equals('MANAGEMENT')}">selected</c:if>>
-                                Management
-                            </option>
-                            <option value="UI_UX" <c:if test="${user.department.code.equals('UI_UX')}">selected</c:if>>
-                                UI/UX
-                            </option>
-                            <option value="DEV1" <c:if test="${user.department.code.equals('DEV1')}">selected</c:if>>
-                                Dev1
-                            </option>
-                            <option value="DEV2" <c:if test="${user.department.code.equals('DEV2')}">selected</c:if>>
-                                Dev2
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group hide">
-                        <label for="userId">User ID:</label>
-                        <input name="email" type="email" class="form-control" id="userId" value="${user.getEmail()}">
-                    </div>
-                    <div class="form-group-password hide">
-                        <label for="password">Password: </label>
-                        <a id="change-password-button" class="text-primary text-decoration-none" style="cursor: pointer;">Change
-                            password</a>
-                        <div id="password-form" style="display: none;">
-                            <input name="password" type="password" class="form-control" id="password" value="" placeholder="New Password">
-                            <span id="messageNewPassword"  class="text-danger"></span>
+                    <h3 class="font-weight-bold">Basic User Information</h3>
+                    <div class="col-md-12">
+                        <div class="p-3 border">
+                            <div class="form-group">
+                                <label for="address">Address:</label>
+                                <input type="text" name="address" class="form-control" id="address" value="${user.getAddress()}">
+                                <small class="form-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="fullname">Username:</label>
+                                <input type="text" class="form-control" name="fullname" id="fullname" value="${user.getFullname()}">
+                                <small class="form-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of birth:</label>
+                                <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
+                                <small class="form-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone number:</label>
+                                <input type="number" class="form-control" name="phone" id="phone" value="${user.getPhone()}">
+                                <small class="form-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyPhone">Emergency phone:</label>
+                                <input type="number" class="form-control" name="emergencyPhone" id="emergencyPhone" value="${user.getEmergencyPhone()}">
+                                <small class="form-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="resume">Resume file:</label>
+                                <c:choose>
+                                    <c:when test="${empty user.getResume()}">
+                                        <div id="resumeContainer" style="display: none;">
+                                            <a href="#" style="display: none;">Download Resume</a>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div id="resumeContainer">
+                                            <a href="${user.getResume()}" download target="_blank">Download Resume</a>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                <input type="file" class="form-control mt-2" name="resume" id="resume">
+                                <small class="text-muted ml-2">Choose new resume</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="timeSheetsCode">TimeSheets code:</label>
+                                <input type="text" class="form-control" name="timesheetsCode" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group hide">
-                        <label for="atm">ATM:</label>
-                        <input name="atm" type="text" class="form-control" id="atm" value="${user.getAtm()}">
-                    </div>
-                    <div class="form-group hide">
-                        <label for="role">Role:</label>
-                        <select name="role" class="form-control" id="role">
-                            <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
-                                Owner
-                            </option>
-                            <option value="MANAGER" <c:if test="${user.role.code.equals('MANAGER')}">selected</c:if>>
-                                Manager
-                            </option>
-                            <option value="DEVELOPER" <c:if test="${user.role.code.equals('DEVELOPER')}">selected</c:if>>
-                                Developer
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group hide">
-                        <label for="position">Position:</label>
-                        <select name="position" class="form-control" id="position">
-                            <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
-                                Intern
-                            </option>
-                            <option value="JUNIOR" <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
-                                Junior
-                            </option>
-                            <option value="SENIOR" <c:if test="${user.position.code.equals('SENIOR')}">selected</c:if>>
-                                Senior
-                            </option>
-                            <option value="MANAGER" <c:if test="${user.position.code.equals('MANAGER')}">selected</c:if>>
-                                Manager
-                            </option>
-                            <option value="SENIOR_MANAGER"
-                                    <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
-                                Senior manager
-                            </option>
-                            <option value="OWNER" <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
-                                Owner
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group hide">
-                        <label for="contract">Contract:</label>
-                        <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
-                                data-target="#contractModal">
-                            View
-                        </button>
-                    </div>
-                    <div class="form-group hide">
-                        <label for="working-day">Working day:</label>
-                        <div class="input-group" id="working-day">
-                            <select class="form-control" id="working-year">
-                                <option value="">-- Select year --</option>
-                            </select>
-                            <select class="form-control" id="working-month" style="display: none;">
-                                <option>-- Select month --</option>
-                            </select>
-                            <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
+                    <h3 class="mt-2 font-weight-bold hide">Detail User Information</h3>
+                    <div class="col-md-12">
+                        <div class="p-3 border hide">
+                            <div class="form-group hide">
+                                <label for="type">Type:</label>
+                                <select name="type" class="form-control" id="type">
+                                    <option value="OFFICIAL"
+                                            <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
+                                    >Official
+                                    </option>
+                                    <option value="PROBATION"
+                                            <c:if test="${user.type.code.equals('PROBATION')}">selected</c:if>
+                                    >Probation
+                                    </option>
+                                    <option value="PARTTIME"
+                                            <c:if test="${user.type.code.equals('PARTTIME')}">selected</c:if>
+                                    >Parttime
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="department">Department:</label>
+                                <select name="department" class="form-control" id="department">
+                                    <option value="ADMINISTRATION"
+                                            <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
+                                        Administration
+                                    </option>
+                                    <option value="MANAGEMENT"
+                                            <c:if test="${user.department.code.equals('MANAGEMENT')}">selected</c:if>>
+                                        Management
+                                    </option>
+                                    <option value="UI_UX" <c:if test="${user.department.code.equals('UI_UX')}">selected</c:if>>
+                                        UI/UX
+                                    </option>
+                                    <option value="DEV1" <c:if test="${user.department.code.equals('DEV1')}">selected</c:if>>
+                                        Dev1
+                                    </option>
+                                    <option value="DEV2" <c:if test="${user.department.code.equals('DEV2')}">selected</c:if>>
+                                        Dev2
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="userId">User ID:</label>
+                                <input name="email" type="email" class="form-control" id="userId" value="${user.getEmail()}">
+                            </div>
+                            <div class="form-group-password hide">
+                                <label for="password">Password: </label>
+                                <a id="change-password-button" class="text-primary text-decoration-none" style="cursor: pointer;">Change
+                                    password</a>
+                                <div id="password-form" style="display: none;">
+                                    <input name="password" type="password" class="form-control" id="password" value="" placeholder="New Password">
+                                    <span id="messageNewPassword"  class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="atm">ATM:</label>
+                                <input name="atm" type="text" class="form-control" id="atm" value="${user.getAtm()}">
+                            </div>
+                            <div class="form-group hide">
+                                <label for="role">Role:</label>
+                                <select name="role" class="form-control" id="role">
+                                    <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
+                                        Owner
+                                    </option>
+                                    <option value="MANAGER" <c:if test="${user.role.code.equals('MANAGER')}">selected</c:if>>
+                                        Manager
+                                    </option>
+                                    <option value="DEVELOPER" <c:if test="${user.role.code.equals('DEVELOPER')}">selected</c:if>>
+                                        Developer
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="position">Position:</label>
+                                <select name="position" class="form-control" id="position">
+                                    <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
+                                        Intern
+                                    </option>
+                                    <option value="JUNIOR" <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
+                                        Junior
+                                    </option>
+                                    <option value="SENIOR" <c:if test="${user.position.code.equals('SENIOR')}">selected</c:if>>
+                                        Senior
+                                    </option>
+                                    <option value="MANAGER" <c:if test="${user.position.code.equals('MANAGER')}">selected</c:if>>
+                                        Manager
+                                    </option>
+                                    <option value="SENIOR_MANAGER"
+                                            <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
+                                        Senior manager
+                                    </option>
+                                    <option value="OWNER" <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
+                                        Owner
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="contract">Contract:</label>
+                                <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
+                                        data-target="#contractModal">
+                                    View
+                                </button>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="working-day">Working day:</label>
+                                <div class="input-group" id="working-day">
+                                    <select class="form-control" id="working-year">
+                                        <option value="">-- Select year --</option>
+                                    </select>
+                                    <select class="form-control" id="working-month" style="display: none;">
+                                        <option>-- Select month --</option>
+                                    </select>
+                                    <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group container-button">
+                    <div class="form-group col-md-12 mt-3 container-button">
                         <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" id="delUser">Delete</button>
                         <a class="btn btn-secondary cancle-button">Cancel</a>
@@ -355,8 +369,8 @@
 
 <!-- Modal Delete Contract-->
 <div class="modal fade" id="deleteContractModal" tabindex="-1" role="dialog" aria-labelledby="deleteContractModalLabel"
-     aria-hidden="true" style="z-index: 999999; margin-top: 235px">
-    <div class="modal-dialog" role="document">
+     aria-hidden="true" style="z-index: 999999;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 Are you sure to delete this contract?
@@ -410,23 +424,40 @@
 <%--Handle User--%>
 <script>
 
-    <%-- avatar default --%>
-    function thayTheHinhAnh() {
-        document.getElementById("avatar-user").src = "/upload/user/avatar-default.jpg";
-    }
+    var fileChanged = false;
+    var currentAvatarSrc = "";
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var srcAvatar = $('#avatar-user').attr('src');
-        localStorage.setItem('avatarLink', srcAvatar);
+    document.getElementById("avatar").addEventListener("change", function (e) {
+        var file = e.target.files[0];
 
-        var avatarLink = localStorage.getItem("avatarLink");
-        if(avatarLink){
-            $('.avatar-login').attr('src', avatarLink);
-            userCurrent.avatar = avatarLink;
-        } else{
-            $('.avatar-login').attr('src', userCurrent.avatar);
+        if (file) {
+            var reader = new FileReader();
+
+            // Set up the image source for preview
+            reader.onload = function (e) {
+                currentAvatarSrc = document.getElementById("avatar-user").src;
+                document.getElementById("avatar-user").src = e.target.result;
+                fileChanged = true;
+                document.getElementById("delete-avatar-button").style.display = "block";
+            };
+
+            reader.readAsDataURL(file);
         }
     });
+
+    document.getElementById("delete-avatar-button").addEventListener("click", function () {
+        if (fileChanged) {
+            document.getElementById("avatar-user").src = currentAvatarSrc;
+            fileChanged = false;
+            document.getElementById("delete-avatar-button").style.display = "none";
+            document.getElementById("avatar").value = "";
+        }
+    });
+
+
+    function avatarDefault() {
+        document.getElementById("avatar-user").src = "/upload/user/avatar-default.jpg";
+    }
 
     var isNewPassword = false;
     var linkCancle = '/users';
@@ -468,13 +499,11 @@
 
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
-            var dateOfBirth = new Date(jsDate.getTime()); // Chuyển đổi thành đối tượng Java Date
+            var dateOfBirth = new Date(jsDate.getTime());
             formData.append('dateOfBirth', dateOfBirth);
 
-            var newPassword = document.getElementById('password').value;
-
-
             if (isNewPassword) {
+                var newPassword = document.getElementById('password').value;
                 var regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/;
                 var message = regex.test(newPassword)?undefined:'Password must have at least 6 characters and include letters, numbers and special characters';
                 if (newPassword != '') {
@@ -564,60 +593,62 @@
 <%--Handle WorkingDay--%>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Lấy tham chiếu đến các phần tử HTML
-        var yearSelect = document.getElementById('working-year');
-        var monthSelect = document.getElementById('working-month');
-        var totalWorkingDayInput = document.getElementById('totalWorkingDay');
+        if (!isDeleveloper()) {
+            // Lấy tham chiếu đến các phần tử HTML
+            var yearSelect = document.getElementById('working-year');
+            var monthSelect = document.getElementById('working-month');
+            var totalWorkingDayInput = document.getElementById('totalWorkingDay');
 
-        var data;
-        callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}', 'GET', null, function (rs) {
-            data = rs;
-            yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
-            data.forEach(function (entry) {
-                var option = document.createElement('option');
-                option.value = entry.year;
-                option.textContent = entry.year;
-                yearSelect.appendChild(option);
-            });
-        });
-
-        // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
-        yearSelect.addEventListener('change', function () {
-            $('#working-day').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
-                var dataMonth = rs;
-                // Xóa các option cũ trong dropdown year
-                monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
-
-                // Thêm các option mới từ dữ liệu API
-                dataMonth.forEach(function (entry) {
+            var data;
+            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}', 'GET', null, function (rs) {
+                data = rs;
+                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+                data.forEach(function (entry) {
                     var option = document.createElement('option');
-                    option.value = entry.month;
-                    option.textContent = entry.month;
-                    monthSelect.appendChild(option);
+                    option.value = entry.year;
+                    option.textContent = entry.year;
+                    yearSelect.appendChild(option);
                 });
-                monthSelect.addEventListener('change', function () {
-                    var selectedMonth = monthSelect.value;
-                    var selectedData = dataMonth.find(function (entry) {
-                        return entry.month === parseInt(selectedMonth);
+            });
+
+            // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
+            yearSelect.addEventListener('change', function () {
+                $('#working-day').after(createLoadingHtml());
+                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
+                    var dataMonth = rs;
+                    // Xóa các option cũ trong dropdown year
+                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
+
+                    // Thêm các option mới từ dữ liệu API
+                    dataMonth.forEach(function (entry) {
+                        var option = document.createElement('option');
+                        option.value = entry.month;
+                        option.textContent = entry.month;
+                        monthSelect.appendChild(option);
+                    });
+                    monthSelect.addEventListener('change', function () {
+                        var selectedMonth = monthSelect.value;
+                        var selectedData = dataMonth.find(function (entry) {
+                            return entry.month === parseInt(selectedMonth);
+                        });
+                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                    });
+                    $('div.custom-spinner').parent().remove();
+                });
+
+                if (yearSelect.value != "") {
+                    var selectedYear = yearSelect.value;
+                    var selectedData = data.find(function (entry) {
+                        return entry.year === parseInt(selectedYear);
                     });
                     totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                });
-                $('div.custom-spinner').parent().remove();
+                    monthSelect.style.display = 'block';
+                } else {
+                    totalWorkingDayInput.value = null;
+                    monthSelect.style.display = 'none';
+                }
             });
-
-            if (yearSelect.value != "") {
-                var selectedYear = yearSelect.value;
-                var selectedData = data.find(function (entry) {
-                    return entry.year === parseInt(selectedYear);
-                });
-                totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                monthSelect.style.display = 'block';
-            } else {
-                totalWorkingDayInput.value = null;
-                monthSelect.style.display = 'none';
-            }
-        });
+        }
     });
 </script>
 
@@ -777,7 +808,6 @@
 
         if(isDeleveloper()){
             $('.hide').remove();
-            $('#updateUserButton').remove();
             $('#delUser').remove();
         } else{
             $('.hide').css('display', 'block');

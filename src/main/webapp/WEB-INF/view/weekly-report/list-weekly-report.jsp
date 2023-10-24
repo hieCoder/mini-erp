@@ -45,11 +45,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-12 text-right">
                 <button type="button" class="btn btn-success px-4 create-weeklyReport-button">Add Weekly Report</button>
             </div>
         </div>
-        <table class="table mt-4 table-bordered">
+        <table class="table mt-2 table-bordered">
             <thead>
             <tr>
                 <th>NO.</th>
@@ -132,8 +132,8 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Username:</label>
                         <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext font-weight-bold"
-                                   value="${user.fullname}" disabled>
+                            <input type="text" readonly id="fullname" class="form-control-plaintext font-weight-bold"
+                                   value='' disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -146,7 +146,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Content:</label>
                         <div class="col-sm-10">
-                            <div id="contentContainer" contenteditable="true" class="form-control mention-container ">
+                            <div id="contentContainer" contenteditable="true" class="form-control mention-container overflow-auto" style="min-height: 100px">
                                 <!-- Content will be edited here -->
 
                             </div>
@@ -237,6 +237,9 @@
 
 <%-------------------------------- Code Javascript -------------------------------------%>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+       $('#fullname').val(userCurrent.fullname);
+    });
     // Handle search
     document.addEventListener("DOMContentLoaded", function () {
         // Get input search
@@ -293,32 +296,36 @@
                     var titles = responseData.map(function (task) {
                         return task.title;
                     });
-                    if (titles.length == 0)  $('div.custom-spinner').parent().remove();
-                    // Show dropdown titles tasks
                     mentionDropdown.innerHTML = "Task:";
-                    titles.forEach(function (title) {
-                        var mentionItem = document.createElement("div");
-                        mentionItem.classList.add("dropdown-item");
-                        mentionItem.classList.add("border");
-                        mentionItem.textContent = title;
-                        $('div.custom-spinner').parent().remove();
-                        // Handle when user choose one of the titles
-                        mentionItem.addEventListener("click", function () {
-                            var selectedTitle = mentionItem.textContent;
-                            var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
-                            var updatedContent = contentContainer.innerHTML + '<a href="/tasks/' + selectedTaskId + '">' + selectedTitle + '</a> ';
-                            contentContainer.innerHTML = updatedContent;
-                            var divs = contentContainer.querySelectorAll("div");
-                            divs.forEach(function (div) {
-                                var span = document.createElement("span");
-                                span.textContent = div.textContent;
-                                contentContainer.replaceChild(span, div);
-                                contentContainer.insertBefore(document.createElement("br"), span);
+                    // Show dropdown titles tasks
+                    if (titles.length != 0) {
+                        titles.forEach(function (title) {
+                            var mentionItem = document.createElement("div");
+                            mentionItem.classList.add("dropdown-item");
+                            mentionItem.classList.add("border");
+                            mentionItem.textContent = title;
+                            $('div.custom-spinner').parent().remove();
+                            // Handle when user choose one of the titles
+                            mentionItem.addEventListener("click", function () {
+                                var selectedTitle = mentionItem.textContent;
+                                var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
+                                var updatedContent = contentContainer.innerHTML + '<a href="/tasks/' + selectedTaskId + '">' + selectedTitle + '</a> ';
+                                contentContainer.innerHTML = updatedContent;
+                                var divs = contentContainer.querySelectorAll("div");
+                                divs.forEach(function (div) {
+                                    var span = document.createElement("span");
+                                    span.textContent = div.textContent;
+                                    contentContainer.replaceChild(span, div);
+                                    contentContainer.insertBefore(document.createElement("br"), span);
+                                });
+                                mentionDropdown.style.display = "none";
                             });
-                            mentionDropdown.style.display = "none";
+                            mentionDropdown.appendChild(mentionItem);
                         });
-                        mentionDropdown.appendChild(mentionItem);
-                    });
+                    } else {
+                        $('div.custom-spinner').parent().remove();
+                        mentionDropdown.innerHTML += " No tasks";
+                    }
                     mentionDropdown.style.display = "block";
                 });
             } else {
@@ -330,7 +337,7 @@
 
     // Handle when user click button "Submit" in modal Add Weekly Report
     document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
-
+        $(this).prop("disabled", true)
         var contentContainerE = document.getElementById("contentContainer");
         var valuaContent = contentContainerE.innerText;
 
@@ -348,7 +355,7 @@
         }
 
         errorMessageSpan = titleE.nextElementSibling;
-        if(valueTitle === ""){
+        if(valueTitle.trim() === ""){
             errorMessageSpan.textContent = "This filed is not filled";
             isValidate = false;
         }else{
@@ -371,8 +378,11 @@
             callAjaxByJsonWithData('/api/v1/weekly-reports', 'POST', data, function (rs){
                 sessionStorage.setItem('result', 'addWeeklyReportSuccess');
                 $('div.custom-spinner').parent().remove();
+                $(this).prop("disabled", false)
                 location.reload();
             });
+        } else{
+            $(this).prop("disabled", false)
         }
     });
 
@@ -439,26 +449,10 @@
             document.getElementById("search").value = selectedSearch;
         }
     });
-</script>
 
-<%-- Format content in modal Add Weekly Report--%>
-<script>
-    function expandContentContainer() {
-        var contentContainer = document.getElementById("contentContainer");
-        var contentHeight = contentContainer.scrollHeight;
-        var containerHeight = contentContainer.clientHeight;
-
-        if (contentHeight > containerHeight) {
-            contentContainer.style.height = contentHeight + "px";
-        }
-    }
-
-    // Get event when user change content
-    document.addEventListener("input", function () {
-        expandContentContainer();
-    });
+    // Disable Modify Content Weekly Report
     $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
-
 </script>
+
 </body>
 </html>
