@@ -187,6 +187,10 @@
             idComment: null,
             liEComment: null
         };
+        var objectUpdate = {
+            valTitle: null,
+            valContent: null
+        };
 
         $(document).ready(function() {
 
@@ -324,6 +328,9 @@
 
             updateCommemtForm(closestLI);
 
+            objectUpdate.valTitle = $('#updateCommentTitle'+id).val();
+            objectUpdate.valContent = $('#updateCommentContent'+id).html();
+
             // update
             Validator({
                 form:'#updateCommentForm'+id,
@@ -352,12 +359,26 @@
         });
         $(document).on('click','.btn-cancel-update-comment',function(){
             var idComment = $(this).data('comment-id');
-            var closestLI = $(this).closest('li');
 
-            $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
-                closestLI.replaceWith(createCommentForm(rs));
-            }, 'updateCommentForm'+idComment);
+            $('#updateCommentTitle'+idComment).val(objectUpdate.valTitle);
+            $('#updateCommentTitle'+idComment).prop('disabled', true);
+
+            $('#updateCommentContent'+idComment).summernote('destroy');
+            $('#updateCommentContent'+idComment).html(objectUpdate.valContent);
+
+            // $('#updateCommentForm'+idComment).find('.remove-file:first-child').addClass('d-none');
+
+            $('#updateCommentForm'+idComment).find('input[name="newFiles"]').first().addClass('d-none');
+
+
+
+
+
+
+            // $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());
+            // callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
+            //     closestLI.replaceWith(createCommentForm(rs));
+            // }, 'updateCommentForm'+idComment);
         });
         $(document).on('click','.btn-delete-comment',function(){
             commentObj.idComment = $(this).data('comment-id');
@@ -407,7 +428,7 @@
         function createCommentForm(comment) {
             var listItem = $('<li class="list-group-item">');
             var row = $('<div class="row">');
-            var userCol = $('<div class="col-md-2 text-center">');
+            var userCol = $('<div class="col-md-2 d-flex flex-column align-items-center">');
             var commentCol = $('<div class="col-md-10">');
 
             userCol.append('<img class="rounded-circle-container" src="' + comment.avatarUser + '" alt="User Avatar">');
