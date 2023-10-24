@@ -32,9 +32,9 @@
             <div class="form-group">
                 <label for="pageCount">Number size each page:</label>
                 <select id="pageCount" class="form-control">
-                    <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
+                    <option value="20">20</option>
                 </select>
             </div>
         </div>
@@ -91,11 +91,22 @@
     </table>
     <nav aria-label="Page navigation">
         <ul id="pagination" class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" onclick="loadPage(1)">
-                    First
-                </a>
-            </li>
+            <c:choose>
+                <c:when test="${list.hasPrevious}">
+                    <li class="page-item">
+                        <a class="page-link" onclick="loadPage(1)">
+                            First
+                        </a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item disabled">
+                        <a class="page-link" onclick="loadPage(1)">
+                            First
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
             <c:choose>
                 <c:when test="${list.hasPrevious}">
                     <li class="page-item">
@@ -134,11 +145,22 @@
                     </li>
                 </c:otherwise>
             </c:choose>
-            <li class="page-item">
-                <a class="page-link" onclick="loadPage(${list.totalPages})">
-                    Last
-                </a>
-            </li>
+            <c:choose>
+                <c:when test="${list.hasNext}">
+                    <li class="page-item">
+                        <a class="page-link" onclick="loadPage(${list.totalPages})">
+                            Last
+                        </a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item disabled">
+                        <a class="page-link" onclick="loadPage(${list.totalPages})">
+                            Last
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
         </ul>
     </nav>
     <table class="table mt-4">
@@ -320,7 +342,12 @@
         var currentPage = responseData.pageNumber;
 
         var paginationHTML = "";
-        paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(1, ' + responseData.pageSize + ')">First</a></li>';
+
+        if (responseData.hasPrevious) {
+            paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(1, ' + responseData.pageSize + ')">First</a></li>';
+        } else {
+            paginationHTML += '<li class="page-item disabled"><a class="page-link" onclick="loadPage(1, ' + responseData.pageSize + ')">First</a></li>';
+        }
 
         if (responseData.hasPrevious) {
             paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(' + (currentPage - 1) + ', ' + responseData.pageSize + ')" tabindex="-1" aria-disabled="true">Previous</a></li>';
@@ -342,7 +369,12 @@
             paginationHTML += '<li class="page-item disabled"><a class="page-link" onclick="loadPage(' + (currentPage + 1) + ', ' + responseData.pageSize + ')" tabindex="-1" aria-disabled="true">Next</a></li>';
         }
 
-        paginationHTML += '<li class="page-item"><a class="page-link" style="cursor: pointer" onclick="loadPage(' + totalPages + ', ' + responseData.pageSize + ')">Last</a></li>';
+        if (responseData.hasNext) {
+            paginationHTML += '<li class="page-item"><a class="page-link" style="cursor: pointer" onclick="loadPage(' + totalPages + ', ' + responseData.pageSize + ')">Last</a></li>';
+        } else {
+            paginationHTML += '<li class="page-item disabled"><a class="page-link" style="cursor: pointer" onclick="loadPage(' + totalPages + ', ' + responseData.pageSize + ')">Last</a></li>';
+        }
+
 
         pagination.innerHTML = paginationHTML;
     }

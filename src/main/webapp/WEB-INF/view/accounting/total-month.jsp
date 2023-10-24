@@ -202,14 +202,6 @@
         }
     });
 
-    document.getElementById('amount').addEventListener('input', function () {
-        var amount = parseFloat(this.value);
-        if (isNaN(amount)) {
-            this.value = '';
-            alert('Amount must be within the specified range.');
-        }
-    });
-
     $(document).on("change", "#createBill", function (event) {
         const billFiles = event.target.files;
         var countFile = billFiles.length;
