@@ -132,8 +132,8 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Username:</label>
                         <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext font-weight-bold"
-                                   value="${user.fullname}" disabled>
+                            <input type="text" readonly id="fullname" class="form-control-plaintext font-weight-bold"
+                                   value='' disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -237,6 +237,9 @@
 
 <%-------------------------------- Code Javascript -------------------------------------%>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+       $('#fullname').val(userCurrent.fullname);
+    });
     // Handle search
     document.addEventListener("DOMContentLoaded", function () {
         // Get input search
@@ -442,7 +445,10 @@
             document.getElementById("search").value = selectedSearch;
         }
     });
+
+    // Disable Modify Content Weekly Report
     $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
 </script>
+
 </body>
 </html>

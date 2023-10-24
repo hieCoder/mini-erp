@@ -69,9 +69,9 @@ public class ManagementTimeDayApiTest {
         String startDate = "2023-01-01";
         String endDate = "2023-01-31";
 
-        when(managementTimeDayService.findAllByMonthYear(userId, startDate, endDate)).thenReturn(new ArrayList<>());
+        when(managementTimeDayService.getDays(userId, startDate, endDate)).thenReturn(new ArrayList<>());
 
-        ResponseEntity<?> responseEntity = managementTimeDayApi.getDaysByMonthAndYear(endDate, startDate, userId);
+        ResponseEntity<?> responseEntity = managementTimeDayApi.getDays(endDate, startDate, userId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
