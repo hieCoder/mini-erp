@@ -247,10 +247,10 @@
                                 Files</a></td>
                             <td>
                                 <button value="${contract.getId()}" type="button"
-                                        class="btn btn-primary edit-contract-button">Edit
+                                        class="btn btn-primary edit-contract-button mt-1">Edit
                                 </button>
                                 <button value="${contract.getId()}" type="button"
-                                        class="btn btn-danger delete-contract-button mt-2">Delete
+                                        class="btn btn-danger delete-contract-button mt-1">Delete
                                 </button>
                             </td>
                         </tr>
