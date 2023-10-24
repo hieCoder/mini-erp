@@ -62,6 +62,9 @@
             font-size: 20px;
         }
 
+         .modal {
+             margin-top: 5%;
+         }
     </style>
     <style>
         /* Tùy chỉnh kiểu của trang loading */
@@ -108,6 +111,60 @@
         <button id="nextMonth" class="btn btn-info ml-4">Next Month</button>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="weeklyToDo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Weekly To-do List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="startDay">Start Day:</label>
+                                <input type="text" class="form-control" id="startDay" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="endDay">End Day:</label>
+                                <input type="text" class="form-control" id="endDay" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group content">
+                        <label for="mostImportant">The Single Most Important Thing:</label>
+                        <input type="text" class="form-control contentData" id="mostImportant">
+                    </div>
+                    <div class="form-group">
+                        <label for="lecture">Lecture:</label>
+                        <input type="text" class="form-control contentData" id="lecture">
+                    </div>
+                    <div class="form-group">
+                        <label for="dailyEvaluation">Daily Evaluation:</label>
+                        <input type="text" class="form-control contentData" id="dailyEvaluation">
+                    </div>
+                    <div class="form-group">
+                        <label for="work">Work:</label>
+                        <input type="text" class="form-control contentData" id="work">
+                    </div>
+                    <div class="form-group">
+                        <label for="reading">Reading:</label>
+                        <input type="text" class="form-control contentData" id="reading">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary saveWeeklyToDo">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const dot = createLoadingHtml();
     const table = document.getElementById('todoTable');
@@ -117,6 +174,23 @@
 
     // Get the current date
     let currentDate = new Date();
+    $(document).on("click", ".saveWeeklyToDo", function() {
+        let content = ""
+        $("#weeklyToDo .contentData").each(function (index){
+            content += $(this).val();
+            if (index < $("#weeklyToDo .contentData").length - 1) {
+                content += ",";
+            }
+        })
+        let data = {
+            id: "",
+            content: content,
+        }
+        console.log(data)
+        // callAjaxByJsonWithData('/api/v1/weekly-management-time-day', 'PUT', data, function () {
+        //
+        // })
+    })
 
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
@@ -341,6 +415,7 @@
         const day = date.getDate().toString().padStart(2, '0'); // Định dạng số với 2 chữ số (01-31)
         return year + '-' + month + '-' + day;
     }
+
 </script>
 </body>
 </html>
