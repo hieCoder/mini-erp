@@ -422,14 +422,12 @@
     const baseUrlComment = "/api/v1/comment-notification";
     const baseUrlNotification = "/api/v1/notifications";
     var dot = createLoadingHtml();
+    const notFilled = '<span class="text-danger font-weight-bold font-italic small">This field is not filled</span>'
 
     document.addEventListener("DOMContentLoaded", function() {
 
         $(document).on("click", "#saveChangesButtonNotification", function (e) {
-            $("#popupFormEditNotification .modal-footer button").each(function() {
-                $(this).prop("disabled", true);
-            });
-            $("#popupFormEditNotification .modal-footer button:first-child").before(dot)
+            $("span.text-danger").remove()
             var apiUrlNotification = baseUrlNotification + "/update/"
             var notificationId = $("table#tableNotification").attr("data-id");
             var title = document.getElementById("editNotificationTitle").value;
@@ -440,6 +438,14 @@
                 oldFile.push($(this).attr("data-name"));
             });
 
+            if (title.trim() === "") {
+                $("input#editNotificationTitle").after(notFilled)
+                return false;
+            }
+            if (content.trim() === "") {
+                $("textarea#editNotificationContent").after(notFilled)
+                return false;
+            }
             var formData = new FormData();
             formData.append("notificationId", title);
             formData.append("title", title);
@@ -448,7 +454,10 @@
             for (var i = 0; i < files.length; i++) {
                 formData.append("files", files[i]);
             }
-
+            $("#popupFormEditNotification .modal-footer button:first-child").before(dot)
+            $("#popupFormEditNotification .modal-footer button").each(function() {
+                $(this).prop("disabled", true);
+            });
             callAjaxByDataFormWithDataForm2(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
                 var data = rs;
                 $("#titleNotification").text(data.title)
@@ -519,6 +528,20 @@
                 $("#successModal div.modal-body").html(modal)
                 $("#successModal").modal("show");
                 $(this).val('')
+            }
+
+            for (let i = 0; i < countFile; i++) {
+                const file = selectedFiles[i];
+                const fileExtension = file.name.split('.').pop();
+                const allowedExtensions = "${listTypeFile}".split(',');
+                if (!allowedExtensions.includes(fileExtension)) {
+                    var modal =
+                        '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File type allowed: ${listTypeFile}.'
+                    $("#successModal div.modal-body").html(modal);
+                    $("#successModal").modal("show");
+                    $(this).val('');
+                    return;
+                }
             }
         });
 

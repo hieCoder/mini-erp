@@ -344,7 +344,7 @@
 
         var errorMessageSpan = contentContainerE.nextElementSibling;
         if (valuaContent.trim() === "") {
-            errorMessageSpan.textContent = "This filed is not filled";
+            errorMessageSpan.textContent = "This field is not filled";
             isValidate = false;
         } else{
             errorMessageSpan.textContent = '';
@@ -352,7 +352,7 @@
 
         errorMessageSpan = titleE.nextElementSibling;
         if(valueTitle.trim() === ""){
-            errorMessageSpan.textContent = "This filed is not filled";
+            errorMessageSpan.textContent = "This field is not filled";
             isValidate = false;
         }else{
             errorMessageSpan.textContent = '';

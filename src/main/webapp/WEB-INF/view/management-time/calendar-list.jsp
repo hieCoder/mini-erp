@@ -76,6 +76,9 @@
             align-items: center;
             justify-content: center;
         }
+        .modal {
+            margin-top: 5%;
+        }
     </style>
     <title>Calendars</title>
 </head>
@@ -98,6 +101,7 @@
             <th>Thu</th>
             <th>Fri</th>
             <th class="text-primary">Sat</th>
+            <th class="text-success">Weekly To-do List</th>
         </tr>
         </thead>
         <tbody>
@@ -108,15 +112,129 @@
         <button id="nextMonth" class="btn btn-info ml-4">Next Month</button>
     </div>
 </div>
+<div class="modal fade" id="weeklyToDo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Weekly To-do List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group content">
+                        <label for="mostImportant">The Single Most Important Thing:</label>
+                        <input type="text" class="form-control contentData" id="mostImportant">
+                    </div>
+                    <div class="form-group content">
+                        <label for="lecture">Lecture:</label>
+                        <input type="text" class="form-control contentData" id="lecture">
+                    </div>
+                    <div class="form-group content">
+                        <label for="dailyEvaluation">Daily Evaluation:</label>
+                        <input type="text" class="form-control contentData" id="dailyEvaluation">
+                    </div>
+                    <div class="form-group content">
+                        <label for="work">Work:</label>
+                        <input type="text" class="form-control contentData" id="work">
+                    </div>
+                    <div class="form-group content">
+                        <label for="reading">Reading:</label>
+                        <input type="text" class="form-control contentData" id="reading">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary saveWeeklyToDo">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="margin-top: 50%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     const dot = createLoadingHtml();
     const table = document.getElementById('todoTable');
     const currentMonthYear = document.getElementById('currentMonthYear');
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
+    const dayCodeTrTag = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
 
     // Get the current date
     let currentDate = new Date();
+
+    $(document).on("click", ".saveWeeklyToDo", function() {
+        let target = $(this)
+        target.after(dot)
+        target.prop("disabled", true)
+        let id = $("#weeklyToDo").attr("data-id")
+        let content = ""
+        let arrContent = []
+        $("#weeklyToDo .contentData").each(function (index){
+            content += $(this).val();
+            arrContent.push($(this).val())
+            if (index < $("#weeklyToDo .contentData").length - 1) {
+                content += ",";
+            }
+        })
+        let data = {
+            id: id,
+            content: content,
+        }
+        callAjaxByJsonWithData('/api/v1/weekly-management-time-day', 'PUT', data, function (rs) {
+            if(rs === 1){
+                let selector = '.showWeeklyUpdate[data-id="' + id +'"]'
+                let button = $(selector)
+                let indexMain = parseInt(button.parent().parent().index()) / 6
+                arrContent.forEach((item, index)=>{
+                    let selector = 'tr.' + dayCodeTrTag[index]
+                    $(selector).eq(indexMain).children().last().text(item)
+                })
+                $("#weeklyToDo").modal("hide")
+                var modal = '<strong class="btn-success rounded-circle p-2">Success!</strong> Update successfully.'
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+
+            }
+            target.after(dot)
+            target.prop("disabled", false)
+        })
+    })
+
+    $(document).on("click", "button.showWeeklyUpdate", function() {
+        let target = $(this)
+        target.after(dot)
+        target.prop("disabled", true)
+        let id = target.attr("data-id")
+        let modal = $("#weeklyToDo")
+        modal.attr("data-id", id)
+        callAjaxByJsonWithData('/api/v1/weekly-management-time-day/' + id, 'GET', null, function (rs) {
+            if(rs.weeklyContents != null){
+                $("#weeklyToDo div.content > input").each(function(index){
+                    $(this).val(rs.weeklyContents[index])
+                })
+            }
+            modal.modal("show")
+            target.prop("disabled", false)
+        })
+    })
 
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
@@ -137,7 +255,7 @@
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + currentDate.toLocaleDateString('en-US', options);
-                    currentMonthYear.classList.add('font-italic','underline-text');
+                    currentMonthYear.classList.add('font-italic', 'underline-text');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
                     span.textContent = "Username: " + fullName;
@@ -160,7 +278,7 @@
                     const tbody = table.querySelector('tbody');
                     for (let i = 0; i < 30; i++) {
                         const row = document.createElement('tr');
-                        for (let j = 0; j < 8; j++) {
+                        for (let j = 0; j < 9; j++) {
                             const cell = document.createElement('td');
                             cell.classList.add("text-center")
                             cell.classList.add("align-middle")
@@ -168,24 +286,26 @@
                                 if (j === 0) {
                                     countLine += 1;
                                     cell.textContent = '';
-                                } else {
+                                } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber < 1) {
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
                                             responseData.forEach((e) => {
-                                                const dateInResponse = new Date(e.day);
-                                                if (
-                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                    (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
-                                                ) {
-                                                    const link = document.createElement('a');
-                                                    link.textContent = lastDayOfPreviousMonth - startDay + j;
-                                                    link.href = 'day/?id=' + e.id;
-                                                    cell.appendChild(link);
-                                                    found = true;
-                                                }
+                                                e.listDayOfWeek.forEach((week) => {
+                                                    const dateInResponse = new Date(week.day);
+                                                    if (
+                                                        currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                        (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
+                                                    ) {
+                                                        const link = document.createElement('a');
+                                                        link.textContent = lastDayOfPreviousMonth - startDay + j;
+                                                        link.href = 'day/?id=' + week.id;
+                                                        cell.appendChild(link);
+                                                        found = true;
+                                                    }
+                                                })
                                             });
                                         }
 
@@ -197,7 +317,7 @@
                                             const month = currentDate.getMonth() + 1;
 
                                             var day = lastDayOfPreviousMonth - startDay + j
-                                            var dayData = (day<10) ? "0"+day : day
+                                            var dayData = (day < 10) ? "0" + day : day
                                             link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + dayData;
                                             cell.appendChild(link);
                                         }
@@ -205,18 +325,20 @@
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
                                             responseData.forEach((e) => {
-                                                const dateInResponse = new Date(e.day);
-                                                if (
-                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                    dayNumber === dateInResponse.getDate()
-                                                ) {
-                                                    const link = document.createElement('a');
-                                                    link.textContent = dayNumber;
-                                                    link.href = "${user.id}" + '/day/?id=' + e.id;
-                                                    cell.appendChild(link);
-                                                    found = true;
-                                                }
+                                                e.listDayOfWeek.forEach((week) => {
+                                                    const dateInResponse = new Date(week.day);
+                                                    if (
+                                                        currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                        dayNumber === dateInResponse.getDate()
+                                                    ) {
+                                                        const link = document.createElement('a');
+                                                        link.textContent = dayNumber;
+                                                        link.href = "${user.id}" + '/day/?id=' + week.id;
+                                                        cell.appendChild(link);
+                                                        found = true;
+                                                    }
+                                                })
                                             });
                                         }
 
@@ -231,6 +353,24 @@
                                     }
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
+                                } else {
+                                    if (responseData != null && responseData.length > 0) {
+                                        responseData.forEach((e) => {
+                                            const startDate = new Date(e.startDate);
+                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
+                                            const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            if (weekNumber === ((i/6) + 1)) {
+                                                const link = document.createElement('button');
+                                                link.textContent = "Edit";
+                                                link.classList.add("btn");
+                                                link.classList.add("btn-primary");
+                                                link.classList.add("showWeeklyUpdate");
+                                                link.setAttribute("data-id", e.weeklyId);
+                                                cell.appendChild(link);
+                                            }
+                                        })
+                                    }
                                 }
                             } else {
                                 if (j === 0) {
@@ -242,27 +382,46 @@
                                     cell.classList.add("text-wrap")
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
-                                } else {
+                                } else if (j < 8) {
                                     if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("font-italic")
                                         responseData.forEach((e) => {
-                                            const dateInResponse = new Date(e.day);
-                                            const currentDay = countLine * 7 + j - startDay;
-                                            const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                            if (
-                                                currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                currentDay === dateInResponse.getDate()
-                                            ) {
-                                                const dayTodo = dayNames[(i % 6) - 1];
-                                                const targetTodo = e.data.oneThingCalendar[dayTodo];
-                                                if (targetTodo != null) {
-                                                    cell.textContent = targetTodo.target;
-                                                } else {
-                                                    cell.textContent = "";
+                                            e.listDayOfWeek.forEach((week) => {
+                                                const dateInResponse = new Date(week.day);
+                                                const currentDay = countLine * 7 + j - startDay;
+                                                const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
+                                                if (
+                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                    currentDay === dateInResponse.getDate()
+                                                ) {
+                                                    const dayTodo = dayNames[(i % 6) - 1];
+                                                    const targetTodo = week.data.oneThingCalendar[dayTodo];
+                                                    if (targetTodo != null) {
+                                                        cell.textContent = targetTodo.target;
+                                                    } else {
+                                                        cell.textContent = "";
+                                                    }
                                                 }
-                                            }
+                                            })
                                         })
+                                    }
+                                } else {
+                                    if (responseData != null && responseData.length > 0) {
+                                        cell.classList.add("font-weight-bold")
+                                        cell.classList.add("font-italic")
+                                        responseData.forEach((e) => {
+                                            if (e.weeklyContents === null) {
+                                                return;
+                                            }
+                                            const startDate = new Date(e.startDate);
+                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
+                                            const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            if (weekNumber === (Math.floor((i/6) + 1))) {
+                                                cell.textContent = e.weeklyContents[(i % 6) - 1];
+                                            }
+                                        });
                                     }
                                 }
                             }
