@@ -19,4 +19,10 @@
             <column name="INSURANCE_MONEY" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="team2">
+        <addColumn tableName="CONTRACT">
+            <column name="HISTORY_ID" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
