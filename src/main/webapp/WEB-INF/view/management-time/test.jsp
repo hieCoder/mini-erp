@@ -98,6 +98,7 @@
             <th>Thu</th>
             <th>Fri</th>
             <th class="text-primary">Sat</th>
+            <th class="text-success">Weekly To-do List</th>
         </tr>
         </thead>
         <tbody>
@@ -160,7 +161,7 @@
                     const tbody = table.querySelector('tbody');
                     for (let i = 0; i < 30; i++) {
                         const row = document.createElement('tr');
-                        for (let j = 0; j < 8; j++) {
+                        for (let j = 0; j < 9; j++) {
                             const cell = document.createElement('td');
                             cell.classList.add("text-center")
                             cell.classList.add("align-middle")
@@ -168,24 +169,26 @@
                                 if (j === 0) {
                                     countLine += 1;
                                     cell.textContent = '';
-                                } else {
+                                } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber < 1) {
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
                                             responseData.forEach((e) => {
-                                                const dateInResponse = new Date(e.day);
-                                                if (
-                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                    (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
-                                                ) {
-                                                    const link = document.createElement('a');
-                                                    link.textContent = lastDayOfPreviousMonth - startDay + j;
-                                                    link.href = 'day/?id=' + e.id;
-                                                    cell.appendChild(link);
-                                                    found = true;
-                                                }
+                                                e.listDayOfWeek.forEach((week) => {
+                                                    const dateInResponse = new Date(week.day);
+                                                    if (
+                                                        currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                        (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
+                                                    ) {
+                                                        const link = document.createElement('a');
+                                                        link.textContent = lastDayOfPreviousMonth - startDay + j;
+                                                        link.href = 'day/?id=' + week.id;
+                                                        cell.appendChild(link);
+                                                        found = true;
+                                                    }
+                                                })
                                             });
                                         }
 
@@ -205,18 +208,20 @@
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
                                             responseData.forEach((e) => {
-                                                const dateInResponse = new Date(e.day);
-                                                if (
-                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                    dayNumber === dateInResponse.getDate()
-                                                ) {
-                                                    const link = document.createElement('a');
-                                                    link.textContent = dayNumber;
-                                                    link.href = "${user.id}" + '/day/?id=' + e.id;
-                                                    cell.appendChild(link);
-                                                    found = true;
-                                                }
+                                                e.listDayOfWeek.forEach((week) => {
+                                                    const dateInResponse = new Date(week.day);
+                                                    if (
+                                                        currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                        dayNumber === dateInResponse.getDate()
+                                                    ) {
+                                                        const link = document.createElement('a');
+                                                        link.textContent = dayNumber;
+                                                        link.href = "${user.id}" + '/day/?id=' + week.id;
+                                                        cell.appendChild(link);
+                                                        found = true;
+                                                    }
+                                                })
                                             });
                                         }
 
@@ -231,6 +236,8 @@
                                     }
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
+                                } else {
+                                    cell.textContent = '';
                                 }
                             } else {
                                 if (j === 0) {
@@ -242,27 +249,36 @@
                                     cell.classList.add("text-wrap")
                                     cell.classList.add("font-weight-bold")
                                     cell.classList.add("font-italic")
+                                } else if (j < 8)  {
+                                    if (responseData != null && responseData.length > 0) {
+                                        cell.classList.add("font-italic")
+                                        responseData.forEach((e) => {
+                                            e.listDayOfWeek.forEach((week) => {
+                                                const dateInResponse = new Date(week.day);
+                                                const currentDay = countLine * 7 + j - startDay;
+                                                const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
+                                                if (
+                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
+                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                    currentDay === dateInResponse.getDate()
+                                                ) {
+                                                    const dayTodo = dayNames[(i % 6) - 1];
+                                                    const targetTodo = week.data.oneThingCalendar[dayTodo];
+                                                    if (targetTodo != null) {
+                                                        cell.textContent = targetTodo.target;
+                                                    } else {
+                                                        cell.textContent = "";
+                                                    }
+                                                }
+                                            })
+                                        })
+                                    }
                                 } else {
                                     if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("font-italic")
                                         responseData.forEach((e) => {
-                                            const dateInResponse = new Date(e.day);
-                                            const currentDay = countLine * 7 + j - startDay;
-                                            const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                            if (
-                                                currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                currentDay === dateInResponse.getDate()
-                                            ) {
-                                                const dayTodo = dayNames[(i % 6) - 1];
-                                                const targetTodo = e.data.oneThingCalendar[dayTodo];
-                                                if (targetTodo != null) {
-                                                    cell.textContent = targetTodo.target;
-                                                } else {
-                                                    cell.textContent = "";
-                                                }
-                                            }
-                                        })
+                                            cell.textContent = e.weeklyContents[(i % 6) - 1];
+                                        });
                                     }
                                 }
                             }

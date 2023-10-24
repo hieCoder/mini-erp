@@ -153,7 +153,7 @@ Validator.isDayBeforeToday=function(selector, message){
             var currentDate = new Date();
             var currentDateValue = currentDate.setHours(0, 0, 0, 0);
 
-            return (dateValue<currentDateValue)?undefined: message||'The day is not after day of today';
+            return (dateValue<currentDateValue)?undefined: message||'The day is not after today';
         }
     };
 }

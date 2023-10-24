@@ -24,7 +24,7 @@
                     <div class="text-center">
                         <div id="avatar-container" style="position: relative;">
                             <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="avatarDefault()">
-                            <input name="avatar" type="file" class="form-control mt-2" id="avatar">
+                            <input name="avatar" type="file" class="form-control mt-2" id="avatar" accept="image/*">
                             <small class="text-muted ml-2">Choose New Avatar</small>
                             <h4 class="mt-2">${user.getFullname()}</h4>
                             <div id="delete-avatar-button" style="position: absolute; top: 0; right: 0; color: black; padding: 5px; cursor: pointer; display: none;">X</div>
