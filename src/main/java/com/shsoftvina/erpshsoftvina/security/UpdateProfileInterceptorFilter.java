@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.security;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,15 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null) {
+            User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
+
+            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(userSet, auth.getCredentials(), userSet.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
+
         if (auth != null && auth.isAuthenticated()) {
             try {
                 User currentUser = Principal.getUserCurrent();

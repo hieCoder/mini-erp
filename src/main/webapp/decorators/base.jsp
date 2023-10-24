@@ -54,33 +54,27 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
-    var avatarLink = localStorage.getItem("avatarLink");
-    if(avatarLink){
-        $('.avatar-login').attr('src', avatarLink);
-        userCurrent.avatar = avatarLink;
-    } else{
+    document.addEventListener("DOMContentLoaded", function () {
         $('.avatar-login').attr('src', userCurrent.avatar);
-    }
-
-    $('.fullname-login').text(userCurrent.fullname);
-    $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
-    var scheduleLink = '';
-    var managementTime = ''
-    if(userCurrent.role != U_DEVELOPER) {
-        scheduleLink = '/schedules';
-        managementTime = '/management-time'
-    }
-    else {
-        scheduleLink = '/schedules/detail/'+userCurrent.id;
-        managementTime = '/management-time/'+userCurrent.id;
-    }
-    $('.schedule-login').attr('href', scheduleLink);
-    $('.management-time-day-login').attr('href', managementTime);
-    if(userCurrent.role == U_DEVELOPER){
-        $('.management-login').remove();
-        $('.setting-login').remove();
-    }
+        $('.fullname-login').text(userCurrent.fullname);
+        $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
+        var scheduleLink = '';
+        var managementTime = ''
+        if(userCurrent.role != U_DEVELOPER) {
+            scheduleLink = '/schedules';
+            managementTime = '/management-time'
+        }
+        else {
+            scheduleLink = '/schedules/detail/'+userCurrent.id;
+            managementTime = '/management-time/'+userCurrent.id;
+        }
+        $('.schedule-login').attr('href', scheduleLink);
+        $('.management-time-day-login').attr('href', managementTime);
+        if(userCurrent.role == U_DEVELOPER){
+            $('.management-login').remove();
+            $('.setting-login').remove();
+        }
+    });
 </script>
 </body>
 </html>

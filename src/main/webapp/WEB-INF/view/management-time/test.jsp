@@ -300,8 +300,7 @@
                                             const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
                                             const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
                                             const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
-                                            if (weekNumber === ((i/6) + 1)) {
-                                                console.log("A" + ((i/6) + 1));
+                                            if (weekNumber === (Math.floor((i/6) + 1))) {
                                                 cell.textContent = e.weeklyContents[(i % 6) - 1];
                                             }
                                         });
