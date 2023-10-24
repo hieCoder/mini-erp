@@ -87,6 +87,7 @@ public class UserConverter {
                 .email(userActiveRequest.getEmail())
                 .status(StatusUserEnum.valueOf(userActiveRequest.getStatus()))
                 .isFirstUpdateProfile(UserConstant.DEFAULT_FIRST_UPDATE_PROFILE)
+                .avatar(UserConstant.AVATAR_DEFAULT)
                 .build();
     }
 

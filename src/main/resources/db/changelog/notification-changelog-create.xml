@@ -17,4 +17,10 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <addColumn tableName="NOTIFICATION">
+            <column name="STATUS" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

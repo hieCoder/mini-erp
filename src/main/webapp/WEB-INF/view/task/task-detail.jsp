@@ -247,6 +247,8 @@
                     $('#comment-list').append(createCommentForm(comment));
                 });
 
+                cutShortLink();
+
                 hideLoading('content-container');
             });
         });
@@ -291,6 +293,9 @@
                      var liE = createCommentForm(rs);
                      liE.prependTo('#comment-list');
 
+
+                    $('#yourCommentTitle').val('');
+                    $('#yourCommentContent').summernote('code', '<p><br></p>');
                 }, 'yourCommentForm');
             }
         });
@@ -421,7 +426,7 @@
             if (comment.files && comment.files.length > 0) {
                 comment.files.forEach(function (file) {
                     var fileSpan = $('<span class="file">');
-                    var fileA = $('<a class="p-2" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
+                    var fileA = $('<a class="p-2 cut-file-name" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
                     var closeSpan = $('<span style="font-size: 20px;cursor: pointer;" class="d-none remove-file" aria-hidden="true">&times;</span>');
 
                     fileSpan.append(fileA);
@@ -444,7 +449,7 @@
             var cancelUpdateButton = $('<button type="button" class="btn btn-secondary btn-cancel-update-comment d-none mr-1">Cancel</button>');
             cancelUpdateButton.attr('data-comment-id', comment.id);
 
-            if(comment.parentId == null){
+            if(comment.parentId == null && !isDeleveloper()){
                 var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment mr-1">Reply</button>');
                 replyButton.attr('data-comment-id', comment.id);
                 buttonCol.append(replyButton);

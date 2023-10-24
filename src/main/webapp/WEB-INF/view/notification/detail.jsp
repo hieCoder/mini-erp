@@ -1,13 +1,13 @@
 <%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     session.setAttribute("pathMain", "/notifications/");
     session.setAttribute("apiURL", "/api/v1");
 %>
-<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}" />
-<c:set var="userId" value="${Principal.getUserCurrent().getId()}" />
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}"/>
+<c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
 <html>
 <head>
     <title>Notification</title>
@@ -43,7 +43,8 @@
                             <th class="text-center align-middle">Attached Files</th>
                             <td id="attachedFilesNotification">
                                 <c:forEach items="${notification.files}" var="file">
-                                    <a href="${file}" download class="btn btn-link text-primary">${file.split("-")[1]}</a>
+                                    <a href="${file}" download
+                                       class="btn btn-link text-primary">${file.split("-")[1]}</a>
                                 </c:forEach>
                             </td>
                         </tr>
@@ -52,7 +53,9 @@
                         <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
                         <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
                             <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalNotification">Delete</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#deleteConfirmationModalNotification">Delete
+                            </button>
                         </c:if>
                     </div>
                 </div>
@@ -61,7 +64,8 @@
                 <div class="row mb-4 mt-4">
                     <div class="col-md-10 d-flex">
                         <img id="avatar-user-login" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">
-                        <textarea id="newComment" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>
+                        <textarea id="newComment" class="form-control" placeholder="Add a comment..."
+                                  style="min-height: 90px;"></textarea>
                     </div>
                     <div class="col-md-2">
                         <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="newCommentBtn">Submit</button>
@@ -72,7 +76,8 @@
                     <c:forEach items="${notification.comments}" var="comment">
                         <li class="list-group-item" data-id="${comment.id}">
                             <div class="comment-header d-flex align-items-center">
-                                <img src="${comment.avatarUser}" alt="Avatar" class="avatar rounded-circle img-thumbnail">
+                                <img src="${comment.avatarUser}" alt="Avatar"
+                                     class="avatar rounded-circle img-thumbnail">
                                 <div class="user-info">
                                     <p class="user-name">${comment.fullnameUser}</p>
                                     <p class="comment-date">${comment.createdDate}</p>
@@ -81,33 +86,45 @@
                             <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
                             <div class="ml-auto">
                                 <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
-                                <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="${comment.id}">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete</button>
+                                    <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal"
+                                            data-target="#popupForm" data-id="${comment.id}">Edit
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete
+                                    </button>
                                 </c:if>
-                                <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply</button>
+                                <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply
+                                </button>
                             </div>
-                                <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
-                                    <c:if test="${not empty comment.childComments}">
+                            <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
+                                <c:if test="${not empty comment.childComments}">
                                     <c:forEach items="${comment.childComments}" var="childComment">
                                         <li class="list-group-item" data-id="${childComment.id}">
                                             <div class="comment-header d-flex align-items-center">
-                                                <img src="${childComment.avatarUser}" alt="Avatar" class="avatar rounded-circle img-thumbnail">
+                                                <img src="${childComment.avatarUser}" alt="Avatar"
+                                                     class="avatar rounded-circle img-thumbnail">
                                                 <div class="user-info">
                                                     <p class="user-name">${childComment.fullnameUser}</p>
                                                     <p class="comment-date">${childComment.createdDate}</p>
                                                 </div>
                                             </div>
-                                            <p class="comment-content" data-id="${childComment.id}">${childComment.content}</p>
+                                            <p class="comment-content"
+                                               data-id="${childComment.id}">${childComment.content}</p>
                                             <div class="ml-auto">
                                                 <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || childComment.userId.equals(userId)}">
-                                                    <button class="btn btn-primary btn-sm edit-button" data-id="${childComment.id}">Edit</button>
-                                                    <button type="button" class="btn btn-sm btn-danger" data-id="${childComment.id}" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
+                                                    <button class="btn btn-primary btn-sm edit-button"
+                                                            data-id="${childComment.id}">Edit
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                            data-id="${childComment.id}" data-toggle="modal"
+                                                            data-target="#deleteConfirmationModal">Delete
+                                                    </button>
                                                 </c:if>
                                             </div>
                                         </li>
                                     </c:forEach>
-                                    </c:if>
-                                </ul>
+                                </c:if>
+                            </ul>
                         </li>
                     </c:forEach>
                 </ul>
@@ -142,7 +159,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="popupFormEditNotification" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel" aria-hidden="true">
+<div class="modal fade" id="popupFormEditNotification" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -164,7 +182,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -183,7 +202,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -203,7 +223,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteConfirmationModalFile" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalFile" aria-hidden="true">
+<div class="modal fade" id="deleteConfirmationModalFile" tabindex="-1" role="dialog"
+     aria-labelledby="deleteConfirmationModalFile" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -222,7 +243,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteConfirmationModalNotification" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalNotification" aria-hidden="true">
+<div class="modal fade" id="deleteConfirmationModalNotification" tabindex="-1" role="dialog"
+     aria-labelledby="deleteConfirmationModalNotification" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -241,7 +263,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="deleteNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -263,8 +286,9 @@
     function generateClientID() {
         const timestamp = new Date().getTime();
         const random = Math.floor(Math.random() * 1000);
-        return 'client-'+timestamp+'-'+random
+        return 'client-' + timestamp + '-' + random
     }
+
     const clientID = generateClientID();
     var stompClient = Stomp.over(new SockJS("/websocket"));
 
@@ -274,7 +298,7 @@
             if (data != null) {
                 if ($('li.list-group-item[data-id="' + data.id + '"]').length <= 0) {
                     var buttonHtml = ""
-                    if(userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}){
+                    if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
                         buttonHtml =
                             '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
                             '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
@@ -300,7 +324,7 @@
                     } else {
                         $("ul#commentList").html(html);
                     }
-                    if(data.clientId == clientID){
+                    if (data.clientId == clientID) {
                         var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
                             `
                         $("#successModal div.modal-body").html(modal)
@@ -317,15 +341,15 @@
             if (data != null) {
                 var $pElement = $('p.comment-content[data-id="' + data.id + '"]');
                 $pElement.text(data.content)
-                if(data.clientId == clientID){
+                if (data.clientId == clientID) {
                     $("#popupForm").modal("hide");
                     var modal = `
                                <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment update successfully.
                                 `
                     $("#successModal div.modal-body").html(modal)
                     $("#successModal").modal("show");
-                    $(".modal-footer button").each(function() {
-                            $(this).prop("disabled", false);
+                    $(".modal-footer button").each(function () {
+                        $(this).prop("disabled", false);
                     });
                     $('div.custom-spinner').parent().remove()
                 }
@@ -334,18 +358,18 @@
         stompClient.subscribe("/notification/deletecomments", function (comment) {
             var data = JSON.parse(comment.body);
             if (data != null) {
-                $('li.list-group-item[data-id="'+data.id+'"]').remove()
-                if(data.clientId == clientID){
+                $('li.list-group-item[data-id="' + data.id + '"]').remove()
+                if (data.clientId == clientID) {
                     var modal = `
                 <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment delete successfully.
                 `
                     $("#successModal div.modal-body").html(modal)
                     $("#popupForm").modal("hide");
                     $("#successModal").modal("show");
-                        $(".modal-footer button").each(function() {
-                            $(this).prop("disabled", false);
-                        });
-                        $('div.custom-spinner').parent().remove()
+                    $(".modal-footer button").each(function () {
+                        $(this).prop("disabled", false);
+                    });
+                    $('div.custom-spinner').parent().remove()
                 }
             }
         });
@@ -354,52 +378,54 @@
             var data = JSON.parse(comment.body);
             if (data != null) {
                 var buttonHtml = ""
-                if(userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}){
+                if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
                     buttonHtml =
                         '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
                         '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
                 }
-                        var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-                            '<div class="comment-header d-flex align-items-center">' +
-                            '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-                            '<div class="user-info">' +
-                            '<p class="user-name">' + data.fullnameUser + '</p>' +
-                            '<p class="comment-date">' + data.createdDate + '</p>' +
-                            '</div>' +
-                            '</div>' +
-                            '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                            '<div class="ml-auto">' + buttonHtml +
-                            '</div>' +
-                            '<ul id="commentChildList-'+ data.id +'" class="list-group mt-2 ml-4">' +
-                            '</li>'
-                        var inputReply = $('#commentList #commentChildList-'+data.parentId+' > div.row')
-                        var listChild = $('#commentList #commentChildList-'+data.parentId+' > li.list-group-item:first')
-                        if(inputReply.length>0){
-                            inputReply.after(html)
-                        }else if(listChild.length>0){
-                            listChild.before(html)
-                        } else{
-                            $('#commentList #commentChildList-'+data.parentId).html(html)
-                        }
-                if(data.clientId == clientID){
-                            var modal = `
+                var html = '<li class="list-group-item" data-id="' + data.id + '">' +
+                    '<div class="comment-header d-flex align-items-center">' +
+                    '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
+                    '<div class="user-info">' +
+                    '<p class="user-name">' + data.fullnameUser + '</p>' +
+                    '<p class="comment-date">' + data.createdDate + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
+                    '<div class="ml-auto">' + buttonHtml +
+                    '</div>' +
+                    '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
+                    '</li>'
+                var inputReply = $('#commentList #commentChildList-' + data.parentId + ' > div.row')
+                var listChild = $('#commentList #commentChildList-' + data.parentId + ' > li.list-group-item:first')
+                if (inputReply.length > 0) {
+                    inputReply.after(html)
+                } else if (listChild.length > 0) {
+                    listChild.before(html)
+                } else {
+                    $('#commentList #commentChildList-' + data.parentId).html(html)
+                }
+                if (data.clientId == clientID) {
+                    var modal = `
                                 <strong class="btn-success rounded-circle p-2">Success!</strong>  Reply successfully.
                                 `
-                            $('textarea#replyComment[data-id='+ data.parentId +']').val('');
-                            $("#successModal div.modal-body").html(modal)
-                            $("#successModal").modal("show");
-                            $('div.custom-spinner').parent().remove()
-                            $('textarea#replyComment[data-id='+ data.parentId +']').prop("disabled", false);
-                            $('button#replyCommentBtn[data-id='+ data.parentId +']').prop("disabled", false);
+                    $('textarea#replyComment[data-id=' + data.parentId + ']').val('');
+                    $("#successModal div.modal-body").html(modal)
+                    $("#successModal").modal("show");
+                    $('div.custom-spinner').parent().remove()
+                    $('textarea#replyComment[data-id=' + data.parentId + ']').prop("disabled", false);
+                    $('button#replyCommentBtn[data-id=' + data.parentId + ']').prop("disabled", false);
                 }
             }
         });
     });
+
     function sendComment(data) {
-            stompClient.send("/app/comment", {
-                clientID: clientID
-            }, data);
+        stompClient.send("/app/comment", {
+            clientID: clientID
+        }, data);
     }
+
     function editComment(data) {
         stompClient.send("/app/editcomment", {
             clientID: clientID
@@ -409,13 +435,13 @@
     function deleteComment(data) {
         stompClient.send("/app/deletecomment", {
             clientID: clientID
-        },data);
+        }, data);
     }
 
     function replyComment(data) {
         stompClient.send("/app/replycomment", {
             clientID: clientID
-        },data);
+        }, data);
     }
 </script>
 <script>
@@ -424,17 +450,20 @@
     var dot = createLoadingHtml();
     const notFilled = '<span class="text-danger font-weight-bold font-italic small">This field is not filled</span>'
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
 
         $(document).on("click", "#saveChangesButtonNotification", function (e) {
-            $("span.text-danger").remove()
+            $("#popupFormEditNotification .modal-footer button").each(function () {
+                $(this).prop("disabled", true);
+            });
+            $("#popupFormEditNotification .modal-footer button:first-child").before(dot)
             var apiUrlNotification = baseUrlNotification + "/update/"
             var notificationId = $("table#tableNotification").attr("data-id");
             var title = document.getElementById("editNotificationTitle").value;
             var content = document.getElementById("editNotificationContent").value;
             var files = document.getElementById("editNotificationFile").files;
             var oldFile = []
-            $("li.listFilesEdit").each(function() {
+            $("li.listFilesEdit").each(function () {
                 oldFile.push($(this).attr("data-name"));
             });
 
@@ -465,9 +494,9 @@
                 $("#authorNotification").text(data.title)
                 $("#createdDateNotification").text(data.createdDate)
                 var xhtml = ''
-                if(data.files!=null){
-                    data.files.forEach((e)=>{
-                        xhtml += '<a href="'+ e +'" download class="btn btn-link text-primary">'+e.split("-")[1]+'</a>'
+                if (data.files != null) {
+                    data.files.forEach((e) => {
+                        xhtml += '<a href="' + e + '" download class="btn btn-link text-primary">' + e.split("-")[1] + '</a>'
                     })
                 }
                 $("#attachedFilesNotification").html(xhtml)
@@ -478,13 +507,13 @@
                 $("#successModal").modal("show");
 
                 $('div.custom-spinner').parent().remove()
-                $("#popupFormEditNotification .modal-footer button").each(function() {
+                $("#popupFormEditNotification .modal-footer button").each(function () {
                     $(this).prop("disabled", false);
                 });
                 $("#popupFormEditNotification").modal("hide");
-            }, function (){
+            }, function () {
                 $('div.custom-spinner').parent().remove()
-                $("#popupFormEditNotification .modal-footer button").each(function() {
+                $("#popupFormEditNotification .modal-footer button").each(function () {
                     $(this).prop("disabled", false);
                 });
             });
@@ -494,12 +523,12 @@
             $("#deleteConfirmationModalFile #deleteFileButton").attr("data-name", $(this).attr("data-name"))
         });
         $(document).on("click", "#deleteFileButton", function (e) {
-            $('.listFilesEdit button[data-name="'+ $(this).attr("data-name") +'"]').parent().remove()
+            $('.listFilesEdit button[data-name="' + $(this).attr("data-name") + '"]').parent().remove()
             $("#deleteConfirmationModalFile").modal("hide");
         });
 
-        $(document).on("click","#deleteNotificationButton",function (e){
-            $("div.card-body button").each(function() {
+        $(document).on("click", "#deleteNotificationButton", function (e) {
+            $("div.card-body button").each(function () {
                 $(this).prop("disabled", true);
             });
             $("#editButtonNotification").parent().append(dot);
@@ -511,7 +540,7 @@
             callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
                 $("#deleteNotificationModal").modal("show");
                 $('div.custom-spinner').parent().remove()
-                $("#popupFormEditNotification .modal-footer button").each(function() {
+                $("#popupFormEditNotification .modal-footer button").each(function () {
                     $(this).prop("disabled", false);
                 });
             });
@@ -521,7 +550,7 @@
             const selectedFiles = event.target.files;
             var countFile = selectedFiles.length;
             var countCurrentFile = $("li.listFilesEdit").length
-            if((countFile+countCurrentFile)>${uploadFileLimit}){
+            if ((countFile + countCurrentFile) >${uploadFileLimit}) {
                 var modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${uploadFileLimit}.
                         `
@@ -545,7 +574,7 @@
             }
         });
 
-        $(document).on("click", "#editButtonNotification", function() {
+        $(document).on("click", "#editButtonNotification", function () {
             $(this).prop("disabled", true);
             $(this).parent().append(dot);
             var notificationId = $("table#tableNotification").attr("data-id");
@@ -569,37 +598,37 @@
                     }
                 }
                 fileListHTML += '<label for="file">Attached Files:</label>'
-                    +'<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'
-                    +'</ul>'
-                    +'<table class="table table-bordered text-center">'
-                    +'<thead>'
-                    +'<tr>'
-                    +' <th class="text-center col-6">File Format</th>'
-                    +' <th class="text-center col-3">Maximum Size</th>'
-                    +' <th class="text-center col-3">Maximum Files</th>'
-                    +'</tr>'
-                    +'</thead>'
-                    +'<tbody>'
-                    +'<tr>'
-                    +'<td class="text-center col-6">${listTypeFile}</td>'
-                    +'<td class="text-center col-3">${maxFileSize}</td>'
-                    +'<td class="text-center col-3">${uploadFileLimit}</td>'
-                    +'</tr>'
-                    +'</tbody>'
-                    +' </table>';
+                    + '<input type="file" id="editNotificationFile" name="files" class="form-control-file" multiple>'
+                    + '</ul>'
+                    + '<table class="table table-bordered text-center">'
+                    + '<thead>'
+                    + '<tr>'
+                    + ' <th class="text-center col-6">File Format</th>'
+                    + ' <th class="text-center col-3">Maximum Size</th>'
+                    + ' <th class="text-center col-3">Maximum Files</th>'
+                    + '</tr>'
+                    + '</thead>'
+                    + '<tbody>'
+                    + '<tr>'
+                    + '<td class="text-center col-6">${listTypeFile}</td>'
+                    + '<td class="text-center col-3">${maxFileSize}</td>'
+                    + '<td class="text-center col-3">${uploadFileLimit}</td>'
+                    + '</tr>'
+                    + '</tbody>'
+                    + ' </table>';
                 var xhtml = '<form id="editNotificationForm">'
-                    +'<div class="form-group">'
-                    +'<label for="title">Title:</label>'
-                    +'<input type="text" id="editNotificationTitle" name="title" value="'+data.title+'" class="form-control">'
-                    +'</div>'
-                    +'<div class="form-group">'
-                    +'<label for="content">Content:</label>'
-                    +'<textarea id="editNotificationContent" name="content" class="form-control">'+data.content+'</textarea>'
-                    +'</div>'
-                    +'<div class="form-group">'
+                    + '<div class="form-group">'
+                    + '<label for="title">Title:</label>'
+                    + '<input type="text" id="editNotificationTitle" name="title" value="' + data.title + '" class="form-control">'
+                    + '</div>'
+                    + '<div class="form-group">'
+                    + '<label for="content">Content:</label>'
+                    + '<textarea id="editNotificationContent" name="content" class="form-control">' + data.content + '</textarea>'
+                    + '</div>'
+                    + '<div class="form-group">'
                     + fileListHTML
-                    +'</div>'
-                    +'</form>';
+                    + '</div>'
+                    + '</form>';
                 $("#popupFormEditNotification div.modal-body").html(xhtml)
                 $("#popupFormEditNotification").modal("show");
 
@@ -608,7 +637,7 @@
             });
         });
 
-        $("ul#commentList").on("click", ".edit-button", function() {
+        $("ul#commentList").on("click", ".edit-button", function () {
             var commentId = $(this).attr("data-id");
             var commentElement = $('p.comment-content[data-id="' + commentId + '"]').text();
             $("#contentCommentEdit").val(commentElement);
@@ -616,43 +645,43 @@
             $("#popupForm").modal("show");
         });
 
-        $("ul#commentList").on("click", ".reply-button", function() {
-            $("div.inputReply").each(function(){
+        $("ul#commentList").on("click", ".reply-button", function () {
+            $("div.inputReply").each(function () {
                 $(this).remove()
             })
             var parentId = $(this).attr("data-id");
             var html =
                 '<div class="row mb-4 mt-4 inputReply">'
-                    +'<div class="col-md-10 d-flex">'
-                    +'<img src="' + userCurrent.avatar + '" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
-                    +'<textarea id="replyComment" data-id="'+parentId+'" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>'
-                    +'</div>'
-                    +'<div class="col-md-2">'
-                    +   ' <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="replyCommentBtn" data-id="'+parentId+'">Submit</button>'
-                    +'</div>'
-                +'</div>'
-            if( $('ul#commentChildList-'+parentId+' li.list-group-item').length > 0){
-                $(document).find('ul#commentChildList-'+parentId+' li.list-group-item:first-child').before(html);
-            }else{
-                $(document).find('ul#commentChildList-'+parentId).html(html);
+                + '<div class="col-md-10 d-flex">'
+                + '<img src="' + userCurrent.avatar + '" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
+                + '<textarea id="replyComment" data-id="' + parentId + '" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>'
+                + '</div>'
+                + '<div class="col-md-2">'
+                + ' <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="replyCommentBtn" data-id="' + parentId + '">Submit</button>'
+                + '</div>'
+                + '</div>'
+            if ($('ul#commentChildList-' + parentId + ' li.list-group-item').length > 0) {
+                $(document).find('ul#commentChildList-' + parentId + ' li.list-group-item:first-child').before(html);
+            } else {
+                $(document).find('ul#commentChildList-' + parentId).html(html);
             }
         });
 
-        $(document).on("click", "#replyCommentBtn", function(e) {
+        $(document).on("click", "#replyCommentBtn", function (e) {
             var parentId = $(this).data("id");
-            var content = $('textarea#replyComment[data-id='+ parentId +']').val();
+            var content = $('textarea#replyComment[data-id=' + parentId + ']').val();
             var notificationId = $("table#tableNotification").attr("data-id");
             $(this).prop("disabled", true);
             $(this).parent().append(dot);
-            $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", true);
-            if(content == ""){
+            $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", true);
+            if (content == "") {
                 var modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
                         `
                 $("#successModal div.modal-body").html(modal)
                 $("#successModal").modal("show");
                 $(this).prop("disabled", false);
-                $('textarea#replyComment[data-id='+ parentId +']').prop("disabled", false);
+                $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", false);
                 $('div.custom-spinner').parent().remove()
                 return
             }
@@ -672,7 +701,7 @@
             $("button#newCommentBtn").parent().append(dot);
 
             var content = $("textarea#newComment").val()
-            if(content == ""){
+            if (content == "") {
                 var modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
                         `
@@ -692,17 +721,17 @@
 
             var jsonData = JSON.stringify(data);
             sendComment(jsonData)
-            })
+        })
 
-        $(document).on("click", "#commentList button.btn-danger", function(e) {
+        $(document).on("click", "#commentList button.btn-danger", function (e) {
             var commentId = $(this).data("id");
-            $("#deleteConfirmationModal").attr("data-id",commentId)
+            $("#deleteConfirmationModal").attr("data-id", commentId)
         });
 
         document.getElementById("deleteButton").addEventListener("click", function () {
             $("#deleteConfirmationModal").modal("hide");
-            var id= $("#deleteConfirmationModal").attr("data-id")
-            $('li.list-group-item[data-id="' + id + '"] > div.ml-auto button').each(function() {
+            var id = $("#deleteConfirmationModal").attr("data-id")
+            $('li.list-group-item[data-id="' + id + '"] > div.ml-auto button').each(function () {
                 $(this).prop("disabled", true);
             });
             var data = {
@@ -714,8 +743,8 @@
         })
 
         document.getElementById("saveChangesButton").addEventListener("click", function () {
-            $('div.modal-content[data-id="'+id+'"]').append(dot)
-            $(".modal-footer button").each(function() {
+            $('div.modal-content[data-id="' + id + '"]').append(dot)
+            $(".modal-footer button").each(function () {
                 $(this).prop("disabled", true);
             });
             // Create an XMLHttpRequest object
@@ -726,8 +755,8 @@
             xhttp.setRequestHeader("Content-Type", "application/json");
 
             // Define the data you want to send (if needed)
-            var id= $("div.modal-content").attr("data-id")
-            var content =  $("#contentCommentEdit").val()
+            var id = $("div.modal-content").attr("data-id")
+            var content = $("#contentCommentEdit").val()
             var data = {
                 id: id,
                 content: content,
@@ -740,13 +769,7 @@
     });
 </script>
 <script>
-    var avatarLink = localStorage.getItem("avatarLink");
-    if(avatarLink){
-        document.getElementById('avatar-user-login').setAttribute('src', avatarLink);
-    } else{
-        document.getElementById('avatar-user-login').setAttribute('src', userCurrent.avatar);
-    }
-
+    document.getElementById('avatar-user-login').setAttribute('src', userCurrent.avatar);
 </script>
 </body>
 </html>

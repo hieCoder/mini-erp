@@ -133,7 +133,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="image" class="col-sm-2 col-form-label">Image Book:</label>
+                        <label for="image" class="col-sm-2 col-form-label">Book Image:</label>
                         <div class="col-sm-10">
                             <input type="file" class="form-control" id="image" required>
                             <span class="errorMessage" style="color: red;"></span>
