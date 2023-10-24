@@ -146,4 +146,14 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_WEEKLY_MANAGEMENT_TIME_DAY_USER"/>
     </changeSet>
+
+    <changeSet id="18" author="team2">
+        <addForeignKeyConstraint
+                baseTableName="CONTRACT"
+                baseColumnNames="HISTORY_ID"
+                referencedTableName="CONTRACT"
+                referencedColumnNames="ID"
+                constraintName="FK_CONTRACT_PARENT"
+                onDelete="CASCADE"/>
+    </changeSet>
 </databaseChangeLog>
