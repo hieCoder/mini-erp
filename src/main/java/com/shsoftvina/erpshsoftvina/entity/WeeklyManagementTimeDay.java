@@ -5,19 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ManagementTimeDay {
+public class WeeklyManagementTimeDay {
     private String id;
-    private String oneThingCalendar;
-    private String toDoList;
-    private String gratitudeDiary;
-    private String affirmation;
-    private Date day;
+    private String code;
+    private String content;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private User user;
-    private String weeklyCode;
 }

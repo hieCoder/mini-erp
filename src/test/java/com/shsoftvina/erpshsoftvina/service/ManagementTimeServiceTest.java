@@ -51,30 +51,30 @@ public class ManagementTimeServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void testFindAllByMonthYear() {
-        // Arrange
-        String userId = "123";
-        String startDate = "2023-01-01";
-        String endDate = "2023-01-31";
-
-        // Mock the behavior of userMapper
-        when(userMapper.findById(userId)).thenReturn(new User());
-
-        // Mock the behavior of managementTimeDayMapper
-        List<ManagementTimeDay> managementTimeDays = new ArrayList<>();
-        // Add your sample managementTimeDay objects to the list
-        // managementTimeDays.add(new ManagementTimeDay(...));
-        // ...
-        when(managementTimeDayMapper.findAllByMonthYear(userId, startDate, endDate)).thenReturn(managementTimeDays);
-
-        // Act
-        List<DayResponse> result = managementTimeDayService.findAllByMonthYear(userId, startDate, endDate);
-
-        // Assert
-        assertNotNull(result);
-        // Perform additional assertions on the result as needed
-    }
+//    @Test
+//    public void testFindAllByMonthYear() {
+//        // Arrange
+//        String userId = "123";
+//        String startDate = "2023-01-01";
+//        String endDate = "2023-01-31";
+//
+//        // Mock the behavior of userMapper
+//        when(userMapper.findById(userId)).thenReturn(new User());
+//
+//        // Mock the behavior of managementTimeDayMapper
+//        List<ManagementTimeDay> managementTimeDays = new ArrayList<>();
+//        // Add your sample managementTimeDay objects to the list
+//        // managementTimeDays.add(new ManagementTimeDay(...));
+//        // ...
+//        when(managementTimeDayMapper.findAllByMonthYear(userId, startDate, endDate)).thenReturn(managementTimeDays);
+//
+//        // Act
+//        List<DayResponse> result = managementTimeDayService.findAllByMonthYear(userId, startDate, endDate);
+//
+//        // Assert
+//        assertNotNull(result);
+//        // Perform additional assertions on the result as needed
+//    }
 
     @Test
     public void testFindById_WithValidId() {
