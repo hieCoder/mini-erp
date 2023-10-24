@@ -55,7 +55,11 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        $('.avatar-login').attr('src', userCurrent.avatar);
+        if (userCurrent.avatar != '') {
+            $('.avatar-login').attr('src', userCurrent.avatar);
+        }
+        else $('.avatar-login').attr('src', '/upload/user/avatar-default.jpg');
+
         $('.fullname-login').text(userCurrent.fullname);
         $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
         var scheduleLink = '';
