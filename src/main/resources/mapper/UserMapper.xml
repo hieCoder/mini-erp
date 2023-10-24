@@ -71,7 +71,7 @@
     </insert>
 
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
+        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile}, avatar = #{avatar} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">

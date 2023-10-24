@@ -21,6 +21,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         if (response.isCommitted()) {
             return;
         }
-        redirectStrategy.sendRedirect(request, response, "/home");
+
+        String id = Principal.getUserCurrent().getId();
+        redirectStrategy.sendRedirect(request, response, "/users/" + id);
     }
 }

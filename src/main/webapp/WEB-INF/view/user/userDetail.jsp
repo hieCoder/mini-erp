@@ -23,7 +23,7 @@
                 <div class="col-md-4">
                     <div class="text-center">
                         <div id="avatar-container" style="position: relative;">
-                            <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200" onerror="avatarDefault()">
+                            <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
                             <input name="avatar" type="file" class="form-control mt-2" id="avatar" accept="image/*">
                             <small class="text-muted ml-2">Choose New Avatar</small>
                             <h4 class="mt-2">${user.getFullname()}</h4>
@@ -454,11 +454,6 @@
         }
     });
 
-
-    function avatarDefault() {
-        document.getElementById("avatar-user").src = "/upload/user/avatar-default.jpg";
-    }
-
     var isNewPassword = false;
     var linkCancle = '/users';
     if(userCurrent.role == U_DEVELOPER) linkCancle = '/home';
@@ -521,6 +516,7 @@
                     resetForm('formUpdateUser');
                 }
             } else {
+                formData.delete('password');
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'updateSuccess');
                     location.href = "/users/" + '${user.getId()}';
