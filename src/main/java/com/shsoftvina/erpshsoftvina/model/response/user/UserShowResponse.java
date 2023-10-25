@@ -16,4 +16,5 @@ public class UserShowResponse {
     private EnumDto department;
     private String email; // user_id
     private EnumDto position;
+    private String createdDate;
 }

@@ -296,32 +296,36 @@
                     var titles = responseData.map(function (task) {
                         return task.title;
                     });
-                    if (titles.length == 0)  $('div.custom-spinner').parent().remove();
-                    // Show dropdown titles tasks
                     mentionDropdown.innerHTML = "Task:";
-                    titles.forEach(function (title) {
-                        var mentionItem = document.createElement("div");
-                        mentionItem.classList.add("dropdown-item");
-                        mentionItem.classList.add("border");
-                        mentionItem.textContent = title;
-                        $('div.custom-spinner').parent().remove();
-                        // Handle when user choose one of the titles
-                        mentionItem.addEventListener("click", function () {
-                            var selectedTitle = mentionItem.textContent;
-                            var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
-                            var updatedContent = contentContainer.innerHTML + '<a href="/tasks/' + selectedTaskId + '">' + selectedTitle + '</a> ';
-                            contentContainer.innerHTML = updatedContent;
-                            var divs = contentContainer.querySelectorAll("div");
-                            divs.forEach(function (div) {
-                                var span = document.createElement("span");
-                                span.textContent = div.textContent;
-                                contentContainer.replaceChild(span, div);
-                                contentContainer.insertBefore(document.createElement("br"), span);
+                    // Show dropdown titles tasks
+                    if (titles.length != 0) {
+                        titles.forEach(function (title) {
+                            var mentionItem = document.createElement("div");
+                            mentionItem.classList.add("dropdown-item");
+                            mentionItem.classList.add("border");
+                            mentionItem.textContent = title;
+                            $('div.custom-spinner').parent().remove();
+                            // Handle when user choose one of the titles
+                            mentionItem.addEventListener("click", function () {
+                                var selectedTitle = mentionItem.textContent;
+                                var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
+                                var updatedContent = contentContainer.innerHTML + '<a href="/tasks/' + selectedTaskId + '">' + selectedTitle + '</a> ';
+                                contentContainer.innerHTML = updatedContent;
+                                var divs = contentContainer.querySelectorAll("div");
+                                divs.forEach(function (div) {
+                                    var span = document.createElement("span");
+                                    span.textContent = div.textContent;
+                                    contentContainer.replaceChild(span, div);
+                                    contentContainer.insertBefore(document.createElement("br"), span);
+                                });
+                                mentionDropdown.style.display = "none";
                             });
-                            mentionDropdown.style.display = "none";
+                            mentionDropdown.appendChild(mentionItem);
                         });
-                        mentionDropdown.appendChild(mentionItem);
-                    });
+                    } else {
+                        $('div.custom-spinner').parent().remove();
+                        mentionDropdown.innerHTML += " No tasks";
+                    }
                     mentionDropdown.style.display = "block";
                 });
             } else {

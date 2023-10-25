@@ -187,6 +187,10 @@
             idComment: null,
             liEComment: null
         };
+        var objectUpdate = {
+            valTitle: null,
+            valContent: null
+        };
 
         $(document).ready(function() {
 
@@ -247,6 +251,8 @@
                     $('#comment-list').append(createCommentForm(comment));
                 });
 
+                cutShortLink();
+
                 hideLoading('content-container');
             });
         });
@@ -291,6 +297,9 @@
                      var liE = createCommentForm(rs);
                      liE.prependTo('#comment-list');
 
+
+                    $('#yourCommentTitle').val('');
+                    $('#yourCommentContent').summernote('code', '<p><br></p>');
                 }, 'yourCommentForm');
             }
         });
@@ -318,6 +327,9 @@
             var closestLI = $(this).closest('li');
 
             updateCommemtForm(closestLI);
+
+            objectUpdate.valTitle = $('#updateCommentTitle'+id).val();
+            objectUpdate.valContent = $('#updateCommentContent'+id).html();
 
             // update
             Validator({
@@ -347,12 +359,26 @@
         });
         $(document).on('click','.btn-cancel-update-comment',function(){
             var idComment = $(this).data('comment-id');
-            var closestLI = $(this).closest('li');
 
-            $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
-                closestLI.replaceWith(createCommentForm(rs));
-            }, 'updateCommentForm'+idComment);
+            $('#updateCommentTitle'+idComment).val(objectUpdate.valTitle);
+            $('#updateCommentTitle'+idComment).prop('disabled', true);
+
+            $('#updateCommentContent'+idComment).summernote('destroy');
+            $('#updateCommentContent'+idComment).html(objectUpdate.valContent);
+
+            // $('#updateCommentForm'+idComment).find('.remove-file:first-child').addClass('d-none');
+
+            $('#updateCommentForm'+idComment).find('input[name="newFiles"]').first().addClass('d-none');
+
+
+
+
+
+
+            // $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());
+            // callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
+            //     closestLI.replaceWith(createCommentForm(rs));
+            // }, 'updateCommentForm'+idComment);
         });
         $(document).on('click','.btn-delete-comment',function(){
             commentObj.idComment = $(this).data('comment-id');
@@ -402,7 +428,7 @@
         function createCommentForm(comment) {
             var listItem = $('<li class="list-group-item">');
             var row = $('<div class="row">');
-            var userCol = $('<div class="col-md-2 text-center">');
+            var userCol = $('<div class="col-md-2 d-flex flex-column align-items-center">');
             var commentCol = $('<div class="col-md-10">');
 
             userCol.append('<img class="rounded-circle-container" src="' + comment.avatarUser + '" alt="User Avatar">');
@@ -421,7 +447,7 @@
             if (comment.files && comment.files.length > 0) {
                 comment.files.forEach(function (file) {
                     var fileSpan = $('<span class="file">');
-                    var fileA = $('<a class="p-2" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
+                    var fileA = $('<a class="p-2 cut-file-name" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');
                     var closeSpan = $('<span style="font-size: 20px;cursor: pointer;" class="d-none remove-file" aria-hidden="true">&times;</span>');
 
                     fileSpan.append(fileA);
@@ -444,7 +470,7 @@
             var cancelUpdateButton = $('<button type="button" class="btn btn-secondary btn-cancel-update-comment d-none mr-1">Cancel</button>');
             cancelUpdateButton.attr('data-comment-id', comment.id);
 
-            if(comment.parentId == null){
+            if(comment.parentId == null && !isDeleveloper()){
                 var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment mr-1">Reply</button>');
                 replyButton.attr('data-comment-id', comment.id);
                 buttonCol.append(replyButton);

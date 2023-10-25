@@ -11,6 +11,7 @@
             <column name="ATM" value="ATM"/>
             <column name="EMAIL" value="canh@gmail.com"/>
             <column name="PASSWORD" value="$2a$12$tUsM3tftkSRJuPv/awZYsuPULKfvL.BkTbgXAG4dJ3rVYUTEKLfZm"/>
+            <column name="AVATAR" value="avatar-default.jpg"/>
             <column name="ROLE" value="OWNER"/>
             <column name="STATUS" value="ACTIVE"/>
         </insert>

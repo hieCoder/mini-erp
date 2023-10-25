@@ -39,7 +39,7 @@
 
     <select id="getAllUser" parameterType="org.apache.ibatis.session.RowBounds" resultMap="userResultMap">
          <![CDATA[
-        SELECT u.fullname, u.id, u.email , u.department, u.position
+        SELECT u.fullname, u.id, u.email , u.department, u.position, u.CREATED_DATE
         FROM USER AS u
         WHERE u.status = #{status}
           AND (u.email LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%')
@@ -67,11 +67,11 @@
     </update>
 
     <insert id="registerUser" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        INSERT INTO USER (ID, FULLNAME, STATUS, EMAIL, PASSWORD) VALUES (#{id}, #{fullname}, #{status}, #{email}, #{password});
+        INSERT INTO USER (ID, FULLNAME, STATUS, EMAIL, PASSWORD, CREATED_DATE) VALUES (#{id}, #{fullname}, #{status}, #{email}, #{password}, #{createdDate});
     </insert>
 
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile} where id = #{id}
+        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile}, avatar = #{avatar} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
@@ -112,6 +112,7 @@
         <result property="resume" column="RESUME"/>
         <result property="isFirstUpdateProfile" column="IS_FIRST_UPDATE_PROFILE"/>
         <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
+        <result property="createdDate" column="CREATED_DATE"/>
         <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
     </resultMap>
 

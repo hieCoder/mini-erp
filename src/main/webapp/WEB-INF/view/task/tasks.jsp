@@ -322,7 +322,9 @@
 
 
             // content
-            $('#content').summernote();
+            $('#content').summernote({
+                maxHeight: 140
+            });
 
             Validator({
                 form:'#registerTaskForm',

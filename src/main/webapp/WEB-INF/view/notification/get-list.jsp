@@ -15,17 +15,24 @@
 <div class="container">
     <h1>Notification List</h1>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <input type="text" value ="${search}" id="searchInput" class="form-control" placeholder="Title or Author">
     </div>
     <div class="col-md-2">
         <button class="btn btn-primary" id="searchButton">Search</button>
     </div>
     <div class="col-md-2">
+    <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+            <a target="_blank" href="${pathMain}create"><button class="btn btn-success createBtn">Create</button></a>
+    </c:if>
+
+    </div>
+    <div class="col-md-2">
         <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
-            <a href="${pathMain}create"><button class="btn btn-success">Create</button></a>
+        <button class="btn btn-primary showListInactive">Show list inactive</button>
         </c:if>
     </div>
+
     <div class="col-md-2">
         <select id="pageSizeSelect" class="form-control">
             <option <c:if test='${pageSize  == 10}'>selected</c:if>>10</option>
@@ -59,11 +66,11 @@
 
         <nav aria-label="Page navigation" <c:if test="${totalPages <= 1}">class="invisible"</c:if> >
             <ul class="pagination justify-content-center" id="paginationList">
-                <li class="page-item">
+                <li class="page-item linkStart">
                 <span class="btn page-link"
                       data-page="1"><<</span>
                 </li>
-                <li class="page-item">
+                <li class="page-item linkStart">
                 <span class="btn page-link"
                       data-page="-1"><</span>
                 </li>
@@ -73,11 +80,11 @@
                           data-page="${page}">${page}</span>
                     </li>
                 </c:forEach>
-                <li class="page-item">
+                <li class="page-item linkEnd">
                 <span class="btn page-link"
                       data-page="+1">></span>
                 </li>
-                <li class="page-item">
+                <li class="page-item linkEnd">
                 <span class="btn page-link"
                       data-page="${totalPages}">>></span>
                 </li>
@@ -85,8 +92,57 @@
         </nav>
 
 </div>
+<div class="modal fade" id="listInactive" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">List Inactive Notification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="inactiveNotificationTable" class="table mt-3">
+                    <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Created Date</th>
+                    </tr>
+                    </thead>
+                    <tbody id="inactiveNotificationList">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    const dot = createLoadingHtml();
+    function displayPagination(){
+        var currentUrl = window.location.search;
+        var params = new URLSearchParams(currentUrl);
+        var currentPage = !params.get('page') ? 1 : parseInt(params.get('page'));
+        if(currentPage == 1){
+            $("li.linkStart").addClass("d-none")
+        } else{
+            $("li.linkStart").removeClass("d-none")
+        }
+        var lastPageElement = $("#paginationList > li").eq(-3)
+        let lastPage = $(lastPageElement).children().attr("data-page")
+        if(currentPage == lastPage){
+            $("li.linkEnd").addClass("d-none")
+        } else{
+            $("li.linkEnd").removeClass("d-none")
+        }
+    }
     document.addEventListener("DOMContentLoaded", function() {
+        displayPagination()
         const baseUrl = "/api/v1/notifications";
         var paginationList = document.getElementById("paginationList");
         paginationList.addEventListener("click", function (event) {
@@ -147,15 +203,17 @@
                         parentDiv.remove()
                         let xhtml =""
                         data.forEach(function(notification, index) {
+                            let pageInt = (parseInt(page) - 1)*10
                             xhtml += '<tr>' +
-                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + (index + pageInt + 1) + '</td>' +
                                 '<td><a href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
-                                '<td>' + notification.title + '</td>' +
+                                '<td>' + notification.user.fullname + '</td>' +
                                 '<td>' + notification.createdDate + '</td>' +
                                 '</tr>';
                         })
                         tbodyElement.innerHTML = xhtml
                         tbodyElement.classList.remove("hidden")
+                        displayPagination()
                     } else {
                         console.error("Request failed with status:", xhr.status);
                     }
@@ -219,6 +277,39 @@
                 searchNotification();
             }
         }
+
+        $("button.showListInactive").click(function() {
+            $(this).after(dot);
+            $(this).prop("disabled", true)
+            callAjaxByJsonWithData(baseUrl + "/inactive","GET",null,function (rs){
+                if(rs){
+                    let xhtml =""
+                    if(rs.length > 0) {
+                        rs.forEach(function(notification, index) {
+                            xhtml += '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
+                                '<td>' + notification.user.fullname + '</td>' +
+                                '<td>' + notification.createdDate + '</td>' +
+                                '</tr>';
+                        })
+                        $("#inactiveNotificationList").html(xhtml)
+                    } else{
+                        xhtml= '<tr>'+
+                            '<td class="text-center" colspan="4">'+
+                            '<span class="badge badge-warning">The list is empty</span>'+
+                            '</td>'+
+                            '</tr>'
+                        $("#inactiveNotificationList").html(xhtml)
+                    }
+                    $("#listInactive").modal("show")
+                    $("button.showListInactive").prop("disabled", false)
+                }else{
+                    console.log("Error")
+                    $("button.showListInactive").prop("disabled", false)
+                }
+            })
+        });
     })
 </script>
 </body>

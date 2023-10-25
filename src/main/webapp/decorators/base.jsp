@@ -32,7 +32,7 @@
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
-            avatar: <%=Principal.getUserCurrent().getAvatar() != null?"'/upload/user/"+Principal.getUserCurrent().getAvatar() + "'":"''"%>
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
         };
     </script>
 </head>
@@ -55,6 +55,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
         $('.avatar-login').attr('src', userCurrent.avatar);
         $('.fullname-login').text(userCurrent.fullname);
         $('.profile-user-login').attr('href', '/users/' +userCurrent.id);
@@ -76,5 +77,6 @@
         }
     });
 </script>
+
 </body>
 </html>

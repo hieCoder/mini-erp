@@ -157,10 +157,18 @@ public class UserServiceImpl implements UserService {
                 userUpdate.setResume(user.getResume());
             }  else if (newFileNameList.size() == 2){
                 if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                if (avatarNameOld != null) {
+                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
+                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                    }
+                }
                 userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
             } else if (avatarFile != null) {
-                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                if (avatarNameOld != null) {
+                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
+                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                    }
+                }
                 userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
                 userUpdate.setResume(user.getResume());
             } else if (resumeFile != null) {
@@ -175,10 +183,18 @@ public class UserServiceImpl implements UserService {
                 userUpdate.setResume(user.getResume());
             } else if (newFileNameList.size() == 2){
                 if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                if (avatarNameOld != null) {
+                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
+                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                    }
+                }
                 userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
             } else if (avatarFile != null) {
-                if (avatarNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                if (avatarNameOld != null) {
+                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
+                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                    }
+                }
                 userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
                 userUpdate.setResume(user.getResume());
             } else if (resumeFile != null) {

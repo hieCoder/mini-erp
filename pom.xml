@@ -16,6 +16,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <!-- Spring -->

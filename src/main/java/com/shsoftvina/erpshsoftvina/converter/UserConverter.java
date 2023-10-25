@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +64,7 @@ public class UserConverter {
                 .address(user.getAddress())
                 .timesheetsCode(user.getTimesheetsCode())
                 .contracts(contracts)
+                .createdDate(DateUtils.formatDateTime(user.getCreatedDate()))
                 .build();
     }
 
@@ -73,6 +75,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .email(user.getEmail())
                 .position(EnumUtils.instance(user.getPosition()))
+                .createdDate(DateUtils.formatDateTime(user.getCreatedDate()))
                 .build();
     }
 
@@ -87,6 +90,7 @@ public class UserConverter {
                 .email(userActiveRequest.getEmail())
                 .status(StatusUserEnum.valueOf(userActiveRequest.getStatus()))
                 .isFirstUpdateProfile(UserConstant.DEFAULT_FIRST_UPDATE_PROFILE)
+                .avatar(UserConstant.AVATAR_DEFAULT)
                 .build();
     }
 
@@ -125,6 +129,7 @@ public class UserConverter {
                 .id(ApplicationUtils.generateId())
                 .email(userRegisterRequest.getEmail())
                 .password(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()))
+                .createdDate(new Date())
                 .build();
     }
 

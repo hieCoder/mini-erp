@@ -174,4 +174,18 @@ public class ApplicationUtils {
             throw new UnauthorizedException(MessageErrorUtils.unauthorized());
         }
     }
+
+    public boolean checkUserWebSocketAllow(User user){
+        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER))){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkUserWebSocketAllow(User user, String userId){
+        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER) || userId.equals(user.getId()))){
+            return false;
+        }
+        return true;
+    }
 }
