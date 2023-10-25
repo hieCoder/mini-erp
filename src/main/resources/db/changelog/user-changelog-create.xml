@@ -31,4 +31,13 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <modifyDataType tableName="USER" columnName="ADDRESS" newDataType="NVARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <addColumn tableName="USER">
+            <column name="CREATED_DATE" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

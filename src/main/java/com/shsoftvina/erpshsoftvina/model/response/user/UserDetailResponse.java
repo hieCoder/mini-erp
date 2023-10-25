@@ -32,4 +32,5 @@ public class UserDetailResponse{
     private String atm;
     private String timesheetsCode;
     private List<ContractResponse> contracts;
+    private String createdDate;
 }

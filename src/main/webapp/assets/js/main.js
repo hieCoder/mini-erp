@@ -180,3 +180,24 @@ function hideLoading(contentId) {
     $('#loading-indicator').hide();
     $('#' + contentId).show();
 }
+
+function cutShortLink() {
+    var fileElements = document.querySelectorAll('a.cut-file-name');
+
+    fileElements.forEach(function (element) {
+        var fileName = element.textContent;
+        var maxLength = 25;
+        if (fileName.length > maxLength) {
+            var indexOfHyphen = fileName.indexOf("-");
+            if (indexOfHyphen !== -1) {
+                var remainingPart = fileName.substring(indexOfHyphen + 1);
+                if (remainingPart.length > 10) {
+                    var truncatedFileName = remainingPart.substring(0, 10) + '...';
+                } else {
+                    var truncatedFileName = remainingPart;
+                }
+                element.textContent = truncatedFileName;
+            }
+        }
+    });
+}

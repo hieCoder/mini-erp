@@ -5,4 +5,5 @@ public class UserConstant {
     public static String PATH_FILE = "/upload/user/";
     public static boolean DEFAULT_FIRST_UPDATE_PROFILE = false;
     public static boolean ACTIVE_FIRST_UPDATE_PROFILE = true;
+    public static String AVATAR_DEFAULT = "avatar-default.jpg";
 }
