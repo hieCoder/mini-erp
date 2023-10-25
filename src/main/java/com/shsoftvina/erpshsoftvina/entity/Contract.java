@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +25,6 @@ public class Contract {
     private InsuranceTypeEnum insuranceType;
     private String insuranceMoney;
     private StatusContractEnum status;
+    private Contract parentContract;
+    private List<Contract> historyContract;
 }
