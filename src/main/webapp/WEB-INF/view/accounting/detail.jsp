@@ -26,7 +26,7 @@
                     <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
                 </div>
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered mt-2">
                 <thead>
                 <tr>
                     <th class="table-success text-center text-secondary">Revenue</th>
@@ -53,7 +53,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="col-md-12 rounded border border-warning p-3">
+            <div class="col-md-12 rounded border border-warning p-3 mb-3">
                 <i class="fa-regular fa-lg fa-clipboard fa-bounce" style="color: #4a4c87;"></i>
                 <strong class="text-info">Note: </strong><span id="noteAccount" class="text-info">${account.note}</span>
             </div>
