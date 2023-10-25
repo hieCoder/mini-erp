@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class SettingAllowanceResponse {
     private String maxFileSize;
     private String listTypeFile;
+    private String listTypeImage;
     private Integer uploadFileLimit;
 }

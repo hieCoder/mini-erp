@@ -99,7 +99,7 @@ Validator.isRequired=function(selector){
     return {
         selector: selector,
         test: function (value) {
-            return value.trim()?undefined:'This filed is not filled';
+            return value.trim()?undefined:'This field is not filled';
         }
     };
 }
@@ -108,7 +108,7 @@ Validator.isEmail=function(selector){
         selector: selector,
         test: function (value) {
             var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            return regex.test(value)?undefined:'This filed must be a email';
+            return regex.test(value)?undefined:'This field must be a email';
         }
     };
 }
