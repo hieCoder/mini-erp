@@ -15,14 +15,29 @@
                     Logout success
                 </div>
             </c:if>
-            <c:if test="${param.incorrectAccount != null}">
-                <div class="alert alert-danger">
-                    User ID or password incorrect
-                </div>
-            </c:if>
             <c:if test="${param.registerSuccess != null}">
                 <div class="alert alert-success">
                     Register success! Waiting Owner approval
+                </div>
+            </c:if>
+            <c:if test="${param.userNotFound != null}">
+                <div class="alert alert-danger">
+                    Email is not registered in the system
+                </div>
+            </c:if>
+            <c:if test="${param.userLock != null}">
+                <div class="alert alert-danger">
+                    User is lock
+                </div>
+            </c:if>
+            <c:if test="${param.userPending != null}">
+                <div class="alert alert-danger">
+                    User is pending
+                </div>
+            </c:if>
+            <c:if test="${param.passwordInvalid != null}">
+                <div class="alert alert-danger">
+                    Password incorrect
                 </div>
             </c:if>
             <form action="/j_spring_security_check" method="post">

@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.config;
 
+import com.shsoftvina.erpshsoftvina.security.CustomAuthenticationFailureHandler;
 import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
@@ -24,6 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
+
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -80,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .loginProcessingUrl("/j_spring_security_check").permitAll()
                 .successHandler(customSuccessHandler)
-                .failureUrl("/login?incorrectAccount")
+                .failureHandler(customAuthenticationFailureHandler)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
