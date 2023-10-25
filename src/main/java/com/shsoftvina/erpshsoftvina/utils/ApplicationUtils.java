@@ -95,9 +95,9 @@ public class ApplicationUtils {
         } else if(c == Accounting.class){
             setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
         } else if(c == Notification.class){
-            setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
+            setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
         } else if(c == CommentNotification.class){
-            setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_COMMENT_CODE);
+            setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_COMMENT_CODE);
         } else if(c == Task.class){
             setting = settingMapper.findByCode(SettingConstant.TASK_CODE);
         } else if(c == CommentTask.class){
@@ -113,10 +113,11 @@ public class ApplicationUtils {
         Setting setting = getSetting(c);
 
         String imageTypes = setting.getImageType();
-        int fileLimit = setting.getFileSize();
+        int fileLimit = setting.getFileLimit();
+        int fileSize = setting.getFileSize();
 
-        if (!FileUtils.isAllowedFileSize(file))
-            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+        if (!FileUtils.isAllowedFileSize(file, fileSize))
+            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
 
         if (fileLimit < 1)
             throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
@@ -125,34 +126,53 @@ public class ApplicationUtils {
             throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageTypes));
     }
 
+    public void checkValidateImage(Class<?> c, MultipartFile[] files){
+
+        if(files!=null){
+            Setting setting = getSetting(c);
+
+            int fileLimit = setting.getFileLimit();
+            if(fileLimit<files.length)
+                throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+            for(MultipartFile file: files){
+                checkValidateImage(c, file);
+            }
+        }
+    }
+
     public void checkValidateFile(Class<?> c, MultipartFile file){
 
-        Setting setting = getSetting(c);
+        if(file!=null){
+            Setting setting = getSetting(c);
 
-        String fileTypes = setting.getFileType();
-        int fileLimit = setting.getFileSize();
+            String fileTypes = setting.getFileType();
+            int fileLimit = setting.getFileLimit();
+            int fileSize = setting.getFileSize();
 
-        if (!FileUtils.isAllowedFileSize(file))
-            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+            if (!FileUtils.isAllowedFileSize(file, fileSize))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
 
-        if (fileLimit < 1)
-            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+            if (fileLimit < 1)
+                throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
 
-        if (!FileUtils.isAllowedFileType(file, fileTypes))
-            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(fileTypes));
+            if (!FileUtils.isAllowedFileType(file, fileTypes))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(fileTypes));
+        }
     }
 
     public void checkValidateFile(Class<?> c, MultipartFile[] files){
 
-        Setting setting = getSetting(c);
+        if(files!=null){
+            Setting setting = getSetting(c);
 
-        int fileLimit = setting.getFileSize();
+            int fileLimit = setting.getFileLimit();
+            if(fileLimit<files.length)
+                throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
 
-        if(fileLimit<files.length)
-            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
-
-        for(MultipartFile file: files){
-            checkValidateFile(c, file);
+            for(MultipartFile file: files){
+                checkValidateFile(c, file);
+            }
         }
     }
 

@@ -18,7 +18,8 @@
                                     <th>Component</th>
                                     <th>Image type</th>
                                     <th>File type</th>
-                                    <th>File size</th>
+                                    <th>File limit</th>
+                                    <th>File size (Mb)</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -66,9 +67,15 @@
                     }
                 },
                 {
+                    data: 'fileLimit',
+                    render: function(data, type, row) {
+                        return '<input name="fileLimit" min="0" type="number" value="' + data + '"/>';
+                    }
+                },
+                {
                     data: 'fileSize',
                     render: function(data, type, row) {
-                        return '<input name="fileSize" type="number" value="' + data + '"/>';
+                        return '<input name="fileSize" min="0" type="number" value="' + data + '"/>';
                     }
                 }
             ],
@@ -93,9 +100,10 @@
                 var code = $(this).find('p').data('code');
                 var imageType = $(this).find('input[name="imageType"]').val();
                 var fileType = $(this).find('input[name="fileType"]').val();
+                var fileLimit = $(this).find('input[name="fileLimit"]').val();
                 var fileSize = $(this).find('input[name="fileSize"]').val();
 
-                if(isBlank(imageType) || isBlank(fileType) || isBlank(fileSize)){
+                if(isBlank(imageType) || isBlank(fileType) || isBlank(fileLimit) || isBlank(fileSize)){
                     isValidate = false;
                     $('.message-noti').text('All field is not empty');
                     $('.message-noti').css('color', 'red');
@@ -105,6 +113,7 @@
                         code: code,
                         imageType: imageType,
                         fileType: fileType,
+                        fileLimit: fileLimit,
                         fileSize: fileSize
                     };
                     object.push(obj);

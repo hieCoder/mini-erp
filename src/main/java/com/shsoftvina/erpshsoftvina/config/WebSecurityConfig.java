@@ -33,6 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
+                .exceptionHandling()
+                    .accessDeniedPage("/forbidden") // 403 no access
+                .and()
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js

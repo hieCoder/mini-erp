@@ -32,15 +32,6 @@ public class UserConverter {
 
     public UserDetailResponse toUserDetailResponse(User user) {
 
-        User userCurrent = Principal.getUserCurrent();
-        if (user.getRole() == null)
-            throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
-        else {
-            if (userCurrent.getRole().equals(RoleEnum.DEVELOPER) && !user.getId().equals(userCurrent.getId())) {
-                throw new UnauthorizedException(MessageErrorUtils.unauthorized());
-            }
-        }
-
         List<ContractResponse> contracts = null;
 
         RoleEnum userCurrentRole = Principal.getUserCurrent().getRole();

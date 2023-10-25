@@ -7,75 +7,66 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-// Annotating this class with @RestControllerAdvice designates it as a global exception handler
-// for the entire application, allowing it to handle exceptions thrown during request processing.
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    // Handle UnauthorizedException and return an ErrorResponse with HTTP status 401 (Unauthorized).
     @ExceptionHandler(UnauthorizedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse handleUnauthorizedException(UnauthorizedException ex, WebRequest req) {
-        return new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    public void handleUnauthorizedException(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/forbidden");
     }
 
-    // Handle DuplicateException and return an ErrorResponse with HTTP status 409 (Conflict).
     @ExceptionHandler(DuplicateException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDuplicateException(DuplicateException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    // Handle FileTooLimitedException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(FileTooLimitedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleFileTooLimitedException(FileTooLimitedException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle NotFoundException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleNotFoundException(NotFoundException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle DuplicateException and return an ErrorResponse with HTTP status 409 (Conflict).
     @ExceptionHandler(NoMatchException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleNoMatchException(NoMatchException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle FileTypeNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(FileTypeNotAllowException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleFileTypeNotAllowException(FileTypeNotAllowException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle FileSizeNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(FileSizeNotAllowException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleFileSizeNotAllowException(FileSizeNotAllowException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle FileLimitNotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(FileLimitNotAllowException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleFileLimitNotAllowException(FileLimitNotAllowException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle NotAllowException and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(NotAllowException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleNotAllowException(NotAllowException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle MethodArgumentNotValidException and return an ErrorResponse with HTTP status 400 (Bad Request).
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e, WebRequest req) {
@@ -83,21 +74,18 @@ public class CustomExceptionHandler {
                 e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
-    // Handle ErrorConvertJsonException and return an ErrorResponse with HTTP status 400 (Bad Request).
     @ExceptionHandler(ErrorConvertJsonException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleErrorConvertJsonException(ErrorConvertJsonException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle InvalidException and return an ErrorResponse with HTTP status 400 (Bad Request).
     @ExceptionHandler(InvalidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidException(InvalidException ex, WebRequest req) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // Handle generic Exception and return an ErrorResponse with HTTP status 500 (Internal Server Error).
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception ex, WebRequest req) {
