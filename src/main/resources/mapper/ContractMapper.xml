@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
 
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type, insurance_money, status)
-            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status})
+        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type, insurance_money, status, history_id)
+            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status}, #{parentContract.id})
     </insert>
 
     <select id="findById" resultMap="contractResultMap">

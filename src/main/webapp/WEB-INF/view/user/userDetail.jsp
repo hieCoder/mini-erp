@@ -219,7 +219,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Contract history</h4>
+                <h4 class="modal-title">List Contract</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -521,6 +521,7 @@
                     resetForm('formUpdateUser');
                 }
             } else {
+                formData.delete('password');
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'updateSuccess');
                     location.href = "/users/" + '${user.getId()}';
