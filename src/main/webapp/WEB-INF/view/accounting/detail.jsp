@@ -12,33 +12,70 @@
 </head>
 <body>
 <div class="container mt-5">
-    <div class="card">
+    <div class="card shadow">
         <div class="card-header">
             Accounting Detail
         </div>
         <div class="card-body" id="table-body">
             <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
-            <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
-            <p class="card-text text-success">Revenue: <span id="revenueAccount"><fmt:formatNumber type="number"
-                                                                                                   value="${account.revenue}"
-                                                                                                   pattern="#,##0 ₫"/></span>
-            </p>
-            <p class="card-text text-danger">Expense: <span id="expenseAccount"><fmt:formatNumber type="number"
-                                                                                                  value="${account.expense}"
-                                                                                                  pattern="#,##0 ₫"/></span>
-            </p>
-            <p class="card-text text-primary">Balance: <span id="remainAccount"><fmt:formatNumber type="number"
-                                                                                                  value="${account.remain}"
-                                                                                                  pattern="#,##0 ₫"/></span>
-            </p>
-            <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
-            <p class="card-text">Note: <span id="noteAccount">${account.note}</span></p>
-
+            <div class="row">
+                <div class="col">
+                    <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
+                </div>
+                <div class="col text-right">
+                    <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="table-success text-center text-secondary">Revenue</th>
+                    <th class="table-danger text-center text-secondary">Expense</th>
+                    <th class="table-primary text-center text-secondary">Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td id="revenueAccount" class="text-success text-center"><fmt:formatNumber type="number"
+                                                                                               value="${account.revenue}"
+                                                                                               pattern="#,##0 ₫"/>
+                    </td>
+                    <td id="expenseAccount" class="text-danger text-center">
+                        <fmt:formatNumber type="number"
+                                          value="${account.expense}"
+                                          pattern="#,##0 ₫"/>
+                    </td>
+                    <td id="remainAccount" class="text-primary text-center">
+                        <fmt:formatNumber type="number"
+                                          value="${account.remain}"
+                                          pattern="#,##0 ₫"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="col-md-12 rounded border border-warning p-3">
+                <i class="fa-regular fa-lg fa-clipboard fa-bounce" style="color: #4a4c87;"></i>
+                <strong class="text-info">Note: </strong><span id="noteAccount" class="text-info">${account.note}</span>
+            </div>
             <c:choose>
                 <c:when test="${not empty account.bill}">
-                    <p class="card-text">Bill: <span id="attachedFilesNotification">
+                    <p class="card-text">Bill: <br>
+                        <span id="attachedFilesNotification">
+                            <c:set var="imageType" value="${setting.listTypeImage}"/>
+                            <c:set var="fileType" value="${setting.listTypeFile}"/>
                         <c:forEach items="${account.bill}" var="file">
-                            <a href="${file}" download="" target="_blank">${file.substring(file.indexOf('-') + 1)}</a>
+                            <c:if test="${fn:contains(imageType, file.substring(file.lastIndexOf('.') + 1))}">
+                                <img width="40" height="40" src="${file}" alt="">
+                            </c:if>
+                            <c:if test="${fn:contains(fileType, file.substring(file.lastIndexOf('.') + 1))}">
+                                <img width="40" height="40"
+                                     src="/upload/common/${file.substring(file.lastIndexOf('.') + 1)}.png" alt="">
+                            </c:if>
+                            <a href="${file}" download="" target="_blank" data-toggle="tooltip" data-placement="bottom"
+                               title="${file.substring(file.indexOf('-') + 1)}">
+                                  <span class="shortened-text"
+                                        style="display:inline-block;width: 250px">${file.substring(file.indexOf('-') + 1)}</span>
+                            </a>
                             <br>
                         </c:forEach>
                         </span>
@@ -132,11 +169,12 @@
                     </script>
                     <div class="form-group">
                         <label for="editNote">Note</label>
-                        <input type="text" class="form-control" id="editNote" value="${account.note}" required>
+                        <textarea class="form-control" id="editNote" required>${account.note}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="editBill">Bill</label>
                         <input type="file" class="form-control form-control-file" id="editBill" name="files" multiple>
+                        <span class="text-secondary" id="validFileText"></span>
                         <ul id="editLink" class="list-group">
                         </ul>
                     </div>
@@ -235,7 +273,17 @@
     </div>
 </div>
 <script>
-    var validExtensions = ["xls", "xlsx", "pdf", "csv", "doc", "pptx"];
+    function initializeTooltips() {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    initializeTooltips();
+    var imageType = "${setting.listTypeImage}";
+    var fileType = "${setting.listTypeFile}";
+    var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
+    var validExtensions = validFileUpload.split(',');
+    var spanElement = $("#editModal #validFileText");
+    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + " and below " + "${setting.uploadFileLimit}" + " files");
 
     function convertMaxFileSize(string) {
         var maxFileSizeWithoutMB = string.replace("MB", "");
@@ -256,30 +304,26 @@
         var countFile = billFiles.length;
         var countCurrentFile = $("li.listFilesEdit").length;
         if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
-            var modal = `
+            let modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
                         `
             $("#successModal div.modal-body").html(modal)
             $("#successModal").modal("show");
             $(this).val('')
+            return;
         }
         for (var i = 0; i < billFiles.length; i++) {
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                alert(`File must ${setting.listTypeFile} and not over 100MB.`);
-                loading.style.display = "none";
+                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must ' +
+                    validFileUpload +
+                    ' and not over ' + "${setting.maxFileSize}" +'.';
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
                 $(this).val('')
                 return;
             }
-        }
-        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
-            var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
-                        `
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
-            $(this).val('')
         }
     });
 
@@ -338,7 +382,7 @@
 
                                 var deleteButton = $('<button>', {
                                     type: 'button',
-                                    class: 'btn btn-danger',
+                                    class: 'btn btn-danger ml-2',
                                     'data-toggle': 'modal',
                                     'data-target': '#deleteConfirmationModalFile',
                                     'data-name': fileName
@@ -416,10 +460,30 @@
                     var xhtml = ''
                     if (responseData.bill != null && responseData.bill.length > 0) {
                         responseData.bill.forEach((e) => {
-                            xhtml += '<a href="' + e + '" download target="_blank">' + e.substring(e.indexOf('-') + 1) + '</a><br>'
+                            var fileExtension = e.substring(e.lastIndexOf('.') + 1);
+                            if (imageType.includes(fileExtension)) {
+                                var img = document.createElement('img');
+                                img.width = 40;
+                                img.height = 40;
+                                img.src = e;
+                                img.alt = '';
+                                xhtml += img.outerHTML; // Append the image as HTML
+                            }
+                            if (fileType.includes(fileExtension)) {
+                                var file = document.createElement('img');
+                                file.width = 40;
+                                file.height = 40;
+                                file.src = "/upload/common/" + fileExtension + ".png";
+                                file.alt = '';
+                                xhtml += file.outerHTML; // Append the file as HTML
+                            }
+                            var subStringBill = e.substring(e.indexOf('-') + 1);
+                            xhtml += '<a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
+                                '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a><br>';
                         })
                     }
-                    $("#attachedFilesNotification").html(xhtml)
+                    $("#attachedFilesNotification").html(xhtml);
+                    initializeTooltips();
                     var editLink = document.getElementById("editLink");
                     var billContent = '';
                     if (responseData.bill !== null && responseData.bill.length > 0) {

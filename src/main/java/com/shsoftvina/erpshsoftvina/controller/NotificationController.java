@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.controller;
 import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
 import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class NotificationController {
     @Autowired
     private SettingMapper settingMapper;
 
+    @Autowired
+    ApplicationUtils applicationUtils;
+
     @GetMapping
     public String getList(
             @RequestParam(name = "page", defaultValue = "1") int page,
@@ -35,7 +40,6 @@ public class NotificationController {
             @RequestParam(name = "search", required = false, defaultValue = "") String search,
             Model model
     ) {
-        try {
             List<NotificationShowResponse> listNotification = notificationService.getAllNoti((page - 1) * pageSize, pageSize, search);
             int totalNotification = notificationService.countAll(search); // Total number of notes
             int totalPages = (totalNotification + pageSize - 1) / pageSize;
@@ -45,16 +49,15 @@ public class NotificationController {
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("search", search);
             return "notification/get-list";
-        } catch(Exception e){
-            e.printStackTrace();
-            return "forbidden";
-        }
     }
 
     @GetMapping("/{id}")
     public String getDetail(@PathVariable String id,
                             Model model){
             NotificationDetailResponse notification = notificationService.findById(id);
+            if(notification.getStatus().equals(StatusNotificationEnum.INACTIVE)){
+                applicationUtils.checkUserAllow();
+            }
             model.addAttribute("notification", notification);
             model.addAttribute("user", Principal.getUserCurrent());
             Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
@@ -67,8 +70,8 @@ public class NotificationController {
     @GetMapping("/create")
     public String getCreate( Model model){
 
+        applicationUtils.checkUserAllow();
         Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
-
         model.addAttribute("maxFileSize", setting.getFileSize());
         model.addAttribute("listTypeFile", setting.getFileType());
         model.addAttribute("uploadFileLimit", setting.getFileLimit());

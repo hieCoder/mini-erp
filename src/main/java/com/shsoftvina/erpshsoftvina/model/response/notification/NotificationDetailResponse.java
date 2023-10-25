@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.notification;
 
+import com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.util.List;
 @Builder
 public class NotificationDetailResponse {
     private String id;
+    private StatusNotificationEnum status;
     private String content;
     private String title;
     private String[] files;

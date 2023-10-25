@@ -108,6 +108,41 @@ public class ApplicationUtils {
         return setting;
     }
 
+    public void checkValidateFileAndImage(Class<?> c, MultipartFile file){
+
+        Setting setting = getSetting(c);
+
+        String imageTypes = setting.getImageType();
+        String fileTypes = setting.getFileType();
+        String imageAndFileTypes = imageTypes + "," + fileTypes;
+
+        int fileLimit = setting.getFileSize();
+        int fileSize = setting.getFileSize();
+
+        if (!FileUtils.isAllowedFileSize(file, fileSize))
+            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
+
+        if (fileLimit < 1)
+            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+        if (!FileUtils.isAllowedFileType(file, imageAndFileTypes))
+            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageAndFileTypes));
+    }
+
+    public void checkValidateFileAndImage(Class<?> c, MultipartFile[] files){
+
+        Setting setting = getSetting(c);
+
+        int fileLimit = setting.getFileSize();
+
+        if(fileLimit<files.length)
+            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+        for(MultipartFile file: files){
+            checkValidateFileAndImage(c, file);
+        }
+    }
+
     public void checkValidateImage(Class<?> c, MultipartFile file){
 
         Setting setting = getSetting(c);
@@ -193,5 +228,19 @@ public class ApplicationUtils {
         if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER) || idUserCurrent.equals(idUser))){
             throw new UnauthorizedException(MessageErrorUtils.unauthorized());
         }
+    }
+
+    public boolean checkUserWebSocketAllow(User user){
+        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER))){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkUserWebSocketAllow(User user, String userId){
+        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER) || userId.equals(user.getId()))){
+            return false;
+        }
+        return true;
     }
 }

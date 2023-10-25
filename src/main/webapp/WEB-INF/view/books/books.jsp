@@ -265,7 +265,7 @@
 
             var errorMessageSpan = titleE.nextElementSibling;
             if (valueTitle === "") {
-                errorMessageSpan.textContent = "This filed is not filled";
+                errorMessageSpan.textContent = "This field is not filled";
                 isValidate = false;
             } else {
                 errorMessageSpan.textContent = '';
@@ -273,7 +273,7 @@
 
             errorMessageSpan = authorE.nextElementSibling;
             if (valueAuthor === "") {
-                errorMessageSpan.textContent = "This filed is not filled";
+                errorMessageSpan.textContent = "This field is not filled";
                 isValidate = false;
             } else {
                 errorMessageSpan.textContent = '';
@@ -281,7 +281,7 @@
 
             errorMessageSpan = linkE.nextElementSibling;
             if (valueLink === "") {
-                errorMessageSpan.textContent = "This filed is not filled";
+                errorMessageSpan.textContent = "This field is not filled";
                 isValidate = false;
             } else {
                 errorMessageSpan.textContent = '';
@@ -289,7 +289,7 @@
 
             errorMessageSpan = image.nextElementSibling;
             if (image.files.length === 0) {
-                errorMessageSpan.textContent = "This filed is not filled";
+                errorMessageSpan.textContent = "This field is not filled";
                 isValidate = false;
             } else {
                 errorMessageSpan.textContent = '';

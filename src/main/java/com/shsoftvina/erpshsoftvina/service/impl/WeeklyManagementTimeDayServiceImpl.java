@@ -11,6 +11,7 @@ import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyReportMapper;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.weekly.WeeklyManagementTimeDayUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyReportRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.PageWeeklyReportListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShowResponse;
@@ -46,5 +47,10 @@ public class WeeklyManagementTimeDayServiceImpl implements WeeklyManagementTimeD
 
         }
         return 0;
+    }
+
+    @Override
+    public WeeklyManagementTimeDayResponse getWeekly(String id){
+        return weeklyManagementTimeDayConverter.toResponse(weeklyManagementTimeDayMapper.findById(id));
     }
 }

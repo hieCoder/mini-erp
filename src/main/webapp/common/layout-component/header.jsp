@@ -61,10 +61,31 @@
             </div>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <span class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img alt="Avatar" width="40" height="40" class="img-thumbnail avatar-login">
-                        <span class="fullname-login"></span>
-                    </span>
+                    <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="userDropdown"
+                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%--                        <div class="d-flex align-items-center">--%>
+                            <%--                            <img alt="Avatar" width="40" height="40" class="img-thumbnail avatar-login">--%>
+                            <%--                            <div class="ml-4">--%>
+                            <%--                                <div class="row">--%>
+                            <%--                                    <span class="position-login">Phòng Ban</span>--%>
+                            <%--                                </div>--%>
+                            <%--                                <div class="row">--%>
+                            <%--                                    <span class="fullname-login"></span>--%>
+                            <%--                                </div>--%>
+                            <%--                            </div>--%>
+                            <%--                        </div>--%>
+                        <div class="row">
+                            <div class="col-md-4 d-flex flex-column align-items-center">
+                                <img alt="Avatar" width="40" height="40" class="img-thumbnail avatar-login">
+                                <figcation class="fullname-login"></figcation>
+                            </div>
+                            <div class="col-md-6 d-flex flex-column align-items-start">
+                                <span class="department-login"></span>
+                                <span class="position-login"></span>
+                            </div>
+                        </div>
+                    </a>
+                    <span class="caret"></span>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
                         <a class="dropdown-item profile-user-login">Profile</a>
                         <div class="dropdown-divider"></div>
