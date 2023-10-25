@@ -1,5 +1,6 @@
 <%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -51,15 +52,25 @@
                     </table>
                     <div class="d-flex justify-content-end">
                         <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
-                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                        <c:if test="${(userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)) && notification.status.equals(StatusNotificationEnum.ACTIVE)}">
                             <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
                             <button type="button" class="btn btn-danger" data-toggle="modal"
                                     data-target="#deleteConfirmationModalNotification">Delete
                             </button>
                         </c:if>
+                        <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
+                            <button type="button" class="btn btn-danger notificationDeleted" disabled>Deleted
+                            </button>
+                        </c:if>
                     </div>
                 </div>
             </div>
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <div class="custom-spinner d-flex align-items-center justify-content-center">
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <div class="containerComment d-none">
             <div class="mb-3 mt-2">
                 <div class="row mb-4 mt-4">
                     <div class="col-md-10 d-flex">
@@ -93,8 +104,13 @@
                                             data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete
                                     </button>
                                 </c:if>
-                                <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply
+                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+
+                                    <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply
                                 </button>
+
+                                </c:if>
+
                             </div>
                             <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
                                 <c:if test="${not empty comment.childComments}">
@@ -130,8 +146,9 @@
                 </ul>
 
             </div>
-
         </div>
+        </div>
+
     </div>
 </div>
 <div class="modal fade" id="popupForm" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel" aria-hidden="true">
@@ -271,7 +288,7 @@
                 <h5 class="modal-title">Notification Deleted</h5>
             </div>
             <div class="modal-body">
-                <p>Your notification has been deleted.</p>
+                <p>This notification has been deleted.</p>
             </div>
             <div class="modal-footer">
                 <a href="${pathMain}" class="btn btn-secondary ml-2">Back to list</a>
@@ -288,14 +305,28 @@
         const random = Math.floor(Math.random() * 1000);
         return 'client-' + timestamp + '-' + random
     }
-
+    function refreshPage() {
+        location.reload();
+    }
     const clientID = generateClientID();
     var stompClient = Stomp.over(new SockJS("/websocket"));
 
     stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/notification/deleteNotification", function (notification) {
+            let id = notification.body;
+            let notiCheck = '#tableNotification[data-id="'+id+'"]'
+            let notificationElement = $(notiCheck)
+            if(notificationElement.length>0){
+                function toNotification(){
+                    location.href = "/notifications"
+                }
+                $("#deleteNotificationModal").modal("show");
+                setTimeout(toNotification, 5000);
+            }
+        })
         stompClient.subscribe("/notification/comments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data != null) {
+            if (data.id != null) {
                 if ($('li.list-group-item[data-id="' + data.id + '"]').length <= 0) {
                     var buttonHtml = ""
                     if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
@@ -303,6 +334,12 @@
                             '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
                             '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
                     }
+                    var buttonReply=""
+
+                    if (${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
+                        buttonReply =  '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>'
+                    }
+
                     $("textarea#newComment").val('');
                     var html = '<li class="list-group-item" data-id="' + data.id + '">' +
                         '<div class="comment-header d-flex align-items-center">' +
@@ -313,8 +350,7 @@
                         '</div>' +
                         '</div>' +
                         '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                        '<div class="ml-auto">' + buttonHtml +
-                        '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>' +
+                        '<div class="ml-auto">' + buttonHtml + buttonReply +
                         '</div>' +
                         '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
                         '</li>';
@@ -334,11 +370,13 @@
                         $('div.custom-spinner').parent().remove()
                     }
                 }
+            }else if(data.clientId == clientID){
+                refreshPage()
             }
         });
         stompClient.subscribe("/notification/editcomments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data != null) {
+            if (data.id != null) {
                 var $pElement = $('p.comment-content[data-id="' + data.id + '"]');
                 $pElement.text(data.content)
                 if (data.clientId == clientID) {
@@ -353,11 +391,13 @@
                     });
                     $('div.custom-spinner').parent().remove()
                 }
+            }else if(data.clientId == clientID){
+                refreshPage()
             }
         });
         stompClient.subscribe("/notification/deletecomments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data != null) {
+            if (data.id != null) {
                 $('li.list-group-item[data-id="' + data.id + '"]').remove()
                 if (data.clientId == clientID) {
                     var modal = `
@@ -371,12 +411,13 @@
                     });
                     $('div.custom-spinner').parent().remove()
                 }
+            }else if(data.clientId == clientID){
+                refreshPage()
             }
         });
-
         stompClient.subscribe("/notification/replycomments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data != null) {
+            if (data.id != null) {
                 var buttonHtml = ""
                 if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
                     buttonHtml =
@@ -416,14 +457,18 @@
                     $('textarea#replyComment[data-id=' + data.parentId + ']').prop("disabled", false);
                     $('button#replyCommentBtn[data-id=' + data.parentId + ']').prop("disabled", false);
                 }
+            }else if(data.clientId == clientID){
+                refreshPage()
             }
         });
+        $("div.containerComment").removeClass("d-none")
+        $('div.custom-spinner').parent().remove()
     });
 
     function sendComment(data) {
         stompClient.send("/app/comment", {
             clientID: clientID
-        }, data);
+        }, data)
     }
 
     function editComment(data) {
@@ -451,12 +496,17 @@
     const notFilled = '<span class="text-danger font-weight-bold font-italic small">This field is not filled</span>'
 
     document.addEventListener("DOMContentLoaded", function () {
-
+        let checkDeleted = $("button.notificationDeleted")
+        if(checkDeleted.length>0){
+            $("button").each(function (index,item){
+                if(index > 0){
+                    $(item).prop("disabled", true)
+                    $("textarea").prop("disabled", true)
+                }
+            })
+        }
         $(document).on("click", "#saveChangesButtonNotification", function (e) {
-            $("#popupFormEditNotification .modal-footer button").each(function () {
-                $(this).prop("disabled", true);
-            });
-            $("#popupFormEditNotification .modal-footer button:first-child").before(dot)
+            $("span.text-danger").remove()
             var apiUrlNotification = baseUrlNotification + "/update/"
             var notificationId = $("table#tableNotification").attr("data-id");
             var title = document.getElementById("editNotificationTitle").value;
@@ -543,6 +593,7 @@
                 $("#popupFormEditNotification .modal-footer button").each(function () {
                     $(this).prop("disabled", false);
                 });
+                checkClientDelete = 1
             });
         });
 

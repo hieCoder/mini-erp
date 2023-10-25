@@ -20,11 +20,11 @@
 
 
     <dec:head/>
+    <%-- jquery --%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <%--    Popper--%>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <%-- jquery --%>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <%-- main --%>
     <script src="/assets/js/main.js"></script>
     <%-- datatable --%>
@@ -37,7 +37,9 @@
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
-            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>,
+            department: <%="'" + Principal.getUserCurrent().getDepartment().getValue() + "'"%>,
+            position: <%="'" + Principal.getUserCurrent().getPosition().getValue() + "'"%>
         };
     </script>
 </head>
@@ -50,36 +52,41 @@
 
 <%@ include file="/common/layout-component/footer.jsp" %>
 
-<%-- bootstrap --%>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <%-- summernote --%>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <%-- sweetalert --%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
 
-        $('.avatar-login').attr('src', userCurrent.avatar);
-        $('.fullname-login').text(userCurrent.fullname);
-        $('.profile-user-login').attr('href', '/users/' + userCurrent.id);
-        var scheduleLink = '';
-        var managementTime = ''
-        if (userCurrent.role != U_DEVELOPER) {
-            scheduleLink = '/schedules';
-            managementTime = '/management-time'
-        } else {
-            scheduleLink = '/schedules/detail/' + userCurrent.id;
-            managementTime = '/management-time/' + userCurrent.id;
-        }
-        $('.schedule-login').attr('href', scheduleLink);
-        $('.management-time-day-login').attr('href', managementTime);
-        if (userCurrent.role == U_DEVELOPER) {
-            $('.management-login').remove();
-            $('.setting-login').remove();
-        }
+    $(document).ready(function () {
+        $('.nav-item.dropdown').hover(function () {
+            $(this).find('.dropdown-menu').show();
+        }, function () {
+            $(this).find('.dropdown-menu').hide();
+        });
     });
+
+    $('.avatar-login').attr('src', userCurrent.avatar);
+    $('.fullname-login').text(userCurrent.fullname);
+    $('.department-login').text(userCurrent.department);
+    $('.position-login').text(userCurrent.position);
+    $('.profile-user-login').attr('href', '/users/' + userCurrent.id);
+    var scheduleLink = '';
+    var managementTime = ''
+    if (userCurrent.role != U_DEVELOPER) {
+        scheduleLink = '/schedules';
+        managementTime = '/management-time'
+    } else {
+        scheduleLink = '/schedules/detail/' + userCurrent.id;
+        managementTime = '/management-time/' + userCurrent.id;
+    }
+    $('.schedule-login').attr('href', scheduleLink);
+    $('.management-time-day-login').attr('href', managementTime);
+    if (userCurrent.role == U_DEVELOPER) {
+        $('.management-login').remove();
+        $('.setting-login').remove();
+    }
 </script>
 
 </body>

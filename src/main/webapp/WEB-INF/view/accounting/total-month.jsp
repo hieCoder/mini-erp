@@ -213,6 +213,7 @@
         const billFiles = event.target.files;
         var countFile = billFiles.length;
         var countCurrentFile = $("li.listFilesEdit").length;
+        console.log(${setting.uploadFileLimit})
         if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
             var modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.

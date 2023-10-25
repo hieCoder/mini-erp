@@ -18,6 +18,8 @@ public class SettingUpdateRequest {
     private String code;
     private String imageType;
     private String fileType;
-    @Min(value=1, message = "Min size is 1")
+    @Min(value=1, message = "Min limit is 1")
+    private Integer fileLimit;
+    @Min(value=1, message = "Min size is 0")
     private Integer fileSize;
 }

@@ -9,28 +9,40 @@
         SELECT n.*,u.id,u.fullname
         FROM NOTIFICATION n
                  LEFT JOIN USER u ON n.user_id = u.id
-        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%')
+        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%') AND n.status = #{status}
         ORDER BY created_date DESC
             LIMIT #{start}, #{pageSize}
         ]]>
     </select>
+
+    <select id="getInactiveNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
+        <![CDATA[
+        SELECT n.*,u.id,u.fullname
+        FROM NOTIFICATION n
+                 LEFT JOIN USER u ON n.user_id = u.id
+        WHERE n.status = #{status}
+        ORDER BY created_date DESC
+            LIMIT #{start}, #{pageSize}
+        ]]>
+    </select>
+
     <select id="getNotificationById" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
         FROM NOTIFICATION n
         WHERE n.id = #{id}
     </select>
 
-    <select id="countAll" resultType="int">
+    <select id="countAll" resultType="int" parameterType="map">
         SELECT COUNT(*)
         FROM NOTIFICATION n
                  INNER JOIN USER u ON n.user_id = u.id
-        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%')
+        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%') AND n.status = #{status}
     </select>
 
     <!--    Create new Notification-->
     <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
-        INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE, USER_ID)
-        VALUES (#{id}, #{title}, #{content}, #{files}, #{createdDate}, #{user.id})
+        INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE, USER_ID, STATUS)
+        VALUES (#{id}, #{title}, #{content}, #{files}, #{createdDate}, #{user.id}, #{status})
     </select>
 
     <!--    Update Notification-->
@@ -52,11 +64,11 @@
     </update>
 
     <!--    Delete Notification-->
-    <delete id="delNoti" parameterType="String">
-        DELETE
-        FROM NOTIFICATION
+    <update id="delNoti" parameterType="map">
+        UPDATE NOTIFICATION
+        SET status = #{status}
         WHERE id = #{id}
-    </delete>
+    </update>
 
     <resultMap id="notiShowResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
         <id property="id" column="id"/>
@@ -84,6 +96,7 @@
     <select id="findById" resultMap="notificationResultMap">
         SELECT
             n.id AS notification_id,
+            n.status AS notification_status,
             n.title AS notification_title,
             n.content AS notification_content,
             n.files AS notification_file,
@@ -109,6 +122,7 @@
     <resultMap id="notificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
         <id property="id" column="notification_id" />
         <result property="title" column="notification_title" />
+        <result property="status" column="notification_status" />
         <result property="content" column="notification_content" />
         <result property="files" column="notification_file" />
         <result property="createdDate" column="notification_created_date" />

@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private boolean isFirstUpdateProfile;
     private String timesheetsCode;
     private List<Contract> contracts;
+    private Date createdDate;
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override

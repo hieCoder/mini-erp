@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateComm
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
 import com.shsoftvina.erpshsoftvina.service.CommentNotificationService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -16,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.Authentication;
+
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -26,14 +29,20 @@ import java.util.Map;
 public class CommentWebSocketController {
     @Autowired
     CommentNotificationService commentNotificationService;
+    @Autowired
+    private ApplicationUtils applicationUtils;
 
     @MessageMapping("/comment")
     @SendTo("/notification/comments")
     public CommentNotificationResponse handleComment(
             @RequestBody CreateCommentNotificationRequest createCommentNotificationRequest,
-            StompHeaderAccessor accessor) {
+            StompHeaderAccessor accessor, Authentication authentication) {
         String clientID = accessor.getFirstNativeHeader("clientID");
-        CommentNotificationResponse commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
+        User user = ((User) authentication.getPrincipal());
+        CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
+        if(applicationUtils.checkUserWebSocketAllow(user, createCommentNotificationRequest.getUserId())){
+             commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
+        }
         commentNotificationResponse.setClientId(clientID);
         return commentNotificationResponse;
     }
@@ -42,49 +51,54 @@ public class CommentWebSocketController {
     @SendTo("/notification/editcomments")
     public CommentNotificationResponse handleEditComment(
             @RequestBody UpdateCommentNotificationRequest updateCommentNotificationRequest,
-            StompHeaderAccessor accessor
+            StompHeaderAccessor accessor,
+            Authentication authentication
             ) {
+        User user = ((User) authentication.getPrincipal());
+        CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
         String clientID = accessor.getFirstNativeHeader("clientID");
-        CommentNotificationResponse commentNotificationResponse = commentNotificationService.updateCommentNotification(updateCommentNotificationRequest);
-        if(commentNotificationResponse != null){
-            commentNotificationResponse.setClientId(clientID);
-            return commentNotificationResponse;
+        if(applicationUtils.checkUserWebSocketAllow(user, updateCommentNotificationRequest.getUserId())) {
+            commentNotificationResponse = commentNotificationService.updateCommentNotification(updateCommentNotificationRequest);
         }
-        return null;
+        commentNotificationResponse.setClientId(clientID);
+        return commentNotificationResponse;
     }
 
     @MessageMapping("/deletecomment")
     @SendTo("/notification/deletecomments")
     public CommentNotificationResponse handleDeleteComment(
             @RequestBody Map<String, String> requestBody,
-            StompHeaderAccessor accessor
+            StompHeaderAccessor accessor,
+            Authentication authentication
     ) {
+        User user = ((User) authentication.getPrincipal());
+        CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
         String clientID = accessor.getFirstNativeHeader("clientID");
-        String id = requestBody.get("id");
-        int rs = commentNotificationService.deleteCommentNotification(id);
-        if(rs>0){
-            CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
-            commentNotificationResponse.setId(id);
-            commentNotificationResponse.setClientId(clientID);
-            return commentNotificationResponse;
+        if(applicationUtils.checkUserWebSocketAllow(user, requestBody.get("userId"))) {
+            String id = requestBody.get("id");
+            int rs = commentNotificationService.deleteCommentNotification(id);
+            if (rs > 0) {
+                commentNotificationResponse.setId(id);
+            }
         }
-            return null;
+        commentNotificationResponse.setClientId(clientID);
+        return commentNotificationResponse;
     }
 
     @MessageMapping("/replycomment")
     @SendTo("/notification/replycomments")
     public CommentNotificationResponse handleReplyComment(
             @RequestBody CreateCommentNotificationRequest createCommentNotificationRequest,
-            StompHeaderAccessor accessor
+            StompHeaderAccessor accessor,
+             Authentication authentication
     ) {
+        User user = ((User) authentication.getPrincipal());
         String clientID = accessor.getFirstNativeHeader("clientID");
-        try{
-            CommentNotificationResponse commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
-            commentNotificationResponse.setClientId(clientID);
-            return commentNotificationResponse;
-        } catch(Exception e){
-            System.out.println(e);
-            return null;
+        CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
+        if(applicationUtils.checkUserWebSocketAllow(user)){
+            commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
         }
+        commentNotificationResponse.setClientId(clientID);
+        return commentNotificationResponse;
     }
 }

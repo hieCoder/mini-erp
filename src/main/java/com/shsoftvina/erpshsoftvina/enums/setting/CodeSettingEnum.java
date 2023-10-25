@@ -5,8 +5,8 @@ public enum CodeSettingEnum {
     USER("User"),
     CONTRACT("Contract"),
     ACCOUNTING("Accounting"),
-    NOTIFICAITON("Notification"),
-    NOTIFICAITON_COMMENT("Notificaiton comment"),
+    NOTIFICATION("Notification"),
+    NOTIFICATION_COMMENT("Notification comment"),
     TASK("Task"),
     TASK_COMMENT("Task comment"),
     BOOK("Book");

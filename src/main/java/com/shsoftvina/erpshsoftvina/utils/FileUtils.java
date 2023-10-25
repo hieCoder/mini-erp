@@ -126,7 +126,6 @@ public class FileUtils {
         return false;
     }
 
-
     public static String convertMultipartFileArrayToString(MultipartFile[] files) {
         if (files != null) {
             return Arrays.stream(files)
@@ -203,18 +202,16 @@ public class FileUtils {
                 .allMatch(file -> isAllowedFileType(file, listType));
     }
 
-    public static long parseFileSize(String size) {
-        if (size.endsWith("MB")) {
-            return Long.parseLong(size.substring(0, size.length() - 2)) * 1024 * 1024;
-        }
-        return Long.parseLong(size);
+    public static boolean isAllowedFileSize(MultipartFile file, Integer fileSize) {
+        long fileSizeInBytes = file.getSize();
+        long maxFileSizeInBytes = fileSize * 1024 * 1024;
+        return fileSizeInBytes <= maxFileSizeInBytes;
     }
 
-    public static boolean isAllowedFileSize(MultipartFile file) {
-        long fileSizeInBytes = file.getSize();
-        long maxFileSizeInBytes = parseFileSize(ApplicationConstant.MAX_FILE_SIZE);
-        long maxRequestSizeInBytes = parseFileSize(ApplicationConstant.MAX_REQUEST_SIZE);
-
-        return fileSizeInBytes <= maxFileSizeInBytes && fileSizeInBytes <= maxRequestSizeInBytes;
+    public static boolean isAllowedFileSize(MultipartFile[] files, Integer fileSize) {
+        for(MultipartFile file: files){
+            if(!isAllowedFileSize(file,fileSize)) return false;
+        }
+        return true;
     }
 }
