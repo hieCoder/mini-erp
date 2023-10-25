@@ -2,7 +2,6 @@
 header {
     background-color: #333;
     color: #fff;
-    padding: 5px;
     position: fixed;
     top: 0;
     left: 0;
@@ -14,7 +13,7 @@ header {
 footer {
     background-color: #333;
     color: #fff;
-    padding: 10px;
+    padding: 5px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -23,8 +22,8 @@ footer {
 }
 
 .content-wrapper {
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin-top: 120px;
+    margin-bottom: 120px;
 }
 
 h1,h3{
@@ -66,7 +65,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #ddd  !important;
+    background-color: rgba(0,0,0,.03)  !important;
 }
 
 /*border radius around for avatar*/

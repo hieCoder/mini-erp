@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
@@ -55,6 +56,7 @@ public class NotificationConverter {
                 .content(createNotificationRequest.getContent())
                 .files(files)
                 .createdDate(new Date())
+                .status(StatusNotificationEnum.ACTIVE)
                 .build();
     }
 
@@ -76,6 +78,7 @@ public class NotificationConverter {
         }
         return NotificationDetailResponse.builder()
                 .id(notification.getId())
+                .status(notification.getStatus())
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .fullnameUser(fullnameUser)

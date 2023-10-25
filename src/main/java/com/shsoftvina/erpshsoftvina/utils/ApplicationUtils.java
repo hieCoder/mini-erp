@@ -95,9 +95,9 @@ public class ApplicationUtils {
         } else if(c == Accounting.class){
             setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
         } else if(c == Notification.class){
-            setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
+            setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
         } else if(c == CommentNotification.class){
-            setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_COMMENT_CODE);
+            setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_COMMENT_CODE);
         } else if(c == Task.class){
             setting = settingMapper.findByCode(SettingConstant.TASK_CODE);
         } else if(c == CommentTask.class){
@@ -108,41 +108,28 @@ public class ApplicationUtils {
         return setting;
     }
 
-    public void checkValidateImage(Class<?> c, MultipartFile file){
+    public void checkValidateFileAndImage(Class<?> c, MultipartFile file){
 
         Setting setting = getSetting(c);
 
         String imageTypes = setting.getImageType();
-        int fileLimit = setting.getFileSize();
-
-        if (!FileUtils.isAllowedFileSize(file))
-            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-
-        if (fileLimit < 1)
-            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
-
-        if (!FileUtils.isAllowedFileType(file, imageTypes))
-            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageTypes));
-    }
-
-    public void checkValidateFile(Class<?> c, MultipartFile file){
-
-        Setting setting = getSetting(c);
-
         String fileTypes = setting.getFileType();
-        int fileLimit = setting.getFileSize();
+        String imageAndFileTypes = imageTypes + "," + fileTypes;
 
-        if (!FileUtils.isAllowedFileSize(file))
-            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
+        int fileLimit = setting.getFileSize();
+        int fileSize = setting.getFileSize();
+
+        if (!FileUtils.isAllowedFileSize(file, fileSize))
+            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
 
         if (fileLimit < 1)
             throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
 
-        if (!FileUtils.isAllowedFileType(file, fileTypes))
-            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(fileTypes));
+        if (!FileUtils.isAllowedFileType(file, imageAndFileTypes))
+            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageAndFileTypes));
     }
 
-    public void checkValidateFile(Class<?> c, MultipartFile[] files){
+    public void checkValidateFileAndImage(Class<?> c, MultipartFile[] files){
 
         Setting setting = getSetting(c);
 
@@ -152,7 +139,75 @@ public class ApplicationUtils {
             throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
 
         for(MultipartFile file: files){
-            checkValidateFile(c, file);
+            checkValidateFileAndImage(c, file);
+        }
+    }
+
+    public void checkValidateImage(Class<?> c, MultipartFile file){
+
+        Setting setting = getSetting(c);
+
+        String imageTypes = setting.getImageType();
+        int fileLimit = setting.getFileLimit();
+        int fileSize = setting.getFileSize();
+
+        if (!FileUtils.isAllowedFileSize(file, fileSize))
+            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
+
+        if (fileLimit < 1)
+            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+        if (!FileUtils.isAllowedFileType(file, imageTypes))
+            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageTypes));
+    }
+
+    public void checkValidateImage(Class<?> c, MultipartFile[] files){
+
+        if(files!=null){
+            Setting setting = getSetting(c);
+
+            int fileLimit = setting.getFileLimit();
+            if(fileLimit<files.length)
+                throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+            for(MultipartFile file: files){
+                checkValidateImage(c, file);
+            }
+        }
+    }
+
+    public void checkValidateFile(Class<?> c, MultipartFile file){
+
+        if(file!=null){
+            Setting setting = getSetting(c);
+
+            String fileTypes = setting.getFileType();
+            int fileLimit = setting.getFileLimit();
+            int fileSize = setting.getFileSize();
+
+            if (!FileUtils.isAllowedFileSize(file, fileSize))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
+
+            if (fileLimit < 1)
+                throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+            if (!FileUtils.isAllowedFileType(file, fileTypes))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(fileTypes));
+        }
+    }
+
+    public void checkValidateFile(Class<?> c, MultipartFile[] files){
+
+        if(files!=null){
+            Setting setting = getSetting(c);
+
+            int fileLimit = setting.getFileLimit();
+            if(fileLimit<files.length)
+                throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+
+            for(MultipartFile file: files){
+                checkValidateFile(c, file);
+            }
         }
     }
 
@@ -173,5 +228,19 @@ public class ApplicationUtils {
         if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER) || idUserCurrent.equals(idUser))){
             throw new UnauthorizedException(MessageErrorUtils.unauthorized());
         }
+    }
+
+    public boolean checkUserWebSocketAllow(User user){
+        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER))){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkUserWebSocketAllow(User user, String userId){
+        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER) || userId.equals(user.getId()))){
+            return false;
+        }
+        return true;
     }
 }

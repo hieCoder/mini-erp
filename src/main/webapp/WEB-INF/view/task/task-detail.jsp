@@ -300,6 +300,8 @@
 
                     $('#yourCommentTitle').val('');
                     $('#yourCommentContent').summernote('code', '<p><br></p>');
+
+                    cutShortLink();
                 }, 'yourCommentForm');
             }
         });
@@ -343,7 +345,9 @@
                     var idForm = '#updateCommentForm'+id;
                     var listFile = $(idForm + ' .list-file');
                     var oldFiles = listFile.find('a').map(function() {
-                        return $(this).text();
+                        var href = $(this).attr('href');
+                        var fileName = getFileNameFromPath(href);
+                        return fileName;
                     }).get().join(',');
 
                     formData.append('id', id);
@@ -353,6 +357,7 @@
                     $(idForm+' .list-button').after(createLoadingHtml());
                     callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
                         closestLI.replaceWith(createCommentForm(rs));
+                        cutShortLink();
                     }, 'updateCommentForm'+id);
                 }
             });
@@ -366,15 +371,22 @@
             $('#updateCommentContent'+idComment).summernote('destroy');
             $('#updateCommentContent'+idComment).html(objectUpdate.valContent);
 
-            // $('#updateCommentForm'+idComment).find('.remove-file:first-child').addClass('d-none');
+            $('#updateCommentForm' + idComment + ' .file').css("border", "none");
+            $('#updateCommentForm' + idComment + ' .remove-file').addClass('d-none');
+            $('#updateCommentForm'+idComment).find('input[name="newFiles"]').addClass('d-none');
 
-            $('#updateCommentForm'+idComment).find('input[name="newFiles"]').first().addClass('d-none');
+            $("#updateCommentForm" + idComment + " .btn-update-comment").addClass('d-none');
+            $("#updateCommentForm" + idComment + " .btn-cancel-update-comment").addClass('d-none');
+            if(isAdminOrUserLogin(userCurrent.id)){
+                $("#updateCommentForm" + idComment + " .btn-delete-comment").removeClass('d-none');
+                $("#updateCommentForm" + idComment + " .btn-modify-comment").removeClass('d-none');
+            }
+            if(!isDeleveloper()){
+                $("#updateCommentForm" + idComment + " .btn-reply-comment").removeClass('d-none');
+            }
 
-
-
-
-
-
+            // var idComment = $(this).data('comment-id');
+            // var closestLI = $(this).closest('li');
             // $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());
             // callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {
             //     closestLI.replaceWith(createCommentForm(rs));
@@ -415,6 +427,8 @@
 
                         closestLI.find('.reply-form-container form').first().remove();
                         closestLI.find('.list-button').first().show();
+
+                        cutShortLink();
                     }, 'replyCommentForm'+parentId);
                 }
             });
@@ -440,8 +454,8 @@
             commentForm.append('<div class="form-group"><input id="updateCommentTitle'+comment.id+'" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');
             commentForm.append('<div class="form-group"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="height: auto;">' + comment.content + '</div><small class="form-message"></small></div>');
 
-            var fileLinksCol = $('<div class="col-md-6">');
-            var buttonCol = $('<div class="col-md-6 text-right list-button">');
+            var fileLinksCol = $('<div class="col-md-8">');
+            var buttonCol = $('<div class="col-md-4 text-right list-button">');
 
             var fileLinks = $('<div class="form-group list-file">');
             if (comment.files && comment.files.length > 0) {
@@ -555,11 +569,11 @@
 
             var buttonFormGroup = $('<div class="form-group row"></div>');
 
-            var fileInputContainer = $('<div class="col-md-6"></div>');
+            var fileInputContainer = $('<div class="col-md-8"></div>');
             var fileInput = $('<input type="file" name="fileList" class="form-control attract-update-comment" multiple>');
             fileInputContainer.append(fileInput);
 
-            var buttonContainer = $('<div class="col-md-6 text-right list-button"></div>');
+            var buttonContainer = $('<div class="col-md-4 text-right list-button"></div>');
             var replyButton = $('<button type="submit" class="btn btn-info mr-1">Reply</button>');
             var cancelButton = $('<button type="button"class="btn btn-secondary btn-cancel-reply-comment" >Cancel</button>');
             buttonContainer.append(replyButton);

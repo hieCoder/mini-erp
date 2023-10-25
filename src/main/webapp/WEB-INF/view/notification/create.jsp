@@ -16,7 +16,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header font-weight-bold">
-                    Notification Create
+                    Create Notification Form
                 </div>
                 <div class="card-body">
                     <form id="createForm">
@@ -95,7 +95,7 @@
 </div>
 
 <script>
-
+    const notFilled = '<span class="text-danger font-weight-bold font-italic small">This field is not filled</span>'
     document.addEventListener("DOMContentLoaded", function () {
         var dot = createLoadingHtml()
 
@@ -110,13 +110,26 @@
                 $("#successModal").modal("show");
                 $(this).val('')
             }
+
+            for (let i = 0; i < countFile; i++) {
+                const file = selectedFiles[i];
+                const fileExtension = file.name.split('.').pop();
+                const allowedExtensions = "${listTypeFile}".split(',');
+                if (!allowedExtensions.includes(fileExtension)) {
+                    var modal =
+                '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File type allowed: ${listTypeFile}.'
+                    $("#successModal div.modal-body").html(modal);
+                    $("#successModal").modal("show");
+                    $(this).val('');
+                    return;
+                }
+            }
+
         });
 
         var submitButton = document.getElementById("submitButton")
         submitButton.addEventListener("click", function () {
-            $("#submitButton").prop("disabled", true);
-            $("#cancelButton").prop("disabled", true);
-            $("#createForm").append(dot)
+            $("span.text-danger").remove()
             document.getElementById("errorAlert").style.display = "none";
             var title = document.getElementById("title").value;
             var content = document.getElementById("content").value;
@@ -128,6 +141,18 @@
             for (var i = 0; i < files.length; i++) {
                 formData.append("files", files[i]);
             }
+            if (title.trim() === "") {
+                $("input#title").after(notFilled)
+                return false;
+            }
+            if (content.trim() === "") {
+                $("textarea#content").after(notFilled)
+                return false;
+            }
+
+            $("#submitButton").prop("disabled", true);
+            $("#cancelButton").prop("disabled", true);
+            $("#createForm").append(dot)
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "${apiURL}${pathMain}", true);
             xhr.send(formData);

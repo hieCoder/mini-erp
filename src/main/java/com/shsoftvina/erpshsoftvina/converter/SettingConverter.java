@@ -16,6 +16,7 @@ public class SettingConverter {
                 .code(EnumUtils.instance(setting.getCode()))
                 .imageType(setting.getImageType())
                 .fileType(setting.getFileType())
+                .fileLimit(setting.getFileLimit())
                 .fileSize(setting.getFileSize()).build();
     }
 
@@ -24,6 +25,7 @@ public class SettingConverter {
                 .code(EnumUtils.getEnumFromValue(CodeSettingEnum.class, settingUpdateRequest.getCode()))
                 .imageType(settingUpdateRequest.getImageType())
                 .fileType(settingUpdateRequest.getFileType())
+                .fileLimit(settingUpdateRequest.getFileLimit())
                 .fileSize(settingUpdateRequest.getFileSize()).build();
     }
 }

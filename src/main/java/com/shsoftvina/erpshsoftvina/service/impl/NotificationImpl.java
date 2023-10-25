@@ -5,8 +5,8 @@ import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.converter.NotificationConverter;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.Setting;
+import com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
-import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.NotificationMapper;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
@@ -47,9 +47,18 @@ public class NotificationImpl implements NotificationService {
 
     @Override
     public List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search) {
-        List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize, search);
+        StatusNotificationEnum status = StatusNotificationEnum.ACTIVE;
+        List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize, search, status);
         return notificationConverter.toListShowResponse(notificationList);
     }
+
+    @Override
+    public List<NotificationShowResponse> getInactiveNoti(int start, int pageSize) {
+        StatusNotificationEnum status = StatusNotificationEnum.INACTIVE;
+        List<Notification> notificationList = notificationMapper.getInactiveNoti(start, pageSize, status);
+        return notificationConverter.toListShowResponse(notificationList);
+    }
+
 
     @Override
     public int createNoti(CreateNotificationRequest createNotificationRequest) {
@@ -106,14 +115,13 @@ public class NotificationImpl implements NotificationService {
         List<String> newFilesUpdate = new ArrayList<>();
         if (upFiles!= null){
 
-            Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
+            applicationUtils.checkValidateFile(Notification.class, upFiles);
 
-            if((upFiles.length + oldFile.size()) > setting.getFileSize()) {
-                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
+            Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
+            if((upFiles.length + oldFile.size()) > setting.getFileLimit()) {
+                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
             }
-            if(!FileUtils.isAllowedFileType(upFiles, setting.getFileType())){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
-            }
+
             newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, upFiles);
             newFiles.addAll(newFilesUpdate);
         }
@@ -137,9 +145,7 @@ public class NotificationImpl implements NotificationService {
             throw new NotFoundException(MessageErrorUtils.notFound("Id"));
         }
         try {
-            notificationMapper.delNoti(id);
-            String dir = NotificationConstant.UPLOAD_FILE_DIR;
-            FileUtils.deleteMultipleFilesToServer(request, dir, notification.getFiles());
+            notificationMapper.delNoti(id, StatusNotificationEnum.INACTIVE);
             return true;
         } catch (Exception e){
         }
@@ -153,6 +159,6 @@ public class NotificationImpl implements NotificationService {
 
     @Override
     public int countAll(String search){
-        return notificationMapper.countAll(search);
+        return notificationMapper.countAll(search, StatusNotificationEnum.ACTIVE);
     };
 }

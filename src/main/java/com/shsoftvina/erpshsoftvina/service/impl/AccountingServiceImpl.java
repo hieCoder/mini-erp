@@ -1,12 +1,15 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.converter.AccountingConverter;
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.AccountingMapper;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
@@ -45,6 +48,8 @@ public class AccountingServiceImpl implements AccountingService {
     private HttpServletRequest request;
     @Autowired
     private ApplicationUtils applicationUtils;
+    @Autowired
+    private SettingMapper settingMapper;
 
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
@@ -83,10 +88,12 @@ public class AccountingServiceImpl implements AccountingService {
         if (latestRemain == null) {
             latestRemain = 0L;
         }
+
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         if (billFile != null) {
-            applicationUtils.checkValidateFile(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
         }
+
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
@@ -103,7 +110,6 @@ public class AccountingServiceImpl implements AccountingService {
         }
         return 0;
     }
-
 
     @Override
     public AccountResponse updateAccounting(AccountingUpdateRequest accountingUpdateRequest) {
@@ -127,13 +133,16 @@ public class AccountingServiceImpl implements AccountingService {
                 newFiles.add(file);
             }
         }
+
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
         if (billFile != null) {
-            applicationUtils.checkValidateFile(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
         }
+
         List<String> newFilesUpdate;
-        if (accountingUpdateRequest.getBill() != null && (billFile.length + oldFile.size()) > AccountingConstant.NUMBER_FILE_LIMIT) {
-            throw new FileTooLimitedException(MessageErrorUtils.notAllowFileSize());
+        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
+        if (accountingUpdateRequest.getBill() != null && (billFile.length + oldFile.size()) > setting.getFileLimit()) {
+            throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
         }
         newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
         assert newFilesUpdate != null;

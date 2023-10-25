@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="fixed-bottom text-right pr-5" style="line-height: 100%">
+            <div class="fixed-bottom text-right pr-4" style="line-height: 60%">
                 <p>Address: District 7-HCM</p>
                 <p>Hotline: 0123456789</p>
             </div>

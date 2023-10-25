@@ -3,7 +3,7 @@
 <decorators defaultdir="/decorators">
 
     <excludes>
-        <pattern>/404-page.html</pattern>
+        <pattern>/forbidden</pattern>
         <pattern>/api*</pattern>
         <pattern>/logout</pattern>
     </excludes>

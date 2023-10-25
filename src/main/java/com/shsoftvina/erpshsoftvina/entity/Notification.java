@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
+import com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 public class Notification {
 
     private String id;
+    private StatusNotificationEnum status;
     private String title;
     private String content;
     private String files;

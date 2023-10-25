@@ -114,15 +114,6 @@ public class CommentTaskImpl implements CommentTaskService {
 
         Setting setting = settingMapper.findByCode(SettingConstant.TASK_COMMENT_CODE);
 
-        if(newFiles != null){
-            for(MultipartFile file: newFiles){
-                if (!FileUtils.isAllowedFileSize(file)) throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize());
-            }
-            if(!FileUtils.isAllowedFileType(newFiles, setting.getFileType())){
-                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
-            }
-        }
-
         String remainFiles = updateCommentTaskRequest.getRemainFiles();
 
         String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
@@ -130,12 +121,14 @@ public class CommentTaskImpl implements CommentTaskService {
 
         if (newFiles!= null){
 
+            applicationUtils.checkValidateFile(CommentTask.class, newFiles);
+
             if(!StringUtils.isBlank(remainFiles)){
-                if((remainFiles.split(",").length + newFiles.length) > setting.getFileSize()) {
-                    throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileSize()));
+                if((remainFiles.split(",").length + newFiles.length) > setting.getFileLimit()) {
+                    throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
                 }
-            } else if(newFiles.length > setting.getFileSize()){
-                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileSize()));
+            } else if(newFiles.length > setting.getFileLimit()){
+                throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
             }
 
             listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, newFiles);

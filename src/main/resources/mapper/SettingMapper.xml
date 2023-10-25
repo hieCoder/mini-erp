@@ -12,6 +12,7 @@
         UPDATE SETTING
         SET IMAGE_TYPE = #{imageType},
             FILE_TYPE = #{fileType},
+            FILE_LIMIT = #{fileLimit},
             FILE_SIZE = #{fileSize}
         WHERE CODE = #{code}
     </update>
@@ -21,6 +22,7 @@
         <result property="code" column="CODE"/>
         <result property="imageType" column="IMAGE_TYPE"/>
         <result property="fileType" column="FILE_TYPE"/>
+        <result property="fileLimit" column="FILE_LIMIT"/>
         <result property="fileSize" column="FILE_SIZE"/>
     </resultMap>
 

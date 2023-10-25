@@ -14,6 +14,8 @@
             <column name="AVATAR" value="avatar-default.jpg"/>
             <column name="ROLE" value="OWNER"/>
             <column name="STATUS" value="ACTIVE"/>
+            <column name="DEPARTMENT" value="ADMINISTRATION"/>
+            <column name="POSITION" value="MANAGER"/>
         </insert>
     </changeSet>
 
@@ -24,7 +26,8 @@
             <column name="CODE" value="USER"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
@@ -32,7 +35,8 @@
             <column name="CODE" value="CONTRACT"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
@@ -40,23 +44,26 @@
             <column name="CODE" value="ACCOUNTING"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
             <column name="ID" value="4"/>
-            <column name="CODE" value="NOTIFICAITON"/>
+            <column name="CODE" value="NOTIFICATION"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
             <column name="ID" value="5"/>
-            <column name="CODE" value="NOTIFICAITON_COMMENT"/>
+            <column name="CODE" value="NOTIFICATION_COMMENT"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
@@ -64,7 +71,8 @@
             <column name="CODE" value="TASK"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
@@ -72,7 +80,8 @@
             <column name="CODE" value="TASK_COMMENT"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
 
         <insert tableName="SETTING">
@@ -80,7 +89,8 @@
             <column name="CODE" value="BOOK"/>
             <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
             <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_SIZE" value="3"/>
+            <column name="FILE_LIMIT" value="3"/>
+            <column name="FILE_SIZE" value="100"/>
         </insert>
     </changeSet>
 

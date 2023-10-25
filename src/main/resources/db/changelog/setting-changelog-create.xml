@@ -18,5 +18,14 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <renameColumn tableName="SETTING" oldColumnName="FILE_SIZE" newColumnName="FILE_LIMIT" columnDataType="INT"/>
+    </changeSet>
+
+    <changeSet id="3" author="team2">
+        <addColumn tableName="SETTING">
+            <column name="FILE_SIZE" type="INT" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
 

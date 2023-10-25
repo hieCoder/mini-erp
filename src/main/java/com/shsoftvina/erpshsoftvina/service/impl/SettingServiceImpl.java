@@ -48,8 +48,7 @@ public class SettingServiceImpl implements SettingService {
                 if (result > 0) {
                     updatedCount++;
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
         }
 
         return updatedCount;

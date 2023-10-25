@@ -2,30 +2,18 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.WeeklyReport;
-import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
-import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyReportRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
-import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShowResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,6 +42,18 @@ public class WeeklyManagementTimeDayConverter {
         WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findById(id);
         weeklyManagementTimeDay.setContent(content);
         return weeklyManagementTimeDay;
+    }
+
+    public WeeklyManagementTimeDayResponse toResponse(WeeklyManagementTimeDay weeklyManagementTimeDay) {
+        String listContent = weeklyManagementTimeDay.getContent();
+        if(listContent != null){
+            String [] contentOfWeekly = listContent.split(",");
+            return WeeklyManagementTimeDayResponse.builder()
+                    .weeklyId(weeklyManagementTimeDay.getId())
+                    .weeklyContents(contentOfWeekly)
+                    .build();
+        }
+        return new WeeklyManagementTimeDayResponse();
     }
 
     public List<WeeklyManagementTimeDayResponse> toListWeeklyResponse(String userId, List<ManagementTimeDay> days){
