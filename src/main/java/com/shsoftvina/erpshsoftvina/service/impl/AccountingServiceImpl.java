@@ -85,7 +85,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         if (billFile != null) {
-            applicationUtils.checkValidateFile(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
         }
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
@@ -129,7 +129,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
         if (billFile != null) {
-            applicationUtils.checkValidateFile(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
         }
         List<String> newFilesUpdate;
         if (accountingUpdateRequest.getBill() != null && (billFile.length + oldFile.size()) > AccountingConstant.NUMBER_FILE_LIMIT) {

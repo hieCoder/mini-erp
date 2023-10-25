@@ -227,7 +227,7 @@
         modal.attr("data-id", id)
         callAjaxByJsonWithData('/api/v1/weekly-management-time-day/' + id, 'GET', null, function (rs) {
             if(rs.weeklyContents != null){
-                $("#weeklyToDo div.content > input").each(function(index){
+                $("#weeklyToDo div.content > input").each(function (index) {
                     $(this).val(rs.weeklyContents[index])
                 })
             }
@@ -238,10 +238,10 @@
 
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
-        const formattedLastSaturday = formatDate(result.lastSaturday);
         const formattedFirstSunday = formatDate(result.firstSunday);
+        const formattedLastDay = formatDate(result.lastDay);
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastSaturday, true);
+        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastDay, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -296,12 +296,11 @@
                                                     const dateInResponse = new Date(week.day);
                                                     if (
                                                         currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
                                                         (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
                                                     ) {
                                                         const link = document.createElement('a');
                                                         link.textContent = lastDayOfPreviousMonth - startDay + j;
-                                                        link.href = 'day/?id=' + week.id;
+                                                        link.href = "${user.id}" + '/day/?id=' + week.id;
                                                         cell.appendChild(link);
                                                         found = true;
                                                     }
@@ -312,13 +311,13 @@
                                         if (!found) {
                                             const link = document.createElement('a');
                                             link.textContent = lastDayOfPreviousMonth - startDay + j;
-                                            ;
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
 
-                                            var day = lastDayOfPreviousMonth - startDay + j
-                                            var dayData = (day < 10) ? "0" + day : day
-                                            link.href = "day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + dayData;
+                                            var day = lastDayOfPreviousMonth - startDay + j;
+                                            var dayData = day < 10 ? "0" + day : day;
+                                            var monthData = (month -1) < 10 ? '0' + (month -1) : (month -1);
+                                            link.href = "day/?day=" + year + "-" + monthData + "-" + dayData;
                                             cell.appendChild(link);
                                         }
                                     } else if (dayNumber > 0 && dayNumber <= daysInMonth) {
@@ -475,22 +474,35 @@
     }
 
     function getFirstSundayLastSaturday(year, month) {
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0); // Là ngày cuối cùng của tháng
-
-        // Tính toán ngày đầu tiên của chủ nhật
-        const firstSunday = new Date(firstDay);
-        if (firstDay.getDay() !== 0) {
-            firstSunday.setDate(firstSunday.getDate() + (7 - firstDay.getDay()));
-        } // Tìm ngày đầu tiên của chủ nhật
-
-        // Tính toán ngày cuối cùng của thứ bảy
-        const lastSaturday = new Date(lastDay);
-        lastSaturday.setDate(lastSaturday.getDate() - (lastDay.getDay() + 1)); // Tìm ngày cuối cùng của thứ bảy
+        const firstSunday = getLastSundayOfPreviousMonth(year,month);
+        const lastDay = new Date(year, month + 1, 0);
 
         return {
             firstSunday,
-            lastSaturday
+            lastDay
+        };
+    }
+
+    function getLastSundayOfPreviousMonth(year, month) {
+        const firstSundayIsBeginningDay = new Date(year, month, 1);
+        const lastDayOfPreviousMonth = new Date(year, month, 0);
+        if (firstSundayIsBeginningDay.getDay() === 0) {
+            return firstSundayIsBeginningDay;
+        }
+        const lastDay = lastDayOfPreviousMonth.getDate();
+        const lastSundayOfPreviousMonth = new Date(year, month - 1, lastDay - lastDayOfPreviousMonth.getDay());
+        return lastSundayOfPreviousMonth;
+    }
+
+    function getFirstAndLastDateOfMonth(year, month) {
+        // Xác định ngày đầu tiên của tháng
+        const firstDay = new Date(year, month, 1);
+
+        // Xác định ngày cuối cùng của tháng
+        const lastDay = new Date(year, month + 1, 0);
+        return {
+            firstDay,
+            lastDay
         };
     }
 
