@@ -34,7 +34,9 @@
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
-            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>,
+            department: <%="'" + Principal.getUserCurrent().getDepartment().getValue() + "'"%>,
+            position: <%="'" + Principal.getUserCurrent().getPosition().getValue() + "'"%>
         };
     </script>
 </head>
@@ -56,27 +58,35 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
 
-        $('.avatar-login').attr('src', userCurrent.avatar);
-        $('.fullname-login').text(userCurrent.fullname);
-        $('.profile-user-login').attr('href', '/users/' + userCurrent.id);
-        var scheduleLink = '';
-        var managementTime = ''
-        if (userCurrent.role != U_DEVELOPER) {
-            scheduleLink = '/schedules';
-            managementTime = '/management-time'
-        } else {
-            scheduleLink = '/schedules/detail/' + userCurrent.id;
-            managementTime = '/management-time/' + userCurrent.id;
-        }
-        $('.schedule-login').attr('href', scheduleLink);
-        $('.management-time-day-login').attr('href', managementTime);
-        if (userCurrent.role == U_DEVELOPER) {
-            $('.management-login').remove();
-            $('.setting-login').remove();
-        }
+    $(document).ready(function () {
+        $('.nav-item.dropdown').hover(function () {
+            $(this).find('.dropdown-menu').show();
+        }, function () {
+            $(this).find('.dropdown-menu').hide();
+        });
     });
+
+    $('.avatar-login').attr('src', userCurrent.avatar);
+    $('.fullname-login').text(userCurrent.fullname);
+    $('.department-login').text(userCurrent.department);
+    $('.position-login').text(userCurrent.position);
+    $('.profile-user-login').attr('href', '/users/' + userCurrent.id);
+    var scheduleLink = '';
+    var managementTime = ''
+    if (userCurrent.role != U_DEVELOPER) {
+        scheduleLink = '/schedules';
+        managementTime = '/management-time'
+    } else {
+        scheduleLink = '/schedules/detail/' + userCurrent.id;
+        managementTime = '/management-time/' + userCurrent.id;
+    }
+    $('.schedule-login').attr('href', scheduleLink);
+    $('.management-time-day-login').attr('href', managementTime);
+    if (userCurrent.role == U_DEVELOPER) {
+        $('.management-login').remove();
+        $('.setting-login').remove();
+    }
 </script>
 
 </body>

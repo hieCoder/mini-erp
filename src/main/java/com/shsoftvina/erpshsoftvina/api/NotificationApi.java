@@ -5,6 +5,9 @@ import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificatio
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +19,9 @@ public class NotificationApi {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
     //    Get all Notification
     @GetMapping
     public ResponseEntity<?> getAllNoti(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
@@ -24,6 +30,13 @@ public class NotificationApi {
     ) {
 
         return ResponseEntity.ok(notificationService.getAllNoti((page - 1) * pageSize, pageSize, search));
+    }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<?> getInactiveNoti(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                                        @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
+    ) {
+        return ResponseEntity.ok(notificationService.getInactiveNoti((page - 1) * pageSize, pageSize));
     }
 
     //    Create New Notification
@@ -40,8 +53,11 @@ public class NotificationApi {
     }
 
     //    Delete Notification
+    @MessageMapping("/deleteNotification")
+    @SendTo("/notification/deleteNotification")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delNoti(@PathVariable("id") String id) {
+        simpMessagingTemplate.convertAndSend("/notification/deleteNotification", id);
         return ResponseEntity.ok(notificationService.delNoti(id));
     }
 

@@ -16,7 +16,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header font-weight-bold">
-                    Notification Create
+                    Create Notification Form
                 </div>
                 <div class="card-body">
                     <form id="createForm">

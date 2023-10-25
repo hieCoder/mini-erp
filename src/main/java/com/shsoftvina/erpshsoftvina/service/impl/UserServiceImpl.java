@@ -1,12 +1,16 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.MailConstant;
+import com.shsoftvina.erpshsoftvina.constant.SettingConstant;
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.converter.UserConverter;
+import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
+import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
+import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
@@ -45,6 +49,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ApplicationUtils applicationUtils;
 
+    @Autowired
+    private SettingMapper settingMapper;
+
     @Override
     public PageUserListRespone getAllUser(String searchTerm, String sortDirection, int start, int pageSize, String status) {
 
@@ -62,13 +69,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailResponse findUserDetail(String id) {
-        User s = null;
-        try {
-            s = userMapper.findById(id);
-        } catch (Exception e) {
 
-        }
-        return userConverter.toUserDetailResponse(s);
+        applicationUtils.checkUserAllow(id);
+
+
+        User user = null;
+        try {
+            user = userMapper.findById(id);
+            if (Principal.getUserCurrent().getRole() == null) throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
+        } catch (Exception e) {}
+        return userConverter.toUserDetailResponse(user);
     }
 
     @Override
@@ -139,11 +149,10 @@ public class UserServiceImpl implements UserService {
         MultipartFile resumeFile = userUpdateRequest.getResume();
 
         if (avatarFile != null) applicationUtils.checkValidateImage(User.class, avatarFile);
-        if (resumeFile != null) applicationUtils.checkValidateFile(User.class, resumeFile);
+        if (resumeFile != null)applicationUtils.checkValidateFile(User.class, resumeFile);
 
         String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-        List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request,
-                uploadDir, avatarFile, resumeFile);
+        List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request, uploadDir, avatarFile, resumeFile);
 
 
         String avatarNameOld = user.getAvatar();

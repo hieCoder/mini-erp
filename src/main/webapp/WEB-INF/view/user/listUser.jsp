@@ -160,6 +160,7 @@
                     <tr>
                         <th>Username</th>
                         <th>User ID</th>
+                        <th>Created date</th>
                         <th>Role</th>
                         <th>Action</th>
                     </tr>
@@ -206,6 +207,7 @@
             columns: [
                 {data: 'fullname'},
                 {data: 'email'},
+                {data: 'createdDate'},
                 {
                     render: function(data, type, row) {
                         return '<select style="width: 150px;" class="form-control" id="exampleFormControlSelect1" name="role">' +

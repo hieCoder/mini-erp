@@ -1,7 +1,5 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
-import com.shsoftvina.erpshsoftvina.constant.ApplicationConstant;
-
 public class MessageErrorUtils {
     public static String notFound(String s){
         return s.concat(" is not found");
@@ -23,8 +21,8 @@ public class MessageErrorUtils {
         return "File count must <= " + fileLimit;
     }
 
-    public static String notAllowFileSize(){
-        return "File size must <= " + ApplicationConstant.MAX_FILE_SIZE;
+    public static String notAllowFileSize(int fileSize){
+        return "File size must <= " + fileSize + "Mb";
     }
 
     public static String unauthorized(){

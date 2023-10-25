@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,15 +31,6 @@ public class UserConverter {
     PasswordEncoder passwordEncoder;
 
     public UserDetailResponse toUserDetailResponse(User user) {
-
-        User userCurrent = Principal.getUserCurrent();
-        if (user.getRole() == null)
-            throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
-        else {
-            if (userCurrent.getRole().equals(RoleEnum.DEVELOPER) && !user.getId().equals(userCurrent.getId())) {
-                throw new UnauthorizedException(MessageErrorUtils.unauthorized());
-            }
-        }
 
         List<ContractResponse> contracts = null;
 
@@ -63,6 +55,7 @@ public class UserConverter {
                 .address(user.getAddress())
                 .timesheetsCode(user.getTimesheetsCode())
                 .contracts(contracts)
+                .createdDate(DateUtils.formatDateTime(user.getCreatedDate()))
                 .build();
     }
 
@@ -73,6 +66,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .email(user.getEmail())
                 .position(EnumUtils.instance(user.getPosition()))
+                .createdDate(DateUtils.formatDateTime(user.getCreatedDate()))
                 .build();
     }
 
@@ -126,6 +120,7 @@ public class UserConverter {
                 .id(ApplicationUtils.generateId())
                 .email(userRegisterRequest.getEmail())
                 .password(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()))
+                .createdDate(new Date())
                 .build();
     }
 

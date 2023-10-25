@@ -19,5 +19,6 @@ public class Setting {
     private CodeSettingEnum code;
     private String imageType;
     private String fileType;
+    private Integer fileLimit;
     private Integer fileSize;
 }
