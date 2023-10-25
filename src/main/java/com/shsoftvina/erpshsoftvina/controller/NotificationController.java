@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class NotificationController {
 
     @Autowired
     private SettingMapper settingMapper;
+
+    @Autowired
+    ApplicationUtils applicationUtils;
 
     @GetMapping
     public String getList(
@@ -67,9 +71,8 @@ public class NotificationController {
 
     @GetMapping("/create")
     public String getCreate( Model model){
-
+        applicationUtils.checkUserAllow();
         Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICAITON_CODE);
-
         model.addAttribute("maxFileSize", ApplicationConstant.MAX_FILE_SIZE);
         model.addAttribute("listTypeFile", setting.getFileType());
         model.addAttribute("uploadFileLimit", setting.getFileSize());

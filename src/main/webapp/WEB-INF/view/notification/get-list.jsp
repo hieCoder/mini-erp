@@ -13,10 +13,10 @@
 </head>
 <body>
 <div class="container">
-    <h1>Notification list</h1>
+    <h1>Notification List</h1>
 <div class="row">
     <div class="col-md-6">
-        <input type="text" value ="${search}" id="searchInput" class="form-control" placeholder="Title or username">
+        <input type="text" value ="${search}" id="searchInput" class="form-control" placeholder="Title or Author">
     </div>
     <div class="col-md-2">
         <button class="btn btn-primary" id="searchButton">Search</button>
