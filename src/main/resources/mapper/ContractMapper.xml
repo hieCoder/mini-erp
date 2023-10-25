@@ -4,46 +4,102 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
 
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type, insurance_money, status)
-            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status})
+        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type,
+                              insurance_money, status, HISTORY_ID)
+            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status}, #{parentContract.id})
     </insert>
 
     <select id="findById" resultMap="contractResultMap">
-        SELECT c.*, u.fullname FROM CONTRACT c
-        INNER JOIN USER u ON c.user_id = u.id
+        SELECT
+            c.ID           AS contract_id,
+            c.ALLOWANCE AS contract_allowance,
+            c.BASIC_SALARY AS contract_basic_salary,
+            c.CONTRACT AS contract_contractFile,
+            c.CREATED_DATE AS contract_created_date,
+            c.STATUS AS contract_status,
+            c.INSURANCE_TYPE AS contract_insurance_type,
+            c.INSURANCE_MONEY AS contract_insurance_money,
+            c.HISTORY_ID AS contract_history_id,
+            C.USER_ID AS contract_user_id,
+            u.fullname AS user_fullname
+        FROM CONTRACT c
+                 LEFT JOIN USER u ON c.user_id = u.id AND c.HISTORY_ID IS NOT NULL
         WHERE c.id = #{id}
     </select>
 
     <select id="getContractByUser" parameterType="String" resultMap="contractResultMap">
-        SELECT c.*, u.fullname FROM CONTRACT c
-        INNER JOIN USER u ON c.user_id = u.id
-        WHERE u.id = #{userId} AND c.status = 'ACTIVE'
+
+        SELECT  c.ID           AS contract_id,
+                c.ALLOWANCE AS contract_allowance,
+                c.BASIC_SALARY AS contract_basic_salary,
+                c.CONTRACT AS contract_contractFile,
+                c.CREATED_DATE AS contract_created_date,
+                c.STATUS AS contract_status,
+                c.INSURANCE_TYPE AS contract_insurance_type,
+                c.INSURANCE_MONEY AS contract_insurance_money,
+                c.HISTORY_ID AS contract_history_id,
+                C.USER_ID AS contract_user_id,
+                u.fullname AS user_fullname
+        FROM CONTRACT c
+                 INNER JOIN USER u ON c.user_id = u.id
+        WHERE u.id = #{userId}
+          AND c.status = 'ACTIVE'
+          AND c.HISTORY_ID IS NULL
     </select>
 
     <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
-        UPDATE CONTRACT SET
-                        basic_salary = #{basicSalary},
-                        allowance = #{allowance},
-                        contract = #{contract},
-                        insurance_type = #{insuranceType},
-                        insurance_money = #{insuranceMoney}
+        UPDATE CONTRACT
+        SET basic_salary    = #{basicSalary},
+            allowance       = #{allowance},
+            contract        = #{contract},
+            insurance_type  = #{insuranceType},
+            insurance_money = #{insuranceMoney}
         WHERE id = #{id};
     </update>
 
     <update id="changeStatusContract" parameterType="String">
-        UPDATE CONTRACT SET
-            status = #{status}
-        WHERE id = #{id};
+        SET SQL_SAFE_UPDATES = 0;
+        UPDATE CONTRACT c
+        SET status = #{status}
+        WHERE id = #{id} or c.history_id = #{id};
+        SET SQL_SAFE_UPDATES = 1;
     </update>
 
     <resultMap id="contractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract">
-        <id property="id" column="id"/>
-        <result property="basicSalary" column="basic_salary"/>
-        <result property="allowance" column="allowance"/>
-        <result property="contract" column="contract"/>
-        <result property="createdDate" column="created_date"/>
-        <result property="status" column="status"/>
-        <result property="insuranceType" column="insurance_type"/>
-        <result property="insuranceMoney" column="insurance_money"/>
+        <id property="id" column="contract_id"/>
+        <result property="basicSalary" column="contract_basic_salary"/>
+        <result property="allowance" column="contract_allowance"/>
+        <result property="contract" column="contract_contractFile"/>
+        <result property="createdDate" column="contract_created_date"/>
+        <result property="status" column="contract_status"/>
+        <result property="insuranceType" column="contract_insurance_type"/>
+        <result property="insuranceMoney" column="contract_insurance_money"/>
+        <association property="user" column="contract_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <collection property="historyContract" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Contract"
+                    select="getHistoryContract"/>
     </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="contract_user_id" />
+        <result property="fullname" column="user_fullname" />
+    </resultMap>
+
+    <select id="getHistoryContract" resultMap="contractResultMap">
+        SELECT
+            c.ID           AS contract_id,
+            c.ALLOWANCE AS contract_allowance,
+            c.BASIC_SALARY AS contract_basic_salary,
+            c.CONTRACT AS contract_contractFile,
+            c.CREATED_DATE AS contract_created_date,
+            c.STATUS AS contract_status,
+            c.INSURANCE_TYPE AS contract_insurance_type,
+            c.INSURANCE_MONEY AS contract_insurance_money,
+            c.HISTORY_ID AS contract_history_id,
+            C.USER_ID AS contract_user_id,
+            u.fullname AS user_fullname
+        FROM CONTRACT c
+                 INNER JOIN USER u ON c.user_id = u.id
+        WHERE c.HISTORY_ID = #{id}
+    </select>
+
 </mapper>

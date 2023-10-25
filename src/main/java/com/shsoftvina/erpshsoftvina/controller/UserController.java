@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -36,6 +39,7 @@ public class UserController {
 
         PageUserListRespone users = userService.getAllUser(search, sort, page, pageSize, status);
 
+
         view.addObject("users", users);
 
         return view;
@@ -46,7 +50,11 @@ public class UserController {
         ModelAndView view = new ModelAndView("user/userDetail");
 
         UserDetailResponse user = userService.findUserDetail(id);
+
+        List<ContractResponse> contracts = contractService.getContractByUser(id);
+
         view.addObject("user", user);
+        view.addObject("contracts", contracts);
         return view;
     }
 

@@ -30,5 +30,6 @@ public class CreateContractRequest {
     @NotBlank(message = "Field insuranceMoney is not filled")
     private String insuranceMoney;
 
+    private String parentId;
     private MultipartFile contract;
 }

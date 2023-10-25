@@ -40,7 +40,7 @@ public class ContractApi {
     }
 
     @PostMapping("/updation")
-    public ResponseEntity<?> updateContract(UpdateContractRequest updateContractRequest) {
+    public ResponseEntity<?> updateContract(@Valid UpdateContractRequest updateContractRequest) {
         return ResponseEntity.ok(contractService.updateContract(updateContractRequest));
     }
 

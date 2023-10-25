@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -51,15 +52,21 @@ public class ContractServiceImpl implements ContractService {
         if(!EnumUtils.isExistInEnum(InsuranceTypeEnum.class, createContractRequest.getInsuranceType()))
             throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
 
-        MultipartFile contract = createContractRequest.getContract();
+        String parentId = createContractRequest.getParentId();
+        Contract contract = null;
+        if (parentId != null) {
+            contract = contractMapper.findById(parentId);
+        }
 
-        if(contract!=null) applicationUtils.checkValidateFile(Contract.class, contract);
+        MultipartFile contractFile = createContractRequest.getContract();
+
+        if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
 
         String fileNameContract = null;
         boolean isSaveContractSuccess = true;
 
-        if(contract != null){
-            fileNameContract = FileUtils.formatNameImage(contract);
+        if(contractFile != null){
+            fileNameContract = FileUtils.formatNameImage(contractFile);
             isSaveContractSuccess = FileUtils.saveImageToServer(
                     request, ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getContract(), fileNameContract);
         }
@@ -79,8 +86,10 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse findById(String id) {
+
         return contractConverter.toResponse(contractMapper.findById(id));
-    }
+    };
+
 
     @Override
     public int updateContract(UpdateContractRequest updateContractRequest) {
