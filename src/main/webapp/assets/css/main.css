@@ -65,7 +65,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #ddd  !important;
+    background-color: rgba(0,0,0,.03)  !important;
 }
 
 /*border radius around for avatar*/

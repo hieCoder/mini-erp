@@ -239,8 +239,6 @@
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
         const formattedFirstSunday = formatDate(result.firstSunday);
-        // const result = getFirstAndLastDateOfMonth(year, month);
-        // const formattedFirstDay = formatDate(result.firstDay);
         const formattedLastDay = formatDate(result.lastDay);
         let xhr = new XMLHttpRequest();
         xhr.open("GET", "/api/v1/management-time/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastDay, true);

@@ -19,7 +19,7 @@
                 <h3 class="mt-3 rounded">Years</h3>
                 <ul class="list-group" id="yearList">
                     <c:forEach varStatus="loop" items="${monthList.monthList}" var="date">
-                        <li class="list-group-item year-item" data-toggle="collapse"
+                        <li class="list-group-item year-item font-italic" data-toggle="collapse"
                             href="#months${loop.index}">${date.year}</li>
                         <div class="collapse" id="months${loop.index}">
                             <ul class="list-group">

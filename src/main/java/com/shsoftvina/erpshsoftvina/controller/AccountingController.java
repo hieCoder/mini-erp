@@ -30,7 +30,7 @@ public class AccountingController {
     @GetMapping("/{monthId}")
     public ModelAndView showAccountingList(@PathVariable("monthId") String monthId,
                                            @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
-                                           @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+                                           @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
                                            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         ModelAndView modelAndView = new ModelAndView("accounting/homepage");
