@@ -55,4 +55,9 @@ public class ScheduleController {
     public String getSchedule() {
         return "schedule/detail-2";
     }
+
+    @GetMapping("/2")
+    public String getSchedule2() {
+        return "schedule/detail-3";
+    }
 }
