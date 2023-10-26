@@ -56,6 +56,7 @@ public class UserConverter {
                 .timesheetsCode(user.getTimesheetsCode())
                 .contracts(contracts)
                 .createdDate(DateUtils.formatDateTime(user.getCreatedDate()))
+                .gender(EnumUtils.instance(user.getGender()))
                 .build();
     }
 
@@ -85,7 +86,6 @@ public class UserConverter {
                 .build();
     }
 
-
     public User toUpdateDetail(UserUpdateRequest userUpdateRequest, String newAvatarFileName, String newResumeFileName) {
         User user = toUpdateBasic(userUpdateRequest, newAvatarFileName, newResumeFileName);
         user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, userUpdateRequest.getType()));
@@ -110,6 +110,7 @@ public class UserConverter {
                 .timesheetsCode(userUpdateRequest.getTimesheetsCode())
                 .atm(userUpdateRequest.getAtm())
                 .isFirstUpdateProfile(UserConstant.ACTIVE_FIRST_UPDATE_PROFILE)
+                .gender(EnumUtils.getEnumFromValue(GenderEnum.class, userUpdateRequest.getGender()))
                 .build();
     }
 
