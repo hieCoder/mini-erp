@@ -55,8 +55,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleListResponse getScheduleDetail(String userId, String monthly) {
-        List<Task> tasks = scheduleMapper.getScheduleDetailByMonth(userId, monthly);
         String firstDayOfMonth = monthly + "-01";
+        List<Task> tasks = scheduleMapper.getScheduleDetailByMonth(userId, monthly);
         List<User> users = userMapper.getUserBirthday(firstDayOfMonth);
         List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users);
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
