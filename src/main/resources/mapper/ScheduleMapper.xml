@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ScheduleMapper">
+    <select id="getScheduleDetailByMonth" resultMap="scheduleDetailResultMap">
+        SELECT t.ID, t.TITLE, t.STATUS_TASK, t.CREATED_DATE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE
+        FROM TASK t
+                 INNER JOIN USER u ON t.USER_ID = u.ID
+        WHERE t.USER_ID = #{userId}
+          AND t.STATUS = 'ACTIVE'
+          AND DATE_FORMAT(t.CREATED_DATE, '%Y-%m') = #{monthly}
+    </select>
 
     <select id="getScheduleDetail" resultMap="scheduleDetailResultMap">
         SELECT t.ID, t.TITLE, t.STATUS_TASK, t.CREATED_DATE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE

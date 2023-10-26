@@ -39,4 +39,6 @@ public interface UserMapper {
     long getTotalUser(@Param("status") String status,
                       @Param("searchTerm") String searchTerm,
                       @Param("sortDirection") String sortDirection);
+
+    List<User> getUserBirthday(@Param("monthly") String monthly);
 }

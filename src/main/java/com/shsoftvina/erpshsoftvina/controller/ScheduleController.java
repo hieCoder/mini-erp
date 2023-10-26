@@ -51,10 +51,6 @@ public class ScheduleController {
         modelAndView.addObject("schedule",list);
         return modelAndView;
     }
-    @GetMapping("/1")
-    public String getSchedule() {
-        return "schedule/detail-2";
-    }
 
     @GetMapping("/2")
     public String getSchedule2() {

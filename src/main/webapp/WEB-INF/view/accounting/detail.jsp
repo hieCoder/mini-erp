@@ -59,27 +59,28 @@
             </div>
             <c:choose>
                 <c:when test="${not empty account.bill}">
-                    <p class="card-text">Bill: <br>
-                        <span id="attachedFilesNotification">
+                    Bill:<br>
+                        <div class="row" id="attachedFilesNotification">
                             <c:set var="imageType" value="${setting.listTypeImage}"/>
                             <c:set var="fileType" value="${setting.listTypeFile}"/>
                         <c:forEach items="${account.bill}" var="file">
-                            <c:if test="${fn:contains(imageType, file.substring(file.lastIndexOf('.') + 1))}">
-                                <img width="40" height="40" src="${file}" alt="">
-                            </c:if>
-                            <c:if test="${fn:contains(fileType, file.substring(file.lastIndexOf('.') + 1))}">
-                                <img width="40" height="40"
-                                     src="/upload/common/${file.substring(file.lastIndexOf('.') + 1)}.png" alt="">
-                            </c:if>
-                            <a href="${file}" download="" target="_blank" data-toggle="tooltip" data-placement="bottom"
-                               title="${file.substring(file.indexOf('-') + 1)}">
+                            <div class="col-md-4 text-center">
+                                <c:if test="${fn:contains(imageType, file.substring(file.lastIndexOf('.') + 1))}">
+                                    <img width="50" height="50" src="${file}" alt="">
+                                </c:if>
+                                <c:if test="${fn:contains(fileType, file.substring(file.lastIndexOf('.') + 1))}">
+                                    <img width="50" height="50"
+                                         src="/upload/common/${file.substring(file.lastIndexOf('.') + 1)}.png" alt="">
+                                </c:if>
+                                <br>
+                                <a href="${file}" download="" target="_blank" data-toggle="tooltip" data-placement="bottom"
+                                   title="${file.substring(file.indexOf('-') + 1)}">
                                   <span class="shortened-text"
                                         style="display:inline-block;width: 250px">${file.substring(file.indexOf('-') + 1)}</span>
-                            </a>
-                            <br>
+                                </a>
+                            </div>
                         </c:forEach>
-                        </span>
-                    </p>
+                        </div>
                 </c:when>
                 <c:otherwise>
                     <p class="card-text">Bill: <span id="attachedFilesNotification"></span></p>
@@ -457,29 +458,30 @@
                     $("#remainAccount").text(formatCurrency(responseData.remain));
                     $("#fullnameAccount").text(responseData.user.fullname);
                     $("#noteAccount").text(responseData.note);
-                    var xhtml = ''
+                    var xhtml = '';
                     if (responseData.bill != null && responseData.bill.length > 0) {
                         responseData.bill.forEach((e) => {
+                            xhtml += '<div class="col-md-4 text-center">';
                             var fileExtension = e.substring(e.lastIndexOf('.') + 1);
                             if (imageType.includes(fileExtension)) {
                                 var img = document.createElement('img');
-                                img.width = 40;
-                                img.height = 40;
+                                img.width = 50;
+                                img.height = 50;
                                 img.src = e;
                                 img.alt = '';
-                                xhtml += img.outerHTML; // Append the image as HTML
+                                xhtml += img.outerHTML;
                             }
                             if (fileType.includes(fileExtension)) {
                                 var file = document.createElement('img');
-                                file.width = 40;
-                                file.height = 40;
+                                file.width = 50;
+                                file.height = 50;
                                 file.src = "/upload/common/" + fileExtension + ".png";
                                 file.alt = '';
-                                xhtml += file.outerHTML; // Append the file as HTML
+                                xhtml += file.outerHTML;
                             }
                             var subStringBill = e.substring(e.indexOf('-') + 1);
-                            xhtml += '<a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
-                                '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a><br>';
+                            xhtml += '<br><a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
+                                '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a></div>';
                         })
                     }
                     $("#attachedFilesNotification").html(xhtml);
