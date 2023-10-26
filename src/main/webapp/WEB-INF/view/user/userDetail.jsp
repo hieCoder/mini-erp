@@ -373,8 +373,8 @@
 <!-- Modal ADD Contract  -->
 <div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content" style="margin-top: 65px !important;">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="max-height: 80%">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Add Contract</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -390,9 +390,7 @@
                     </div>
                     <div class="form-group">
                         <label id="valAllowance">Allowance:</label>
-                        <button id="showAdditionalFields" type="button" class="btn btn-secondary">Add Allowance</button>
-                        <small class="form-message"></small>
-                        <div id="additionalFields" style="display: none">
+                        <div id="additionalFields" class="p-3 border">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -475,7 +473,7 @@
 <div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content" style="margin-top: 65px !important;">
+        <div class="modal-content" style="margin-top: 75px !important;">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Edit Contract</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -557,7 +555,6 @@
                     </div>
                     <div class="form-group">
                         <label for="contractUser">Contract Files: </label>
-                        <a href="" download target="_blank" id="contractFile">Download Contract</a>
                         <input type="file" class="form-control mt-2" id="contractUser" name="contract">
                         <small class="text-muted ml-2">Choose New Contract</small>
                     </div>
@@ -896,21 +893,10 @@
                 keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + '$' + '<br><br>';
             }
         }
-
         keyValueString = keyValueString.slice(0, -2);
 
         return keyValueString;
     }
-
-    // Handle when user click button "Add Allowance"
-    document.getElementById("showAdditionalFields").addEventListener("click", function () {
-        var additionalFields = document.getElementById("additionalFields");
-        if (additionalFields.style.display === "none" || additionalFields.style.display === "") {
-            additionalFields.style.display = "block";
-        } else {
-            additionalFields.style.display = "none";
-        }
-    });
 
     // Handle when user click button "Edit Allowance"
     document.getElementById("showEditFields").addEventListener("click", function () {
@@ -940,7 +926,6 @@
         rules: [
             Validator.isRequired('#addBasicSalary'),
             Validator.isRequired('#addInsuranceMoney'),
-            Validator.isRequired('#valAllowance'),
             Validator.isRequired('#telephone'),
             Validator.isRequired('#meal'),
             Validator.isRequired('#gasoline'),
@@ -1060,12 +1045,12 @@
                         document.getElementById("editBasicSalary").value = responseData.basicSalary;
                         // document.getElementById("editAllowance").value = responseData.allowance;
                         var allowance = JSON.parse(responseData.allowance);
-                        document.getElementById('editTelephone').value = allowance.telephone;
-                        document.getElementById('editMeal').value = allowance.meal;
-                        document.getElementById('editGasoline').value = allowance.gasoline;
-                        document.getElementById('editUniform').value = allowance.uniform;
-                        document.getElementById('editAttendance').value = allowance.attendance;
-                        document.getElementById('editOther').value = allowance.other;
+                        document.getElementById('editTelephone').value = allowance.Telephone;
+                        document.getElementById('editMeal').value = allowance.Meal;
+                        document.getElementById('editGasoline').value = allowance.Gasoline;
+                        document.getElementById('editUniform').value = allowance.Uniform;
+                        document.getElementById('editAttendance').value = allowance.Attendance;
+                        document.getElementById('editOther').value = allowance.Other;
 
                         var selectElement = document.getElementById("editInsuranceType");
                         var editInsuranceType = responseData.insuranceType.name;
@@ -1079,7 +1064,6 @@
                         selectElement.selectedIndex = 0;
 
                         document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;
-                        document.getElementById("contractFile").setAttribute("href", responseData.contract);
                     });
                 }
             });
