@@ -890,7 +890,7 @@
         var keyValueString = '';
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + '$' + '<br><br>';
+                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + 'đ' + '<br><br>';
             }
         }
         keyValueString = keyValueString.slice(0, -2);
