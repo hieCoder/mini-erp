@@ -40,8 +40,8 @@
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
             avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>,
-            department: <%="'" + Principal.getUserCurrent().getDepartment()==null?"":Principal.getUserCurrent().getDepartment().getValue() + "'"%>,
-            position: <%="'" + Principal.getUserCurrent().getPosition()==null?"":Principal.getUserCurrent().getPosition().getValue() + "'"%>
+            department: <%="'" + Principal.getUserCurrent().getDepartment().getValue() + "'"%>,
+            position: <%="'" + Principal.getUserCurrent().getPosition().getValue() + "'"%>
         };
     </script>
 </head>

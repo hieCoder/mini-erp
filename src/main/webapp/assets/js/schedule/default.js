@@ -1,11 +1,12 @@
 /* eslint-disable */
+const CODE_TASK = ["REGISTERED","OPENED", "POSTPONED", "REOPENED", "CLOSED"]
 function formatDate(date) {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
   return year + '-' + month + '-' + day;
 }
-function init(currentTime) {
+function init() {
   cal.setCalendars(CalendarList);
   setRenderRangeText();
   setEventListener();
@@ -45,6 +46,7 @@ function setDropdownCalendarType() {
 }
 
 function onClickMenu(e) {
+  console.log(e)
   var target = $(e.target).closest('a[role="menuitem"]')[0];
   var action = getDataAction(target);
   var options = cal.getOptions();
@@ -143,7 +145,8 @@ function setSchedules(currentTime) {
   let apiData = currentTime.replaceAll(".","-")
   console.log(apiData)
   cal.clear();
-  callAjaxByJsonWithData("/api/v1/schedules/1","GET",null,function (rs){
+  callAjaxByJsonWithData("/api/v1/schedules/1?monthly="+apiData,"GET",null,function (rs){
+    console.log(rs)
     if(rs){
       let ScheduleListNew = []
       rs.list.forEach((item,index)=>{
@@ -213,3 +216,29 @@ cal.on({
 });
 
 init();
+$(function() {
+
+  $(document).on("click", "span.tui-full-calendar-weekday-schedule-title", function (e) {
+    let id = $(this).parent().attr("data-schedule-id")
+    let code = $(this).parent().attr("data-calendar-id")
+    if (CODE_TASK.includes(code)) {
+      let html = '<button class="btn btn-sm btn-info mt-2 font-weight-bold linkToTask" data-id="' + id + '">Link to Task</button>'
+      $("div.tui-full-calendar-section-detail > div.tui-full-calendar-popup-detail-item").after(html)
+    }
+  })
+
+  $(document).on("click", "div.tui-full-calendar-month-more-list > div", function (e) {
+    let id = $(this).attr("data-schedule-id")
+    let code = $(this).attr("data-calendar-id")
+    if (CODE_TASK.includes(code)) {
+      let html = '<button class="btn btn-sm btn-info mt-2 font-weight-bold linkToTask" data-id="' + id + '">Link to Task</button>'
+      $("div.tui-full-calendar-section-detail > div.tui-full-calendar-popup-detail-item").after(html)
+    }
+  })
+
+  $(document).on("click", "div.tui-full-calendar-section-detail .linkToTask", function (e) {
+      let id = $(this).attr("data-id")
+      window.open("/tasks/" + id, '_blank');
+  })
+
+})

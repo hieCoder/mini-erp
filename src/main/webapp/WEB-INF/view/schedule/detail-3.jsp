@@ -9,7 +9,6 @@
 
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>TOAST UI Calendar Template For Popup DEMO</title>
@@ -19,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/schedule/default.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/schedule/icons.css">
 </head>
-
 <body>
 <div class="container" style="margin-top: 6%">
     <div class="code-html">
@@ -39,7 +37,13 @@
         <div id="calendar"></div>
     </div>
 </div>
-
+<style>
+    .tui-full-calendar-weekday-grid-header .tui-full-calendar-weekday-grid-more-schedules{
+        color: #fb0072;
+        font-size: 13px;
+        font-style: italic;
+    }
+</style>
 <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
 <script src="https://uicdn.toast.com/tui.time-picker/v2.0.3/tui-time-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
@@ -60,7 +64,6 @@
             return startFormat + ' ~ ' + endFormat
         },
     };
-
     var cal = new tui.Calendar('#calendar', {
         defaultView: 'month',
         template: templates,
