@@ -91,7 +91,7 @@ public class UserConverter {
         user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, userUpdateRequest.getType()));
         user.setDepartment(EnumUtils.getEnumFromValue(DepartmentEnum.class, userUpdateRequest.getDepartment()));
         user.setEmail(userUpdateRequest.getEmail());
-        user.setPassword(userUpdateRequest.getPassword() != null? passwordEncoder.encode(userUpdateRequest.getPassword()): null);
+        user.setPassword(userUpdateRequest.getPassword() != null? passwordEncoder.encode(userUpdateRequest.getPassword()): user.getPassword());
         user.setRole(EnumUtils.getEnumFromValue(RoleEnum.class, userUpdateRequest.getRole()));
         user.setPosition(EnumUtils.getEnumFromValue(PositionEnum.class, userUpdateRequest.getPosition()));
         return user;

@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
+import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
@@ -139,84 +140,65 @@ public class UserServiceImpl implements UserService {
     public int updateUserDetail(UserUpdateRequest userUpdateRequest) {
 
         User user = userMapper.findById(userUpdateRequest.getId());
-
         if (user == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
         MultipartFile avatarFile = userUpdateRequest.getAvatar();
-        MultipartFile resumeFile = userUpdateRequest.getResume();
-
-        if (avatarFile != null) applicationUtils.checkValidateImage(User.class, avatarFile);
-        if (resumeFile != null)applicationUtils.checkValidateFile(User.class, resumeFile);
+        String remainResumeFiles = userUpdateRequest.getRemainResumeFiles();
+        MultipartFile[] newResumeFiles = userUpdateRequest.getNewResumeFiles();
 
         String uploadDir = UserConstant.UPLOAD_FILE_DIR;
-        List<String> newFileNameList = FileUtils.saveMultipleFilesToServer(request, uploadDir, avatarFile, resumeFile);
+        String newAvatarName = null;
+        List<String> newResumeFileNameList = null;
 
-
-        String avatarNameOld = user.getAvatar();
-        String resumeNameOld = user.getResume();
-
-        User userUpdate = null;
-        if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
-            if (newFileNameList.size() == 0) {// = 0, no avatar and resume
-                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, null);
-                userUpdate.setAvatar(user.getAvatar());
-                userUpdate.setResume(user.getResume());
-            }  else if (newFileNameList.size() == 2){
-                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                if (avatarNameOld != null) {
-                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
-                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
-                    }
-                }
-                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
-            } else if (avatarFile != null) {
-                if (avatarNameOld != null) {
-                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
-                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
-                    }
-                }
-                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newFileNameList.get(0), null);
-                userUpdate.setResume(user.getResume());
-            } else if (resumeFile != null) {
-                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                userUpdate = userConverter.toUpdateBasic(userUpdateRequest, null, newFileNameList.get(0));
-                userUpdate.setAvatar(user.getAvatar());
-            }
-        } else {
-            if (newFileNameList.size() == 0) {// = 0, no avatar and resume
-                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, null);
-                userUpdate.setAvatar(user.getAvatar());
-                userUpdate.setResume(user.getResume());
-            } else if (newFileNameList.size() == 2){
-                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                if (avatarNameOld != null) {
-                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
-                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
-                    }
-                }
-                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), newFileNameList.get(1));
-            } else if (avatarFile != null) {
-                if (avatarNameOld != null) {
-                    if(!avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
-                        FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
-                    }
-                }
-                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newFileNameList.get(0), null);
-                userUpdate.setResume(user.getResume());
-            } else if (resumeFile != null) {
-                if (resumeNameOld != null) FileUtils.deleteImageFromServer(request, uploadDir, resumeNameOld);
-                userUpdate = userConverter.toUpdateDetail(userUpdateRequest, null, newFileNameList.get(0));
-                userUpdate.setAvatar(user.getAvatar());
+        if(avatarFile!= null){
+            applicationUtils.checkValidateImage(User.class, avatarFile);
+            newAvatarName =FileUtils.formatNameImage(avatarFile);
+            if(!FileUtils.saveImageToServer(request, uploadDir, avatarFile, newAvatarName)) return 0;
+        }
+        if(newResumeFiles!=null){
+            newResumeFileNameList = FileUtils.saveMultipleFilesToServer(request, uploadDir, newResumeFiles);
+            if(newResumeFileNameList==null) {
+                if(newAvatarName!=null) FileUtils.deleteImageFromServer(request, uploadDir, newAvatarName);
+                return 0;
             }
         }
 
+        String newAvatarFileToDB = avatarFile!= null?newAvatarName:user.getAvatar();
+        String newResumeFilesToDB = null;
+        if(StringUtils.isBlank(remainResumeFiles)){
+            newResumeFilesToDB = String.join(",", newResumeFileNameList);
+        } else{
+            if(!newResumeFileNameList.isEmpty()){
+                newResumeFilesToDB = remainResumeFiles + "," + String.join(",", newResumeFileNameList);
+            } else newResumeFilesToDB = remainResumeFiles;
+        }
+
+        User userUpdate = null;
+        if(Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)){
+            userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newAvatarFileToDB, newResumeFilesToDB);
+        } else{
+            userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newAvatarFileToDB, newResumeFilesToDB);
+        }
+
+        String avatarNameOld = user.getAvatar();
+        String resumeNameOld = user.getResume();
+        String avatarNameNew = userUpdate.getAvatar();
+        String resumeNameNew = userUpdate.getResume();
         try {
-            if (userUpdateRequest.getPassword() == null) userUpdate.setPassword(user.getPassword());
             if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
                 userMapper.updateUserProfile(userUpdate);
             } else {
                 userMapper.updateUserDetail(userUpdate);
             }
+
+            if(!avatarNameOld.equals(avatarNameNew)){
+                FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+            }
+            if(!resumeNameOld.equals(resumeNameNew)){
+                String deleteFiles = StringUtils.getDifference(resumeNameOld, remainResumeFiles);
+                FileUtils.deleteMultipleFilesToServer(request, uploadDir, deleteFiles);
+            }
+
             return 1;
         } catch (Exception e) {
             return 0;
