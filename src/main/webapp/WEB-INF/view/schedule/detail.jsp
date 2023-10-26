@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>TOAST UI Calendar Template For Popup DEMO</title>
+    <title>Schedule Detail</title>
     <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
     <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/schedule/dist/tui-calendar.css">

@@ -142,14 +142,14 @@ function setRenderRangeText() {
 }
 
 function setSchedules(currentTime) {
+  $("#menu-navi button").prop("disabled",true)
+  let ScheduleListNew = []
   let apiData = currentTime.replaceAll(".","-")
   let idArr = window.location.href.split("/")
   let id = idArr[idArr.length-1]
   cal.clear();
   callAjaxByJsonWithData("/api/v1/schedules/" + id +"?monthly="+apiData,"GET",null,function (rs){
-    console.log(rs)
     if(rs){
-      let ScheduleListNew = []
       rs.list.forEach((item,index)=>{
         var schedule = new ScheduleInfo();
         schedule.id = item.id
@@ -158,15 +158,13 @@ function setSchedules(currentTime) {
         schedule.end  = new Date(item.dueOrCloseDate.replace(/~/g, "").replace(/\s/g, ""))
         schedule.calendarId = item.statusTask.code
         schedule.category = "time"
-        schedule.comingDuration = 85
-        schedule.goingDuration = 95
         ScheduleListNew.push(schedule)
       })
-      console.log(ScheduleListNew)
       cal.createSchedules(ScheduleListNew)
+      $("#menu-navi button").prop("disabled",false)
+      refreshScheduleVisibility();
     }
   })
-  refreshScheduleVisibility();
 }
 
 

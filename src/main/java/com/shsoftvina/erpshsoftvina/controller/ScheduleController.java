@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.service.ScheduleService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class ScheduleController {
     private ScheduleService scheduleService;
     @Autowired
     private UserService userService;
+    @Autowired
+    ApplicationUtils applicationUtils;
 
     @GetMapping
     public ModelAndView getScheduleList() {
@@ -35,6 +38,7 @@ public class ScheduleController {
     }
     @GetMapping("/detail/{userId}")
     public ModelAndView getScheduleDetail(@PathVariable("userId") String userId) {
+        applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("schedule/detail");
         modelAndView.addObject("userId",userId);
         return modelAndView;
