@@ -8,9 +8,7 @@ import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
-import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
-import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
+import com.shsoftvina.erpshsoftvina.exception.*;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
@@ -50,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ApplicationUtils applicationUtils;
+
+    @Autowired
+    private SettingMapper settingMapper;
 
     @Override
     public PageUserListRespone getAllUser(String searchTerm, String sortDirection, int start, int pageSize, String status) {
@@ -156,6 +157,13 @@ public class UserServiceImpl implements UserService {
             if(!FileUtils.saveImageToServer(request, uploadDir, avatarFile, newAvatarName)) return 0;
         }
         if(newResumeFiles!=null){
+
+            Setting setting = settingMapper.findByCode(SettingConstant.USER_CODE);
+            if (!FileUtils.isAllowedFileSize(newResumeFiles, setting.getFileSize()))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(setting.getFileSize()));
+            if (!FileUtils.isAllowedFileType(newResumeFiles, setting.getFileType()))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
+
             newResumeFileNameList = FileUtils.saveMultipleFilesToServer(request, uploadDir, newResumeFiles);
             if(newResumeFileNameList==null) {
                 if(newAvatarName!=null) FileUtils.deleteImageFromServer(request, uploadDir, newAvatarName);

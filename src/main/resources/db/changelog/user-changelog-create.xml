@@ -46,4 +46,8 @@
             <column name="GENDER" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="5" author="team2">
+        <modifyDataType tableName="USER" columnName="RESUME" newDataType="LONGTEXT"/>
+    </changeSet>
 </databaseChangeLog>
