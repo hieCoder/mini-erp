@@ -16,210 +16,236 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <form id="formUpdateUser">
-            <div class="row">
-                <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
-                <div class="col-md-4">
-                    <div class="text-center">
-                        <div id="avatar-container" style="position: relative;">
-                            <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
-                            <input name="avatar" type="file" class="form-control mt-2" id="avatar" accept="image/*">
-                            <small class="text-muted ml-2">Choose New Avatar</small>
-                            <h4 class="mt-2">${user.getFullname()}</h4>
-                            <div id="delete-avatar-button" style="position: absolute; top: 0; right: 0; color: black; padding: 5px; cursor: pointer; display: none;">X</div>
+<div class="container">
+    <form id="formUpdateUser">
+        <div class="row">
+            <!-- Phần 1: Hình ảnh avatar và tên người dùng -->
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div id="avatar-container" style="position: relative;">
+                        <img id="avatar-user" src="${user.getAvatar()}" class="img-fluid" alt="User Avatar" width="200">
+                        <input name="avatar" type="file" class="form-control mt-2" id="avatar" accept="image/*">
+                        <small class="text-muted ml-2">Choose New Avatar</small>
+                        <h4 class="mt-2">${user.getFullname()}</h4>
+                        <div id="delete-avatar-button"
+                             style="position: absolute; top: 0; right: 0; color: black; padding: 5px; cursor: pointer; display: none;">
+                            X
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <!-- Phần 2: Form thông tin người dùng -->
-                    <h3 class="font-weight-bold">Basic User Information</h3>
-                    <div class="col-md-12">
-                        <div class="p-3 border">
-                            <div class="form-group">
-                                <label for="address">Address:</label>
-                                <input type="text" name="address" class="form-control" id="address" value="${user.getAddress()}">
-                                <small class="form-message"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="fullname">Username:</label>
-                                <input type="text" class="form-control" name="fullname" id="fullname" value="${user.getFullname()}">
-                                <small class="form-message"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="dateOfBirth">Date of birth:</label>
-                                <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
-                                <small class="form-message"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone number:</label>
-                                <input type="number" class="form-control" name="phone" id="phone" value="${user.getPhone()}">
-                                <small class="form-message"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="emergencyPhone">Emergency phone:</label>
-                                <input type="number" class="form-control" name="emergencyPhone" id="emergencyPhone" value="${user.getEmergencyPhone()}">
-                                <small class="form-message"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="resume">Resume file:</label>
-                                <c:choose>
-                                    <c:when test="${empty user.getResume()}">
-                                        <div id="resumeContainer" style="display: none;">
-                                            <a href="#" style="display: none;">Download Resume</a>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div id="resumeContainer">
-                                            <a href="${user.getResume()}" download target="_blank">Download Resume</a>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                                <input type="file" class="form-control mt-2" name="resume" id="resume">
-                                <small class="text-muted ml-2">Choose new resume</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="timeSheetsCode">TimeSheets code:</label>
-                                <input type="text" class="form-control" name="timesheetsCode" id="timeSheetsCode" value="${user.getTimesheetsCode()}">
-                            </div>
-                        </div>
-                    </div>
-                    <h3 class="mt-2 font-weight-bold hide">Detail User Information</h3>
-                    <div class="col-md-12">
-                        <div class="p-3 border hide">
-                            <div class="form-group hide">
-                                <label for="type">Type:</label>
-                                <select name="type" class="form-control" id="type">
-                                    <option value="OFFICIAL"
-                                            <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
-                                    >Official
-                                    </option>
-                                    <option value="PROBATION"
-                                            <c:if test="${user.type.code.equals('PROBATION')}">selected</c:if>
-                                    >Probation
-                                    </option>
-                                    <option value="PARTTIME"
-                                            <c:if test="${user.type.code.equals('PARTTIME')}">selected</c:if>
-                                    >Parttime
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group hide">
-                                <label for="department">Department:</label>
-                                <select name="department" class="form-control" id="department">
-                                    <option value="ADMINISTRATION"
-                                            <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
-                                        Administration
-                                    </option>
-                                    <option value="MANAGEMENT"
-                                            <c:if test="${user.department.code.equals('MANAGEMENT')}">selected</c:if>>
-                                        Management
-                                    </option>
-                                    <option value="UI_UX" <c:if test="${user.department.code.equals('UI_UX')}">selected</c:if>>
-                                        UI/UX
-                                    </option>
-                                    <option value="DEV1" <c:if test="${user.department.code.equals('DEV1')}">selected</c:if>>
-                                        Dev1
-                                    </option>
-                                    <option value="DEV2" <c:if test="${user.department.code.equals('DEV2')}">selected</c:if>>
-                                        Dev2
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group hide">
-                                <label for="userId">User ID:</label>
-                                <input name="email" type="email" class="form-control" id="userId" value="${user.getEmail()}">
-                            </div>
-                            <div class="form-group-password hide">
-                                <label for="password">Password: </label>
-                                <a id="change-password-button" class="text-primary text-decoration-none" style="cursor: pointer;">Change
-                                    password</a>
-                                <div id="password-form" style="display: none;">
-                                    <input name="password" type="password" class="form-control" id="password" value="" placeholder="New Password">
-                                    <span id="messageNewPassword"  class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="form-group hide">
-                                <label for="atm">ATM:</label>
-                                <input name="atm" type="text" class="form-control" id="atm" value="${user.getAtm()}">
-                            </div>
-                            <div class="form-group hide">
-                                <label for="role">Role:</label>
-                                <select name="role" class="form-control" id="role">
-                                    <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
-                                        Owner
-                                    </option>
-                                    <option value="MANAGER" <c:if test="${user.role.code.equals('MANAGER')}">selected</c:if>>
-                                        Manager
-                                    </option>
-                                    <option value="DEVELOPER" <c:if test="${user.role.code.equals('DEVELOPER')}">selected</c:if>>
-                                        Developer
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group hide">
-                                <label for="position">Position:</label>
-                                <select name="position" class="form-control" id="position">
-                                    <option value="INTERN" <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
-                                        Intern
-                                    </option>
-                                    <option value="JUNIOR" <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
-                                        Junior
-                                    </option>
-                                    <option value="SENIOR" <c:if test="${user.position.code.equals('SENIOR')}">selected</c:if>>
-                                        Senior
-                                    </option>
-                                    <option value="MANAGER" <c:if test="${user.position.code.equals('MANAGER')}">selected</c:if>>
-                                        Manager
-                                    </option>
-                                    <option value="SENIOR_MANAGER"
-                                            <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
-                                        Senior manager
-                                    </option>
-                                    <option value="OWNER" <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
-                                        Owner
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group hide">
-                                <label for="contract">Contract:</label>
-                                <button id="contract" type="button" class="btn btn-warning font-weight-bold" data-toggle="modal"
-                                        data-target="#contractModal">
-                                    View
-                                </button>
-                            </div>
-                            <div class="form-group hide">
-                                <label for="working-day">Working day:</label>
-                                <div class="input-group" id="working-day">
-                                    <select class="form-control" id="working-year">
-                                        <option value="">-- Select year --</option>
-                                    </select>
-                                    <select class="form-control" id="working-month" style="display: none;">
-                                        <option>-- Select month --</option>
-                                    </select>
-                                    <input type="text" class="form-control" id="totalWorkingDay" readonly placeholder="Result">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-12 mt-3 container-button">
-                        <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save</button>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" id="delUser">Delete</button>
-                        <a class="btn btn-secondary cancle-button">Cancel</a>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+
+            <div class="col-md-8">
+                <!-- Phần 2: Form thông tin người dùng -->
+                <h3 class="font-weight-bold">Basic User Information</h3>
+                <div class="col-md-12">
+                    <div class="p-3 border">
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" name="address" class="form-control" id="address"
+                                   value="${user.getAddress()}">
+                            <small class="form-message"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Username:</label>
+                            <input type="text" class="form-control" name="fullname" id="fullname"
+                                   value="${user.getFullname()}">
+                            <small class="form-message"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of birth:</label>
+                            <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
+                            <small class="form-message"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone number:</label>
+                            <input type="number" class="form-control" name="phone" id="phone"
+                                   value="${user.getPhone()}">
+                            <small class="form-message"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyPhone">Emergency phone:</label>
+                            <input type="number" class="form-control" name="emergencyPhone" id="emergencyPhone"
+                                   value="${user.getEmergencyPhone()}">
+                            <small class="form-message"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="resume">Resume file:</label>
+                            <c:choose>
+                                <c:when test="${empty user.getResume()}">
+                                    <div id="resumeContainer" style="display: none;">
+                                        <a href="#" style="display: none;">Download Resume</a>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div id="resumeContainer">
+                                        <a href="${user.getResume()}" download target="_blank">Download Resume</a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                            <input type="file" class="form-control mt-2" name="resume" id="resume">
+                            <small class="text-muted ml-2">Choose new resume</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeSheetsCode">TimeSheets code:</label>
+                            <input type="text" class="form-control" name="timesheetsCode" id="timeSheetsCode"
+                                   value="${user.getTimesheetsCode()}">
+                        </div>
+                    </div>
+                </div>
+                <h3 class="mt-2 font-weight-bold hide">Detail User Information</h3>
+                <div class="col-md-12">
+                    <div class="p-3 border hide">
+                        <div class="form-group hide">
+                            <label for="type">Type:</label>
+                            <select name="type" class="form-control" id="type">
+                                <option value="OFFICIAL"
+                                        <c:if test="${user.type.code.equals('OFFICIAL')}">selected</c:if>
+                                >Official
+                                </option>
+                                <option value="PROBATION"
+                                        <c:if test="${user.type.code.equals('PROBATION')}">selected</c:if>
+                                >Probation
+                                </option>
+                                <option value="PARTTIME"
+                                        <c:if test="${user.type.code.equals('PARTTIME')}">selected</c:if>
+                                >Parttime
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group hide">
+                            <label for="department">Department:</label>
+                            <select name="department" class="form-control" id="department">
+                                <option value="ADMINISTRATION"
+                                        <c:if test="${user.department.code.equals('ADMINISTRATION')}">selected</c:if>>
+                                    Administration
+                                </option>
+                                <option value="MANAGEMENT"
+                                        <c:if test="${user.department.code.equals('MANAGEMENT')}">selected</c:if>>
+                                    Management
+                                </option>
+                                <option value="UI_UX"
+                                        <c:if test="${user.department.code.equals('UI_UX')}">selected</c:if>>
+                                    UI/UX
+                                </option>
+                                <option value="DEV1"
+                                        <c:if test="${user.department.code.equals('DEV1')}">selected</c:if>>
+                                    Dev1
+                                </option>
+                                <option value="DEV2"
+                                        <c:if test="${user.department.code.equals('DEV2')}">selected</c:if>>
+                                    Dev2
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group hide">
+                            <label for="userId">User ID:</label>
+                            <input name="email" type="email" class="form-control" id="userId"
+                                   value="${user.getEmail()}">
+                        </div>
+                        <div class="form-group-password hide">
+                            <label for="password">Password: </label>
+                            <a id="change-password-button" class="text-primary text-decoration-none"
+                               style="cursor: pointer;">Change
+                                password</a>
+                            <div id="password-form" style="display: none;">
+                                <input name="password" type="password" class="form-control" id="password" value=""
+                                       placeholder="New Password">
+                                <span id="messageNewPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group hide">
+                            <label for="atm">ATM:</label>
+                            <input name="atm" type="text" class="form-control" id="atm" value="${user.getAtm()}">
+                        </div>
+                        <div class="form-group hide">
+                            <label for="role">Role:</label>
+                            <select name="role" class="form-control" id="role">
+                                <option value="OWNER" <c:if test="${user.role.code.equals('OWNER')}">selected</c:if>>
+                                    Owner
+                                </option>
+                                <option value="MANAGER"
+                                        <c:if test="${user.role.code.equals('MANAGER')}">selected</c:if>>
+                                    Manager
+                                </option>
+                                <option value="DEVELOPER"
+                                        <c:if test="${user.role.code.equals('DEVELOPER')}">selected</c:if>>
+                                    Developer
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group hide">
+                            <label for="position">Position:</label>
+                            <select name="position" class="form-control" id="position">
+                                <option value="INTERN"
+                                        <c:if test="${user.position.code.equals('INTERN')}">selected</c:if>>
+                                    Intern
+                                </option>
+                                <option value="JUNIOR"
+                                        <c:if test="${user.position.code.equals('JUNIOR')}">selected</c:if>>
+                                    Junior
+                                </option>
+                                <option value="SENIOR"
+                                        <c:if test="${user.position.code.equals('SENIOR')}">selected</c:if>>
+                                    Senior
+                                </option>
+                                <option value="MANAGER"
+                                        <c:if test="${user.position.code.equals('MANAGER')}">selected</c:if>>
+                                    Manager
+                                </option>
+                                <option value="SENIOR_MANAGER"
+                                        <c:if test="${user.position.code.equals('SENIOR_MANAGER')}">selected</c:if>>
+                                    Senior manager
+                                </option>
+                                <option value="OWNER"
+                                        <c:if test="${user.position.code.equals('OWNER')}">selected</c:if>>
+                                    Owner
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group hide">
+                            <label for="contract">Contract:</label>
+                            <button id="contract" type="button" class="btn btn-warning font-weight-bold"
+                                    data-toggle="modal"
+                                    data-target="#contractModal">
+                                View
+                            </button>
+                        </div>
+                        <div class="form-group hide">
+                            <label for="working-day">Working day:</label>
+                            <div class="input-group" id="working-day">
+                                <select class="form-control" id="working-year">
+                                    <option value="">-- Select year --</option>
+                                </select>
+                                <select class="form-control" id="working-month" style="display: none;">
+                                    <option>-- Select month --</option>
+                                </select>
+                                <input type="text" class="form-control" id="totalWorkingDay" readonly
+                                       placeholder="Result">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mt-3 container-button">
+                    <button value="${user.getId()}" type="submit" class="btn btn-primary" id="updateUserButton">Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal"
+                            id="delUser">Delete
+                    </button>
+                    <a class="btn btn-secondary cancle-button">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 <!-- Modal List Contract  -->
 <div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="margin-top: 65px; width: 150%">
             <div class="modal-header">
-                <h4 class="modal-title">Contract history</h4>
+                <h4 class="modal-title">List Contract</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -229,7 +255,7 @@
                     <thead>
                     <tr>
                         <th>Basic Salary</th>
-                        <th>Allowance</th>
+                        <th width="200">Allowance</th>
                         <th>Insurance Type</th>
                         <th>Insurance Money</th>
                         <th>Contract</th>
@@ -237,20 +263,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="contract" items="${user.contracts}">
+                    <c:forEach var="contract" items="${contracts}">
                         <tr>
-                            <td>${contract.getBasicSalary()}$</td>
-                            <td>${contract.getAllowance()}$</td>
-                            <td>${contract.getInsuranceType().getName()}</td>
-                            <td>${contract.getInsuranceMoney()}$</td>
-                            <td><a href="${contract.getContract()}" download target="_blank" class="contractLink">Contract
+                            <td>${contract.basicSalary}</td>
+                            <td class="format-allowance">${contract.allowance}</td>
+                            <td>${contract.insuranceType.name}</td>
+                            <td>${contract.insuranceMoney}</td>
+                            <td><a href="${contract.getContract()}" download target="_blank"
+                                   class="contractLink cut-file-name">Contract
                                 Files</a></td>
                             <td>
-                                <button value="${contract.getId()}" type="button"
+                                <button value="${contract.id}" type="button"
                                         class="btn btn-primary edit-contract-button mt-1">Edit
                                 </button>
-                                <button value="${contract.getId()}" type="button"
+                                <button value="${contract.id}" type="button"
                                         class="btn btn-danger delete-contract-button mt-1">Delete
+                                </button>
+                                <button value="${contract.id}" type="button"
+                                        class="btn btn-warning history-contract-button mt-1">History Update
                                 </button>
                             </td>
                         </tr>
@@ -258,8 +288,41 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-body text-center">
+            <div class="modal-footer text-center">
                 <button type="button" class="btn btn-primary px-4 add-contract-button">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal History Update Contract  -->
+<div class="modal fade" id="contractHistoryModal" tabindex="-1" role="dialog"
+     aria-labelledby="contractHistoryModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="margin-top: 65px; width: 150%">
+            <div class="modal-header">
+                <h4 class="modal-title">Contract History</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="table-history-contract">
+                    <thead>
+                    <tr>
+                        <th>Basic Salary</th>
+                        <th>Allowance</th>
+                        <th>Insurance Type</th>
+                        <th>Insurance Money</th>
+                        <th>Contract</th>
+                        <th>Create Date</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -270,7 +333,7 @@
 <div class="modal fade" id="addContractModal" tabindex="-1" role="dialog" aria-labelledby="addContractModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="margin-top: 65px !important;">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Add Contract</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -285,9 +348,58 @@
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group">
-                        <label for="editAllowance">Allowance:</label>
-                        <input type="number" class="form-control" id="addAllowance" name="allowance">
-                        <small class="form-message"></small>
+                        <label>Allowance:</label>
+                        <button id="showAdditionalFields" type="button" class="btn btn-secondary">Add Allowance</button>
+                        <div id="additionalFields" style="display: none">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="telephone">Telephone:</label>
+                                        <input type="number" class="form-control" id="telephone">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="meal">Meal:</label>
+                                        <input type="number" class="form-control" id="meal">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="gasoline">Gasoline:</label>
+                                        <input type="number" class="form-control" id="gasoline">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="uniform">Uniform:</label>
+                                        <input type="number" class="form-control" id="uniform">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="attendance">Attendance:</label>
+                                        <input type="number" class="form-control" id="attendance">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="other">Other:</label>
+                                        <input type="number" class="form-control" id="other">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="editInsuranceType">Insurance Type:</label>
@@ -306,7 +418,8 @@
                         <input type="file" class="form-control mt-2" id="newContract" name="contract">
                     </div>
                     <div class="form-group container-button-add-contract">
-                        <button value="${user.getId()}" type="submit" class="btn btn-primary" id="addContractButton">Confirm
+                        <button value="${user.getId()}" type="submit" class="btn btn-primary" id="addContractButton">
+                            Confirm
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
@@ -320,7 +433,7 @@
 <div class="modal fade" id="editContractModal" tabindex="-1" role="dialog" aria-labelledby="editContractModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="margin-top: 65px !important;">
             <div class="modal-header">
                 <h4 class="modal-title text-center">Edit Contract</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -335,9 +448,58 @@
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group">
-                        <label for="editAllowance">Allowance:</label>
-                        <input type="number" class="form-control" id="editAllowance" name="allowance">
-                        <small class="form-message"></small>
+                        <label>Allowance:</label>
+                        <button id="showEditFields" type="button" class="btn btn-secondary">Edit Allowance</button>
+                        <div id="editFields" style="display: none">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="telephone">Telephone:</label>
+                                        <input type="number" class="form-control" id="editTelephone">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="meal">Meal:</label>
+                                        <input type="number" class="form-control" id="editMeal">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="gasoline">Gasoline:</label>
+                                        <input type="number" class="form-control" id="editGasoline">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="uniform">Uniform:</label>
+                                        <input type="number" class="form-control" id="editUniform">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="attendance">Attendance:</label>
+                                        <input type="number" class="form-control" id="editAttendance">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="other">Other:</label>
+                                        <input type="number" class="form-control" id="editOther">
+                                        <small class="form-message"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="editInsuranceType">Insurance Type:</label>
@@ -400,7 +562,8 @@
 </div>
 
 <!-- Modal Notification Success -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -423,7 +586,21 @@
 
 <%--Handle User--%>
 <script>
+    cutShortLink();
 
+    function formatName(ClassName) {
+        for (var i = 0; i < ClassName.length; i++) {
+            var link = ClassName[i];
+            var href = link.getAttribute("href");
+            var fileName = href.substring(href.indexOf("-") + 1);
+            if (fileName.length > 15) {
+                var extension = fileName.substring(fileName.lastIndexOf("."));
+                fileName = fileName.substring(0, 12) + "..." + extension;
+            }
+
+            link.textContent = fileName;
+        }
+    };
     var fileChanged = false;
     var currentAvatarSrc = "";
 
@@ -456,7 +633,7 @@
 
     var isNewPassword = false;
     var linkCancle = '/users';
-    if(userCurrent.role == U_DEVELOPER) linkCancle = '/home';
+    if (userCurrent.role == U_DEVELOPER) linkCancle = '/home';
     $('.cancle-button').attr('href', linkCancle);
 
     // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
@@ -465,8 +642,7 @@
         if (inputPassword.style.display == "none") {
             inputPassword.style.display = "block";
             isNewPassword = true;
-        }
-        else {
+        } else {
             inputPassword.style.display = "none";
             isNewPassword = false;
         }
@@ -475,9 +651,9 @@
     });
 
     Validator({
-        form:'#formUpdateUser',
+        form: '#formUpdateUser',
         errorSelector: '.form-message',
-        rules:[
+        rules: [
             Validator.isRequired('#address'),
             Validator.isRequired('#fullname'),
             Validator.isRequired('#dateOfBirth'),
@@ -500,7 +676,7 @@
             if (isNewPassword) {
                 var newPassword = document.getElementById('password').value;
                 var regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/;
-                var message = regex.test(newPassword)?undefined:'Password must have at least 6 characters and include letters, numbers and special characters';
+                var message = regex.test(newPassword) ? undefined : 'Password must have at least 6 characters and include letters, numbers and special characters';
                 if (newPassword != '') {
                     if (message == undefined) {
                         callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
@@ -534,15 +710,7 @@
 
         // Show File Name Contract
         var contractLinks = document.getElementsByClassName("contractLink");
-        for (var i = 0; i < contractLinks.length; i++) {
-            var contractLink = contractLinks[i];
-            var contractHref = contractLink.getAttribute("href");
-            var contractfileName = contractHref.substring(contractHref.indexOf("-") + 1);
-
-            // Đặt nội dung mặc định cho thẻ <a> bằng cách sử dụng textContent.
-            contractLink.textContent = contractfileName;
-        }
-
+        formatName(contractLinks);
 
         // Xử lý khi nút Delete được nhấn trong modal
         deleteUserButtons.addEventListener("click", function () {
@@ -610,7 +778,7 @@
             // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
             yearSelect.addEventListener('change', function () {
                 $('#working-day').after(createLoadingHtml());
-                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' +"?year=" + yearSelect.value, 'GET', null, function (rs) {
+                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.getId()}' + "?year=" + yearSelect.value, 'GET', null, function (rs) {
                     var dataMonth = rs;
                     // Xóa các option cũ trong dropdown year
                     monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
@@ -650,7 +818,42 @@
 
 <%--Handle Contract--%>
 <script>
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Add Contract"
+    // Function formatAllowance
+    function allowanceFormat(data) {
+        var data = JSON.parse(data);
+        var keyValueString = '';
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + '$' + '<br><br>';
+            }
+        }
+
+        keyValueString = keyValueString.slice(0, -2);
+
+        return keyValueString;
+    }
+
+    // Handle when user click button "Add Allowance"
+    document.getElementById("showAdditionalFields").addEventListener("click", function() {
+        var additionalFields = document.getElementById("additionalFields");
+        if (additionalFields.style.display === "none" || additionalFields.style.display === "") {
+            additionalFields.style.display = "block";
+        } else {
+            additionalFields.style.display = "none";
+        }
+    });
+
+    // Handle when user click button "Edit Allowance"
+    document.getElementById("showEditFields").addEventListener("click", function() {
+        var editFields = document.getElementById("editFields");
+        if (editFields.style.display === "none" || editFields.style.display === "") {
+            editFields.style.display = "block";
+        } else {
+            editFields.style.display = "none";
+        }
+    });
+
+    // Handle when user click button "Add Contract"
     document.addEventListener("DOMContentLoaded", function () {
         var addButtons = document.querySelectorAll(".add-contract-button");
 
@@ -663,19 +866,38 @@
     });
 
     Validator({
-        form:'#formAddContract',
+        form: '#formAddContract',
         errorSelector: '.form-message',
-        rules:[
+        rules: [
             Validator.isRequired('#addBasicSalary'),
-            Validator.isRequired('#addAllowance'),
-            Validator.isRequired('#addInsuranceMoney')
+            Validator.isRequired('#addInsuranceMoney'),
+            Validator.isRequired('#telephone'),
+            Validator.isRequired('#meal'),
+            Validator.isRequired('#gasoline'),
+            Validator.isRequired('#uniform'),
+            Validator.isRequired('#attendance'),
+            Validator.isRequired('#other')
         ],
         onSubmit: function (formData) {
 
             $('.container-button-add-contract').after(createLoadingHtml());
 
-            formData.append('userId', '${user.id}');
+            var telPhone = document.getElementById('telephone').value;
+            var meal = document.getElementById('meal').value;
+            var gasoline = document.getElementById('gasoline').value;
+            var uniform = document.getElementById('uniform').value;
+            var attendance = document.getElementById('attendance').value;
+            var other = document.getElementById('other').value;
 
+            formData.append('userId', '${user.id}');
+            formData.append('allowance', JSON.stringify({
+                    "telephone": telPhone,
+                    "meal": meal,
+                    "gasoline": gasoline,
+                    "uniform": uniform,
+                    "attendance": attendance,
+                    "other": other
+            }));
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'addContractSuccess');
                 localStorage.setItem("showModal", "true");
@@ -684,8 +906,71 @@
         }
     });
 
+    // Handle when user click 'History Update' button
+    document.addEventListener("DOMContentLoaded", function () {
+        var tdElements = document.getElementsByClassName('format-allowance');
+        for (var i = 0; i < tdElements.length; i++) {
+            var tdElement = tdElements[i];
+            var jsonText = tdElement.textContent;
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Edit Contract"
+            tdElement.innerHTML = allowanceFormat(jsonText);
+        }
+        var historyButtons = document.querySelectorAll('.history-contract-button');
+        var contractIdHistory;
+
+        historyButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                contractIdHistory = button.value;
+                $('#contractHistoryModal').modal('show');
+
+                if ($.fn.DataTable.isDataTable('#table-history-contract')) {
+                    $('#table-history-contract').DataTable().destroy();
+                }
+
+                if (contractIdHistory) {
+                    table = $('#table-history-contract').DataTable({
+                        ajax: {
+                            url: '/api/v1/contracts/' + contractIdHistory,
+                            contentType: 'application/json',
+                            method: 'GET',
+                            dataSrc: 'historyContract'
+                        },
+                        columns: [
+                            {data: 'basicSalary'},
+                            {
+                                data: 'allowance',
+                                render: function (data, type, row) {
+                                    return allowanceFormat(data);
+                                }
+                            },
+                            {data: 'insuranceType.name'},
+                            {data: 'insuranceMoney'},
+                            {
+                                data: 'contract',
+                                render: function (data, type, row) {
+                                    if (data != null) {
+                                        return '<a class="cut-file-name" href="' + data + '">' + data + '</a>';
+                                    }
+                                    return '';
+                                }
+                            },
+                            {data: 'createdDate'}
+                        ],
+                        ordering: false,
+                        searching: false,
+                        lengthChange: false,
+                        paging: false,
+                        info: false,
+                        initComplete: function () {
+                            cutShortLink();
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+    // Handle when user click button "Edit Contract"
     document.addEventListener("DOMContentLoaded", function () {
         var editButtons = document.querySelectorAll(".edit-contract-button");
         var contractIdEdit;
@@ -703,7 +988,14 @@
 
                         // Đổ dữ liệu từ API vào các trường của modal
                         document.getElementById("editBasicSalary").value = responseData.basicSalary;
-                        document.getElementById("editAllowance").value = responseData.allowance;
+                        // document.getElementById("editAllowance").value = responseData.allowance;
+                        var allowance = JSON.parse(responseData.allowance);
+                        document.getElementById('editTelephone').value = allowance.telephone;
+                        document.getElementById('editMeal').value = allowance.meal;
+                        document.getElementById('editGasoline').value = allowance.gasoline;
+                        document.getElementById('editUniform').value = allowance.uniform;
+                        document.getElementById('editAttendance').value = allowance.attendance;
+                        document.getElementById('editOther').value = allowance.other;
 
                         var selectElement = document.getElementById("editInsuranceType");
                         var editInsuranceType = responseData.insuranceType.name;
@@ -737,17 +1029,41 @@
         });
 
         Validator({
-            form:'#editContractForm',
+            form: '#editContractForm',
             errorSelector: '.form-message',
-            rules:[
+            rules: [
                 Validator.isRequired('#editBasicSalary'),
-                Validator.isRequired('#editAllowance'),
                 Validator.isRequired('#editInsuranceMoney')
             ],
             onSubmit: function (formData) {
 
                 $('.container-button-edit-contract').after(createLoadingHtml());
 
+                var telPhone = document.getElementById('editTelephone').value;
+                var meal = document.getElementById('editMeal').value;
+                var gasoline = document.getElementById('editGasoline').value;
+                var uniform = document.getElementById('editUniform').value;
+                var attendance = document.getElementById('editAttendance').value;
+                var other = document.getElementById('editOther').value;
+
+                formData.append('allowance', JSON.stringify({
+                    "telephone": telPhone,
+                    "meal": meal,
+                    "gasoline": gasoline,
+                    "uniform": uniform,
+                    "attendance": attendance,
+                    "other": other
+                }));
+
+
+                formData.append('userId', '${user.id}');
+                formData.append('parentId', contractIdValue);
+                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
+
+                }, 'formAddContract');
+
+                formData.delete('parentId');
+                formData.delete('userId');
                 formData.append('id', contractIdValue);
                 callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                     sessionStorage.setItem('result', 'editContractSuccess');
@@ -802,10 +1118,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        if(isDeleveloper()){
+        if (isDeleveloper()) {
             $('.hide').remove();
             $('#delUser').remove();
-        } else{
+        } else {
             $('.hide').css('display', 'block');
         }
     });

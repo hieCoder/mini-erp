@@ -18,17 +18,9 @@ public class UpdateContractRequest {
     @NotBlank(message = "Field id is not filled")
     private String id;
 
-    @NotBlank(message = "Field basicSalary is not filled")
     private String basicSalary;
-
-    @NotBlank(message = "Field allowance is not filled")
     private String allowance;
-
-    @NotBlank(message = "Field insuranceType is not filled")
     private String insuranceType;
-
-    @NotBlank(message = "Field insuranceMoney is not filled")
     private String insuranceMoney;
-
     private MultipartFile contract;
 }
