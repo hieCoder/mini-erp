@@ -109,12 +109,16 @@
                 $("#successModal div.modal-body").html(modal)
                 $("#successModal").modal("show");
                 $(this).val('')
+                return
             }
+            let sizeCount = 0
 
             for (let i = 0; i < countFile; i++) {
                 const file = selectedFiles[i];
+                const fileSizeMb = (file.size / (1024 * 1024)).toFixed(0)
                 const fileExtension = file.name.split('.').pop();
                 const allowedExtensions = "${listTypeFile}".split(',');
+                sizeCount += parseInt(fileSizeMb)
                 if (!allowedExtensions.includes(fileExtension)) {
                     var modal =
                 '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File type allowed: ${listTypeFile}.'
@@ -123,6 +127,15 @@
                     $(this).val('');
                     return;
                 }
+            }
+
+            if(sizeCount > ${maxFileSize}){
+                    var modal =
+                '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum size allowed: ${maxFileSize} MB.'
+                    $("#successModal div.modal-body").html(modal);
+                    $("#successModal").modal("show");
+                    $(this).val('');
+                    return;
             }
 
         });

@@ -51,7 +51,6 @@
                         </tr>
                     </table>
                     <div class="d-flex justify-content-end">
-                        <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
                         <c:if test="${(userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)) && notification.status.equals(StatusNotificationEnum.ACTIVE)}">
                             <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
                             <button type="button" class="btn btn-danger" data-toggle="modal"
@@ -62,6 +61,7 @@
                             <button type="button" class="btn btn-danger notificationDeleted" disabled>Deleted
                             </button>
                         </c:if>
+                        <a href="${pathMain}" class="btn btn-dark ml-1">Back to list</a>
                     </div>
                 </div>
             </div>
