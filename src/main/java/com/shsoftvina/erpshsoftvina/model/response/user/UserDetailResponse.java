@@ -33,4 +33,5 @@ public class UserDetailResponse{
     private String timesheetsCode;
     private List<ContractResponse> contracts;
     private String createdDate;
+    private EnumDto gender;
 }

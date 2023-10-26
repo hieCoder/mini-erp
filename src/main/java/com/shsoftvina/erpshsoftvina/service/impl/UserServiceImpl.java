@@ -49,9 +49,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ApplicationUtils applicationUtils;
 
-    @Autowired
-    private SettingMapper settingMapper;
-
     @Override
     public PageUserListRespone getAllUser(String searchTerm, String sortDirection, int start, int pageSize, String status) {
 

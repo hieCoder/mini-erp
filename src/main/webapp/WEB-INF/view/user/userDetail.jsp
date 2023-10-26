@@ -52,6 +52,22 @@
                                    value="${user.getFullname()}">
                             <small class="form-message"></small>
                         </div>
+
+
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select name="gender" class="form-control" id="gender">
+                                <option value="MALE"
+                                        <c:if test="${user.gender.code.equals('MALE')}">selected</c:if>
+                                >Male
+                                </option>
+                                <option value="FEMALE"
+                                        <c:if test="${user.gender.code.equals('FEMALE')}">selected</c:if>
+                                >Female
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label for="dateOfBirth">Date of birth:</label>
                             <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
@@ -348,8 +364,9 @@
                         <small class="form-message"></small>
                     </div>
                     <div class="form-group">
-                        <label>Allowance:</label>
+                        <label id="valAllowance">Allowance:</label>
                         <button id="showAdditionalFields" type="button" class="btn btn-secondary">Add Allowance</button>
+                        <small class="form-message"></small>
                         <div id="additionalFields" style="display: none">
                             <div class="row">
                                 <div class="col">
@@ -601,8 +618,8 @@
             link.textContent = fileName;
         }
     };
+
     var fileChanged = false;
-    var currentAvatarSrc = "";
 
     document.getElementById("avatar").addEventListener("change", function (e) {
         var file = e.target.files[0];
@@ -612,7 +629,6 @@
 
             // Set up the image source for preview
             reader.onload = function (e) {
-                currentAvatarSrc = document.getElementById("avatar-user").src;
                 document.getElementById("avatar-user").src = e.target.result;
                 fileChanged = true;
                 document.getElementById("delete-avatar-button").style.display = "block";
@@ -624,7 +640,7 @@
 
     document.getElementById("delete-avatar-button").addEventListener("click", function () {
         if (fileChanged) {
-            document.getElementById("avatar-user").src = currentAvatarSrc;
+            document.getElementById("avatar-user").src = userCurrent.avatar;
             fileChanged = false;
             document.getElementById("delete-avatar-button").style.display = "none";
             document.getElementById("avatar").value = "";
@@ -659,6 +675,7 @@
             Validator.isRequired('#dateOfBirth'),
             Validator.isDayBeforeToday('#dateOfBirth'),
             Validator.isRequired('#phone'),
+            Validator.isPhoneVN('#phone'),
             Validator.isRequired('#emergencyPhone')
         ],
         onSubmit: function (formData) {
@@ -871,6 +888,7 @@
         rules: [
             Validator.isRequired('#addBasicSalary'),
             Validator.isRequired('#addInsuranceMoney'),
+            Validator.isRequired('#valAllowance'),
             Validator.isRequired('#telephone'),
             Validator.isRequired('#meal'),
             Validator.isRequired('#gasoline'),

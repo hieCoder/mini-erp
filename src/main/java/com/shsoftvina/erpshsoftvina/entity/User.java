@@ -41,6 +41,7 @@ public class User implements UserDetails {
     private String timesheetsCode;
     private List<Contract> contracts;
     private Date createdDate;
+    private GenderEnum gender;
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override
