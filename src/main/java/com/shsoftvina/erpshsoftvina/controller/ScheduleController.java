@@ -34,26 +34,9 @@ public class ScheduleController {
         return modelAndView;
     }
     @GetMapping("/detail/{userId}")
-    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId,
-                                          @RequestParam(required = false) Date startDate,
-                                          @RequestParam(required = false) Date endDate) {
+    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView("schedule/detail");
-
-        if (startDate == null && endDate == null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-            startDate = calendar.getTime();
-
-            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-            endDate = calendar.getTime();
-        }
-        ScheduleListResponse list = scheduleService.getScheduleDetail(userId, startDate, endDate);
-        modelAndView.addObject("schedule",list);
+        modelAndView.addObject("userId",userId);
         return modelAndView;
-    }
-
-    @GetMapping("/2")
-    public String getSchedule2() {
-        return "schedule/detail-3";
     }
 }
