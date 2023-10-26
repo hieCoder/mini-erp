@@ -1,6 +1,4 @@
 <%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
-<%@ page import="com.shsoftvina.erpshsoftvina.utils.StringUtils" %>
-<%@ page import="com.shsoftvina.erpshsoftvina.utils.JsonUtils" %>
 <%@include file="/common/taglib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -35,13 +33,19 @@
     <script src="/assets/js/jquery.twbsPagination.js"></script>
     <script src="/assets/js/validation.js"></script>
     <script>
+
+        <%
+            String department = Principal.getUserCurrent().getDepartment()==null?"":Principal.getUserCurrent().getDepartment().getValue();
+            String position = Principal.getUserCurrent().getPosition()==null?"":Principal.getUserCurrent().getPosition().getValue();
+        %>
+
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
             avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>,
-            department: <%="'" + Principal.getUserCurrent().getDepartment()==null?"":Principal.getUserCurrent().getDepartment().getValue() + "'"%>,
-            position: <%="'" + Principal.getUserCurrent().getPosition()==null?"":Principal.getUserCurrent().getPosition().getValue() + "'"%>
+            department: <%="'" + department + "'"%>,
+            position: <%="'" + position + "'"%>
         };
     </script>
 </head>
@@ -71,8 +75,14 @@
 
     $('.avatar-login').attr('src', userCurrent.avatar);
     $('.fullname-login').text(userCurrent.fullname);
-    $('.department-login').text(userCurrent.department);
-    $('.position-login').text(userCurrent.position);
+
+    if(userCurrent.department == '' || userCurrent.position == ''){
+        $('.container-department-position').remove();
+    }else{
+        $('.department-login').text(userCurrent.department);
+        $('.position-login').text(userCurrent.position);
+    }
+
     $('.profile-user-login').attr('href', '/users/' + userCurrent.id);
     var scheduleLink = '';
     var managementTime = ''

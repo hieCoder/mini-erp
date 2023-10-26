@@ -33,7 +33,10 @@ public class UserUpdateRequest {
 
     private String emergencyPhone;
     private MultipartFile avatar;
-    private MultipartFile resume;
+
+    private String remainResumeFiles;
+    private MultipartFile[] newResumeFiles;
+
     private String timesheetsCode;
     private String atm;
     private String type;

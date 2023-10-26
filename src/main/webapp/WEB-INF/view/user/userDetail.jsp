@@ -52,8 +52,6 @@
                                    value="${user.getFullname()}">
                             <small class="form-message"></small>
                         </div>
-
-
                         <div class="form-group">
                             <label for="gender">Gender:</label>
                             <select name="gender" class="form-control" id="gender">
@@ -67,7 +65,6 @@
                                 </option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="dateOfBirth">Date of birth:</label>
                             <input type="date" class="form-control" id="dateOfBirth" value="${user.dateOfBirth}">
@@ -87,19 +84,10 @@
                         </div>
                         <div class="form-group">
                             <label for="resume">Resume file:</label>
-                            <c:choose>
-                                <c:when test="${empty user.getResume()}">
-                                    <div id="resumeContainer" style="display: none;">
-                                        <a href="#" style="display: none;">Download Resume</a>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div id="resumeContainer">
-                                        <a href="${user.getResume()}" download target="_blank">Download Resume</a>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                            <input type="file" class="form-control mt-2" name="resume" id="resume">
+                            <button id="viewFileResume" type="button" class="btn btn-info font-weight-bold">
+                                View Files Resume
+                            </button>
+                            <input type="file" class="form-control mt-2" name="newResumeFiles" id="resume" multiple>
                             <small class="text-muted ml-2">Choose new resume</small>
                         </div>
                         <div class="form-group">
@@ -253,6 +241,43 @@
             </div>
         </div>
     </form>
+</div>
+
+<!-- Modal List File Resume  -->
+<div class="modal fade" id="filesResume" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <h4 class="modal-title">Files Resume</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <c:forEach var="resume" items="${resumes}">
+                        <div class="col-md-2 mt-2 text-center delete-fileResume" style="position: relative">
+                        <span class="custom-icon">
+                           <i class="fa-regular fa-file" style="font-size: 75px; color: #4A86E8"></i>
+                        </span>
+                            <br>
+                            <div class="resume-link">
+                                <a href="/upload/user/${resume}" class="cut-file-name fileName-Resume">${resume}</a>
+                            </div>
+                            <div class="delete-fileResume-button"
+                                 style="position: absolute;top: -20px;right: 30px;color: black;padding: 5px;cursor: pointer;display: block;">
+                                X
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal List Contract  -->
@@ -603,8 +628,23 @@
 
 <%--Handle User--%>
 <script>
-    cutShortLink();
+    // Handle button view Of resume
+    document.addEventListener("DOMContentLoaded", function () {
+        cutShortLink();
+        // Show modal view files resume
+        var viewResumeButton = document.getElementById('viewFileResume');
+        viewResumeButton.addEventListener('click', function () {
+            $('#filesResume').modal('show');
+            var viewFilesResumeButton = document.querySelectorAll('.delete-fileResume-button');
+            viewFilesResumeButton.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    this.closest('.delete-fileResume').remove();
+                });
+            });
+        });
+    });
 
+    // Format filename
     function formatName(ClassName) {
         for (var i = 0; i < ClassName.length; i++) {
             var link = ClassName[i];
@@ -621,6 +661,7 @@
 
     var fileChanged = false;
 
+    // Show image of user choose
     document.getElementById("avatar").addEventListener("change", function (e) {
         var file = e.target.files[0];
 
@@ -638,6 +679,7 @@
         }
     });
 
+    // When user delete avatar curren then change = avatar-defalut
     document.getElementById("delete-avatar-button").addEventListener("click", function () {
         if (fileChanged) {
             document.getElementById("avatar-user").src = userCurrent.avatar;
@@ -652,7 +694,7 @@
     if (userCurrent.role == U_DEVELOPER) linkCancle = '/home';
     $('.cancle-button').attr('href', linkCancle);
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
+    // Handle user click on "Change Password"
     document.getElementById("change-password-button").addEventListener("click", function () {
         var inputPassword = document.getElementById("password-form");
         if (inputPassword.style.display == "none") {
@@ -662,8 +704,6 @@
             inputPassword.style.display = "none";
             isNewPassword = false;
         }
-
-
     });
 
     Validator({
@@ -685,10 +725,24 @@
 
             formData.append('id', '${user.id}');
 
+            // ADD dateOfBirth after format
             var dobString = document.getElementById('dateOfBirth').value;
             var jsDate = new Date(dobString);
             var dateOfBirth = new Date(jsDate.getTime());
             formData.append('dateOfBirth', dateOfBirth);
+
+            // ADD all file resume
+            var filesResume = document.querySelectorAll('.fileName-Resume');
+            var filenamesResume = [];
+            filesResume.forEach(function (element) {
+                var href = element.getAttribute('href');
+                var parts = href.split('/');
+                var fileName = parts[parts.length - 1];
+                filenamesResume.push(fileName);
+            });
+
+            var result = filenamesResume.join(",");
+            formData.append('remainResumeFiles', result);
 
             if (isNewPassword) {
                 var newPassword = document.getElementById('password').value;
@@ -715,11 +769,10 @@
                     location.href = "/users/" + '${user.getId()}';
                 }, 'formUpdateUser');
             }
-
         }
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete User"
+    // Handle when user click button "Confirm Delete User"
     document.addEventListener("DOMContentLoaded", function () {
 
         var deleteUserButtons = document.getElementById('deleteUser');
@@ -729,10 +782,9 @@
         var contractLinks = document.getElementsByClassName("contractLink");
         formatName(contractLinks);
 
-        // Xử lý khi nút Delete được nhấn trong modal
+        // Handler button Delete in modal Delete
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {
-
                 $('.container-button-delete-user').after(createLoadingHtml());
 
                 callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
@@ -851,7 +903,7 @@
     }
 
     // Handle when user click button "Add Allowance"
-    document.getElementById("showAdditionalFields").addEventListener("click", function() {
+    document.getElementById("showAdditionalFields").addEventListener("click", function () {
         var additionalFields = document.getElementById("additionalFields");
         if (additionalFields.style.display === "none" || additionalFields.style.display === "") {
             additionalFields.style.display = "block";
@@ -861,7 +913,7 @@
     });
 
     // Handle when user click button "Edit Allowance"
-    document.getElementById("showEditFields").addEventListener("click", function() {
+    document.getElementById("showEditFields").addEventListener("click", function () {
         var editFields = document.getElementById("editFields");
         if (editFields.style.display === "none" || editFields.style.display === "") {
             editFields.style.display = "block";
@@ -909,12 +961,12 @@
 
             formData.append('userId', '${user.id}');
             formData.append('allowance', JSON.stringify({
-                    "telephone": telPhone,
-                    "meal": meal,
-                    "gasoline": gasoline,
-                    "uniform": uniform,
-                    "attendance": attendance,
-                    "other": other
+                "Telephone": telPhone,
+                "Meal": meal,
+                "Gasoline": gasoline,
+                "Uniform": uniform,
+                "Attendance": attendance,
+                "Other": other
             }));
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'addContractSuccess');
@@ -1034,7 +1086,7 @@
         });
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Edit Contract"
+    // Handle when user click button "Confirm Edit Contract"
     document.addEventListener('DOMContentLoaded', function () {
         var confirmButton = document.getElementById("confirmContractButton");
         var contractId = document.querySelectorAll(".edit-contract-button");
@@ -1065,12 +1117,12 @@
                 var other = document.getElementById('editOther').value;
 
                 formData.append('allowance', JSON.stringify({
-                    "telephone": telPhone,
-                    "meal": meal,
-                    "gasoline": gasoline,
-                    "uniform": uniform,
-                    "attendance": attendance,
-                    "other": other
+                    "Telephone": telPhone,
+                    "Meal": meal,
+                    "Gasoline": gasoline,
+                    "Uniform": uniform,
+                    "Attendance": attendance,
+                    "Other": other
                 }));
 
 
@@ -1092,7 +1144,7 @@
         });
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete Contract"
+    // Handle when user click button "Confirm Delete Contract"
     document.addEventListener("DOMContentLoaded", function () {
         var deleteButtons = document.querySelectorAll(".delete-contract-button");
         var confirmButton = document.querySelector(".confirm-delete-button");
@@ -1122,7 +1174,7 @@
         });
     });
     window.onload = function () {
-        // Kiểm tra trạng thái hiển thị modal trong Local Storage và hiển thị modal nếu cần
+        // Show Modal when page reload
         if (localStorage.getItem("showModal") === "true") {
             $("#contractModal").modal("show");
             // Đặt trạng thái hiển thị modal trong Local Storage thành false để tránh hiển thị lần tiếp theo

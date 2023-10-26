@@ -186,8 +186,7 @@ function cutShortLink() {
 
     fileElements.forEach(function (element) {
         var fileName = element.textContent;
-        var maxLength = 25;
-        if (fileName.length > maxLength) {
+        if (fileName.length > 0) {
             var indexOfHyphen = fileName.indexOf("-");
             if (indexOfHyphen !== -1) {
                 var remainingPart = fileName.substring(indexOfHyphen + 1);

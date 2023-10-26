@@ -16,7 +16,7 @@
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Task
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                        <div class="dropdown-menu m-0" aria-labelledby="navbarDropdown1">
                             <a class="dropdown-item" href="/tasks">Task</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/weekly-reports">Weekly report</a>
@@ -31,7 +31,7 @@
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Management
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <div class="dropdown-menu m-0" aria-labelledby="navbarDropdown2">
                             <a class="dropdown-item human-login" href="/users">Human</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/accounting">Accounting</a>
@@ -43,7 +43,7 @@
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Management time
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        <div class="dropdown-menu m-0" aria-labelledby="navbarDropdown3">
                             <a class="dropdown-item management-time-day-login">Management day</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/books">Reading book</a>
@@ -53,7 +53,7 @@
                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown4" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Setting
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown4">
+                        <div class="dropdown-menu m-0" aria-labelledby="navbarDropdown4">
                             <a class="dropdown-item" href="/settings/file">File</a>
                         </div>
                     </li>
@@ -76,17 +76,17 @@
                             <%--                        </div>--%>
                         <div class="row">
                             <div class="col-md-4 d-flex flex-column align-items-center">
-                                <img alt="Avatar" width="40" height="40" class="img-thumbnail avatar-login">
+                                <img alt="Avatar" width="40" height="40" class="avatar-login">
                                 <figcation class="fullname-login"></figcation>
                             </div>
-                            <div class="col-md-6 d-flex flex-column align-items-start">
+                            <div class="col-md-6 d-flex flex-column align-items-start container-department-position">
                                 <span class="department-login"></span>
                                 <span class="position-login"></span>
                             </div>
                         </div>
                     </a>
                     <span class="caret"></span>
-                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <div class="dropdown-menu m-0" aria-labelledby="userDropdown">
                         <a class="dropdown-item profile-user-login">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout">Logout</a>

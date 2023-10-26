@@ -50,8 +50,8 @@
                     <label for="page-count-select" class="mr-2">Page count:</label>
                     <select class="form-control w-auto" id="page-count-select">
                         <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
                     </select>
                 </div>
             </div>
