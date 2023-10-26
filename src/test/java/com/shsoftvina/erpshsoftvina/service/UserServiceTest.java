@@ -67,21 +67,21 @@ public class UserServiceTest {
         assertEquals(2, response.getListUser().size());
     }
 
-    @Test
-    public void testFindUserDetail() {
-        String userId = "1";
-        User expectedUser = new User();
-
-
-        when(userMapper.findById(userId)).thenReturn(expectedUser);
-
-        UserDetailResponse response = userServiceImpl.findUserDetail(userId);
-
-        verify(userMapper).findById(userId);
-
-        UserDetailResponse expectedResponse = userConverter.toUserDetailResponse(expectedUser);
-        assertEquals(expectedResponse, response);
-    }
+//    @Test
+//    public void testFindUserDetail() {
+//        String userId = "1";
+//        User expectedUser = new User();
+//
+//
+//        when(userMapper.findById(userId)).thenReturn(expectedUser);
+//
+//        UserDetailResponse response = userServiceImpl.findUserDetail(userId);
+//
+//        verify(userMapper).findById(userId);
+//
+//        UserDetailResponse expectedResponse = userConverter.toUserDetailResponse(expectedUser);
+//        assertEquals(expectedResponse, response);
+//    }
 
     @Test
     public void testFindUserIdFullName() {

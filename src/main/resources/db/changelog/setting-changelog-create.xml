@@ -14,18 +14,9 @@
             </column>
             <column name="IMAGE_TYPE" type="VARCHAR(255)"/>
             <column name="FILE_TYPE" type="VARCHAR(255)"/>
-            <column name="FILE_SIZE" type="INT"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <renameColumn tableName="SETTING" oldColumnName="FILE_SIZE" newColumnName="FILE_LIMIT" columnDataType="INT"/>
-    </changeSet>
-
-    <changeSet id="3" author="team2">
-        <addColumn tableName="SETTING">
+            <column name="FILE_LIMIT" type="INT"/>
             <column name="FILE_SIZE" type="INT" />
-        </addColumn>
+        </createTable>
     </changeSet>
 </databaseChangeLog>
 

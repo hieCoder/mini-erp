@@ -1,12 +1,14 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Task;
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.task.ActionChangeStatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.PriorityTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse;
@@ -57,7 +59,7 @@ public class TaskConverter {
                 .build();
     }
 
-    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks){
+    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks,List<User> users){
         List<ScheduleListResponse.TaskResponse> rs = new ArrayList<>();
 
         String createdOrStartDate = null;
@@ -82,6 +84,17 @@ public class TaskConverter {
                         .startDate(createdOrStartDate)
                         .dueOrCloseDate(dueOrCloseDate)
                         .statusTask(EnumUtils.instance(task.getStatusTask())).build();
+                rs.add(taskResponse);
+            }
+        }
+        for (User user : users) {
+            if (user != null) {
+                ScheduleListResponse.TaskResponse taskResponse = ScheduleListResponse.TaskResponse.builder()
+                        .id(user.getId())
+                        .title("Happy Birthday to " + user.getFullname())
+                        .startDate(DateUtils.formatDate(user.getDateOfBirth()))
+                        .dueOrCloseDate(DateUtils.formatDate(user.getDateOfBirth()))
+                        .statusTask(new EnumDto("BIRTHDAY","Birthday")).build();
                 rs.add(taskResponse);
             }
         }

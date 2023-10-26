@@ -313,10 +313,10 @@
                                     downloadLink.href = file;
                                     downloadLink.setAttribute("download", "");
                                     downloadLink.target = "_blank";
-                                    downloadLink.classList.add("text-break","cut-file-name")
+                                    downloadLink.classList.add("cut-file-name","text-break")
                                     downloadLink.id = "resumeLink";
                                     downloadLink.title = subStringFile;
-                                    downloadLink.textContent = subStringFile;
+                                    downloadLink.textContent = file;
                                     downloadLink.setAttribute("data-toggle", "tooltip");
                                     downloadLink.setAttribute("data-placement", "bottom");
                                     cell.appendChild(downloadLink);
@@ -325,8 +325,6 @@
                                         cell.appendChild(document.createElement("hr"));
                                     }
                                 }
-                                initializeTooltips();
-                                cutShortLink();
                             } else {
                                 row.insertCell();
                             }
@@ -334,6 +332,8 @@
                             totalRevenue += account.revenue;
                             totalRemain = account.remain;
                         });
+                        initializeTooltips();
+                        cutShortLink();
                     }
 
                     updatePagination(responseData);

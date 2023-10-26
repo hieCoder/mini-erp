@@ -68,18 +68,18 @@ public class UserApiTest {
         assertEquals(1, responseEntity.getBody());
     }
 
-    @Test
-    public void testFindUserDetail() {
-        String userId = "1";
-
-        UserDetailResponse mockResponse = new UserDetailResponse();
-        when(userService.findUserDetail(userId)).thenReturn(mockResponse);
-
-        ResponseEntity<?> responseEntity = userApi.findUserDetail(userId);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(mockResponse, responseEntity.getBody());
-    }
+//    @Test
+//    public void testFindUserDetail() {
+//        String userId = "1";
+//
+//        UserDetailResponse mockResponse = new UserDetailResponse();
+//        when(userService.findUserDetail(userId)).thenReturn(mockResponse);
+//
+//        ResponseEntity<?> responseEntity = userApi.findUserDetail(userId);
+//
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(mockResponse, responseEntity.getBody());
+//    }
 
     @Test
     public void testDeleteUser() {

@@ -18,13 +18,9 @@
             <column name="PRIORITY" type="VARCHAR(255)"/>
             <column name="PROGRESS" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
-            <column name="CONTENT" type="TEXT"/>
+            <column name="CONTENT" type="LONGTEXT"/>
             <column name="DUE_DATE" type="DATE"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <modifyDataType tableName="TASK" columnName="CONTENT" newDataType="LONGTEXT"/>
     </changeSet>
 </databaseChangeLog>
 

@@ -24,26 +24,12 @@
             <column name="ROLE" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
             <column name="POSITION" type="VARCHAR(255)"/>
-            <column name="RESUME" type="VARCHAR(255)"/>
-            <column name="ADDRESS" type="VARCHAR(255)"/>
+            <column name="RESUME" type="LONGTEXT"/>
+            <column name="ADDRESS" type="NVARCHAR(255)"/>
             <column name="IS_FIRST_UPDATE_PROFILE" type="BIT"/>
             <column name="TIMESHEETS_CODE" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <modifyDataType tableName="USER" columnName="ADDRESS" newDataType="NVARCHAR(255)"/>
-    </changeSet>
-
-    <changeSet id="3" author="team2">
-        <addColumn tableName="USER">
             <column name="CREATED_DATE" type="DATETIME"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="4" author="team2">
-        <addColumn tableName="USER">
             <column name="GENDER" type="VARCHAR(255)"/>
-        </addColumn>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

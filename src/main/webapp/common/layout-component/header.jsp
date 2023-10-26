@@ -79,9 +79,9 @@
                                 <img alt="Avatar" width="40" height="40" class="avatar-login">
                                 <figcation class="fullname-login"></figcation>
                             </div>
-                            <div class="col-md-6 d-flex flex-column align-items-start container-department-position">
-                                <span class="department-login"></span>
-                                <span class="position-login"></span>
+                            <div class="col-md-6 d-flex flex-column justify-content-center container-department-position" style="text-align: center;">
+                                <span class="department-login" style="font-size: 14px;font-style: italic; font-weight: bold;"></span>
+                                <span class="position-login" style="font-size: 13px;"></span>
                             </div>
                         </div>
                     </a>
