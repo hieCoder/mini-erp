@@ -20,7 +20,7 @@
             c.INSURANCE_TYPE AS contract_insurance_type,
             c.INSURANCE_MONEY AS contract_insurance_money,
             c.HISTORY_ID AS contract_history_id,
-            C.USER_ID AS contract_user_id,
+            c.USER_ID AS contract_user_id,
             u.fullname AS user_fullname
         FROM CONTRACT c
                  LEFT JOIN USER u ON c.user_id = u.id AND c.HISTORY_ID IS NOT NULL
@@ -38,7 +38,7 @@
                 c.INSURANCE_TYPE AS contract_insurance_type,
                 c.INSURANCE_MONEY AS contract_insurance_money,
                 c.HISTORY_ID AS contract_history_id,
-                C.USER_ID AS contract_user_id,
+                c.USER_ID AS contract_user_id,
                 u.fullname AS user_fullname
         FROM CONTRACT c
                  INNER JOIN USER u ON c.user_id = u.id
@@ -95,7 +95,7 @@
             c.INSURANCE_TYPE AS contract_insurance_type,
             c.INSURANCE_MONEY AS contract_insurance_money,
             c.HISTORY_ID AS contract_history_id,
-            C.USER_ID AS contract_user_id,
+            c.USER_ID AS contract_user_id,
             u.fullname AS user_fullname
         FROM CONTRACT c
                  INNER JOIN USER u ON c.user_id = u.id

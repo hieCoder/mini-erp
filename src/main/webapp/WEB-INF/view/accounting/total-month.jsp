@@ -213,32 +213,27 @@
         const billFiles = event.target.files;
         var countFile = billFiles.length;
         var countCurrentFile = $("li.listFilesEdit").length;
-        console.log(${setting.uploadFileLimit})
         if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
-            var modal = `
+            let modal = `
                         <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
                         `
             $("#successModal div.modal-body").html(modal)
             $("#successModal").modal("show");
             $(this).val('')
+            return;
         }
         for (var i = 0; i < billFiles.length; i++) {
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                alert("File must " +  validFileUpload + " and not over 100MB.");
-                loading.style.display = "none";
+                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
+                    validFileUpload +
+                    ' and not over ' + "${setting.maxFileSize}" +'MB.';
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
                 $(this).val('')
                 return;
             }
-        }
-        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
-            var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
-                        `
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
-            $(this).val('')
         }
     });
 
@@ -271,16 +266,6 @@
             alert("Title, note and amount are required and amount must be a number.");
             loading.style.display = "none";
             return;
-        }
-
-        for (var i = 0; i < billFiles.length; i++) {
-            var fileName = billFiles[i].name;
-            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
-            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                alert(`File must ${setting.listTypeFile} and not over ${setting.maxFileSize}.`);
-                loading.style.display = "none";
-                return;
-            }
         }
 
         if (transaction === 'expense') {

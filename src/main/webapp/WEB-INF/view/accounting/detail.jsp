@@ -283,7 +283,7 @@
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#editModal #validFileText");
-    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + " and below " + "${setting.uploadFileLimit}" + " files");
+    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + "MB and below " + "${setting.uploadFileLimit}" + " files");
 
     function convertMaxFileSize(string) {
         var maxFileSizeWithoutMB = string.replace("MB", "");
@@ -316,9 +316,9 @@
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must ' +
+                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
                     validFileUpload +
-                    ' and not over ' + "${setting.maxFileSize}" +'.';
+                    ' and not over ' + "${setting.maxFileSize}" +'MB.';
                 $("#successModal div.modal-body").html(modal)
                 $("#successModal").modal("show");
                 $(this).val('')
