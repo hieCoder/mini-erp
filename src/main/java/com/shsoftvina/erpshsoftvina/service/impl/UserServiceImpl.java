@@ -70,7 +70,6 @@ public class UserServiceImpl implements UserService {
 
         applicationUtils.checkUserAllow(id);
 
-
         User user = null;
         try {
             user = userMapper.findById(id);
