@@ -1,27 +1,16 @@
 /* eslint-disable */
+const CODE_TASK = ["REGISTERED","OPENED", "POSTPONED", "REOPENED", "CLOSED"]
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
 function init() {
   cal.setCalendars(CalendarList);
-  callAjaxByJsonWithData("/api/v1/schedules/1","GET",null,function (rs){
-    if(rs){
-      let ScheduleListNew = []
-      rs.list.forEach((item,index)=>{
-        var schedule = new ScheduleInfo();
-        schedule.id = item.id
-        schedule.title = item.title
-        schedule.start = new Date(item.startDate)
-        schedule.end  = new Date(item.dueOrCloseDate.replace(/~/g, "").replace(/\s/g, ""))
-        schedule.calendarId = item.statusTask.code
-        schedule.dueDateClass = "morning"
-        schedule.category = "task"
-        schedule.comingDuration = 85
-        schedule.goingDuration = 95
-        ScheduleListNew.push(schedule)
-      })
-      setRenderRangeText();
-      setSchedules(ScheduleListNew);
-      setEventListener();
-    }
-  })
+  setRenderRangeText();
+  setEventListener();
+
 }
 
 function getDataAction(target) {
@@ -57,6 +46,7 @@ function setDropdownCalendarType() {
 }
 
 function onClickMenu(e) {
+  console.log(e)
   var target = $(e.target).closest('a[role="menuitem"]')[0];
   var action = getDataAction(target);
   var options = cal.getOptions();
@@ -116,7 +106,6 @@ function onClickMenu(e) {
 
 function onClickNavi(e) {
   var action = getDataAction(e.target);
-
   switch (action) {
     case 'move-prev':
       cal.prev();
@@ -130,9 +119,7 @@ function onClickNavi(e) {
     default:
       return;
   }
-
   setRenderRangeText();
-  setSchedules();
 }
 
 function setRenderRangeText() {
@@ -151,17 +138,34 @@ function setRenderRangeText() {
     html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
   }
   renderRange.innerHTML = html.join('');
+  setSchedules(renderRange.textContent);
 }
 
-function setSchedules(ScheduleListNew) {
-  console.log("tetstst")
-  console.log(ScheduleListNew)
+function setSchedules(currentTime) {
+  let apiData = currentTime.replaceAll(".","-")
+  let idArr = window.location.href.split("/")
+  let id = idArr[idArr.length-1]
   cal.clear();
-  generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
-  // cal.createSchedules(ScheduleList);
-  console.log(typeof ScheduleList)
-  console.log(ScheduleList)
-  cal.createSchedules(ScheduleListNew);
+  callAjaxByJsonWithData("/api/v1/schedules/" + id +"?monthly="+apiData,"GET",null,function (rs){
+    console.log(rs)
+    if(rs){
+      let ScheduleListNew = []
+      rs.list.forEach((item,index)=>{
+        var schedule = new ScheduleInfo();
+        schedule.id = item.id
+        schedule.title = item.title
+        schedule.start = new Date(item.startDate)
+        schedule.end  = new Date(item.dueOrCloseDate.replace(/~/g, "").replace(/\s/g, ""))
+        schedule.calendarId = item.statusTask.code
+        schedule.category = "time"
+        schedule.comingDuration = 85
+        schedule.goingDuration = 95
+        ScheduleListNew.push(schedule)
+      })
+      console.log(ScheduleListNew)
+      cal.createSchedules(ScheduleListNew)
+    }
+  })
   refreshScheduleVisibility();
 }
 
@@ -213,3 +217,29 @@ cal.on({
 });
 
 init();
+$(function() {
+
+  $(document).on("click", "span.tui-full-calendar-weekday-schedule-title", function (e) {
+    let id = $(this).parent().attr("data-schedule-id")
+    let code = $(this).parent().attr("data-calendar-id")
+    if (CODE_TASK.includes(code)) {
+      let html = '<button class="btn btn-sm btn-info mt-2 font-weight-bold linkToTask" data-id="' + id + '">Link to Task</button>'
+      $("div.tui-full-calendar-section-detail > div.tui-full-calendar-popup-detail-item").after(html)
+    }
+  })
+
+  $(document).on("click", "div.tui-full-calendar-month-more-list > div", function (e) {
+    let id = $(this).attr("data-schedule-id")
+    let code = $(this).attr("data-calendar-id")
+    if (CODE_TASK.includes(code)) {
+      let html = '<button class="btn btn-sm btn-info mt-2 font-weight-bold linkToTask" data-id="' + id + '">Link to Task</button>'
+      $("div.tui-full-calendar-section-detail > div.tui-full-calendar-popup-detail-item").after(html)
+    }
+  })
+
+  $(document).on("click", "div.tui-full-calendar-section-detail .linkToTask", function (e) {
+      let id = $(this).attr("data-id")
+      window.open("/tasks/" + id, '_blank');
+  })
+
+})

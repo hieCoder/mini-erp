@@ -9,7 +9,6 @@
 
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>TOAST UI Calendar Template For Popup DEMO</title>
@@ -19,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/schedule/default.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/schedule/icons.css">
 </head>
-
 <body>
 <div class="container" style="margin-top: 6%">
     <div class="code-html">
@@ -39,7 +37,13 @@
         <div id="calendar"></div>
     </div>
 </div>
-
+<style>
+    .tui-full-calendar-weekday-grid-header .tui-full-calendar-weekday-grid-more-schedules{
+        color: #fb0072;
+        font-size: 13px;
+        font-style: italic;
+    }
+</style>
 <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
 <script src="https://uicdn.toast.com/tui.time-picker/v2.0.3/tui-time-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
@@ -50,71 +54,22 @@
 <script src="/assets/js/schedule/data/schedules.js"></script>
 <script type="text/javascript" class="code-js">
     var templates = {
-        popupIsAllDay: function() {
-            return 'All Day';
-        },
-        // popupStateFree: function() {
-        //     return 'Free';
-        // },
-        // popupStateBusy: function() {
-        //     return 'Busy';
-        // },
-        // titlePlaceholder: function() {
-        //     return 'Subject';
-        // },
-        // locationPlaceholder: function() {
-        //     return 'Location';
-        // },
-        startDatePlaceholder: function() {
-            return 'Start date';
-        },
-        endDatePlaceholder: function() {
-            return 'End date';
-        },
-        // popupSave: function() {
-        //     return 'Save';
-        // },
-        // popupUpdate: function() {
-        //     return 'Update';
-        // },
-        popupDetailDate: function(isAllDay, start, end) {
-            var isSameDate = moment(start).isSame(end);
-            var endFormat = (isSameDate ? '' : 'YYYY.MM.DD ') + 'hh:mm a';
-
-            if (isAllDay) {
-                return moment(start).format('YYYY.MM.DD') + (isSameDate ? '' : ' - ' + moment(end).format('YYYY.MM.DD'));
+        popupDetailDate: function(allDay ,start, end) {
+            var isSameDate = moment(start._date).isSame(moment(end._date));
+            var startFormat = moment(start._date).format('YYYY.MM.DD')
+            var endFormat = moment(end._date).format('YYYY.MM.DD')
+            if (isSameDate) {
+                return moment(start).format('YYYY.MM.DD')
             }
-
-            return (moment(start).format('YYYY.MM.DD hh:mm a') + ' - ' + moment(end).format(endFormat));
+            return startFormat + ' ~ ' + endFormat
         },
-        // popupDetailLocation: function(schedule) {
-        //     return 'Location : ' + schedule.location;
-        // },
-        // popupDetailUser: function(schedule) {
-        //     return 'User : ' + (schedule.attendees || []).join(', ');
-        // },
-        // popupDetailState: function(schedule) {
-        //     return 'State : ' + schedule.state || 'Busy';
-        // },
-        // popupDetailRepeat: function(schedule) {
-        //     return 'Repeat : ' + schedule.recurrenceRule;
-        // },
-        // popupDetailBody: function(schedule) {
-        //     return 'Body : ' + schedule.body;
-        // },
-        // popupEdit: function() {
-        //     return 'Edit';
-        // },
-        // popupDelete: function() {
-        //     return 'Delete';
-        // }
     };
-
     var cal = new tui.Calendar('#calendar', {
         defaultView: 'month',
         template: templates,
         useCreationPopup: false,
-        useDetailPopup: true
+        useDetailPopup: true,
+        isReadOnly: true,
     });
 </script>
 <script src="/assets/js/schedule/default.js"></script>

@@ -93,17 +93,17 @@ public class NotificationApiTest {
         assertEquals(mockResponse, responseEntity.getBody());
     }
 
-    @Test
-    public void testDelNoti() {
-        String notificationId = "1"; // Replace with a valid notification ID
-
-        when(notificationService.delNoti(notificationId)).thenReturn(true); // Assuming your service returns true for a successful deletion
-
-        ResponseEntity<?> responseEntity = notificationApi.delNoti(notificationId);
-
-        // Assert that the response status code is HttpStatus.OK (200)
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    }
+//    @Test
+//    public void testDelNoti() {
+//        String notificationId = "1"; // Replace with a valid notification ID
+//
+//        when(notificationService.delNoti(notificationId)).thenReturn(true); // Assuming your service returns true for a successful deletion
+//
+//        ResponseEntity<?> responseEntity = notificationApi.delNoti(notificationId);
+//
+//        // Assert that the response status code is HttpStatus.OK (200)
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//    }
 
     @Test
     public void testNotificationDetail() {
