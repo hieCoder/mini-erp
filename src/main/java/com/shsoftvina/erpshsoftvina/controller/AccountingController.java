@@ -46,7 +46,7 @@ public class AccountingController {
         MonthHistoryList monthHistoryList = accountingService.findAllMonthlyHistory();
         Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
 
-        SettingAllowanceResponse settings = new SettingAllowanceResponse(String.valueOf(setting.getFileSize()),setting.getFileType(),setting.getImageType(),setting.getFileLimit());
+        SettingAllowanceResponse settings = new SettingAllowanceResponse(setting.getFileSize(),setting.getFileType(),setting.getImageType(),setting.getFileLimit());
         modelAndView.addObject("monthList",monthHistoryList);
         modelAndView.addObject("setting",settings);
         return modelAndView;
@@ -58,7 +58,7 @@ public class AccountingController {
         AccountResponse accountingResponse = accountingService.findAccountingById(id);
         Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
 
-        SettingAllowanceResponse settings = new SettingAllowanceResponse(String.valueOf(setting.getFileSize()),setting.getFileType(),setting.getImageType(),setting.getFileLimit());
+        SettingAllowanceResponse settings = new SettingAllowanceResponse(setting.getFileSize(),setting.getFileType(),setting.getImageType(),setting.getFileLimit());
 
         modelAndView.addObject("account",accountingResponse);
         modelAndView.addObject("setting",settings);

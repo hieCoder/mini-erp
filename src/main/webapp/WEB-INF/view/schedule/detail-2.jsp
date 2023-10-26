@@ -17,12 +17,15 @@
     <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
 </head>
 <body>
-<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-    <input type="text" id="tui-date-picker-target" aria-label="Date-Time" />
-    <span class="tui-ico-date"></span>
+<div class="container">
+    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+        <input type="text" id="tui-date-picker-target" aria-label="Date-Time" />
+        <span class="tui-ico-date"></span>
+    </div>
+    <div id="tui-date-picker-container" style="margin-top: -1px;"></div>
+    <div id="calendar" style="height: 600px;"></div>
 </div>
-<div id="tui-date-picker-container" style="margin-top: -1px;"></div>
-<div id="calendar" style="height: 600px;"></div>
+
 <script>
     const DatePicker = tui.DatePicker;
     const containerDate = document.getElementById('tui-date-picker-container');
@@ -115,7 +118,7 @@
     ]);
 
     calendar.setOptions({
-        useFormPopup: true,
+        useFormPopup: false,
         useDetailPopup: true,
     });
 
@@ -137,14 +140,14 @@
     // calendar.changeView('day');
     // calendar.setDate(new Date(2023, 9, 26));
 
-    calendar.openFormPopup({
-        id: 'some-event-id',
-        calendarId: 'cal1',
-        title: 'Go to live concert',
-        start: '2022-05-31T09:00:00',
-        end: '2022-05-31T12:00:00',
-        category: 'time',
-    });
+    // calendar.openFormPopup({
+    //     id: 'some-event-id',
+    //     calendarId: 'cal1',
+    //     title: 'Go to live concert',
+    //     start: '2022-05-31T09:00:00',
+    //     end: '2022-05-31T12:00:00',
+    //     category: 'time',
+    // });
 </script>
 </body>
 </html>
