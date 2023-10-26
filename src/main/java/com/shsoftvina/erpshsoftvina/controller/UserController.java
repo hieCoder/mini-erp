@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,19 +52,10 @@ public class UserController {
         UserDetailResponse user = userService.findUserDetail(id);
 
         List<ContractResponse> contracts = contractService.getContractByUser(id);
-
-        String[] resumeArray = user.getResume().split(",");
-
-        for (int i = 0; i < resumeArray.length; i++) {
-            // Bỏ phần "/upload/user/" ra khỏi chuỗi
-            if (resumeArray[i].startsWith("/upload/user/")) {
-                resumeArray[i] = resumeArray[i].substring("/upload/user/".length());
-            }
-        }
-
+        
         view.addObject("user", user);
         view.addObject("contracts", contracts);
-        view.addObject("resumes", resumeArray);
+        view.addObject("resumes", StringUtils.isBlank(user.getResume()) ?null: user.getResume().split(","));
         return view;
     }
 
