@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,6 @@ public class UserController {
 
         PageUserListRespone users = userService.getAllUser(search, sort, page, pageSize, status);
 
-
         view.addObject("users", users);
 
         return view;
@@ -55,6 +55,7 @@ public class UserController {
 
         view.addObject("user", user);
         view.addObject("contracts", contracts);
+        view.addObject("resumes", StringUtils.isBlank(user.getResume()) ?null: user.getResume().split(","));
         return view;
     }
 

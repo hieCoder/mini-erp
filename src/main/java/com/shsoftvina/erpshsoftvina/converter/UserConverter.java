@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.entity.User;
 
 import com.shsoftvina.erpshsoftvina.enums.user.*;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
@@ -25,10 +26,13 @@ import java.util.stream.Collectors;
 public class UserConverter {
 
     @Autowired
-    ContractConverter contractConverter;
+    private ContractConverter contractConverter;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserMapper userMapper;
 
     public UserDetailResponse toUserDetailResponse(User user) {
 
@@ -49,7 +53,7 @@ public class UserConverter {
                 .department(EnumUtils.instance(user.getDepartment()))
                 .atm(user.getAtm())
                 .email(user.getEmail())
-                .resume(FileUtils.getPathUpload(User.class, user.getResume()))
+                .resume(user.getResume())
                 .role(EnumUtils.instance(user.getRole()))
                 .position(EnumUtils.instance(user.getPosition()))
                 .address(user.getAddress())
@@ -87,11 +91,14 @@ public class UserConverter {
     }
 
     public User toUpdateDetail(UserUpdateRequest userUpdateRequest, String newAvatarFileName, String newResumeFileName) {
+
+        User userDb = userMapper.findById(userUpdateRequest.getId());
+
         User user = toUpdateBasic(userUpdateRequest, newAvatarFileName, newResumeFileName);
         user.setType(EnumUtils.getEnumFromValue(TypeUserEnum.class, userUpdateRequest.getType()));
         user.setDepartment(EnumUtils.getEnumFromValue(DepartmentEnum.class, userUpdateRequest.getDepartment()));
         user.setEmail(userUpdateRequest.getEmail());
-        user.setPassword(userUpdateRequest.getPassword() != null? passwordEncoder.encode(userUpdateRequest.getPassword()): null);
+        user.setPassword(userUpdateRequest.getPassword() != null? passwordEncoder.encode(userUpdateRequest.getPassword()): userDb.getPassword());
         user.setRole(EnumUtils.getEnumFromValue(RoleEnum.class, userUpdateRequest.getRole()));
         user.setPosition(EnumUtils.getEnumFromValue(PositionEnum.class, userUpdateRequest.getPosition()));
         return user;

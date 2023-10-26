@@ -12,21 +12,12 @@
             <column name="BASIC_SALARY" type="VARCHAR(255)"/>
             <column name="ALLOWANCE" type="VARCHAR(255)"/>
             <column name="CONTRACT" type="VARCHAR(255)"/>
-            <column name="CREATED_DATE" type="DATE"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
             <column name="INSURANCE_TYPE" type="VARCHAR(255)"/>
             <column name="INSURANCE_MONEY" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <addColumn tableName="CONTRACT">
             <column name="HISTORY_ID" type="VARCHAR(255)"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="3" author="team2">
-        <modifyDataType tableName="CONTRACT" columnName="CREATED_DATE" newDataType="DATETIME"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

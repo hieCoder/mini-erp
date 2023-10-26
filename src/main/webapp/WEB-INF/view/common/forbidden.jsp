@@ -9,9 +9,7 @@
             display:flex;
             justify-content:center;
             align-items:center;
-            background-color:#7a7777;
             font-family:"Quicksand", sans-serif;
-
         }
 
         #container_anim{
@@ -58,35 +56,6 @@
 </div>
 
 <p id="text">403 FORBIDDEN</p>
-<script>
-    var lock = document.querySelector('#lock');
-    var key = document.querySelector('#key');
-
-
-    function keyAnimate(){
-        dynamics.animate(key, {
-            translateX: 33
-        }, {
-            type:dynamics.easeInOut,
-            duration:500,
-            complete:lockAnimate
-        })
-    }
-
-
-    function lockAnimate(){
-        dynamics.animate(lock, {
-            rotateZ:-5,
-            scale:0.9
-        }, {
-            type:dynamics.bounce,
-            duration:3000,
-            complete:keyAnimate
-        })
-    }
-
-
-    setInterval(keyAnimate, 3000);
-</script>
+<p id="credit">Back to system: <a href="/home">Back</a></p>
 </body>
 </html>
