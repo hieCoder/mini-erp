@@ -54,4 +54,8 @@
         <param-value>resources.application</param-value>
     </context-param>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/view/common/404-page.jsp</location>
+    </error-page>
 </web-app>

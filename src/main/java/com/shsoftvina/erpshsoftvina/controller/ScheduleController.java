@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.service.ScheduleService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class ScheduleController {
     private ScheduleService scheduleService;
     @Autowired
     private UserService userService;
+    @Autowired
+    ApplicationUtils applicationUtils;
 
     @GetMapping
     public ModelAndView getScheduleList() {
@@ -34,30 +37,10 @@ public class ScheduleController {
         return modelAndView;
     }
     @GetMapping("/detail/{userId}")
-    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId,
-                                          @RequestParam(required = false) Date startDate,
-                                          @RequestParam(required = false) Date endDate) {
+    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId) {
+        applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("schedule/detail");
-
-        if (startDate == null && endDate == null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-            startDate = calendar.getTime();
-
-            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-            endDate = calendar.getTime();
-        }
-        ScheduleListResponse list = scheduleService.getScheduleDetail(userId, startDate, endDate);
-        modelAndView.addObject("schedule",list);
+        modelAndView.addObject("userId",userId);
         return modelAndView;
-    }
-    @GetMapping("/1")
-    public String getSchedule() {
-        return "schedule/detail-2";
-    }
-
-    @GetMapping("/2")
-    public String getSchedule2() {
-        return "schedule/detail-3";
     }
 }

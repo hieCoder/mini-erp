@@ -47,7 +47,8 @@ public class ManagementTimeDayController {
             @RequestParam(name = "id", required = false, defaultValue = "") String id,
             @RequestParam(name = "day", required = false, defaultValue = "") String day
     ) {
-            ModelAndView mav = new ModelAndView();
+        applicationUtils.checkUserAllow(userId);
+        ModelAndView mav = new ModelAndView();
             DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
             if(dayResponse!=null){
                 mav.addObject("dayResponse", dayResponse);
@@ -65,6 +66,7 @@ public class ManagementTimeDayController {
 
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
+        applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
         modelAndView.addObject("user",user);

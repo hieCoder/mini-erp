@@ -3,6 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.UserMapper">
 
+    <select id="getUserBirthday" parameterType="String" resultMap="birthdayResultMap">
+        SELECT ID,FULLNAME, DATE_OF_BIRTH
+        FROM USER
+        WHERE MONTH(DATE_OF_BIRTH) = MONTH(#{monthly}) AND status = 'ACTIVE'
+    </select>
+
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM USER
@@ -137,5 +143,11 @@
     <resultMap id="fullnameResultMap" type="java.util.Map">
         <result property="id" column="ID"/>
         <result property="fullname" column="FULLNAME"/>
+    </resultMap>
+
+    <resultMap id="birthdayResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <result property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
+        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
     </resultMap>
 </mapper>

@@ -51,7 +51,6 @@
                         </tr>
                     </table>
                     <div class="d-flex justify-content-end">
-                        <a href="${pathMain}" class="btn btn-secondary mr-1">Back to list</a>
                         <c:if test="${(userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)) && notification.status.equals(StatusNotificationEnum.ACTIVE)}">
                             <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
                             <button type="button" class="btn btn-danger" data-toggle="modal"
@@ -62,6 +61,7 @@
                             <button type="button" class="btn btn-danger notificationDeleted" disabled>Deleted
                             </button>
                         </c:if>
+                        <a href="${pathMain}" class="btn btn-dark ml-1">Back to list</a>
                     </div>
                 </div>
             </div>
@@ -187,9 +187,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
 
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -662,12 +660,12 @@
                     + '<tbody>'
                     + '<tr>'
                     + '<td class="text-center col-6">${listTypeFile}</td>'
-                    + '<td class="text-center col-3">${maxFileSize}</td>'
+                    + '<td class="text-center col-3">${maxFileSize} MB</td>'
                     + '<td class="text-center col-3">${uploadFileLimit}</td>'
                     + '</tr>'
                     + '</tbody>'
                     + ' </table>';
-                var xhtml = '<form id="editNotificationForm">'
+                var xhtml = '<div id="editNotificationForm">'
                     + '<div class="form-group">'
                     + '<label for="title">Title:</label>'
                     + '<input type="text" id="editNotificationTitle" name="title" value="' + data.title + '" class="form-control">'
@@ -679,7 +677,7 @@
                     + '<div class="form-group">'
                     + fileListHTML
                     + '</div>'
-                    + '</form>';
+                    + '</div>';
                 $("#popupFormEditNotification div.modal-body").html(xhtml)
                 $("#popupFormEditNotification").modal("show");
 
@@ -794,6 +792,18 @@
         })
 
         document.getElementById("saveChangesButton").addEventListener("click", function () {
+            var content = $("#contentCommentEdit").val()
+            if (content == "") {
+                var modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
+                        `
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+                $("button#newCommentBtn").prop("disabled", false);
+                $("textarea#newComment").prop("disabled", false);
+                $('div.custom-spinner').parent().remove()
+                return
+            }
             $('div.modal-content[data-id="' + id + '"]').append(dot)
             $(".modal-footer button").each(function () {
                 $(this).prop("disabled", true);
@@ -807,7 +817,6 @@
 
             // Define the data you want to send (if needed)
             var id = $("div.modal-content").attr("data-id")
-            var content = $("#contentCommentEdit").val()
             var data = {
                 id: id,
                 content: content,

@@ -48,54 +48,54 @@ function hexToRGBA(hex) {
     calendar.id = "OPENED";
     calendar.name = 'Opened';
     calendar.color = '#ffffff';
-    calendar.bgColor = '#9e5fff';
-    calendar.dragBgColor = '#9e5fff';
-    calendar.borderColor = '#9e5fff';
+    calendar.bgColor = '#ffc107';
+    calendar.dragBgColor = '#ffc107';
+    calendar.borderColor = '#ffc107';
     addCalendar(calendar);
 
     calendar = new CalendarInfo();
     calendar.id = "POSTPONED";
     calendar.name = 'Postponed';
     calendar.color = '#ffffff';
-    calendar.bgColor = '#ff5583';
-    calendar.dragBgColor = '#ff5583';
-    calendar.borderColor = '#ff5583';
+    calendar.bgColor = '#dc3545';
+    calendar.dragBgColor = '#dc3545';
+    calendar.borderColor = '#dc3545';
     addCalendar(calendar);
 
     calendar = new CalendarInfo();
     calendar.id = "REGISTERED";
     calendar.name = 'Registered';
     calendar.color = '#ffffff';
-    calendar.bgColor = '#03bd9e';
-    calendar.dragBgColor = '#03bd9e';
-    calendar.borderColor = '#03bd9e';
+    calendar.bgColor = '#6c757d';
+    calendar.dragBgColor = '#6c757d';
+    calendar.borderColor = '#6c757d';
     addCalendar(calendar);
 
     calendar = new CalendarInfo();
     calendar.id = "CLOSED";
     calendar.name = 'Closed';
     calendar.color = '#ffffff';
-    calendar.bgColor = '#bbdc00';
-    calendar.dragBgColor = '#bbdc00';
-    calendar.borderColor = '#bbdc00';
+    calendar.bgColor = '#28a745';
+    calendar.dragBgColor = '#28a745';
+    calendar.borderColor = '#28a745';
     addCalendar(calendar);
 
     calendar = new CalendarInfo();
     calendar.id = "REOPENED";
     calendar.name = 'Reopened';
     calendar.color = '#ffffff';
-    calendar.bgColor = '#9d9d9d';
-    calendar.dragBgColor = '#9d9d9d';
-    calendar.borderColor = '#9d9d9d';
+    calendar.bgColor = '#ff0185';
+    calendar.dragBgColor = '#ff0185';
+    calendar.borderColor = '#ff0185';
     addCalendar(calendar);
 
     calendar = new CalendarInfo();
-    calendar.id = "BIRTHDAYS";
-    calendar.name = 'Birthdays';
-    calendar.color = '#ffffff';
-    calendar.bgColor = '#ffbb3b';
-    calendar.dragBgColor = '#ffbb3b';
-    calendar.borderColor = '#ffbb3b';
+    calendar.id = "BIRTHDAY";
+    calendar.name = 'Birthday';
+    calendar.color = '#ff0185';
+    calendar.bgColor = '#ff0185';
+    calendar.dragBgColor = '#ff0185';
+    calendar.borderColor = '#ff0185';
     addCalendar(calendar);
 
 })();
