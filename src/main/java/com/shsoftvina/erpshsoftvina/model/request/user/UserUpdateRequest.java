@@ -42,4 +42,5 @@ public class UserUpdateRequest {
     private String password;
     private String role;
     private String position;
+    private String gender;
 }

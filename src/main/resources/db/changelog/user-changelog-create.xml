@@ -40,4 +40,10 @@
             <column name="CREATED_DATE" type="DATETIME"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="4" author="team2">
+        <addColumn tableName="USER">
+            <column name="GENDER" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
