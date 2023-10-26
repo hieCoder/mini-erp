@@ -19,7 +19,7 @@
                     Create Notification Form
                 </div>
                 <div class="card-body">
-                    <form id="createForm">
+                    <div id="createForm">
                         <div id="errorAlert" class="alert alert-danger" style="display: none;">
                         </div>
                         <div class="mb-3">
@@ -44,7 +44,7 @@
                                 <tbody>
                                 <tr>
                                     <td class="text-center col-6">${listTypeFile}</td>
-                                    <td class="text-center col-3">${maxFileSize}</td>
+                                    <td class="text-center col-3">${maxFileSize} MB</td>
                                     <td class="text-center col-3">${uploadFileLimit}</td>
                                 </tr>
                                 </tbody>
@@ -52,7 +52,7 @@
                         </div>
                         <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
                         <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
