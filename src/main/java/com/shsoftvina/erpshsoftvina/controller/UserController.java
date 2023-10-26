@@ -39,7 +39,6 @@ public class UserController {
 
         PageUserListRespone users = userService.getAllUser(search, sort, page, pageSize, status);
 
-
         view.addObject("users", users);
 
         return view;
@@ -53,8 +52,18 @@ public class UserController {
 
         List<ContractResponse> contracts = contractService.getContractByUser(id);
 
+        String[] resumeArray = user.getResume().split(",");
+
+        for (int i = 0; i < resumeArray.length; i++) {
+            // Bỏ phần "/upload/user/" ra khỏi chuỗi
+            if (resumeArray[i].startsWith("/upload/user/")) {
+                resumeArray[i] = resumeArray[i].substring("/upload/user/".length());
+            }
+        }
+
         view.addObject("user", user);
         view.addObject("contracts", contracts);
+        view.addObject("resumes", resumeArray);
         return view;
     }
 
