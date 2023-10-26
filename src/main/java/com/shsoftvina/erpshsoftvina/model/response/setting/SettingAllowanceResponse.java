@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SettingAllowanceResponse {
-    private String maxFileSize;
+    private Integer maxFileSize;
     private String listTypeFile;
     private String listTypeImage;
     private Integer uploadFileLimit;

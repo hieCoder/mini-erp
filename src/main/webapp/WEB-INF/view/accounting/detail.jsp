@@ -26,7 +26,7 @@
                     <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
                 </div>
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered mt-2">
                 <thead>
                 <tr>
                     <th class="table-success text-center text-secondary">Revenue</th>
@@ -53,7 +53,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="col-md-12 rounded border border-warning p-3">
+            <div class="col-md-12 rounded border border-warning p-3 mb-3">
                 <i class="fa-regular fa-lg fa-clipboard fa-bounce" style="color: #4a4c87;"></i>
                 <strong class="text-info">Note: </strong><span id="noteAccount" class="text-info">${account.note}</span>
             </div>
@@ -283,7 +283,7 @@
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#editModal #validFileText");
-    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + " and below " + "${setting.uploadFileLimit}" + " files");
+    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + "MB and below " + "${setting.uploadFileLimit}" + " files");
 
     function convertMaxFileSize(string) {
         var maxFileSizeWithoutMB = string.replace("MB", "");
@@ -316,9 +316,9 @@
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must ' +
+                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
                     validFileUpload +
-                    ' and not over ' + "${setting.maxFileSize}" +'.';
+                    ' and not over ' + "${setting.maxFileSize}" +'MB.';
                 $("#successModal div.modal-body").html(modal)
                 $("#successModal").modal("show");
                 $(this).val('')
