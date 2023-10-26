@@ -17,12 +17,7 @@ public class ScheduleApi {
 
     @Autowired
     private ScheduleService scheduleService;
-//    @GetMapping("/{userId}")
-//    public ResponseEntity<?> getScheduleDetail(@PathVariable String userId,
-//                                               @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-//                                               @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-//        return new ResponseEntity<>(scheduleService.getScheduleDetail(userId, startDate, endDate), HttpStatus.OK);
-//    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<?> getScheduleDetail(@PathVariable String userId,
                                                @RequestParam(name = "monthly",required = false) String monthly) {

@@ -143,9 +143,10 @@ function setRenderRangeText() {
 
 function setSchedules(currentTime) {
   let apiData = currentTime.replaceAll(".","-")
-  console.log(apiData)
+  let idArr = window.location.href.split("/")
+  let id = idArr[idArr.length-1]
   cal.clear();
-  callAjaxByJsonWithData("/api/v1/schedules/1?monthly="+apiData,"GET",null,function (rs){
+  callAjaxByJsonWithData("/api/v1/schedules/" + id +"?monthly="+apiData,"GET",null,function (rs){
     console.log(rs)
     if(rs){
       let ScheduleListNew = []
