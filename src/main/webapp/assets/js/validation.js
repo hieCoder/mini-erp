@@ -157,7 +157,15 @@ Validator.isDayBeforeToday=function(selector, message){
         }
     };
 }
-
+Validator.isPhoneVN=function(selector){
+    return {
+        selector: selector,
+        test: function (value) {
+            var regex = /(03[2-9]|07[0-9]|08[0-9]|09[0-9]|05[6-9])+([0-9]{7})\b/;
+            return regex.test(value)?undefined:'Phone must be format of VietNam';
+        }
+    };
+}
 
 // Validator.isNumberGreaterEqualThan=function(selector, min){
 //     return {

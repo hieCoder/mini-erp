@@ -191,7 +191,6 @@ function cutShortLink() {
             var indexOfHyphen = fileName.indexOf("-");
             if (indexOfHyphen !== -1) {
                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-
                 if (remainingPart.length > 10) {
                     var truncatedFileName = remainingPart.substring(0, 10) + '...';
                 } else {

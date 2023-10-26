@@ -26,7 +26,7 @@
                     <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
                 </div>
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered mt-2">
                 <thead>
                 <tr>
                     <th class="table-success text-center text-secondary">Revenue</th>
@@ -53,33 +53,34 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="col-md-12 rounded border border-warning p-3">
+            <div class="col-md-12 rounded border border-warning p-3 mb-3">
                 <i class="fa-regular fa-lg fa-clipboard fa-bounce" style="color: #4a4c87;"></i>
                 <strong class="text-info">Note: </strong><span id="noteAccount" class="text-info">${account.note}</span>
             </div>
             <c:choose>
                 <c:when test="${not empty account.bill}">
-                    <p class="card-text">Bill: <br>
-                        <span id="attachedFilesNotification">
+                    Bill:<br>
+                        <div class="row" id="attachedFilesNotification">
                             <c:set var="imageType" value="${setting.listTypeImage}"/>
                             <c:set var="fileType" value="${setting.listTypeFile}"/>
                         <c:forEach items="${account.bill}" var="file">
-                            <c:if test="${fn:contains(imageType, file.substring(file.lastIndexOf('.') + 1))}">
-                                <img width="40" height="40" src="${file}" alt="">
-                            </c:if>
-                            <c:if test="${fn:contains(fileType, file.substring(file.lastIndexOf('.') + 1))}">
-                                <img width="40" height="40"
-                                     src="/upload/common/${file.substring(file.lastIndexOf('.') + 1)}.png" alt="">
-                            </c:if>
-                            <a href="${file}" download="" target="_blank" data-toggle="tooltip" data-placement="bottom"
-                               title="${file.substring(file.indexOf('-') + 1)}">
+                            <div class="col-md-4 text-center">
+                                <c:if test="${fn:contains(imageType, file.substring(file.lastIndexOf('.') + 1))}">
+                                    <img width="50" height="50" src="${file}" alt="">
+                                </c:if>
+                                <c:if test="${fn:contains(fileType, file.substring(file.lastIndexOf('.') + 1))}">
+                                    <img width="50" height="50"
+                                         src="/upload/common/${file.substring(file.lastIndexOf('.') + 1)}.png" alt="">
+                                </c:if>
+                                <br>
+                                <a href="${file}" download="" target="_blank" data-toggle="tooltip" data-placement="bottom"
+                                   title="${file.substring(file.indexOf('-') + 1)}">
                                   <span class="shortened-text"
                                         style="display:inline-block;width: 250px">${file.substring(file.indexOf('-') + 1)}</span>
-                            </a>
-                            <br>
+                                </a>
+                            </div>
                         </c:forEach>
-                        </span>
-                    </p>
+                        </div>
                 </c:when>
                 <c:otherwise>
                     <p class="card-text">Bill: <span id="attachedFilesNotification"></span></p>
@@ -283,7 +284,7 @@
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#editModal #validFileText");
-    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + " and below " + "${setting.uploadFileLimit}" + " files");
+    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + "MB and below " + "${setting.uploadFileLimit}" + " files");
 
     function convertMaxFileSize(string) {
         var maxFileSizeWithoutMB = string.replace("MB", "");
@@ -316,9 +317,9 @@
             var fileName = billFiles[i].name;
             var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
             if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must ' +
+                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
                     validFileUpload +
-                    ' and not over ' + "${setting.maxFileSize}" +'.';
+                    ' and not over ' + "${setting.maxFileSize}" +'MB.';
                 $("#successModal div.modal-body").html(modal)
                 $("#successModal").modal("show");
                 $(this).val('')
@@ -457,29 +458,30 @@
                     $("#remainAccount").text(formatCurrency(responseData.remain));
                     $("#fullnameAccount").text(responseData.user.fullname);
                     $("#noteAccount").text(responseData.note);
-                    var xhtml = ''
+                    var xhtml = '';
                     if (responseData.bill != null && responseData.bill.length > 0) {
                         responseData.bill.forEach((e) => {
+                            xhtml += '<div class="col-md-4 text-center">';
                             var fileExtension = e.substring(e.lastIndexOf('.') + 1);
                             if (imageType.includes(fileExtension)) {
                                 var img = document.createElement('img');
-                                img.width = 40;
-                                img.height = 40;
+                                img.width = 50;
+                                img.height = 50;
                                 img.src = e;
                                 img.alt = '';
-                                xhtml += img.outerHTML; // Append the image as HTML
+                                xhtml += img.outerHTML;
                             }
                             if (fileType.includes(fileExtension)) {
                                 var file = document.createElement('img');
-                                file.width = 40;
-                                file.height = 40;
+                                file.width = 50;
+                                file.height = 50;
                                 file.src = "/upload/common/" + fileExtension + ".png";
                                 file.alt = '';
-                                xhtml += file.outerHTML; // Append the file as HTML
+                                xhtml += file.outerHTML;
                             }
                             var subStringBill = e.substring(e.indexOf('-') + 1);
-                            xhtml += '<a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
-                                '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a><br>';
+                            xhtml += '<br><a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
+                                '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a></div>';
                         })
                     }
                     $("#attachedFilesNotification").html(xhtml);

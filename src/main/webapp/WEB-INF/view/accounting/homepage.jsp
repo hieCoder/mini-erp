@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Management</title>
+    <link rel="stylesheet" href="../../../assets/css/accounting/style.css">
 </head>
 <body>
 <c:set var="totalExpense" value="0" scope="page"/>
@@ -63,22 +64,23 @@
                     <td class="align-middle"><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a></td>
                     <td class="align-middle"><c:out value="${a.createdDate}"/></td>
                     <td class="align-middle"><c:out value="${a.title}"/></td>
-                    <td class="align-middle ${a.revenue > 0 ? 'text-success' : ''}">
+                    <td class="align-middle min-width text-right ${a.revenue > 0 ? 'text-success' : ''}">
                         <fmt:formatNumber type="number" value="${a.revenue}" pattern="#,##0 ₫"/>
                     </td>
-                    <td class="align-middle ${a.expense < 0 ? 'text-danger' : ''}">
+                    <td class="align-middle min-width text-right ${a.expense < 0 ? 'text-danger' : ''}">
                         <fmt:formatNumber type="number" value="${a.expense}" pattern="#,##0 ₫"/>
                     </td>
-                    <td class="align-middle text-primary"><fmt:formatNumber type="number" value="${a.remain}"
+                    <td class="align-middle min-width text-right text-primary"><fmt:formatNumber type="number" value="${a.remain}"
                                                                             pattern="#,##0 ₫"/></td>
                     <td class="align-middle"><c:out value="${a.user.fullname}"/></td>
-                    <td class="align-middle"><c:if test="${a.note != null}"><c:out value="${a.note}"/></c:if></td>
+                    <td class="align-middle text-break"><c:if test="${a.note != null}"><c:out value="${a.note}"/></c:if></td>
                     <td class="align-middle">
                         <c:choose>
                             <c:when test="${not empty a.bill}">
                                 <c:forEach items="${a.bill}" var="file">
-                                    <a href="${file}" download="" target="_blank"
-                                       id="resumeLink">${file.substring(file.indexOf('-') + 1)}</a>
+                                    <a href="${file}" download="" target="_blank" data-toggle="tooltip" data-placement="bottom"
+                                       title="${file.substring(file.indexOf('-') + 1)}" class="text-break cut-file-name"
+                                       id="resumeLink">${file}</a>
                                     <hr>
                                 </c:forEach>
                             </c:when>
@@ -127,7 +129,7 @@
                 <c:forEach var="page" begin="1" end="${list.totalPages}">
                     <c:choose>
                         <c:when test="${page == list.pageNumber}">
-                            <li class="page-item active"><a class="page-link" href="#">${page}</a></li>
+                            <li class="page-item active"><a class="page-link" href="">${page}</a></li>
                         </c:when>
                         <c:otherwise>
                             <li class="page-item"><a class="page-link" onclick="loadPage(${page})">${page}</a></li>
@@ -217,6 +219,11 @@
 </div>
 </div>
 <script>
+    function initializeTooltips() {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    initializeTooltips();
+    cutShortLink();
     var defaultDate = new Date('${month}');
     var year = defaultDate.getFullYear();
     var month = defaultDate.getMonth() + 1;
@@ -289,11 +296,11 @@
                                 + "<td class='align-middle' >" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
                                 + "<td class='align-middle' >" + account.createdDate + "</td>"
                                 + "<td class='align-middle' >" + account.title + "</td>"
-                                + "<td class='align-middle' style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
-                                + "<td class='align-middle' style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
-                                + "<td class='align-middle' style='color: blue'>" + formatCurrency(account.remain) + "</td>"
+                                + "<td class='align-middle min-width text-right' style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
+                                + "<td class='align-middle min-width text-right' style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
+                                + "<td class='align-middle min-width text-right' style='color: blue'>" + formatCurrency(account.remain) + "</td>"
                                 + "<td class='align-middle'>" + account.user.fullname + "</td>"
-                                + "<td class='align-middle'>" + (account.note !== null ? account.note : '') + "</td>";
+                                + "<td class='align-middle text-break'>" + (account.note !== null ? account.note : '') + "</td>";
                             if (account.bill) {
                                 var cell = row.insertCell();
 
@@ -301,12 +308,17 @@
 
                                 for (var i = 0; i < files.length; i++) {
                                     var file = files[i];
+                                    let subStringFile = file.substring(file.indexOf('-') + 1);
                                     var downloadLink = document.createElement("a");
                                     downloadLink.href = file;
                                     downloadLink.setAttribute("download", "");
                                     downloadLink.target = "_blank";
+                                    downloadLink.classList.add("cut-file-name","text-break")
                                     downloadLink.id = "resumeLink";
-                                    downloadLink.textContent = file.substring(file.indexOf('-') + 1);
+                                    downloadLink.title = subStringFile;
+                                    downloadLink.textContent = file;
+                                    downloadLink.setAttribute("data-toggle", "tooltip");
+                                    downloadLink.setAttribute("data-placement", "bottom");
                                     cell.appendChild(downloadLink);
 
                                     if (i < files.length - 1) {
@@ -320,6 +332,8 @@
                             totalRevenue += account.revenue;
                             totalRemain = account.remain;
                         });
+                        initializeTooltips();
+                        cutShortLink();
                     }
 
                     updatePagination(responseData);
@@ -379,7 +393,6 @@
         } else {
             paginationHTML += '<li class="page-item disabled"><a class="page-link" style="cursor: pointer" onclick="loadPage(' + totalPages + ', ' + responseData.pageSize + ')">Last</a></li>';
         }
-
 
         pagination.innerHTML = paginationHTML;
     }

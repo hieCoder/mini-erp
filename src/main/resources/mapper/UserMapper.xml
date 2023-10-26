@@ -3,6 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.UserMapper">
 
+    <select id="getUserBirthday" parameterType="String" resultMap="birthdayResultMap">
+        SELECT ID,FULLNAME, DATE_OF_BIRTH
+        FROM USER
+        WHERE MONTH(DATE_OF_BIRTH) = MONTH(#{monthly}) AND status = 'ACTIVE'
+    </select>
+
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM USER
@@ -33,7 +39,8 @@
             resume = #{resume},
             address = #{address},
             is_first_update_profile = #{isFirstUpdateProfile},
-            timesheets_code = #{timesheetsCode}
+            timesheets_code = #{timesheetsCode},
+            gender = #{gender}
         WHERE id = #{id}
     </update>
 
@@ -89,7 +96,8 @@
             address = #{address},
             resume = #{resume},
             is_first_update_profile = #{isFirstUpdateProfile},
-            timesheets_code = #{timesheetsCode}
+            timesheets_code = #{timesheetsCode},
+            gender = #{gender}
         WHERE id = #{id};
     </update>
 
@@ -113,6 +121,7 @@
         <result property="isFirstUpdateProfile" column="IS_FIRST_UPDATE_PROFILE"/>
         <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
         <result property="createdDate" column="CREATED_DATE"/>
+        <result property="gender" column="GENDER"/>
         <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
     </resultMap>
 
@@ -134,5 +143,11 @@
     <resultMap id="fullnameResultMap" type="java.util.Map">
         <result property="id" column="ID"/>
         <result property="fullname" column="FULLNAME"/>
+    </resultMap>
+
+    <resultMap id="birthdayResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <result property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
+        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
     </resultMap>
 </mapper>

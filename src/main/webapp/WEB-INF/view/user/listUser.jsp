@@ -27,7 +27,6 @@
                         <select id="status" name="status" class="form-control" onchange="this.form.submit()">
                             <option value="ACTIVE">ACTIVE</option>
                             <option value="INACTIVE">INACTIVE</option>
-                            <option value="PENDING">PENDING</option>
                         </select>
                     </div>
                 </div>
