@@ -87,18 +87,21 @@
                         </div>
                         <div class="form-group">
                             <label for="resume">Resume file:</label>
-                            <c:choose>
-                                <c:when test="${empty user.getResume()}">
-                                    <div id="resumeContainer" style="display: none;">
-                                        <a href="#" style="display: none;">Download Resume</a>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div id="resumeContainer">
-                                        <a href="${user.getResume()}" download target="_blank">Download Resume</a>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
+                            <button id="viewFileResume" type="button" class="btn btn-warning font-weight-bold">
+                                View
+                            </button>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${empty user.getResume()}">--%>
+<%--                                    <div id="resumeContainer" style="display: none;">--%>
+<%--                                        <a href="#" style="display: none;">Download Resume</a>--%>
+<%--                                    </div>--%>
+<%--                                </c:when>--%>
+<%--                                <c:otherwise>--%>
+<%--                                    <div id="resumeContainer">--%>
+<%--                                        <a href="${user.getResume()}" download target="_blank">Download Resume</a>--%>
+<%--                                    </div>--%>
+<%--                                </c:otherwise>--%>
+<%--                            </c:choose>--%>
                             <input type="file" class="form-control mt-2" name="resume" id="resume">
                             <small class="text-muted ml-2">Choose new resume</small>
                         </div>
@@ -253,6 +256,27 @@
             </div>
         </div>
     </form>
+</div>
+
+<!-- Modal List File Resume  -->
+<div class="modal fade" id="filesResume" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <h4 class="modal-title">Files Resume</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal List Contract  -->
@@ -605,6 +629,15 @@
 <script>
     cutShortLink();
 
+    // Handle button view Of resume
+    document.addEventListener("DOMContentLoaded", function () {
+        var viewResumeButton = document.getElementById('viewFileResume');
+        viewResumeButton.addEventListener('click', function () {
+           $('#filesResume').modal('show');
+        });
+    });
+
+    // Format filename
     function formatName(ClassName) {
         for (var i = 0; i < ClassName.length; i++) {
             var link = ClassName[i];
@@ -621,6 +654,7 @@
 
     var fileChanged = false;
 
+    // Show image of user choose
     document.getElementById("avatar").addEventListener("change", function (e) {
         var file = e.target.files[0];
 
@@ -638,6 +672,7 @@
         }
     });
 
+    // When user delete avatar curren then change = avatar-defalut
     document.getElementById("delete-avatar-button").addEventListener("click", function () {
         if (fileChanged) {
             document.getElementById("avatar-user").src = userCurrent.avatar;
@@ -652,7 +687,7 @@
     if (userCurrent.role == U_DEVELOPER) linkCancle = '/home';
     $('.cancle-button').attr('href', linkCancle);
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Change Password"
+    // Handle user click on "Change Password"
     document.getElementById("change-password-button").addEventListener("click", function () {
         var inputPassword = document.getElementById("password-form");
         if (inputPassword.style.display == "none") {
@@ -662,8 +697,6 @@
             inputPassword.style.display = "none";
             isNewPassword = false;
         }
-
-
     });
 
     Validator({
@@ -719,7 +752,7 @@
         }
     });
 
-    // Lắng nghe sự kiện khi người dùng nhấn nút "Confirm Delete User"
+    // Handle when user click button "Confirm Delete User"
     document.addEventListener("DOMContentLoaded", function () {
 
         var deleteUserButtons = document.getElementById('deleteUser');
@@ -729,10 +762,9 @@
         var contractLinks = document.getElementsByClassName("contractLink");
         formatName(contractLinks);
 
-        // Xử lý khi nút Delete được nhấn trong modal
+        // Handler button Delete in modal Delete
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {
-
                 $('.container-button-delete-user').after(createLoadingHtml());
 
                 callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
@@ -909,12 +941,12 @@
 
             formData.append('userId', '${user.id}');
             formData.append('allowance', JSON.stringify({
-                    "telephone": telPhone,
-                    "meal": meal,
-                    "gasoline": gasoline,
-                    "uniform": uniform,
-                    "attendance": attendance,
-                    "other": other
+                    "Telephone": telPhone,
+                    "Meal": meal,
+                    "Gasoline": gasoline,
+                    "Uniform": uniform,
+                    "Attendance": attendance,
+                    "Other": other
             }));
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 sessionStorage.setItem('result', 'addContractSuccess');
@@ -1065,12 +1097,12 @@
                 var other = document.getElementById('editOther').value;
 
                 formData.append('allowance', JSON.stringify({
-                    "telephone": telPhone,
-                    "meal": meal,
-                    "gasoline": gasoline,
-                    "uniform": uniform,
-                    "attendance": attendance,
-                    "other": other
+                    "Telephone": telPhone,
+                    "Meal": meal,
+                    "Gasoline": gasoline,
+                    "Uniform": uniform,
+                    "Attendance": attendance,
+                    "Other": other
                 }));
 
 
