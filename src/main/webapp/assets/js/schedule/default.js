@@ -1,27 +1,15 @@
 /* eslint-disable */
-function init() {
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
+function init(currentTime) {
   cal.setCalendars(CalendarList);
-  callAjaxByJsonWithData("/api/v1/schedules/1","GET",null,function (rs){
-    if(rs){
-      let ScheduleListNew = []
-      rs.list.forEach((item,index)=>{
-        var schedule = new ScheduleInfo();
-        schedule.id = item.id
-        schedule.title = item.title
-        schedule.start = new Date(item.startDate)
-        schedule.end  = new Date(item.dueOrCloseDate.replace(/~/g, "").replace(/\s/g, ""))
-        schedule.calendarId = item.statusTask.code
-        schedule.dueDateClass = "morning"
-        schedule.category = "task"
-        schedule.comingDuration = 85
-        schedule.goingDuration = 95
-        ScheduleListNew.push(schedule)
-      })
-      setRenderRangeText();
-      setSchedules(ScheduleListNew);
-      setEventListener();
-    }
-  })
+  setRenderRangeText();
+  setEventListener();
+
 }
 
 function getDataAction(target) {
@@ -116,7 +104,6 @@ function onClickMenu(e) {
 
 function onClickNavi(e) {
   var action = getDataAction(e.target);
-
   switch (action) {
     case 'move-prev':
       cal.prev();
@@ -130,9 +117,7 @@ function onClickNavi(e) {
     default:
       return;
   }
-
   setRenderRangeText();
-  setSchedules();
 }
 
 function setRenderRangeText() {
@@ -151,17 +136,32 @@ function setRenderRangeText() {
     html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
   }
   renderRange.innerHTML = html.join('');
+  setSchedules(renderRange.textContent);
 }
 
-function setSchedules(ScheduleListNew) {
-  console.log("tetstst")
-  console.log(ScheduleListNew)
+function setSchedules(currentTime) {
+  let apiData = currentTime.replaceAll(".","-")
+  console.log(apiData)
   cal.clear();
-  generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
-  // cal.createSchedules(ScheduleList);
-  console.log(typeof ScheduleList)
-  console.log(ScheduleList)
-  cal.createSchedules(ScheduleListNew);
+  callAjaxByJsonWithData("/api/v1/schedules/1","GET",null,function (rs){
+    if(rs){
+      let ScheduleListNew = []
+      rs.list.forEach((item,index)=>{
+        var schedule = new ScheduleInfo();
+        schedule.id = item.id
+        schedule.title = item.title
+        schedule.start = new Date(item.startDate)
+        schedule.end  = new Date(item.dueOrCloseDate.replace(/~/g, "").replace(/\s/g, ""))
+        schedule.calendarId = item.statusTask.code
+        schedule.category = "time"
+        schedule.comingDuration = 85
+        schedule.goingDuration = 95
+        ScheduleListNew.push(schedule)
+      })
+      console.log(ScheduleListNew)
+      cal.createSchedules(ScheduleListNew)
+    }
+  })
   refreshScheduleVisibility();
 }
 
