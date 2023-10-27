@@ -45,13 +45,13 @@ public class TaskServiceImpl implements TaskService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search, String userRole, String userId) {
-        return taskMapper.findAll(start, pageSize, statusTask, search, userRole, userId).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search) {
+        return taskMapper.findAll(start, pageSize, statusTask, search).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
     }
 
     @Override
-    public long getTotalItem(int start, int pageSize, String statusTask, String search, String userRole, String userId) {
-        return taskMapper.getTotalItem(start, pageSize, statusTask, search, userRole, userId);
+    public long getTotalItem(int start, int pageSize, String statusTask, String search) {
+        return taskMapper.getTotalItem(start, pageSize, statusTask, search);
     }
 
     @Override
@@ -111,8 +111,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<StatusTaskCountsResponse> getStatusTaskCount(String userRole, String userId) {
-        return taskConverter.toListStatusTaskCountsResponse(taskMapper.getStatusTaskCounts(userRole, userId));
+    public List<StatusTaskCountsResponse> getStatusTaskCount() {
+        return taskConverter.toListStatusTaskCountsResponse(taskMapper.getStatusTaskCounts());
     }
 
     @Override

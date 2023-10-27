@@ -1,16 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<footer class="text-center text-white fixed-bottom">
+<footer class="footer">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 text-center text-white p-3">
-                © 2023 Copyright:
-                <a class="text-white" href="https://mdbootstrap.com/">SH SOFT VINA CORP</a>
+            <div class="col-sm-6">
+                <script>document.write(new Date().getFullYear())</script> © Velzon.
             </div>
-        </div>
-        <div class="row">
-            <div class="fixed-bottom text-right pr-4" style="line-height: 60%">
-                <p>Address: District 7-HCM</p>
-                <p>Hotline: 0123456789</p>
+            <div class="col-sm-6">
+                <div class="text-sm-end d-none d-sm-block">
+                    Design & Develop by Themesbrand
+                </div>
             </div>
         </div>
     </div>
