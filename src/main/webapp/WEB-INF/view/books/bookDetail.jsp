@@ -152,7 +152,7 @@
         $('#delete-btn').click(function() {
             var bookId= '${bookDetail.book.id}';
             var userId = userCurrent.id;
-            $('#deleteTaskModal .modal-footer').after(createLoadingHtml());
+            $('#deleteFeelingModal .modal-footer').after(createLoadingHtml());
             callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userId + "&bookId=" + bookId, "DELETE", null, function (rs) {
                 location.reload();
             }, 'formYourFeeling');
