@@ -21,6 +21,7 @@ import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -89,11 +90,20 @@ public class TaskConverter {
         }
         for (User user : users) {
             if (user != null) {
+                String startDate =DateUtils.formatDate(user.getDateOfBirth());
+                // Lấy năm hiện tại
+                SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+                String currentYear = yearFormat.format(new Date());
+
+                String[] stringArray = startDate.split("-");
+                String yearFromStartDate = stringArray[0];
+                String newStartDate = startDate.replace(yearFromStartDate, currentYear);
+
                 ScheduleListResponse.TaskResponse taskResponse = ScheduleListResponse.TaskResponse.builder()
                         .id(user.getId())
                         .title("Happy Birthday to " + user.getFullname())
-                        .startDate(DateUtils.formatDate(user.getDateOfBirth()))
-                        .dueOrCloseDate(DateUtils.formatDate(user.getDateOfBirth()))
+                        .startDate(newStartDate)
+                        .dueOrCloseDate(newStartDate)
                         .statusTask(new EnumDto("BIRTHDAY","Birthday")).build();
                 rs.add(taskResponse);
             }
