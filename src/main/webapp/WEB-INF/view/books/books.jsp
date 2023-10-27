@@ -422,12 +422,12 @@
 
     // Get value Search save to Local Storage
     document.getElementById("search").addEventListener("input", function () {
-        localStorage.setItem("selectedSearch", this.value);
+        localStorage.setItem("searchBook", this.value);
     });
 
     // Restore "Search" value from Local Storage
     window.addEventListener("load", function () {
-        var selectedSearch = localStorage.getItem("selectedSearch");
+        var selectedSearch = localStorage.getItem("searchBook");
         if (selectedSearch) {
             document.getElementById("search").value = selectedSearch;
         }

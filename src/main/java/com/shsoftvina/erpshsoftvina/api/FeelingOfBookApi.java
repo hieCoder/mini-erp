@@ -42,8 +42,9 @@ public class FeelingOfBookApi {
         return ResponseEntity.ok(feelingOfBookService.updateFeelingOfBook(feelingOfBookUpdateRequest));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFeelingOfBook(@PathVariable String id) {
-        return ResponseEntity.ok(feelingOfBookService.deleteFeelingOfBook(id));
+    @DeleteMapping
+    public ResponseEntity<?> deleteFeelingOfBook(@RequestParam String userId,
+                                                 @RequestParam String bookId) {
+        return ResponseEntity.ok(feelingOfBookService.deleteFeelingOfBook(bookId, userId));
     }
 }

@@ -136,7 +136,7 @@
         FROM TASK t
             LEFT JOIN COMMENT_TASK c ON t.ID = c.TASK_ID AND c.PARENT_ID IS NULL
             LEFT JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.ID = #{id} AND t.STATUS = 'ACTIVE'
+        WHERE t.ID = #{id}
     </select>
 
     <resultMap id="taskDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">

@@ -439,12 +439,12 @@
 
     // Save value to Local Storage
     document.getElementById("search").addEventListener("input", function () {
-        localStorage.setItem("selectedSearch", this.value);
+        localStorage.setItem("searchWeeklyReport", this.value);
     });
 
     // Restore the "Search" value from Local Storage when the page is loaded
     window.addEventListener("load", function () {
-        var selectedSearch = localStorage.getItem("selectedSearch");
+        var selectedSearch = localStorage.getItem("searchWeeklyReport");
         if (selectedSearch) {
             document.getElementById("search").value = selectedSearch;
         }

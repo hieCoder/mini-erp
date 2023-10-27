@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.entity.Task;
+import com.shsoftvina.erpshsoftvina.enums.task.StatusDeleteTaskEnum;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,11 @@ public class TaskController {
     public ModelAndView getTask(@PathVariable String id) {
 
         Task task = taskMapper.findById(id);
-        applicationUtils.checkUserAllow(task.getUser().getId());
+        if (task.getStatus().equals(StatusDeleteTaskEnum.ACTIVE)){
+            applicationUtils.checkUserAllow(task.getUser().getId());
+        } else{
+            applicationUtils.checkUserAllow();
+        }
 
         ModelAndView mav = new ModelAndView("task/task-detail");
         mav.addObject("id", id);
