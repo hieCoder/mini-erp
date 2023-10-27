@@ -53,10 +53,7 @@
 
         <div class="page-content">
             <div class="container-fluid">
-
-                <!-- start page title -->
                 <dec:body/>
-                <!-- end page title -->
             </div>
             <!-- container-fluid -->
         </div>
