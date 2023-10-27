@@ -363,34 +363,36 @@
                         $("#editBill").val('');
                         var editLink = $('#editLink');
                         var accountBill = responseData.bill;
-                        if (accountBill.length > 0) {
-                            editLink.html('')
-                            $.each(accountBill, function (index, file) {
-                                var fileName = file.substring(file.lastIndexOf('/') + 1);
-                                var linkText = file.substring(file.indexOf('-') + 1);
+                        if (accountBill) {
+                            if (accountBill.length > 0) {
+                                editLink.html('')
+                                $.each(accountBill, function (index, file) {
+                                    var fileName = file.substring(file.lastIndexOf('/') + 1);
+                                    var linkText = file.substring(file.indexOf('-') + 1);
 
-                                var listItem = $('<li>', {
-                                    class: 'list-group-item listFilesEdit',
-                                    'data-name': fileName
+                                    var listItem = $('<li>', {
+                                        class: 'list-group-item listFilesEdit',
+                                        'data-name': fileName
+                                    });
+
+                                    var link = $('<a>', {
+                                        href: file,
+                                        download: '',
+                                        target: '_blank',
+                                        id: 'resumeLink'
+                                    }).text(linkText);
+
+                                    var deleteButton = $('<button>', {
+                                        type: 'button',
+                                        class: 'btn btn-danger ml-2',
+                                        'data-toggle': 'modal',
+                                        'data-target': '#deleteConfirmationModalFile',
+                                        'data-name': fileName
+                                    }).html('<span>×</span>');
+                                    listItem.append(link, deleteButton);
+                                    editLink.append(listItem);
                                 });
-
-                                var link = $('<a>', {
-                                    href: file,
-                                    download: '',
-                                    target: '_blank',
-                                    id: 'resumeLink'
-                                }).text(linkText);
-
-                                var deleteButton = $('<button>', {
-                                    type: 'button',
-                                    class: 'btn btn-danger ml-2',
-                                    'data-toggle': 'modal',
-                                    'data-target': '#deleteConfirmationModalFile',
-                                    'data-name': fileName
-                                }).html('<span>×</span>');
-                                listItem.append(link, deleteButton);
-                                editLink.append(listItem);
-                            });
+                            }
                         }
                         $('#editModal').modal('show');
                         loading.style.display = "none";
