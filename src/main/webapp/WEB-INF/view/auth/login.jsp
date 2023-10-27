@@ -64,7 +64,7 @@
                 <p class="text-muted">Welcome Sh Soft Vina !</p>
             </div>
             <div class="p-2 mt-4">
-                <form action="/j_spring_security_check" method="post">
+                <form action="/j_spring_security_check" method="post" id="formLogin">
 
                     <c:if test="${param.logout != null}">
                         <div class="alert alert-success" role="alert">
@@ -96,11 +96,12 @@
                             Password incorrect
                         </div>
                     </c:if>
+
                     <div class="mb-3">
                         <label for="username" class="form-label">User ID</label>
-                        <input type="email" class="form-control" id="username" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter User ID">
+                        <small class="form-message"></small>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label" for="password">Password</label>
                         <div class="position-relative auth-pass-inputgroup mb-3">
@@ -108,9 +109,8 @@
                             <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                         </div>
                     </div>
-
                     <div class="mt-4">
-                        <button class="btn btn-success w-100" type="submit">Sign In</button>
+                        <button class="btn btn-success w-100" type="button" id="signInButton">Sign In</button>
                     </div>
                 </form>
             </div>
@@ -126,5 +126,17 @@
 </div>
 <!-- password-addon init -->
 <script src="/assets/js/pages/password-addon.init.js"></script>
+<%-- jquery --%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="/assets/custom/js/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#signInButton").click(function () {
+            console.log(123);
+            $("#formLogin").submit();
+        });
+    });
+</script>
 </body>
 </html>
