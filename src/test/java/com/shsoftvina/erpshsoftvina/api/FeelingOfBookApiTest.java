@@ -107,7 +107,7 @@ public class FeelingOfBookApiTest {
         mockResponse.setId("1");
         mockResponse.setFullnameUser("Happy");
 
-        Mockito.when(feelingOfBookService.deleteFeelingOfBook(Mockito.anyString())).thenReturn(1);
+        Mockito.when(feelingOfBookService.deleteFeelingOfBook(Mockito.anyString(), Mockito.anyString())).thenReturn(1);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/feeling-of-book/123"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
