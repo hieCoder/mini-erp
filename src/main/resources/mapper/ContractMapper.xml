@@ -6,7 +6,7 @@
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
         insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type,
                               insurance_money, status, HISTORY_ID)
-            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, NOW(), #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status}, #{parentContract.id})
+            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, #{createdDate}, #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status}, #{parentContract.id})
     </insert>
 
     <select id="findById" resultMap="contractResultMap">

@@ -89,6 +89,12 @@
                             </button>
                             <input type="file" class="form-control mt-2" name="newResumeFiles" id="resume" multiple>
                             <small class="text-muted ml-2">Choose new resume</small>
+<%--                            <div id="selectedFiles" style="display: none">--%>
+<%--                                <label for="resume" class="mt-2">File da chon</label>--%>
+<%--                                <div class="border">--%>
+<%--                                    <div class="row" id="listFiles"></div>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
                         </div>
                         <div class="form-group">
                             <label for="timeSheetsCode">TimeSheets code:</label>
@@ -641,6 +647,20 @@
         });
     });
 
+    // document.getElementById('resume').addEventListener('change', function() {
+    //     document.getElementById('selectedFiles').style.display = 'block';
+    //     var selectedFiles = document.getElementById('resume').files;
+    //     var filesList = document.getElementById('listFiles');
+    //     for (var i = 0; i < selectedFiles.length; i++) {
+    //         var fileName = selectedFiles[i].name;
+    //         var listItem = document.createElement('div');
+    //         listItem.classList.add('col-md-3', 'm-3');
+    //         listItem.textContent = fileName;
+    //         filesList.appendChild(listItem);
+    //         cutShortLink();
+    //     }
+    // });
+
     // Format filename
     function formatName(ClassName) {
         for (var i = 0; i < ClassName.length; i++) {
@@ -890,7 +910,7 @@
         var keyValueString = '';
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + '$' + '<br><br>';
+                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + 'đ' + '<br><br>';
             }
         }
         keyValueString = keyValueString.slice(0, -2);

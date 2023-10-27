@@ -190,13 +190,16 @@ function cutShortLink() {
             var indexOfHyphen = fileName.indexOf("-");
             if (indexOfHyphen !== -1) {
                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-                if (remainingPart.length > 10) {
-                    var truncatedFileName = remainingPart.substring(0, 10) + '...';
+                var truncatedFileName;
+                if (remainingPart.length > 14) {
+                    truncatedFileName = remainingPart.substring(0, 10) + '...';
                 } else {
-                    var truncatedFileName = remainingPart;
+                    truncatedFileName = remainingPart;
                 }
-                element.textContent = truncatedFileName;
+            } else {
+                if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
             }
+            element.textContent = truncatedFileName;
         }
     });
 }

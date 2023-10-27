@@ -263,6 +263,7 @@
             rules:[
                 Validator.isRequired('#title'),
                 Validator.isRequired('#dueDate'),
+                Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),
                 Validator.isRequired('#content'),
                 Validator.isRequired('#progress')
             ],
@@ -358,6 +359,7 @@
                     callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
                         closestLI.replaceWith(createCommentForm(rs));
                         cutShortLink();
+                        console.log(123);
                     }, 'updateCommentForm'+id);
                 }
             });
