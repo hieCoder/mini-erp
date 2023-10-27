@@ -42,11 +42,9 @@ public class TaskApiTest {
         listTaskRequest.setPageSize(10);
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
-        listTaskRequest.setUserRole("OWNER");
-        listTaskRequest.setUserId("1");
 
         List<TaskShowResponse> mockResponse = Collections.singletonList(new TaskShowResponse());
-        when(taskService.findAll(0, 10, "REGISTERED", "sample search", "OWNER", "1")).thenReturn(mockResponse);
+        when(taskService.findAll(0, 10, "REGISTERED", "sample search")).thenReturn(mockResponse);
 
         ResponseEntity<?> responseEntity = taskApi.findAll(listTaskRequest);
 
@@ -59,11 +57,9 @@ public class TaskApiTest {
         ListTaskRequest listTaskRequest = new ListTaskRequest();
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
-        listTaskRequest.setUserRole("OWNER");
-        listTaskRequest.setUserId("1");
 
         List<TaskShowResponse> mockResponse = Collections.singletonList(new TaskShowResponse());
-        when(taskService.findAll(0, TaskConstant.pageSizeDefault, "REGISTERED", "sample search", "OWNER", "1")).thenReturn(mockResponse);
+        when(taskService.findAll(0, TaskConstant.pageSizeDefault, "REGISTERED", "sample search")).thenReturn(mockResponse);
 
         ResponseEntity<?> responseEntity = taskApi.findAll(listTaskRequest);
 
@@ -106,9 +102,9 @@ public class TaskApiTest {
         String userId = "sampleUserId";
 
         List<StatusTaskCountsResponse> mockResponse = Collections.singletonList(new StatusTaskCountsResponse());
-        when(taskService.getStatusTaskCount(userRole, userId)).thenReturn(mockResponse);
+        when(taskService.getStatusTaskCount()).thenReturn(mockResponse);
 
-        ResponseEntity<?> responseEntity = taskApi.getStatusTaskCount(userRole, userId);
+        ResponseEntity<?> responseEntity = taskApi.getStatusTaskCount();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockResponse, responseEntity.getBody());
@@ -159,10 +155,8 @@ public class TaskApiTest {
         listTaskRequest.setPageSize(10);
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
-        listTaskRequest.setUserRole("OWNER");
-        listTaskRequest.setUserId("1");
 
-        when(taskService.getTotalItem(0, 10, "REGISTERED", "sample search", "OWNER", "1")).thenReturn(42L);
+        when(taskService.getTotalItem(0, 10, "REGISTERED", "sample search")).thenReturn(42L);
 
         ResponseEntity<?> responseEntity = taskApi.getTotalItem(listTaskRequest);
 
@@ -175,10 +169,8 @@ public class TaskApiTest {
         ListTaskRequest listTaskRequest = new ListTaskRequest();
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
-        listTaskRequest.setUserRole("OWNER");
-        listTaskRequest.setUserId("1");
 
-        when(taskService.getTotalItem(0, TaskConstant.pageSizeDefault, "REGISTERED", "sample search", "OWNER", "1")).thenReturn(42L);
+        when(taskService.getTotalItem(0, TaskConstant.pageSizeDefault, "REGISTERED", "sample search")).thenReturn(42L);
 
         ResponseEntity<?> responseEntity = taskApi.getTotalItem(listTaskRequest);
 

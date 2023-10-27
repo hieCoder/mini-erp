@@ -26,7 +26,6 @@
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
-        AND ( #{userRole} != 'DEVELOPER' OR t.USER_ID = #{userId})
         ORDER BY t.CREATED_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>
@@ -41,7 +40,6 @@
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
-        AND ( #{userRole} != 'DEVELOPER' OR t.USER_ID = #{userId})
         ORDER BY t.START_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>
@@ -98,8 +96,11 @@
         SELECT STATUS_TASK, COUNT(*) as taskCount
         FROM TASK
         WHERE STATUS = 'ACTIVE'
-        AND ( #{userRole} != 'DEVELOPER' OR USER_ID = #{userId})
         GROUP BY STATUS_TASK
+        UNION
+        SELECT '', COUNT(*)
+        FROM TASK
+        WHERE STATUS = 'ACTIVE'
     </select>
 
     <resultMap id="statusTaskCountResultMap" type="java.util.Map">

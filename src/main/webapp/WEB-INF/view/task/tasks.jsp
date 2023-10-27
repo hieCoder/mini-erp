@@ -137,9 +137,7 @@
         page: 1,
         pageSize: $('#page-count-select').val(),
         statusTask: '',
-        search: '',
-        userRole: userCurrent.role,
-        userId: userCurrent.id
+        search: ''
     }
 
     var tableTask, tableStatus;
@@ -216,17 +214,17 @@
         loadPaging();
         tableStatus = $('#data-table-status').DataTable({
             ajax: {
-                url: '/api/v1/tasks/status-task-count?userRole=' + userCurrent.role+'&userId='+userCurrent.id,
+                url: '/api/v1/tasks/status-task-count',
                 contentType: 'application/json',
                 method: 'GET',
                 dataSrc: ''
             },
             columns: [
                 {
-                    data: 'statusTask.code',
+                    data: 'statusTask',
                     render: function(data, type, row) {
-                        var colorClass = getStatusColor(data);
-                        return '<span class="badge ' + colorClass + '">' + data + '</span>';
+                        var colorClass = getStatusColor(data.code);
+                        return '<span class="badge ' + colorClass + '">' + data.name + '</span>';
                     }
                 },
                 {
@@ -331,7 +329,6 @@
                 errorSelector: '.form-message',
                 rules:[
                     Validator.isRequired('#title'),
-                    Validator.isRequired('#dueDate'),
                     Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),
                     Validator.isRequired('#content'),
                 ],

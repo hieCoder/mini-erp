@@ -132,9 +132,14 @@ public class TaskConverter {
         return statusTaskCounts.stream()
                 .map(statusTaskCount -> {
                     String statusTask = (String) statusTaskCount.get("statusTask");
-                    StatusTaskEnum statusEnum = EnumUtils.getEnumFromValue(StatusTaskEnum.class, statusTask);
-                    long taskCount = (long) statusTaskCount.get("taskCount");
-                    return new StatusTaskCountsResponse(EnumUtils.instance(statusEnum), taskCount);
+                    if(!statusTask.equals("")){
+                        StatusTaskEnum statusEnum = EnumUtils.getEnumFromValue(StatusTaskEnum.class, statusTask);
+                        long taskCount = (long) statusTaskCount.get("taskCount");
+                        return new StatusTaskCountsResponse(EnumUtils.instance(statusEnum), taskCount);
+                    } else{
+                        long taskCount = (long) statusTaskCount.get("taskCount");
+                        return new StatusTaskCountsResponse(new EnumDto("", "All"), taskCount);
+                    }
                 })
                 .collect(Collectors.toList());
     }
