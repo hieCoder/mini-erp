@@ -3,11 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AccountingMapper">
     <select id="findAllMonthlyHistory" resultMap="MonthYearFormatResultMap">
-        SELECT DISTINCT DATE_FORMAT(created_date, '%Y') AS year,
-        DATE_FORMAT(created_date, '%Y - %m') AS month_list
-        FROM ACCOUNTING
-        WHERE status = 'ACTIVE'
-        ORDER BY created_date DESC
+        SELECT year, month_list
+        FROM (
+            SELECT DISTINCT DATE_FORMAT(created_date, '%Y') AS year,
+            DATE_FORMAT(created_date, '%m') AS month_list
+            FROM ACCOUNTING
+            WHERE status = 'ACTIVE'
+            ) AS subquery
+        ORDER BY year DESC, month_list DESC
     </select>
     <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
         <id property="year" column="year" />
@@ -19,7 +22,7 @@
     <select id="getTotalRecordCountPerMonth" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ACCOUNTING
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
+        WHERE status ='ACTIVE'
         <choose>
             <when test="startDate != null and endDate != null">
                 <if test="startDate != null">
@@ -88,20 +91,20 @@
         INNER JOIN
         USER u
         ON a.user_id = u.id
-        WHERE DATE_FORMAT(a.created_date, '%Y-%m') = #{monthId} AND a.status ='ACTIVE'
+        WHERE a.status ='ACTIVE'
         <choose>
-            <when test="startDate != null and endDate != null">
-                <if test="startDate != null">
-                    AND a.created_date &gt;= #{startDate}
-                </if>
-                AND a.created_date &lt;= #{endDate}
-            </when>
-            <when test="startDate != null and endDate == null">
-                AND a.created_date &gt;= #{startDate}
-            </when>
-            <when test="endDate != null and startDate == null">
-                AND a.created_date &lt;= #{endDate}
-            </when>
+              <when test="startDate != null and endDate != null">
+                  <if test="startDate != null">
+                      AND a.created_date &gt;= #{startDate}
+                  </if>
+                  AND a.created_date &lt;= #{endDate}
+              </when>
+              <when test="startDate != null and endDate == null">
+                  AND a.created_date &gt;= #{startDate}
+              </when>
+              <when test="endDate != null and startDate == null">
+                  AND a.created_date &lt;= #{endDate}
+              </when>
         </choose>
         ORDER BY a.created_date ASC
     </select>
@@ -110,13 +113,27 @@
         SELECT SUM(CASE WHEN spending &gt; 0 THEN spending ELSE 0 END) AS totalRevenue,
                SUM(CASE WHEN spending &lt; 0 THEN spending ELSE 0 END) AS totalExpense
         FROM ACCOUNTING
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
+        WHERE status ='ACTIVE'
+        <choose>
+                <when test="startDate != null and endDate != null">
+                    <if test="startDate != null">
+                        AND created_date &gt;= #{startDate}
+                    </if>
+                    AND created_date &lt;= #{endDate}
+                </when>
+                <when test="startDate != null and endDate == null">
+                    AND created_date &gt;= #{startDate}
+                </when>
+                <when test="endDate != null and startDate == null">
+                    AND created_date &lt;= #{endDate}
+                </when>
+        </choose>
     </select>
 
     <select id="getLatestRemain" resultType="java.lang.Long">
         SELECT remain
         FROM ACCOUNTING
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
+        WHERE created_date &lt;= #{endDate} AND status ='ACTIVE'
         ORDER BY created_date DESC
             LIMIT 1;
     </select>

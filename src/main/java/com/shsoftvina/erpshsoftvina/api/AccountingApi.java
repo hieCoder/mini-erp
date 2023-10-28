@@ -26,28 +26,27 @@ public class AccountingApi {
     @Autowired
     private AccountingService accountingService;
 
-    @GetMapping()
+    @GetMapping("total-month")
     public ResponseEntity<?> findAllMonthlyHistory() {
         return ResponseEntity.ok(accountingService.findAllMonthlyHistory());
     }
 
-    @GetMapping("/{monthId}")
-    public ResponseEntity<?> findAccountingByMonth(@PathVariable("monthId") String monthId,
+    @GetMapping()
+    public ResponseEntity<?> findAccountingByMonth(
                                                    @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
-                                                   @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+                                                   @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
                                                    @RequestParam(name = "startDate", required = false) String startDate,
                                                    @RequestParam(name = "endDate", required = false) String endDate
     ) {
         LocalDate startDateParsed = null;
         LocalDate endDateParsed = null;
-
         if (startDate != null && !startDate.isEmpty()) {
             startDateParsed = LocalDate.parse(startDate);
         }
         if (endDate != null && !endDate.isEmpty()) {
             endDateParsed = LocalDate.parse(endDate);
         }
-        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(monthId,page,size,startDateParsed,endDateParsed);
+        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(page,size,startDateParsed,endDateParsed);
         return ResponseEntity.ok(accountListResponse);
     }
 

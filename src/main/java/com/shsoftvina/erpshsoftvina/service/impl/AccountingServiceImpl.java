@@ -58,22 +58,22 @@ public class AccountingServiceImpl implements AccountingService {
     }
 
     @Override
-    public PageAccountListResponse findAccountingByMonth(String monthId, Integer page, Integer size, LocalDate startTime, LocalDate endTime) {
-        TotalSpendAndRemain totals = accountingMapper.getTotalSpending(monthId);
-        if (totals == null) {
-            return new PageAccountListResponse();
-        }
-        Long latestRemain = accountingMapper.getLatestRemain(monthId);
-        totals.setTotalRemain(latestRemain);
+    public PageAccountListResponse findAccountingByMonth(Integer page, Integer size, LocalDate startTime, LocalDate endTime) {
         int offset = (page - 1) * size;
         RowBounds rowBounds = new RowBounds(offset, size);
         LocalDateTime endDateWithTime = null;
         if (endTime != null) {
             endDateWithTime = endTime.atTime(23, 59, 59);
         }
-        List<Accounting> accountingList = accountingMapper.findAccountingByMonth(monthId, rowBounds, startTime, endDateWithTime);
+        List<Accounting> accountingList = accountingMapper.findAccountingByMonth(rowBounds, startTime, endDateWithTime);
         List<AccountResponse> accountResponses = accountingConverter.convertToListResponse(accountingList);
-        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(monthId, startTime, endDateWithTime);
+        TotalSpendAndRemain totals = accountingMapper.getTotalSpending(startTime,endDateWithTime);
+        if (totals == null) {
+            return new PageAccountListResponse();
+        }
+        Long latestRemain = accountingMapper.getLatestRemain(endDateWithTime);
+        totals.setTotalRemain(latestRemain);
+        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(startTime, endDateWithTime);
         long totalPage = (long) Math.ceil((double) totalRecordCount / size);
         boolean hasNext = page < totalPage;
         boolean hasPrevious = page > 1;
@@ -84,7 +84,7 @@ public class AccountingServiceImpl implements AccountingService {
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
         LocalDateTime newDate = LocalDateTime.now();
         String formattedMonthYear = DateUtils.formatMonthYear(newDate);
-        Long latestRemain = accountingMapper.getLatestRemain(formattedMonthYear);
+        Long latestRemain = accountingMapper.getLatestRemain(LocalDateTime.parse(formattedMonthYear));
         if (latestRemain == null) {
             latestRemain = 0L;
         }

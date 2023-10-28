@@ -11,95 +11,95 @@
 //
 // // FUNCTION
 //
-// function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         processData: false,
-//         contentType: false,
-//         data: formData,
-//         enctype: 'multipart/form-data',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
-// function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         processData: false,
-//         contentType: false,
-//         data: formData,
-//         enctype: 'multipart/form-data',
-//         success: function(response) {
-//             callback(response);
-//         },
-//         error: function (xhr, status, error) {
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//             callBackError();
-//         }
-//     });
-// }
-//
-// function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
-//     var data = {};
-//     formData.forEach((value, key) => data[key] = value);
-//
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         data: JSON.stringify(data),
-//         contentType: "application/json",
-//         dataType: 'json',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
-// function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
-//
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         data: JSON.stringify(data),
-//         contentType: "application/json",
-//         dataType: 'json',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
+function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        processData: false,
+        contentType: false,
+        data: formData,
+        enctype: 'multipart/form-data',
+        success: function(response) {
+            callback(response);
+            resetForm(formId);
+        },
+        error: function (xhr, status, error) {
+            resetForm(formId);
+            Swal.fire({
+                icon: 'error',
+                text: JSON.parse(xhr.responseText).message
+            });
+        }
+    });
+}
+
+function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        processData: false,
+        contentType: false,
+        data: formData,
+        enctype: 'multipart/form-data',
+        success: function(response) {
+            callback(response);
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                text: JSON.parse(xhr.responseText).message
+            });
+            callBackError();
+        }
+    });
+}
+
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
+    var data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(response) {
+            callback(response);
+            resetForm(formId);
+        },
+        error: function (xhr, status, error) {
+            resetForm(formId);
+            Swal.fire({
+                icon: 'error',
+                text: JSON.parse(xhr.responseText).message
+            });
+        }
+    });
+}
+
+function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
+
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(response) {
+            callback(response);
+            resetForm(formId);
+        },
+        error: function (xhr, status, error) {
+            resetForm(formId);
+            Swal.fire({
+                icon: 'error',
+                text: JSON.parse(xhr.responseText).message
+            });
+        }
+    });
+}
+
 // function isBlank(a){
 //     return a === '' || a===null;
 // }
@@ -124,20 +124,20 @@
 //     return userCurrent.role == U_DEVELOPER;
 // }
 //
-// function createLoadingHtml() {
-//     return `
-//             <div class="text-center d-flex align-items-center justify-content-center">
-//                 <div class="custom-spinner d-flex align-items-center justify-content-center">
-//                     <div class="dot"></div>
-//                 </div>
-//             </div>
-//         `;
-// }
+function createLoadingHtml() {
+    return `
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <div class="custom-spinner d-flex align-items-center justify-content-center">
+                    <div class="dot"></div>
+                </div>
+            </div>
+        `;
+}
 //
-// function resetForm(idForm){
-//     $('#'+idForm).find('*').prop('disabled', false);
-//     $('div.custom-spinner').parent().remove();
-// }
+function resetForm(idForm){
+    $('#'+idForm).find('*').prop('disabled', false);
+    $('div.custom-spinner').parent().remove();
+}
 //
 // function createLoadingIndicator() {
 //     if ($('#loading-indicator').length === 0) {
@@ -181,22 +181,22 @@
 //     $('#' + contentId).show();
 // }
 //
-// function cutShortLink() {
-//     var fileElements = document.querySelectorAll('a.cut-file-name');
-//
-//     fileElements.forEach(function (element) {
-//         var fileName = element.textContent;
-//         if (fileName.length > 0) {
-//             var indexOfHyphen = fileName.indexOf("-");
-//             if (indexOfHyphen !== -1) {
-//                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-//                 if (remainingPart.length > 10) {
-//                     var truncatedFileName = remainingPart.substring(0, 10) + '...';
-//                 } else {
-//                     var truncatedFileName = remainingPart;
-//                 }
-//                 element.textContent = truncatedFileName;
-//             }
-//         }
-//     });
-// }
+function cutShortLink() {
+    var fileElements = document.querySelectorAll('a.cut-file-name');
+
+    fileElements.forEach(function (element) {
+        var fileName = element.textContent;
+        if (fileName.length > 0) {
+            var indexOfHyphen = fileName.indexOf("-");
+            if (indexOfHyphen !== -1) {
+                var remainingPart = fileName.substring(indexOfHyphen + 1);
+                if (remainingPart.length > 10) {
+                    var truncatedFileName = remainingPart.substring(0, 10) + '...';
+                } else {
+                    var truncatedFileName = remainingPart;
+                }
+                element.textContent = truncatedFileName;
+            }
+        }
+    });
+}
