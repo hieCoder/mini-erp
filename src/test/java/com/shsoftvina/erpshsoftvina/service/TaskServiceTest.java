@@ -230,16 +230,14 @@ public class TaskServiceTest {
         int pageSize = 10;
         String statusTask = "REGISTER";
         String search = "sample search";
-        String userRole = "OWNER";
-        String userId = "1";
 
         List<Task> mockTasks = Arrays.asList(new Task(), new Task());
-        when(taskMapper.findAll(start, pageSize, statusTask, search, userRole, userId)).thenReturn(mockTasks);
+        when(taskMapper.findAll(start, pageSize, statusTask, search)).thenReturn(mockTasks);
         when(taskConverter.toResponse(any())).thenReturn(new TaskShowResponse());
 
-        List<TaskShowResponse> result = taskService.findAll(start, pageSize, statusTask, search, userRole, userId);
+        List<TaskShowResponse> result = taskService.findAll(start, pageSize, statusTask, search);
 
-        verify(taskMapper).findAll(start, pageSize, statusTask, search, userRole, userId);
+        verify(taskMapper).findAll(start, pageSize, statusTask, search);
         verify(taskConverter, times(2)).toResponse(any());
 
         assertEquals(2, result.size());
@@ -251,15 +249,13 @@ public class TaskServiceTest {
         int pageSize = 10;
         String statusTask = "REGISTER";
         String search = "sample search";
-        String userRole = "OWNER";
-        String userId = "1";
 
         long mockTotalItemCount = 42;
-        when(taskMapper.getTotalItem(start, pageSize, statusTask, search, userRole, userId)).thenReturn(mockTotalItemCount);
+        when(taskMapper.getTotalItem(start, pageSize, statusTask, search)).thenReturn(mockTotalItemCount);
 
-        long result = taskService.getTotalItem(start, pageSize, statusTask, search, userRole, userId);
+        long result = taskService.getTotalItem(start, pageSize, statusTask, search);
 
-        verify(taskMapper).getTotalItem(start, pageSize, statusTask, search, userRole, userId);
+        verify(taskMapper).getTotalItem(start, pageSize, statusTask, search);
 
         assertEquals(mockTotalItemCount, result);
     }
@@ -311,18 +307,15 @@ public class TaskServiceTest {
 
     @Test
     public void testGetStatusTaskCount_EmptyList() {
-        // Sample user role and user ID
-        String userRole = "ROLE_USER";
-        String userId = "sampleUserId";
 
         // Mock the taskMapper to return an empty list
-        when(taskMapper.getStatusTaskCounts(userRole, userId)).thenReturn(Collections.emptyList());
+        when(taskMapper.getStatusTaskCounts()).thenReturn(Collections.emptyList());
 
         // Call the method under test
-        List<StatusTaskCountsResponse> result = taskService.getStatusTaskCount(userRole, userId);
+        List<StatusTaskCountsResponse> result = taskService.getStatusTaskCount();
 
         // Verify that taskMapper.getStatusTaskCounts was called
-        verify(taskMapper).getStatusTaskCounts(userRole, userId);
+        verify(taskMapper).getStatusTaskCounts();
 
         // Verify the result (empty list)
         assertEquals(Collections.emptyList(), result);

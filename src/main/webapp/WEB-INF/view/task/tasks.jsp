@@ -6,6 +6,25 @@
     <title>Tasks</title>
 </head>
 <body>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">List task</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                    <li class="breadcrumb-item active">Datatables</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -137,9 +156,7 @@
         page: 1,
         pageSize: $('#page-count-select').val(),
         statusTask: '',
-        search: '',
-        userRole: userCurrent.role,
-        userId: userCurrent.id
+        search: ''
     }
 
     var tableTask, tableStatus;
@@ -216,17 +233,17 @@
         loadPaging();
         tableStatus = $('#data-table-status').DataTable({
             ajax: {
-                url: '/api/v1/tasks/status-task-count?userRole=' + userCurrent.role+'&userId='+userCurrent.id,
+                url: '/api/v1/tasks/status-task-count',
                 contentType: 'application/json',
                 method: 'GET',
                 dataSrc: ''
             },
             columns: [
                 {
-                    data: 'statusTask.code',
+                    data: 'statusTask',
                     render: function(data, type, row) {
-                        var colorClass = getStatusColor(data);
-                        return '<span class="badge ' + colorClass + '">' + data + '</span>';
+                        var colorClass = getStatusColor(data.code);
+                        return '<span class="badge ' + colorClass + '">' + data.name + '</span>';
                     }
                 },
                 {
@@ -331,7 +348,6 @@
                 errorSelector: '.form-message',
                 rules:[
                     Validator.isRequired('#title'),
-                    Validator.isRequired('#dueDate'),
                     Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),
                     Validator.isRequired('#content'),
                 ],

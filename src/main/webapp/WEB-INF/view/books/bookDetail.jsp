@@ -40,6 +40,7 @@
                             <button type="button" class="btn btn-primary" id="submit">
                                 Submit
                             </button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteFeelingModal">Delete</button>
                                 <a href="/books" type="button" class="btn btn-secondary" id="back-button">Back</a>
                             </form>
                         </div>
@@ -70,6 +71,27 @@
         </div>
     </div>
 </form>
+
+<%-- modal delete feeling book--%>
+<div class="modal fade" id="deleteFeelingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Confirm delete feeling</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button id="delete-btn" type="button" class="btn btn-danger">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal Notification Success -->
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
@@ -126,6 +148,15 @@
                     });
                 };
             });
+
+        $('#delete-btn').click(function() {
+            var bookId= '${bookDetail.book.id}';
+            var userId = userCurrent.id;
+            $('#deleteFeelingModal .modal-footer').after(createLoadingHtml());
+            callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userId + "&bookId=" + bookId, "DELETE", null, function (rs) {
+                location.reload();
+            }, 'formYourFeeling');
+        });
     });
 
     // Handle when user click submit

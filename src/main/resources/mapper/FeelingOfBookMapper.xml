@@ -45,7 +45,7 @@
     <delete id="deleteFeelingOfBook" parameterType="String">
         DELETE
         FROM FEELING_OF_BOOK
-        WHERE ID = #{id}
+        WHERE USER_ID = #{userId} AND BOOK_ID = #{bookId}
     </delete>
 
     <select id="findAllByBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook" resultMap="feelingOfBookDetailResultMap">

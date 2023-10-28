@@ -81,10 +81,14 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     }
 
     @Override
-    public int deleteFeelingOfBook(String id) {
-        if(feelingOfBookMapper.findById(id) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("id"));
+    public int deleteFeelingOfBook(String bookId, String userId) {
+//        if(feelingOfBookMapper.findById(id) == null)
+//            throw new NotFoundException(MessageErrorUtils.notFound("id"));
 
-        return feelingOfBookMapper.deleteFeelingOfBook(id);
+        try{
+            feelingOfBookMapper.deleteFeelingOfBook(bookId, userId);
+            return 1;
+        }catch (Exception e){}
+        return 0;
     }
 }
