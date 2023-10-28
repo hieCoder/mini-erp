@@ -19,8 +19,8 @@
     <!--Swiper slider css-->
     <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- Sweet Alert css-->
-    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+<%--    <!-- Sweet Alert css-->--%>
+<%--    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />--%>
 
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
@@ -35,6 +35,7 @@
 
     <%-- Custom --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
@@ -791,17 +792,27 @@
 <!-- Dashboard init -->
 <script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
 
-<!-- list.js min js -->
-<script src="/assets/libs/list.js/list.min.js"></script>
+<%--<!-- list.js min js -->--%>
+<%--<script src="/assets/libs/list.js/list.min.js"></script>--%>
 
-<!--list pagination js-->
-<script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+<%--<!--list pagination js-->--%>
+<%--<script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>--%>
 
-<!-- titcket init js -->
-<script src="/assets/js/pages/tasks-list.init.js"></script>
+<%--<!-- titcket init js -->--%>
+<%--<script src="/assets/js/pages/tasks-list.init.js"></script>--%>
 
-<!-- Sweet Alerts js -->
-<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<%--<!-- Sweet Alerts js -->--%>
+<%--<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>--%>
+
+<!-- ckeditor -->
+<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+
+<!-- quill js -->
+<script src="/assets/libs/quill/quill.min.js"></script>
+
+<!-- init js -->
+<script src="/assets/js/pages/form-editor.init.js"></script>
+
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>

@@ -1,6 +1,6 @@
-//
-// // CONSTANT
-// const U_DEVELOPER = 'DEVELOPER';
+
+// CONSTANT
+const U_DEVELOPER = 'DEVELOPER';
 // const T_REGISTERED = 'REGISTERED';
 // const T_POSTPONSED = 'POSTPONSED';
 // const T_CLOSED = 'CLOSED';
@@ -65,10 +65,10 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSucces
         contentType: "application/json",
         dataType: 'json',
         success: function(response) {
-            callbackSuccess(response);
+            if(callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            callbackFail(xhr);
+            if(callbackFail) callbackFail(xhr);
         }
     });
 }
@@ -82,10 +82,10 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
         contentType: "application/json",
         dataType: 'json',
         success: function(response) {
-            callbackSuccess(response);
+            if(callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            callbackFail(xhr);
+            if(callbackFail) callbackFail(xhr);
         }
     });
 }
@@ -109,11 +109,11 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
 // function isAdminOrUserLogin(idUser) {
 //     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 // }
-//
-// function isDeleveloper() {
-//     return userCurrent.role == U_DEVELOPER;
-// }
-//
+
+function isDeleveloper() {
+    return userCurrent.role == U_DEVELOPER;
+}
+
 // function createLoadingHtml() {
 //     return `
 //             <div class="text-center d-flex align-items-center justify-content-center">

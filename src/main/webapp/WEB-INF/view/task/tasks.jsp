@@ -7,361 +7,6 @@
 </head>
 <body>
 
-<%--<!-- start page title -->--%>
-<%--<div class="row">--%>
-<%--    <div class="col-12">--%>
-<%--        <div class="page-title-box d-sm-flex align-items-center justify-content-between">--%>
-<%--            <h4 class="mb-sm-0">List task</h4>--%>
-
-<%--            <div class="page-title-right">--%>
-<%--                <ol class="breadcrumb m-0">--%>
-<%--                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>--%>
-<%--                    <li class="breadcrumb-item active">Datatables</li>--%>
-<%--                </ol>--%>
-<%--            </div>--%>
-
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<!-- end page title -->--%>
-
-<%--<div class="container">--%>
-<%--    <div class="row">--%>
-<%--        <div class="col-md-3">--%>
-<%--            <h1>Status</h1>--%>
-<%--            <div class="row">--%>
-<%--                <div class="col-md-12">--%>
-<%--                    <div class="table-responsive">--%>
-<%--                        <table id="data-table-status" class="table">--%>
-<%--                            <thead>--%>
-<%--                                <tr>--%>
-<%--                                    <th>Status</th>--%>
-<%--                                    <th>Total</th>--%>
-<%--                                </tr>--%>
-<%--                            </thead>--%>
-<%--                        </table>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--        <div class="col-md-9">--%>
-<%--            <h1>List Task</h1>--%>
-<%--            <c:if test="${param.registerSuccess != null}">--%>
-<%--                <div class="alert alert-success">--%>
-<%--                    Register success!--%>
-<%--                </div>--%>
-<%--            </c:if>--%>
-<%--            <c:if test="${param.deleteSuccess != null}">--%>
-<%--                <div class="alert alert-success">--%>
-<%--                    Delete success!--%>
-<%--                </div>--%>
-<%--            </c:if>--%>
-<%--            <div class="row mt-3">--%>
-<%--                <div class="col-md-8">--%>
-<%--                    <div class="d-flex justify-content-center">--%>
-<%--                        <input class="form-control mr-1" id="search-input" type="text" placeholder="Title, username, hashtag">--%>
-<%--                        <button id="search-button" type="button" class="btn btn-info mr-5">Search</button>--%>
-<%--                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#registerTaskModal">--%>
-<%--                            Register</button>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--                <div class="col-md-4 d-flex align-items-end justify-content-end">--%>
-<%--                    <label for="page-count-select" class="mr-2">Page count:</label>--%>
-<%--                    <select class="form-control w-auto" id="page-count-select">--%>
-<%--                        <option value="10">10</option>--%>
-<%--                        <option value="15">15</option>--%>
-<%--                        <option value="20">20</option>--%>
-<%--                    </select>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--            <div class="row mt-2">--%>
-<%--                <div class="col-md-12">--%>
-<%--                    <div class="table-responsive">--%>
-<%--                        <table id="data-table-task" class="table">--%>
-<%--                            <thead>--%>
-<%--                            <tr>--%>
-<%--                                <th>ID</th>--%>
-<%--                                <th>Status</th>--%>
-<%--                                <th>Title</th>--%>
-<%--                                <th>Username</th>--%>
-<%--                                <th>Priority</th>--%>
-<%--                                <th>Progress</th>--%>
-<%--                                <th>Start date</th>--%>
-<%--                                <th>Due/Closed date</th>--%>
-<%--                            </tr>--%>
-<%--                            </thead>--%>
-<%--                        </table>--%>
-<%--                    </div>--%>
-<%--                    <div>--%>
-<%--                        <ul id="pagination" class="pagination mt-2 justify-content-center"></ul>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-
-<%--    &lt;%&ndash; modal register &ndash;%&gt;--%>
-<%--    <div class="modal fade" id="registerTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
-<%--        <div class="modal-dialog modal-dialog-centered">--%>
-<%--            <div class="modal-content">--%>
-<%--                <form id="registerTaskForm">--%>
-<%--                    <div class="modal-header">--%>
-<%--                        <h5 class="modal-title" id="exampleModalLabel">Register task</h5>--%>
-<%--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--                            <span aria-hidden="true">&times;</span>--%>
-<%--                        </button>--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-body">--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label>Username:</label>--%>
-<%--                            <select id="selectUsername" name="userId" class="form-control" aria-label="Default select example"></select>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label for="title">Title:</label>--%>
-<%--                            <input id="title" name="title" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Title">--%>
-<%--                            <small class="form-message"></small>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label for="content">Content:</label>--%>
-<%--                            <div id="content" class="summernote"></div>--%>
-<%--                            <small class="form-message"></small>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label for="dueDate">Due date:</label>--%>
-<%--                            <input id="dueDate" name="dueDate" type="date" class="form-control">--%>
-<%--                            <small class="form-message"></small>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label>Priority:</label>--%>
-<%--                            <select id="selectPriority" name="priority" class="form-control" aria-label="Default select example">--%>
-<%--                                <option value="LOW" class="text-warning">Low</option>--%>
-<%--                                <option value="MEDIUM" class="text-primary">Medium</option>--%>
-<%--                                <option value="HIGH" class="text-danger">High</option>--%>
-<%--                            </select>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-footer">--%>
-<%--                        <button type="submit" class="btn btn-success">Register</button>--%>
-<%--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--%>
-<%--                    </div>--%>
-<%--                </form>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<script src="/assets/js/task/task.js"></script>--%>
-<%--<script>--%>
-
-<%--    var tasksRequest = {--%>
-<%--        page: 1,--%>
-<%--        pageSize: $('#page-count-select').val(),--%>
-<%--        statusTask: '',--%>
-<%--        search: ''--%>
-<%--    }--%>
-
-<%--    var tableTask, tableStatus;--%>
-<%--    $(document).ready(function (){--%>
-<%--        tableTask = $('#data-table-task').DataTable({--%>
-<%--            ajax: {--%>
-<%--                url: '/api/v1/tasks',--%>
-<%--                contentType: 'application/json',--%>
-<%--                method: 'POST',--%>
-<%--                data: function (d) {--%>
-<%--                    return JSON.stringify(tasksRequest);--%>
-<%--                },--%>
-<%--                dataSrc: function (json) {--%>
-<%--                    return json;--%>
-<%--                }--%>
-<%--            },--%>
-<%--            columns: [--%>
-<%--                { data: 'id' },--%>
-<%--                {--%>
-<%--                    data: 'statusTask.code',--%>
-<%--                    render: function(data, type, row) {--%>
-<%--                        var colorClass = getStatusColor(data);--%>
-<%--                        return '<span class="badge ' + colorClass + '">' + data + '</span>';--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                {--%>
-<%--                    data: 'title',--%>
-<%--                    render: function(data, type, row) {--%>
-<%--                        var href = '/tasks/' + row.id;--%>
-<%--                        return '<a href="' + href + '">' + data + '</a>';--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                { data: 'fullnameUser' },--%>
-<%--                { data: 'priority.code',--%>
-<%--                    render: function(data, type, row) {--%>
-<%--                        var colorClass = getPriorityColor(data);--%>
-<%--                        return '<span class="badge ' + colorClass + '">' + data + '</span>';--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                {--%>
-<%--                    data: 'progress',--%>
-<%--                    render: function(data, type, row) {--%>
-<%--                        var minWidth = 25; // Độ rộng tối thiểu--%>
-<%--                        var width = Math.max(data, minWidth); // Đảm bảo rộng ít nhất là 50%--%>
-<%--                        return '<div class="progress" style="height: 20px;"><div class="progress-bar bg-success" role="progressbar" style="width: ' + width + '%" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%</div></div>';--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                { data: 'startDate' },--%>
-<%--                { data: 'dueOrCloseDate' }--%>
-<%--            ],--%>
-<%--            ordering: false,--%>
-<%--            searching: false,--%>
-<%--            lengthChange: false,--%>
-<%--            paging: false,--%>
-<%--            info: false--%>
-<%--        });--%>
-
-<%--        $('#search-button').on('click', function() {--%>
-<%--            var keyword = $('#search-input').val();--%>
-<%--            tasksRequest.search = keyword;--%>
-<%--            tasksRequest.page = 1;--%>
-<%--            tableTask.ajax.reload();--%>
-<%--            loadPaging();--%>
-<%--        });--%>
-
-<%--        $('#page-count-select').on('change', function() {--%>
-<%--            var selectedValue = $(this).val();--%>
-<%--            tasksRequest.pageSize = selectedValue;--%>
-<%--            tasksRequest.page = 1;--%>
-<%--            tableTask.ajax.reload();--%>
-<%--            loadPaging();--%>
-<%--        });--%>
-
-<%--        loadPaging();--%>
-<%--        tableStatus = $('#data-table-status').DataTable({--%>
-<%--            ajax: {--%>
-<%--                url: '/api/v1/tasks/status-task-count',--%>
-<%--                contentType: 'application/json',--%>
-<%--                method: 'GET',--%>
-<%--                dataSrc: ''--%>
-<%--            },--%>
-<%--            columns: [--%>
-<%--                {--%>
-<%--                    data: 'statusTask',--%>
-<%--                    render: function(data, type, row) {--%>
-<%--                        var colorClass = getStatusColor(data.code);--%>
-<%--                        return '<span class="badge ' + colorClass + '">' + data.name + '</span>';--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                {--%>
-<%--                    data: 'statusTask.code',--%>
-<%--                    render: function(data, type, row) {--%>
-<%--                        return '<a class="numberStatus" href="#" status="' + data + '">' + row.taskCount + '</a>';--%>
-<%--                    }--%>
-<%--                }--%>
-<%--            ],--%>
-<%--            ordering: false,--%>
-<%--            searching: false,--%>
-<%--            lengthChange: false,--%>
-<%--            paging: false,--%>
-<%--            info: false--%>
-<%--        });--%>
-
-<%--        $('#data-table-status').on('click', 'a.numberStatus', function(e) {--%>
-<%--            e.preventDefault();--%>
-<%--            var statusTask = $(this).attr('status');--%>
-<%--            tasksRequest.statusTask = statusTask;--%>
-<%--            tasksRequest.page = 1;--%>
-<%--            tableTask.ajax.reload();--%>
-<%--            loadPaging();--%>
-<%--        });--%>
-<%--    });--%>
-
-<%--    function loadPaging(){--%>
-<%--        callAjaxByJsonWithData('/api/v1/tasks/count', 'POST', tasksRequest, function (totalItem) {--%>
-
-<%--            if (window.pagObj) {--%>
-<%--                window.pagObj.twbsPagination('destroy');--%>
-<%--            }--%>
-
-<%--            var totalPage = 0;--%>
-<%--            if(totalItem <= tasksRequest.pageSize) totalPage = 1;--%>
-<%--            else totalPage = Math.ceil(totalItem / tasksRequest.pageSize);--%>
-
-<%--            //paging--%>
-<%--            var totalPages = totalPage;--%>
-<%--            var currentPage = tasksRequest.page;--%>
-
-<%--            $(function () {--%>
-<%--                window.pagObj = $('#pagination').twbsPagination({--%>
-<%--                    totalPages: totalPages,--%>
-<%--                    visiblePages: <%=TaskConstant.visiblePages%>,--%>
-<%--                    startPage: currentPage,--%>
-<%--                    onPageClick: function (event, page) {--%>
-<%--                        if (currentPage != page) {--%>
-<%--                            tasksRequest.page = page;--%>
-<%--                            tableTask.ajax.reload();--%>
-<%--                            currentPage = page;--%>
-<%--                        }--%>
-<%--                    }--%>
-<%--                });--%>
-<%--            });--%>
-<%--        });--%>
-<%--    }--%>
-<%--</script>--%>
-<%--<script>--%>
-<%--    var isFirstTime = true;--%>
-
-<%--    $(document).ready(function() {--%>
-
-<%--        $('#registerTaskModal').on('shown.bs.modal', function() {--%>
-
-<%--            // username--%>
-<%--            if(isDeleveloper()){--%>
-<%--                var selectElement = $('#selectUsername');--%>
-<%--                selectElement.empty();--%>
-<%--                selectElement.append('<option value="'+ userCurrent.id+'">'+userCurrent.fullname+"</option>");--%>
-<%--                $('#selectUsername').prop('disabled', true);--%>
-<%--            } else{--%>
-<%--                if (isFirstTime) {--%>
-<%--                    var selectElement = $('#selectUsername');--%>
-<%--                    selectElement.empty();--%>
-<%--                    callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {--%>
-<%--                        rs.forEach(function(user) {--%>
-<%--                            var option = $('<option></option>');--%>
-<%--                            option.attr('value', user.id);--%>
-<%--                            option.text(user.fullname);--%>
-
-<%--                            if (user.id == userCurrent.id) {--%>
-<%--                                option.attr('selected', 'selected');--%>
-<%--                            }--%>
-
-<%--                            selectElement.append(option);--%>
-<%--                        });--%>
-
-<%--                        isFirstTime = false;--%>
-<%--                    });--%>
-<%--                }--%>
-<%--            }--%>
-
-
-<%--            // content--%>
-<%--            $('#content').summernote({--%>
-<%--                maxHeight: 140--%>
-<%--            });--%>
-
-<%--            Validator({--%>
-<%--                form:'#registerTaskForm',--%>
-<%--                errorSelector: '.form-message',--%>
-<%--                rules:[--%>
-<%--                    Validator.isRequired('#title'),--%>
-<%--                    Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),--%>
-<%--                    Validator.isRequired('#content'),--%>
-<%--                ],--%>
-<%--                onSubmit: function (formData) {--%>
-<%--                    formData.append('content', $('#content').summernote().summernote('code'));--%>
-<%--                    callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {--%>
-<%--                        window.location.href = "/tasks?registerSuccess";--%>
-<%--                    });--%>
-<%--                }--%>
-<%--            });--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
-
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -525,14 +170,14 @@
             <div class="card-body border border-dashed border-end-0 border-start-0">
                 <form>
                     <div class="row g-3">
-                        <div class="col-xxl-8 col-sm-12">
+                        <div class="col-xxl-7 col-sm-12">
                             <div class="search-box">
-                                <input type="text" class="form-control search bg-light border-light" placeholder="Search by username, title, content">
+                                <input id="search-input" type="text" class="form-control search bg-light border-light" placeholder="Search by username, title, content">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
                         <!--end col-->
-                        <div class="col-xxl-3 col-sm-4">
+                        <div class="col-xxl-2 col-sm-4">
                             <div class="input-light">
                                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
                                     <option value="" selected>All</option>
@@ -546,9 +191,18 @@
                         </div>
                         <!--end col-->
                         <div class="col-xxl-1 col-sm-4">
-                            <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                            <button id="filter-btn" type="button" class="btn btn-primary w-100"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                 Filters
                             </button>
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
+                            <label style="margin-right: 5px;">Show entries: </label>
+                            <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
                         </div>
                         <!--end col-->
                     </div>
@@ -558,7 +212,7 @@
             <!--end card-body-->
             <div class="card-body">
                 <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap mb-0" id="tasksTable">
+                    <table class="table align-middle table-nowrap mb-0 w-100" id="tasksTable">
                         <thead class="table-light text-muted">
                         <tr>
                             <th scope="col" style="width: 40px;">
@@ -587,15 +241,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-2">
+                <div class="d-flex justify-content-center mt-2">
                     <div class="pagination-wrap hstack gap-2">
-                        <a class="page-item pagination-prev disabled" href="#">
-                            Previous
-                        </a>
-                        <ul class="pagination listjs-pagination mb-0"></ul>
-                        <a class="page-item pagination-next" href="#">
-                            Next
-                        </a>
+                        <ul id="pagination" class="pagination"></ul>
                     </div>
                 </div>
             </div>
@@ -631,7 +279,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
-                <h5 class="modal-title" id="exampleModalLabel">Create Task</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Register Task</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
             <form action="">
@@ -639,10 +287,10 @@
                     <input type="hidden" id="tasksId" />
                     <div class="row g-3">
                         <div class="col-lg-12">
-                            <label for="projectName-field" class="form-label">Project Name</label>
-                            <input type="text" id="projectName-field" class="form-control" placeholder="Project name" required />
+                            <label for="selectUsername" class="form-label">Username: <span class="username-register-task"></span></label>
+                            <select id="selectUsername" class="form-select d-none" aria-label="Default select example">
+                            </select>
                         </div>
-                        <!--end col-->
                         <div class="col-lg-12">
                             <div>
                                 <label for="tasksTitle-field" class="form-label">Title</label>
@@ -651,120 +299,8 @@
                         </div>
                         <!--end col-->
                         <div class="col-lg-12">
-                            <label for="clientName-field" class="form-label">Client Name</label>
-                            <input type="text" id="clientName-field" class="form-control" placeholder="Client name" required />
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label class="form-label">Assigned To</label>
-                            <div data-simplebar style="height: 95px;">
-                                <ul class="list-unstyled vstack gap-2 mb-0">
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-1.jpg" id="anna-adame">
-                                            <label class="form-check-label d-flex align-items-center" for="anna-adame">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Anna Adame
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-3.jpg" id="frank-hook">
-                                            <label class="form-check-label d-flex align-items-center" for="frank-hook">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Frank Hook
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-6.jpg" id="alexis-clarke">
-                                            <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Alexis Clarke
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-2.jpg" id="herbert-stokes">
-                                            <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Herbert Stokes
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-7.jpg" id="michael-morris">
-                                            <label class="form-check-label d-flex align-items-center" for="michael-morris">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Michael Morris
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-5.jpg" id="nancy-martino">
-                                            <label class="form-check-label d-flex align-items-center" for="nancy-martino">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Nancy Martino
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-8.jpg" id="thomas-taylor">
-                                            <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Thomas Taylor
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" name="assignedTo[]" value="avatar-10.jpg" id="tonya-noble">
-                                            <label class="form-check-label d-flex align-items-center" for="tonya-noble">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle">
-                                                                    </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                                        Tonya Noble
-                                                                    </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                            <label for="content" class="form-label">Content</label>
+                            <div id="content" class="ckeditor-classic"></div>
                         </div>
                         <!--end col-->
                         <div class="col-lg-6">
@@ -773,20 +309,8 @@
                         </div>
                         <!--end col-->
                         <div class="col-lg-6">
-                            <label for="ticket-status" class="form-label">Status</label>
-                            <select class="form-control" data-choices data-choices-search-false id="ticket-status">
-                                <option value="">Status</option>
-                                <option value="New">New</option>
-                                <option value="Inprogress">Inprogress</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Completed">Completed</option>
-                            </select>
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
                             <label for="priority-field" class="form-label">Priority</label>
                             <select class="form-control" data-choices data-choices-search-false id="priority-field">
-                                <option value="">Priority</option>
                                 <option value="High">High</option>
                                 <option value="Medium">Medium</option>
                                 <option value="Low">Low</option>
@@ -799,8 +323,7 @@
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="add-btn">Add Task</button>
-                        <button type="button" class="btn btn-success" id="edit-btn">Update Task</button>
+                        <button type="submit" class="btn btn-success" id="add-btn">Register Task</button>
                     </div>
                 </div>
             </form>
@@ -810,6 +333,15 @@
 <!--end modal-->
 <script src="/assets/custom/js/task/task.js"></script>
 <script>
+
+    var tasksRequest = {
+        page: 1,
+        pageSize: $('#page-count-select').val(),
+        statusTask: '',
+        search: ''
+    }
+    var tableTask = null;
+
     $(document).ready(function (){
         callAjaxByJsonWithData('/api/v1/tasks/status-task-count', 'GET', null, function (rs) {
             $(".counter-total-task").attr("data-target", getTaskCountByCode(rs, T_ALL));
@@ -820,14 +352,7 @@
             $(".counter-reopend-task").attr("data-target", getTaskCountByCode(rs, T_REOPENED));
         });
 
-
-        var tasksRequest = {
-            page: 1,
-            pageSize: 10,
-            statusTask: '',
-            search: ''
-        }
-        $('#tasksTable').DataTable({
+        tableTask = $('#tasksTable').DataTable({
             ajax: {
                 url: '/api/v1/tasks',
                 contentType: 'application/json',
@@ -905,6 +430,108 @@
             lengthChange: false,
             paging: false,
             info: false
+        });
+
+        $('#filter-btn').on('click', function() {
+            tasksRequest.search = $('#search-input').val();
+            tasksRequest.statusTask = $('#idStatus').val();
+            tableTask.ajax.reload();
+        });
+
+        loadPaging();
+
+        $('#page-count-select').on('change', function() {
+            var selectedValue = $(this).val();
+            tasksRequest.pageSize = selectedValue;
+            tasksRequest.page = 1;
+            tableTask.ajax.reload();
+            loadPaging();
+        });
+    });
+
+    function loadPaging(){
+        callAjaxByJsonWithData('/api/v1/tasks/count', 'POST', tasksRequest, function (totalItem) {
+
+            if (window.pagObj) {
+                window.pagObj.twbsPagination('destroy');
+            }
+
+            //paging
+            var totalPages = 0;
+            if(totalItem <= tasksRequest.pageSize) totalPages = 1;
+            else totalPages = Math.ceil(totalItem / tasksRequest.pageSize);
+            var currentPage = tasksRequest.page;
+
+            $(function () {
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    visiblePages: <%=TaskConstant.visiblePages%>,
+                    startPage: currentPage,
+                    onPageClick: function (event, page) {
+                        if (currentPage != page) {
+                            tasksRequest.page = page;
+                            tableTask.ajax.reload();
+                            currentPage = page;
+                        }
+                    }
+                });
+            });
+        });
+    }
+</script>
+<script>
+
+    var isFirstTime = true;
+    $(document).ready(function() {
+        $('#showModal').on('shown.bs.modal', function() {
+            // username
+            if(isDeleveloper()){
+                $('.username-register-task').text(userCurrent.fullname);
+            } else{
+                if (isFirstTime) {
+                    var selectElement = $('#selectUsername');
+                    selectElement.empty();
+                    callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
+                        rs.forEach(function(user) {
+                            var option = $('<option></option>');
+                            option.attr('value', user.id);
+                            option.text(user.fullname);
+
+                            if (user.id == userCurrent.id) {
+                                option.attr('selected', 'selected');
+                            }
+
+                            selectElement.append(option);
+                        });
+
+                        isFirstTime = false;
+                    });
+
+                    $('#selectUsername').removeClass('d-none');
+                }
+            }
+
+
+            // // content
+            // $('#content').summernote({
+            //     maxHeight: 140
+            // });
+            //
+            // Validator({
+            //     form:'#registerTaskForm',
+            //     errorSelector: '.form-message',
+            //     rules:[
+            //         Validator.isRequired('#title'),
+            //         Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),
+            //         Validator.isRequired('#content'),
+            //     ],
+            //     onSubmit: function (formData) {
+            //         formData.append('content', $('#content').summernote().summernote('code'));
+            //         callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
+            //             window.location.href = "/tasks?registerSuccess";
+            //         });
+            //     }
+            // });
         });
     });
 </script>
