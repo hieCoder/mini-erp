@@ -11,7 +11,8 @@
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
-
+    <!-- Plugins css -->
+    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
     <!-- jsvectormap css -->
     <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
 
@@ -28,6 +29,10 @@
     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+    <%-- Custom --%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/custom/js/validation.js"></script>
 
 </head>
 
@@ -83,11 +88,11 @@
     </div>
 </div>
 
-<div class="customizer-setting d-none d-md-block">
-    <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-    </div>
-</div>
+<%--<div class="customizer-setting d-none d-md-block">--%>
+<%--    <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">--%>
+<%--        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <!-- Theme Settings -->
 <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
@@ -772,9 +777,11 @@
 
 <!-- Dashboard init -->
 <script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
-
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
+
+<%-- Custom --%>
+<script src="/assets/custom/js/main.js"></script>
 </body>
 
 </html>
