@@ -53,53 +53,43 @@
 //         }
 //     });
 // }
-//
-// function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
-//     var data = {};
-//     formData.forEach((value, key) => data[key] = value);
-//
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         data: JSON.stringify(data),
-//         contentType: "application/json",
-//         dataType: 'json',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
-// function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
-//
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         data: JSON.stringify(data),
-//         contentType: "application/json",
-//         dataType: 'json',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
+
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
+    var data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(response) {
+            callbackSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            callbackFail(xhr);
+        }
+    });
+}
+
+function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callbackFail) {
+
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(response) {
+            callbackSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            callbackFail(xhr);
+        }
+    });
+}
+
 // function isBlank(a){
 //     return a === '' || a===null;
 // }
@@ -190,13 +180,16 @@
 //             var indexOfHyphen = fileName.indexOf("-");
 //             if (indexOfHyphen !== -1) {
 //                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-//                 if (remainingPart.length > 10) {
-//                     var truncatedFileName = remainingPart.substring(0, 10) + '...';
+//                 var truncatedFileName;
+//                 if (remainingPart.length > 14) {
+//                     truncatedFileName = remainingPart.substring(0, 10) + '...';
 //                 } else {
-//                     var truncatedFileName = remainingPart;
+//                     truncatedFileName = remainingPart;
 //                 }
-//                 element.textContent = truncatedFileName;
+//             } else {
+//                 if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
 //             }
+//             element.textContent = truncatedFileName;
 //         }
 //     });
 // }
