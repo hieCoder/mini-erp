@@ -23,6 +23,9 @@
     <!-- custom Css-->
     <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
+    <%-- Custom --%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/custom/js/validation.js"></script>
 </head>
 
 <body>
@@ -95,7 +98,11 @@
 <script src="/assets/libs/particles.js/particles.js"></script>
 <!-- particles app js -->
 <script src="/assets/js/pages/particles.app.js"></script>
+<!-- password-addon init -->
+<script src="/assets/js/pages/password-addon.init.js"></script>
 
+<%-- Custom --%>
+<script src="/assets/custom/js/main.js"></script>
 </body>
 
 </html>
