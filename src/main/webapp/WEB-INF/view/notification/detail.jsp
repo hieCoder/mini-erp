@@ -524,7 +524,6 @@
                 return false;
             }
             var formData = new FormData();
-            formData.append("notificationId", title);
             formData.append("title", title);
             formData.append("content", content);
             formData.append("oldFile", oldFile);

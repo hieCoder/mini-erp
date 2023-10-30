@@ -11,13 +11,8 @@
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
-    <!-- Plugins css -->
-    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
-    <!-- jsvectormap css -->
-    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
 
-    <!--Swiper slider css-->
-    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <dec:head />
 
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
@@ -29,6 +24,8 @@
     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+
 
     <%-- Custom --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -765,18 +762,18 @@
 <script src="/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 <script src="/assets/js/plugins.js"></script>
 
-<!-- apexcharts -->
-<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<%--<!-- apexcharts -->--%>
+<%--<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>--%>
 
-<!-- Vector map-->
-<script src="/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>
-<script src="/assets/libs/jsvectormap/maps/world-merc.js"></script>
+<%--<!-- Vector map-->--%>
+<%--<script src="/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>--%>
+<%--<script src="/assets/libs/jsvectormap/maps/world-merc.js"></script>--%>
 
-<!--Swiper slider js-->
-<script src="/assets/libs/swiper/swiper-bundle.min.js"></script>
+<%--<!--Swiper slider js-->--%>
+<%--<script src="/assets/libs/swiper/swiper-bundle.min.js"></script>--%>
 
-<!-- Dashboard init -->
-<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
+<%--<!-- Dashboard init -->--%>
+<%--<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>--%>
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
 
