@@ -82,7 +82,8 @@
             PROGRESS = #{progress},
             START_DATE = #{startDate},
             CLOSE_DATE = #{closeDate},
-            DUE_DATE = #{dueDate}
+            DUE_DATE = #{dueDate},
+            USER_ID = #{user.id}
         WHERE ID = #{id};
     </update>
 
@@ -92,13 +93,32 @@
         WHERE ID = #{id};
     </update>
 
+    <update id="changeStatusTasks" parameterType="map">
+        UPDATE TASK
+        SET STATUS = #{status}
+        WHERE ID IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
     <select id="getStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
-        SELECT STATUS_TASK, COUNT(*) as taskCount
-        FROM TASK
-        WHERE STATUS = 'ACTIVE'
-        GROUP BY STATUS_TASK
-        UNION
-        SELECT '', COUNT(*)
+        SELECT all_statuses.status AS STATUS_TASK, COUNT(task.id) as taskCount
+        FROM (
+                 SELECT 'REGISTERED' AS status
+                 UNION ALL
+                 SELECT 'OPENED'
+                 UNION ALL
+                 SELECT 'POSTPONED'
+                 UNION ALL
+                 SELECT 'REOPENED'
+                 UNION ALL
+                 SELECT 'CLOSED'
+             ) AS all_statuses
+                 LEFT JOIN TASK AS task ON all_statuses.status = task.STATUS_TASK AND task.STATUS = 'ACTIVE'
+        GROUP BY all_statuses.status
+        UNION ALL
+        SELECT '' AS STATUS_TASK, COUNT(task.id) as taskCount
         FROM TASK
         WHERE STATUS = 'ACTIVE'
     </select>

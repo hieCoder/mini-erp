@@ -19,6 +19,9 @@ public class TaskUpdateRequest {
     @NotBlank(message = "Field id is not filled")
     private String id;
 
+    @NotBlank(message = "Field userId is not filled")
+    private String userId;
+
     private String action;
 
     @NotBlank(message = "Field title is not filled")

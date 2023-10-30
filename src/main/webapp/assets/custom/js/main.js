@@ -1,10 +1,11 @@
-//
-// // CONSTANT
-// const U_DEVELOPER = 'DEVELOPER';
-// const T_REGISTERED = 'REGISTERED';
-// const T_POSTPONSED = 'POSTPONSED';
-// const T_CLOSED = 'CLOSED';
-//
+
+// CONSTANT
+const U_DEVELOPER = 'DEVELOPER';
+const DEFAULT_VALUE_SNOW_EDITOR = [
+        `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
+        `<div class="ql-editor" data-gramm="false" contenteditable="true"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
+        `<div class="ql-editor" data-gramm="false" contenteditable="true"><div><br></div></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
+    ];
 // const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
 // const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
 // const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
@@ -53,77 +54,68 @@
 //         }
 //     });
 // }
-//
-// function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
-//     var data = {};
-//     formData.forEach((value, key) => data[key] = value);
-//
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         data: JSON.stringify(data),
-//         contentType: "application/json",
-//         dataType: 'json',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
-// function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
-//
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         data: JSON.stringify(data),
-//         contentType: "application/json",
-//         dataType: 'json',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
+
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
+    var data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(response) {
+            if(callbackSuccess) callbackSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            if(callbackFail) callbackFail(xhr);
+        }
+    });
+}
+
+function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callbackFail) {
+
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(response) {
+            if(callbackSuccess) callbackSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            if(callbackFail) callbackFail(xhr);
+        }
+    });
+}
+
 // function isBlank(a){
 //     return a === '' || a===null;
 // }
-//
-// function formatDateValueToValueOfInputDate(s) {
-//     var dateArray = s.split('-');
-//     var date = new Date(Date.UTC(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])));
-//     return date.toISOString().slice(0, 10);
-// }
-//
+
+function formatDateValueToValueOfInputDate(s) {
+    var dateArray = s.split('-');
+    var date = new Date(Date.UTC(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])));
+    return date.toISOString().slice(0, 10);
+}
+
 // function getFileNameFromPath(path) {
 //     var parts = path.split("/");
 //     var lastPart = parts[parts.length - 1];
 //     return lastPart;
 // }
 //
-// function isAdminOrUserLogin(idUser) {
-//     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
-// }
-//
-// function isDeleveloper() {
-//     return userCurrent.role == U_DEVELOPER;
-// }
-//
+
+function isAdminOrUserLogin(idUser) {
+    return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
+}
+
+function isDeleveloper() {
+    return userCurrent.role == U_DEVELOPER;
+}
+
 // function createLoadingHtml() {
 //     return `
 //             <div class="text-center d-flex align-items-center justify-content-center">
@@ -190,13 +182,16 @@
 //             var indexOfHyphen = fileName.indexOf("-");
 //             if (indexOfHyphen !== -1) {
 //                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-//                 if (remainingPart.length > 10) {
-//                     var truncatedFileName = remainingPart.substring(0, 10) + '...';
+//                 var truncatedFileName;
+//                 if (remainingPart.length > 14) {
+//                     truncatedFileName = remainingPart.substring(0, 10) + '...';
 //                 } else {
-//                     var truncatedFileName = remainingPart;
+//                     truncatedFileName = remainingPart;
 //                 }
-//                 element.textContent = truncatedFileName;
+//             } else {
+//                 if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
 //             }
+//             element.textContent = truncatedFileName;
 //         }
 //     });
 // }
