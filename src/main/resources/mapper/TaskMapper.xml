@@ -82,7 +82,8 @@
             PROGRESS = #{progress},
             START_DATE = #{startDate},
             CLOSE_DATE = #{closeDate},
-            DUE_DATE = #{dueDate}
+            DUE_DATE = #{dueDate},
+            USER_ID = #{user.id}
         WHERE ID = #{id};
     </update>
 
@@ -90,6 +91,15 @@
         UPDATE TASK SET
             STATUS = #{status}
         WHERE ID = #{id};
+    </update>
+
+    <update id="changeStatusTasks" parameterType="map">
+        UPDATE TASK
+        SET STATUS = #{status}
+        WHERE ID IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </update>
 
     <select id="getStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">

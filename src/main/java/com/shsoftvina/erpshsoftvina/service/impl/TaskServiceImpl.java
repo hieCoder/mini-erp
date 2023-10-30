@@ -22,9 +22,12 @@ import com.shsoftvina.erpshsoftvina.service.TaskService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,6 +84,8 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.findById(id);
         if (task == null) throw new NotFoundException(MessageErrorUtils.notFound("Id"));
 
+        if(userMapper.findById(taskUpdateRequest.getUserId()) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+
         if (!EnumUtils.isExistInEnum(PriorityTaskEnum.class, taskUpdateRequest.getPriority()))
             throw new NotFoundException(MessageErrorUtils.notFound("Priority"));
 
@@ -129,5 +134,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Map<String, Object>> getTaskByHashtag(String userId) {
         return taskMapper.getTaskByHashtag(userId);
+    }
+
+    @Override
+    public int deleteByIds(String[] ids) {
+        for(String id: ids){
+            if (taskMapper.findById(id) == null)
+                throw new NotFoundException(MessageErrorUtils.notFound("Id"));
+        }
+        return taskMapper.changeStatusTasks(ids, StatusDeleteTaskEnum.INACTIVE.toString());
     }
 }

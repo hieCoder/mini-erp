@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.model.response.task;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,7 @@ public class TaskDetailResponse {
     private String id;
     private ActionChangeStatusTaskEnumDto statusTask;
     private String title;
-    private String idUser;
-    private String fullnameUser;
+    private IdAndFullnameUserResponse user;
     private String createdDate;
     private String startDate;
     private String dueDate;

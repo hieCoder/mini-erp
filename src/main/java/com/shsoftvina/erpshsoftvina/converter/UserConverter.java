@@ -133,6 +133,7 @@ public class UserConverter {
     }
 
     public IdAndFullnameUserResponse toIdAndFullnameUserResponse(User user) {
+        if(user == null) return null;
         return IdAndFullnameUserResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
