@@ -1,3 +1,4 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@include file="/common/taglib.jsp" %>
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
@@ -23,6 +24,9 @@
     <!--Swiper slider css-->
     <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
+<%--    <!-- Sweet Alert css-->--%>
+<%--    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />--%>
+
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
@@ -33,8 +37,24 @@
     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="../assets/js/custom/main.js"></script>
+
+    <%-- Custom --%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <%-- Custom --%>
+    <script src="/assets/custom/js/main.js"></script>
+    <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
+    <script src="/assets/custom/js/validation.js"></script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        var userCurrent = {
+            id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
+            fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
+            role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+        };
+    </script>
+
 </head>
 
 <body>
@@ -779,14 +799,52 @@
 <!-- Dashboard init -->
 <script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
 
-<!-- Widget init -->
-<script src="/assets/js/pages/widgets.init.js"></script>
+<%--<!-- list.js min js -->--%>
+<%--<script src="/assets/libs/list.js/list.min.js"></script>--%>
+
+<%--<!--list pagination js-->--%>
+<%--<script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>--%>
+
+<%--<!-- titcket init js -->--%>
+<%--<script src="/assets/js/pages/tasks-list.init.js"></script>--%>
+
+<%--<!-- Sweet Alerts js -->--%>
+<%--<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>--%>
+
+<!-- ckeditor -->
+<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+
+<!-- quill js -->
+<script src="/assets/libs/quill/quill.min.js"></script>
+
+<!-- init js -->
+<script src="/assets/js/pages/form-editor.init.js"></script>
+
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
 
-<div class="jvm-tooltip"></div>
 
+<!-- Widget init -->
+<script src="/assets/js/pages/widgets.init.js"></script>
+<script>
+
+    // var scheduleLink = '';
+    // var managementTime = ''
+    // if (userCurrent.role != U_DEVELOPER) {
+    //     scheduleLink = '/schedules';
+    //     managementTime = '/management-time'
+    // } else {
+    //     scheduleLink = '/schedules/detail/' + userCurrent.id;
+    //     managementTime = '/management-time/' + userCurrent.id;
+    // }
+    // $('.schedule-login').attr('href', scheduleLink);
+    // $('.management-time-day-login').attr('href', managementTime);
+    // if (userCurrent.role == U_DEVELOPER) {
+    //     $('.management-login').remove();
+    //     $('.setting-login').remove();
+    // }
+</script>
 <!--datatable js-->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -797,6 +855,5 @@
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="/assets/js/pages/datatables.init.js"></script>
-
 </body>
 </html>

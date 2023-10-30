@@ -1,6 +1,6 @@
-//
-// // CONSTANT
-// const U_DEVELOPER = 'DEVELOPER';
+
+// CONSTANT
+const U_DEVELOPER = 'DEVELOPER';
 // const T_REGISTERED = 'REGISTERED';
 // const T_POSTPONSED = 'POSTPONSED';
 // const T_CLOSED = 'CLOSED';
@@ -10,51 +10,50 @@
 // const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
 //
 // // FUNCTION
+// function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
+//     $.ajax({
+//         url: urlAPI,
+//         type: methodType,
+//         processData: false,
+//         contentType: false,
+//         data: formData,
+//         enctype: 'multipart/form-data',
+//         success: function(response) {
+//             callback(response);
+//             resetForm(formId);
+//         },
+//         error: function (xhr, status, error) {
+//             resetForm(formId);
+//             Swal.fire({
+//                 icon: 'error',
+//                 text: JSON.parse(xhr.responseText).message
+//             });
+//         }
+//     });
+// }
 //
-function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
-    $.ajax({
-        url: urlAPI,
-        type: methodType,
-        processData: false,
-        contentType: false,
-        data: formData,
-        enctype: 'multipart/form-data',
-        success: function(response) {
-            callback(response);
-            resetForm(formId);
-        },
-        error: function (xhr, status, error) {
-            resetForm(formId);
-            Swal.fire({
-                icon: 'error',
-                text: JSON.parse(xhr.responseText).message
-            });
-        }
-    });
-}
+// function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
+//     $.ajax({
+//         url: urlAPI,
+//         type: methodType,
+//         processData: false,
+//         contentType: false,
+//         data: formData,
+//         enctype: 'multipart/form-data',
+//         success: function(response) {
+//             callback(response);
+//         },
+//         error: function (xhr, status, error) {
+//             Swal.fire({
+//                 icon: 'error',
+//                 text: JSON.parse(xhr.responseText).message
+//             });
+//             callBackError();
+//         }
+//     });
+// }
 
-function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
-    $.ajax({
-        url: urlAPI,
-        type: methodType,
-        processData: false,
-        contentType: false,
-        data: formData,
-        enctype: 'multipart/form-data',
-        success: function(response) {
-            callback(response);
-        },
-        error: function (xhr, status, error) {
-            Swal.fire({
-                icon: 'error',
-                text: JSON.parse(xhr.responseText).message
-            });
-            callBackError();
-        }
-    });
-}
-
-function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, formId) {
+function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
 
@@ -65,21 +64,15 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callback, form
         contentType: "application/json",
         dataType: 'json',
         success: function(response) {
-            callback(response);
-            resetForm(formId);
+            if(callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            resetForm(formId);
-            Swal.fire({
-                icon: 'error',
-                text: JSON.parse(xhr.responseText).message
-            });
+            if(callbackFail) callbackFail(xhr);
         }
     });
 }
 
-function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
-
+function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callbackFail) {
     $.ajax({
         url: urlAPI,
         type: methodType,
@@ -87,15 +80,10 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
         contentType: "application/json",
         dataType: 'json',
         success: function(response) {
-            callback(response);
-            resetForm(formId);
+            if(callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            resetForm(formId);
-            Swal.fire({
-                icon: 'error',
-                text: JSON.parse(xhr.responseText).message
-            });
+            if(callbackFail) callbackFail(xhr);
         }
     });
 }
@@ -119,21 +107,20 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callback, formId) {
 // function isAdminOrUserLogin(idUser) {
 //     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 // }
-//
-// function isDeleveloper() {
-//     return userCurrent.role == U_DEVELOPER;
-// }
-//
-function createLoadingHtml() {
-    return `
-            <div class="text-center d-flex align-items-center justify-content-center">
-                <div class="custom-spinner d-flex align-items-center justify-content-center">
-                    <div class="dot"></div>
-                </div>
-            </div>
-        `;
+
+function isDeleveloper() {
+    return userCurrent.role == U_DEVELOPER;
 }
-//
+
+// function createLoadingHtml() {
+//     return `
+//             <div class="text-center d-flex align-items-center justify-content-center">
+//                 <div class="custom-spinner d-flex align-items-center justify-content-center">
+//                     <div class="dot"></div>
+//                 </div>
+//             </div>
+//         `;
+// }
 function resetForm(idForm){
     $('#'+idForm).find('*').prop('disabled', false);
     $('div.custom-spinner').parent().remove();
@@ -190,13 +177,16 @@ function cutShortLink() {
             var indexOfHyphen = fileName.indexOf("-");
             if (indexOfHyphen !== -1) {
                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-                if (remainingPart.length > 10) {
-                    var truncatedFileName = remainingPart.substring(0, 10) + '...';
+                var truncatedFileName;
+                if (remainingPart.length > 14) {
+                    truncatedFileName = remainingPart.substring(0, 10) + '...';
                 } else {
-                    var truncatedFileName = remainingPart;
+                    truncatedFileName = remainingPart;
                 }
-                element.textContent = truncatedFileName;
+            } else {
+                if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
             }
+            element.textContent = truncatedFileName;
         }
     });
 }
