@@ -47,37 +47,27 @@
                         class="ri-user-smile-line label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
                 </button>
             </div>
-            <div class="col-md-4 col-xl-4">
-                <div class="form-group">
-                    <label for="pageCount" class="form-label mb-0 text-muted">Default</label>
-                    <select class="form-select rounded-pill mb-3" aria-label="Default select example" id="pageCount">
-                        <option selected="">--Select size--</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Basic Datatables</h5>
+                        <h5 class="card-title mb-0">Accounting Datatables</h5>
                     </div>
                     <div class="card-body">
                         <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
-                                    <div class="dataTables_length" id="example_length"><label>Show <select
-                                            name="example_length"
-                                            aria-controls="example"
-                                            class="form-select form-select-sm">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select> entries</label></div>
+                                    <div class="dataTables_length" id="example_length"><label for="pageCount"
+                                                                                              class="form-label">Show
+                                        <select
+                                                name="example_length"
+                                                aria-controls="example"
+                                                class="form-select form-select-sm" id="pageCount">
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                        </select> entries</label></div>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <div id="example_filter" class="dataTables_filter"><label>Search:<input
@@ -90,20 +80,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="example"
+                                    <table
                                            class="table table-bordered dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed"
                                            style="width: 100%;" aria-describedby="example_info">
                                         <thead>
                                         <tr>
-                                            <th scope="col" style="width: 17.4px;" class="sorting sorting_asc"
-                                                tabindex="0" aria-controls="example" rowspan="1" colspan="1"
-                                                aria-sort="ascending" aria-label="
-                                                : activate to sort column descending">
-                                                <div class="form-check">
-                                                    <input class="form-check-input fs-15" type="checkbox" id="checkAll"
-                                                           value="option">
-                                                </div>
-                                            </th>
                                             <th data-ordering="false" class="sorting" tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 43.4px;"
                                                 aria-label="SR No.: activate to sort column ascending">NO.
@@ -141,10 +122,13 @@
                                                 aria-label="Status: activate to sort column ascending">
                                                 NOTE
                                             </th>
-                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
-                                                rowspan="1" colspan="1" style="width: 43.4px;"
-                                                aria-label="Action: activate to sort column descending"
-                                                aria-sort="ascending">BILL
+                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                                colspan="1" style="width: 62.4px;"
+                                                aria-label="Priority: activate to sort column ascending">BILL
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                                colspan="1" style="width: 62.4px;"
+                                                aria-label="Priority: activate to sort column ascending">ACTION
                                             </th>
                                         </tr>
                                         </thead>
@@ -152,17 +136,10 @@
                                         <c:forEach varStatus="loop" var="a"
                                                    items="${requestScope.list.accountResponseList}">
                                             <tr class="odd">
-                                                <th scope="row" class="dtr-control sorting_1" tabindex="0">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input fs-15" type="checkbox"
-                                                               name="checkAll"
-                                                               value="option1">
-                                                    </div>
-                                                </th>
                                                 <td>${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</td>
                                                 <td><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a>
                                                 </td>
-                                                <td style=""><c:out value="${a.createdDate}"/></td>
+                                                <td style=""><c:out value="${a.payDate}"/></td>
                                                 <td style=""><c:out value="${a.title}"/></td>
                                                 <td class="${a.revenue > 0 ? 'text-bg-success' : ''}"><fmt:formatNumber
                                                         type="number" value="${a.revenue}" pattern="#,##0 ₫"/></td>
@@ -192,7 +169,7 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-                                                <td style="display: none;">
+                                                <td>
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown"
                                                                 type="button"
@@ -356,12 +333,15 @@
             </tr>
             <tr>
                 <th>Total in Month</th>
-                <td class="text-success"><fmt:formatNumber type="number" value="${list.totalList.totalRevenue}"
-                                                           pattern="#,##0 ₫"/></td>
-                <td class="text-danger"><fmt:formatNumber type="number" value="${list.totalList.totalExpense}"
-                                                          pattern="#,##0 ₫"/></td>
-                <td class="text-primary"><fmt:formatNumber type="number" value="${list.totalList.totalRemain}"
-                                                           pattern="#,##0 ₫"/></td>
+                <td class="text-success" id="totalRevenue"><fmt:formatNumber type="number"
+                                                                             value="${list.totalList.totalRevenue}"
+                                                                             pattern="#,##0 ₫"/></td>
+                <td class="text-danger" id="totalExpense"><fmt:formatNumber type="number"
+                                                                            value="${list.totalList.totalExpense}"
+                                                                            pattern="#,##0 ₫"/></td>
+                <td class="text-primary" id="totalRemain"><fmt:formatNumber type="number"
+                                                                            value="${list.totalList.totalRemain}"
+                                                                            pattern="#,##0 ₫"/></td>
             </tr>
             </tbody>
         </table>
@@ -499,19 +479,18 @@
 <!-- Modal HTML -->
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
                 The request has been completed successfully.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -522,15 +501,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
                 An error occurred while sending the request. Please try again.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -609,61 +587,60 @@
     var month = segments[segments.length - 1];
 
     document.addEventListener("DOMContentLoaded", function () {
-        // if (!isDeleveloper()) {
-        // Lấy tham chiếu đến các phần tử HTML
-        var yearSelect = document.getElementById('account-year');
-        var monthSelect = document.getElementById('account-month');
-        var data;
-        callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
-            data = rs;
-            yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
-            data.monthList.forEach(function (entry) {
-                let option = document.createElement('option');
-                option.value = entry.year;
-                option.textContent = entry.year;
-                yearSelect.appendChild(option);
-            });
-        });
-
-        yearSelect.addEventListener('change', function () {
-            $('#account-day').after(createLoadingHtml());
+        if (!isDeleveloper()) {
+            var yearSelect = document.getElementById('account-year');
+            var monthSelect = document.getElementById('account-month');
+            var data;
             callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
-                var dataMonth = rs;
-                monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
-                dataMonth.monthList.forEach(function (entry) {
-                    if (yearSelect.value === entry.year) {
-                        entry.month.forEach(function (target) {
-                            var option = document.createElement('option');
-                            option.value = target;
-                            option.textContent = target;
-                            monthSelect.appendChild(option);
-                        })
+                data = rs;
+                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+                data.monthList.forEach(function (entry) {
+                    let option = document.createElement('option');
+                    option.value = entry.year;
+                    option.textContent = entry.year;
+                    yearSelect.appendChild(option);
+                });
+            });
+
+            yearSelect.addEventListener('change', function () {
+                // $('#account-day').after(createLoadingHtml());
+                callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
+                    var dataMonth = rs;
+                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
+                    dataMonth.monthList.forEach(function (entry) {
+                        if (yearSelect.value === entry.year) {
+                            entry.month.forEach(function (target) {
+                                var option = document.createElement('option');
+                                option.value = target;
+                                option.textContent = target;
+                                monthSelect.appendChild(option);
+                            })
+                        }
+                    });
+                    $('div.custom-spinner').parent().remove();
+                    if (yearSelect.value !== "") {
+                        monthSelect.style.display = 'block';
+                    } else {
+                        monthSelect.style.display = 'none';
                     }
                 });
-                monthSelect.addEventListener('change', function () {
-                    month = yearSelect.value + "-" + monthSelect.value;
-                    let defaultDate = new Date(month);
-                    let pickYear = defaultDate.getFullYear();
-                    let pickMonth = defaultDate.getMonth() + 1;
-                    let formattedTextStartDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-01';
-                    localStorage.setItem("selectedDateStart", formattedDateToText(formattedTextStartDate));
-
-                    let lastDay = new Date(pickYear, pickMonth, 0);
-                    let lastDayOfMonth = lastDay.getDate();
-                    let formattedTextEndDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-' + lastDayOfMonth;
-                    localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
-                    console.log(month);
-                    loadPage(1);
-                });
-                $('div.custom-spinner').parent().remove();
             });
-            if (yearSelect.value !== "") {
-                monthSelect.style.display = 'block';
-            } else {
-                monthSelect.style.display = 'none';
-            }
-        });
-        // }
+
+            monthSelect.addEventListener('change', function () {
+                month = yearSelect.value + "-" + monthSelect.value;
+                let defaultDate = new Date(month);
+                let pickYear = defaultDate.getFullYear();
+                let pickMonth = defaultDate.getMonth() + 1;
+                let formattedTextStartDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-01';
+                localStorage.setItem("selectedDateStart", formattedDateToText(formattedTextStartDate));
+
+                let lastDay = new Date(pickYear, pickMonth, 0);
+                let lastDayOfMonth = lastDay.getDate();
+                let formattedTextEndDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-' + lastDayOfMonth;
+                localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
+                loadPage(1);
+            });
+        }
     });
 
     function loadPage(page) {
@@ -693,28 +670,53 @@
                         tableBody.innerHTML = "";
                         responseData.accountResponseList.forEach((account, index) => {
                             var row = tableBody.insertRow();
-                            row.innerHTML = "<th scope='row' class='align-middle text-center'>" + ((page - 1) * selectedPageSize + index + 1) + "</th>"
-                                + "<td class='align-middle' >" + '<a href="/accounting/detail/' + account.id + '">' + account.id + "</a>" + "</td>"
-                                + "<td class='align-middle' >" + account.createdDate + "</td>"
-                                + "<td class='align-middle' >" + account.title + "</td>"
-                                + "<td class='align-middle min-width text-right' style='color: " + (account.revenue > 0 ? 'green' : 'inherit') + "'>" + formatCurrency(account.revenue) + "</td>"
-                                + "<td class='align-middle min-width text-right' style='color: " + (account.expense < 0 ? 'red' : 'inherit') + "'>" + formatCurrency(account.expense) + "</td>"
-                                + "<td class='align-middle min-width text-right' style='color: blue'>" + formatCurrency(account.remain) + "</td>"
-                                + "<td class='align-middle'>" + account.user.fullname + "</td>"
-                                + "<td class='align-middle text-break'>" + (account.note !== null ? account.note : '') + "</td>";
+                            row.innerHTML =
+                                "<td>" + ((page - 1) * selectedPageSize + index + 1) + "</td>" +
+                                "<td><a href='/accounting/detail/" + account.id + "'>" + account.id + "</a></td>" +
+                                "<td style=''>" + account.createdDate + "</td>" +
+                                "<td style=''>" + account.title + "</td>" +
+                                "<td class='" + (account.revenue > 0 ? 'text-bg-success' : '') + "'>" + account.revenue + "</td>" +
+                                "<td class='" + (account.expense < 0 ? 'text-bg-danger' : '') + "'>" + account.expense + "</td>" +
+                                "<td class='text-bg-primary'>" + account.remain + "</td>" +
+                                "<td style=''>" + account.user.fullname + "</td>" +
+                                "<td style=''>" +
+                                "<span class='badge badge-soft-info cut-file-name' " +
+                                "data-bs-toggle='tooltip' data-bs-placement='bottom' " +
+                                "title='" + account.note + "'>" + account.note + "</span>" +
+                                "</td>" +
+                                "<td style='display: none;'>" +
+                                "<div class='dropdown d-inline-block'>" +
+                                "<button class='btn btn-soft-secondary btn-sm dropdown' type='button' " +
+                                "data-bs-toggle='dropdown' aria-expanded='false'>" +
+                                "<i class='ri-more-fill align-middle'></i>" +
+                                "</button>" +
+                                "<ul class='dropdown-menu dropdown-menu-end'>" +
+                                "<li><a href='#!' class='dropdown-item'>" +
+                                "<i class='ri-eye-fill align-bottom me-2 text-muted'></i>View" +
+                                "</a></li>" +
+                                "<li><a class='dropdown-item edit-item-btn'>" +
+                                "<i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit" +
+                                "</a></li>" +
+                                "<li><a class='dropdown-item remove-item-btn'>" +
+                                "<i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete" +
+                                "</a></li>" +
+                                "</ul>" +
+                                "</div>" +
+                                "</td>";
+
                             if (account.bill) {
                                 var cell = row.insertCell();
-
                                 var files = account.bill;
 
                                 for (var i = 0; i < files.length; i++) {
                                     var file = files[i];
                                     let subStringFile = file.substring(file.indexOf('-') + 1);
+
                                     var downloadLink = document.createElement("a");
                                     downloadLink.href = file;
                                     downloadLink.setAttribute("download", "");
                                     downloadLink.target = "_blank";
-                                    downloadLink.classList.add("cut-file-name", "text-break")
+                                    downloadLink.classList.add("cut-file-name", "text-break");
                                     downloadLink.id = "resumeLink";
                                     downloadLink.title = subStringFile;
                                     downloadLink.textContent = file;
@@ -733,6 +735,9 @@
                             totalRevenue += account.revenue;
                             totalRemain = account.remain;
                         });
+                        $("#totalRevenue").text(formatCurrency(responseData.totalList.totalRevenue))
+                        $("#totalExpense").text(formatCurrency(responseData.totalList.totalExpense))
+                        $("#totalRemain").text(formatCurrency(responseData.totalList.totalRemain))
                         cutShortLink();
                     }
 
@@ -761,39 +766,26 @@
 
         var paginationHTML = "";
 
-        if (responseData.hasPrevious) {
-            paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(1, ' + responseData.pageSize + ')">First</a></li>';
-        } else {
-            paginationHTML += '<li class="page-item disabled"><a class="page-link" onclick="loadPage(1, ' + responseData.pageSize + ')">First</a></li>';
+        function createListItem(text, pageNumber, isDisabled) {
+            return '<li class="paginate_button page-item ' + (isDisabled ? 'disabled' : '') + '">' +
+                '<a style="cursor: pointer" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link" ' +
+                'onclick="loadPage(' + pageNumber + ')">' + text + '</a></li>';
         }
 
-        if (responseData.hasPrevious) {
-            paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(' + (currentPage - 1) + ', ' + responseData.pageSize + ')" tabindex="-1" aria-disabled="true">Previous</a></li>';
-        } else {
-            paginationHTML += '<li class="page-item disabled"><a class="page-link" onclick="loadPage(' + (currentPage - 1) + ', ' + responseData.pageSize + ')" tabindex="-1" aria-disabled="true">Previous</a></li>';
-        }
+        paginationHTML += createListItem('First', 1, !responseData.hasPrevious);
+        paginationHTML += createListItem('Previous', currentPage - 1, !responseData.hasPrevious);
 
         for (var page = 1; page <= totalPages; page++) {
-            if (page === currentPage) {
-                paginationHTML += '<li class="page-item active"><a class="page-link" href="#">' + page + '</a></li>';
-            } else {
-                paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(' + page + ', ' + responseData.pageSize + ')">' + page + '</a></li>';
-            }
+            paginationHTML += '<li class="paginate_button page-item ' + (page === currentPage ? 'active' : '') + '">' +
+                '<a style="cursor: pointer" aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link" ' +
+                'onclick="loadPage(' + page + ')">' + page + '</a></li>';
         }
 
-        if (responseData.hasNext) {
-            paginationHTML += '<li class="page-item"><a class="page-link" onclick="loadPage(' + (currentPage + 1) + ', ' + responseData.pageSize + ')" tabindex="-1" aria-disabled="true">Next</a></li>';
-        } else {
-            paginationHTML += '<li class="page-item disabled"><a class="page-link" onclick="loadPage(' + (currentPage + 1) + ', ' + responseData.pageSize + ')" tabindex="-1" aria-disabled="true">Next</a></li>';
-        }
-
-        if (responseData.hasNext) {
-            paginationHTML += '<li class="page-item"><a class="page-link" style="cursor: pointer" onclick="loadPage(' + totalPages + ', ' + responseData.pageSize + ')">Last</a></li>';
-        } else {
-            paginationHTML += '<li class="page-item disabled"><a class="page-link" style="cursor: pointer" onclick="loadPage(' + totalPages + ', ' + responseData.pageSize + ')">Last</a></li>';
-        }
+        paginationHTML += createListItem('Next', currentPage + 1, !responseData.hasNext);
+        paginationHTML += createListItem('Last', totalPages, !responseData.hasNext);
 
         pagination.innerHTML = paginationHTML;
+
     }
 
 
@@ -861,6 +853,7 @@
         var title = document.getElementById("createTitle").value;
         var note = document.getElementById("createNote").value;
         var transaction = document.getElementById("transactionType").value;
+        var payDate = document.getElementById("createPayDate").value;
         var input = document.getElementById("amount").value;
         var amount = Number(input.replace(/[^0-9.]/g, ''));
         var billInput = document.getElementById("createBill");
@@ -868,19 +861,20 @@
 
         if (!title || !amount || isNaN(amount)) {
             alert("Title, note and amount are required and amount must be a number.");
-            loading.style.display = "none";
             return;
         }
 
         if (transaction === 'expense') {
             amount = -amount;
         }
+
         var formData = new FormData();
 
         formData.append("title", title);
         formData.append("note", note);
         formData.append("userId", userCurrent.id);
         formData.append("expense", amount);
+        formData.append("payDate", payDate);
 
         for (var i = 0; i < billFiles.length; i++) {
             formData.append("bill", billFiles[i]);
@@ -906,7 +900,6 @@
 
                                 $.each(date.month, function (index, month) {
                                     var monthItem = $('<li/>').addClass('list-group-item').text(month).on('click', function () {
-                                        redirectToAccounting(month);
                                     });
                                     monthList.append(monthItem);
                                 });
@@ -914,7 +907,6 @@
                                 monthsContainer.append(monthList);
                                 $('#yearList').append(monthsContainer);
                             });
-                            loading.style.display = "none";
                             $('#createNote').val("");
                             $('#createBill').val("");
                             $('#createTitle').val("");
@@ -926,7 +918,6 @@
                             $('#successModal').modal('show');
                         });
                 } else {
-                    loading.style.display = "none";
                     $('#createModal').modal('hide');
                     $('#errorModal').modal('show');
                 }

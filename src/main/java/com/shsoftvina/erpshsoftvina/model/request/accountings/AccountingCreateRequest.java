@@ -31,6 +31,6 @@ public class AccountingCreateRequest {
     private String note;
 
     @NotBlank(message = "Field is not filled")
-    private LocalDateTime payDate;
+    private String payDate;
 }
 

@@ -39,6 +39,7 @@ public class AccountingConverter {
             revenue = accounting.getExpense();
         }
         String parseCreatedDate = DateUtils.formatLocalDateTime(accounting.getCreatedDate());
+        String parsePayDate = DateUtils.formatLocalDateTime(accounting.getPayDate());
         return AccountResponse.builder()
                 .id(accounting.getId())
                 .bill(FileUtils.getPathUploadList(Accounting.class, accounting.getBill()))
@@ -49,6 +50,7 @@ public class AccountingConverter {
                 .user(userConverter.toIdAndFullnameUserResponse(accounting.getUser()))
                 .title(accounting.getTitle())
                 .note(accounting.getNote())
+                .payDate(parsePayDate)
                 .build();
     }
 
@@ -56,19 +58,18 @@ public class AccountingConverter {
         return accountingList.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
     }
 
-    public Accounting convertToEntity(AccountingCreateRequest accountingCreateRequest, User user, Long latestRemain, LocalDateTime newDate, List<String> listFileNameSaveFileSuccess) {
+    public Accounting convertToEntity(AccountingCreateRequest accountingCreateRequest, User user, Long latestRemain, List<String> listFileNameSaveFileSuccess) {
         Long newRemain = latestRemain + accountingCreateRequest.getExpense();
         return Accounting.builder()
                 .user(user)
                 .title(accountingCreateRequest.getTitle())
                 .remain(newRemain)
                 .expense(accountingCreateRequest.getExpense())
-                .createdDate(newDate)
                 .id(ApplicationUtils.generateId())
                 .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .status(StatusAccountingEnum.ACTIVE)
                 .note(accountingCreateRequest.getNote())
-                .payDate(accountingCreateRequest.getPayDate())
+                .payDate(DateUtils.toLocalDateTime(accountingCreateRequest.getPayDate()))
                 .build();
     }
 

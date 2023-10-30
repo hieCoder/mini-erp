@@ -82,11 +82,10 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
-        LocalDateTime newDate = LocalDateTime.now();
-        Accounting beforeCreateAccounting = accountingMapper.findBeforeCurrentAccounting(accountingCreateRequest.getPayDate());
-        Long latestRemain = accountingMapper.getLatestRemain(accountingCreateRequest.getPayDate());
-        if (latestRemain == null) {
-            latestRemain = 0L;
+        Accounting beforeCreateAccounting = accountingMapper.findBeforeCurrentAccounting(DateUtils.toLocalDateTime(accountingCreateRequest.getPayDate()));
+        long latestRemain = 0L;
+        if (beforeCreateAccounting != null) {
+            latestRemain = beforeCreateAccounting.getRemain();
         }
 
         MultipartFile[] billFile = accountingCreateRequest.getBill();
@@ -99,7 +98,7 @@ public class AccountingServiceImpl implements AccountingService {
         if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
-            Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, newDate, listFileNameSaveFileSuccess);
+            Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, listFileNameSaveFileSuccess);
             try {
                 accountingMapper.createAccounting(newAccounting);
                 List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(beforeCreateAccounting);

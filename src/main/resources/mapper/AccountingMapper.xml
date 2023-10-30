@@ -38,8 +38,8 @@
 
     <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         INSERT
-        INTO ACCOUNTING (id,pay_date,spending,remain, user_id, bill, title, status, note,create_date)
-        VALUES (#{id}, #{pay_date},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status}, #{note}, now());
+        INTO ACCOUNTING (id,pay_date,spending,remain, user_id, bill, title, status, note,created_date)
+        VALUES (#{id}, #{payDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status}, #{note}, now());
     </insert>
 
     <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
@@ -65,13 +65,20 @@
     <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
         SELECT spending, remain, id
         FROM ACCOUNTING
-        WHERE pay_date >= #{createdDate}
-        AND pay_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
+        WHERE
+        <if test="payDate != null">
+            pay_date &gt;= #{payDate}
+            AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
+        </if>
+        <if test="payDate == null">
+            pay_date &gt;= LAST_DAY(CURRENT_DATE - INTERVAL 1 MONTH) + INTERVAL 1 DAY
+            AND pay_date &lt;= LAST_DAY(CURRENT_DATE)
+        </if>
           AND status ='ACTIVE'
         ORDER BY pay_date ASC
     </select>
 
-    <select id="findBeforeCurrentAccounting" resultType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <select id="findBeforeCurrentAccounting" resultMap="accountingResultMap">
         SELECT spending, remain
         FROM ACCOUNTING
         WHERE pay_date &lt; #{payDate}
@@ -82,12 +89,12 @@
         LIMIT 1;
     </select>
 
-    <select id="findBeforeCreateAccounting" resultType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <select id="findBeforeCreateAccounting" resultMap="accountingResultMap">
         SELECT spending, remain
         FROM ACCOUNTING
-        WHERE pay_date &lt; #{createdDate}
-          AND pay_date &gt;= DATE_FORMAT(#{createdDate}, '%Y-%m-01 00:00:00')
-          AND pay_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
+        WHERE pay_date &lt; #{payDate}
+          AND pay_date &gt;= DATE_FORMAT(#{payDate}, '%Y-%m-01 00:00:00')
+          AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
           AND status = 'ACTIVE'
         ORDER BY pay_date DESC
             LIMIT 1;

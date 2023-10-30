@@ -79,9 +79,11 @@ public class DateUtils {
         return time.format(formatter);
     }
 
-    public static LocalDateTime toLocalDateTime(String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(time, formatter);
+    public static LocalDateTime toLocalDateTime(String dateString) {
+        LocalDate localDate = LocalDate.parse(dateString);
+        LocalTime currentTime = LocalTime.now();
+
+        return LocalDateTime.of(localDate, currentTime);
     }
 
     public static String timeWork(Time startDate, Time endDate) {

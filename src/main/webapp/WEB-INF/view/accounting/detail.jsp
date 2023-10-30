@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../../assets/css/accounting/style.css">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <div class="card shadow">
         <div class="card-header">
             Accounting Detail
@@ -21,6 +21,9 @@
             <div class="row">
                 <div class="col">
                     <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
+                </div>
+                <div class="col">
+                    <p class="card-text">Pay date: <span id="payDateAccount">${account.payDate}</span></p>
                 </div>
                 <div class="col text-right">
                     <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
@@ -38,7 +41,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <p class="text-uppercase fw-medium text-muted mb-3">Total Revenue</p>
-                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.revenue}"><fmt:formatNumber type="number" value="${account.revenue}" pattern="#,##0 ₫"/></span>₫</h4>
+                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.revenue}" id="revenueAccount"><fmt:formatNumber type="number" value="${account.revenue}" pattern="#,##0 ₫"/></span>₫</h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -59,7 +62,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <p class="text-uppercase fw-medium text-muted mb-3">Total Expense</p>
-                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.expense}">${account.expense}</span>₫</h4>
+                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.expense}" id="expenseAccount">${account.expense}</span>₫</h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -81,7 +84,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <p class="text-uppercase fw-medium text-muted mb-3">Balance</p>
-                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.remain}">${account.remain}</span>₫</h4>
+                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.remain}" id="remainAccount">${account.remain}</span>₫</h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -129,9 +132,9 @@
             </c:choose>
         </div>
         <div class="card-footer">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" id="editBtn">Edit</button>
-            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelModal" onclick="goBack()">Cancel
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" id="editBtn">Edit</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#cancelModal" onclick="goBack()">Cancel
             </button>
         </div>
     </div>
@@ -139,12 +142,11 @@
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Edit Information</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -223,7 +225,7 @@
                 </form>
             </div>
             <div class=" modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button class="btn btn-primary" type="submit" onclick="editAccount('${account.id}')">Save changes
                 </button>
             </div>
@@ -237,15 +239,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteConfirmationModalFileLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete this file?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" id="deleteFileButton" class="btn btn-danger">Delete</button>
             </div>
         </div>
@@ -255,20 +256,19 @@
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Information</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete this information?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                         onclick="deleteAccount('${account.id}')">Delete
                 </button>
             </div>
@@ -278,11 +278,11 @@
 
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -290,26 +290,25 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
                 An error occurred while sending the request. Please try again.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -388,8 +387,6 @@
     }
 
     document.getElementById('editBtn').addEventListener('click', function () {
-            var loading = document.getElementById("loading");
-            loading.style.display = "block";
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/api/v1/accounts/detail/" + "${account.id}", true);
             xhr.onreadystatechange = function () {
@@ -421,8 +418,8 @@
                                     var deleteButton = $('<button>', {
                                         type: 'button',
                                         class: 'btn btn-danger ml-2',
-                                        'data-toggle': 'modal',
-                                        'data-target': '#deleteConfirmationModalFile',
+                                        'data-bs-toggle': 'modal',
+                                        'data-bs-target': '#deleteConfirmationModalFile',
                                         'data-name': fileName
                                     }).html('<span>×</span>');
                                     listItem.append(link, deleteButton);
@@ -431,11 +428,9 @@
                             }
                         }
                         $('#editModal').modal('show');
-                        loading.style.display = "none";
                     } else {
                         $('#editModal').modal('hide');
                         $('#errorModal').modal('show');
-                        loading.style.display = "none";
                     }
                 }
             }
@@ -444,8 +439,6 @@
     );
 
     function editAccount(accountId) {
-        var loading = document.getElementById("loading");
-        loading.style.display = "block";
         var xhr = new XMLHttpRequest();
 
         xhr.open("POST", "/api/v1/accounts/edit", true);
@@ -523,7 +516,6 @@
                         })
                     }
                     $("#attachedFilesNotification").html(xhtml);
-                    initializeTooltips();
                     var editLink = document.getElementById("editLink");
                     var billContent = '';
                     if (responseData.bill !== null && responseData.bill.length > 0) {
@@ -537,13 +529,11 @@
                         });
                     }
                     $('#editModal').modal('hide');
-                    loading.style.display = "none";
                     $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
                     editLink.innerHTML = billContent;
                     $('#editBill').val("");
                 } else {
-                    loading.style.display = "none";
                     $('#editModal').modal('hide');
                     $('#errorModal').modal('show');
                 }
@@ -557,18 +547,14 @@
     }
 
     function deleteAccount(accountId) {
-        var loading = document.getElementById("loading");
-        loading.style.display = "block";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    loading.style.display = "none";
                     $('#successModal div.modal-body').text("The request has been completed successfully.")
                     $('#successModal').modal('show');
                     window.location.replace(document.referrer);
                 } else {
-                    loading.style.display = "none";
                     $('#deleteModal').modal('hide');
                     $('#errorModal').modal('show');
                 }
