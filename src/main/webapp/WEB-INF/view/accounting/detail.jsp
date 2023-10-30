@@ -26,33 +26,74 @@
                     <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
                 </div>
             </div>
-            <table class="table table-bordered mt-2">
-                <thead>
-                <tr>
-                    <th class="table-success text-center text-secondary">Revenue</th>
-                    <th class="table-danger text-center text-secondary">Expense</th>
-                    <th class="table-primary text-center text-secondary">Balance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td id="revenueAccount" class="text-success text-center"><fmt:formatNumber type="number"
-                                                                                               value="${account.revenue}"
-                                                                                               pattern="#,##0 ₫"/>
-                    </td>
-                    <td id="expenseAccount" class="text-danger text-center">
-                        <fmt:formatNumber type="number"
-                                          value="${account.expense}"
-                                          pattern="#,##0 ₫"/>
-                    </td>
-                    <td id="remainAccount" class="text-primary text-center">
-                        <fmt:formatNumber type="number"
-                                          value="${account.remain}"
-                                          pattern="#,##0 ₫"/>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-xl-4 col-md-6">
+                    <div class="card card-height-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-soft-success text-success rounded-2 fs-2">
+                                                <i class="bx bxs-badge-dollar"></i>
+                                            </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="text-uppercase fw-medium text-muted mb-3">Total Revenue</p>
+                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.revenue}"><fmt:formatNumber type="number" value="${account.revenue}" pattern="#,##0 ₫"/></span>₫</h4>
+                                    <p class="text-muted mb-0">From $1,750.04 last year</p>
+                                </div>
+                                <div class="flex-shrink-0 align-self-center">
+                                    <span class="badge badge-soft-success fs-12"><i class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>22.96 %<span></span></span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card card-height-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-soft-danger text-danger rounded-2 fs-2">
+                                                <i class="bx bxs-cart-download"></i>
+                                            </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="text-uppercase fw-medium text-muted mb-3">Total Expense</p>
+                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.expense}">${account.expense}</span>₫</h4>
+                                    <p class="text-muted mb-0">From $1,750.04 last year</p>
+                                </div>
+                                <div class="flex-shrink-0 align-self-center">
+                                    <span class="badge badge-soft-success fs-12"><i class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>22.96 %<span></span></span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card card-height-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-soft-primary text-primary rounded-2 fs-2">
+                                                <i class="bx bxs-box"></i>
+
+                                            </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="text-uppercase fw-medium text-muted mb-3">Balance</p>
+                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.remain}">${account.remain}</span>₫</h4>
+                                    <p class="text-muted mb-0">From $1,750.04 last year</p>
+                                </div>
+                                <div class="flex-shrink-0 align-self-center">
+                                    <span class="badge badge-soft-success fs-12"><i class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>22.96 %<span></span></span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </div>
+            </div>
+
+
             <div class="col-md-12 rounded border border-warning p-3 mb-3">
                 <i class="fa-regular fa-lg fa-clipboard fa-bounce" style="color: #4a4c87;"></i>
                 <strong class="text-info">Note: </strong><span id="noteAccount" class="text-info">${account.note}</span>
@@ -274,11 +315,6 @@
     </div>
 </div>
 <script>
-    function initializeTooltips() {
-        $('[data-toggle="tooltip"]').tooltip();
-    }
-
-    initializeTooltips();
     var imageType = "${setting.listTypeImage}";
     var fileType = "${setting.listTypeFile}";
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
@@ -542,7 +578,6 @@
         xhr.send();
     }
 </script>
-<div id="loading" class="loading-spin">Loading...</div>
 </body>
 </html>
 

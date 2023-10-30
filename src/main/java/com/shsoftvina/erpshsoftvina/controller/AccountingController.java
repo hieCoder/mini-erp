@@ -33,8 +33,23 @@ public class AccountingController {
                                            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         ModelAndView modelAndView = new ModelAndView("accounting/homepage");
+        if (startDate == null) {
+            LocalDate today = LocalDate.now();
+            startDate = today.withDayOfMonth(1);
+        }
+
+        if (endDate == null) {
+            LocalDate today = LocalDate.now();
+            endDate = today.withDayOfMonth(today.lengthOfMonth());
+        }
         PageAccountListResponse listResponse = accountingService.findAccountingByMonth(page,size,startDate,endDate);
+        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
+
+        SettingAllowanceResponse settings = new SettingAllowanceResponse(setting.getFileSize(),setting.getFileType(),setting.getImageType(),setting.getFileLimit());
+
         modelAndView.addObject("list",listResponse);
+        modelAndView.addObject("setting",settings);
+
 //        modelAndView.addObject("month",monthId);
         return modelAndView;
     }

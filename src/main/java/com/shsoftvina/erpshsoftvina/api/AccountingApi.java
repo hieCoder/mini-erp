@@ -32,8 +32,7 @@ public class AccountingApi {
     }
 
     @GetMapping()
-    public ResponseEntity<?> findAccountingByMonth(
-                                                   @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
+    public ResponseEntity<?> findAccountingByMonth(@RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
                                                    @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
                                                    @RequestParam(name = "startDate", required = false) String startDate,
                                                    @RequestParam(name = "endDate", required = false) String endDate

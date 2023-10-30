@@ -30,12 +30,14 @@ public interface AccountingMapper {
 
     int updateAccounting(Accounting accounting);
 
-    Accounting findBeforeCurrentAccounting(Accounting accounting);
+    Accounting findBeforeCurrentAccounting(@Param("payDate") LocalDateTime payDate);
 
     List<Accounting> getRemainRecordInMonth(Accounting currentAccounting);
 
     void updateRecordsBatch(List<Accounting> remainRecordInMonthList);
 
     void deleteAccounting(String id);
+
+    Accounting findBeforeCreateAccounting(LocalDateTime payDate);
 }
 

@@ -779,9 +779,13 @@
 <!-- Dashboard init -->
 <script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
 
+<!-- Widget init -->
+<script src="/assets/js/pages/widgets.init.js"></script>
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
+
+<div class="jvm-tooltip"></div>
 
 <!--datatable js-->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -795,5 +799,4 @@
 <script src="/assets/js/pages/datatables.init.js"></script>
 
 </body>
-
 </html>

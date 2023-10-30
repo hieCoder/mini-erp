@@ -20,23 +20,21 @@
             </div>
         </div>
         <div class="row mt-1">
-            <div class="col-md-6">
+            <div class="col-md-4 col-xl-4">
                 <div class="form-group">
                     <label for="account-day" class="form-label mb-0 text-muted">Filter by year: </label>
                     <div class="input-group" id="account-day">
                         <select class="form-select rounded-pill" aria-label="Default select example" id="account-year">
-                            <option selected="">-- Select year --</option>
+                            <option value="">-- Select year --</option>
                         </select>
-                        <select class="form-select rounded-pill" aria-label="Default select example" id="account-month">
-                            <option selected="">-- Select month --</option>
+                        <select class="form-select rounded-pill" aria-label="Default select example" id="account-month"
+                                style="display: none;">
+                            <option value="">-- Select month --</option>
                         </select>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary btn-label rounded-pill mt-3" onclick="loadPage(1)"><i
-                        class="ri-user-smile-line label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
-                </button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4 col-xl-4">
                 <div class="form-group">
                     <label for="datePickerStart" class="form-label mb-0 text-muted">Start Date</label>
                     <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"
@@ -49,7 +47,7 @@
                         class="ri-user-smile-line label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
                 </button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4 col-xl-4">
                 <div class="form-group">
                     <label for="pageCount" class="form-label mb-0 text-muted">Default</label>
                     <select class="form-select rounded-pill mb-3" aria-label="Default select example" id="pageCount">
@@ -116,7 +114,7 @@
                                             </th>
                                             <th data-ordering="false" class="sorting" tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 81.4px;"
-                                                aria-label="Purchase ID: activate to sort column ascending">CREATED DATE
+                                                aria-label="Purchase ID: activate to sort column ascending">PAY DATE
                                             </th>
                                             <th data-ordering="false" class="sorting" tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 200.4px;"
@@ -166,11 +164,11 @@
                                                 </td>
                                                 <td style=""><c:out value="${a.createdDate}"/></td>
                                                 <td style=""><c:out value="${a.title}"/></td>
-                                                <td class="${a.revenue > 0 ? 'text-success' : ''}"><fmt:formatNumber
+                                                <td class="${a.revenue > 0 ? 'text-bg-success' : ''}"><fmt:formatNumber
                                                         type="number" value="${a.revenue}" pattern="#,##0 ₫"/></td>
-                                                <td class="${a.revenue > 0 ? 'text-danger' : ''}"><fmt:formatNumber
+                                                <td class="${a.expense < 0 ? 'text-bg-danger' : ''}"><fmt:formatNumber
                                                         type="number" value="${a.expense}" pattern="#,##0 ₫"/></td>
-                                                <td class="${a.revenue > 0 ? 'text-primary' : ''}"><fmt:formatNumber
+                                                <td class="text-bg-primary"><fmt:formatNumber
                                                         type="number" value="${a.remain}" pattern="#,##0 ₫"/></td>
                                                 <td style=""><c:out value="${a.user.fullname}"/></td>
                                                 <td style=""><span
@@ -368,38 +366,191 @@
             </tbody>
         </table>
     </div>
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-center" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    An error occurred while sending the request. Please try again.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
+    </div>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Create Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your create form content goes here -->
+                <form enctype="multipart/form-data">
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                            <label for="createTitle" class="form-label">Title</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="createTitle" required
+                                   placeholder="Enter title">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                            <label for="createPayDate" class="form-label">Pay Date</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="date" class="form-control" id="createPayDate" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                            <label for="transactionType" class="form-label">Transaction Type</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <select class="form-control" id="transactionType" required>
+                                <option value="">--Select Option--</option>
+                                <option value="revenue">Revenue</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" id="amountGroup" style="display: none;">
+                        <div class="col-lg-3">
+                            <label for="amount" class="form-label">Amount</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="amount" value="0" step="1" required
+                                   pattern="[0-9]+">
+                        </div>
+                    </div>
+
+                    <script>
+                        var amount = $('input#amount').val()
+                        $('input#amount').val(formatNumberToVND(amount));
+
+                        function formatNumberToVND(number) {
+                            var parts = number.toString().split('.');
+
+                            var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+                            var formattedNumber = integerPart;
+                            if (parts.length > 1) {
+                                formattedNumber += '.' + parts[1];
+                            }
+                            return formattedNumber;
+                        }
+
+                        $(document).ready(function () {
+                            $(document).ready(function () {
+                                var input = $('#amount');
+                                input.on('keydown', function (event) {
+                                    var value = input.val();
+                                    var charCode = event.which;
+                                    if (charCode === 190 || charCode === 110) {
+                                        if (value.indexOf('.') !== -1) {
+                                            event.preventDefault();
+                                        }
+                                    }
+                                    if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
+                                        if (charCode !== 8 && charCode !== 46) {
+                                            event.preventDefault();
+                                        }
+                                    }
+                                });
+
+                                input.on('keyup', function () {
+                                    var value = input.val().replace(/[^0-9.]/g, '');
+                                    input.val(formatNumberToVND(value));
+                                });
+                            });
+                        })
+                    </script>
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                            <label for="createNote" class="form-label">Note</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="createNote" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                            <label for="createBill">Bill</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <input type="file" class="form-control" id="createBill" multiple>
+                            <span class="text-secondary"
+                                  id="validFileText">*File must be , file not over ${setting.maxFileSize} and below ${setting.uploadFileLimit} files</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" type="button" onclick="sendCreateForm()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal HTML -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                The request has been completed successfully.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-center" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                An error occurred while sending the request. Please try again.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 <script>
     cutShortLink();
-    var defaultDate = new Date();
-    var currentYear = defaultDate.getFullYear();
-    var currentMonth = defaultDate.getMonth() + 1;
-    var formattedTextStartDate = currentYear + '-' + (currentMonth < 10 ? '0' : '') + currentMonth + '-01';
-    document.getElementById("datePickerStart").value = formattedDateToText(formattedTextStartDate);
+    window.onload = function () {
+        var defaultDate = new Date();
+        var currentYear = defaultDate.getFullYear();
+        var currentMonth = defaultDate.getMonth() + 1;
+        var formattedTextStartDate = currentYear + '-' + (currentMonth < 10 ? '0' : '') + currentMonth + '-01';
+        document.getElementById("datePickerStart").value = formattedDateToText(formattedTextStartDate);
+        localStorage.setItem("selectedDateStart", formattedDateToText(formattedTextStartDate));
 
-    var lastDay = new Date(currentYear, currentMonth, 0);
-    var lastDayOfMonth = lastDay.getDate();
-    var formattedTextEndDate = currentYear + '-' + (currentMonth < 10 ? '0' : '') + currentMonth + '-' + lastDayOfMonth;
-    document.getElementById("datePickerEnd").value = formattedDateToText(formattedTextEndDate);
+        var lastDay = new Date(currentYear, currentMonth, 0);
+        var lastDayOfMonth = lastDay.getDate();
+        var formattedTextEndDate = currentYear + '-' + (currentMonth < 10 ? '0' : '') + currentMonth + '-' + lastDayOfMonth;
+        document.getElementById("datePickerEnd").value = formattedDateToText(formattedTextEndDate);
+        localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
+    }
 
     function formattedDateToText(inputDate) {
         const dateObj = new Date(inputDate);
@@ -463,7 +614,7 @@
         var yearSelect = document.getElementById('account-year');
         var monthSelect = document.getElementById('account-month');
         var data;
-        callAjaxByJsonWithData('/api/v1/accounts', 'GET', null, function (rs) {
+        callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
             data = rs;
             yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
             data.monthList.forEach(function (entry) {
@@ -476,7 +627,7 @@
 
         yearSelect.addEventListener('change', function () {
             $('#account-day').after(createLoadingHtml());
-            callAjaxByJsonWithData('/api/v1/accounts', 'GET', null, function (rs) {
+            callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
                 var dataMonth = rs;
                 monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
                 dataMonth.monthList.forEach(function (entry) {
@@ -491,12 +642,21 @@
                 });
                 monthSelect.addEventListener('change', function () {
                     month = yearSelect.value + "-" + monthSelect.value;
+                    let defaultDate = new Date(month);
+                    let pickYear = defaultDate.getFullYear();
+                    let pickMonth = defaultDate.getMonth() + 1;
+                    let formattedTextStartDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-01';
+                    localStorage.setItem("selectedDateStart", formattedDateToText(formattedTextStartDate));
+
+                    let lastDay = new Date(pickYear, pickMonth, 0);
+                    let lastDayOfMonth = lastDay.getDate();
+                    let formattedTextEndDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-' + lastDayOfMonth;
+                    localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
                     console.log(month);
                     loadPage(1);
                 });
                 $('div.custom-spinner').parent().remove();
             });
-
             if (yearSelect.value !== "") {
                 monthSelect.style.display = 'block';
             } else {
@@ -586,7 +746,7 @@
                 }
             }
         };
-        xhr.open("GET", "/api/v1/accounts/" + month + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + formattedDate(selectedDateStart) + "&endDate=" + formattedDate(selectedDateEnd), true);
+        xhr.open("GET", "/api/v1/accounts/" + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + formattedDate(selectedDateStart) + "&endDate=" + formattedDate(selectedDateEnd), true);
         xhr.send();
     }
 
@@ -635,6 +795,146 @@
 
         pagination.innerHTML = paginationHTML;
     }
+
+
+    var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
+    var validExtensions = validFileUpload.split(',');
+    var spanElement = $("#createModal #validFileText");
+    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + " and below " + "${setting.uploadFileLimit}" + " files");
+
+    document.getElementById('transactionType').addEventListener('change', function () {
+        var selectedOption = this.value;
+        var amountGroup = document.getElementById('amountGroup');
+        var amountInput = document.getElementById('amount');
+
+        if (selectedOption === 'revenue') {
+            amountGroup.style.display = 'flex';
+            amountInput.placeholder = 'Enter positive amount';
+            amountInput.min = 0;
+        } else if (selectedOption === 'expense') {
+            amountGroup.style.display = 'flex';
+            amountInput.placeholder = 'Enter positive amount';
+            amountInput.min = 0;
+        } else {
+            amountGroup.style.display = 'none';
+        }
+    });
+
+    $(document).on("change", "#createBill", function (event) {
+        const billFiles = event.target.files;
+        var countFile = billFiles.length;
+        var countCurrentFile = $("li.listFilesEdit").length;
+        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
+            let modal = `
+                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
+                        `
+            $("#successModal div.modal-body").html(modal)
+            $("#successModal").modal("show");
+            $(this).val('')
+            return;
+        }
+        for (var i = 0; i < billFiles.length; i++) {
+            var fileName = billFiles[i].name;
+            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
+                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
+                    validFileUpload +
+                    ' and not over ' + "${setting.maxFileSize}" + 'MB.';
+                $("#successModal div.modal-body").html(modal)
+                $("#successModal").modal("show");
+                $(this).val('')
+                return;
+            }
+        }
+    });
+
+    function convertMaxFileSize(string) {
+        var maxFileSizeWithoutMB = string.replace("MB", "");
+        return parseFloat(maxFileSizeWithoutMB) * 1024 * 1024;
+    }
+
+    function sendCreateForm() {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/api/v1/accounts", true);
+
+        var title = document.getElementById("createTitle").value;
+        var note = document.getElementById("createNote").value;
+        var transaction = document.getElementById("transactionType").value;
+        var input = document.getElementById("amount").value;
+        var amount = Number(input.replace(/[^0-9.]/g, ''));
+        var billInput = document.getElementById("createBill");
+        var billFiles = billInput.files;
+
+        if (!title || !amount || isNaN(amount)) {
+            alert("Title, note and amount are required and amount must be a number.");
+            loading.style.display = "none";
+            return;
+        }
+
+        if (transaction === 'expense') {
+            amount = -amount;
+        }
+        var formData = new FormData();
+
+        formData.append("title", title);
+        formData.append("note", note);
+        formData.append("userId", userCurrent.id);
+        formData.append("expense", amount);
+
+        for (var i = 0; i < billFiles.length; i++) {
+            formData.append("bill", billFiles[i]);
+        }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 201) {
+                    $.ajax({
+                        url: "/api/v1/accounts",
+                        beforeSend: function (xhr) {
+                            xhr.overrideMimeType("text/plain; charset=x-user-defined");
+                        }
+                    })
+                        .done(function (data) {
+                            var responseData = JSON.parse(data);
+                            $('#yearList').html('');
+                            $.each(responseData.monthList, function (index, date) {
+                                var yearItem = $('<li/>').addClass('list-group-item year-item').attr('data-toggle', 'collapse').attr('href', '#months' + index).text(date.year);
+                                $('#yearList').append(yearItem);
+
+                                var monthsContainer = $('<div/>').addClass('collapse').attr('id', 'months' + index);
+                                var monthList = $('<ul/>').addClass('list-group');
+
+                                $.each(date.month, function (index, month) {
+                                    var monthItem = $('<li/>').addClass('list-group-item').text(month).on('click', function () {
+                                        redirectToAccounting(month);
+                                    });
+                                    monthList.append(monthItem);
+                                });
+
+                                monthsContainer.append(monthList);
+                                $('#yearList').append(monthsContainer);
+                            });
+                            loading.style.display = "none";
+                            $('#createNote').val("");
+                            $('#createBill').val("");
+                            $('#createTitle').val("");
+                            $('#amount').val("");
+                            $('#amountGroup').css('display', 'none');
+                            $('#transactionType').val("");
+                            $('#createModal').modal('hide');
+                            $('#successModal div.modal-body').text("The request has been completed successfully.")
+                            $('#successModal').modal('show');
+                        });
+                } else {
+                    loading.style.display = "none";
+                    $('#createModal').modal('hide');
+                    $('#errorModal').modal('show');
+                }
+            }
+        };
+        xhr.send(formData);
+    }
+
 </script>
 <%--<div id="loading" class="loading-spin">Loading...</div>--%>
 </body>

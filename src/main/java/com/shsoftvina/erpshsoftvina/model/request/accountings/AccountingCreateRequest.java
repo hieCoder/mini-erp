@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -28,5 +29,8 @@ public class AccountingCreateRequest {
     private String title;
 
     private String note;
+
+    @NotBlank(message = "Field is not filled")
+    private LocalDateTime payDate;
 }
 

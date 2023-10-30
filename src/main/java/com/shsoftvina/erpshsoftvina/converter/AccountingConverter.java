@@ -68,6 +68,7 @@ public class AccountingConverter {
                 .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .status(StatusAccountingEnum.ACTIVE)
                 .note(accountingCreateRequest.getNote())
+                .payDate(accountingCreateRequest.getPayDate())
                 .build();
     }
 
