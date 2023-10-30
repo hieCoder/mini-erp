@@ -24,6 +24,8 @@
     <!--Swiper slider css-->
     <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
+    <dec:head />
+
 <%--    <!-- Sweet Alert css-->--%>
 <%--    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />--%>
 
@@ -109,11 +111,11 @@
     </div>
 </div>
 
-<div class="customizer-setting d-none d-md-block">
-    <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-    </div>
-</div>
+<%--<div class="customizer-setting d-none d-md-block">--%>
+<%--    <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">--%>
+<%--        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <!-- Theme Settings -->
 <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
@@ -786,18 +788,15 @@
 <script src="/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 <script src="/assets/js/plugins.js"></script>
 
-<!-- apexcharts -->
-<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<%--<!-- apexcharts -->--%>
+<%--<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>--%>
 
-<!-- Vector map-->
-<script src="/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>
-<script src="/assets/libs/jsvectormap/maps/world-merc.js"></script>
+<%--<!-- Vector map-->--%>
+<%--<script src="/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>--%>
+<%--<script src="/assets/libs/jsvectormap/maps/world-merc.js"></script>--%>
 
-<!--Swiper slider js-->
-<script src="/assets/libs/swiper/swiper-bundle.min.js"></script>
-
-<!-- Dashboard init -->
-<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
+<%--<!--Swiper slider js-->--%>
+<%--<script src="/assets/libs/swiper/swiper-bundle.min.js"></script>--%>
 
 <%--<!-- list.js min js -->--%>
 <%--<script src="/assets/libs/list.js/list.min.js"></script>--%>
@@ -820,10 +819,10 @@
 <!-- init js -->
 <script src="/assets/js/pages/form-editor.init.js"></script>
 
-
+<%--<!-- Dashboard init -->--%>
+<%--<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>--%>
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
-
 
 <!-- Widget init -->
 <script src="/assets/js/pages/widgets.init.js"></script>
