@@ -188,7 +188,7 @@
     </div>
 </div>
 
-<div id="viewNotification" class="modal modal-lg fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+<div id="viewNotification" class="modal modal-xl fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -196,7 +196,103 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-muted">
+                            <h5 class="mb-3 fw-semibold text-uppercase titleView">Title</h5>
 
+                        </div>
+                        <div class="text-muted">
+                            <h5 class="mb-3 fw-semibold text-uppercase contentView">Content</h5>
+                            <div id="contentView">
+
+                            </div>
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                <div class="row">
+
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div>
+                                            <p class="mb-2 text-uppercase fw-medium">Create Date :</p>
+                                            <h5 class="fs-15 mb-0">15 Sep, 2021</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                <h6 class="mb-3 fw-semibold text-uppercase">Resources</h6>
+                                <div class="row g-3">
+                                    <div class="col-xxl-4 col-lg-6">
+                                        <div class="border rounded border-dashed p-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar-sm">
+                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                            <i class="ri-folder-zip-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h5 class="fs-13 mb-1"><a href="#" class="text-body text-truncate d-block">App pages.zip</a></h5>
+                                                    <div>2.2MB</div>
+                                                </div>
+                                                <div class="flex-shrink-0 ms-2">
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></button>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-icon text-muted btn-sm fs-18 dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="ri-more-fill"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Rename</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+                                    <div class="col-xxl-4 col-lg-6">
+                                        <div class="border rounded border-dashed p-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar-sm">
+                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                            <i class="ri-file-ppt-2-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h5 class="fs-13 mb-1"><a href="#" class="text-body text-truncate d-block">Velzon admin.ppt</a></h5>
+                                                    <div>2.4MB</div>
+                                                </div>
+                                                <div class="flex-shrink-0 ms-2">
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></button>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-icon text-muted btn-sm fs-18 dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="ri-more-fill"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Rename</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+                                </div>
+                                <!-- end row -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -527,7 +623,7 @@
         $(document).on("click", "li.viewNotification", function (e) {
             let main = $(this)
             let idNotification = main.parent().attr("data-id")
-            console.log(idNotification)
+
             $("#viewNotification").modal("show")
         })
         $(document).on("click", "li.paginate_button", function (e) {
@@ -773,58 +869,98 @@
         function loadDatabase(){
             var currentUrl = window.location.search;
             var params = new URLSearchParams(currentUrl);
-            var currentPage = !params.get('page') ? 1 : parseInt(params.get('page'));
+            var page = !params.get('page') ? 1 : parseInt(params.get('page'));
             var pageSize = !params.get('pageSize') ? 10 : parseInt(params.get('pageSize'));
             var search = !params.get('search') ? "" : params.get('search');
-            let currentGet = "?page=" +currentPage +"&pageSize="+pageSize+"&search="+search
+            let currentGet = "?page=" +page +"&pageSize="+pageSize+"&search="+search
             var apiUrl = baseUrlNotification + currentGet
-            // callAjaxByJsonWithData(apiUrl, "GET", null,
-            //     function (rs) {
-            //         if(rs){
-            //             history.pushState(null, null, currentUrl);
-            //             let xhtml =""
-            //             var currentURL = window.location.href;
-            //             var urlParams = new URLSearchParams(currentURL);
-            //             var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
-            //             rs.forEach(function (notification, index) {
-            //                 let pageInt = (parseInt(page) - 1) * pageSize
-            //                 xhtml += '<tr class="">' +
-            //                     '<td>' + (index + pageInt + 1) + '</td>' +
-            //                     '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
-            //                     '<td>' + notification.user.fullname + '</td>' +
-            //                     '<td>' + notification.createdDate + '</td>' +
-            //                     '<td>' +
-            //                     '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
-            //                     '<div class="viewNotification">'+
-            //                     '<button class="btn btn-sm btn-info edit-item-btn">View</button>'+
-            //                     ' </div>'+
-            //                     '<div class="editNotification">'+
-            //                     '<button class="btn btn-sm btn-success edit-item-btn">Edit</button>'+
-            //                     '</div>'+
-            //                     '<div class="removeNotification">'+
-            //                     '<button class="btn btn-sm btn-danger remove-item-btn">Remove</button>'+
-            //                     '</div>'+
-            //                     '    </div>' +
-            //                     '</td>'+
-            //                     '</tr>'
-            //             })
-            //             tbodyElement.innerHTML = xhtml
-            //             tbodyElement.classList.remove("hidden")
-            //             displayPagination()
-            //         } else{
-            //             console.log("Data API Error")
-            //         }
-            //     },
-            //     function (error){
-            //         console.log("Call API Error")
-            //         console.log(error)
-            //     })
+            var tbodyElement = document.getElementById("notificationList");
+            callAjaxByJsonWithData(apiUrl, "GET", null,
+                function (rs) {
+                    if(rs){
+                        history.pushState(null, null, currentUrl);
+                        let xhtml =""
+                        var currentURL = window.location.href;
+                        var urlParams = new URLSearchParams(currentURL);
+                        var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
+                        rs.forEach(function (notification, index) {
+                            let pageInt = (parseInt(page) - 1) * pageSize
+                            xhtml += '<tr class="">' +
+                                '<td>' + (index + pageInt + 1) + '</td>' +
+                                '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
+                                '<td>' + notification.user.fullname + '</td>' +
+                                '<td>' + notification.createdDate + '</td>' +
+                                '<td>' +
+                                '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
+                                '<div class="viewNotification">'+
+                                '<button class="btn btn-sm btn-info edit-item-btn">View</button>'+
+                                ' </div>'+
+                                '<div class="editNotification">'+
+                                '<button class="btn btn-sm btn-success edit-item-btn">Edit</button>'+
+                                '</div>'+
+                                '<div class="removeNotification">'+
+                                '<button class="btn btn-sm btn-danger remove-item-btn">Remove</button>'+
+                                '</div>'+
+                                '    </div>' +
+                                '</td>'+
+                                '</tr>'
+                        })
+                        tbodyElement.innerHTML = xhtml
+                        tbodyElement.classList.remove("hidden")
+                        displayPagination()
+                    } else{
+                        console.log("Data API Error")
+                    }
+                },
+                function (error){
+                    console.log("Call API Error")
+                    console.log(error)
+                })
         }
-        loadDatabase()
         $(document).on("click","div.removeNotification", function (){
             let notificationId = $(this).parent().attr("data-id")
             $("#deleteNotification").attr("data-id", notificationId)
             $("#deleteNotification").modal("show")
+        })
+
+        $(document).on("click","div.viewNotification", function (){
+            let notificationId = $(this).parent().attr("data-id")
+            $("#viewNotification").attr("data-id", notificationId)
+            let apiUrlNotification = baseUrlNotification
+            if(notificationId){
+                callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
+                    function (rs) {
+                        console.log(rs)
+                        $("h5.titleView").text("Title: " + rs.title)
+                        let contentParse = JSON.parse(rs.content)
+                        quillView.setContents(contentParse)
+                        console.log(contentParse)
+                        let urlFiles = rs.files ? rs.files : []
+                        let fileLength = rs.files ? rs.files.length : 0
+                        let html=""
+                        if(fileLength>0){
+                            urlFiles.forEach(function (url) {
+                                $.ajax({
+                                    type: "HEAD",
+                                    url: url,
+                                    success: function (data, status, xhr) {
+                                        var contentLength = xhr.getResponseHeader('Content-Length');
+                                        var fileName = url.substring(url.lastIndexOf("/") + 1);
+                                        html+= showFileUploaded(fileName, contentLength, url)
+                                        $(".showFilesUploaded").html(html)
+                                        $("#viewNotification").modal("show")
+                                    }
+                                });
+                            });
+                        }else{
+                            $("#viewNotification").modal("show")
+                        }
+                    },
+                    function (error){
+                        console.log(error)
+                    }
+                )
+            }
         })
 
         $(document).on("click","#deleteNotificationBtn", function (){
@@ -834,7 +970,7 @@
                 callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
                     console.log(rs)
                     if(rs){
-
+                        loadDatabase();
                     }
                     $("#deleteNotification").modal("hide")
                 });
@@ -882,6 +1018,11 @@
                 }
          var quillCreate = new Quill("#contentCreate", snowEditorData);
          var quillEdit = new Quill("#contentEdit", snowEditorData);
+        var quillView = new Quill("#contentView",{
+            theme: 'bubble', // Specify theme in configuration
+            readOnly: true,  // Set the editor to read-only mode
+        });
+
         let listTypeFileArr = "${listTypeFile}".split(",")
         let listTypeFile = ""
         listTypeFileArr.forEach((item, index)=>{
@@ -1056,7 +1197,6 @@
                      }
                  )
              }
-             console.log(notificationId)
          })
 
         $(document).on("click","button.editBtn", function(){
@@ -1093,8 +1233,9 @@
 
             callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
                 console.log(rs)
-                if(rs>0){
-
+                if(rs){
+                    $('#notificationList a[href="/notifications/'+notificationId+'"]').text(rs.title)
+                    $("#formEditNotication").modal("hide")
                 }
             },function (error){
                 console.log(error)
@@ -1105,7 +1246,7 @@
             removeAlert()
             var apiUrlNotification = baseUrlNotification + "/update/"
             let title = $("#titleCreate").val()
-            let contentCheck = $(".ql-editor").html().toString()
+            let contentCheck = $("#formCreateNotication .ql-editor").html().toString()
             let content = JSON.stringify(quillCreate.getContents())
             if (title.trim() === "") {
                 $("input#titleCreate").parent().after(INVALID_FILLED)
@@ -1130,6 +1271,7 @@
             callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}","POST", formData ,function (rs){
                 console.log(rs)
                 if(rs>0){
+                    loadDatabase();
                     $("#formCreateNotication").modal("hide")
                 }
             },function (error){
