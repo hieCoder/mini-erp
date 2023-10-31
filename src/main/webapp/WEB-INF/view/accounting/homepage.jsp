@@ -55,8 +55,8 @@
                         <div class="d-flex align-items-center">
                             <h5 class="card-title mb-0 flex-grow-1">Accounting Datatable</h5>
                             <div class="flex-shrink-0">
-                                <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#createModal"><i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i> Create Tickets</button>
-                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#createModal"><i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i> Create Account</button>
+<%--                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>--%>
                             </div>
                         </div>
                     </div>

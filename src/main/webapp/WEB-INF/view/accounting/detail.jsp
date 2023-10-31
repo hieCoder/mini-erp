@@ -9,22 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Accounting</title>
     <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
-    <style>
-        .ql-container {
-            min-height: 10rem;
-            height: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ql-editor {
-            height: 100%;
-            flex: 1;
-            overflow-y: auto;
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -32,7 +16,7 @@
         <div class="card-header">
             <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
         </div>
-        <div class="card-body" id="table-body">
+        <div class="card-body" id="viewAccount" data-id="${account.id}">
             <div class="text-muted">
                 <div class="pb-3 border-bottom border-bottom-dashed mb-4 ">
                     <div class="row">
@@ -138,63 +122,8 @@
             </div>
             <div class="pt-3 border-top border-top-dashed mt-4">
                 <h6 class="mb-3 fw-semibold text-uppercase">Bills</h6>
-                <c:choose>
-                    <c:when test="${not empty account.bill}">
-                        <div class="row g-3" id="attachedFilesNotification">
-                            <c:set var="imageType" value="${setting.listTypeImage}"/>
-                            <c:set var="fileType" value="${setting.listTypeFile}"/>
-                            <c:forEach items="${account.bill}" var="file">
-                            <div class="col-xxl-4 col-lg-6">
-                                <div class="border rounded border-dashed p-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0 me-3">
-                                            <div class="avatar-sm">
-                                                <div class="avatar-title bg-light text-secondary rounded fs-24">
-                                                    <i class="ri-folder-zip-line"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="fs-13 mb-1"><a href="${file}" download class="text-body text-truncate d-block cut-file-name"
-                                                                      data-bs-toggle="tooltip"
-                                                                      data-bs-placement="bottom"
-                                                                      title="${file.substring(file.indexOf('-') + 1)}">${file}</a></h5>
-                                            <div>2.2MB</div>
-                                        </div>
-                                        <div class="flex-shrink-0 ms-2">
-                                            <div class="d-flex gap-1">
-                                                <button type="button" class="btn btn-icon text-muted btn-sm fs-18 downFileBtn"><i
-                                                        class="ri-download-2-line" data-url="${file}"></i></button>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown"
-                                                            type="button"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#"><i
-                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                            Rename</a>
-                                                        </li>
-                                                        <li><a class="dropdown-item" href="#"><i
-                                                                class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </c:forEach>
+                        <div class="row g-3 showFilesUploaded">
                         </div>
-                    </c:when>
-                    <c:otherwise>
-                    </c:otherwise>
-                </c:choose>
-                <!-- end col -->
-
-                <!-- end row -->
             </div>
         </div>
         <div class="card-footer" data-id="${account.id}">
@@ -768,6 +697,24 @@
             + "    </div>"
             + "</div>";
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let fileNameArr = []
+        function loadFilesName(fileNameArr){
+            let html =""
+            handleFiles(fileNameArr, function handleEachFunc (fileName, fileSize, url) {
+                html += showFileUploaded(fileName, fileSize, url, "view")
+                $("#viewAccount .showFilesUploaded").html(html)
+            })
+        }
+
+        <c:forEach items="${account.bill}" var="value" varStatus="loop">
+        fileNameArr.push('${value}');
+        <c:if test="${loop.index + 1 == fn:length(account.bill)}">
+        loadFilesName(fileNameArr);
+        </c:if>
+        </c:forEach>
+    });
 
     $(document).on("click", "button.downFileBtn", function () {
         let dataUrl = $(this).children().attr("data-url")

@@ -84,6 +84,57 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
     });
 }
 
+function handleFiles(arrUrl, handleEachFunc){
+    arrUrl.forEach(function (url,index) {
+        $.ajax({
+            type: "HEAD",
+            url: url,
+            success: function (data, status, xhr) {
+                var fileSize = xhr.getResponseHeader('Content-Length');
+                var fileName = url.substring(url.lastIndexOf("/") + 1);
+                if(handleEachFunc) handleEachFunc(fileName, fileSize, url);
+            }
+        });
+    });
+}
+
+function showFileUploaded(fileName, size, url, mode){
+    let html =""
+
+    if(mode === "edit"){
+        html =  "<button type='button' class='btn btn-icon text-muted btn-sm fs-18 deleteFileBtn'>"
+            + "    <i class='ri-delete-bin-fill' data-name='"+ fileName +"'></i>"
+            + "  </button>"
+    }
+
+    return "<div class='col-xxl-4 col-lg-6' data-name='"+ fileName +"'>"
+        + "    <div class='border rounded border-dashed p-2'>"
+        + "        <div class='d-flex align-items-center'>"
+        + "            <div class='flex-shrink-0 me-3'>"
+        + "                <div class='avatar-sm'>"
+        + "                    <div class='avatar-title bg-light text-secondary rounded fs-24'>"
+        + "                        <i class='ri-file-download-line'></i>"
+        + "                    </div>"
+        + "                </div>"
+        + "            </div>"
+        + "            <div class='flex-grow-1 overflow-hidden'>"
+        + "                <h5 class='fs-13 mb-1'><a href='"+ url +"' download data-toggle='tooltip' data-placement='bottom' title='"+ fileName+"' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
+        + "                <div>"+ bytesToMBShow(size)+" MB</div>"
+        + "            </div>"
+        + "            <div class='flex-shrink-0 ms-2'>"
+        + "                <div class='d-flex gap-1'>"
+        + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
+        + "                        <i class='ri-download-2-line' data-url='"+ url +"'></i>"
+        + "                    </button>"
+        + html
+        + "                </div>"
+        + "            </div>"
+        + "        </div>"
+        + "    </div>"
+        + "</div>";
+}
+
+
 function isBlank(a){
     return a === '' || a===null;
 }
