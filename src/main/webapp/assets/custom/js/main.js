@@ -1,59 +1,28 @@
 
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
-const DEFAULT_VALUE_SNOW_EDITOR = [
-        `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
-        `<div class="ql-editor" data-gramm="false" contenteditable="true"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
-        `<div class="ql-editor" data-gramm="false" contenteditable="true"><div><br></div></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
-    ];
 // const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
 // const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
 // const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
 //
-// // FUNCTION
-//
-// function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         processData: false,
-//         contentType: false,
-//         data: formData,
-//         enctype: 'multipart/form-data',
-//         success: function(response) {
-//             callback(response);
-//             resetForm(formId);
-//         },
-//         error: function (xhr, status, error) {
-//             resetForm(formId);
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//         }
-//     });
-// }
-//
-// function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
-//     $.ajax({
-//         url: urlAPI,
-//         type: methodType,
-//         processData: false,
-//         contentType: false,
-//         data: formData,
-//         enctype: 'multipart/form-data',
-//         success: function(response) {
-//             callback(response);
-//         },
-//         error: function (xhr, status, error) {
-//             Swal.fire({
-//                 icon: 'error',
-//                 text: JSON.parse(xhr.responseText).message
-//             });
-//             callBackError();
-//         }
-//     });
-// }
+// FUNCTION
+
+function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
+    $.ajax({
+        url: urlAPI,
+        type: methodType,
+        processData: false,
+        contentType: false,
+        data: formData,
+        enctype: 'multipart/form-data',
+        success: function(response) {
+            if(callbackSuccess) callbackSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            if(callbackFail) callbackFail(xhr);
+        }
+    });
+}
 
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
@@ -195,3 +164,43 @@ function isDeleveloper() {
 //         }
 //     });
 // }
+//
+// function handleFiles(arrUrl, handleEachFunc){
+//     arrUrl.forEach(function (url,index) {
+//         $.ajax({
+//             type: "HEAD",
+//             url: url,
+//             success: function (data, status, xhr) {
+//                 var fileSize = xhr.getResponseHeader('Content-Length');
+//                 var fileName = url.substring(url.lastIndexOf("/") + 1);
+//                 if(handleEachFunc) handleEachFunc(fileName, fileSize, url);
+//             }
+//         });
+//     });
+// }
+
+
+async function handleFilesAsync(arrUrl, handleEachFunc) {
+    var promises = arrUrl.map(function (url) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: "HEAD",
+                url: url,
+                success: function (data, status, xhr) {
+                    var fileSize = xhr.getResponseHeader('Content-Length');
+                    var fileName = url.substring(url.lastIndexOf("/") + 1);
+                    if (handleEachFunc) {
+                        handleEachFunc(fileName, fileSize, url);
+                    }
+                    resolve();
+                },
+                error: function (xhr, status, error) {
+                    reject(error);
+                }
+            });
+        });
+    });
+
+    await Promise.all(promises);
+}
+

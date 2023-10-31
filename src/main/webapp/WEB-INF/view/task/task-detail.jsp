@@ -3,6 +3,17 @@
 <html>
 <head>
     <title>Task detail</title>
+
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+
+    <!-- Sweet Alert css-->
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- dropzone css -->
+    <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css" />
 </head>
 <body>
 <%--    <div class="container mt-4" id="content-container">--%>
@@ -366,91 +377,6 @@
 <%--            closestLI.find('.list-button').first().show();--%>
 <%--        });--%>
 
-<%--        function createCommentForm(comment) {--%>
-<%--            var listItem = $('<li class="list-group-item">');--%>
-<%--            var row = $('<div class="row">');--%>
-<%--            var userCol = $('<div class="col-md-2 d-flex flex-column align-items-center">');--%>
-<%--            var commentCol = $('<div class="col-md-10">');--%>
-
-<%--            userCol.append('<img class="rounded-circle-container" src="' + comment.avatarUser + '" alt="User Avatar">');--%>
-<%--            userCol.append('<figcaption><b>' + comment.fullnameUser + '</b></figcaption>');--%>
-<%--            userCol.append('<small>' + comment.createdDate + '</small>');--%>
-
-<%--            var commentForm = $('<form id="updateCommentForm'+comment.id+'">');--%>
-
-<%--            commentForm.append('<div class="form-group"><input id="updateCommentTitle'+comment.id+'" name="title" type="text" class="form-control fw-bold" value="' + comment.title + '" disabled><small class="form-message"></small></div>');--%>
-<%--            commentForm.append('<div class="form-group"><div id="updateCommentContent'+comment.id+'" class="form-control summernote" style="height: auto;">' + comment.content + '</div><small class="form-message"></small></div>');--%>
-
-<%--            var fileLinksCol = $('<div class="col-md-8">');--%>
-<%--            var buttonCol = $('<div class="col-md-4 text-right list-button">');--%>
-
-<%--            var fileLinks = $('<div class="form-group list-file">');--%>
-<%--            if (comment.files && comment.files.length > 0) {--%>
-<%--                comment.files.forEach(function (file) {--%>
-<%--                    var fileSpan = $('<span class="file">');--%>
-<%--                    var fileA = $('<a class="p-2 cut-file-name" href="' + file + '" download>' + getFileNameFromPath(file) + '</a>');--%>
-<%--                    var closeSpan = $('<span style="font-size: 20px;cursor: pointer;" class="d-none remove-file" aria-hidden="true">&times;</span>');--%>
-
-<%--                    fileSpan.append(fileA);--%>
-<%--                    fileSpan.append(closeSpan);--%>
-
-<%--                    fileLinks.append(fileSpan);--%>
-<%--                });--%>
-<%--            }--%>
-
-<%--            var fileInput = $('<input type="file" name="newFiles" class="form-control mt-2 attract-update-comment d-none" multiple>');--%>
-<%--            fileLinks.append(fileInput);--%>
-
-<%--            fileLinksCol.append(fileLinks);--%>
-
-<%--            var modifyButton = $('<button type="button" class="btn btn-warning btn-modify-comment d-none mr-1"">Modify</button>');--%>
-<%--            modifyButton.attr('data-comment-id', comment.id);--%>
-<%--            var deleteButton = $('<button type="button" class="btn btn-danger btn-delete-comment d-none mr-1" data-toggle="modal" data-target="#deleteCommentModal">Delete</button>');--%>
-<%--            deleteButton.attr('data-comment-id', comment.id);--%>
-<%--            var updateButton = $('<button type="submit" class="btn btn-primary btn-update-comment d-none mr-1">Update</button>');--%>
-<%--            var cancelUpdateButton = $('<button type="button" class="btn btn-secondary btn-cancel-update-comment d-none mr-1">Cancel</button>');--%>
-<%--            cancelUpdateButton.attr('data-comment-id', comment.id);--%>
-
-<%--            if(comment.parentId == null && !isDeleveloper()){--%>
-<%--                var replyButton = $('<button type="button" class="btn btn-info btn-reply-comment mr-1">Reply</button>');--%>
-<%--                replyButton.attr('data-comment-id', comment.id);--%>
-<%--                buttonCol.append(replyButton);--%>
-<%--            }--%>
-<%--            buttonCol.append(modifyButton);--%>
-<%--            buttonCol.append(updateButton);--%>
-<%--            buttonCol.append(deleteButton);--%>
-<%--            buttonCol.append(cancelUpdateButton);--%>
-<%--            if(isAdminOrUserLogin(comment.idUser)){--%>
-<%--                deleteButton.removeClass('d-none');--%>
-<%--                modifyButton.removeClass('d-none');--%>
-<%--            }--%>
-
-<%--            commentForm.append('<div class="form-group row">');--%>
-<%--            commentForm.find('.row').append(fileLinksCol).append(buttonCol);--%>
-
-<%--            commentCol.append(commentForm);--%>
-
-<%--            row.append(userCol).append(commentCol);--%>
-<%--            listItem.append(row);--%>
-
-<%--            listItem.append('<div class="row"><div class="col-md-2"></div><div class="col-md-10 reply-form-container"></div></div>');--%>
-
-<%--            var childComments = comment.childComments;--%>
-<%--            var ul = $('<ul class="childs-comment-list w-100"></ul>');--%>
-<%--            if (childComments && childComments.length > 0) {--%>
-
-<%--                childComments.forEach(function (comment) {--%>
-<%--                    var liE = createCommentForm(comment);--%>
-<%--                    ul.append(liE);--%>
-<%--                });--%>
-<%--            }--%>
-<%--            var rowCommentChilds = $('<div class="row"></div>');--%>
-<%--            rowCommentChilds.append(ul);--%>
-<%--            listItem.append(rowCommentChilds);--%>
-
-<%--            return listItem;--%>
-<%--        }--%>
-
 <%--        function updateCommemtForm(closestLI) {--%>
 <%--            // title--%>
 <%--            var titleInput = closestLI.find('input[name="title"]').first();--%>
@@ -628,7 +554,7 @@
             <div class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="home-1" role="tabpanel">
-                        <h5 class="card-title mb-4">Comments</h5>
+                        <h5 class="card-title">Comments</h5>
                         <div data-simplebar class="px-3 mx-n3 mb-2" id="comment-list"></div>
                         <form class="mt-4">
                             <div class="row g-3">
@@ -984,6 +910,40 @@
 </div>
 <!-- end modal -->
 
+
+<div class="modal fade flip" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 text-center">
+                    <h4>You are about to delete a task comment ?</h4>
+                    <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
+                        your information from our database.</p>
+                    <div class="hstack gap-2 justify-content-center remove">
+                        <button class="btn btn-danger" id="delete-comment" data-id="">Yes, Delete It</button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end delete modal -->
+
+<!-- ckeditor -->
+<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+<!-- quill js -->
+<script src="/assets/libs/quill/quill.min.js"></script>
+<!-- init js -->
+<script src="/assets/js/pages/form-editor.init.js"></script>
+
+<!-- Sweet Alerts js -->
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+<!-- dropzone min -->
+<script src="/assets/libs/dropzone/dropzone-min.js"></script>
+
 <script src="/assets/custom/js/task/task.js"></script>
 <script>
     $(document).ready(function() {
@@ -1000,28 +960,92 @@
             $('.task-due-date').text(rs.dueDate);
             $('.task-closed-date').text(rs.closeDate);
 
-            $('.task-content').html($(rs.content).find('div:first'));
+            $('.task-content').html(getContentViewOfEditorSnow(rs.content));
 
             // LIST OF COMMENT
             rs.comments.forEach(function (comment) {
-                $('#comment-list').append(createCommentForm(comment));
+                createCommentForm(comment)
+                    .then(function (commentHTML) {
+                        $('#comment-list').append(commentHTML);
+                    }).catch(function (error) {
+                        console.error(error);
+                    });
             });
         });
     });
 
-    function createCommentForm(comment){
-        return `<div class="d-flex mb-4">
-    <div class="flex-shrink-0">
-        <img src="` + comment.avatarUser + `" alt="" class="avatar-xs rounded-circle" />
-    </div>
-    <div class="flex-grow-1 ms-3">
-        <h5 class="fs-13"><a href="pages-profile.html">`+ comment.fullnameUser + `</a> <small class="text-muted">`+comment.createdDate+`</small></h5>
-        <p class="mb-2">`+ comment.title+`</p>
-        <p class="text-muted">I am getting message from customers that when they place order always get error message .</p>
-        <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
-    </div>
-</div>`;
-    }
+    $(document).on('click', '.remove-comment-btn', function (e) {
+        var id = $(this).data('id');
+        $('#delete-comment').attr('data-id', id);
+    });
+
+    $(document).on('click', '#delete-comment', function (e) {
+        var id = $(this).attr('data-id');
+        callAjaxByJsonWithData("/api/v1/comment-task/" + id, "DELETE", null, function (rs) {
+            $(".comment-container[data-id='" + id + "']").remove();
+            $('#deleteCommentModal').modal('hide');
+        });
+    });
+
+    $(document).on('click', '.btn-reply', function (e){
+        var id = $(this).data('id');
+        var replyContainer = $(".form-reply[data-id='" + id + "']");
+        replyContainer.html(replyCommentForm(id));
+
+        var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
+        dropzonePreviewNode.id = "";
+        var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
+        dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
+        var dropzone = new Dropzone(".dropzone", {
+            url: 'https://httpbin.org/post',
+            method: "post",
+            previewTemplate: previewTemplate,
+            previewsContainer: "#dropzone-preview",
+            autoProcessQueue: false,
+        });
+
+        $.getScript("/assets/js/pages/form-editor.init.js");
+
+
+        Validator({
+            form:'.reply-comment-form[data-id="'+ id+ '"]',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('.reply-comment-form[data-id="'+ id+ '"] .title-reply'),
+                Validator.isRequired('.reply-comment-form[data-id="'+ id+ '"] .content-reply')
+            ],
+            onSubmit: function (formData) {
+                formData.append('taskId', ${id});
+                formData.append('content', $('.reply-comment-form[data-id="'+ id+ '"] .content-reply').html());
+                formData.append('userId', userCurrent.id);
+                formData.append('parentId', id);
+                dropzone.files.forEach((file) => {
+                    formData.append('fileList', file);
+                });
+
+                var data = {};
+                formData.forEach((value, key) => data[key] = value);
+                console.log(data);
+
+                // callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                //     // var liE = createCommentForm(rs);
+                //     // var ulChildsComment = closestLI.find('.childs-comment-list').first();
+                //     // liE.prependTo(ulChildsComment);
+                //     //
+                //     // closestLI.find('.reply-form-container form').first().remove();
+                //     // closestLI.find('.list-button').first().show();
+                //     console.log(123);
+                //
+                // });
+            }
+        });
+    });
+
+    $(document).on('click', '.close-reply-form', function (e){
+        var parentElement = $(this).closest(".reply-comment-form");
+        if (parentElement.length > 0) parentElement.remove();
+    });
+
 </script>
 </body>
 </html>

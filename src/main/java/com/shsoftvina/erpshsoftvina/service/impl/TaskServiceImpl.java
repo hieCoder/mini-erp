@@ -123,9 +123,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDetailResponse findById(String id) {
         Task task = taskMapper.findById(id);
-        if (task.getStatus().equals(StatusDeleteTaskEnum.ACTIVE)){
-            applicationUtils.checkUserAllow(task.getUser().getId());
-        } else{
+        if (task.getStatus().equals(StatusDeleteTaskEnum.INACTIVE)){
             applicationUtils.checkUserAllow();
         }
         return taskConverter.toDetailResponse(task);
