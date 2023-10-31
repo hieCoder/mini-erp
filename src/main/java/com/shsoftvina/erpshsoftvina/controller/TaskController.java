@@ -31,9 +31,7 @@ public class TaskController {
     public ModelAndView getTask(@PathVariable String id) {
 
         Task task = taskMapper.findById(id);
-        if (task.getStatus().equals(StatusDeleteTaskEnum.ACTIVE)){
-            applicationUtils.checkUserAllow(task.getUser().getId());
-        } else{
+        if (task.getStatus().equals(StatusDeleteTaskEnum.INACTIVE)){
             applicationUtils.checkUserAllow();
         }
 
