@@ -34,6 +34,10 @@
             overflow-y: auto;
             width: 100%;
         }
+
+        #viewNotification .ql-bubble{
+            border: none
+        }
     </style>
 </head>
 <body>
@@ -59,7 +63,6 @@
                         <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
                                 <button type="button" class="btn btn-success addNotification" style="margin-left: 8px"><i class="ri-add-line align-bottom me-1"></i> Add</button>
                                 <button type="button" class="btn btn-danger showListInactive" style="margin-left: 8px"><i class=" ri-delete-bin-line align-bottom me-1"></i> Inactive List</button>
-                                <button class="btn btn-soft-danger" onclick="deleteMultiple()" style="margin-left: 8px"><i class="ri-delete-bin-2-line"></i></button>
                         </c:if>
                         </div>
                         <div class="col-sm d-flex justify-content-end align-items-center">
@@ -97,13 +100,13 @@
                                         <td>
                                             <div class="d-flex gap-2" data-id="${notification.id}">
                                                 <div class="viewNotification">
-                                                    <button class="btn btn-sm btn-info edit-item-btn">View</button>
+                                                    <button class="btn btn-sm btn-info viewNotification">View</button>
                                                 </div>
                                                 <div class="editNotification">
-                                                    <button class="btn btn-sm btn-success edit-item-btn">Edit</button>
+                                                    <button class="btn btn-sm btn-success editNotification">Edit</button>
                                                 </div>
                                                 <div class="removeNotification">
-                                                    <button class="btn btn-sm btn-danger remove-item-btn">Remove</button>
+                                                    <button class="btn btn-sm btn-danger removeNotification">Remove</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -188,7 +191,7 @@
     </div>
 </div>
 
-<div id="viewNotification" class="modal modal-lg fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+<div id="viewNotification" class="modal modal-xl fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -196,7 +199,41 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-muted">
+                            <h5 class="mb-3 fw-semibold text-uppercase titleView">Title:
+                               <strong class="fw-bolder fst-italic fs-4"> </strong>
+                            </h5>
+                        </div>
+                        <div class="text-muted">
+                            <h5 class="mb-3 fw-semibold text-uppercase contentView">Content</h5>
+                            <div id="contentView">
 
+                            </div>
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                <div class="row">
+
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div>
+                                            <p class="mb-2 text-uppercase fw-medium">Create Date :</p>
+                                            <h5 class="fs-15 mb-0 createdDate">15 Sep, 2021</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                                <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                <div class="row g-3 showFilesUploaded">
+
+                                </div>
+                                <!-- end row -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -429,7 +466,6 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-
 <div class="modal fade zoomIn" id="deleteFileModal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -479,25 +515,48 @@
         </div>
     </div>
 </div>
+<div class="modal fade zoomIn" id="deleteSuccessNotification" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Inform</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            The notification has been deleted.
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script src="/assets/js/notification/notification.js"></script>
 <script>
-        const baseUrlComment = "/api/v1/comment-notification";
-        const baseUrlNotification = "/api/v1/notifications";
-        const INVALID_FILLED=' <div class="alert alert-danger" role="alert">'+
-            '<strong> Invalid </strong> This field is not filled'+
+    const INVALID_FILLED=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> This field is not filled'+
         '</div>'
-        const INVALID_FILES_LIMIT=' <div class="alert alert-danger" role="alert">'+
-            '<strong> Invalid </strong> Maximum Files is ${uploadFileLimit}'+
-            '</div>'
+    const INVALID_FILES_LIMIT=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> Maximum Files is ${uploadFileLimit}'+
+        '</div>'
 
-        const INVALID_FILES_TYPE=' <div class="alert alert-danger" role="alert">'+
-            '<strong> Invalid </strong> File type allowed: ${listTypeFile}'+
-            '</div>'
+    const INVALID_FILES_TYPE=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> File type allowed: ${listTypeFile}'+
+        '</div>'
 
-        const INVALID_FILES_SIZE=' <div class="alert alert-danger" role="alert">'+
-            '<strong> Invalid </strong> Maximum Size Files is ${maxFileSize}'+
-            '</div>'
-        function displayPagination() {
+    const INVALID_FILES_SIZE=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> Maximum Size Files is ${maxFileSize}'+
+        '</div>'
+
+    function displayPagination() {
         var currentUrl = window.location.search;
         var params = new URLSearchParams(currentUrl);
         var currentPage = !params.get('page') ? 1 : parseInt(params.get('page'));
@@ -524,12 +583,11 @@
             $("#formCreateNotication").modal("show")
         })
 
-        $(document).on("click", "li.viewNotification", function (e) {
-            let main = $(this)
-            let idNotification = main.parent().attr("data-id")
-            console.log(idNotification)
-            $("#viewNotification").modal("show")
-        })
+        // $(document).on("click", "li.viewNotification", function (e) {
+        //     let main = $(this)
+        //     let idNotification = main.parent().attr("data-id")
+        //     $("#viewNotification").modal("show")
+        // })
         $(document).on("click", "li.paginate_button", function (e) {
             var currentUrl = window.location.search;
             var params = new URLSearchParams(currentUrl);
@@ -577,25 +635,29 @@
                         var urlParams = new URLSearchParams(currentURL);
                         var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
                         rs.forEach(function (notification, index) {
+                            let htmlAdmin = ""
+                            if(${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}){
+                                htmlAdmin = '<td>' +
+                                    '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
+                                    '<div class="viewNotification">'+
+                                    '<button class="btn btn-sm btn-info viewNotification">View</button>'+
+                                    ' </div>'+
+                                    '<div class="editNotification">'+
+                                    '<button class="btn btn-sm btn-success editNotification">Edit</button>'+
+                                    '</div>'+
+                                    '<div class="removeNotification">'+
+                                    '<button class="btn btn-sm btn-danger removeNotification">Remove</button>'+
+                                    '</div>'+
+                                    '    </div>' +
+                                    '</td>'
+                            }
                             let pageInt = (parseInt(page) - 1) * pageSize
                             xhtml += '<tr class="">' +
                                 '<td>' + (index + pageInt + 1) + '</td>' +
                                 '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
                                 '<td>' + notification.user.fullname + '</td>' +
                                 '<td>' + notification.createdDate + '</td>' +
-                                '<td>' +
-                                '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
-                                        '<div class="viewNotification">'+
-                                            '<button class="btn btn-sm btn-info edit-item-btn">View</button>'+
-                                       ' </div>'+
-                                        '<div class="editNotification">'+
-                                            '<button class="btn btn-sm btn-success edit-item-btn">Edit</button>'+
-                                        '</div>'+
-                                        '<div class="removeNotification">'+
-                                            '<button class="btn btn-sm btn-danger remove-item-btn">Remove</button>'+
-                                        '</div>'+
-                                '    </div>' +
-                                '</td>'+
+                                 htmlAdmin+
                                 '</tr>'
                         })
                         tbodyElement.innerHTML = xhtml
@@ -732,124 +794,140 @@
 <!-- init js -->
 <%--<script src="/assets/js/pages/form-editor.init.js"></script>--%>
 <script>
-        function bytesToMB(bytes) {
-            return parseInt((bytes / (1024 * 1024)).toFixed(0))
-        }
 
-        function bytesToMBShow(bytes){
-            return (bytes / (1024 * 1024)).toFixed(2)
-        }
-        function showFileUploaded(fileName, size, url){
+    var quillCreate = new Quill("#contentCreate", snowEditorData);
 
-            return "<div class='col-xxl-4 col-lg-6' data-name='"+ fileName +"'>"
-                + "    <div class='border rounded border-dashed p-2'>"
-                + "        <div class='d-flex align-items-center'>"
-                + "            <div class='flex-shrink-0 me-3'>"
-                + "                <div class='avatar-sm'>"
-                + "                    <div class='avatar-title bg-light text-secondary rounded fs-24'>"
-                + "                        <i class='ri-file-download-line'></i>"
-                + "                    </div>"
-                + "                </div>"
-                + "            </div>"
-                + "            <div class='flex-grow-1 overflow-hidden'>"
-                + "                <h5 class='fs-13 mb-1'><a href='"+ url +"' download data-toggle='tooltip' data-placement='bottom' title='"+ fileName+"' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
-                + "                <div>"+ bytesToMBShow(size)+" MB</div>"
-                + "            </div>"
-                + "            <div class='flex-shrink-0 ms-2'>"
-                + "                <div class='d-flex gap-1'>"
-                + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
-                + "                        <i class='ri-download-2-line' data-url='"+ url +"'></i>"
-                + "                    </button>"
-                + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 deleteFileBtn'>"
-                + "                        <i class='ri-delete-bin-fill' data-name='"+ fileName +"'></i>"
-                + "                    </button>"
-                + "                </div>"
-                + "            </div>"
-                + "        </div>"
-                + "    </div>"
-                + "</div>";
-        }
+    var quillEdit = new Quill("#contentEdit", snowEditorData);
 
+    var quillView = new Quill("#contentView",{
+        theme: 'bubble', // Specify theme in configuration
+        readOnly: true,  // Set the editor to read-only mode
+    });
         function loadDatabase(){
             var currentUrl = window.location.search;
             var params = new URLSearchParams(currentUrl);
-            var currentPage = !params.get('page') ? 1 : parseInt(params.get('page'));
+            var page = !params.get('page') ? 1 : parseInt(params.get('page'));
             var pageSize = !params.get('pageSize') ? 10 : parseInt(params.get('pageSize'));
             var search = !params.get('search') ? "" : params.get('search');
-            let currentGet = "?page=" +currentPage +"&pageSize="+pageSize+"&search="+search
+            let currentGet = "?page=" +page +"&pageSize="+pageSize+"&search="+search
             var apiUrl = baseUrlNotification + currentGet
-            // callAjaxByJsonWithData(apiUrl, "GET", null,
-            //     function (rs) {
-            //         if(rs){
-            //             history.pushState(null, null, currentUrl);
-            //             let xhtml =""
-            //             var currentURL = window.location.href;
-            //             var urlParams = new URLSearchParams(currentURL);
-            //             var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
-            //             rs.forEach(function (notification, index) {
-            //                 let pageInt = (parseInt(page) - 1) * pageSize
-            //                 xhtml += '<tr class="">' +
-            //                     '<td>' + (index + pageInt + 1) + '</td>' +
-            //                     '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
-            //                     '<td>' + notification.user.fullname + '</td>' +
-            //                     '<td>' + notification.createdDate + '</td>' +
-            //                     '<td>' +
-            //                     '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
-            //                     '<div class="viewNotification">'+
-            //                     '<button class="btn btn-sm btn-info edit-item-btn">View</button>'+
-            //                     ' </div>'+
-            //                     '<div class="editNotification">'+
-            //                     '<button class="btn btn-sm btn-success edit-item-btn">Edit</button>'+
-            //                     '</div>'+
-            //                     '<div class="removeNotification">'+
-            //                     '<button class="btn btn-sm btn-danger remove-item-btn">Remove</button>'+
-            //                     '</div>'+
-            //                     '    </div>' +
-            //                     '</td>'+
-            //                     '</tr>'
-            //             })
-            //             tbodyElement.innerHTML = xhtml
-            //             tbodyElement.classList.remove("hidden")
-            //             displayPagination()
-            //         } else{
-            //             console.log("Data API Error")
-            //         }
-            //     },
-            //     function (error){
-            //         console.log("Call API Error")
-            //         console.log(error)
-            //     })
-        }
-        loadDatabase()
-        $(document).on("click","div.removeNotification", function (){
-            let notificationId = $(this).parent().attr("data-id")
-            $("#deleteNotification").attr("data-id", notificationId)
-            $("#deleteNotification").modal("show")
-        })
-
-        $(document).on("click","#deleteNotificationBtn", function (){
-           let notificationId = $("#deleteNotification").attr("data-id")
-            let apiUrlNotification = baseUrlNotification;
-            if(notificationId){
-                callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
-                    console.log(rs)
+            var tbodyElement = document.getElementById("notificationList");
+            callAjaxByJsonWithData(apiUrl, "GET", null,
+                function (rs) {
                     if(rs){
-
+                        history.pushState(null, null, currentUrl);
+                        let xhtml =""
+                        var currentURL = window.location.href;
+                        var urlParams = new URLSearchParams(currentURL);
+                        var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
+                        rs.forEach(function (notification, index) {
+                            let pageInt = (parseInt(page) - 1) * pageSize
+                            xhtml += '<tr class="">' +
+                                '<td>' + (index + pageInt + 1) + '</td>' +
+                                '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
+                                '<td>' + notification.user.fullname + '</td>' +
+                                '<td>' + notification.createdDate + '</td>' +
+                                '<td>' +
+                                '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
+                                '<div class="viewNotification">'+
+                                '<button class="btn btn-sm btn-info viewNotification">View</button>'+
+                                ' </div>'+
+                                '<div class="editNotification">'+
+                                '<button class="btn btn-sm btn-success editNotification">Edit</button>'+
+                                '</div>'+
+                                '<div class="removeNotification">'+
+                                '<button class="btn btn-sm btn-danger removeNotification">Remove</button>'+
+                                '</div>'+
+                                '    </div>' +
+                                '</td>'+
+                                '</tr>'
+                        })
+                        tbodyElement.innerHTML = xhtml
+                        tbodyElement.classList.remove("hidden")
+                        displayPagination()
+                    } else{
+                        console.log("Data API Error")
                     }
-                    $("#deleteNotification").modal("hide")
-                });
+                },
+                function (error){
+                    console.log("Call API Error")
+                    console.log(error)
+                })
+        }
+
+    function loadFilesName(fileNameArr, mode){
+        let html =""
+        handleFiles(fileNameArr, function handleEachFunc (fileName, fileSize, url) {
+                html += showFileUploaded(fileName, fileSize, url, mode)
+            if(mode == "view") {
+                $("#viewNotification .showFilesUploaded").html(html)
+            }else if(mode == "edit"){
+                $("#formEditNotication .showFilesUploaded").html(html)
+            }
+            })
+        if(mode == "view"){
+            $("#viewNotification").modal("show")
+        } else if(mode == "edit"){
+            $("#formEditNotication").modal("show")
+        }
+    }
+    $(document).on("click","button.editNotification",function (){
+        Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
+        let notificationId = $(this).parent().parent().attr("data-id")
+        let apiUrlNotification = baseUrlNotification
+        if(notificationId){
+            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
+                function (rs) {
+                    $("#formEditNotication").attr("data-id", rs.id)
+                    $("#titleEdit").val(rs.title)
+                    let contentParse = JSON.parse(rs.content)
+                    quillEdit.setContents(contentParse)
+                    let urlFiles = rs.files ? rs.files : []
+                    let fileLength = rs.files ? rs.files.length : 0
+                    dropzoneEdit.options.maxFiles = parseInt(uploadFileLimit) - fileLength;
+                    if(fileLength>0){
+                        loadFilesName(urlFiles, "edit");
+                    }else{
+                        $("#formEditNotication").modal("show")
+                    }
+                },
+                function (error){
+                    console.log(error)
+                }
+            )
+        }
+    })
+
+    $(document).on("click","button.viewNotification", function (){
+            let notificationId = $(this).parent().parent().attr("data-id")
+            $("#viewNotification").attr("data-id", notificationId)
+            let apiUrlNotification = baseUrlNotification
+            if(notificationId){
+                callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
+                    function (rs) {
+                        console.log(rs)
+                        $("#viewNotification h5.titleView strong").text(rs.title)
+                        $("#viewNotification h5.createdDate").text(rs.createdDate)
+                        let contentParse = JSON.parse(rs.content)
+                        quillView.setContents(contentParse)
+                        let urlFiles = rs.files ? rs.files : []
+                        let fileLength = rs.files ? rs.files.length : 0
+                        if(fileLength>0){
+                            loadFilesName(urlFiles, "view");
+                        }else{
+                            $("#viewNotification").modal("show")
+                        }
+                    },
+                    function (error){
+                        console.log(error)
+                    }
+                )
             }
         })
 
         $(document).on("click","button.downFileBtn",function (){
             let dataUrl = $(this).children().attr("data-url")
             downloadFiles(dataUrl)
-        })
-
-        $(document).on("click","button.deleteFileBtn",function (){
-            let fileName = $(this).children().attr("data-name")
-            $("#deleteFileModal").attr("data-name", fileName)
-            $("#deleteFileModal").modal("show")
         })
 
         $(document).on("click","button#deleteFileBtn",function (){
@@ -859,29 +937,6 @@
             dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
         })
 
-        function downloadFiles(url){
-            var link = document.createElement('a');
-            link.href = url;
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        })
-         var snowEditorData = {};
-            snowEditorData.theme = 'snow'
-            snowEditorData.modules = {
-                    'toolbar': [[{ 'font': [] }, { 'size': [] }], ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }], [{ 'script': 'super' }, { 'script': 'sub' }],
-                        [{ 'header': [false, 1, 2, 3, 4, 5, 6] }, 'blockquote', 'code-block'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-                        ['direction', { 'align': [] }], ['link', 'image', 'video'], ['clean']]
-                }
-         var quillCreate = new Quill("#contentCreate", snowEditorData);
-         var quillEdit = new Quill("#contentEdit", snowEditorData);
         let listTypeFileArr = "${listTypeFile}".split(",")
         let listTypeFile = ""
         listTypeFileArr.forEach((item, index)=>{
@@ -892,7 +947,8 @@
         })
         let maxFileSize = "${maxFileSize}"
         let uploadFileLimit = "${uploadFileLimit}"
-        var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
+
+    var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
         dropzonePreviewNode.id = "";
         var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
         dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
@@ -915,7 +971,7 @@
          var dropzoneEdit = new Dropzone("#dropzoneEdit", {
              url: 'https://httpbin.org/post',
              method: "post",
-             previewTemplate: previewTemplate,
+             previewTemplate: previewTemplateEdit,
              previewsContainer: "#dropzone-preview-edit",
              acceptedFiles: listTypeFile,
              maxFilesize: parseInt(maxFileSize),
@@ -923,53 +979,6 @@
              uploadMultiple:true,
              autoProcessQueue: false,
          });
-
-         function removeAlert(){
-             $(".alert-danger").remove()
-         }
-        function checkLimitFile(count, limit){
-             return count <= limit ? true : false
-        }
-
-        function checkTypeFile(type, listType){
-            if(listType.includes(type)){
-                return true
-            }
-        }
-
-        function checkLimitSize(size, limit){
-            if(parseInt(size)<= limit){
-                return true
-            }
-        }
-
-        function showAlertValidate(html){
-            let xhtml =  '<li class="mt-2" id=""> '+
-                html +
-                '</li>'
-
-            let check = $("#dropzone-preview-edit li").children().last()
-            if(check.length>0){
-                $("#dropzone-preview-edit li").children().last().after(xhtml)
-            }else{
-                $("#dropzone-preview-edit").html(xhtml)
-            }
-
-        }
-
-        function showAlertValidateCreate(html){
-            let xhtml =  '<li class="mt-2" id=""> '+
-                html +
-                '</li>'
-
-            let check = $("#dropzone-preview li").children().last()
-            if(check.length>0){
-                $("#dropzone-preview li").children().last().after(xhtml)
-            }else{
-                $("#dropzone-preview").html(xhtml)
-            }
-
-        }
 
         dropzone.on("addedfile", function (file) {
             removeAlert();
@@ -1015,97 +1024,11 @@
             }
         });
 
-         $(document).on("click",".editNotification",function (){
-             Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
-             let notificationId = $(this).parent().attr("data-id")
-             let apiUrlNotification = baseUrlNotification
-             if(notificationId){
-                 callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
-                         function (rs) {
-                             console.log(rs)
-                             $("#formEditNotication").attr("data-id", rs.id)
-                             $("#titleEdit").val(rs.title)
-                             let contentParse = JSON.parse(rs.content)
-                             quillEdit.setContents(contentParse)
-                             let urlFiles = rs.files ? rs.files : []
-                             let fileLength = rs.files ? rs.files.length : 0
-                             dropzoneEdit.options.maxFiles = parseInt(uploadFileLimit) - fileLength;
-                             let html=""
-                             if(fileLength>0){
-                                 urlFiles.forEach(function (url) {
-                                     $.ajax({
-                                         type: "HEAD",
-                                         url: url,
-                                         success: function (data, status, xhr) {
-                                             var contentLength = xhr.getResponseHeader('Content-Length');
-                                             var fileName = url.substring(url.lastIndexOf("/") + 1);
-                                             console.log("File Name: " + fileName);
-                                             console.log("Content Length: " + contentLength);
-                                             html+= showFileUploaded(fileName, contentLength, url)
-                                             $(".showFilesUploaded").html(html)
-                                             $("#formEditNotication").modal("show")
-                                         }
-                                     });
-                                 });
-                             }else{
-                                 $("#formEditNotication").modal("show")
-                             }
-                     },
-                         function (error){
-                             console.log(error)
-                     }
-                 )
-             }
-             console.log(notificationId)
-         })
-
-        $(document).on("click","button.editBtn", function(){
-            removeAlert()
-            let notificationId = $("#formEditNotication").attr("data-id")
-            let title = $("#titleEdit").val()
-            let contentCheck = $("div#formEditNotication .ql-editor").html().toString()
-            let content = JSON.stringify(quillEdit.getContents())
-            if (title.trim() === "") {
-                $("input#titleEdit").parent().after(INVALID_FILLED)
-                return false;
-            }
-            if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
-                $("div#contentEdit").parent().after(INVALID_FILLED)
-                return false;
-            }
-            var oldFile = []
-            $("div.showFilesUploaded > div").each(function () {
-                oldFile.push($(this).attr("data-name"));
-            });
-            var formData = new FormData();
-            formData.append("title", title);
-            formData.append("content", content);
-            formData.append("oldFile", oldFile);
-
-            if(dropzoneEdit.files.length>0) {
-                for (let i = 0; i < dropzoneEdit.files.length; i++) {
-                    let file = dropzoneEdit.files[i]
-                    if(file.accepted){
-                        formData.append("files", file);
-                    }
-                }
-            }
-
-            callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
-                console.log(rs)
-                if(rs>0){
-
-                }
-            },function (error){
-                console.log(error)
-            })
-
-        })
         $(document).on("click","button.createBtn", function (){
             removeAlert()
             var apiUrlNotification = baseUrlNotification + "/update/"
             let title = $("#titleCreate").val()
-            let contentCheck = $(".ql-editor").html().toString()
+            let contentCheck = $("#formCreateNotication .ql-editor").html().toString()
             let content = JSON.stringify(quillCreate.getContents())
             if (title.trim() === "") {
                 $("input#titleCreate").parent().after(INVALID_FILLED)
@@ -1130,6 +1053,7 @@
             callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}","POST", formData ,function (rs){
                 console.log(rs)
                 if(rs>0){
+                    loadDatabase();
                     $("#formCreateNotication").modal("hide")
                 }
             },function (error){

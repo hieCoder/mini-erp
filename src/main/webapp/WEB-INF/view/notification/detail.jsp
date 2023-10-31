@@ -3,73 +3,214 @@
 <%@ page import="com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <%
     session.setAttribute("pathMain", "/notifications/");
     session.setAttribute("apiURL", "/api/v1");
 %>
+
 <c:set var="userRole" value="${Principal.getUserCurrent().getRole()}"/>
 <c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
 <html>
 <head>
-    <title>Notification</title>
-    <link rel="stylesheet" href="/assets/css/notification/style.css">
+    <title>Notification Detail</title>
+    <!-- Plugins css -->
+    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <!-- bubble css for bubble editor-->
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <!-- snow css for snow editor-->
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <style>
+        .ql-container {
+            min-height: 10rem;
+            height: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ql-editor {
+            height: 100%;
+            flex: 1;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        #viewNotification .ql-bubble{
+            border: none
+        }
+
+        .ql-editor p:has(> img) {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header font-weight-bold">
-                    <h1>Notification Details</h1>
-                </div>
-                <div class="card-body">
-                    <table id="tableNotification" data-id="${notification.id}" class="table table-bordered">
-                        <tr>
-                            <th class="text-center align-middle">Title</th>
-                            <td id="titleNotification">${notification.title}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-center align-middle">Content</th>
-                            <td id="contentNotification">${notification.content}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-center align-middle">Author</th>
-                            <td id="authorNotification">${notification.fullnameUser}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-center align-middle">Created Date</th>
-                            <td id="createdDateNotification">${notification.createdDate}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-center align-middle">Attached Files</th>
-                            <td id="attachedFilesNotification">
-                                <c:forEach items="${notification.files}" var="file">
-                                    <a href="${file}" download
-                                       class="btn btn-link text-primary">${file.split("-")[1]}</a>
-                                </c:forEach>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="d-flex justify-content-end">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Notification Detail</h4>
+            </div><!-- end card header -->
+                <div id="viewNotification" class="card-body" data-id="${notification.id}">
+                            <div class="text-muted">
+                                <h5 class="mb-3 fw-semibold text-uppercase titleView">
+                                    <strong class="fw-bolder fst-italic fs-4">${notification.title}</strong>
+                                </h5>
+                            </div>
+                            <div class="text-muted">
+                                <div id="contentView">
+
+                                </div>
+                                <div class="pt-3 border-top border-top-dashed mt-4">
+                                    <div class="row">
+
+                                        <div class="col-lg-3 col-sm-6">
+                                            <div>
+                                                <p class="mb-2 text-uppercase fw-medium">Create Date :</p>
+                                                <h5 class="fs-15 mb-0 createdDate">${notification.createdDate}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-3 border-top border-top-dashed mt-4">
+                                    <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                    <div class="row g-3 showFilesUploaded">
+                                    </div>
+                                    <!-- end row -->
+                                </div>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-end mt-2" data-id="${notification.id}">
                         <c:if test="${(userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)) && notification.status.equals(StatusNotificationEnum.ACTIVE)}">
-                            <button id="editButtonNotification" class="btn btn-primary mr-1">Edit</button>
-                            <button type="button" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#deleteConfirmationModalNotification">Delete
-                            </button>
+                            <div class="editNotification">
+                                <button class="btn btn-sm btn-success editNotification">Edit</button>
+                            </div>
+                            <div class="removeNotification">
+                                <button class="btn btn-sm btn-danger removeNotification">Remove</button>
+                            </div>
                         </c:if>
                         <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
-                            <button type="button" class="btn btn-danger notificationDeleted" disabled>Deleted
-                            </button>
+                            <div class="notificationDeleted">
+                                <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted">Deleted</button>
+                            </div>
                         </c:if>
-                        <a href="${pathMain}" class="btn btn-dark ml-1">Back to list</a>
+                        <div class="backToList">
+                            <button class="btn btn-sm btn-dark backToList">Back to list</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="text-center d-flex align-items-center justify-content-center">
-                <div class="custom-spinner d-flex align-items-center justify-content-center">
-                    <div class="dot"></div>
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Comments</h4>
+<%--                    <div class="flex-shrink-0">--%>
+<%--                        <div class="dropdown card-header-dropdown">--%>
+<%--                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+<%--                                <span class="text-muted">Recent<i class="mdi mdi-chevron-down ms-1"></i></span>--%>
+<%--                            </a>--%>
+<%--                            <div class="dropdown-menu dropdown-menu-end">--%>
+<%--                                <a class="dropdown-item" href="#">Recent</a>--%>
+<%--                                <a class="dropdown-item" href="#">Top Rated</a>--%>
+<%--                                <a class="dropdown-item" href="#">Previous</a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <div data-simplebar="init" style="max-height: 500px;" class="px-3 mx-n3 mb-2">
+                        <div class="simplebar-wrapper" style="margin: 0px -16px;">
+                            <div class="simplebar-height-auto-observer-wrapper">
+                                <div class="simplebar-height-auto-observer"></div>
+                            </div>
+                            <div class="simplebar-mask">
+                                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                                        <div class="simplebar-content" style="padding: 0px 16px;">
+                                            <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img src="/assets/images/users/avatar-8.jpg" alt="" class="avatar-xs rounded-circle">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="fs-13">Joseph Parker <small class="text-muted ms-2">20 Dec 2021 - 05:47AM</small></h5>
+                                                <p class="text-muted">I am getting message from customers that when they place order always get error message .</p>
+                                                <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
+                                                <div class="d-flex mt-4">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="/assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h5 class="fs-13">Alexis Clarke <small class="text-muted ms-2">22 Dec 2021 - 02:32PM</small></h5>
+                                                        <p class="text-muted">Please be sure to check your Spam mailbox to see if your email filters have identified the email from Dell as spam.</p>
+                                                        <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="d-flex mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="/assets/images/users/avatar-6.jpg" alt="" class="avatar-xs rounded-circle">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="fs-13">Donald Palmer <small class="text-muted ms-2">24 Dec 2021 - 05:20PM</small></h5>
+                                <p class="text-muted">If you have further questions, please contact Customer Support from the “Action Menu” on your <a href="javascript:void(0);" class="text-decoration-underline">Online Order Support</a>.</p>
+                                <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
+                            </div>
+                        </div>
+                                            <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <img src="/assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="fs-13">Alexis Clarke <small class="text-muted ms-2">26 min ago</small></h5>
+                                <p class="text-muted">Your <a href="javascript:void(0)" class="text-decoration-underline">Online Order Support</a> provides you with the most current status of your order. To help manage your order refer to the “Action Menu” to initiate return, contact Customer Support and more.</p>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-lg-1 col-sm-2 col-6">
+                                        <img src="/assets/images/small/img-4.jpg" alt="" class="img-fluid rounded">
+                                    </div>
+                                    <div class="col-lg-1 col-sm-2 col-6">
+                                        <img src="/assets/images/small/img-5.jpg" alt="" class="img-fluid rounded">
+                                    </div>
+                                </div>
+                                <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
+                                <div class="d-flex mt-4">
+                                    <div class="flex-shrink-0">
+                                        <img src="/assets/images/users/avatar-6.jpg" alt="" class="avatar-xs rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="fs-13">Donald Palmer <small class="text-muted ms-2">8 sec ago</small></h5>
+                                        <p class="text-muted">Other shipping methods are available at checkout if you want your purchase delivered faster.</p>
+                                        <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="simplebar-placeholder" style="width: auto; height: 598px;"></div>
+                    </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 150px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+                    <div class="mt-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="newCommentContent" class="form-label text-body">Leave a Comments</label>
+                                <textarea class="form-control bg-light border-light" id="newCommentContent" rows="3" placeholder="Enter your comment..."></textarea>
+                            </div>
+                            <div class="col-12 text-end">
+<%--                                <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>--%>
+                                <button class="btn btn-success" id="newCommentBtn">Post Comments</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- end card body -->
             </div>
+
             <div class="containerComment d-none">
             <div class="mb-3 mt-2">
                 <div class="row mb-4 mt-4">
@@ -79,7 +220,7 @@
                                   style="min-height: 90px;"></textarea>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="newCommentBtn">Submit</button>
+<%--                        <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="newCommentBtn">Submit</button>--%>
                     </div>
                 </div>
 
@@ -258,38 +399,189 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteConfirmationModalNotification" tabindex="-1" role="dialog"
-     aria-labelledby="deleteConfirmationModalNotification" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade zoomIn" id="deleteNotification" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmationModalNotificationLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this notification?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="deleteNotificationButton" class="btn btn-danger">Delete</button>
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure?</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            Are you Sure You want to Remove this Notification?
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-danger " id="deleteNotificationButton">Yes, Delete It!</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+<div class="modal fade zoomIn" id="deleteSuccessNotification" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Notification Deleted</h5>
             </div>
             <div class="modal-body">
-                <p>This notification has been deleted.</p>
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Inform</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            This notification has been deleted.
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light backToList" data-bs-dismiss="modal">Back To List</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="formEditNotication" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Edit Notification Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label" for="titleEdit">Notification Title</label>
+                                    <input type="text" class="form-control" id="titleEdit" placeholder="Input Title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Notification Content</label>
+                                    <div class="snow-editor" id="contentEdit">
+
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="pt-3 border-top border-top-dashed mt-4">
+                                        <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                        <div class="row g-3 showFilesUploaded">
+
+                                        </div>
+                                        <!-- end row -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                        <!-- end card -->
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Attached files</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center col-6">File Format</th>
+                                        <th class="text-center col-3">Maximum Size</th>
+                                        <th class="text-center col-3">Maximum Files</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-center col-6">${listTypeFile}</td>
+                                        <td class="text-center col-3">${maxFileSize} MB</td>
+                                        <td class="text-center col-3">${uploadFileLimit}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <p class="text-muted">Add Attached files here.</p>
+
+                                    <div class="dropzone" id="dropzoneEdit">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple="multiple">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+
+                                            <h5>Drop files here or click to upload.</h5>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview-edit">
+                                        <li class="mt-2" id="dropzone-preview-list-edit">
+                                            <!-- This is used as the file preview template -->
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="d-flex p-2">
+                                                        <div class="flex-shrink-0 me-3">
+                                                            <div class="avatar-sm">
+                                                                <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                    <i class="ri-file-upload-line"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!-- end dropzon-preview -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <a href="${pathMain}" class="btn btn-secondary ml-2">Back to list</a>
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                <button type="button" class="btn btn-primary editBtn">Update</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade zoomIn" id="deleteFileModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure?</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            Are you Sure You want to Delete this File?
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-danger " id="deleteFileBtn">Yes, Delete It!</button>
+                </div>
             </div>
         </div>
     </div>
@@ -297,7 +589,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<!-- quill js -->
+<script src="/assets/libs/quill/quill.min.js"></script>
+<!-- dropzone js -->
+<script src="/assets/libs/dropzone/dropzone-min.js"></script>
+<script src="/assets/js/notification/notification.js"></script>
 <script>
+
     function generateClientID() {
         const timestamp = new Date().getTime();
         const random = Math.floor(Math.random() * 1000);
@@ -312,14 +610,11 @@
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/notification/deleteNotification", function (notification) {
             let id = notification.body;
-            let notiCheck = '#tableNotification[data-id="'+id+'"]'
+            let notiCheck = 'div#viewNotification[data-id="'+id+'"]'
             let notificationElement = $(notiCheck)
             if(notificationElement.length>0){
-                function toNotification(){
-                    location.href = "/notifications"
-                }
-                $("#deleteNotificationModal").modal("show");
-                setTimeout(toNotification, 5000);
+                $("#deleteSuccessNotification").modal("show");
+                setTimeout(backToList, 5000);
             }
         })
         stompClient.subscribe("/notification/comments", function (comment) {
@@ -488,10 +783,76 @@
     }
 </script>
 <script>
-    const baseUrlComment = "/api/v1/comment-notification";
-    const baseUrlNotification = "/api/v1/notifications";
-    var dot = createLoadingHtml();
-    const notFilled = '<span class="text-danger font-weight-bold font-italic small">This field is not filled</span>'
+    const INVALID_FILLED=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> This field is not filled'+
+        '</div>'
+    const INVALID_FILES_LIMIT=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> Maximum Files is ${uploadFileLimit}'+
+        '</div>'
+
+    const INVALID_FILES_TYPE=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> File type allowed: ${listTypeFile}'+
+        '</div>'
+
+    const INVALID_FILES_SIZE=' <div class="alert alert-danger" role="alert">'+
+        '<strong> Invalid </strong> Maximum Size Files is ${maxFileSize}'+
+        '</div>'
+
+    let listTypeFileArr = "${listTypeFile}".split(",")
+    let listTypeFile = ""
+    listTypeFileArr.forEach((item, index)=>{
+        listTypeFile += "." + item
+        if(index<listTypeFileArr.length){
+            listTypeFile += ","
+        }
+    })
+    let maxFileSize = "${maxFileSize}"
+    let uploadFileLimit = "${uploadFileLimit}"
+
+    var dropzonePreviewNodeEdit = document.querySelector("#dropzone-preview-list-edit");
+    var previewTemplateEdit = dropzonePreviewNodeEdit.parentNode.innerHTML;
+    dropzonePreviewNodeEdit.id = "";
+    dropzonePreviewNodeEdit.parentNode.removeChild(dropzonePreviewNodeEdit);
+    var dropzoneEdit = new Dropzone("#dropzoneEdit", {
+        url: 'https://httpbin.org/post',
+        method: "post",
+        previewTemplate: previewTemplateEdit,
+        previewsContainer: "#dropzone-preview-edit",
+        acceptedFiles: listTypeFile,
+        maxFilesize: parseInt(maxFileSize),
+        maxFiles: parseInt(uploadFileLimit) ,
+        uploadMultiple:true,
+        autoProcessQueue: false,
+    });
+
+    dropzoneEdit.on("addedfile", function (file) {
+        removeAlert();
+        let files = dropzoneEdit.files
+        const fileExtension = file.name.split('.').pop();
+        const fileSize = file.size
+        if(!checkLimitFile(files.length, parseInt(dropzoneEdit.options.maxFiles))){
+            dropzoneEdit.removeFile(file)
+            showAlertValidate(INVALID_FILES_LIMIT)
+            return
+        }
+        if(!checkTypeFile(fileExtension, listTypeFileArr)){
+            dropzoneEdit.removeFile(file)
+            showAlertValidate(INVALID_FILES_TYPE)
+            return
+        }
+        if(!checkLimitSize(bytesToMB(fileSize),parseInt(maxFileSize))){
+            dropzoneEdit.removeFile(file)
+            showAlertValidate(INVALID_FILES_SIZE)
+            return
+        }
+    });
+
+    var quillView = new Quill("#contentView",{
+        theme: 'bubble', // Specify theme in configuration
+        readOnly: true,  // Set the editor to read-only mode
+    });
+
+    var quillEdit = new Quill("#contentEdit", snowEditorData);
 
     document.addEventListener("DOMContentLoaded", function () {
         let checkDeleted = $("button.notificationDeleted")
@@ -503,6 +864,122 @@
                 }
             })
         }
+        $(document).on("click","button#deleteFileBtn",function (){
+            let fileName = $("#deleteFileModal").attr("data-name")
+            $('#formEditNotication div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
+            $("#deleteFileModal").modal("hide")
+            dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
+        })
+
+        $(document).on("click","button.editBtn", function(){
+            removeAlert()
+            let notificationId = $("#formEditNotication").attr("data-id")
+            let title = $("#titleEdit").val()
+            let contentCheck = $("div#formEditNotication .ql-editor").html().toString()
+            let content = JSON.stringify(quillEdit.getContents())
+            if (title.trim() === "") {
+                $("input#titleEdit").parent().after(INVALID_FILLED)
+                return false;
+            }
+            if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
+                $("div#contentEdit").parent().after(INVALID_FILLED)
+                return false;
+            }
+            var oldFile = []
+            $("#formEditNotication div.showFilesUploaded > div").each(function () {
+                oldFile.push($(this).attr("data-name"));
+            });
+            var formData = new FormData();
+            formData.append("title", title);
+            formData.append("content", content);
+            formData.append("oldFile", oldFile);
+            if(dropzoneEdit.files.length>0) {
+                for (let i = 0; i < dropzoneEdit.files.length; i++) {
+                    let file = dropzoneEdit.files[i]
+                    if(file.accepted){
+                        formData.append("files", file);
+                    }
+                }
+            }
+            callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
+                console.log(rs)
+                if(rs){
+                    $("h5.titleView strong").text(rs.title)
+                    let contentParse = JSON.parse(rs.content)
+                    quillView.setContents(contentParse)
+                    loadFilesName(rs.files);
+                    $("#formEditNotication").modal("hide")
+                }
+            },function (error){
+                console.log(error)
+            })
+
+        })
+
+        $(document).on("click","button.editNotification",function (){
+            Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
+            let notificationId = $(this).parent().parent().attr("data-id")
+            let apiUrlNotification = baseUrlNotification
+            if(notificationId){
+                callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
+                    function (rs) {
+                        $("#formEditNotication").attr("data-id", rs.id)
+                        $("#titleEdit").val(rs.title)
+                        let contentParse = JSON.parse(rs.content)
+                        quillEdit.setContents(contentParse)
+                        let urlFiles = rs.files ? rs.files : []
+                        let fileLength = rs.files ? rs.files.length : 0
+                        dropzoneEdit.options.maxFiles = parseInt(uploadFileLimit) - fileLength;
+                        let html=""
+                        if(fileLength>0){
+                            urlFiles.forEach(function (url) {
+                                $.ajax({
+                                    type: "HEAD",
+                                    url: url,
+                                    success: function (data, status, xhr) {
+                                        var contentLength = xhr.getResponseHeader('Content-Length');
+                                        var fileName = url.substring(url.lastIndexOf("/") + 1);
+                                        html+= showFileUploaded(fileName, contentLength, url, "edit")
+                                        $("#formEditNotication .showFilesUploaded").html(html)
+                                        $("#formEditNotication").modal("show")
+                                    }
+                                });
+                            });
+                        }else{
+                            $("#formEditNotication").modal("show")
+                        }
+                    },
+                    function (error){
+                        console.log(error)
+                    }
+                )
+            }
+        })
+
+        $(document).on("click","button.downFileBtn",function (){
+            let dataUrl = $(this).children().attr("data-url")
+            downloadFiles(dataUrl)
+        })
+
+        let fileNameArr = []
+        function loadFilesName(fileNameArr){
+            let html =""
+            handleFiles(fileNameArr, function handleEachFunc (fileName, fileSize, url) {
+                html += showFileUploaded(fileName, fileSize, url, "view")
+                $("#viewNotification .showFilesUploaded").html(html)
+            })
+        }
+
+        <c:forEach items="${notification.files}" var="value" varStatus="loop">
+            fileNameArr.push('${value}');
+            <c:if test="${loop.index + 1 == fn:length(notification.files)}">
+                loadFilesName(fileNameArr);
+            </c:if>
+        </c:forEach>
+        function loadContent(content){
+            quillView.setContents(content)
+        }
+        loadContent(${notification.content})
         $(document).on("click", "#saveChangesButtonNotification", function (e) {
             $("span.text-danger").remove()
             var apiUrlNotification = baseUrlNotification + "/update/"
@@ -530,7 +1007,6 @@
             for (var i = 0; i < files.length; i++) {
                 formData.append("files", files[i]);
             }
-            $("#popupFormEditNotification .modal-footer button:first-child").before(dot)
             $("#popupFormEditNotification .modal-footer button").each(function() {
                 $(this).prop("disabled", true);
             });
@@ -575,56 +1051,15 @@
         });
 
         $(document).on("click", "#deleteNotificationButton", function (e) {
-            $("div.card-body button").each(function () {
-                $(this).prop("disabled", true);
-            });
-            $("#editButtonNotification").parent().append(dot);
-            $('#popupFormEditNotification div.modal-content').append(dot)
-            $("#deleteConfirmationModalNotification").modal("hide");
-            var notificationId = $("table#tableNotification").attr("data-id");
+            var notificationId = $("#deleteNotification").attr("data-id");
             var apiUrlNotification = baseUrlNotification;
-
             callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
-                $("#deleteNotificationModal").modal("show");
-                $('div.custom-spinner').parent().remove()
-                $("#popupFormEditNotification .modal-footer button").each(function () {
-                    $(this).prop("disabled", false);
-                });
-                checkClientDelete = 1
+                $("#deleteNotification").modal("hide");
             });
-        });
-
-        $(document).on("change", "#editNotificationFile", function (event) {
-            const selectedFiles = event.target.files;
-            var countFile = selectedFiles.length;
-            var countCurrentFile = $("li.listFilesEdit").length
-            if ((countFile + countCurrentFile) >${uploadFileLimit}) {
-                var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${uploadFileLimit}.
-                        `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $(this).val('')
-            }
-
-            for (let i = 0; i < countFile; i++) {
-                const file = selectedFiles[i];
-                const fileExtension = file.name.split('.').pop();
-                const allowedExtensions = "${listTypeFile}".split(',');
-                if (!allowedExtensions.includes(fileExtension)) {
-                    var modal =
-                        '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File type allowed: ${listTypeFile}.'
-                    $("#successModal div.modal-body").html(modal);
-                    $("#successModal").modal("show");
-                    $(this).val('');
-                    return;
-                }
-            }
         });
 
         $(document).on("click", "#editButtonNotification", function () {
             $(this).prop("disabled", true);
-            $(this).parent().append(dot);
             var notificationId = $("table#tableNotification").attr("data-id");
             var apiUrlNotification = baseUrlNotification;
 
@@ -720,7 +1155,6 @@
             var content = $('textarea#replyComment[data-id=' + parentId + ']').val();
             var notificationId = $("table#tableNotification").attr("data-id");
             $(this).prop("disabled", true);
-            $(this).parent().append(dot);
             $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", true);
             if (content == "") {
                 var modal = `
@@ -743,33 +1177,18 @@
             var jsonData = JSON.stringify(data);
             replyComment(jsonData)
         });
-        document.getElementById("newCommentBtn").addEventListener("click", function () {
-            $("button#newCommentBtn").prop("disabled", true);
-            $("textarea#newComment").prop("disabled", true);
-            $("button#newCommentBtn").parent().append(dot);
-
-            var content = $("textarea#newComment").val()
-            if (content == "") {
-                var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
-                        `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $("button#newCommentBtn").prop("disabled", false);
-                $("textarea#newComment").prop("disabled", false);
-                $('div.custom-spinner').parent().remove()
-                return
-            }
-            var notificationId = $("table#tableNotification").attr("data-id")
+        $(document).on("click", "#newCommentBtn", function (e) {
+            var notificationId = $("div#viewNotification").attr("data-id")
+            var content = $("textarea#newCommentContent").val()
             var data = {
                 content: content,
                 notificationId: notificationId,
                 userId: userCurrent.id
             };
-
+            console.log(data)
             var jsonData = JSON.stringify(data);
             sendComment(jsonData)
-        })
+        });
 
         $(document).on("click", "#commentList button.btn-danger", function (e) {
             var commentId = $(this).data("id");
@@ -803,7 +1222,6 @@
                 $('div.custom-spinner').parent().remove()
                 return
             }
-            $('div.modal-content[data-id="' + id + '"]').append(dot)
             $(".modal-footer button").each(function () {
                 $(this).prop("disabled", true);
             });
@@ -826,9 +1244,6 @@
             editComment(jsonData);
         });
     });
-</script>
-<script>
-    document.getElementById('avatar-user-login').setAttribute('src', userCurrent.avatar);
 </script>
 </body>
 </html>
