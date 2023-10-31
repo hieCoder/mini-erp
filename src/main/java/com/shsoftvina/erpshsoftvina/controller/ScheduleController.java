@@ -36,6 +36,10 @@ public class ScheduleController {
         modelAndView.addObject("list",list);
         return modelAndView;
     }
+    @GetMapping("/1")
+    public ModelAndView getScheduleDetail1() {
+        return new ModelAndView("schedule/detail-test");
+    }
     @GetMapping("/detail/{userId}")
     public ModelAndView getScheduleDetail(@PathVariable("userId") String userId) {
         applicationUtils.checkUserAllow(userId);

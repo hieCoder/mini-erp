@@ -134,6 +134,91 @@ function showFileUploaded(fileName, size, url, mode){
         + "</div>";
 }
 
+function bytesToMB(bytes) {
+    return parseInt((bytes / (1024 * 1024)).toFixed(0))
+}
+
+function bytesToMBShow(bytes) {
+    return (bytes / (1024 * 1024)).toFixed(2)
+}
+
+function showFileUploaded(fileName, size, url) {
+
+    return "<div class='col-xxl-4 col-lg-6' data-name='" + fileName + "'>"
+        + "    <div class='border rounded border-dashed p-2'>"
+        + "        <div class='d-flex align-items-center'>"
+        + "            <div class='flex-shrink-0 me-3'>"
+        + "                <div class='avatar-sm'>"
+        + "                    <div class='avatar-title bg-light text-secondary rounded fs-24'>"
+        + "                        <i class='ri-file-download-line'></i>"
+        + "                    </div>"
+        + "                </div>"
+        + "            </div>"
+        + "            <div class='flex-grow-1 overflow-hidden'>"
+        + "                <h5 class='fs-13 mb-1'><a href='" + url + "' download data-toggle='tooltip' data-placement='bottom' title='" + fileName + "' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
+        + "                <div>" + bytesToMBShow(size) + " MB</div>"
+        + "            </div>"
+        + "            <div class='flex-shrink-0 ms-2'>"
+        + "                <div class='d-flex gap-1'>"
+        + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
+        + "                        <i class='ri-download-2-line' data-url='" + url + "'></i>"
+        + "                    </button>"
+        + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 deleteFileBtn'>"
+        + "                        <i class='ri-delete-bin-fill' data-name='" + fileName + "'></i>"
+        + "                    </button>"
+        + "                </div>"
+        + "            </div>"
+        + "        </div>"
+        + "    </div>"
+        + "</div>";
+}
+
+function downloadFiles(url) {
+    var link = document.createElement('a');
+    link.href = url;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function removeAlert() {
+    $(".alert-danger").remove()
+}
+
+function checkLimitFile(count, limit) {
+    return count <= limit ? true : false
+}
+
+function checkTypeFile(type, listType) {
+    if (listType.includes(type)) {
+        return true
+    }
+}
+
+function checkLimitSize(size, limit) {
+    if (parseInt(size) <= limit) {
+        return true
+    }
+}
+
+function showAlertValidate(html) {
+    let xhtml = '<li class="mt-2" id=""> ' +
+        html +
+        '</li>'
+
+    let check = $("#dropzone-preview-edit li").children().last()
+    if (check.length > 0) {
+        $("#dropzone-preview-edit li").children().last().after(xhtml)
+    } else {
+        $("#dropzone-preview-edit").html(xhtml)
+    }
+
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
+}
 
 function isBlank(a){
     return a === '' || a===null;

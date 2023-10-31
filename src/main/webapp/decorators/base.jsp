@@ -12,6 +12,8 @@
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <!-- fullcalendar css -->
+    <link href="/assets/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 
@@ -26,8 +28,8 @@
 
     <dec:head />
 
-<%--    <!-- Sweet Alert css-->--%>
-<%--    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />--%>
+    <!-- Sweet Alert css-->
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
@@ -47,6 +49,7 @@
     <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <script>
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
@@ -806,8 +809,14 @@
 <%--<!-- titcket init js -->--%>
 <%--<script src="/assets/js/pages/tasks-list.init.js"></script>--%>
 
-<%--<!-- Sweet Alerts js -->--%>
-<%--<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>--%>
+<!-- flatpickr.js -->
+<script type='text/javascript' src='/assets/libs/flatpickr/flatpickr.min.js'></script>
+
+<!-- choices.js -->
+<script type='text/javascript' src='/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+
+<!-- Sweet Alerts js -->
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 <!-- ckeditor -->
 <script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
@@ -820,11 +829,18 @@
 
 <%--<!-- Dashboard init -->--%>
 <%--<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>--%>
-<!-- App js -->
-<script src="/assets/js/app.js"></script>
 
 <!-- Widget init -->
 <script src="/assets/js/pages/widgets.init.js"></script>
+
+<!-- calendar min js -->
+<script src="/assets/libs/fullcalendar/main.min.js"></script>
+
+<!-- Calendar init -->
+<script src="/assets/js/pages/calendar.init.js"></script>
+
+<!-- App js -->
+<script src="/assets/js/app.js"></script>
 <script>
 
     // var scheduleLink = '';

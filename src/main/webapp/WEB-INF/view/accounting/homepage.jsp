@@ -298,13 +298,14 @@
                 </div>
             </div>
         </div>
-        <table class="table mt-4">
+        <div class="table-responsive table-card">
+        <table class="table table-nowrap table-hover mb-0 mt-4">
             <thead>
             <tr>
-                <th></th>
-                <th>Total Revenue</th>
-                <th>Total Expense</th>
-                <th>Ending Balance</th>
+                <th scope="col"></th>
+                <th scope="col">Total Revenue</th>
+                <th scope="col">Total Expense</th>
+                <th scope="col">Ending Balance</th>
             </tr>
             </thead>
             <tbody>
@@ -654,9 +655,9 @@
                                 "<td><a href='/accounting/detail/" + account.id + "'>" + account.id + "</a></td>" +
                                 "<td style=''>" + account.payDate + "</td>" +
                                 "<td style=''>" + account.title + "</td>" +
-                                "<td class='" + (account.revenue > 0 ? 'text-bg-success' : '') + "'>" + account.revenue + "</td>" +
-                                "<td class='" + (account.expense < 0 ? 'text-bg-danger' : '') + "'>" + account.expense + "</td>" +
-                                "<td class='text-bg-primary'>" + account.remain + "</td>" +
+                                "<td class='" + (account.revenue > 0 ? 'text-bg-success' : '') + "'>" + formatCurrency(account.revenue) + "</td>" +
+                                "<td class='" + (account.expense < 0 ? 'text-bg-danger' : '') + "'>" + formatCurrency(account.expense) + "</td>" +
+                                "<td class='text-bg-primary'>" + formatCurrency(account.remain) + "</td>" +
                                 "<td style=''>" + account.user.fullname + "</td>" +
                                 "<td style=''><span class='badge badge-soft-info cut-file-name' data-bs-toggle='tooltip' data-bs-placement='bottom' title='" + account.note + "'>" + account.note + "</span></td>" +
                                 "<td style='display: none;'>" +
@@ -683,10 +684,6 @@
         };
         xhr.open("GET", "/api/v1/accounts/" + "?page=" + page + "&size=" + selectedPageSize + "&startDate=" + formattedDate(selectedDateStart) + "&endDate=" + formattedDate(selectedDateEnd), true);
         xhr.send();
-    }
-
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
     }
 
     function updatePagination(responseData) {

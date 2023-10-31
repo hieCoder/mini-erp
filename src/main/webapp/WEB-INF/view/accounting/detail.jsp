@@ -118,18 +118,19 @@
             </div>
 
             <div class="alert alert-warning alert-dismissible alert-label-icon rounded-label fade show" role="alert">
-                <i class="ri-clipboard-fill label-icon"></i><strong>Note</strong> - <span id="noteAccount">${account.note}</span>
+                <i class="ri-clipboard-fill label-icon"></i><strong>Note</strong> - <span
+                    id="noteAccount">${account.note}</span>
             </div>
             <div class="pt-3 border-top border-top-dashed mt-4">
                 <h6 class="mb-3 fw-semibold text-uppercase">Bills</h6>
-                        <div class="row g-3 showFilesUploaded">
-                        </div>
+                <div class="row g-3 showFilesUploaded">
+                </div>
             </div>
         </div>
         <div class="card-footer" data-id="${account.id}">
             <button class="btn btn-primary editAccount" data-bs-toggle="modal" data-bs-target="#editModal">Edit
             </button>
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+            <button class="btn btn-danger" id="deleteModal">Delete</button>
             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#cancelModal" onclick="goBack()">
                 Cancel
             </button>
@@ -138,7 +139,8 @@
 </div>
 
 <!-- Edit Modal -->
-<div class="modal zoomIn" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal zoomIn" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -354,29 +356,6 @@
     </div>
 </div>
 
-<!-- Delete Modal -->
-<div class="modal zoomIn" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Information</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this information?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onclick="deleteAccount(${account.id})"
-                        data-bs-dismiss="modal">Delete
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal zoomIn" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -463,48 +442,63 @@
     var spanElement = $("#editModal #validFileText");
     spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + "MB and below " + "${setting.uploadFileLimit}" + " files");
 
+    document.getElementById("deleteModal").addEventListener("click", function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-primary w-xs ms-2 mt-2',
+            cancelButtonClass: 'btn btn-danger w-xs mt-2',
+            buttonsStyling: false,
+            showCloseButton: true,
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your accounting has been deleted.',
+                                icon: 'success',
+                                confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                buttonsStyling: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.replace(document.referrer);
+                                }
+                            });
+                        } else {
+                            $('#deleteModal').modal('hide');
+                            $('#errorModal').modal('show');
+                        }
+                    }
+                }
+                xhr.open("DELETE", "/api/v1/accounts/" + "${account.id}", true);
+                xhr.send();
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Your information is remained :)',
+                    icon: 'error',
+                    confirmButtonClass: 'btn btn-primary mt-2',
+                    buttonsStyling: false
+                })
+            }
+        });
+    });
+
     function convertMaxFileSize(string) {
         var maxFileSizeWithoutMB = string.replace("MB", "");
         return parseFloat(maxFileSizeWithoutMB) * 1024 * 1024;
     }
-
-    $(document).on("click", ".listFilesEdit button", function (e) {
-        $("#deleteConfirmationModalFile #deleteFileButton").attr("data-name", $(this).attr("data-name"))
-    });
-
-    $(document).on("click", "#deleteFileButton", function (e) {
-        $('.listFilesEdit button[data-name="' + $(this).attr("data-name") + '"]').parent().remove()
-        $("#deleteConfirmationModalFile").modal("hide");
-    });
-
-    $(document).on("change", "#editBill", function (event) {
-        const billFiles = event.target.files;
-        var countFile = billFiles.length;
-        var countCurrentFile = $("li.listFilesEdit").length;
-        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
-            let modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
-                        `
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
-            $(this).val('')
-            return;
-        }
-        for (var i = 0; i < billFiles.length; i++) {
-            var fileName = billFiles[i].name;
-            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
-            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
-                    validFileUpload +
-                    ' and not over ' + "${setting.maxFileSize}" + 'MB.';
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $(this).val('')
-                return;
-            }
-        }
-    });
-
 
     document.getElementById('transactionType').addEventListener('change', function () {
         var selectedOption = this.value;
@@ -524,185 +518,125 @@
         }
     });
 
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
-    }
 
-    function editAccount(accountId) {
-        var xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "/api/v1/accounts/edit", true);
-
-        var title = document.getElementById("editTitle").value;
-        var note = document.getElementById("editNote").value;
-        var transaction = document.getElementById("transactionType").value;
-        var input = document.getElementById("amount").value;
-        var amount = Number(input.replace(/[^0-9.]/g, ''))
-
-        var billInput = document.getElementById("editBill");
-        var billFiles = billInput.files;
-        var oldFile = []
-        $("li.listFilesEdit").each(function () {
-            oldFile.push($(this).attr("data-name"));
-        });
-
-        if (!title || !amount || isNaN(amount)) {
-            alert("Title and amount are required and amount must be a number.");
-            loading.style.display = "none";
-            return;
-        }
-
-        if (transaction === 'expense') {
-            amount = -amount;
-        }
-
-        var formData = new FormData();
-        formData.append("title", title);
-        formData.append("note", note);
-        formData.append("id", accountId);
-        formData.append("oldFile", oldFile);
-        formData.append("userId", userCurrent.id);
-        formData.append("expense", amount);
-
-        for (var i = 0; i < billFiles.length; i++) {
-            formData.append("bill", billFiles[i]);
-        }
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 302) {
-                    var responseData = JSON.parse(xhr.responseText);
-                    $("#titleAccount").text(responseData.title);
-                    $("#createdDateAccount").text(responseData.createdDate);
-                    $("#revenueAccount").text(formatCurrency(responseData.revenue));
-                    $("#expenseAccount").text(formatCurrency(responseData.expense));
-                    $("#remainAccount").text(formatCurrency(responseData.remain));
-                    $("#fullnameAccount").text(responseData.user.fullname);
-                    $("#noteAccount").text(responseData.note);
-                    var xhtml = '';
-                    if (responseData.bill != null && responseData.bill.length > 0) {
-                        responseData.bill.forEach((e) => {
-                            xhtml += '<div class="col-md-4 text-center">';
-                            var fileExtension = e.substring(e.lastIndexOf('.') + 1);
-                            if (imageType.includes(fileExtension)) {
-                                var img = document.createElement('img');
-                                img.width = 50;
-                                img.height = 50;
-                                img.src = e;
-                                img.alt = '';
-                                xhtml += img.outerHTML;
-                            }
-                            if (fileType.includes(fileExtension)) {
-                                var file = document.createElement('img');
-                                file.width = 50;
-                                file.height = 50;
-                                file.src = "/upload/common/" + fileExtension + ".png";
-                                file.alt = '';
-                                xhtml += file.outerHTML;
-                            }
-                            var subStringBill = e.substring(e.indexOf('-') + 1);
-                            xhtml += '<br><a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
-                                '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a></div>';
-                        })
-                    }
-                    $("#attachedFilesNotification").html(xhtml);
-                    var editLink = document.getElementById("editLink");
-                    var billContent = '';
-                    if (responseData.bill !== null && responseData.bill.length > 0) {
-                        responseData.bill.forEach(function (file) {
-                            billContent += '<li class="list-group-item listFilesEdit" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
-                            billContent += '<a href="' + file + '" download="" target="_blank" id="resumeLink">' + file.substring(file.indexOf('-') + 1) + '</a>';
-                            billContent += '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
-                            billContent += '<span>×</span>';
-                            billContent += '</button>';
-                            billContent += '</li>';
-                        });
-                    }
-                    $('#editModal').modal('hide');
-                    $('#successModal div.modal-body').text("The request has been completed successfully.")
-                    $('#successModal').modal('show');
-                    editLink.innerHTML = billContent;
-                    $('#editBill').val("");
-                } else {
-                    $('#editModal').modal('hide');
-                    $('#errorModal').modal('show');
-                }
-            }
-        };
-        xhr.send(formData);
-    }
+    // function editAccount(accountId) {
+    //     var xhr = new XMLHttpRequest();
+    //
+    //     xhr.open("POST", "/api/v1/accounts/edit", true);
+    //
+    //     var title = document.getElementById("editTitle").value;
+    //     var note = document.getElementById("editNote").value;
+    //     var transaction = document.getElementById("transactionType").value;
+    //     var input = document.getElementById("amount").value;
+    //     var amount = Number(input.replace(/[^0-9.]/g, ''))
+    //
+    //     var billInput = document.getElementById("editBill");
+    //     var billFiles = billInput.files;
+    //     var oldFile = []
+    //     $("li.listFilesEdit").each(function () {
+    //         oldFile.push($(this).attr("data-name"));
+    //     });
+    //
+    //     if (!title || !amount || isNaN(amount)) {
+    //         alert("Title and amount are required and amount must be a number.");
+    //         loading.style.display = "none";
+    //         return;
+    //     }
+    //
+    //     if (transaction === 'expense') {
+    //         amount = -amount;
+    //     }
+    //
+    //     var formData = new FormData();
+    //     formData.append("title", title);
+    //     formData.append("note", note);
+    //     formData.append("id", accountId);
+    //     formData.append("oldFile", oldFile);
+    //     formData.append("userId", userCurrent.id);
+    //     formData.append("expense", amount);
+    //
+    //     for (var i = 0; i < billFiles.length; i++) {
+    //         formData.append("bill", billFiles[i]);
+    //     }
+    //
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.readyState === 4) {
+    //             if (xhr.status === 302) {
+    //                 var responseData = JSON.parse(xhr.responseText);
+    //                 $("#titleAccount").text(responseData.title);
+    //                 $("#createdDateAccount").text(responseData.createdDate);
+    //                 $("#revenueAccount").text(formatCurrency(responseData.revenue));
+    //                 $("#expenseAccount").text(formatCurrency(responseData.expense));
+    //                 $("#remainAccount").text(formatCurrency(responseData.remain));
+    //                 $("#fullnameAccount").text(responseData.user.fullname);
+    //                 $("#noteAccount").text(responseData.note);
+    //                 var xhtml = '';
+    //                 if (responseData.bill != null && responseData.bill.length > 0) {
+    //                     responseData.bill.forEach((e) => {
+    //                         xhtml += '<div class="col-md-4 text-center">';
+    //                         var fileExtension = e.substring(e.lastIndexOf('.') + 1);
+    //                         if (imageType.includes(fileExtension)) {
+    //                             var img = document.createElement('img');
+    //                             img.width = 50;
+    //                             img.height = 50;
+    //                             img.src = e;
+    //                             img.alt = '';
+    //                             xhtml += img.outerHTML;
+    //                         }
+    //                         if (fileType.includes(fileExtension)) {
+    //                             var file = document.createElement('img');
+    //                             file.width = 50;
+    //                             file.height = 50;
+    //                             file.src = "/upload/common/" + fileExtension + ".png";
+    //                             file.alt = '';
+    //                             xhtml += file.outerHTML;
+    //                         }
+    //                         var subStringBill = e.substring(e.indexOf('-') + 1);
+    //                         xhtml += '<br><a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
+    //                             '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a></div>';
+    //                     })
+    //                 }
+    //                 $("#attachedFilesNotification").html(xhtml);
+    //                 var editLink = document.getElementById("editLink");
+    //                 var billContent = '';
+    //                 if (responseData.bill !== null && responseData.bill.length > 0) {
+    //                     responseData.bill.forEach(function (file) {
+    //                         billContent += '<li class="list-group-item listFilesEdit" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
+    //                         billContent += '<a href="' + file + '" download="" target="_blank" id="resumeLink">' + file.substring(file.indexOf('-') + 1) + '</a>';
+    //                         billContent += '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
+    //                         billContent += '<span>×</span>';
+    //                         billContent += '</button>';
+    //                         billContent += '</li>';
+    //                     });
+    //                 }
+    //                 $('#editModal').modal('hide');
+    //                 $('#successModal div.modal-body').text("The request has been completed successfully.")
+    //                 $('#successModal').modal('show');
+    //                 editLink.innerHTML = billContent;
+    //                 $('#editBill').val("");
+    //             } else {
+    //                 $('#editModal').modal('hide');
+    //                 $('#errorModal').modal('show');
+    //             }
+    //         }
+    //     };
+    //     xhr.send(formData);
+    // }
 
     function goBack() {
         window.location.replace(document.referrer);
     }
-
-    function deleteAccount(accountId) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    $('#successModal div.modal-body').text("The request has been completed successfully.")
-                    $('#successModal').modal('show');
-                    window.location.replace(document.referrer);
-                } else {
-                    $('#deleteModal').modal('hide');
-                    $('#errorModal').modal('show');
-                }
-            }
-        }
-        xhr.open("DELETE", "/api/v1/accounts/" + accountId, true);
-        xhr.send();
-    }
 </script>
 <!-- dropzone js -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
-<!-- init js -->
-<%--<script src="/assets/js/pages/form-editor.init.js"></script>--%>
+
 <script>
-    function bytesToMB(bytes) {
-        return parseInt((bytes / (1024 * 1024)).toFixed(0))
-    }
-
-    function bytesToMBShow(bytes) {
-        return (bytes / (1024 * 1024)).toFixed(2)
-    }
-
-    function showFileUploaded(fileName, size, url) {
-
-        return "<div class='col-xxl-4 col-lg-6' data-name='" + fileName + "'>"
-            + "    <div class='border rounded border-dashed p-2'>"
-            + "        <div class='d-flex align-items-center'>"
-            + "            <div class='flex-shrink-0 me-3'>"
-            + "                <div class='avatar-sm'>"
-            + "                    <div class='avatar-title bg-light text-secondary rounded fs-24'>"
-            + "                        <i class='ri-file-download-line'></i>"
-            + "                    </div>"
-            + "                </div>"
-            + "            </div>"
-            + "            <div class='flex-grow-1 overflow-hidden'>"
-            + "                <h5 class='fs-13 mb-1'><a href='" + url + "' download data-toggle='tooltip' data-placement='bottom' title='" + fileName + "' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
-            + "                <div>" + bytesToMBShow(size) + " MB</div>"
-            + "            </div>"
-            + "            <div class='flex-shrink-0 ms-2'>"
-            + "                <div class='d-flex gap-1'>"
-            + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
-            + "                        <i class='ri-download-2-line' data-url='" + url + "'></i>"
-            + "                    </button>"
-            + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 deleteFileBtn'>"
-            + "                        <i class='ri-delete-bin-fill' data-name='" + fileName + "'></i>"
-            + "                    </button>"
-            + "                </div>"
-            + "            </div>"
-            + "        </div>"
-            + "    </div>"
-            + "</div>";
-    }
-
     document.addEventListener("DOMContentLoaded", function () {
         let fileNameArr = []
-        function loadFilesName(fileNameArr){
-            let html =""
-            handleFiles(fileNameArr, function handleEachFunc (fileName, fileSize, url) {
+
+        function loadFilesName(fileNameArr) {
+            let html = ""
+            handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
                 html += showFileUploaded(fileName, fileSize, url, "view")
                 $("#viewAccount .showFilesUploaded").html(html)
             })
@@ -733,15 +667,6 @@
         $("#deleteFileModal").modal("hide")
         dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
     })
-
-    function downloadFiles(url) {
-        var link = document.createElement('a');
-        link.href = url;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -774,39 +699,6 @@
         autoProcessQueue: false,
     });
 
-    function removeAlert() {
-        $(".alert-danger").remove()
-    }
-
-    function checkLimitFile(count, limit) {
-        return count <= limit ? true : false
-    }
-
-    function checkTypeFile(type, listType) {
-        if (listType.includes(type)) {
-            return true
-        }
-    }
-
-    function checkLimitSize(size, limit) {
-        if (parseInt(size) <= limit) {
-            return true
-        }
-    }
-
-    function showAlertValidate(html) {
-        let xhtml = '<li class="mt-2" id=""> ' +
-            html +
-            '</li>'
-
-        let check = $("#dropzone-preview-edit li").children().last()
-        if (check.length > 0) {
-            $("#dropzone-preview-edit li").children().last().after(xhtml)
-        } else {
-            $("#dropzone-preview-edit").html(xhtml)
-        }
-
-    }
 
     dropzoneEdit.on("addedfile", function (file) {
         removeAlert();
