@@ -446,6 +446,23 @@
     </div>
 </div>
 
+<div id="successComment" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <div class="text-end">
+                    <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mt-2">
+                    <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover" style="width:150px;height:150px"></lord-icon>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <div id="formEditNotication" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -656,11 +673,10 @@
                     if (data.clientId == clientID) {
                         var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
                             `
-                        $("#successModal div.modal-body").html(modal)
-                        $("#successModal").modal("show");
+                        $("#successComment div.modal-body").append(modal)
+                        $("#successComment").modal("show");
                         $("button#newCommentBtn").prop("disabled", false);
                         $("textarea#newComment").prop("disabled", false);
-                        $('div.custom-spinner').parent().remove()
                     }
                 }
             }else if(data.clientId == clientID){
@@ -745,10 +761,8 @@
                                 `
                     $('textarea#replyComment[data-id=' + data.parentId + ']').val('');
                     $("#successModal div.modal-body").html(modal)
-                    $("#successModal").modal("show");
-                    $('div.custom-spinner').parent().remove()
-                    $('textarea#replyComment[data-id=' + data.parentId + ']').prop("disabled", false);
-                    $('button#replyCommentBtn[data-id=' + data.parentId + ']').prop("disabled", false);
+                    $("#successComment").modal("show");
+
                 }
             }else if(data.clientId == clientID){
                 refreshPage()
@@ -1185,7 +1199,6 @@
                 notificationId: notificationId,
                 userId: userCurrent.id
             };
-            console.log(data)
             var jsonData = JSON.stringify(data);
             sendComment(jsonData)
         });
