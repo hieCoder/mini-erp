@@ -1,3 +1,4 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@include file="/common/taglib.jsp" %>
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
@@ -25,11 +26,17 @@
     <!-- custom Css-->
     <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
-
-
     <%-- Custom --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
+    <script>
+        var userCurrent = {
+            id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
+            fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
+            role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
+            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+        };
+    </script>
 
 </head>
 
