@@ -9,12 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Accounting</title>
     <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
-    <!-- quill css -->
-    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css"/>
-    <!-- bubble css for bubble editor-->
-    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css"/>
-    <!-- snow css for snow editor-->
-    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css"/>
     <style>
         .ql-container {
             min-height: 10rem;
@@ -36,19 +30,31 @@
 <div class="container">
     <div class="card shadow">
         <div class="card-header">
-            Accounting Detail
+            <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
         </div>
         <div class="card-body" id="table-body">
-            <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
-            <div class="row">
-                <div class="col">
-                    <p class="card-text">Created date: <span id="createdDateAccount">${account.createdDate}</span></p>
-                </div>
-                <div class="col">
-                    <p class="card-text">Pay date: <span id="payDateAccount">${account.payDate}</span></p>
-                </div>
-                <div class="col text-right">
-                    <p class="card-text">Username: <span id="fullnameAccount">${account.user.fullname}</span></p>
+            <div class="text-muted">
+                <div class="pb-3 border-bottom border-bottom-dashed mb-4 ">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6">
+                            <div>
+                                <p class="mb-2 text-uppercase fw-medium">Create Date :</p>
+                                <h5 class="fs-15 mb-0" id="createdDateAccount">${account.createdDate}</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <div>
+                                <p class="mb-2 text-uppercase fw-medium">Pay Date :</p>
+                                <h5 class="fs-15 mb-0" id="payDateAccount">${account.payDate}</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <div>
+                                <p class="mb-2 text-uppercase fw-medium">Last user created/edited :</p>
+                                <div class="badge bg-danger fs-12" id="fullnameAccount">${account.user.fullname}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -127,44 +133,72 @@
                 </div>
             </div>
 
-
-            <div class="col-md-12 rounded border border-warning p-3 mb-3">
-                <i class="fa-regular fa-lg fa-clipboard fa-bounce" style="color: #4a4c87;"></i>
-                <strong class="text-info">Note: </strong><span id="noteAccount" class="text-info">${account.note}</span>
+            <div class="alert alert-warning alert-dismissible alert-label-icon rounded-label fade show" role="alert">
+                <i class="ri-clipboard-fill label-icon"></i><strong>Note</strong> - <span id="noteAccount">${account.note}</span>
             </div>
-            <c:choose>
-                <c:when test="${not empty account.bill}">
-                    Bill:<br>
-                    <div class="row" id="attachedFilesNotification">
-                        <c:set var="imageType" value="${setting.listTypeImage}"/>
-                        <c:set var="fileType" value="${setting.listTypeFile}"/>
-                        <c:forEach items="${account.bill}" var="file">
-                            <div class="col-md-4 text-center">
-                                <c:if test="${fn:contains(imageType, file.substring(file.lastIndexOf('.') + 1))}">
-                                    <img width="50" height="50" src="${file}" alt="">
-                                </c:if>
-                                <c:if test="${fn:contains(fileType, file.substring(file.lastIndexOf('.') + 1))}">
-                                    <img width="50" height="50"
-                                         src="/upload/common/${file.substring(file.lastIndexOf('.') + 1)}.png" alt="">
-                                </c:if>
-                                <br>
-                                <a href="${file}" download="" target="_blank" data-toggle="tooltip"
-                                   data-placement="bottom"
-                                   title="${file.substring(file.indexOf('-') + 1)}">
-                                  <span class="shortened-text"
-                                        style="display:inline-block;width: 250px">${file.substring(file.indexOf('-') + 1)}</span>
-                                </a>
+            <div class="pt-3 border-top border-top-dashed mt-4">
+                <h6 class="mb-3 fw-semibold text-uppercase">Bills</h6>
+                <c:choose>
+                    <c:when test="${not empty account.bill}">
+                        <div class="row g-3" id="attachedFilesNotification">
+                            <c:set var="imageType" value="${setting.listTypeImage}"/>
+                            <c:set var="fileType" value="${setting.listTypeFile}"/>
+                            <c:forEach items="${account.bill}" var="file">
+                            <div class="col-xxl-4 col-lg-6">
+                                <div class="border rounded border-dashed p-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="avatar-sm">
+                                                <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                    <i class="ri-folder-zip-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h5 class="fs-13 mb-1"><a href="${file}" download class="text-body text-truncate d-block cut-file-name"
+                                                                      data-bs-toggle="tooltip"
+                                                                      data-bs-placement="bottom"
+                                                                      title="${file.substring(file.indexOf('-') + 1)}">${file}</a></h5>
+                                            <div>2.2MB</div>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-2">
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="btn btn-icon text-muted btn-sm fs-18 downFileBtn"><i
+                                                        class="ri-download-2-line" data-url="${file}"></i></button>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown"
+                                                            type="button"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="ri-more-fill"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#"><i
+                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                            Rename</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="#"><i
+                                                                class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                            Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </c:forEach>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <p class="card-text">Bill: <span id="attachedFilesNotification"></span></p>
-                </c:otherwise>
-            </c:choose>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                    </c:otherwise>
+                </c:choose>
+                <!-- end col -->
+
+                <!-- end row -->
+            </div>
         </div>
-        <div class="card-footer">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" id="editBtn">Edit
+        <div class="card-footer" data-id="${account.id}">
+            <button class="btn btn-primary editAccount" data-bs-toggle="modal" data-bs-target="#editModal">Edit
             </button>
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#cancelModal" onclick="goBack()">
@@ -175,7 +209,7 @@
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal zoomIn" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -302,9 +336,9 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td class="text-center col-6">${listTypeFile}</td>
-                                        <td class="text-center col-3">${maxFileSize} MB</td>
-                                        <td class="text-center col-3">${uploadFileLimit}</td>
+                                        <td class="text-center col-6">${setting.listTypeFile},${setting.listTypeImage}</td>
+                                        <td class="text-center col-3">${setting.maxFileSize} MB</td>
+                                        <td class="text-center col-3">${setting.uploadFileLimit}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -342,11 +376,13 @@
                                                         <div class="pt-1">
                                                             <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
                                                             <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                            <strong class="error text-danger"
+                                                                    data-dz-errormessage></strong>
                                                         </div>
                                                     </div>
-                                                    <div class="flex-shrink-0 ms-3">
-                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                                    <div class="flex-shrink-0 ms-3 pt-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -362,14 +398,14 @@
             </div>
             <div class=" modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="submit" onclick="editAccount('${account.id}')">Save changes
+                <button class="btn btn-primary editBtn" type="submit">Save changes
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="deleteConfirmationModalFile" tabindex="-1" role="dialog"
+<div class="modal zoomIn" id="deleteConfirmationModalFile" tabindex="-1" role="dialog"
      aria-labelledby="deleteConfirmationModalFile" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -390,7 +426,7 @@
 </div>
 
 <!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+<div class="modal zoomIn" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -404,15 +440,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                        onclick="deleteAccount('${account.id}')">Delete
+                <button type="button" class="btn btn-danger" onclick="deleteAccount(${account.id})"
+                        data-bs-dismiss="modal">Delete
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal zoomIn" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -431,7 +467,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal zoomIn" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -449,7 +485,48 @@
         </div>
     </div>
 </div>
+<div class="modal zoomIn" id="deleteFileModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                               colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure?</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            Are you Sure You want to Delete this File?
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-danger " id="deleteFileBtn">Yes, Delete It!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    cutShortLink();
+    const baseUrlAccount = "/api/v1/accounts/";
+    const INVALID_FILLED = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> This field is not filled' +
+        '</div>'
+    const INVALID_FILES_LIMIT = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> Maximum Files is ${setting.uploadFileLimit}' +
+        '</div>'
+
+    const INVALID_FILES_TYPE = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> File type allowed: ${setting.listTypeFile}' + 'and ${setting.listTypeImage}' +
+        '</div>'
+
+    const INVALID_FILES_SIZE = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> Maximum Size Files is ${setting.maxFileSize}' +
+        '</div>'
     var imageType = "${setting.listTypeImage}";
     var fileType = "${setting.listTypeFile}";
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
@@ -506,11 +583,11 @@
         var amountInput = document.getElementById('amount');
 
         if (selectedOption === 'revenue') {
-            amountGroup.style.display = 'block';
+            amountGroup.style.display = 'flex';
             amountInput.placeholder = 'Enter positive amount';
             amountInput.min = 0;
         } else if (selectedOption === 'expense') {
-            amountGroup.style.display = 'block';
+            amountGroup.style.display = 'flex';
             amountInput.placeholder = 'Enter positive amount';
             amountInput.min = 0;
         } else {
@@ -521,58 +598,6 @@
     function formatCurrency(amount) {
         return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
     }
-
-    document.getElementById('editBtn').addEventListener('click', function () {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/api/v1/accounts/detail/" + "${account.id}", true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        var responseData = JSON.parse(xhr.responseText);
-                        $("#editBill").val('');
-                        var editLink = $('#editLink');
-                        var accountBill = responseData.bill;
-                        if (accountBill) {
-                            if (accountBill.length > 0) {
-                                editLink.html('')
-                                $.each(accountBill, function (index, file) {
-                                    var fileName = file.substring(file.lastIndexOf('/') + 1);
-                                    var linkText = file.substring(file.indexOf('-') + 1);
-
-                                    var listItem = $('<li>', {
-                                        class: 'list-group-item listFilesEdit',
-                                        'data-name': fileName
-                                    });
-
-                                    var link = $('<a>', {
-                                        href: file,
-                                        download: '',
-                                        target: '_blank',
-                                        id: 'resumeLink'
-                                    }).text(linkText);
-
-                                    var deleteButton = $('<button>', {
-                                        type: 'button',
-                                        class: 'btn btn-danger ml-2',
-                                        'data-bs-toggle': 'modal',
-                                        'data-bs-target': '#deleteConfirmationModalFile',
-                                        'data-name': fileName
-                                    }).html('<span>×</span>');
-                                    listItem.append(link, deleteButton);
-                                    editLink.append(listItem);
-                                });
-                            }
-                        }
-                        $('#editModal').modal('show');
-                    } else {
-                        $('#editModal').modal('hide');
-                        $('#errorModal').modal('show');
-                    }
-                }
-            }
-            xhr.send();
-        }
-    );
 
     function editAccount(accountId) {
         var xhr = new XMLHttpRequest();
@@ -700,8 +725,6 @@
         xhr.send();
     }
 </script>
-<!-- quill js -->
-<script src="/assets/libs/quill/quill.min.js"></script>
 <!-- dropzone js -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 <!-- init js -->
@@ -746,78 +769,6 @@
             + "</div>";
     }
 
-    // function loadDatabase() {
-    //     var currentUrl = window.location.search;
-    //     var params = new URLSearchParams(currentUrl);
-    //     var currentPage = !params.get('page') ? 1 : parseInt(params.get('page'));
-    //     var pageSize = !params.get('pageSize') ? 10 : parseInt(params.get('pageSize'));
-    //     var search = !params.get('search') ? "" : params.get('search');
-    //     let currentGet = "?page=" + currentPage + "&pageSize=" + pageSize + "&search=" + search
-    //     var apiUrl = baseUrlNotification + currentGet
-    //     // callAjaxByJsonWithData(apiUrl, "GET", null,
-    //     //     function (rs) {
-    //     //         if(rs){
-    //     //             history.pushState(null, null, currentUrl);
-    //     //             let xhtml =""
-    //     //             var currentURL = window.location.href;
-    //     //             var urlParams = new URLSearchParams(currentURL);
-    //     //             var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
-    //     //             rs.forEach(function (notification, index) {
-    //     //                 let pageInt = (parseInt(page) - 1) * pageSize
-    //     //                 xhtml += '<tr class="">' +
-    //     //                     '<td>' + (index + pageInt + 1) + '</td>' +
-    //     //                     '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
-    //     //                     '<td>' + notification.user.fullname + '</td>' +
-    //     //                     '<td>' + notification.createdDate + '</td>' +
-    //     //                     '<td>' +
-    //     //                     '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
-    //     //                     '<div class="viewNotification">'+
-    //     //                     '<button class="btn btn-sm btn-info edit-item-btn">View</button>'+
-    //     //                     ' </div>'+
-    //     //                     '<div class="editNotification">'+
-    //     //                     '<button class="btn btn-sm btn-success edit-item-btn">Edit</button>'+
-    //     //                     '</div>'+
-    //     //                     '<div class="removeNotification">'+
-    //     //                     '<button class="btn btn-sm btn-danger remove-item-btn">Remove</button>'+
-    //     //                     '</div>'+
-    //     //                     '    </div>' +
-    //     //                     '</td>'+
-    //     //                     '</tr>'
-    //     //             })
-    //     //             tbodyElement.innerHTML = xhtml
-    //     //             tbodyElement.classList.remove("hidden")
-    //     //             displayPagination()
-    //     //         } else{
-    //     //             console.log("Data API Error")
-    //     //         }
-    //     //     },
-    //     //     function (error){
-    //     //         console.log("Call API Error")
-    //     //         console.log(error)
-    //     //     })
-    // }
-    //
-    // loadDatabase()
-    $(document).on("click", "div.removeNotification", function () {
-        let notificationId = $(this).parent().attr("data-id")
-        $("#deleteNotification").attr("data-id", notificationId)
-        $("#deleteNotification").modal("show")
-    })
-
-    $(document).on("click", "#deleteNotificationBtn", function () {
-        let notificationId = $("#deleteNotification").attr("data-id")
-        let apiUrlNotification = baseUrlNotification;
-        if (notificationId) {
-            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
-                console.log(rs)
-                if (rs) {
-
-                }
-                $("#deleteNotification").modal("hide")
-            });
-        }
-    })
-
     $(document).on("click", "button.downFileBtn", function () {
         let dataUrl = $(this).children().attr("data-url")
         downloadFiles(dataUrl)
@@ -848,18 +799,8 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     })
-    var snowEditorData = {};
-    snowEditorData.theme = 'snow'
-    snowEditorData.modules = {
-        'toolbar': [[{'font': []}, {'size': []}], ['bold', 'italic', 'underline', 'strike'],
-            [{'color': []}, {'background': []}], [{'script': 'super'}, {'script': 'sub'}],
-            [{'header': [false, 1, 2, 3, 4, 5, 6]}, 'blockquote', 'code-block'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-            ['direction', {'align': []}], ['link', 'image', 'video'], ['clean']]
-    }
-    var quillCreate = new Quill("#contentCreate", snowEditorData);
-    var quillEdit = new Quill("#contentEdit", snowEditorData);
-    let listTypeFileArr = "${listTypeFile}".split(",")
+
+    let listTypeFileArr = validExtensions
     let listTypeFile = ""
     listTypeFileArr.forEach((item, index) => {
         listTypeFile += "." + item
@@ -867,8 +808,8 @@
             listTypeFile += ","
         }
     })
-    let maxFileSize = "${maxFileSize}"
-    let uploadFileLimit = "${uploadFileLimit}"
+    let maxFileSize = "${setting.maxFileSize}"
+    let uploadFileLimit = "${setting.uploadFileLimit}"
 
     var dropzonePreviewNodeEdit = document.querySelector("#dropzone-preview-list-edit");
     var previewTemplateEdit = dropzonePreviewNodeEdit.parentNode.innerHTML;
@@ -877,7 +818,7 @@
     var dropzoneEdit = new Dropzone("#dropzoneEdit", {
         url: 'https://httpbin.org/post',
         method: "post",
-        previewTemplate: previewTemplate,
+        previewTemplate: previewTemplateEdit,
         previewsContainer: "#dropzone-preview-edit",
         acceptedFiles: listTypeFile,
         maxFilesize: parseInt(maxFileSize),
@@ -920,42 +861,6 @@
 
     }
 
-    function showAlertValidateCreate(html) {
-        let xhtml = '<li class="mt-2" id=""> ' +
-            html +
-            '</li>'
-
-        let check = $("#dropzone-preview li").children().last()
-        if (check.length > 0) {
-            $("#dropzone-preview li").children().last().after(xhtml)
-        } else {
-            $("#dropzone-preview").html(xhtml)
-        }
-
-    }
-
-    dropzone.on("addedfile", function (file) {
-        removeAlert();
-        let files = dropzone.files
-        const fileExtension = file.name.split('.').pop();
-        const fileSize = file.size
-        if (!checkLimitFile(files.length, parseInt(uploadFileLimit))) {
-            dropzone.removeFile(file)
-            showAlertValidateCreate(INVALID_FILES_LIMIT)
-            return
-        }
-        if (!checkTypeFile(fileExtension, listTypeFileArr)) {
-            dropzone.removeFile(file)
-            showAlertValidateCreate(INVALID_FILES_TYPE)
-            return
-        }
-        if (!checkLimitSize(bytesToMB(fileSize), parseInt(maxFileSize))) {
-            dropzone.removeFile(file)
-            showAlertValidateCreate(INVALID_FILES_TYPE)
-            return
-        }
-    });
-
     dropzoneEdit.on("addedfile", function (file) {
         removeAlert();
         let files = dropzoneEdit.files
@@ -974,24 +879,18 @@
         if (!checkLimitSize(bytesToMB(fileSize), parseInt(maxFileSize))) {
             dropzoneEdit.removeFile(file)
             showAlertValidate(INVALID_FILES_SIZE)
-            return
         }
     });
 
-    $(document).on("click", ".editNotification", function () {
+    $(document).on("click", ".editAccount", function () {
         Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
-        let notificationId = $(this).parent().attr("data-id")
-        let apiUrlNotification = baseUrlNotification
-        if (notificationId) {
-            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
+        let accountId = $(this).parent().attr("data-id")
+        if (accountId) {
+            callAjaxByJsonWithData(baseUrlAccount + "detail/" + accountId, 'GET', null,
                 function (rs) {
-                    console.log(rs)
-                    $("#formEditNotication").attr("data-id", rs.id)
-                    $("#titleEdit").val(rs.title)
-                    let contentParse = JSON.parse(rs.content)
-                    quillEdit.setContents(contentParse)
-                    let urlFiles = rs.files ? rs.files : []
-                    let fileLength = rs.files ? rs.files.length : 0
+                    $("#editModal").attr("data-id", rs.id)
+                    let urlFiles = rs.bill ? rs.bill : []
+                    let fileLength = rs.bill ? rs.bill.length : 0
                     dropzoneEdit.options.maxFiles = parseInt(uploadFileLimit) - fileLength;
                     let html = ""
                     if (fileLength > 0) {
@@ -1002,16 +901,14 @@
                                 success: function (data, status, xhr) {
                                     var contentLength = xhr.getResponseHeader('Content-Length');
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
-                                    console.log("File Name: " + fileName);
-                                    console.log("Content Length: " + contentLength);
                                     html += showFileUploaded(fileName, contentLength, url)
                                     $(".showFilesUploaded").html(html)
-                                    $("#formEditNotication").modal("show")
+                                    $("#editModal").modal("show")
                                 }
                             });
                         });
                     } else {
-                        $("#formEditNotication").modal("show")
+                        $("#editModal").modal("show")
                     }
                 },
                 function (error) {
@@ -1019,21 +916,21 @@
                 }
             )
         }
-        console.log(notificationId)
     })
 
     $(document).on("click", "button.editBtn", function () {
         removeAlert()
-        let notificationId = $("#formEditNotication").attr("data-id")
-        let title = $("#titleEdit").val()
-        let contentCheck = $("div#formEditNotication .ql-editor").html().toString()
-        let content = JSON.stringify(quillEdit.getContents())
-        if (title.trim() === "") {
-            $("input#titleEdit").parent().after(INVALID_FILLED)
-            return false;
+        let accountId = $("#editModal").attr("data-id")
+        let title = $("#editTitle").val()
+        let note = $("#editNote").val()
+        let transaction = $("#transactionType").val()
+        let input = document.getElementById("amount").value;
+        let amount = Number(input.replace(/[^0-9.]/g, ''))
+        if (transaction === 'expense') {
+            amount = -amount;
         }
-        if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
-            $("div#contentEdit").parent().after(INVALID_FILLED)
+        if (title.trim() === "") {
+            $("input#editTitle").parent().after(INVALID_FILLED)
             return false;
         }
         var oldFile = []
@@ -1042,61 +939,40 @@
         });
         var formData = new FormData();
         formData.append("title", title);
-        formData.append("content", content);
+        formData.append("note", note);
+        formData.append("id", accountId);
         formData.append("oldFile", oldFile);
+        formData.append("userId", userCurrent.id);
+        formData.append("expense", amount);
 
         if (dropzoneEdit.files.length > 0) {
             for (let i = 0; i < dropzoneEdit.files.length; i++) {
                 let file = dropzoneEdit.files[i]
                 if (file.accepted) {
-                    formData.append("files", file);
+                    formData.append("bill", file);
                 }
             }
         }
 
-        callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId, "POST", formData, function (rs) {
-            console.log(rs)
-            if (rs > 0) {
-
+        callAjaxByDataFormWithDataForm2(baseUrlAccount + "edit", "POST", formData, function (rs) {
+            if (rs) {
+                $("#titleAccount").text(rs.title);
+                $("#createdDateAccount").text(rs.createdDate);
+                $("#revenueAccount").text(formatCurrency(rs.revenue));
+                $("#expenseAccount").text(formatCurrency(rs.expense));
+                $("#remainAccount").text(formatCurrency(rs.remain));
+                $("#fullnameAccount").text(rs.user.fullname);
+                $("#noteAccount").text(rs.note);
+                $('#editModal').modal('hide');
+                $('#successModal div.modal-body').text("The request has been completed successfully.")
+                $('#successModal').modal('show');
+                $('#editBill').val("");
             }
         }, function (error) {
-            console.log(error)
-        })
-
-    })
-    $(document).on("click", "button.createBtn", function () {
-        removeAlert()
-        var apiUrlNotification = baseUrlNotification + "/update/"
-        let title = $("#titleCreate").val()
-        let contentCheck = $(".ql-editor").html().toString()
-        let content = JSON.stringify(quillCreate.getContents())
-        if (title.trim() === "") {
-            $("input#titleCreate").parent().after(INVALID_FILLED)
-            return false;
-        }
-        if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
-            $("div#contentCreate").parent().after(INVALID_FILLED)
-            return false;
-        }
-        var formData = new FormData();
-        formData.append("title", title);
-        formData.append("content", content);
-        formData.append("userId", ${userId});
-        if (dropzone.files.length > 0) {
-            for (let i = 0; i < dropzone.files.length; i++) {
-                let file = dropzone.files[i]
-                if (file.accepted) {
-                    formData.append("files", file);
-                }
+            if (error) {
+                $('#editModal').modal('hide');
+                $('#errorModal').modal('show');
             }
-        }
-        callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}", "POST", formData, function (rs) {
-            console.log(rs)
-            if (rs > 0) {
-                $("#formCreateNotication").modal("hide")
-            }
-        }, function (error) {
-            console.log(error)
         })
     })
 </script>

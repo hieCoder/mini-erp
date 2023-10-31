@@ -41,14 +41,10 @@ function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback,
         data: formData,
         enctype: 'multipart/form-data',
         success: function(response) {
-            callback(response);
+            if(callback) callback(response);
         },
         error: function (xhr, status, error) {
-            Swal.fire({
-                icon: 'error',
-                text: JSON.parse(xhr.responseText).message
-            });
-            callBackError();
+            if(callBackError) callBackError(xhr);
         }
     });
 }

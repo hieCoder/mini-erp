@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="row mt-1">
-            <div class="col-md-4 col-xl-4">
+            <div class="col-md-4 col-xl-6">
                 <div class="form-group">
                     <label for="account-day" class="form-label mb-0 text-muted">Filter by year: </label>
                     <div class="input-group" id="account-day">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xl-4">
+            <div class="col-md-4 col-xl-6">
                 <div class="form-group">
                     <label for="datePickerStart" class="form-label mb-0 text-muted">Start Date</label>
                     <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"
@@ -44,15 +44,21 @@
                            data-date-format="d M, Y" data-deafult-date="" id="datePickerEnd">
                 </div>
                 <button type="button" class="btn btn-primary btn-label rounded-pill mt-3" onclick="loadPage(1)"><i
-                        class="ri-user-smile-line label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
+                        class="ri-equalizer-fill label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Accounting Datatables</h5>
+                    <div class="card-header border-0">
+                        <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 flex-grow-1">Accounting Datatable</h5>
+                            <div class="flex-shrink-0">
+                                <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#createModal"><i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i> Create Tickets</button>
+                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -81,8 +87,8 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <table
-                                           class="table table-bordered dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed"
-                                           style="width: 100%;" aria-describedby="example_info">
+                                            class="table table-bordered dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed"
+                                            style="width: 100%;" aria-describedby="example_info">
                                         <thead>
                                         <tr>
                                             <th data-ordering="false" class="sorting" tabindex="0"
@@ -124,10 +130,6 @@
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" style="width: 62.4px;"
-                                                aria-label="Priority: activate to sort column ascending">BILL
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" style="width: 62.4px;"
                                                 aria-label="Priority: activate to sort column ascending">ACTION
                                             </th>
                                         </tr>
@@ -152,23 +154,6 @@
                                                         class="badge badge-soft-info cut-file-name"
                                                         data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                         title="${a.note}">${a.note}</span></td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${not empty a.bill}">
-                                                            <c:forEach items="${a.bill}" var="file">
-                                                        <span class="badge bg-soft-success">
-                                                            <a href="${file}" download="" target="_blank"
-                                                               data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                               title="${file.substring(file.indexOf('-') + 1)}"
-                                                               class="cut-file-name"
-                                                               id="resumeLink">${file}</a>
-                                                        </span>
-                                                            </c:forEach>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
                                                 <td>
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown"
@@ -319,7 +304,7 @@
                 <th></th>
                 <th>Total Revenue</th>
                 <th>Total Expense</th>
-                <th>Total Balance</th>
+                <th>Ending Balance</th>
             </tr>
             </thead>
             <tbody>
@@ -347,13 +332,8 @@
         </table>
     </div>
 </div>
-<div class="row">
-    <div class="col-12">
-        <button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
-    </div>
-</div>
 
-<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+<div class="modal zoomIn" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -477,7 +457,7 @@
     </div>
 </div>
 <!-- Modal HTML -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal zoomIn" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -495,7 +475,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal zoomIn" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-center" role="document">
         <div class="modal-content">
@@ -670,67 +650,17 @@
                         tableBody.innerHTML = "";
                         responseData.accountResponseList.forEach((account, index) => {
                             var row = tableBody.insertRow();
-                            row.innerHTML =
-                                "<td>" + ((page - 1) * selectedPageSize + index + 1) + "</td>" +
+                            row.innerHTML = "<td>" + ((page - 1) * selectedPageSize + index + 1) + "</td>" +
                                 "<td><a href='/accounting/detail/" + account.id + "'>" + account.id + "</a></td>" +
-                                "<td style=''>" + account.createdDate + "</td>" +
+                                "<td style=''>" + account.payDate + "</td>" +
                                 "<td style=''>" + account.title + "</td>" +
                                 "<td class='" + (account.revenue > 0 ? 'text-bg-success' : '') + "'>" + account.revenue + "</td>" +
                                 "<td class='" + (account.expense < 0 ? 'text-bg-danger' : '') + "'>" + account.expense + "</td>" +
                                 "<td class='text-bg-primary'>" + account.remain + "</td>" +
                                 "<td style=''>" + account.user.fullname + "</td>" +
-                                "<td style=''>" +
-                                "<span class='badge badge-soft-info cut-file-name' " +
-                                "data-bs-toggle='tooltip' data-bs-placement='bottom' " +
-                                "title='" + account.note + "'>" + account.note + "</span>" +
-                                "</td>" +
+                                "<td style=''><span class='badge badge-soft-info cut-file-name' data-bs-toggle='tooltip' data-bs-placement='bottom' title='" + account.note + "'>" + account.note + "</span></td>" +
                                 "<td style='display: none;'>" +
-                                "<div class='dropdown d-inline-block'>" +
-                                "<button class='btn btn-soft-secondary btn-sm dropdown' type='button' " +
-                                "data-bs-toggle='dropdown' aria-expanded='false'>" +
-                                "<i class='ri-more-fill align-middle'></i>" +
-                                "</button>" +
-                                "<ul class='dropdown-menu dropdown-menu-end'>" +
-                                "<li><a href='#!' class='dropdown-item'>" +
-                                "<i class='ri-eye-fill align-bottom me-2 text-muted'></i>View" +
-                                "</a></li>" +
-                                "<li><a class='dropdown-item edit-item-btn'>" +
-                                "<i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit" +
-                                "</a></li>" +
-                                "<li><a class='dropdown-item remove-item-btn'>" +
-                                "<i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete" +
-                                "</a></li>" +
-                                "</ul>" +
-                                "</div>" +
-                                "</td>";
-
-                            if (account.bill) {
-                                var cell = row.insertCell();
-                                var files = account.bill;
-
-                                for (var i = 0; i < files.length; i++) {
-                                    var file = files[i];
-                                    let subStringFile = file.substring(file.indexOf('-') + 1);
-
-                                    var downloadLink = document.createElement("a");
-                                    downloadLink.href = file;
-                                    downloadLink.setAttribute("download", "");
-                                    downloadLink.target = "_blank";
-                                    downloadLink.classList.add("cut-file-name", "text-break");
-                                    downloadLink.id = "resumeLink";
-                                    downloadLink.title = subStringFile;
-                                    downloadLink.textContent = file;
-                                    downloadLink.setAttribute("data-toggle", "tooltip");
-                                    downloadLink.setAttribute("data-placement", "bottom");
-                                    cell.appendChild(downloadLink);
-
-                                    if (i < files.length - 1) {
-                                        cell.appendChild(document.createElement("hr"));
-                                    }
-                                }
-                            } else {
-                                row.insertCell();
-                            }
+                                "<div class='dropdown d-inline-block'><button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'><i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'><li><a href='#!' class='dropdown-item'><i class='ri-eye-fill align-bottom me-2 text-muted'></i>View</a></li><li><a class='dropdown-item edit-item-btn'><i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit</a></li><li><a class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a></li></ul></div></td><td><div class='dropdown d-inline-block'><button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'><i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'><li><a href='#!' class='dropdown-item'><i class='ri-eye-fill align-bottom me-2 text-muted'></i>View</a></li><li><a class='dropdown-item edit-item-btn'><i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit</a></li><li><a class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a></li></ul></div></td>";
                             totalExpense += account.expense;
                             totalRevenue += account.revenue;
                             totalRemain = account.remain;
@@ -927,7 +857,6 @@
     }
 
 </script>
-<%--<div id="loading" class="loading-spin">Loading...</div>--%>
 </body>
 </html>
 

@@ -63,7 +63,7 @@ public class AccountingApi {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(accountingService.updateAccounting(accountingUpdateRequest),HttpStatus.FOUND);
+        return new ResponseEntity<>(accountingService.updateAccounting(accountingUpdateRequest),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
