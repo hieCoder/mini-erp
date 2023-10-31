@@ -349,7 +349,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div id="formEditNotication" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
+<div id="formEditNotification" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -862,13 +862,13 @@
             if(mode == "view") {
                 $("#viewNotification .showFilesUploaded").html(html)
             }else if(mode == "edit"){
-                $("#formEditNotication .showFilesUploaded").html(html)
+                $("#formEditNotification .showFilesUploaded").html(html)
             }
             })
         if(mode == "view"){
             $("#viewNotification").modal("show")
         } else if(mode == "edit"){
-            $("#formEditNotication").modal("show")
+            $("#formEditNotification").modal("show")
         }
     }
     $(document).on("click","button.editNotification",function (){
@@ -878,7 +878,7 @@
         if(notificationId){
             callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
                 function (rs) {
-                    $("#formEditNotication").attr("data-id", rs.id)
+                    $("#formEditNotification").attr("data-id", rs.id)
                     $("#titleEdit").val(rs.title)
                     let contentParse = JSON.parse(rs.content)
                     quillEdit.setContents(contentParse)
@@ -888,7 +888,7 @@
                     if(fileLength>0){
                         loadFilesName(urlFiles, "edit");
                     }else{
-                        $("#formEditNotication").modal("show")
+                        $("#formEditNotification").modal("show")
                     }
                 },
                 function (error){

@@ -44,6 +44,7 @@ public class CommentWebSocketController {
              commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);
+        commentNotificationResponse.setNotificationId(createCommentNotificationRequest.getNotificationId());
         return commentNotificationResponse;
     }
 
