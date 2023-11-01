@@ -5,6 +5,8 @@ const T_OPENED = 'OPENED';
 const T_POSTPONED = 'POSTPONED';
 const T_REOPENED = 'REOPENED';
 
+const S_TASK_COMMENT = 'TASK_COMMENT';
+
 const DEFAULT_VALUE_SNOW_EDITOR = [
     `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
     `<div class="ql-editor" data-gramm="false" contenteditable="true"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
@@ -231,6 +233,7 @@ function showReplyCommentForm(id){
                                             </div>
                                         </li>
                                     </ul>
+                                    <div class="message-error-file"></div>
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-start">
@@ -260,7 +263,25 @@ function activeEditor(classNameOfForm){
     });
 }
 
-function activeFile(classNameOfForm) {
+function createMessError(INVALID, setting){
+    var mess = '';
+    switch (INVALID){
+        case INVALID_FILES_LIMIT:
+            mess = getMessageLimitFile(setting.fileLimit);
+            break;
+        case INVALID_FILES_FILESIZE:
+            mess = getMessageSizeFile(setting.fileSize);
+            break;
+        case INVALID_FILES_FILETYPE:
+            mess = getMessageTypeFile(setting.fileType);
+            break;
+        default:
+            mess = '';
+    }
+    return `<div class="alert alert-danger message-error-file mt-1 mb-0">` +mess+`</div>`;
+}
+
+function activeFile(classNameOfForm, setting) {
     var dropzonePreviewNode = document.querySelector(classNameOfForm + " #dropzone-preview-list");
     dropzonePreviewNode.id = "";
     var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
@@ -270,8 +291,33 @@ function activeFile(classNameOfForm) {
         method: "post",
         previewTemplate: previewTemplate,
         previewsContainer: classNameOfForm + " #dropzone-preview",
-        autoProcessQueue: false,
+        acceptedFiles: convertExtensionsList(setting.fileType),
+        maxFilesize: convertMbToB(setting.fileSize),
+        maxFiles: parseInt(setting.fileLimit),
+        uploadMultiple:true,
+        autoProcessQueue: false
     });
+
+    dropzone.on("addedfile", function (file) {
+
+        var errorE = document.querySelector(classNameOfForm + " .message-error-file");
+
+        var fileSize = file.size;
+        var files = dropzone.files;
+        var fileExtension = file.name.split('.').pop();
+
+        if(files.length > parseInt(dropzone.options.maxFiles)){
+            dropzone.removeFile(file);
+            errorE.innerHTML = createMessError(INVALID_FILES_LIMIT, setting);
+        } else if(!setting.fileType.includes(fileExtension)){
+            dropzone.removeFile(file);
+            errorE.innerHTML = createMessError(INVALID_FILES_FILETYPE, setting);
+        } else if(fileSize > convertMbToB(setting.fileSize)){
+            dropzone.removeFile(file);
+            errorE.innerHTML = createMessError(INVALID_FILES_FILESIZE, setting);
+        }
+    });
+
     return dropzone;
 }
 
@@ -318,6 +364,7 @@ function resetFormPostComment(){
                                                     </div>
                                                 </li>
                                             </ul>
+                                            <div class="message-error-file"></div>
                                         </div>`);
 }
 
@@ -399,6 +446,7 @@ async function showEditCommentForm(comment){
                                             </div>
                                         </li>
                                     </ul>
+                                    <div class="message-error-file"></div>
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-start">

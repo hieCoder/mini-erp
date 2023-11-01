@@ -1,9 +1,15 @@
 
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
+
+const INVALID_FILES_LIMIT = 'INVALID_FILES_LIMIT';
+const INVALID_FILES_FILESIZE = 'INVALID_FILES_FILESIZE';
+const INVALID_FILES_FILETYPE = 'INVALID_FILES_FILETYPE';
+
 // const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
 // const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
 // const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
+
 //
 // FUNCTION
 
@@ -70,13 +76,6 @@ function formatDateValueToValueOfInputDate(s) {
     return date.toISOString().slice(0, 10);
 }
 
-// function getFileNameFromPath(path) {
-//     var parts = path.split("/");
-//     var lastPart = parts[parts.length - 1];
-//     return lastPart;
-// }
-//
-
 function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
@@ -85,21 +84,6 @@ function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
 
-// function createLoadingHtml() {
-//     return `
-//             <div class="text-center d-flex align-items-center justify-content-center">
-//                 <div class="custom-spinner d-flex align-items-center justify-content-center">
-//                     <div class="dot"></div>
-//                 </div>
-//             </div>
-//         `;
-// }
-//
-// function resetForm(idForm){
-//     $('#'+idForm).find('*').prop('disabled', false);
-//     $('div.custom-spinner').parent().remove();
-// }
-//
 // function createLoadingIndicator() {
 //     if ($('#loading-indicator').length === 0) {
 //         var loadingIndicator = $('<div>', {
@@ -141,44 +125,6 @@ function isDeleveloper() {
 //     $('#loading-indicator').hide();
 //     $('#' + contentId).show();
 // }
-//
-// function cutShortLink() {
-//     var fileElements = document.querySelectorAll('a.cut-file-name');
-//
-//     fileElements.forEach(function (element) {
-//         var fileName = element.textContent;
-//         if (fileName.length > 0) {
-//             var indexOfHyphen = fileName.indexOf("-");
-//             if (indexOfHyphen !== -1) {
-//                 var remainingPart = fileName.substring(indexOfHyphen + 1);
-//                 var truncatedFileName;
-//                 if (remainingPart.length > 14) {
-//                     truncatedFileName = remainingPart.substring(0, 10) + '...';
-//                 } else {
-//                     truncatedFileName = remainingPart;
-//                 }
-//             } else {
-//                 if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
-//             }
-//             element.textContent = truncatedFileName;
-//         }
-//     });
-// }
-//
-// function handleFiles(arrUrl, handleEachFunc){
-//     arrUrl.forEach(function (url,index) {
-//         $.ajax({
-//             type: "HEAD",
-//             url: url,
-//             success: function (data, status, xhr) {
-//                 var fileSize = xhr.getResponseHeader('Content-Length');
-//                 var fileName = url.substring(url.lastIndexOf("/") + 1);
-//                 if(handleEachFunc) handleEachFunc(fileName, fileSize, url);
-//             }
-//         });
-//     });
-// }
-
 
 async function handleFilesAsync(arrUrl, handleEachFunc) {
     var promises = arrUrl.map(function (url) {
@@ -204,3 +150,24 @@ async function handleFilesAsync(arrUrl, handleEachFunc) {
     await Promise.all(promises);
 }
 
+function convertExtensionsList(extensions) {
+    const extensionArray = extensions.split(',');
+    const formattedExtensions = extensionArray.map(extension => `.${extension.trim()}`);
+    return formattedExtensions.join(',');
+}
+
+function getMessageLimitFile(limit){
+    return 'The number of files must be less than ' + limit;
+}
+
+function getMessageSizeFile(fileSize){
+    return 'The size of the file must be less than ' + fileSize + ' Mb';
+}
+
+function getMessageTypeFile(fileType){
+    return 'Files must be of the following types: ' + fileType;
+}
+
+function convertMbToB(mb){
+    return mb * 1024 * 1024;
+}

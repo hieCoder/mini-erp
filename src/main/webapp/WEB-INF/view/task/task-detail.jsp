@@ -16,106 +16,6 @@
     <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css" />
 </head>
 <body>
-<%--    <div class="container mt-4" id="content-container">--%>
-<%--        <div class="row">--%>
-<%--            <div class="col-md-12">--%>
-<%--                <h1 class="text-center">Your comment</h1>--%>
-<%--                <form id="yourCommentForm">--%>
-<%--                    <div class="form-group">--%>
-<%--                        <label for="yourCommentTitle">Title:</label>--%>
-<%--                        <input id="yourCommentTitle" name="title" type="text" class="form-control" aria-describedby="emailHelp">--%>
-<%--                        <small class="form-message"></small>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-group">--%>
-<%--                        <label for="yourCommentTitle">Content:</label>--%>
-<%--                        <div id="yourCommentContent" class="summernote"></div>--%>
-<%--                        <small class="form-message"></small>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-group">--%>
-<%--                        <input name="fileList" type="file" class="form-control" id="yourCommentFiles" multiple>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-group text-right">--%>
-<%--                        <button id="yourCommentSubmitComment" type="submit" class="btn btn-success">Comment</button>--%>
-<%--                    </div>--%>
-<%--                </form>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row">--%>
-<%--            <div class="col-md-12">--%>
-<%--                <h1 class="text-center">List of comment</h1>--%>
-<%--                <ul id="comment-list" class="list-group">--%>
-<%--&lt;%&ndash;                    <li class="list-group-item">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        <div class="row">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <div class="col-md-2 text-center"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <div class="col-md-10">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                <form>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    <div class="form-group">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                        <input type="text" class="form-control fw-bold" placeholder="Title">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    <div class="form-group mt-2">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                        <div class="form-control summernote" style="height: auto;"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    <div class="form-group mt-2 row">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                        <div class="col-md-6">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                            <input type="file" name="newFiles" class="form-control mt-2 attract-update-comment" multiple="">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                        </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                        <div class="col-md-6 text-right">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                            <button class="btn btn-primary">Reply</button>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                            <button class="btn btn-danger">Cancel</button>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                        </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                </form>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                    </li>&ndash;%&gt;--%>
-<%--                </ul>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-
-
-<%--        $(document).on('click','.btn-modify-comment',function(){--%>
-<%--            var id = $(this).data('comment-id');--%>
-<%--            var closestLI = $(this).closest('li');--%>
-
-<%--            updateCommemtForm(closestLI);--%>
-
-<%--            objectUpdate.valTitle = $('#updateCommentTitle'+id).val();--%>
-<%--            objectUpdate.valContent = $('#updateCommentContent'+id).html();--%>
-
-<%--            // update--%>
-<%--            Validator({--%>
-<%--                form:'#updateCommentForm'+id,--%>
-<%--                errorSelector: '.form-message',--%>
-<%--                rules:[--%>
-<%--                    Validator.isRequired('#updateCommentTitle'+id),--%>
-<%--                    Validator.isRequired('#updateCommentContent'+id)--%>
-<%--                ],--%>
-<%--                onSubmit: function (formData) {--%>
-<%--                    var idForm = '#updateCommentForm'+id;--%>
-<%--                    var listFile = $(idForm + ' .list-file');--%>
-<%--                    var oldFiles = listFile.find('a').map(function() {--%>
-<%--                        var href = $(this).attr('href');--%>
-<%--                        var fileName = getFileNameFromPath(href);--%>
-<%--                        return fileName;--%>
-<%--                    }).get().join(',');--%>
-
-<%--                    formData.append('id', id);--%>
-<%--                    formData.append('remainFiles', oldFiles);--%>
-<%--                    formData.append('content', $('#updateCommentContent'+id).summernote().summernote('code'));--%>
-
-<%--                    $(idForm+' .list-button').after(createLoadingHtml());--%>
-<%--                    callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){--%>
-<%--                        closestLI.replaceWith(createCommentForm(rs));--%>
-<%--                        cutShortLink();--%>
-<%--                        console.log(123);--%>
-<%--                    }, 'updateCommentForm'+id);--%>
-<%--                }--%>
-<%--            });--%>
-<%--        });--%>
-<%--    </script>--%>
-
 
 <!-- start page title -->
 <div class="row">
@@ -284,6 +184,7 @@
                                                     </div>
                                                 </li>
                                             </ul>
+                                            <div class="message-error-file"></div>
                                         </div>
                                     </div>
                                     <div class="hstack gap-2 justify-content-start">
@@ -713,33 +614,36 @@
 
             // Post a comment
             activeEditor('.post-comment-form');
-            var dropzone = activeFile('.post-comment-form');
-            Validator({
-                form:'.post-comment-form',
-                errorSelector: '.form-message',
-                rules:[
-                    Validator.isRequired('.post-comment-form .title-post-comment'),
-                    Validator.isRequired('.post-comment-form .content-post-comment')
-                ],
-                onSubmit: function (formData) {
-                    formData.append('taskId', idTask);
-                    formData.append('content', $('.post-comment-form .content-post-comment').html());
-                    formData.append('userId', userCurrent.id);
-                    dropzone.files.forEach((file) => {
-                        formData.append('fileList', file);
-                    });
-
-                    callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
-                        createCommentForm(rs)
-                            .then(function (commentHTML) {
-                                $('#comment-list').append(commentHTML);
-                                resetFormPostComment();
-                                dropzone = activeFile('.post-comment-form');
-                            }).catch(function (error) {
-                            console.error(error);
+            var dropzone = '';
+            callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK_COMMENT, 'GET', null, function (setting) {
+                dropzone = activeFile('.post-comment-form', setting);
+                Validator({
+                    form:'.post-comment-form',
+                    errorSelector: '.form-message',
+                    rules:[
+                        Validator.isRequired('.post-comment-form .title-post-comment'),
+                        Validator.isRequired('.post-comment-form .content-post-comment')
+                    ],
+                    onSubmit: function (formData) {
+                        formData.append('taskId', idTask);
+                        formData.append('content', $('.post-comment-form .content-post-comment').html());
+                        formData.append('userId', userCurrent.id);
+                        dropzone.files.forEach((file) => {
+                            formData.append('fileList', file);
                         });
-                    });
-                }
+
+                        callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                            createCommentForm(rs)
+                                .then(function (commentHTML) {
+                                    $('#comment-list').append(commentHTML);
+                                    resetFormPostComment();
+                                    dropzone = activeFile('.post-comment-form', setting);
+                                }).catch(function (error) {
+                                console.error(error);
+                            });
+                        });
+                    }
+                });
             });
         });
     });
@@ -763,7 +667,11 @@
         replyContainer.html(showReplyCommentForm(id));
 
         activeEditor(".form-reply[data-id='" + id + "']");
-        var dropzone = activeFile(".form-reply[data-id='" + id + "']");
+
+        var dropzone = '';
+            callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK_COMMENT, 'GET', null, function (setting) {
+            dropzone = activeFile(".form-reply[data-id='" + id + "']", setting);
+        });
 
         Validator({
             form:'.reply-comment-form[data-id="'+ id+ '"]',
@@ -809,7 +717,11 @@
                     editContainer.html(commentHTML);
                     $(".form-edit[data-id='" + id + "']" + ' .content-edit').html(rs.content);
                     activeEditor(".form-edit[data-id='" + id + "']");
-                    var dropzone = activeFile(".form-edit[data-id='" + id + "']");
+
+                    var dropzone = '';
+                    callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK_COMMENT, 'GET', null, function (setting) {
+                        dropzone = activeFile(".form-edit[data-id='" + id + "']", setting);
+                    });
 
                     Validator({
                         form:'.edit-comment-form[data-id="'+ id+ '"]',

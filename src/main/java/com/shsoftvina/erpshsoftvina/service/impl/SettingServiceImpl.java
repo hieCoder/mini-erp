@@ -53,4 +53,9 @@ public class SettingServiceImpl implements SettingService {
 
         return updatedCount;
     }
+
+    @Override
+    public SettingResponse findByCode(String code) {
+        return settingConverter.toResponse(settingMapper.findByCode(code));
+    }
 }
