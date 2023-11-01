@@ -2,10 +2,6 @@ package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.constant.*;
 import com.shsoftvina.erpshsoftvina.entity.*;
-import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
-import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +20,29 @@ import java.util.stream.Stream;
 
 public class FileUtils {
 
-    public static String formatNameImage(MultipartFile file){
-        if(file!=null){
-            return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss-")) + file.getOriginalFilename();
+    private static String getFileExtension(String filename) {
+        int lastDotIndex = filename.lastIndexOf('.');
+        if (lastDotIndex > 0) {
+            return filename.substring(lastDotIndex);
+        }
+        return "";
+    }
+
+    private static String removeFileExtension(String filename) {
+        int lastDotIndex = filename.lastIndexOf('.');
+        if (lastDotIndex > 0) {
+            return filename.substring(0, lastDotIndex);
+        }
+        return filename;
+    }
+
+    public static String formatNameImage(MultipartFile file) {
+        if (file != null) {
+            String originalFilename = file.getOriginalFilename();
+            String extension = getFileExtension(originalFilename);
+            String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+            String filenameWithoutExtension = removeFileExtension(originalFilename);
+            return filenameWithoutExtension + "-" + formattedDate + extension;
         }
         return null;
     }

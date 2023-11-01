@@ -8,7 +8,8 @@ const T_REOPENED = 'REOPENED';
 const DEFAULT_VALUE_SNOW_EDITOR = [
     `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
     `<div class="ql-editor" data-gramm="false" contenteditable="true"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
-    `<div class="ql-editor" data-gramm="false" contenteditable="true"><div><br></div></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
+    `<div class="ql-editor" data-gramm="false" contenteditable="true"><div><br></div></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
+    `<div class="ql-editor" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
 ];
 
 function getTaskCountByCode(rs, code) {
@@ -79,7 +80,13 @@ function getContentViewOfEditorSnow(comtentDataInDB){
 }
 
 function createFile(file, isShowDeleteIcon) {
-    return `<div class="col-lg-3 mb-1">
+
+    var iconDelete = '';
+    if(isShowDeleteIcon){
+        iconDelete = `<a class="delete-file" data-name="`+file.fileName+`" href="#deleteFileCommentModal" data-bs-toggle="modal"><i class="ri-delete-bin-fill align-bottom text-muted"></i></a>`;
+    }
+
+    return `<div class="col-lg-3 mb-1 file-container-item" data-name="`+file.fileName+`">
                     <div class="border rounded border-dashed p-2">
                         <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-3">
@@ -90,13 +97,14 @@ function createFile(file, isShowDeleteIcon) {
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block">`+file.fileName+`</a></h5>
+                                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="`+file.fileName+`">`+file.fileName+`</a></h5>
                                                     <div>`+file.fileSize+`</div>
                                                 </div>
-                                                <div class="flex-shrink-0 ms-2">
-                                                    <div class="d-flex gap-1">
-                                                        <a href="`+ file.url +`" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></a>
-                                                    </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="d-flex gap-1 align-items-center">
+                                                        <a href="`+ file.url +`" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></a>`
+                                                        + iconDelete +
+                                                    `</div>
                                                 </div>
                                             </div>
                     </div>
@@ -124,7 +132,7 @@ async function createCommentForm(comment) {
             btnReply = `<a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="`+id+`" style="margin-right: 3px;"><i class="mdi mdi-reply"></i> Reply</a>`;
         }
         if (isAdminOrUserLogin(idUser)) {
-            groupEditAndDeleteBtn = `<a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-edit"></i> Edit</a>
+            groupEditAndDeleteBtn = `<a href="javascript: void(0);" data-id="`+ id + `" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
                     <a href="#deleteCommentModal" data-bs-toggle="modal" data-id="`+ id +`" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>`;
         }
 
@@ -160,14 +168,16 @@ async function createCommentForm(comment) {
                                             <p class="mb-2">` + title + `</p>
                                             <div class="text-muted mb-1">` + getContentViewOfEditorSnow(content) + `</div>`
             + `<div class="row mb-1">` + files + `</div>`
-            + btnReply + groupEditAndDeleteBtn + `<div class="form-reply mt-3" data-id="`+id+`"></div>`+ listChildComment.html() + `
+            + btnReply + groupEditAndDeleteBtn +
+            `<div class="form-reply mt-3" data-id="`+id+`"></div>` +
+            `<div class="form-edit mt-3" data-id="`+id+`"></div>`+ listChildComment.html() + `
                                         </div>
                                     </div>`;
         resolve(commentHTML);
     });
 }
 
-function replyCommentForm(id){
+function showReplyCommentForm(id){
     return `<form class="form-control reply-comment-form" data-id="`+id+`">
                 <div class="row g-3">
                         <div class="col-lg-12">
@@ -229,4 +239,174 @@ function replyCommentForm(id){
                         </div>
                     </div>
             </form>`;
+}
+
+function activeEditor(classNameOfForm){
+    var ckClassicEditor = document.querySelectorAll(classNameOfForm + " .ckeditor-classic"),
+        snowEditor = (ckClassicEditor && Array.from(ckClassicEditor).forEach(function () {
+            ClassicEditor.create(document.querySelector(classNameOfForm + " .ckeditor-classic")).then(function (e) {
+                e.ui.view.editable.element.style.height = "200px"
+            }).catch(function (e) {
+                console.error(e)
+            })
+        }), document.querySelectorAll(classNameOfForm + " .snow-editor")),
+        bubbleEditor = (snowEditor && Array.from(snowEditor).forEach(function (e) {
+            var o = {};
+            1 == e.classList.contains("snow-editor") && (o.theme = "snow", o.modules = {toolbar: [[{font: []}, {size: []}], ["bold", "italic", "underline", "strike"], [{color: []}, {background: []}], [{script: "super"}, {script: "sub"}], [{header: [!1, 1, 2, 3, 4, 5, 6]}, "blockquote", "code-block"], [{list: "ordered"}, {list: "bullet"}, {indent: "-1"}, {indent: "+1"}], ["direction", {align: []}], ["link", "image", "video"], ["clean"]]}), new Quill(e, o)
+        }), document.querySelectorAll(classNameOfForm + " .bubble-editor"));
+    bubbleEditor && Array.from(bubbleEditor).forEach(function (e) {
+        var o = {};
+        1 == e.classList.contains("bubble-editor") && (o.theme = "bubble"), new Quill(e, o)
+    });
+}
+
+function activeFile(classNameOfForm) {
+    var dropzonePreviewNode = document.querySelector(classNameOfForm + " #dropzone-preview-list");
+    dropzonePreviewNode.id = "";
+    var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
+    dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
+    var dropzone = new Dropzone(classNameOfForm + " .dropzone", {
+        url: 'https://httpbin.org/post',
+        method: "post",
+        previewTemplate: previewTemplate,
+        previewsContainer: classNameOfForm + " #dropzone-preview",
+        autoProcessQueue: false,
+    });
+    return dropzone;
+}
+
+function resetFormPostComment(){
+    $('.post-comment-form .title-post-comment').val('');
+    $('.ql-toolbar.ql-snow').remove();
+    $('.post-comment-form .content-post-comment').replaceWith('<div class="content-post-comment snow-editor h-auto"></div>');
+    activeEditor('.post-comment-form');
+
+    $('.post-comment-form .attach-file-container').replaceWith(`<div class="card-body attach-file-container">
+                                            <div class="dropzone">
+                                                <div class="fallback">
+                                                    <input name="fileList" type="file" multiple="multiple">
+                                                </div>
+                                                <div class="dz-message needsclick">
+                                                    <div class="mb-3">
+                                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                    </div>
+                                                    <h4>Drop files here or click to upload.</h4>
+                                                </div>
+                                            </div>
+                                            <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                                <li class="mt-2" id="dropzone-preview-list">
+                                                    <div class="border rounded">
+                                                        <div class="d-flex p-2">
+                                                            <div class="flex-shrink-0 me-3">
+                                                                <div class="avatar-sm bg-light rounded">
+                                                                    <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                        <i class="ri-file-upload-line"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <div class="pt-1">
+                                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-shrink-0 ms-3">
+                                                                <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>`);
+}
+
+async function showEditCommentForm(comment){
+
+    return new Promise(async (resolve, reject) => {
+
+        var id = comment.id;
+        var title = comment.title;
+        var filesComment = comment.files;
+
+        // files
+        var files = ``;
+        if (filesComment && filesComment.length > 0) {
+            try {
+                await handleFilesAsync(filesComment, function (fileName, fileSize, url) {
+                    files += createFile({ fileName: fileName, fileSize: fileSize, url: url }, true);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const commentHTML = `<form class="form-control edit-comment-form" data-id="`+id+`">
+                <div class="row g-3">
+                        <div class="col-lg-12">
+                            <div>
+                                <label class="form-label">Title</label>
+                                <input value="`+title+`" type="text" name="title" class="title-edit form-control" placeholder="Title"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="form-label">Content</label>
+                            <div class="content-edit snow-editor h-auto"></div>
+                            <small class="form-message"></small>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="form-label">Old files</label>
+                            <div class="row mb-1">`
+                                + files +
+                            `</div>
+                        <div class="col-lg-12">
+                            <label class="form-label">Attach file</label>
+                            <div class="card-body">
+                                    <div class="dropzone">
+                                        <div class="fallback">
+                                            <input name="fileList" type="file" multiple="multiple">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+                                            <h4>Drop files here or click to upload.</h4>
+                                        </div>
+                                    </div>
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                        <li class="mt-2" id="dropzone-preview-list">
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="flex-shrink-0 me-3">
+                                                         <div class="avatar-sm bg-light rounded">
+                                                            <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                <i class="ri-file-upload-line"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </div>
+                        </div>
+                        <div class="hstack gap-2 justify-content-start">
+                            <button type="submit" class="btn btn-success">Edit</button>
+                            <button type="button" class="btn btn-ligh close-edit-form">Close</button>
+                        </div>
+                    </div>
+            </form>`;
+        resolve(commentHTML);
+    });
 }
