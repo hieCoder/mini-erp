@@ -779,21 +779,19 @@
 <script src="/assets/custom/js/main.js"></script>
 <script>
 
-    // var scheduleLink = '';
-    // var managementTime = ''
-    // if (userCurrent.role != U_DEVELOPER) {
-    //     scheduleLink = '/schedules';
-    //     managementTime = '/management-time'
-    // } else {
-    //     scheduleLink = '/schedules/detail/' + userCurrent.id;
-    //     managementTime = '/management-time/' + userCurrent.id;
-    // }
-    // $('.schedule-login').attr('href', scheduleLink);
+    var scheduleLink = '', managementTime = '';
+    if(isDeleveloper()){
+        $('.manager-menu').remove();
+
+        scheduleLink = '/schedules/detail/' + userCurrent.id;
+        //managementTime = '/management-time';
+    } else{
+        scheduleLink = '/schedules';
+        //managementTime = '/management-time/' + userCurrent.id;
+    }
+
+    $('.schedule-item-menu').attr('href', scheduleLink);
     // $('.management-time-day-login').attr('href', managementTime);
-    // if (userCurrent.role == U_DEVELOPER) {
-    //     $('.management-login').remove();
-    //     $('.setting-login').remove();
-    // }
 </script>
 
 </body>

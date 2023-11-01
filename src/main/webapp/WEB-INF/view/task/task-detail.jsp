@@ -73,193 +73,7 @@
 <%--            </div>--%>
 <%--        </div>--%>
 
-<%--        &lt;%&ndash; modal confirm delete task &ndash;%&gt;--%>
-<%--        <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
-<%--            <div class="modal-dialog modal-dialog-centered">--%>
-<%--                <div class="modal-content">--%>
-<%--                    <div class="modal-header">--%>
-<%--                        <h5 class="modal-title" id="staticBackdropLabel">Confirm delete task</h5>--%>
-<%--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--                            <span aria-hidden="true">&times;</span>--%>
-<%--                        </button>--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-body">--%>
-<%--                        Are you sure?--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-footer">--%>
-<%--                        <button id="delete-task" type="button" class="btn btn-danger">Confirm</button>--%>
-<%--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
 
-<%--        &lt;%&ndash; modal confirm delete comment &ndash;%&gt;--%>
-<%--        <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
-<%--            <div class="modal-dialog modal-dialog-centered">--%>
-<%--                <div class="modal-content">--%>
-<%--                    <div class="modal-header">--%>
-<%--                        <h5 class="modal-title">Confirm delete comment</h5>--%>
-<%--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--                            <span aria-hidden="true">&times;</span>--%>
-<%--                        </button>--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-body">--%>
-<%--                        Are you sure?--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-footer">--%>
-<%--                        <button id="delete-comment" type="button" class="btn btn-danger">Confirm</button>--%>
-<%--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <script src="/assets/js/task/task.js"></script>--%>
-<%--    <script>--%>
-
-<%--        var idTask = '${id}';--%>
-<%--        var commentObj = {--%>
-<%--            idComment: null,--%>
-<%--            liEComment: null--%>
-<%--        };--%>
-<%--        var objectUpdate = {--%>
-<%--            valTitle: null,--%>
-<%--            valContent: null--%>
-<%--        };--%>
-
-<%--        $(document).ready(function() {--%>
-
-<%--            showLoading('content-container');--%>
-
-<%--            callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {--%>
-
-<%--                // TASK DETAIL--%>
-<%--                $('#fullnameUser').text(rs.fullnameUser);--%>
-
-<%--                $('#title').val(rs.title);--%>
-
-<%--                $('#content').summernote('code', rs.content);--%>
-
-<%--                var statusTask = rs.statusTask;--%>
-<%--                $('#statusTask').html('<span class="p-2 badge ' + getStatusColor(statusTask.code) + '">' + statusTask.name + '</span>');--%>
-
-<%--                $('#selectAction').empty();--%>
-<%--                $('#selectAction').html('<option value="">-- Actions --</option>');--%>
-<%--                statusTask.actions.forEach(function(action) {--%>
-<%--                    var option = $('<option></option>');--%>
-<%--                    option.attr('value', action.code);--%>
-<%--                    option.text(action.name);--%>
-<%--                    $('#selectAction').append(option);--%>
-<%--                });--%>
-
-<%--                $('#selectPriority').val(rs.priority.code);--%>
-
-<%--                $('#progress').val(rs.progress);--%>
-<%--                if([T_REGISTERED, T_POSTPONSED, T_CLOSED].includes(statusTask.code)){--%>
-<%--                    $('#progress').prop('disabled', true);--%>
-<%--                }--%>
-
-<%--                $('#registeredDate').val(rs.createdDate);--%>
-
-<%--                $('#startDate').val(rs.startDate);--%>
-
-<%--                $('#dueDate').val(formatDateValueToValueOfInputDate(rs.dueDate));--%>
-<%--                if(userCurrent.role == U_DEVELOPER){--%>
-<%--                    $('#dueDate').prop('disabled', true);--%>
-<%--                }--%>
-
-<%--                $('#closeDate').val(rs.closeDate);--%>
-
-<%--                if(userCurrent.role != U_DEVELOPER || userCurrent.id == rs.idUser){--%>
-<%--                    $('#group-button-task-detail').removeClass('d-none');--%>
-<%--                }--%>
-
-
-<%--                // YOUR COMMENT--%>
-<%--                $('#yourCommentContent').summernote();--%>
-
-
-<%--                // LIST OF COMMENT--%>
-<%--                var comments = rs.comments;--%>
-
-<%--                comments.forEach(function (comment) {--%>
-<%--                    $('#comment-list').append(createCommentForm(comment));--%>
-<%--                });--%>
-
-<%--                cutShortLink();--%>
-
-<%--                hideLoading('content-container');--%>
-<%--            });--%>
-<%--        });--%>
-
-<%--        Validator({--%>
-<%--            form:'#taskDetailForm',--%>
-<%--            errorSelector: '.form-message',--%>
-<%--            rules:[--%>
-<%--                Validator.isRequired('#title'),--%>
-<%--                Validator.isRequired('#dueDate'),--%>
-<%--                Validator.isDayAfterToday("#dueDate", 'Due day is not before today'),--%>
-<%--                Validator.isRequired('#content'),--%>
-<%--                Validator.isRequired('#progress')--%>
-<%--            ],--%>
-<%--            onSubmit: function (formData) {--%>
-
-<%--                $('#btn-cancel-task-detail').after(createLoadingHtml());--%>
-
-<%--                formData.append('id', idTask);--%>
-<%--                formData.append('content', $('#content').summernote().summernote('code'));--%>
-
-<%--                callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {--%>
-<%--                    window.location.href = "/tasks/"+idTask + "?updateSuccess";--%>
-<%--                }, 'taskDetailForm');--%>
-<%--            }--%>
-<%--        });--%>
-
-<%--        Validator({--%>
-<%--            form:'#yourCommentForm',--%>
-<%--            errorSelector: '.form-message',--%>
-<%--            rules:[--%>
-<%--                Validator.isRequired('#yourCommentTitle'),--%>
-<%--                Validator.isRequired('#yourCommentContent')--%>
-<%--            ],--%>
-<%--            onSubmit: function (formData) {--%>
-<%--                formData.append('taskId', idTask);--%>
-<%--                formData.append('content', $('#yourCommentContent').summernote().summernote('code'));--%>
-<%--                formData.append('userId', userCurrent.id);--%>
-
-<%--                $('#yourCommentSubmitComment').after(createLoadingHtml());--%>
-
-<%--                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {--%>
-<%--                     var liE = createCommentForm(rs);--%>
-<%--                     liE.prependTo('#comment-list');--%>
-
-
-<%--                    $('#yourCommentTitle').val('');--%>
-<%--                    $('#yourCommentContent').summernote('code', '<p><br></p>');--%>
-
-<%--                    cutShortLink();--%>
-<%--                }, 'yourCommentForm');--%>
-<%--            }--%>
-<%--        });--%>
-
-<%--        $('#delete-task').click(function() {--%>
-<%--            $('#deleteTaskModal .modal-footer').after(createLoadingHtml());--%>
-<%--            callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {--%>
-<%--                window.location.href = "/tasks?deleteSuccess";--%>
-<%--            }, 'deleteTaskModal');--%>
-<%--        });--%>
-
-<%--        $('#delete-comment').click(function() {--%>
-
-<%--            $('#deleteCommentModal .modal-footer').after(createLoadingHtml());--%>
-
-<%--            callAjaxByJsonWithData("/api/v1/comment-task/" + commentObj.idComment, "DELETE", null, function (rs) {--%>
-<%--                commentObj.liEComment.remove();--%>
-<%--                $('#deleteCommentModal').modal('hide');--%>
-
-<%--            }, 'deleteCommentModal');--%>
-<%--        });--%>
 
 <%--        $(document).on('click','.btn-modify-comment',function(){--%>
 <%--            var id = $(this).data('comment-id');--%>
@@ -300,147 +114,6 @@
 <%--                }--%>
 <%--            });--%>
 <%--        });--%>
-<%--        $(document).on('click','.btn-cancel-update-comment',function(){--%>
-<%--            var idComment = $(this).data('comment-id');--%>
-
-<%--            $('#updateCommentTitle'+idComment).val(objectUpdate.valTitle);--%>
-<%--            $('#updateCommentTitle'+idComment).prop('disabled', true);--%>
-
-<%--            $('#updateCommentContent'+idComment).summernote('destroy');--%>
-<%--            $('#updateCommentContent'+idComment).html(objectUpdate.valContent);--%>
-
-<%--            $('#updateCommentForm' + idComment + ' .file').css("border", "none");--%>
-<%--            $('#updateCommentForm' + idComment + ' .remove-file').addClass('d-none');--%>
-<%--            $('#updateCommentForm'+idComment).find('input[name="newFiles"]').addClass('d-none');--%>
-
-<%--            $("#updateCommentForm" + idComment + " .btn-update-comment").addClass('d-none');--%>
-<%--            $("#updateCommentForm" + idComment + " .btn-cancel-update-comment").addClass('d-none');--%>
-<%--            if(isAdminOrUserLogin(userCurrent.id)){--%>
-<%--                $("#updateCommentForm" + idComment + " .btn-delete-comment").removeClass('d-none');--%>
-<%--                $("#updateCommentForm" + idComment + " .btn-modify-comment").removeClass('d-none');--%>
-<%--            }--%>
-<%--            if(!isDeleveloper()){--%>
-<%--                $("#updateCommentForm" + idComment + " .btn-reply-comment").removeClass('d-none');--%>
-<%--            }--%>
-
-<%--            // var idComment = $(this).data('comment-id');--%>
-<%--            // var closestLI = $(this).closest('li');--%>
-<%--            // $('#updateCommentForm'+ idComment +' .list-button').after(createLoadingHtml());--%>
-<%--            // callAjaxByJsonWithData('/api/v1/comment-task/' + idComment, "GET", null, function (rs) {--%>
-<%--            //     closestLI.replaceWith(createCommentForm(rs));--%>
-<%--            // }, 'updateCommentForm'+idComment);--%>
-<%--        });--%>
-<%--        $(document).on('click','.btn-delete-comment',function(){--%>
-<%--            commentObj.idComment = $(this).data('comment-id');--%>
-<%--            commentObj.liEComment = $(this).closest('li');--%>
-<%--        });--%>
-<%--        $(document).on('click','.btn-reply-comment',function(){--%>
-<%--            var parentId = $(this).data('comment-id');--%>
-<%--            var closestLI = $(this).closest('li');--%>
-<%--            var containerReplyForm = closestLI.find('.reply-form-container').first();--%>
-
-<%--            replyCommentForm(parentId).appendTo(containerReplyForm);--%>
-<%--            var contentEditor = closestLI.find('#replyCommentForm'+parentId+' .summernote').first();--%>
-<%--            contentEditor.summernote();--%>
-<%--            closestLI.find('.list-button').first().hide();--%>
-
-<%--            Validator({--%>
-<%--                form:'#replyCommentForm'+parentId,--%>
-<%--                errorSelector: '.form-message',--%>
-<%--                rules:[--%>
-<%--                    Validator.isRequired('#titleReply'+parentId),--%>
-<%--                    Validator.isRequired('#contentReply'+parentId)--%>
-<%--                ],--%>
-<%--                onSubmit: function (formData) {--%>
-<%--                    formData.append('taskId', idTask);--%>
-<%--                    formData.append('content', $('#contentReply'+parentId).summernote().summernote('code'));--%>
-<%--                    formData.append('userId', userCurrent.id);--%>
-<%--                    formData.append('parentId', parentId);--%>
-
-<%--                    $('#replyCommentForm'+ parentId +' .list-button').after(createLoadingHtml());--%>
-<%--                    callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {--%>
-<%--                        var liE = createCommentForm(rs);--%>
-<%--                        var ulChildsComment = closestLI.find('.childs-comment-list').first();--%>
-<%--                        liE.prependTo(ulChildsComment);--%>
-
-<%--                        closestLI.find('.reply-form-container form').first().remove();--%>
-<%--                        closestLI.find('.list-button').first().show();--%>
-
-<%--                        cutShortLink();--%>
-<%--                    }, 'replyCommentForm'+parentId);--%>
-<%--                }--%>
-<%--            });--%>
-<%--        });--%>
-<%--        $(document).on('click','.btn-cancel-reply-comment',function(){--%>
-<%--            var closestLI = $(this).closest('li');--%>
-<%--            closestLI.find('.reply-form-container form').first().remove();--%>
-<%--            closestLI.find('.list-button').first().show();--%>
-<%--        });--%>
-
-<%--        function updateCommemtForm(closestLI) {--%>
-<%--            // title--%>
-<%--            var titleInput = closestLI.find('input[name="title"]').first();--%>
-<%--            titleInput.prop('disabled', false);--%>
-<%--            var currentValue = titleInput.val();--%>
-<%--            titleInput.val('');--%>
-<%--            titleInput.val(currentValue);--%>
-<%--            titleInput.focus();--%>
-<%--            // content--%>
-<%--            var summernoteDiv = closestLI.find('.summernote').first();--%>
-<%--            summernoteDiv.summernote();--%>
-<%--            // files--%>
-<%--            var files = closestLI.find('.list-file').first().find('.file');--%>
-<%--            files.css({--%>
-<%--                'border': '1px solid #9f9292',--%>
-<%--                'margin-right': '20px'--%>
-<%--            });--%>
-<%--            files.find('span').removeClass('d-none');--%>
-
-<%--            // attach file--%>
-<%--            closestLI.find('input.attract-update-comment').first().removeClass('d-none');--%>
-
-<%--            // remove file--%>
-<%--            $('.remove-file').click(function () {--%>
-<%--                $(this).closest('.file').remove();--%>
-<%--            });--%>
-
-<%--            // list button--%>
-<%--            closestLI.find('.list-button').first().find('.btn-update-comment, .btn-cancel-update-comment').removeClass('d-none');--%>
-<%--            closestLI.find('.list-button').first().find('.btn-modify-comment, .btn-reply-comment, .btn-delete-comment').addClass('d-none');--%>
-<%--        }--%>
-
-<%--        function replyCommentForm(parentId) {--%>
-<%--            var form = $('<form id="replyCommentForm'+parentId+'"></form>');--%>
-
-<%--            var titleFormGroup = $('<div class="form-group"></div>');--%>
-<%--            var titleInput = $('<input id="titleReply'+parentId+'" name="title" type="text" class="form-control fw-bold" placeholder="Title"><small class="form-message"></small>');--%>
-<%--            titleFormGroup.append(titleInput);--%>
-
-<%--            var contentFormGroup = $('<div class="form-group"></div>');--%>
-<%--            var contentTextarea = $('<div id="contentReply'+parentId+'" class="form-control summernote" style="height: auto;"></div><small class="form-message"></small>');--%>
-<%--            contentFormGroup.append(contentTextarea);--%>
-
-<%--            var buttonFormGroup = $('<div class="form-group row"></div>');--%>
-
-<%--            var fileInputContainer = $('<div class="col-md-8"></div>');--%>
-<%--            var fileInput = $('<input type="file" name="fileList" class="form-control attract-update-comment" multiple>');--%>
-<%--            fileInputContainer.append(fileInput);--%>
-
-<%--            var buttonContainer = $('<div class="col-md-4 text-right list-button"></div>');--%>
-<%--            var replyButton = $('<button type="submit" class="btn btn-info mr-1">Reply</button>');--%>
-<%--            var cancelButton = $('<button type="button"class="btn btn-secondary btn-cancel-reply-comment" >Cancel</button>');--%>
-<%--            buttonContainer.append(replyButton);--%>
-<%--            buttonContainer.append(cancelButton);--%>
-
-<%--            buttonFormGroup.append(fileInputContainer);--%>
-<%--            buttonFormGroup.append(buttonContainer);--%>
-
-<%--            form.append(titleFormGroup);--%>
-<%--            form.append(contentFormGroup);--%>
-<%--            form.append(buttonFormGroup);--%>
-
-<%--            return form;--%>
-<%--        }--%>
 <%--    </script>--%>
 
 
@@ -556,20 +229,69 @@
                     <div class="tab-pane active" id="home-1" role="tabpanel">
                         <h5 class="card-title">Comments</h5>
                         <div data-simplebar class="px-3 mx-n3 mb-2" id="comment-list"></div>
-                        <form class="mt-4">
-                            <div class="row g-3">
-                                <div class="col-lg-12">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Leave a Comments</label>
-                                    <textarea class="form-control bg-light border-light" id="exampleFormControlTextarea1" rows="3" placeholder="Enter comments"></textarea>
+                        <div class="post-comment">
+                            <h5 class="card-title">Leave a Comments</h5>
+                            <form class="form-control post-comment-form">
+                                <div class="row g-3">
+                                    <div class="col-lg-12">
+                                        <div>
+                                            <label class="form-label">Title</label>
+                                            <input type="text" name="title" class="title-post-comment form-control" placeholder="Title"/>
+                                            <small class="form-message"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="form-label">Content</label>
+                                        <div class="content-post-comment snow-editor h-auto"></div>
+                                        <small class="form-message"></small>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="form-label">Attach file</label>
+                                        <div class="card-body attach-file-container">
+                                            <div class="dropzone">
+                                                <div class="fallback">
+                                                    <input name="fileList" type="file" multiple="multiple">
+                                                </div>
+                                                <div class="dz-message needsclick">
+                                                    <div class="mb-3">
+                                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                    </div>
+                                                    <h4>Drop files here or click to upload.</h4>
+                                                </div>
+                                            </div>
+                                            <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                                <li class="mt-2" id="dropzone-preview-list">
+                                                    <div class="border rounded">
+                                                        <div class="d-flex p-2">
+                                                            <div class="flex-shrink-0 me-3">
+                                                                <div class="avatar-sm bg-light rounded">
+                                                                    <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                        <i class="ri-file-upload-line"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <div class="pt-1">
+                                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-shrink-0 ms-3">
+                                                                <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="hstack gap-2 justify-content-start">
+                                        <button type="submit" class="btn btn-success">Comment</button>
+                                    </div>
                                 </div>
-                                <!--end col-->
-                                <div class="col-12 text-end">
-                                    <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>
-                                    <a href="javascript:void(0);" class="btn btn-success">Post Comments</a>
-                                </div>
-                            </div>
-                            <!--end row-->
-                        </form>
+                            </form>
+                        </div>
                     </div>
                     <!--end tab-pane-->
                     <div class="tab-pane" id="messages-1" role="tabpanel">
@@ -910,7 +632,6 @@
 </div>
 <!-- end modal -->
 
-
 <div class="modal fade flip" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -931,12 +652,30 @@
 </div>
 <!--end delete modal -->
 
+<div class="modal fade flip" id="deleteFileCommentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 text-center">
+                    <h4>You are about to delete a file ?</h4>
+                    <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
+                        your information from our database.</p>
+                    <div class="hstack gap-2 justify-content-center remove">
+                        <button class="btn btn-danger" id="delete-file-comment" data-name="">Yes, Delete It</button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end delete modal -->
+
 <!-- ckeditor -->
 <script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <!-- quill js -->
 <script src="/assets/libs/quill/quill.min.js"></script>
-<!-- init js -->
-<script src="/assets/js/pages/form-editor.init.js"></script>
 
 <!-- Sweet Alerts js -->
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
@@ -971,6 +710,37 @@
                         console.error(error);
                     });
             });
+
+            // Post a comment
+            activeEditor('.post-comment-form');
+            var dropzone = activeFile('.post-comment-form');
+            Validator({
+                form:'.post-comment-form',
+                errorSelector: '.form-message',
+                rules:[
+                    Validator.isRequired('.post-comment-form .title-post-comment'),
+                    Validator.isRequired('.post-comment-form .content-post-comment')
+                ],
+                onSubmit: function (formData) {
+                    formData.append('taskId', idTask);
+                    formData.append('content', $('.post-comment-form .content-post-comment').html());
+                    formData.append('userId', userCurrent.id);
+                    dropzone.files.forEach((file) => {
+                        formData.append('fileList', file);
+                    });
+
+                    callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                        createCommentForm(rs)
+                            .then(function (commentHTML) {
+                                $('#comment-list').append(commentHTML);
+                                resetFormPostComment();
+                                dropzone = activeFile('.post-comment-form');
+                            }).catch(function (error) {
+                            console.error(error);
+                        });
+                    });
+                }
+            });
         });
     });
 
@@ -990,22 +760,10 @@
     $(document).on('click', '.btn-reply', function (e){
         var id = $(this).data('id');
         var replyContainer = $(".form-reply[data-id='" + id + "']");
-        replyContainer.html(replyCommentForm(id));
+        replyContainer.html(showReplyCommentForm(id));
 
-        var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
-        dropzonePreviewNode.id = "";
-        var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
-        dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
-        var dropzone = new Dropzone(".dropzone", {
-            url: 'https://httpbin.org/post',
-            method: "post",
-            previewTemplate: previewTemplate,
-            previewsContainer: "#dropzone-preview",
-            autoProcessQueue: false,
-        });
-
-        $.getScript("/assets/js/pages/form-editor.init.js");
-
+        activeEditor(".form-reply[data-id='" + id + "']");
+        var dropzone = activeFile(".form-reply[data-id='" + id + "']");
 
         Validator({
             form:'.reply-comment-form[data-id="'+ id+ '"]',
@@ -1023,20 +781,15 @@
                     formData.append('fileList', file);
                 });
 
-                var data = {};
-                formData.forEach((value, key) => data[key] = value);
-                console.log(data);
-
-                // callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
-                //     // var liE = createCommentForm(rs);
-                //     // var ulChildsComment = closestLI.find('.childs-comment-list').first();
-                //     // liE.prependTo(ulChildsComment);
-                //     //
-                //     // closestLI.find('.reply-form-container form').first().remove();
-                //     // closestLI.find('.list-button').first().show();
-                //     console.log(123);
-                //
-                // });
+                callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                    createCommentForm(rs)
+                        .then(function (commentHTML) {
+                            replyContainer.after(commentHTML);
+                            replyContainer.html('');
+                        }).catch(function (error) {
+                        console.error(error);
+                    });
+                });
             }
         });
     });
@@ -1046,6 +799,71 @@
         if (parentElement.length > 0) parentElement.remove();
     });
 
+    $(document).on('click', '.btn-edit', function (e){
+        var id = $(this).data('id');
+        var editContainer = $(".form-edit[data-id='" + id + "']");
+        callAjaxByJsonWithData('/api/v1/comment-task/'+id, 'GET', null, function (rs) {
+
+            showEditCommentForm(rs)
+                .then(function (commentHTML) {
+                    editContainer.html(commentHTML);
+                    $(".form-edit[data-id='" + id + "']" + ' .content-edit').html(rs.content);
+                    activeEditor(".form-edit[data-id='" + id + "']");
+                    var dropzone = activeFile(".form-edit[data-id='" + id + "']");
+
+                    Validator({
+                        form:'.edit-comment-form[data-id="'+ id+ '"]',
+                        errorSelector: '.form-message',
+                        rules:[
+                            Validator.isRequired('.edit-comment-form[data-id="'+ id+ '"] .title-edit'),
+                            Validator.isRequired('.edit-comment-form[data-id="'+ id+ '"] .content-edit')
+                        ],
+                        onSubmit: function (formData) {
+                            formData.append('id', id);
+                            formData.append('content', $('.edit-comment-form[data-id="'+ id+ '"] .content-edit').html());
+
+                            var oldFiles = $('.edit-comment-form[data-id="'+ id+ '"]').find('a.file-name-item').map(function() {
+                                return $(this).text();
+                            }).get().join(',');
+                            formData.append('remainFiles', oldFiles);
+
+                            dropzone.files.forEach((file) => {
+                                formData.append('newFiles', file);
+                            });
+
+                            callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
+                                createCommentForm(rs)
+                                    .then(function (commentHTML) {
+                                        $('.comment-container[data-id="' + id + '"]').replaceWith(commentHTML);
+                                        $('.edit-comment-form[data-id="' + id + '"]').remove();
+                                    }).catch(function (error) {
+                                    console.error(error);
+                                });
+                            });
+                        }
+                    });
+                }).catch(function (error) {
+                console.error(error);
+            });
+        });
+    });
+
+    $(document).on('click', '.delete-file', function (e){
+        var name = $(this).data('name');
+        console.log(name);
+        $('#delete-file-comment').attr('data-name', name);
+    });
+
+    $(document).on('click', '#delete-file-comment', function (e) {
+        var name = $(this).attr('data-name');
+        $(".file-container-item[data-name='" + name + "']").remove();
+        $('#deleteFileCommentModal').modal('hide');
+    });
+
+    $(document).on('click', '.close-edit-form', function (e){
+        var parentElement = $(this).closest(".edit-comment-form");
+        if (parentElement.length > 0) parentElement.remove();
+    });
 </script>
 </body>
 </html>
