@@ -50,6 +50,7 @@
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
     <script>
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
@@ -790,6 +791,7 @@
 <script src="/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 <script src="/assets/js/plugins.js"></script>
 
+
 <%--<!-- apexcharts -->--%>
 <%--<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>--%>
 
@@ -808,12 +810,10 @@
 
 <%--<!-- titcket init js -->--%>
 <%--<script src="/assets/js/pages/tasks-list.init.js"></script>--%>
-
-<!-- flatpickr.js -->
-<script type='text/javascript' src='/assets/libs/flatpickr/flatpickr.min.js'></script>
-
 <!-- choices.js -->
 <script type='text/javascript' src='/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<!-- flatpickr.js -->
+<script type='text/javascript' src='/assets/libs/flatpickr/flatpickr.min.js'></script>
 
 <!-- Sweet Alerts js -->
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>

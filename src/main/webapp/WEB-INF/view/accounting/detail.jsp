@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Accounting</title>
-    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -325,7 +324,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class=" modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -440,7 +438,7 @@
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#editModal #validFileText");
-    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + "MB and below " + "${setting.uploadFileLimit}" + " files");
+    spanElement.text("*File must be " + validFileUpload + ", file not over " + "${setting.maxFileSize}" + "MB and maximum " + "${setting.uploadFileLimit}" + " files");
 
     document.getElementById("deleteModal").addEventListener("click", function () {
         Swal.fire({
@@ -494,11 +492,6 @@
             }
         });
     });
-
-    function convertMaxFileSize(string) {
-        var maxFileSizeWithoutMB = string.replace("MB", "");
-        return parseFloat(maxFileSizeWithoutMB) * 1024 * 1024;
-    }
 
     document.getElementById('transactionType').addEventListener('change', function () {
         var selectedOption = this.value;

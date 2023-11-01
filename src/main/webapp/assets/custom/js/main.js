@@ -216,6 +216,20 @@ function showAlertValidate(html) {
 
 }
 
+function showAlertValidateCreate(html) {
+    let xhtml = '<li class="mt-2" id=""> ' +
+        html +
+        '</li>'
+
+    let check = $("#dropzone-preview li").children().last()
+    if (check.length > 0) {
+        $("#dropzone-preview li").children().last().after(xhtml)
+    } else {
+        $("#dropzone-preview").html(xhtml)
+    }
+
+}
+
 function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
 }

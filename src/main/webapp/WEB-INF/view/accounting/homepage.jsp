@@ -55,8 +55,12 @@
                         <div class="d-flex align-items-center">
                             <h5 class="card-title mb-0 flex-grow-1">Accounting Datatable</h5>
                             <div class="flex-shrink-0">
-                                <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#createModal"><i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i> Create Account</button>
-<%--                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>--%>
+                                <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal"
+                                        data-bs-target="#createModal"><i
+                                        class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i> Create
+                                    Account
+                                </button>
+                                <%--                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>--%>
                             </div>
                         </div>
                     </div>
@@ -70,7 +74,7 @@
                                                 name="example_length"
                                                 aria-controls="example"
                                                 class="form-select form-select-sm" id="pageCount">
-                                            <option value="10">10</option>
+                                            <option selected value="10">10</option>
                                             <option value="15">15</option>
                                             <option value="20">20</option>
                                         </select> entries</label></div>
@@ -135,53 +139,72 @@
                                         </tr>
                                         </thead>
                                         <tbody id="table-body">
-                                        <c:forEach varStatus="loop" var="a"
-                                                   items="${requestScope.list.accountResponseList}">
-                                            <tr class="odd">
-                                                <td>${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</td>
-                                                <td><a href="/accounting/detail/${a.id}"><c:out value="${a.id}"/></a>
-                                                </td>
-                                                <td style=""><c:out value="${a.payDate}"/></td>
-                                                <td style=""><c:out value="${a.title}"/></td>
-                                                <td class="${a.revenue > 0 ? 'text-bg-success' : ''}"><fmt:formatNumber
-                                                        type="number" value="${a.revenue}" pattern="#,##0 ₫"/></td>
-                                                <td class="${a.expense < 0 ? 'text-bg-danger' : ''}"><fmt:formatNumber
-                                                        type="number" value="${a.expense}" pattern="#,##0 ₫"/></td>
-                                                <td class="text-bg-primary"><fmt:formatNumber
-                                                        type="number" value="${a.remain}" pattern="#,##0 ₫"/></td>
-                                                <td style=""><c:out value="${a.user.fullname}"/></td>
-                                                <td style=""><span
-                                                        class="badge badge-soft-info cut-file-name"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                        title="${a.note}">${a.note}</span></td>
-                                                <td>
-                                                    <div class="dropdown d-inline-block">
-                                                        <button class="btn btn-soft-secondary btn-sm dropdown"
-                                                                type="button"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill align-middle"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a href="#!" class="dropdown-item"><i
-                                                                    class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                                View</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item edit-item-btn"><i
-                                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                Edit</a></li>
-                                                            <li>
-                                                                <a class="dropdown-item remove-item-btn">
-                                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                                    Delete
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <c:set var="totalExpense" value="${totalExpense + a.expense}" scope="page"/>
-                                            <c:set var="totalRevenue" value="${totalRevenue + a.revenue}" scope="page"/>
-                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${requestScope.list.accountResponseList != null}">
+                                                <c:forEach varStatus="loop" var="a"
+                                                           items="${requestScope.list.accountResponseList}">
+                                                    <tr class="odd">
+                                                        <td>${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</td>
+                                                        <td><a href="/accounting/detail/${a.id}"><c:out
+                                                                value="${a.id}"/></a>
+                                                        </td>
+                                                        <td style=""><c:out value="${a.payDate}"/></td>
+                                                        <td style=""><c:out value="${a.title}"/></td>
+                                                        <td class="${a.revenue > 0 ? 'text-bg-success' : ''}">
+                                                            <fmt:formatNumber
+                                                                    type="number" value="${a.revenue}"
+                                                                    pattern="#,##0 ₫"/></td>
+                                                        <td class="${a.expense < 0 ? 'text-bg-danger' : ''}">
+                                                            <fmt:formatNumber
+                                                                    type="number" value="${a.expense}"
+                                                                    pattern="#,##0 ₫"/></td>
+                                                        <td class="text-bg-primary"><fmt:formatNumber
+                                                                type="number" value="${a.remain}"
+                                                                pattern="#,##0 ₫"/></td>
+                                                        <td style=""><c:out value="${a.user.fullname}"/></td>
+                                                        <td style=""><span
+                                                                class="badge badge-soft-info cut-file-name"
+                                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                title="${a.note}">${a.note}</span></td>
+                                                        <td>
+                                                            <div class="dropdown d-inline-block">
+                                                                <button class="btn btn-soft-secondary btn-sm dropdown"
+                                                                        type="button"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="ri-more-fill align-middle"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                                    <li><a href="#!" class="dropdown-item"><i
+                                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                                        View</a>
+                                                                    </li>
+                                                                    <li><a class="dropdown-item edit-item-btn"><i
+                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                                        Edit</a></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item remove-item-btn">
+                                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                                            Delete
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <c:set var="totalExpense" value="${totalExpense + a.expense}"
+                                                           scope="page"/>
+                                                    <c:set var="totalRevenue" value="${totalRevenue + a.revenue}"
+                                                           scope="page"/>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr>
+                                                    <td colspan='10' class='text-center fw-bold'>NOT FOUND DATA IN THIS
+                                                        DURATION
+                                                    </td>
+                                                </tr>
+                                            </c:otherwise>
+                                        </c:choose>
                                         </tbody>
                                     </table>
                                 </div>
@@ -299,44 +322,45 @@
             </div>
         </div>
         <div class="table-responsive table-card">
-        <table class="table table-nowrap table-hover mb-0 mt-4">
-            <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Total Revenue</th>
-                <th scope="col">Total Expense</th>
-                <th scope="col">Ending Balance</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="total">
-                <th>Page ${list.pageNumber}</th>
-                <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}"
-                                                           pattern="#,##0 ₫"/></td>
-                <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}" pattern="#,##0 ₫"/></td>
-                <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}"
-                                                           pattern="#,##0 ₫"/></td>
-            </tr>
-            <tr>
-                <th>Total in Month</th>
-                <td class="text-success" id="totalRevenue"><fmt:formatNumber type="number"
-                                                                             value="${list.totalList.totalRevenue}"
-                                                                             pattern="#,##0 ₫"/></td>
-                <td class="text-danger" id="totalExpense"><fmt:formatNumber type="number"
-                                                                            value="${list.totalList.totalExpense}"
-                                                                            pattern="#,##0 ₫"/></td>
-                <td class="text-primary" id="totalRemain"><fmt:formatNumber type="number"
-                                                                            value="${list.totalList.totalRemain}"
-                                                                            pattern="#,##0 ₫"/></td>
-            </tr>
-            </tbody>
-        </table>
+            <table class="table table-nowrap table-hover mb-0 mt-4">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Total Revenue</th>
+                    <th scope="col">Total Expense</th>
+                    <th scope="col">Ending Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="total">
+                    <th>Page ${list.pageNumber}</th>
+                    <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}"
+                                                               pattern="#,##0 ₫"/></td>
+                    <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}"
+                                                              pattern="#,##0 ₫"/></td>
+                    <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}"
+                                                               pattern="#,##0 ₫"/></td>
+                </tr>
+                <tr>
+                    <th>Total in Month</th>
+                    <td class="text-success" id="totalRevenue"><fmt:formatNumber type="number"
+                                                                                 value="${list.totalList.totalRevenue}"
+                                                                                 pattern="#,##0 ₫"/></td>
+                    <td class="text-danger" id="totalExpense"><fmt:formatNumber type="number"
+                                                                                value="${list.totalList.totalExpense}"
+                                                                                pattern="#,##0 ₫"/></td>
+                    <td class="text-primary" id="totalRemain"><fmt:formatNumber type="number"
+                                                                                value="${list.totalList.totalRemain}"
+                                                                                pattern="#,##0 ₫"/></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
 <div class="modal zoomIn" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createModalLabel">Create Information</h5>
@@ -344,115 +368,185 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Your create form content goes here -->
-                <form enctype="multipart/form-data">
-                    <div class="row mb-3">
-                        <div class="col-lg-3">
-                            <label for="createTitle" class="form-label">Title</label>
-                        </div>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="createTitle" required
-                                   placeholder="Enter title">
-                        </div>
-                    </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Your create form content goes here -->
+                                <form enctype="multipart/form-data">
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="createTitle" class="form-label">Title</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" id="createTitle" required
+                                                   placeholder="Enter title">
+                                        </div>
+                                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-lg-3">
-                            <label for="createPayDate" class="form-label">Pay Date</label>
-                        </div>
-                        <div class="col-lg-9">
-                            <input type="date" class="form-control" id="createPayDate" required>
-                        </div>
-                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="createPayDate" class="form-label">Pay Date</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="date" class="form-control" id="createPayDate" required>
+                                        </div>
+                                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-lg-3">
-                            <label for="transactionType" class="form-label">Transaction Type</label>
-                        </div>
-                        <div class="col-lg-9">
-                            <select class="form-control" id="transactionType" required>
-                                <option value="">--Select Option--</option>
-                                <option value="revenue">Revenue</option>
-                                <option value="expense">Expense</option>
-                            </select>
-                        </div>
-                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="transactionType" class="form-label">Transaction Type</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <select class="form-control" id="transactionType" required>
+                                                <option value="">--Select Option--</option>
+                                                <option value="revenue">Revenue</option>
+                                                <option value="expense">Expense</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                    <div class="row mb-3" id="amountGroup" style="display: none;">
-                        <div class="col-lg-3">
-                            <label for="amount" class="form-label">Amount</label>
-                        </div>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="amount" value="0" step="1" required
-                                   pattern="[0-9]+">
-                        </div>
-                    </div>
+                                    <div class="row mb-3" id="amountGroup" style="display: none;">
+                                        <div class="col-lg-3">
+                                            <label for="amount" class="form-label">Amount</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" id="amount" value="0" step="1"
+                                                   required
+                                                   pattern="[0-9]+">
+                                        </div>
+                                    </div>
 
-                    <script>
-                        var amount = $('input#amount').val()
-                        $('input#amount').val(formatNumberToVND(amount));
+                                    <script>
+                                        var amount = $('input#amount').val()
+                                        $('input#amount').val(formatNumberToVND(amount));
 
-                        function formatNumberToVND(number) {
-                            var parts = number.toString().split('.');
+                                        function formatNumberToVND(number) {
+                                            var parts = number.toString().split('.');
 
-                            var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                            var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-                            var formattedNumber = integerPart;
-                            if (parts.length > 1) {
-                                formattedNumber += '.' + parts[1];
-                            }
-                            return formattedNumber;
-                        }
-
-                        $(document).ready(function () {
-                            $(document).ready(function () {
-                                var input = $('#amount');
-                                input.on('keydown', function (event) {
-                                    var value = input.val();
-                                    var charCode = event.which;
-                                    if (charCode === 190 || charCode === 110) {
-                                        if (value.indexOf('.') !== -1) {
-                                            event.preventDefault();
+                                            var formattedNumber = integerPart;
+                                            if (parts.length > 1) {
+                                                formattedNumber += '.' + parts[1];
+                                            }
+                                            return formattedNumber;
                                         }
-                                    }
-                                    if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
-                                        if (charCode !== 8 && charCode !== 46) {
-                                            event.preventDefault();
-                                        }
-                                    }
-                                });
 
-                                input.on('keyup', function () {
-                                    var value = input.val().replace(/[^0-9.]/g, '');
-                                    input.val(formatNumberToVND(value));
-                                });
-                            });
-                        })
-                    </script>
-                    <div class="row mb-3">
-                        <div class="col-lg-3">
-                            <label for="createNote" class="form-label">Note</label>
-                        </div>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="createNote" required>
-                        </div>
-                    </div>
+                                        $(document).ready(function () {
+                                            $(document).ready(function () {
+                                                var input = $('#amount');
+                                                input.on('keydown', function (event) {
+                                                    var value = input.val();
+                                                    var charCode = event.which;
+                                                    if (charCode === 190 || charCode === 110) {
+                                                        if (value.indexOf('.') !== -1) {
+                                                            event.preventDefault();
+                                                        }
+                                                    }
+                                                    if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
+                                                        if (charCode !== 8 && charCode !== 46) {
+                                                            event.preventDefault();
+                                                        }
+                                                    }
+                                                });
 
-                    <div class="row mb-3">
-                        <div class="col-lg-3">
-                            <label for="createBill">Bill</label>
+                                                input.on('keyup', function () {
+                                                    var value = input.val().replace(/[^0-9.]/g, '');
+                                                    input.val(formatNumberToVND(value));
+                                                });
+                                            });
+                                        })
+                                    </script>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="createNote" class="form-label">Note</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" id="createNote" required>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="col-lg-9">
-                            <input type="file" class="form-control" id="createBill" multiple>
-                            <span class="text-secondary"
-                                  id="validFileText">*File must be , file not over ${setting.maxFileSize} and below ${setting.uploadFileLimit} files</span>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Attached files</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center col-6">File Format</th>
+                                        <th class="text-center col-3">Maximum Size</th>
+                                        <th class="text-center col-3">Maximum Files</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-center col-6">${setting.listTypeFile},${setting.listTypeImage}</td>
+                                        <td class="text-center col-3">${setting.maxFileSize} MB</td>
+                                        <td class="text-center col-3">${setting.uploadFileLimit}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <p class="text-muted">Add Attached files here.</p>
+
+                                    <div class="dropzone" id="dropzoneCreate">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple="multiple">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+
+                                            <h5>Drop files here or click to upload.</h5>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                        <li class="mt-2" id="dropzone-preview-list">
+                                            <!-- This is used as the file preview template -->
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="d-flex p-2">
+                                                        <div class="flex-shrink-0 me-3">
+                                                            <div class="avatar-sm">
+                                                                <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                    <i class="ri-file-upload-line"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger"
+                                                                    data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3 pt-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!-- end dropzon-preview -->
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="button" onclick="sendCreateForm()">Save changes</button>
+                <button class="btn btn-primary createBtn" type="button">Save changes</button>
             </div>
         </div>
     </div>
@@ -494,8 +588,24 @@
         </div>
     </div>
 </div>
+
 <script>
     cutShortLink();
+    const baseUrlAccount = "/api/v1/accounts/";
+    const INVALID_FILLED = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> This field is not filled' +
+        '</div>'
+    const INVALID_FILES_LIMIT = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> Maximum Files is ${setting.uploadFileLimit}' +
+        '</div>'
+
+    const INVALID_FILES_TYPE = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> File type allowed: ${setting.listTypeFile}' + ' and ${setting.listTypeImage}' +
+        '</div>'
+
+    const INVALID_FILES_SIZE = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> Maximum Size Files is ${setting.maxFileSize}' +
+        '</div>'
     window.onload = function () {
         var defaultDate = new Date();
         var currentYear = defaultDate.getFullYear();
@@ -542,7 +652,6 @@
     }
 
     document.getElementById("pageCount").addEventListener("change", function () {
-        localStorage.setItem("selectedPageSize", this.value);
         loadPage(1);
     });
 
@@ -552,7 +661,6 @@
         localStorage.removeItem("selectedDateEnd");
         document.getElementById("datePickerStart").value = "";
         document.getElementById("datePickerEnd").value = "";
-        document.getElementById("pageCount").selectedIndex = 0;
     });
 
     document.getElementById("datePickerStart").addEventListener("input", function () {
@@ -625,7 +733,7 @@
     });
 
     function loadPage(page) {
-        var selectedPageSize = localStorage.getItem("selectedPageSize") || ${list.pageSize};
+        var selectedPageSize = document.getElementById("pageCount").value;
         var selectedDateStart = localStorage.getItem("selectedDateStart") || null;
         var selectedDateEnd = localStorage.getItem("selectedDateEnd") || null;
 
@@ -644,9 +752,10 @@
                     var totalRevenue = 0;
                     var totalRemain = 0;
 
-                    if (responseData.accountResponseList.length === 0) {
+                    if (responseData.accountResponseList === null || responseData.accountResponseList.length === 0) {
                         tableBody.innerHTML = "";
-                        row.innerHTML = "<td colspan='10' class='text-center'>NOT FOUND DATA IN THIS DURATION</td>";
+                        let row = tableBody.insertRow();
+                        row.innerHTML = "<td colspan='10' class='text-center fw-bold'>NOT FOUND DATA IN THIS DURATION</td>";
                     } else {
                         tableBody.innerHTML = "";
                         responseData.accountResponseList.forEach((account, index) => {
@@ -852,7 +961,99 @@
         };
         xhr.send(formData);
     }
+</script>
+<!-- dropzone js -->
+<script src="/assets/libs/dropzone/dropzone-min.js"></script>
 
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
+
+    let listTypeFileArr = validExtensions
+    let listTypeFile = ""
+    listTypeFileArr.forEach((item, index) => {
+        listTypeFile += "." + item
+        if (index < listTypeFileArr.length) {
+            listTypeFile += ","
+        }
+    })
+    let maxFileSize = "${setting.maxFileSize}"
+    let uploadFileLimit = "${setting.uploadFileLimit}"
+
+    var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
+    dropzonePreviewNode.id = "";
+    var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
+    dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
+    var dropzone = new Dropzone("#dropzoneCreate", {
+        url: 'https://httpbin.org/post',
+        method: "post",
+        previewTemplate: previewTemplate,
+        previewsContainer: "#dropzone-preview",
+        acceptedFiles: listTypeFile,
+        maxFilesize: parseInt(maxFileSize),
+        maxFiles: parseInt(uploadFileLimit),
+        uploadMultiple: true,
+        autoProcessQueue: false,
+    });
+
+    dropzone.on("addedfile", function (file) {
+        removeAlert();
+        let files = dropzone.files
+        const fileExtension = file.name.split('.').pop();
+        const fileSize = file.size
+        if (!checkLimitFile(files.length, parseInt(uploadFileLimit))) {
+            dropzone.removeFile(file)
+            showAlertValidateCreate(INVALID_FILES_LIMIT)
+            return
+        }
+        if (!checkTypeFile(fileExtension, listTypeFileArr)) {
+            dropzone.removeFile(file)
+            showAlertValidateCreate(INVALID_FILES_TYPE)
+            return
+        }
+        if (!checkLimitSize(bytesToMB(fileSize), parseInt(maxFileSize))) {
+            dropzone.removeFile(file)
+            showAlertValidateCreate(INVALID_FILES_TYPE)
+        }
+    });
+
+    $(document).on("click", "button.createBtn", function () {
+        removeAlert()
+        let title = $("#createTitle").val()
+        let note = $("#createNote").val()
+        let transaction = $("#transactionType").val()
+        var payDate = $("#createPayDate").val();
+        let input = document.getElementById("amount").value;
+        let amount = Number(input.replace(/[^0-9.]/g, ''))
+        if (transaction === 'expense') {
+            amount = -amount;
+        }
+        if (title.trim() === "") {
+            $("input#createTitle").parent().after(INVALID_FILLED)
+            return false;
+        }
+        var formData = new FormData();
+        formData.append("title", title);
+        formData.append("note", note);
+        formData.append("userId", userCurrent.id);
+        formData.append("expense", amount);
+        formData.append("payDate", payDate);
+        if (dropzone.files.length > 0) {
+            for (let i = 0; i < dropzone.files.length; i++) {
+                let file = dropzone.files[i]
+                if (file.accepted) {
+                    formData.append("bill", file);
+                }
+            }
+        }
+        callAjaxByDataFormWithDataForm2(baseUrlAccount, "POST", formData, function (rs) {
+            loadPage(1);
+            $("#createModal").modal("hide")
+        }, function (error) {
+            console.log(error)
+        })
+    })
 </script>
 </body>
 </html>

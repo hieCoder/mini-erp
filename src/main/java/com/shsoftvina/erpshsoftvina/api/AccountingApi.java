@@ -55,7 +55,7 @@ public class AccountingApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         accountingService.createAccounting(accountingCreateRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/edit")
