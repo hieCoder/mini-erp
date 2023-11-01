@@ -1,4 +1,3 @@
-
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
 const T_REGISTERED = 'REGISTERED';
@@ -76,10 +75,10 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
         contentType: "application/json",
         dataType: 'json',
         success: function(response) {
-            if(callbackSuccess) callbackSuccess(response);
+            callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            if(callbackFail) callbackFail(xhr);
+            callbackFail(xhr);
         }
     });
 }
@@ -136,10 +135,6 @@ function showFileUploaded(fileName, size, url, mode){
 
 function bytesToMB(bytes) {
     return parseInt((bytes / (1024 * 1024)).toFixed(0))
-}
-
-function bytesToMBShow(bytes) {
-    return (bytes / (1024 * 1024)).toFixed(2)
 }
 
 function showFileUploaded(fileName, size, url) {
@@ -336,3 +331,56 @@ function cutShortLink() {
         }
     });
 }
+function bytesToMBShow(bytes){
+    return (bytes / (1024 * 1024)).toFixed(2)
+}
+
+<!-- Load More Buttons -->
+
+const  BtnLoadRemove = () => {
+    $('.btn-load').remove()
+}
+
+const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+
+const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+
+const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-grow flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+
+const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-grow flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';

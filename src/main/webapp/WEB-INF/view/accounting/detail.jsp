@@ -12,8 +12,8 @@
 <body>
 <div class="container">
     <div class="card shadow">
-        <div class="card-header">
-            <h5 class="card-title">Title: <span id="titleAccount">${account.title}</span></h5>
+        <div class="card-header align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1">${account.title}</h4>
         </div>
         <div class="card-body" id="viewAccount" data-id="${account.id}">
             <div class="text-muted">
@@ -52,10 +52,9 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <p class="text-uppercase fw-medium text-muted mb-3">Total Revenue</p>
-                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.revenue}"
-                                                                id="revenueAccount"><fmt:formatNumber type="number"
+                                    <h4 class="fs-4 mb-3"><span id="revenueAccount"><fmt:formatNumber type="number"
                                                                                                       value="${account.revenue}"
-                                                                                                      pattern="#,##0 ₫"/></span>₫
+                                                                                                      pattern="#,##0 ₫"/></span>
                                     </h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
@@ -78,8 +77,9 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <p class="text-uppercase fw-medium text-muted mb-3">Total Expense</p>
-                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.expense}"
-                                                                id="expenseAccount">${account.expense}</span>₫</h4>
+                                    <h4 class="fs-4 mb-3"><span id="expenseAccount"><fmt:formatNumber type="number"
+                                                                                                      value="${account.expense}"
+                                                                                                      pattern="#,##0 ₫"/></span></h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -102,8 +102,9 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <p class="text-uppercase fw-medium text-muted mb-3">Balance</p>
-                                    <h4 class="fs-4 mb-3"><span class="counter-value" data-target="${account.remain}"
-                                                                id="remainAccount">${account.remain}</span>₫</h4>
+                                    <h4 class="fs-4 mb-3"><span id="remainAccount"><fmt:formatNumber type="number"
+                                                                                                     value="${account.remain}"
+                                                                                                     pattern="#,##0 ₫"/></span></h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -624,17 +625,15 @@
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 
 <script>
+    function loadFilesName(fileNameArr) {
+        let html = ""
+        handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
+            html += showFileUploaded(fileName, fileSize, url, "view")
+            $("#viewAccount .showFilesUploaded").html(html)
+        })
+    }
     document.addEventListener("DOMContentLoaded", function () {
         let fileNameArr = []
-
-        function loadFilesName(fileNameArr) {
-            let html = ""
-            handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
-                html += showFileUploaded(fileName, fileSize, url, "view")
-                $("#viewAccount .showFilesUploaded").html(html)
-            })
-        }
-
         <c:forEach items="${account.bill}" var="value" varStatus="loop">
         fileNameArr.push('${value}');
         <c:if test="${loop.index + 1 == fn:length(account.bill)}">
@@ -733,7 +732,7 @@
                                 success: function (data, status, xhr) {
                                     var contentLength = xhr.getResponseHeader('Content-Length');
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
-                                    html += showFileUploaded(fileName, contentLength, url)
+                                    html += showFileUploaded(fileName, contentLength, url,"edit")
                                     $(".showFilesUploaded").html(html)
                                     $("#editModal").modal("show")
                                 }
@@ -766,9 +765,10 @@
             return false;
         }
         var oldFile = []
-        $("div.showFilesUploaded > div").each(function () {
+        $("#editModal div.showFilesUploaded > div").each(function () {
             oldFile.push($(this).attr("data-name"));
         });
+
         var formData = new FormData();
         formData.append("title", title);
         formData.append("note", note);
@@ -795,6 +795,11 @@
                 $("#remainAccount").text(formatCurrency(rs.remain));
                 $("#fullnameAccount").text(rs.user.fullname);
                 $("#noteAccount").text(rs.note);
+                let fileNameArr = []
+                rs.bill.forEach(item=>{
+                    fileNameArr.push(item);
+                })
+                loadFilesName(fileNameArr);
                 $('#editModal').modal('hide');
                 $('#successModal div.modal-body').text("The request has been completed successfully.")
                 $('#successModal').modal('show');

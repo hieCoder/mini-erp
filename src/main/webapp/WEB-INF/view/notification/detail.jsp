@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-<div class="row">
+<div class="row notificationDetail">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
@@ -65,7 +65,6 @@
                             </div>
                             <div class="text-muted">
                                 <div id="contentView">
-
                                 </div>
                                 <div class="pt-3 border-top border-top-dashed mt-4">
                                     <div class="row">
@@ -97,7 +96,7 @@
                         </c:if>
                         <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
                             <div class="notificationDeleted">
-                                <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted">Deleted</button>
+                                <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted" disabled>Deleted</button>
                             </div>
                         </c:if>
                         <div class="backToList">
@@ -122,80 +121,72 @@
 <%--                    </div>--%>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <div data-simplebar="init" style="max-height: 500px;" class="px-3 mx-n3 mb-2">
+                    <div data-simplebar class="px-3 mx-n3 mb-2">
                         <div class="simplebar-wrapper" style="margin: 0px -16px;">
                             <div class="simplebar-height-auto-observer-wrapper">
                                 <div class="simplebar-height-auto-observer"></div>
                             </div>
                             <div class="simplebar-mask">
                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
-                                        <div class="simplebar-content" style="padding: 0px 16px;">
-                                            <div class="d-flex mb-4">
-                                            <div class="flex-shrink-0">
-                                                <img src="/assets/images/users/avatar-8.jpg" alt="" class="avatar-xs rounded-circle">
+                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
+                                        <div class="simplebar-content listComment" data-id="${notification.id}" style="padding: 0px 16px;">
+                        <c:forEach items="${notification.comments}" var="comment">
+                                            <div class="d-flex mb-2 commentParent" data-id="${comment.id}">
+                                                <div class="flex-shrink-0">
+                                                <img src="${comment.avatarUser}" alt="Avatar" class="avatar-xs rounded-circle">
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h5 class="fs-13">Joseph Parker <small class="text-muted ms-2">20 Dec 2021 - 05:47AM</small></h5>
-                                                <p class="text-muted">I am getting message from customers that when they place order always get error message .</p>
-                                                <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
-                                                <div class="d-flex mt-4">
-                                                    <div class="flex-shrink-0">
-                                                        <img src="/assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle">
+                                                <div class="flex-grow-1 ms-3">
+                                                <h5 class="fs-13">${comment.fullnameUser} <small class="text-muted ms-2">${comment.createdDate}</small></h5>
+                                                <p class="text-muted comment-content" data-id="${comment.id}">${comment.content}</p>
+                                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                                                <a href="javascript: void(0);" class="badge text-muted bg-light replyCommentBtn"><i class="mdi mdi-reply"></i> Reply</a>
+                                            </c:if>
+                                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
+                                                <a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn"><i class="mdi mdi-delete"></i> Delete</a>
+                                            </c:if>
+                                                    <div id="commentChildList-${comment.id}" class="mt-2">
+                                                        <c:if test="${not empty comment.childComments}">
+                                                            <c:forEach items="${comment.childComments}" var="childComment">
+                                                            <div class="d-flex mb-2" data-id="${childComment.id}">
+                                                                <div class="flex-shrink-0">
+                                                                        <img src="${childComment.avatarUser}" alt="avatar" class="avatar-xs rounded-circle">
+                                                                    </div>
+                                                                    <div  class="flex-grow-1 ms-3">
+                                                                            <h5 class="fs-13">${childComment.fullnameUser} <small class="text-muted ms-2">${childComment.createdDate}</small></h5>
+                                                                            <p class="text-muted comment-content" data-id="${childComment.id}">${childComment.content}</p>
+                                                                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
+                                                                                <a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                                                <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn"><i class="mdi mdi-delete"></i> Delete</a>
+                                                                            </c:if>
+                                                                    </div>
+                                                            </div>
+                                                            </c:forEach>
+                                                        </c:if>
                                                     </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h5 class="fs-13">Alexis Clarke <small class="text-muted ms-2">22 Dec 2021 - 02:32PM</small></h5>
-                                                        <p class="text-muted">Please be sure to check your Spam mailbox to see if your email filters have identified the email from Dell as spam.</p>
-                                                        <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
-                                                    </div>
-                                                </div>
                                             </div>
                                             </div>
-                                            <div class="d-flex mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="/assets/images/users/avatar-6.jpg" alt="" class="avatar-xs rounded-circle">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fs-13">Donald Palmer <small class="text-muted ms-2">24 Dec 2021 - 05:20PM</small></h5>
-                                <p class="text-muted">If you have further questions, please contact Customer Support from the “Action Menu” on your <a href="javascript:void(0);" class="text-decoration-underline">Online Order Support</a>.</p>
-                                <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
-                            </div>
-                        </div>
-                                            <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <img src="/assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fs-13">Alexis Clarke <small class="text-muted ms-2">26 min ago</small></h5>
-                                <p class="text-muted">Your <a href="javascript:void(0)" class="text-decoration-underline">Online Order Support</a> provides you with the most current status of your order. To help manage your order refer to the “Action Menu” to initiate return, contact Customer Support and more.</p>
-                                <div class="row g-2 mb-3">
-                                    <div class="col-lg-1 col-sm-2 col-6">
-                                        <img src="/assets/images/small/img-4.jpg" alt="" class="img-fluid rounded">
-                                    </div>
-                                    <div class="col-lg-1 col-sm-2 col-6">
-                                        <img src="/assets/images/small/img-5.jpg" alt="" class="img-fluid rounded">
-                                    </div>
-                                </div>
-                                <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
-                                <div class="d-flex mt-4">
-                                    <div class="flex-shrink-0">
-                                        <img src="/assets/images/users/avatar-6.jpg" alt="" class="avatar-xs rounded-circle">
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="fs-13">Donald Palmer <small class="text-muted ms-2">8 sec ago</small></h5>
-                                        <p class="text-muted">Other shipping methods are available at checkout if you want your purchase delivered faster.</p>
-                                        <a href="javascript: void(0);" class="badge text-muted bg-light"><i class="mdi mdi-reply"></i> Reply</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <div class="simplebar-placeholder" style="width: auto; height: 598px;"></div>
-                    </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 150px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
-                    <div class="mt-4">
+                        <div class="simplebar-placeholder" style="width: 0px; height: 300px">
+
+                        </div>
+                    </div>
+                        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                            <div class="simplebar-scrollbar" style="width: 0px; display: none;">
+
+                            </div>
+                        </div>
+                        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                            <div class="simplebar-scrollbar" style="height: 150px; transform: translate3d(0px, 0px, 0px); display: block;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
                         <div class="row g-3">
                             <div class="col-12">
                                 <label for="newCommentContent" class="form-label text-body">Leave a Comments</label>
@@ -203,136 +194,12 @@
                             </div>
                             <div class="col-12 text-end">
 <%--                                <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>--%>
-                                <button class="btn btn-success" id="newCommentBtn">Post Comments</button>
+                                <button class="btn btn-sm btn-success" id="newCommentBtn">Post Comments</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- end card body -->
-            </div>
-
-            <div class="containerComment d-none">
-            <div class="mb-3 mt-2">
-                <div class="row mb-4 mt-4">
-                    <div class="col-md-10 d-flex">
-                        <img id="avatar-user-login" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">
-                        <textarea id="newComment" class="form-control" placeholder="Add a comment..."
-                                  style="min-height: 90px;"></textarea>
-                    </div>
-                    <div class="col-md-2">
-<%--                        <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="newCommentBtn">Submit</button>--%>
-                    </div>
-                </div>
-
-                <ul id="commentList" class="list-group">
-                    <c:forEach items="${notification.comments}" var="comment">
-                        <li class="list-group-item" data-id="${comment.id}">
-                            <div class="comment-header d-flex align-items-center">
-                                <img src="${comment.avatarUser}" alt="Avatar"
-                                     class="avatar rounded-circle img-thumbnail">
-                                <div class="user-info">
-                                    <p class="user-name">${comment.fullnameUser}</p>
-                                    <p class="comment-date">${comment.createdDate}</p>
-                                </div>
-                            </div>
-                            <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
-                            <div class="ml-auto">
-                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
-                                    <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal"
-                                            data-target="#popupForm" data-id="${comment.id}">Edit
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                            data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete
-                                    </button>
-                                </c:if>
-                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
-
-                                    <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply
-                                </button>
-
-                                </c:if>
-
-                            </div>
-                            <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
-                                <c:if test="${not empty comment.childComments}">
-                                    <c:forEach items="${comment.childComments}" var="childComment">
-                                        <li class="list-group-item" data-id="${childComment.id}">
-                                            <div class="comment-header d-flex align-items-center">
-                                                <img src="${childComment.avatarUser}" alt="Avatar"
-                                                     class="avatar rounded-circle img-thumbnail">
-                                                <div class="user-info">
-                                                    <p class="user-name">${childComment.fullnameUser}</p>
-                                                    <p class="comment-date">${childComment.createdDate}</p>
-                                                </div>
-                                            </div>
-                                            <p class="comment-content"
-                                               data-id="${childComment.id}">${childComment.content}</p>
-                                            <div class="ml-auto">
-                                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || childComment.userId.equals(userId)}">
-                                                    <button class="btn btn-primary btn-sm edit-button"
-                                                            data-id="${childComment.id}">Edit
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-danger"
-                                                            data-id="${childComment.id}" data-toggle="modal"
-                                                            data-target="#deleteConfirmationModal">Delete
-                                                    </button>
-                                                </c:if>
-                                            </div>
-                                        </li>
-                                    </c:forEach>
-                                </c:if>
-                            </ul>
-                        </li>
-                    </c:forEach>
-                </ul>
-
-            </div>
-        </div>
-        </div>
-
-    </div>
-</div>
-<div class="modal fade" id="popupForm" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="popupFormLabel">Edit Comment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="contentCommentEdit">Content</label>
-                        <textarea class="form-control" id="contentCommentEdit" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="saveChangesButton" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="popupFormEditNotification" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="popupFormEditNotificationLabel">Edit Notification</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="saveChangesButtonNotification" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -445,25 +312,76 @@
         </div>
     </div>
 </div>
-
-<div id="successComment" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
+<div class="modal fade zoomIn" id="deleteCommentModal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body text-center p-5">
-                <div class="text-end">
-                    <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure?</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            Are you Sure You want to Remove this Comment?
+                        </p>
+                    </div>
                 </div>
-                <div class="mt-2">
-                    <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover" style="width:150px;height:150px"></lord-icon>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-danger " id="deleteCommentBtn">Yes, Delete It!</button>
                 </div>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
 
-<div id="formEditNotication" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade zoomIn" id="editCommentModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Content:</label>
+                        <textarea class="form-control" id="editContentComment" rows="4"></textarea>
+                    </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-primary " id="editCommentBtn">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade zoomIn" id="successComment" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover" style="width:150px;height:150px">
+                    </lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Successful !</h4>
+                        <p class="text-muted mx-4 mb-0">
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="formEditNotification" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -606,6 +524,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="/assets/libs/simplebar/simplebar.min.js"></script>
 <!-- quill js -->
 <script src="/assets/libs/quill/quill.min.js"></script>
 <!-- dropzone js -->
@@ -636,70 +555,66 @@
         })
         stompClient.subscribe("/notification/comments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data.id != null) {
-                if ($('li.list-group-item[data-id="' + data.id + '"]').length <= 0) {
+            if($('.listComment[data-id="' + data.notificationId + '"]').length <= 0){
+                return false
+            }else{
+                if (data.id != null) {
                     var buttonHtml = ""
                     if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
-                        buttonHtml =
-                            '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
-                            '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
+                        buttonHtml = '<a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn">'+
+                            '<i class="mdi mdi-pencil"></i> Edit </a>' +
+                            '      <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn">'+
+                            '<i class="mdi mdi-delete"></i> Delete </a>'
                     }
                     var buttonReply=""
-
                     if (${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
-                        buttonReply =  '<button class="btn btn-success btn-sm reply-button ml-1" data-id="' + data.id + '">Reply</button>'
+                        buttonReply =        '<a href="javascript: void(0);" class="badge text-muted bg-light replyCommentBtn">'+
+                            '<i class="mdi mdi-reply"></i> Reply </a>'
                     }
-
-                    $("textarea#newComment").val('');
-                    var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-                        '<div class="comment-header d-flex align-items-center">' +
-                        '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-                        '<div class="user-info">' +
-                        '<p class="user-name">' + data.fullnameUser + '</p>' +
-                        '<p class="comment-date">' + data.createdDate + '</p>' +
-                        '</div>' +
-                        '</div>' +
-                        '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                        '<div class="ml-auto">' + buttonHtml + buttonReply +
-                        '</div>' +
-                        '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
-                        '</li>';
-
-                    if ($("ul#commentList li.list-group-item:first").length > 0) {
-                        $("ul#commentList li.list-group-item:first").before(html);
-                    } else {
-                        $("ul#commentList").html(html);
+                    var html = ' <div class="d-flex mb-2 commentParent" data-id="'+data.id+'">'+
+                                '<div class="flex-shrink-0">'+
+                                '<img src="'+data.avatarUser+'" alt="Avatar" class="avatar-xs rounded-circle">'+
+                                '</div>'+
+                                '<div class="flex-grow-1 ms-3">'+
+                                '<h5 class="fs-13">'+data.fullnameUser+'<small class="text-muted ms-2">'+data.createdDate+'</small></h5>'+
+                                '<p class="text-muted comment-content" data-id="'+data.id+'">'+data.content+'</p>'+
+                                buttonReply+
+                                buttonHtml+
+                                '<div id="commentChildList-'+data.id+'" class="mt-2">'+
+                                '</div>'+
+                                '</div>'+
+                                '</div>'
+                    if ($('.listComment div.commentParent').length > 0 ) {
+                            $("div.listComment div.commentParent:first").before(html);
+                    } else{
+                        $("div.listComment").html(html);
                     }
                     if (data.clientId == clientID) {
-                        var modal = `<strong class="btn-success rounded-circle p-2">Success!</strong>  Comment posted successfully.
+                        var modal = `<strong class="btn-success rounded-circle p-2">Comment posted successfully.</strong>
                             `
-                        $("#successComment div.modal-body").append(modal)
+                        $("#successComment div.modal-body p").html(modal)
                         $("#successComment").modal("show");
-                        $("button#newCommentBtn").prop("disabled", false);
-                        $("textarea#newComment").prop("disabled", false);
+                        $("textarea#newCommentContent").val("")
                     }
+                }else if(data.clientId == clientID){
+                    refreshPage()
                 }
-            }else if(data.clientId == clientID){
-                refreshPage()
             }
         });
         stompClient.subscribe("/notification/editcomments", function (comment) {
             var data = JSON.parse(comment.body);
             if (data.id != null) {
-                var $pElement = $('p.comment-content[data-id="' + data.id + '"]');
+                var $pElement = $('div.simplebar-wrapper p.comment-content[data-id="'+ data.id +'"]')
                 $pElement.text(data.content)
+                $("#editCommentModal").modal("hide")
+
                 if (data.clientId == clientID) {
-                    $("#popupForm").modal("hide");
-                    var modal = `
-                               <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment update successfully.
-                                `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successModal").modal("show");
-                    $(".modal-footer button").each(function () {
-                        $(this).prop("disabled", false);
-                    });
-                    $('div.custom-spinner').parent().remove()
+                        var modal = `<strong class="btn-success rounded-circle p-2">Edit Comment Successfully.</strong>
+                            `
+                        $("#successComment div.modal-body p").html(modal)
+                        $("#successComment").modal("show");
                 }
+
             }else if(data.clientId == clientID){
                 refreshPage()
             }
@@ -707,18 +622,12 @@
         stompClient.subscribe("/notification/deletecomments", function (comment) {
             var data = JSON.parse(comment.body);
             if (data.id != null) {
-                $('li.list-group-item[data-id="' + data.id + '"]').remove()
+                $('div.simplebar-wrapper div[data-id="' + data.id + '"]').remove()
                 if (data.clientId == clientID) {
-                    var modal = `
-                <strong class="btn-success rounded-circle p-2">Success!</strong>  Comment delete successfully.
-                `
-                    $("#successModal div.modal-body").html(modal)
-                    $("#popupForm").modal("hide");
-                    $("#successModal").modal("show");
-                    $(".modal-footer button").each(function () {
-                        $(this).prop("disabled", false);
-                    });
-                    $('div.custom-spinner').parent().remove()
+                    var modal = `<strong class="btn-success rounded-circle p-2">Delete Comment Successfully.</strong>
+                            `
+                    $("#successComment div.modal-body p").html(modal)
+                    $("#successComment").modal("show");
                 }
             }else if(data.clientId == clientID){
                 refreshPage()
@@ -726,50 +635,50 @@
         });
         stompClient.subscribe("/notification/replycomments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data.id != null) {
-                var buttonHtml = ""
-                if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
-                    buttonHtml =
-                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
-                        '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
-                }
-                var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-                    '<div class="comment-header d-flex align-items-center">' +
-                    '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-                    '<div class="user-info">' +
-                    '<p class="user-name">' + data.fullnameUser + '</p>' +
-                    '<p class="comment-date">' + data.createdDate + '</p>' +
-                    '</div>' +
-                    '</div>' +
-                    '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                    '<div class="ml-auto">' + buttonHtml +
-                    '</div>' +
-                    '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
-                    '</li>'
-                var inputReply = $('#commentList #commentChildList-' + data.parentId + ' > div.row')
-                var listChild = $('#commentList #commentChildList-' + data.parentId + ' > li.list-group-item:first')
-                if (inputReply.length > 0) {
-                    inputReply.after(html)
-                } else if (listChild.length > 0) {
-                    listChild.before(html)
-                } else {
-                    $('#commentList #commentChildList-' + data.parentId).html(html)
-                }
-                if (data.clientId == clientID) {
-                    var modal = `
-                                <strong class="btn-success rounded-circle p-2">Success!</strong>  Reply successfully.
-                                `
-                    $('textarea#replyComment[data-id=' + data.parentId + ']').val('');
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successComment").modal("show");
+            if($('div.commentParent[data-id="' + data.parentId + '"]').length <= 0){
+                return false
+            }else{
+                if (data.id != null) {
+                    var buttonHtml = ""
+                    if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
+                        buttonHtml = '<a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn">'+
+                            '<i class="mdi mdi-pencil"></i> Edit </a>' +
+                            '      <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn">'+
+                            '<i class="mdi mdi-delete"></i> Delete </a>'
+                    }
+                    var html = ' <div class="d-flex mb-2" data-id="'+data.id+'">'+
+                        '<div class="flex-shrink-0">'+
+                        '<img src="'+data.avatarUser+'" alt="Avatar" class="avatar-xs rounded-circle">'+
+                        '</div>'+
+                        '<div class="flex-grow-1 ms-3">'+
+                        '<h5 class="fs-13">'+data.fullnameUser+'<small class="text-muted ms-2">'+data.createdDate+'</small></h5>'+
+                        '<p class="text-muted comment-content" data-id="'+data.id+'">'+data.content+'</p>'+
+                        buttonHtml+
+                        '</div>'+
+                        '</div>'
 
+                    let $elementReply = "div#commentChildList-" + data.parentId
+                    let $elementReplyHasContainer = "div#commentChildList-" + data.parentId + " .containerReply"
+                    if($($elementReplyHasContainer).children().length > 0){
+                        $($elementReplyHasContainer).after(html)
+                    }else if($($elementReply).children().length > 0){
+                        $($elementReply).children().first().before(html)
+                    }else{
+                        $($elementReply).html(html)
+                    }
+
+                    if (data.clientId == clientID) {
+                        var modal = `<strong class="btn-success rounded-circle p-2">Reply posted successfully.</strong>
+                            `
+                        $("#successComment div.modal-body p").html(modal)
+                        $("#successComment").modal("show");
+                        $(".containerReply").remove()
+                    }
+                }else if(data.clientId == clientID){
+                    refreshPage()
                 }
-            }else if(data.clientId == clientID){
-                refreshPage()
             }
         });
-        $("div.containerComment").removeClass("d-none")
-        $('div.custom-spinner').parent().remove()
     });
 
     function sendComment(data) {
@@ -869,27 +778,28 @@
     var quillEdit = new Quill("#contentEdit", snowEditorData);
 
     document.addEventListener("DOMContentLoaded", function () {
-        let checkDeleted = $("button.notificationDeleted")
-        if(checkDeleted.length>0){
-            $("button").each(function (index,item){
-                if(index > 0){
+        let checkDeleted = $(".notificationDetail button.notificationDeleted")
+        if(checkDeleted.length>0) {
+            $(".notificationDetail button").each(function (index,item){
+                if(!$(item).hasClass("backToList")){
                     $(item).prop("disabled", true)
                     $("textarea").prop("disabled", true)
                 }
             })
+            $(".notificationDetail .simplebar-wrapper a").addClass("d-none")
         }
         $(document).on("click","button#deleteFileBtn",function (){
             let fileName = $("#deleteFileModal").attr("data-name")
-            $('#formEditNotication div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
+            $('#formEditNotification div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
             $("#deleteFileModal").modal("hide")
             dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
         })
 
         $(document).on("click","button.editBtn", function(){
             removeAlert()
-            let notificationId = $("#formEditNotication").attr("data-id")
+            let notificationId = $("#formEditNotification").attr("data-id")
             let title = $("#titleEdit").val()
-            let contentCheck = $("div#formEditNotication .ql-editor").html().toString()
+            let contentCheck = $("div#formEditNotification .ql-editor").html().toString()
             let content = JSON.stringify(quillEdit.getContents())
             if (title.trim() === "") {
                 $("input#titleEdit").parent().after(INVALID_FILLED)
@@ -900,7 +810,7 @@
                 return false;
             }
             var oldFile = []
-            $("#formEditNotication div.showFilesUploaded > div").each(function () {
+            $("#formEditNotification div.showFilesUploaded > div").each(function () {
                 oldFile.push($(this).attr("data-name"));
             });
             var formData = new FormData();
@@ -922,7 +832,8 @@
                     let contentParse = JSON.parse(rs.content)
                     quillView.setContents(contentParse)
                     loadFilesName(rs.files);
-                    $("#formEditNotication").modal("hide")
+                    INFORM_SUCCESS("Notification updated successfully.")
+                    $("#formEditNotification").modal("hide")
                 }
             },function (error){
                 console.log(error)
@@ -937,7 +848,7 @@
             if(notificationId){
                 callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
                     function (rs) {
-                        $("#formEditNotication").attr("data-id", rs.id)
+                        $("#formEditNotification").attr("data-id", rs.id)
                         $("#titleEdit").val(rs.title)
                         let contentParse = JSON.parse(rs.content)
                         quillEdit.setContents(contentParse)
@@ -954,13 +865,13 @@
                                         var contentLength = xhr.getResponseHeader('Content-Length');
                                         var fileName = url.substring(url.lastIndexOf("/") + 1);
                                         html+= showFileUploaded(fileName, contentLength, url, "edit")
-                                        $("#formEditNotication .showFilesUploaded").html(html)
-                                        $("#formEditNotication").modal("show")
+                                        $("#formEditNotification .showFilesUploaded").html(html)
+                                        $("#formEditNotification").modal("show")
                                     }
                                 });
                             });
                         }else{
-                            $("#formEditNotication").modal("show")
+                            $("#formEditNotification").modal("show")
                         }
                     },
                     function (error){
@@ -1134,53 +1045,10 @@
             });
         });
 
-        $("ul#commentList").on("click", ".edit-button", function () {
-            var commentId = $(this).attr("data-id");
-            var commentElement = $('p.comment-content[data-id="' + commentId + '"]').text();
-            $("#contentCommentEdit").val(commentElement);
-            $("#popupForm div.modal-content").attr("data-id", commentId);
-            $("#popupForm").modal("show");
-        });
-
-        $("ul#commentList").on("click", ".reply-button", function () {
-            $("div.inputReply").each(function () {
-                $(this).remove()
-            })
-            var parentId = $(this).attr("data-id");
-            var html =
-                '<div class="row mb-4 mt-4 inputReply">'
-                + '<div class="col-md-10 d-flex">'
-                + '<img src="' + userCurrent.avatar + '" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
-                + '<textarea id="replyComment" data-id="' + parentId + '" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>'
-                + '</div>'
-                + '<div class="col-md-2">'
-                + ' <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="replyCommentBtn" data-id="' + parentId + '">Submit</button>'
-                + '</div>'
-                + '</div>'
-            if ($('ul#commentChildList-' + parentId + ' li.list-group-item').length > 0) {
-                $(document).find('ul#commentChildList-' + parentId + ' li.list-group-item:first-child').before(html);
-            } else {
-                $(document).find('ul#commentChildList-' + parentId).html(html);
-            }
-        });
-
-        $(document).on("click", "#replyCommentBtn", function (e) {
+        $(document).on("click", "#newReplyBtn", function (e) {
             var parentId = $(this).data("id");
-            var content = $('textarea#replyComment[data-id=' + parentId + ']').val();
-            var notificationId = $("table#tableNotification").attr("data-id");
-            $(this).prop("disabled", true);
-            $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", true);
-            if (content == "") {
-                var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
-                        `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $(this).prop("disabled", false);
-                $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", false);
-                $('div.custom-spinner').parent().remove()
-                return
-            }
+            var content = $('textarea#newReplyContent').val();
+            var notificationId = $("div#viewNotification").attr("data-id")
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -1208,54 +1076,66 @@
             $("#deleteConfirmationModal").attr("data-id", commentId)
         });
 
-        document.getElementById("deleteButton").addEventListener("click", function () {
-            $("#deleteConfirmationModal").modal("hide");
-            var id = $("#deleteConfirmationModal").attr("data-id")
-            $('li.list-group-item[data-id="' + id + '"] > div.ml-auto button').each(function () {
-                $(this).prop("disabled", true);
-            });
+        $(document).on("click","a.deleteCommentBtn", function (){
+            let id = $(this).parent().parent().attr("data-id")
+            $("#deleteCommentModal").attr("data-id", id)
+            $("#deleteCommentModal").modal("show")
+        })
+
+        $(document).on("click","#deleteCommentBtn", function (){
+            var id = $("#deleteCommentModal").attr("data-id")
             var data = {
                 id: id,
                 userId: userCurrent.id
             };
             var jsonData = JSON.stringify(data);
             deleteComment(jsonData)
+            $("#deleteCommentModal").modal("hide")
         })
 
-        document.getElementById("saveChangesButton").addEventListener("click", function () {
-            var content = $("#contentCommentEdit").val()
-            if (content == "") {
-                var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
-                        `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $("button#newCommentBtn").prop("disabled", false);
-                $("textarea#newComment").prop("disabled", false);
-                $('div.custom-spinner').parent().remove()
-                return
-            }
-            $(".modal-footer button").each(function () {
-                $(this).prop("disabled", true);
-            });
-            // Create an XMLHttpRequest object
-            var xhttp = new XMLHttpRequest();
-            var apiUrl = baseUrlComment
-            // Configure the request
-            xhttp.open("PUT", apiUrl, true); // Replace "/your-api-endpoint" with your actual API URL
-            xhttp.setRequestHeader("Content-Type", "application/json");
+        $(document).on("click","a.editCommentBtn", function (){
+            let id = $(this).parent().parent().attr("data-id")
+            let content = $('div.simplebar-content-wrapper p.comment-content[data-id="'+ id +'"]').text()
+            $("#editCommentModal").attr("data-id", id)
+            $("#editContentComment").val(content)
+            $("#editCommentModal").modal("show")
+        })
 
+        $(document).on("click","a.replyCommentBtn", function (){
+            $(".containerReply").remove()
+            let id = $(this).parent().parent().attr("data-id")
+            let html = '<div class="row g-3 containerReply">'+
+                '<div class="col-12">'+
+                    '<label for="newReplyContent" class="form-label text-body">Leave a Reply</label>'+
+                    '<textarea class="form-control bg-light border-light" id="newReplyContent" rows="3" placeholder="Enter your reply..."></textarea>'+
+                '</div>'+
+                '<div class="col-12 text-end">'+
+                    '<button class="btn btn-sm btn-success" data-id="'+id+'" id="newReplyBtn">Post Reply</button>'+
+                '</div>'+
+            '</div>'
+            let $elementReply = "div#commentChildList-" + id
+            if($($elementReply).children().length > 0){
+                $($elementReply).children().first().before(html)
+            }else{
+                $($elementReply).html(html)
+            }
+        })
+
+        $(document).on("click","#editCommentBtn", function (){
+            var contentEdit = $("#editContentComment").val()
+            console.log(contentEdit)
             // Define the data you want to send (if needed)
-            var id = $("div.modal-content").attr("data-id")
+            var id = $("#editCommentModal").attr("data-id")
             var data = {
                 id: id,
-                content: content,
+                content: contentEdit,
                 userId: userCurrent.id
             };
             // Convert the data to JSON
             var jsonData = JSON.stringify(data);
             editComment(jsonData);
-        });
+        })
+
     });
 </script>
 </body>

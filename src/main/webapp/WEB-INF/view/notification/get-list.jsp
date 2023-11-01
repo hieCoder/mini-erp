@@ -202,12 +202,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-muted">
-                            <h5 class="mb-3 fw-semibold text-uppercase titleView">Title:
+                            <h5 class="mb-3 fw-semibold text-uppercase titleView">
                                <strong class="fw-bolder fst-italic fs-4"> </strong>
                             </h5>
                         </div>
                         <div class="text-muted">
-                            <h5 class="mb-3 fw-semibold text-uppercase contentView">Content</h5>
                             <div id="contentView">
 
                             </div>
@@ -349,7 +348,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div id="formEditNotication" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
+<div id="formEditNotification" data-bs-keyboard="false" data-bs-backdrop="static" class="modal fade zoomIn bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -528,6 +527,29 @@
                         <h4>Inform</h4>
                         <p class="text-muted mx-4 mb-0">
                             The notification has been deleted.
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade zoomIn" id="successComment" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover" style="width:150px;height:150px">
+                    </lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Successful !</h4>
+                        <p class="text-muted mx-4 mb-0">
                         </p>
                     </div>
                 </div>
@@ -862,13 +884,13 @@
             if(mode == "view") {
                 $("#viewNotification .showFilesUploaded").html(html)
             }else if(mode == "edit"){
-                $("#formEditNotication .showFilesUploaded").html(html)
+                $("#formEditNotification .showFilesUploaded").html(html)
             }
             })
         if(mode == "view"){
             $("#viewNotification").modal("show")
         } else if(mode == "edit"){
-            $("#formEditNotication").modal("show")
+            $("#formEditNotification").modal("show")
         }
     }
     $(document).on("click","button.editNotification",function (){
@@ -878,7 +900,7 @@
         if(notificationId){
             callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
                 function (rs) {
-                    $("#formEditNotication").attr("data-id", rs.id)
+                    $("#formEditNotification").attr("data-id", rs.id)
                     $("#titleEdit").val(rs.title)
                     let contentParse = JSON.parse(rs.content)
                     quillEdit.setContents(contentParse)
@@ -888,7 +910,7 @@
                     if(fileLength>0){
                         loadFilesName(urlFiles, "edit");
                     }else{
-                        $("#formEditNotication").modal("show")
+                        $("#formEditNotification").modal("show")
                     }
                 },
                 function (error){
@@ -925,7 +947,50 @@
             }
         })
 
-        $(document).on("click","button.downFileBtn",function (){
+    $(document).on("click","button.editBtn", function(){
+        removeAlert()
+        let notificationId = $("#formEditNotification").attr("data-id")
+        let title = $("#titleEdit").val()
+        let contentCheck = $("div#formEditNotification .ql-editor").html().toString()
+        let content = JSON.stringify(quillEdit.getContents())
+        if (title.trim() === "") {
+            $("input#titleEdit").parent().after(INVALID_FILLED)
+            return false;
+        }
+        if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
+            $("div#contentEdit").parent().after(INVALID_FILLED)
+            return false;
+        }
+        var oldFile = []
+        $("#formEditNotification div.showFilesUploaded > div").each(function () {
+            oldFile.push($(this).attr("data-name"));
+        });
+        var formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("oldFile", oldFile);
+        if(dropzoneEdit.files.length>0) {
+            for (let i = 0; i < dropzoneEdit.files.length; i++) {
+                let file = dropzoneEdit.files[i]
+                if(file.accepted){
+                    formData.append("files", file);
+                }
+            }
+        }
+        callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
+            if(rs){
+                $('#notificationList a[href="/notifications/'+notificationId+'"]').text(rs.title)
+                INFORM_SUCCESS("Notification updated successfully.")
+                $("#formEditNotification").modal("hide")
+            }
+        },function (error){
+            console.log(error)
+        })
+
+    })
+
+
+    $(document).on("click","button.downFileBtn",function (){
             let dataUrl = $(this).children().attr("data-url")
             downloadFiles(dataUrl)
         })
@@ -1051,9 +1116,9 @@
                }
             }
             callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}","POST", formData ,function (rs){
-                console.log(rs)
                 if(rs>0){
                     loadDatabase();
+                    INFORM_SUCCESS("Notification created successfully.")
                     $("#formCreateNotication").modal("hide")
                 }
             },function (error){

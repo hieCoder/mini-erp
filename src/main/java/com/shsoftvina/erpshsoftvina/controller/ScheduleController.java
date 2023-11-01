@@ -1,7 +1,9 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
+import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
+import com.shsoftvina.erpshsoftvina.service.EventService;
 import com.shsoftvina.erpshsoftvina.service.ScheduleService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
@@ -25,6 +27,8 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
+    private EventService eventService;
+    @Autowired
     private UserService userService;
     @Autowired
     ApplicationUtils applicationUtils;
@@ -41,9 +45,10 @@ public class ScheduleController {
         return new ModelAndView("schedule/detail-test");
     }
     @GetMapping("/detail/{userId}")
-    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId) {
+    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId,@RequestParam("month") String month) {
         applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("schedule/detail");
+        List<EventResponse> responses = eventService.getAllEventsByMonth(month);
         modelAndView.addObject("userId",userId);
         return modelAndView;
     }
