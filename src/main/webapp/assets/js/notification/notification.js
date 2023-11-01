@@ -105,17 +105,9 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 })
 
-const REPLY_ELEMENT = `
-                      <div class="col-md-12">
-                                                        <div class="row g-3">
-                                                            <div class="col-12">
-                                                                <label class="form-label text-body">Leave a Reply</label>
-                                                                <textarea class="form-control bg-light border-light" rows="3" placeholder="Enter your reply..."></textarea>
-                                                            </div>
-                                                            <div class="col-12 text-end">
-                                                                <button class="btn btn-sm btn-success" >Reply Comments</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-`
+function INFORM_SUCCESS(text){
+    var modal = `<strong class="btn-success rounded-circle p-2">${text}</strong>
+                 `
+    $("#successComment div.modal-body p").html(modal)
+    $("#successComment").modal("show");
+}

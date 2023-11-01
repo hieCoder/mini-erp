@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-<div class="row">
+<div class="row notificationDetail">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
@@ -96,7 +96,7 @@
                         </c:if>
                         <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
                             <div class="notificationDeleted">
-                                <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted">Deleted</button>
+                                <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted" disabled>Deleted</button>
                             </div>
                         </c:if>
                         <div class="backToList">
@@ -121,17 +121,17 @@
 <%--                    </div>--%>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <div data-simplebar="init" style="max-height: 500px;" class="px-3 mx-n3 mb-2">
+                    <div data-simplebar class="px-3 mx-n3 mb-2">
                         <div class="simplebar-wrapper" style="margin: 0px -16px;">
                             <div class="simplebar-height-auto-observer-wrapper">
                                 <div class="simplebar-height-auto-observer"></div>
                             </div>
                             <div class="simplebar-mask">
                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
                                         <div class="simplebar-content listComment" data-id="${notification.id}" style="padding: 0px 16px;">
                         <c:forEach items="${notification.comments}" var="comment">
-                                            <div class="d-flex mb-4 commentParent" data-id="${comment.id}">
+                                            <div class="d-flex mb-2 commentParent" data-id="${comment.id}">
                                                 <div class="flex-shrink-0">
                                                 <img src="${comment.avatarUser}" alt="Avatar" class="avatar-xs rounded-circle">
                                             </div>
@@ -139,16 +139,16 @@
                                                 <h5 class="fs-13">${comment.fullnameUser} <small class="text-muted ms-2">${comment.createdDate}</small></h5>
                                                 <p class="text-muted comment-content" data-id="${comment.id}">${comment.content}</p>
                                             <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
-                                                <a href="javascript: void(0);" class="badge text-muted bg-light replyCommentbtn"><i class="mdi mdi-reply"></i> Reply</a>
+                                                <a href="javascript: void(0);" class="badge text-muted bg-light replyCommentBtn"><i class="mdi mdi-reply"></i> Reply</a>
                                             </c:if>
                                             <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
                                                 <a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn"><i class="mdi mdi-pencil"></i> Edit</a>
                                                 <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn"><i class="mdi mdi-delete"></i> Delete</a>
                                             </c:if>
-                                                    <div id="commentChildList-${comment.id}" class="mt-4">
+                                                    <div id="commentChildList-${comment.id}" class="mt-2">
                                                         <c:if test="${not empty comment.childComments}">
                                                             <c:forEach items="${comment.childComments}" var="childComment">
-                                                            <div class="d-flex mb-4" data-id="${childComment.id}">
+                                                            <div class="d-flex mb-2" data-id="${childComment.id}">
                                                                 <div class="flex-shrink-0">
                                                                         <img src="${childComment.avatarUser}" alt="avatar" class="avatar-xs rounded-circle">
                                                                     </div>
@@ -171,9 +171,22 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="simplebar-placeholder" style="width: auto; max-height: 500px;"></div>
-                    </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 150px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
-                    <div class="mt-4">
+                        <div class="simplebar-placeholder" style="width: 0px; height: 300px">
+
+                        </div>
+                    </div>
+                        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                            <div class="simplebar-scrollbar" style="width: 0px; display: none;">
+
+                            </div>
+                        </div>
+                        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                            <div class="simplebar-scrollbar" style="height: 150px; transform: translate3d(0px, 0px, 0px); display: block;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
                         <div class="row g-3">
                             <div class="col-12">
                                 <label for="newCommentContent" class="form-label text-body">Leave a Comments</label>
@@ -187,130 +200,6 @@
                     </div>
                 </div>
                 <!-- end card body -->
-            </div>
-
-            <div class="containerComment d-none">
-            <div class="mb-3 mt-2">
-                <div class="row mb-4 mt-4">
-                    <div class="col-md-10 d-flex">
-                        <img id="avatar-user-login" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">
-                        <textarea id="newComment" class="form-control" placeholder="Add a comment..."
-                                  style="min-height: 90px;"></textarea>
-                    </div>
-                    <div class="col-md-2">
-<%--                        <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="newCommentBtn">Submit</button>--%>
-                    </div>
-                </div>
-
-                <ul id="commentList" class="list-group">
-                    <c:forEach items="${notification.comments}" var="comment">
-                        <li class="list-group-item" data-id="${comment.id}">
-                            <div class="comment-header d-flex align-items-center">
-                                <img src="${comment.avatarUser}" alt="Avatar"
-                                     class="avatar rounded-circle img-thumbnail">
-                                <div class="user-info">
-                                    <p class="user-name">${comment.fullnameUser}</p>
-                                    <p class="comment-date">${comment.createdDate}</p>
-                                </div>
-                            </div>
-                            <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
-                            <div class="ml-auto">
-                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
-                                    <button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal"
-                                            data-target="#popupForm" data-id="${comment.id}">Edit
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                            data-id="${comment.id}" data-target="#deleteConfirmationModal">Delete
-                                    </button>
-                                </c:if>
-                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
-
-                                    <button class="btn btn-success btn-sm reply-button" data-id="${comment.id}">Reply
-                                </button>
-
-                                </c:if>
-
-                            </div>
-                            <ul id="commentChildList-${comment.id}" class="list-group mt-2 ml-4">
-                                <c:if test="${not empty comment.childComments}">
-                                    <c:forEach items="${comment.childComments}" var="childComment">
-                                        <li class="list-group-item" data-id="${childComment.id}">
-                                            <div class="comment-header d-flex align-items-center">
-                                                <img src="${childComment.avatarUser}" alt="Avatar"
-                                                     class="avatar rounded-circle img-thumbnail">
-                                                <div class="user-info">
-                                                    <p class="user-name">${childComment.fullnameUser}</p>
-                                                    <p class="comment-date">${childComment.createdDate}</p>
-                                                </div>
-                                            </div>
-                                            <p class="comment-content"
-                                               data-id="${childComment.id}">${childComment.content}</p>
-                                            <div class="ml-auto">
-                                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || childComment.userId.equals(userId)}">
-                                                    <button class="btn btn-primary btn-sm edit-button"
-                                                            data-id="${childComment.id}">Edit
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-danger"
-                                                            data-id="${childComment.id}" data-toggle="modal"
-                                                            data-target="#deleteConfirmationModal">Delete
-                                                    </button>
-                                                </c:if>
-                                            </div>
-                                        </li>
-                                    </c:forEach>
-                                </c:if>
-                            </ul>
-                        </li>
-                    </c:forEach>
-                </ul>
-
-            </div>
-        </div>
-        </div>
-
-    </div>
-</div>
-<div class="modal fade" id="popupForm" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="popupFormLabel">Edit Comment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="contentCommentEdit">Content</label>
-                        <textarea class="form-control" id="contentCommentEdit" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="saveChangesButton" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="popupFormEditNotification" tabindex="-1" role="dialog" aria-labelledby="popupFormLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="popupFormEditNotificationLabel">Edit Notification</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="saveChangesButtonNotification" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -635,6 +524,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="/assets/libs/simplebar/simplebar.min.js"></script>
 <!-- quill js -->
 <script src="/assets/libs/quill/quill.min.js"></script>
 <!-- dropzone js -->
@@ -681,7 +571,7 @@
                         buttonReply =        '<a href="javascript: void(0);" class="badge text-muted bg-light replyCommentBtn">'+
                             '<i class="mdi mdi-reply"></i> Reply </a>'
                     }
-                    var html = ' <div class="d-flex mb-4 commentParent" data-id="'+data.id+'">'+
+                    var html = ' <div class="d-flex mb-2 commentParent" data-id="'+data.id+'">'+
                                 '<div class="flex-shrink-0">'+
                                 '<img src="'+data.avatarUser+'" alt="Avatar" class="avatar-xs rounded-circle">'+
                                 '</div>'+
@@ -690,7 +580,7 @@
                                 '<p class="text-muted comment-content" data-id="'+data.id+'">'+data.content+'</p>'+
                                 buttonReply+
                                 buttonHtml+
-                                '<div id="commentChildList-'+data.id+'" class="mt-4">'+
+                                '<div id="commentChildList-'+data.id+'" class="mt-2">'+
                                 '</div>'+
                                 '</div>'+
                                 '</div>'
@@ -745,46 +635,48 @@
         });
         stompClient.subscribe("/notification/replycomments", function (comment) {
             var data = JSON.parse(comment.body);
-            if (data.id != null) {
-                var buttonHtml = ""
-                if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
-                    buttonHtml =
-                        '<button type="button" class="btn btn-primary btn-sm edit-button" data-toggle="modal" data-target="#popupForm" data-id="' + data.id + '">Edit</button>' +
-                        '<button type="button" class="btn btn-sm btn-danger ml-1" data-toggle="modal" data-id="' + data.id + '" data-target="#deleteConfirmationModal">Delete</button>'
-                }
-                var html = '<li class="list-group-item" data-id="' + data.id + '">' +
-                    '<div class="comment-header d-flex align-items-center">' +
-                    '<img src="' + data.avatarUser + '" alt="Avatar" class="avatar rounded-circle img-thumbnail">' +
-                    '<div class="user-info">' +
-                    '<p class="user-name">' + data.fullnameUser + '</p>' +
-                    '<p class="comment-date">' + data.createdDate + '</p>' +
-                    '</div>' +
-                    '</div>' +
-                    '<p class="comment-content" data-id="' + data.id + '">' + data.content + '</p>' +
-                    '<div class="ml-auto">' + buttonHtml +
-                    '</div>' +
-                    '<ul id="commentChildList-' + data.id + '" class="list-group mt-2 ml-4">' +
-                    '</li>'
-                var inputReply = $('#commentList #commentChildList-' + data.parentId + ' > div.row')
-                var listChild = $('#commentList #commentChildList-' + data.parentId + ' > li.list-group-item:first')
-                if (inputReply.length > 0) {
-                    inputReply.after(html)
-                } else if (listChild.length > 0) {
-                    listChild.before(html)
-                } else {
-                    $('#commentList #commentChildList-' + data.parentId).html(html)
-                }
-                if (data.clientId == clientID) {
-                    var modal = `
-                                <strong class="btn-success rounded-circle p-2">Success!</strong>  Reply successfully.
-                                `
-                    $('textarea#replyComment[data-id=' + data.parentId + ']').val('');
-                    $("#successModal div.modal-body").html(modal)
-                    $("#successComment").modal("show");
+            if($('div.commentParent[data-id="' + data.parentId + '"]').length <= 0){
+                return false
+            }else{
+                if (data.id != null) {
+                    var buttonHtml = ""
+                    if (userCurrent.id == data.userId || ${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}) {
+                        buttonHtml = '<a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn">'+
+                            '<i class="mdi mdi-pencil"></i> Edit </a>' +
+                            '      <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn">'+
+                            '<i class="mdi mdi-delete"></i> Delete </a>'
+                    }
+                    var html = ' <div class="d-flex mb-2" data-id="'+data.id+'">'+
+                        '<div class="flex-shrink-0">'+
+                        '<img src="'+data.avatarUser+'" alt="Avatar" class="avatar-xs rounded-circle">'+
+                        '</div>'+
+                        '<div class="flex-grow-1 ms-3">'+
+                        '<h5 class="fs-13">'+data.fullnameUser+'<small class="text-muted ms-2">'+data.createdDate+'</small></h5>'+
+                        '<p class="text-muted comment-content" data-id="'+data.id+'">'+data.content+'</p>'+
+                        buttonHtml+
+                        '</div>'+
+                        '</div>'
 
+                    let $elementReply = "div#commentChildList-" + data.parentId
+                    let $elementReplyHasContainer = "div#commentChildList-" + data.parentId + " .containerReply"
+                    if($($elementReplyHasContainer).children().length > 0){
+                        $($elementReplyHasContainer).after(html)
+                    }else if($($elementReply).children().length > 0){
+                        $($elementReply).children().first().before(html)
+                    }else{
+                        $($elementReply).html(html)
+                    }
+
+                    if (data.clientId == clientID) {
+                        var modal = `<strong class="btn-success rounded-circle p-2">Reply posted successfully.</strong>
+                            `
+                        $("#successComment div.modal-body p").html(modal)
+                        $("#successComment").modal("show");
+                        $(".containerReply").remove()
+                    }
+                }else if(data.clientId == clientID){
+                    refreshPage()
                 }
-            }else if(data.clientId == clientID){
-                refreshPage()
             }
         });
     });
@@ -886,14 +778,15 @@
     var quillEdit = new Quill("#contentEdit", snowEditorData);
 
     document.addEventListener("DOMContentLoaded", function () {
-        let checkDeleted = $("button.notificationDeleted")
-        if(checkDeleted.length>0){
-            $("button").each(function (index,item){
-                if(index > 0){
+        let checkDeleted = $(".notificationDetail button.notificationDeleted")
+        if(checkDeleted.length>0) {
+            $(".notificationDetail button").each(function (index,item){
+                if(!$(item).hasClass("backToList")){
                     $(item).prop("disabled", true)
                     $("textarea").prop("disabled", true)
                 }
             })
+            $(".notificationDetail .simplebar-wrapper a").addClass("d-none")
         }
         $(document).on("click","button#deleteFileBtn",function (){
             let fileName = $("#deleteFileModal").attr("data-name")
@@ -939,6 +832,7 @@
                     let contentParse = JSON.parse(rs.content)
                     quillView.setContents(contentParse)
                     loadFilesName(rs.files);
+                    INFORM_SUCCESS("Notification updated successfully.")
                     $("#formEditNotification").modal("hide")
                 }
             },function (error){
@@ -1151,53 +1045,10 @@
             });
         });
 
-        // $("ul#commentList").on("click", ".edit-button", function () {
-        //     var commentId = $(this).attr("data-id");
-        //     var commentElement = $('p.comment-content[data-id="' + commentId + '"]').text();
-        //     $("#contentCommentEdit").val(commentElement);
-        //     $("#popupForm div.modal-content").attr("data-id", commentId);
-        //     $("#popupForm").modal("show");
-        // });
-        //
-        // $("ul#commentList").on("click", ".reply-button", function () {
-        //     $("div.inputReply").each(function () {
-        //         $(this).remove()
-        //     })
-        //     var parentId = $(this).attr("data-id");
-        //     var html =
-        //         '<div class="row mb-4 mt-4 inputReply">'
-        //         + '<div class="col-md-10 d-flex">'
-        //         + '<img src="' + userCurrent.avatar + '" alt="Avatar" class="avatar rounded-circle img-thumbnail mr-4">'
-        //         + '<textarea id="replyComment" data-id="' + parentId + '" class="form-control" placeholder="Add a comment..." style="min-height: 90px;"></textarea>'
-        //         + '</div>'
-        //         + '<div class="col-md-2">'
-        //         + ' <button class="btn btn-primary submit-button mt-2 mb-2 w-100" id="replyCommentBtn" data-id="' + parentId + '">Submit</button>'
-        //         + '</div>'
-        //         + '</div>'
-        //     if ($('ul#commentChildList-' + parentId + ' li.list-group-item').length > 0) {
-        //         $(document).find('ul#commentChildList-' + parentId + ' li.list-group-item:first-child').before(html);
-        //     } else {
-        //         $(document).find('ul#commentChildList-' + parentId).html(html);
-        //     }
-        // });
-
-        $(document).on("click", "#replyCommentBtn", function (e) {
+        $(document).on("click", "#newReplyBtn", function (e) {
             var parentId = $(this).data("id");
-            var content = $('textarea#replyComment[data-id=' + parentId + ']').val();
-            var notificationId = $("table#tableNotification").attr("data-id");
-            $(this).prop("disabled", true);
-            $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", true);
-            if (content == "") {
-                var modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Please input comment.
-                        `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $(this).prop("disabled", false);
-                $('textarea#replyComment[data-id=' + parentId + ']').prop("disabled", false);
-                $('div.custom-spinner').parent().remove()
-                return
-            }
+            var content = $('textarea#newReplyContent').val();
+            var notificationId = $("div#viewNotification").attr("data-id")
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -1248,6 +1099,26 @@
             $("#editCommentModal").attr("data-id", id)
             $("#editContentComment").val(content)
             $("#editCommentModal").modal("show")
+        })
+
+        $(document).on("click","a.replyCommentBtn", function (){
+            $(".containerReply").remove()
+            let id = $(this).parent().parent().attr("data-id")
+            let html = '<div class="row g-3 containerReply">'+
+                '<div class="col-12">'+
+                    '<label for="newReplyContent" class="form-label text-body">Leave a Reply</label>'+
+                    '<textarea class="form-control bg-light border-light" id="newReplyContent" rows="3" placeholder="Enter your reply..."></textarea>'+
+                '</div>'+
+                '<div class="col-12 text-end">'+
+                    '<button class="btn btn-sm btn-success" data-id="'+id+'" id="newReplyBtn">Post Reply</button>'+
+                '</div>'+
+            '</div>'
+            let $elementReply = "div#commentChildList-" + id
+            if($($elementReply).children().length > 0){
+                $($elementReply).children().first().before(html)
+            }else{
+                $($elementReply).html(html)
+            }
         })
 
         $(document).on("click","#editCommentBtn", function (){
