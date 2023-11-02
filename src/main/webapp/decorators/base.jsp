@@ -6,7 +6,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Dashboard | Velzon - Admin & Dashboard Template</title>
+    <title><dec:title default="Base page"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -41,14 +41,15 @@
     <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
     <%-- Custom --%>
+    <link rel="stylesheet" href="/assets/custom/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <%-- Custom --%>
     <script src="/assets/custom/js/main.js"></script>
     <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
     <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
+
     <script>
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
@@ -789,7 +790,6 @@
 <script src="/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 <script src="/assets/js/plugins.js"></script>
 
-
 <%--<!-- apexcharts -->--%>
 <%--<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>--%>
 
@@ -831,21 +831,19 @@
 <script src="/assets/js/app.js"></script>
 <script>
 
-    // var scheduleLink = '';
-    // var managementTime = ''
-    // if (userCurrent.role != U_DEVELOPER) {
-    //     scheduleLink = '/schedules';
-    //     managementTime = '/management-time'
-    // } else {
-    //     scheduleLink = '/schedules/detail/' + userCurrent.id;
-    //     managementTime = '/management-time/' + userCurrent.id;
-    // }
-    // $('.schedule-login').attr('href', scheduleLink);
+    var scheduleLink = '', managementTime = '';
+    if(isDeleveloper()){
+        $('.manager-menu').remove();
+
+        scheduleLink = '/schedules/detail/' + userCurrent.id;
+        //managementTime = '/management-time';
+    } else{
+        scheduleLink = '/schedules';
+        //managementTime = '/management-time/' + userCurrent.id;
+    }
+
+    $('.schedule-item-menu').attr('href', scheduleLink);
     // $('.management-time-day-login').attr('href', managementTime);
-    // if (userCurrent.role == U_DEVELOPER) {
-    //     $('.management-login').remove();
-    //     $('.setting-login').remove();
-    // }
 </script>
 <!--datatable js-->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

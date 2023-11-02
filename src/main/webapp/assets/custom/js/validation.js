@@ -12,11 +12,9 @@ function Validator(options){
             }
             // ckeditor
             else if(inputElement.nodeName === 'DIV'){
-                var id = inputElement.id;
-                var valEditor = $('#'+ id).summernote().summernote('code');
-                if(valEditor === '<p><br></p>' || valEditor === '') valEditor= '';
+                var valEditor = $(inputElement).html();
+                if(DEFAULT_VALUE_SNOW_EDITOR.includes(valEditor)) valEditor= '';
                 errorMessage =  rules[i](valEditor);
-                // inputElement.value = valEditor;
             }
             // <image>
             else if(inputElement.nodeName === 'IMG'){
@@ -58,8 +56,14 @@ function Validator(options){
                             });
                         });
 
+                        // var initialDisabledState = $(obj).find('*').map(function() {
+                        //     return { element: this, isDisabled: $(this).prop('disabled') };
+                        // }).get();
                         $(obj).find('*').prop('disabled', false);
                         var params = $(obj).serializeArray();
+                        // $.each(initialDisabledState, function(index, item) {
+                        //     $(item.element).prop('disabled', item.isDisabled);
+                        // });
 
                         $.each(params, function (i, v) {
                             formData.append(""+v.name+"", v.value);
@@ -131,17 +135,20 @@ Validator.isConfirmed=function(selector, getConfirmValue, message){
         }
     };
 }
-Validator.isDayAfterToday=function(selector, message){
+Validator.isDayAfterTodayOrNull=function(selector, message){
     return {
         selector: selector,
         test: function (value) {
-            var date = new Date(value);
-            var dateValue = date.setHours(0, 0, 0, 0);
+            if(value == '') return undefined;
+            else{
+                var date = new Date(value);
+                var dateValue = date.setHours(0, 0, 0, 0);
 
-            var currentDate = new Date();
-            var currentDateValue = currentDate.setHours(0, 0, 0, 0);
+                var currentDate = new Date();
+                var currentDateValue = currentDate.setHours(0, 0, 0, 0);
 
-            return (dateValue>=currentDateValue)?undefined: message||'The day is not before day of today';
+                return (dateValue>=currentDateValue)?undefined: message||'The day is not before day of today';
+            }
         }
     };
 }
