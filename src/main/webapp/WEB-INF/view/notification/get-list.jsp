@@ -1023,7 +1023,7 @@
             previewTemplate: previewTemplate,
             previewsContainer: "#dropzone-preview",
             acceptedFiles: listTypeFile,
-            maxFilesize: parseInt(maxFileSize),
+            maxFilesize: parseInt(convertMbToB(maxFileSize)),
             maxFiles: parseInt(uploadFileLimit) ,
             uploadMultiple:true,
             autoProcessQueue: false,
@@ -1039,7 +1039,7 @@
              previewTemplate: previewTemplateEdit,
              previewsContainer: "#dropzone-preview-edit",
              acceptedFiles: listTypeFile,
-             maxFilesize: parseInt(maxFileSize),
+             maxFilesize: parseInt(convertMbToB(maxFileSize)),
              maxFiles: parseInt(uploadFileLimit) ,
              uploadMultiple:true,
              autoProcessQueue: false,
@@ -1053,17 +1053,14 @@
             if(!checkLimitFile(files.length,parseInt(uploadFileLimit))){
                 dropzone.removeFile(file)
                 showAlertValidateCreate(INVALID_FILES_LIMIT)
-                return
             }
             if(!checkTypeFile(fileExtension, listTypeFileArr)){
                 dropzone.removeFile(file)
                 showAlertValidateCreate(INVALID_FILES_TYPE)
-                return
             }
-            if(!checkLimitSize(bytesToMB(fileSize),parseInt(maxFileSize))){
+            if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
                 dropzone.removeFile(file)
-                showAlertValidateCreate(INVALID_FILES_TYPE)
-                return
+                showAlertValidateCreate(INVALID_FILES_SIZE)
             }
         });
 
@@ -1082,7 +1079,7 @@
                 showAlertValidate(INVALID_FILES_TYPE)
                 return
             }
-            if(!checkLimitSize(bytesToMB(fileSize),parseInt(maxFileSize))){
+            if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
                 dropzoneEdit.removeFile(file)
                 showAlertValidate(INVALID_FILES_SIZE)
                 return
@@ -1091,7 +1088,6 @@
 
         $(document).on("click","button.createBtn", function (){
             removeAlert()
-            var apiUrlNotification = baseUrlNotification + "/update/"
             let title = $("#titleCreate").val()
             let contentCheck = $("#formCreateNotication .ql-editor").html().toString()
             let content = JSON.stringify(quillCreate.getContents())

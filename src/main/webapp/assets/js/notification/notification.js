@@ -68,6 +68,7 @@ function checkTypeFile(type, listType){
 }
 
 function checkLimitSize(size, limit){
+    console.log(size + "+" + limit)
     if(parseInt(size)<= limit){
         return true
     }
@@ -110,4 +111,8 @@ function INFORM_SUCCESS(text){
                  `
     $("#successComment div.modal-body p").html(modal)
     $("#successComment").modal("show");
+}
+
+function convertMbToB(mb){
+    return mb * 1024 * 1024;
 }

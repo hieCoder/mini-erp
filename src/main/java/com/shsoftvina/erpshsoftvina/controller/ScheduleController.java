@@ -52,4 +52,10 @@ public class ScheduleController {
         modelAndView.addObject("userId",userId);
         return modelAndView;
     }
+
+    @GetMapping("/test")
+    public ModelAndView getScheduleDetailTest() {
+        ModelAndView modelAndView = new ModelAndView("schedule/test");
+        return modelAndView;
+    }
 }
