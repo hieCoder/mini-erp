@@ -16,13 +16,13 @@ public interface AccountingMapper {
 
     List<MonthYearFormat> findAllMonthlyHistory();
 
-    List<Accounting> findAccountingByMonth(@Param("monthId") String monthId, RowBounds rowBounds,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
+    List<Accounting> findAccountingByMonth(RowBounds rowBounds,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
 
-    long getTotalRecordCountPerMonth(@Param("monthId") String monthId, @Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
+    long getTotalRecordCountPerMonth(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
 
-    TotalSpendAndRemain getTotalSpending(@Param("monthId") String monthId);
+    TotalSpendAndRemain getTotalSpending(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
 
-    Long getLatestRemain(@Param("monthId") String monthId);
+    Long getLatestRemain(@Param("endDate") LocalDateTime endDate);
 
     int createAccounting(Accounting accounting);
 
@@ -30,12 +30,14 @@ public interface AccountingMapper {
 
     int updateAccounting(Accounting accounting);
 
-    Accounting findBeforeCurrentAccounting(Accounting accounting);
+    Accounting findBeforeCurrentAccounting(@Param("payDate") LocalDateTime payDate);
 
     List<Accounting> getRemainRecordInMonth(Accounting currentAccounting);
 
     void updateRecordsBatch(List<Accounting> remainRecordInMonthList);
 
     void deleteAccounting(String id);
+
+    Accounting findBeforeCreateAccounting(LocalDateTime payDate);
 }
 

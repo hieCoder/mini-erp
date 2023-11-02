@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.user.*;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.FullnameAndAvatarResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
@@ -137,6 +138,15 @@ public class UserConverter {
         return IdAndFullnameUserResponse.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
+                .build();
+    }
+
+    public FullnameAndAvatarResponse toFullnameAndAvatarResponse(User user) {
+        if(user == null) return null;
+        return FullnameAndAvatarResponse.builder()
+                .id(user.getId())
+                .fullname(user.getFullname())
+                .avatar(FileUtils.getPathUpload(User.class, user.getAvatar()))
                 .build();
     }
 }

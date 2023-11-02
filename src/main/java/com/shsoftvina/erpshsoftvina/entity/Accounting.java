@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class Accounting {
     private String id;
     private LocalDateTime createdDate;
+    private LocalDateTime payDate;
     private Long expense;
     private Long remain;
     private User user;
