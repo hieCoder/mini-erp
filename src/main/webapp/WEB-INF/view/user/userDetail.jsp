@@ -18,11 +18,11 @@
             <div class="overlay-content">
                 <div class="text-end p-3">
                     <div class="p-0 ms-auto rounded-circle profile-photo-edit">
-                        <input id="profile-foreground-img-file-input" type="file"
-                               class="profile-foreground-img-file-input">
-                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
-                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
-                        </label>
+<%--                        <input id="profile-foreground-img-file-input" type="file"--%>
+<%--                               class="profile-foreground-img-file-input">--%>
+<%--                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">--%>
+<%--                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover--%>
+<%--                        </label>--%>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
             </div>
             <!--end card-->
             <%--========================== Working Day =================================--%>
-            <div class="card">
+            <div class="card hide">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-grow-1">
@@ -95,7 +95,7 @@
                                 <i class="fas fa-home"></i> Basic Information
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item hide">
                             <a class="nav-link" data-bs-toggle="tab" href="#detailInformationSession" role="tab">
                                 <i class="far fa-user"></i> Detail Information
                             </a>
@@ -105,7 +105,7 @@
                                 <i class="far fa-envelope"></i> Resume
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item hide">
                             <a class="nav-link" data-bs-toggle="tab" href="#contractSession" role="tab">
                                 <i class="far fa-envelope"></i> Contract
                             </a>
@@ -160,9 +160,9 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="timeSheetsCode" class="form-label">TimeSheets Code</label>
-                                        <input type="text" class="form-control" placeholder="Enter TimeSheets Code"
+                                        <input type="text" class="form-control"
                                                id="timeSheetsCode" name="timesheetsCode" value="${user.timesheetsCode}"
-                                               autocomplete="false">
+                                               readonly disabled>
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-6">
@@ -186,7 +186,7 @@
                                         <button type="submit" class="btn btn-primary isSuccessUpdate"
                                         >Updates
                                         </button>
-                                        <button type="button" class="btn btn-soft-success" cancle-button>Cancel</button>
+                                        <a  class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
                                 </div>
                             </div><!--end row-->
@@ -339,7 +339,7 @@
                                         <button type="submit" class="btn btn-primary isSuccessUpdate"
                                                 id="detailUserBtn">Updates
                                         </button>
-                                        <button type="button" class="btn btn-soft-success cancle-button">Cancel</button>
+                                        <a  class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
 
                                 </div>
@@ -376,7 +376,7 @@
 
                             <div class="hstack gap-2 justify-content-end">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <button type="button" class="btn btn-soft-success">Cancel</button>
+                                <a  class="btn btn-soft-success cancle-button">Cancel</a>
                             </div>
 
                         </div>
@@ -413,7 +413,8 @@
                                             <c:forEach var="contract" items="${contracts}">
                                                 <tr>
                                                     <td>${contract.basicSalary}</td>
-                                                    <td class="format-allowance">${contract.allowance}</td>
+                                                    <td class="format-allowance" data-simplebar
+                                                        style="max-height: 200px;">${contract.allowance}</td>
                                                     <td>${contract.insuranceType.name}</td>
                                                     <td>${contract.insuranceMoney}</td>
                                                     <td>
@@ -427,21 +428,21 @@
                                                         </a>
                                                     </td>
 
-                                                    <td style="max-width: 115px;">
+                                                    <td style="max-width: 125px">
                                                         <div class="row">
                                                             <div class="col-lg-12 text-center">
                                                                 <button value="${contract.id}"
-                                                                        class="btn btn-success">
+                                                                        class="btn btn-success edit-contract-btn">
                                                                     Edit
                                                                 </button>
                                                                 <button value="${contract.id}"
-                                                                        class="btn btn-danger "
+                                                                        class="btn btn-danger del-contract-btn"
                                                                 >Remove
                                                                 </button>
                                                             </div>
                                                             <div class="col-lg-12 mt-2 text-center">
                                                                 <button value="${contract.id}"
-                                                                        class="btn btn-warning w-lg"
+                                                                        class="btn btn-warning w-lg history-contract-button"
                                                                 >History Update
                                                                 </button>
                                                             </div>
@@ -503,7 +504,7 @@
     </div>
 </footer>
 
-<%--Modal add contract--%>
+<%--Modal Add Contract--%>
 <form id="formAddContract">
     <div class="modal fade" id="addContractModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -625,7 +626,120 @@
         </div>
     </div>
 </form>
-<%-- Modal delete contract --%>
+
+<%--Modal Edit Contract--%>
+<form id="editContractForm">
+    <div class="modal fade" id="editContractModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light p-3">
+                    <h5 class="modal-title">Edit Contract</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    ></button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editBasicSalary" class="form-label">Basic Salary:</label>
+                            <input type="text" class="form-control" id="editBasicSalary" name="basicSalary"
+                                   oninput="formatCurrency(this)" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label>Allowance:</label>
+                            <button type="button" class="btn btn-primary waves-effect waves-light"
+                                    id="edit-allowance-btn">Edit Allowance
+                            </button>
+                            <div class="p-3 mt-2 border bg-light" id="editAllowanceSession"
+                                 style="display: none; max-height: 255px" data-simplebar>
+                                <div id="exitElement">
+
+                                </div>
+                                <div class="row mt-2" id="editionalInputs">
+
+
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <button type="button" id="editAllowanceButton"
+                                                    class="btn btn-success waves-effect waves-light"
+                                                    onclick="editInput()">
+                                                <i class="ri-add-line align-bottom me-1"></i> Allowance
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editInsuranceType" class="form-label">Insurance Type</label>
+                            <select class="form-control" id="editInsuranceType" name="insuranceType" required>
+                                <option value="HEALTH_INSURANCE">Health insurance</option>
+                                <option value="SOCIAL_INSURANCE">Social insurance</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editInsuranceMoney" class="form-label">Insurance Money:</label>
+                            <input type="text" class="form-control" id="editInsuranceMoney" name="insuranceMoney"
+                                   oninput="formatCurrency(this)" required>
+                            <small class="form-message"></small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editContract">Contract</label>
+                            <input type="file" class="form-control mt-2" id="editContract" name="contract">
+                            <small class="text-muted ml-2">Choose Contract File</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="hstack gap-2 justify-content-end">
+                            <button type="submit" class="btn btn-success" id="edit-confirm-btn">Confirm</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+
+<%--Modal History Contract--%>
+<div class="modal fade" id="contractHistoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title">History Contract</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                ></button>
+            </div>
+            <form>
+                <div class="modal-body border" data-simplebar style="max-height: 650px">
+                    <table class="table align-middle table-nowrap table-striped-columns"
+                           id="table-history-contract" style="width: 100%;">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Basic Salary</th>
+                            <th>Allowance</th>
+                            <th>Insurance Type</th>
+                            <th>Insurance Money</th>
+                            <th>Contract</th>
+                            <th>Create Date</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<%-- Modal Delete Contract --%>
 <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -665,9 +779,8 @@
                     <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
                                colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                     <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                        <h4>Are you Sure ?</h4>
-                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this User ?
-                            You won't be able to revert this!</p>
+                        <h4>Are you sure delete this user?</h4>
+                        <p class="text-muted mx-4 mb-0">You won't be able to revert this!</p>
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
@@ -962,42 +1075,19 @@
                 var newPassword = document.getElementById('newPassword').value;
                 if (newPassword != '' && isFormValid == true) {
                     callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-                        localStorage.setItem('result', 'updateSuccess');
+                        localStorage.setItem('result', 'updateUserSuccess');
                         location.href = "/users/" + '${user.id}';
                     }, 'formUpdateUser');
                 }
             } else {
                 formData.delete('password');
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
-                    localStorage.setItem('result', 'updateSuccess');
+                    localStorage.setItem('result', 'updateUserSuccess');
                     location.href = "/users/" + '${user.id}';
                 }, 'formUpdateUser');
             }
         }
     });
-
-    // Show result update
-    document.addEventListener("DOMContentLoaded", function () {
-        if (localStorage.getItem('result') == 'updateSuccess') notificationUpdate();
-        localStorage.clear()
-    });
-
-    // Create Notification Update Success
-    function notificationUpdate() {
-        Swal.fire(
-            {
-                title: 'Good job!',
-                text: 'You clicked the button!',
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-                cancelButtonClass: 'btn btn-danger w-xs mt-2',
-                buttonsStyling: false,
-                showCloseButton: true
-            }
-        )
-
-    }
 
     // Handle when user click button "Confirm Delete User"
     document.addEventListener("DOMContentLoaded", function () {
@@ -1010,7 +1100,7 @@
         deleteUserButtons.addEventListener("click", function () {
             if (userId) {
                 callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
-                    sessionStorage.setItem('result', 'deleteSuccess');
+                    localStorage.setItem('result', 'delUserSuccess');
                     window.location.href = "/users";
                 });
             }
@@ -1109,10 +1199,10 @@
         input.value = value;
     }
 
+    // Format File Name Contract
     document.addEventListener("DOMContentLoaded", function () {
-
         var elementContract = document.querySelectorAll('a.contractLink');
-        elementContract.forEach(function(link) {
+        elementContract.forEach(function (link) {
             var href = link.getAttribute('href');
             var fileName = href.split('/').pop();
             var truncatedFileName;
@@ -1121,26 +1211,26 @@
             }
             link.textContent = truncatedFileName;
         });
-
     });
 
+    // Format Allowance
+    document.addEventListener("DOMContentLoaded", function () {
+        var tdElements = document.getElementsByClassName('format-allowance');
+        for (var i = 0; i < tdElements.length; i++) {
+            var tdElement = tdElements[i];
+            var jsonText = tdElement.textContent;
 
-    <%--    // Handle when user click button "Edit Allowance"--%>
-    <%--    document.getElementById("showEditFields").addEventListener("click", function () {--%>
-    <%--        var editFields = document.getElementById("editFields");--%>
-    <%--        if (editFields.style.display === "none" || editFields.style.display === "") {--%>
-    <%--            editFields.style.display = "block";--%>
-    <%--        } else {--%>
-    <%--            editFields.style.display = "none";--%>
-    <%--        }--%>
-    <%--    });--%>
+            tdElement.innerHTML = allowanceFormat(jsonText);
+        }
+    });
 
     // Handle when user click button "+ Allowance"
     let addedInputCount = 0;
+    let editInputCount = 0;
 
     // Add input allowance
     function addInput() {
-        if (addedInputCount < 3) {
+        if (addedInputCount < 4) {
             const additionalInputs = document.getElementById("additionalInputs");
             const newInput = document.createElement("div");
             newInput.classList.add('row', 'mt-2', 'newAllowance');
@@ -1176,8 +1266,51 @@
                 });
             });
 
-            if (addedInputCount === 3) {
+            if (addedInputCount === 4) {
                 document.getElementById('addAllowanceButton').style.display = 'none';
+            }
+        }
+    }
+
+    function editInput() {
+        if (editInputCount < 4) {
+            const edititionalInputs = document.getElementById("editionalInputs");
+            const newInput = document.createElement("div");
+            newInput.classList.add('row', 'mt-2', 'newAllowance');
+            newInput.innerHTML = `
+                   <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control newTitle" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="value">Value</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control newValue" oninput="formatCurrency(this)" required>
+                                    <div class="input-group-append ml-2">
+                                        <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput2(this)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            `;
+
+            edititionalInputs.appendChild(newInput);
+            editInputCount++;
+            var btnDelAllowance = document.querySelectorAll('.deleteBtnAllowance');
+
+            btnDelAllowance.forEach(function (button, i) {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                });
+            });
+
+            if (editInputCount == 4) {
+                document.getElementById('editAllowanceButton').style.display = 'none';
             }
         }
     }
@@ -1186,7 +1319,14 @@
     function delInput(element) {
         addedInputCount--;
         element.closest('.newAllowance').remove();
-        if (addedInputCount < 3) document.getElementById('addAllowanceButton').style.display = 'inline-block';
+        if (addedInputCount < 4) document.getElementById('addAllowanceButton').style.display = 'inline-block';
+    }
+
+    // Delete input Allowance when click 'X'
+    function delInput2(element) {
+        editInputCount--;
+        element.closest('.newAllowance').remove();
+        if (editInputCount < 4) document.getElementById('edit-allowance-btn').style.display = 'inline-block';
     }
 
     // Show modal Add Contract
@@ -1206,255 +1346,278 @@
             var uniform = document.getElementById('uniform').value;
             var attendance = document.getElementById('attendance').value;
             var other = document.getElementById('other').value;
-
-            formData.append('userId', '${user.id}');
-            formData.append('allowance', JSON.stringify({
+            var titles = document.querySelectorAll('.title');
+            var values = document.querySelectorAll('.value');
+            var formDataObject = {
                 "Telephone": telPhone,
                 "Meal": meal,
                 "Gasoline": gasoline,
                 "Uniform": uniform,
                 "Attendance": attendance,
                 "Other": other
-            }));
+            };
+
+            if (titles.length === values.length && titles.length > 0 && values.length > 0) {
+                for (var i = 0; i < titles.length; i++) {
+                    formDataObject[titles[i].value] = values[i].value;
+                }
+            }
+
+            formData.append('userId', '${user.id}');
+            formData.set('allowance', JSON.stringify(formDataObject));
+
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-                console.log(123);
-                location.reload();
+                formData.append('parentId', rs.id);
+                callAnotherAjax();
+
             }, 'formAddContract');
+            function callAnotherAjax() {
+                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
+                    localStorage.setItem('result', 'addContractSuccess');
+                    location.reload();
+                }, 'formAddContract');
+            }
+            console.log(id);
         }
+    });
+
+    // Handle when user click 'Edit Contract' button
+    document.addEventListener("DOMContentLoaded", function () {
+        // Hand button Edit Allowance
+        document.getElementById('edit-allowance-btn').addEventListener('click', function () {
+            var elementAllowance = document.getElementById('editAllowanceSession');
+            if (elementAllowance.style.display == 'none') elementAllowance.style.display = 'block';
+            else elementAllowance.style.display = 'none';
+        });
+
+        var editContractBtn = document.querySelectorAll('.edit-contract-btn');
+        editContractBtn.forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                var editContractId = this.value;
+                e.preventDefault();
+                $('#editContractModal').modal('show');
+                callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
+                    document.getElementById("editBasicSalary").value = rs.basicSalary;
+                    var allowance = JSON.parse(rs.allowance);
+
+                    var divRow;
+                    var count = 0;
+
+                    var exitElement = document.getElementById('exitElement');
+                    if (exitElement.querySelectorAll('.row').length > 0) $('#exitElement').empty();
+
+                    for (var key in allowance) {
+                        if (allowance.hasOwnProperty(key)) {
+                            var value = allowance[key];
+
+                            if (count % 2 === 0) {
+                                divRow = document.createElement("div");
+                                divRow.className = "row";
+                            }
+
+                            var divCol = document.createElement("div");
+                            divCol.className = "col";
+
+                            var formGroupLabel = document.createElement("div");
+                            formGroupLabel.className = "form-group";
+
+                            var label = document.createElement("label");
+                            label.setAttribute("for", "edit" + key);
+                            label.classList.add("form-label", "mt-2", "title");
+                            label.textContent = key;
+
+                            var input = document.createElement("input");
+                            input.setAttribute("type", "text");
+                            input.classList.add("form-control", "value");
+                            input.id = "edit" + key;
+                            input.value = value;
+                            input.setAttribute("oninput", "formatCurrency(this)");
+                            input.required = true;
+
+                            var small = document.createElement("small");
+                            small.className = "form-message";
+
+                            small.appendChild(document.createTextNode(""));
+                            formGroupLabel.appendChild(label);
+                            formGroupLabel.appendChild(input);
+                            formGroupLabel.appendChild(small);
+                            divCol.appendChild(formGroupLabel);
+                            divRow.appendChild(divCol);
+
+                            if (count % 2 === 1 || count === Object.keys(allowance).length - 1) {
+                                document.getElementById("exitElement").appendChild(divRow);
+                            }
+                            count++;
+                        }
+                    }
+
+                    var selectElement = document.getElementById("editInsuranceType");
+                    var editInsuranceType = rs.insuranceType.name;
+                    for (var i = 0; i < selectElement.options.length; i++) {
+                        if (selectElement.options[i].text === editInsuranceType) {
+                            selectElement.insertBefore(selectElement.options[i], selectElement.options[0]);
+                            break;
+                        }
+                    }
+                    selectElement.selectedIndex = 0;
+                    document.getElementById("editInsuranceMoney").value = rs.insuranceMoney;
+
+                });
+
+
+                if (editContractId) {
+                    Validator({
+                        form: '#editContractForm',
+                        errorSelector: '.form-message',
+                        rules: [],
+                        onSubmit: function (formData) {
+                            var formUpdateContract = document.getElementById('editContractForm');
+                            var titles = formUpdateContract.querySelectorAll('.title');
+                            var values = formUpdateContract.querySelectorAll('.value');
+                            var newTitles = formUpdateContract.querySelectorAll('.newTitle');
+                            var newValues = formUpdateContract.querySelectorAll('.newValue');
+                            var formDataObject = {};
+
+                            if (titles.length === values.length && titles.length > 0 && values.length > 0) {
+                                for (var i = 0; i < titles.length; i++) {
+                                    formDataObject[titles[i].textContent] = values[i].value;
+                                }
+                            }
+                            if (newTitles.length === newValues.length && newTitles.length > 0 && newValues.length > 0) {
+                                for (var j = 0; j < newTitles.length; j++) {
+                                    formDataObject[newTitles[j].value] = newValues[j].value;
+                                }
+                            }
+
+                            formData.append('allowance', JSON.stringify(formDataObject));
+                            formData.append('userId', '${user.id}');
+                            formData.append('parentId', editContractId);
+                            callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
+
+                            }, 'formAddContract');
+
+                            formData.delete('parentId');
+                            formData.delete('userId');
+                            formData.append('id', editContractId);
+                            callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
+                                localStorage.setItem("result", "updateContractSuccess");
+                                location.reload();
+                            }, 'editContractForm');
+                        }
+                    });
+                }
+            })
+        });
+    });
+
+    // Handle when user Delete Contract
+    document.addEventListener("DOMContentLoaded", function () {
+        var delContractBtn = document.querySelectorAll('.del-contract-btn');
+        delContractBtn.forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                var delContractId = this.value;
+                e.preventDefault();
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+                    cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                    confirmButtonText: "Yes, delete it!",
+                    buttonsStyling: false,
+                    showCloseButton: true
+                }).then(function (result) {
+                    if (result.value) {
+                        callAjaxByJsonWithData('/api/v1/contracts/' + delContractId, 'DELETE', null, function (rs) {
+                            localStorage.setItem('result', 'delContractSuccess');
+                            location.reload();
+                        });
+                    }
+                });
+            })
+        });
     });
 
     // Handle when user click 'History Update' button
     document.addEventListener("DOMContentLoaded", function () {
-        var tdElements = document.getElementsByClassName('format-allowance');
-        for (var i = 0; i < tdElements.length; i++) {
-            var tdElement = tdElements[i];
-            var jsonText = tdElement.textContent;
 
-            tdElement.innerHTML = allowanceFormat(jsonText);
-        }
-        // var historyButtons = document.querySelectorAll('.history-contract-button');
-        // var contractIdHistory;
+        var historyButtons = document.querySelectorAll('.history-contract-button');
+        var contractIdHistory;
 
-        // historyButtons.forEach(function (button) {
-        //     button.addEventListener('click', function () {
-        //         contractIdHistory = button.value;
-        //         $('#contractHistoryModal').modal('show');
-        //
-        //         if ($.fn.DataTable.isDataTable('#table-history-contract')) {
-        //             $('#table-history-contract').DataTable().destroy();
-        //         }
-        //
-        //         if (contractIdHistory) {
-        //             table = $('#table-history-contract').DataTable({
-        //                 ajax: {
-        //                     url: '/api/v1/contracts/' + contractIdHistory,
-        //                     contentType: 'application/json',
-        //                     method: 'GET',
-        //                     dataSrc: 'historyContract'
-        //                 },
-        //                 columns: [
-        //                     {data: 'basicSalary'},
-        //                     {
-        //                         data: 'allowance',
-        //                         render: function (data, type, row) {
-        //                             return allowanceFormat(data);
-        //                         }
-        //                     },
-        //                     {data: 'insuranceType.name'},
-        //                     {data: 'insuranceMoney'},
-        //                     {
-        //                         data: 'contract',
-        //                         render: function (data, type, row) {
-        //                             if (data != null) {
-        //                                 return '<a class="cut-file-name" href="' + data + '">' + data + '</a>';
-        //                             }
-        //                             return '';
-        //                         }
-        //                     },
-        //                     {data: 'createdDate'}
-        //                 ],
-        //                 ordering: false,
-        //                 searching: false,
-        //                 lengthChange: false,
-        //                 paging: false,
-        //                 info: false,
-        //                 initComplete: function () {
-        //                     cutShortLink();
-        //                 }
-        //             });
-        //         }
-        //     });
-        // });
+        historyButtons.forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                contractIdHistory = button.value;
+                $('#contractHistoryModal').modal('show');
+                e.preventDefault();
+                if ($.fn.DataTable.isDataTable('#table-history-contract')) {
+                    $('#table-history-contract').DataTable().destroy();
+                }
+
+                if (contractIdHistory) {
+                    table = $('#table-history-contract').DataTable({
+                        ajax: {
+                            url: '/api/v1/contracts/' + contractIdHistory,
+                            contentType: 'application/json',
+                            method: 'GET',
+                            dataSrc: 'historyContract'
+                        },
+                        columns: [
+                            {data: 'basicSalary'},
+                            {
+                                data: 'allowance',
+                                render: function (data, type, row) {
+                                    return allowanceFormat(data);
+                                }
+                            },
+                            {data: 'insuranceType.name'},
+                            {data: 'insuranceMoney'},
+                            {
+                                data: 'contract',
+                                render: function (data, type, row) {
+                                    if (data != null) {
+                                        return '<a class="cut-file-name" href="' + data + '">' + data + '</a>';
+                                    }
+                                    return '';
+                                }
+                            },
+                            {data: 'createdDate'}
+                        ],
+                        ordering: false,
+                        searching: false,
+                        lengthChange: false,
+                        paging: false,
+                        info: false,
+                        initComplete: function () {
+                            cutShortLink();
+                        }
+                    });
+                }
+
+            });
+        });
     });
-
-    <%--    // Handle when user click button "Edit Contract"--%>
-    <%--    document.addEventListener("DOMContentLoaded", function () {--%>
-    <%--        var editButtons = document.querySelectorAll(".edit-contract-button");--%>
-    <%--        var contractIdEdit;--%>
-
-    <%--        // Show modal Edit Contract--%>
-    <%--        editButtons.forEach(function (button) {--%>
-    <%--            button.addEventListener("click", function () {--%>
-    <%--                contractIdEdit = button.value;--%>
-    <%--                $("#editContractModal").modal("show");--%>
-
-    <%--                if (contractIdEdit) {--%>
-
-    <%--                    callAjaxByJsonWithData('/api/v1/contracts/' + contractIdEdit, 'GET', null, function (rs) {--%>
-    <%--                        var responseData = rs--%>
-
-    <%--                        // Đổ dữ liệu từ API vào các trường của modal--%>
-    <%--                        document.getElementById("editBasicSalary").value = responseData.basicSalary;--%>
-    <%--                        // document.getElementById("editAllowance").value = responseData.allowance;--%>
-    <%--                        var allowance = JSON.parse(responseData.allowance);--%>
-    <%--                        document.getElementById('editTelephone').value = allowance.Telephone;--%>
-    <%--                        document.getElementById('editMeal').value = allowance.Meal;--%>
-    <%--                        document.getElementById('editGasoline').value = allowance.Gasoline;--%>
-    <%--                        document.getElementById('editUniform').value = allowance.Uniform;--%>
-    <%--                        document.getElementById('editAttendance').value = allowance.Attendance;--%>
-    <%--                        document.getElementById('editOther').value = allowance.Other;--%>
-
-    <%--                        var selectElement = document.getElementById("editInsuranceType");--%>
-    <%--                        var editInsuranceType = responseData.insuranceType.name;--%>
-    <%--                        for (var i = 0; i < selectElement.options.length; i++) {--%>
-    <%--                            if (selectElement.options[i].text === editInsuranceType) {--%>
-    <%--                                // Option đã tồn tại, di chuyển option đó lên đầu--%>
-    <%--                                selectElement.insertBefore(selectElement.options[i], selectElement.options[0]);--%>
-    <%--                                break;--%>
-    <%--                            }--%>
-    <%--                        }--%>
-    <%--                        selectElement.selectedIndex = 0;--%>
-
-    <%--                        document.getElementById("editInsuranceMoney").value = responseData.insuranceMoney;--%>
-    <%--                    });--%>
-    <%--                }--%>
-    <%--            });--%>
-    <%--        });--%>
-    <%--    });--%>
-
-    <%--    // Handle when user click button "Confirm Edit Contract"--%>
-    <%--    document.addEventListener('DOMContentLoaded', function () {--%>
-    <%--        var confirmButton = document.getElementById("confirmContractButton");--%>
-    <%--        var contractId = document.querySelectorAll(".edit-contract-button");--%>
-    <%--        var contractIdValue;--%>
-
-    <%--        contractId.forEach(function (button) {--%>
-    <%--            button.addEventListener("click", function () {--%>
-    <%--                contractIdValue = button.value;--%>
-    <%--            });--%>
-    <%--        });--%>
-
-    <%--        Validator({--%>
-    <%--            form: '#editContractForm',--%>
-    <%--            errorSelector: '.form-message',--%>
-    <%--            rules: [--%>
-    <%--                Validator.isRequired('#editBasicSalary'),--%>
-    <%--                Validator.isRequired('#editInsuranceMoney')--%>
-    <%--            ],--%>
-    <%--            onSubmit: function (formData) {--%>
-
-    <%--                $('.container-button-edit-contract').after(createLoadingHtml());--%>
-
-    <%--                var telPhone = document.getElementById('editTelephone').value;--%>
-    <%--                var meal = document.getElementById('editMeal').value;--%>
-    <%--                var gasoline = document.getElementById('editGasoline').value;--%>
-    <%--                var uniform = document.getElementById('editUniform').value;--%>
-    <%--                var attendance = document.getElementById('editAttendance').value;--%>
-    <%--                var other = document.getElementById('editOther').value;--%>
-
-    <%--                formData.append('allowance', JSON.stringify({--%>
-    <%--                    "Telephone": telPhone,--%>
-    <%--                    "Meal": meal,--%>
-    <%--                    "Gasoline": gasoline,--%>
-    <%--                    "Uniform": uniform,--%>
-    <%--                    "Attendance": attendance,--%>
-    <%--                    "Other": other--%>
-    <%--                }));--%>
-
-
-    <%--                formData.append('userId', '${user.id}');--%>
-    <%--                formData.append('parentId', contractIdValue);--%>
-    <%--                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {--%>
-
-    <%--                }, 'formAddContract');--%>
-
-    <%--                formData.delete('parentId');--%>
-    <%--                formData.delete('userId');--%>
-    <%--                formData.append('id', contractIdValue);--%>
-    <%--                callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {--%>
-    <%--                    sessionStorage.setItem('result', 'editContractSuccess');--%>
-    <%--                    localStorage.setItem("showModal", "true");--%>
-    <%--                    location.reload();--%>
-    <%--                }, 'editContractForm');--%>
-    <%--            }--%>
-    <%--        });--%>
-    <%--    });--%>
-
-    <%--    // Handle when user click button "Confirm Delete Contract"--%>
-    <%--    document.addEventListener("DOMContentLoaded", function () {--%>
-    <%--        var deleteButtons = document.querySelectorAll(".delete-contract-button");--%>
-    <%--        var confirmButton = document.querySelector(".confirm-delete-button");--%>
-    <%--        var contractIdToDelete;--%>
-
-    <%--        // Xử lý khi nút Delete được nhấn--%>
-    <%--        deleteButtons.forEach(function (button) {--%>
-    <%--            button.addEventListener("click", function () {--%>
-    <%--                contractIdToDelete = button.value;--%>
-
-    <%--                // Đặt trạng thái hiển thị modal trong Local Storage thành true--%>
-    <%--                localStorage.setItem("showModal", "true");--%>
-    <%--                $("#deleteContractModal").modal("show");--%>
-    <%--            });--%>
-    <%--        });--%>
-
-    <%--        // Xử lý khi nút Confirm được nhấn trong modal--%>
-    <%--        confirmButton.addEventListener("click", function () {--%>
-    <%--            if (contractIdToDelete) {--%>
-    <%--                $('.container-button-delete-contract').after(createLoadingHtml());--%>
-    <%--                callAjaxByJsonWithData('/api/v1/contracts/' + contractIdToDelete, 'DELETE', null, function (rs) {--%>
-    <%--                    sessionStorage.setItem('result', 'deleteContractSuccess');--%>
-    <%--                    localStorage.setItem("showModal", "true");--%>
-    <%--                    location.reload();--%>
-    <%--                });--%>
-    <%--            }--%>
-    <%--        });--%>
-    <%--    });--%>
-    <%--    window.onload = function () {--%>
-    <%--        // Show Modal when page reload--%>
-    <%--        if (localStorage.getItem("showModal") === "true") {--%>
-    <%--            $("#contractModal").modal("show");--%>
-    <%--            // Đặt trạng thái hiển thị modal trong Local Storage thành false để tránh hiển thị lần tiếp theo--%>
-    <%--            localStorage.setItem("showModal", "false");--%>
-    <%--        }--%>
-    <%--    };--%>
-
-    <%--</script>--%>
-
-    <%--&lt;%&ndash;Handle Role&ndash;%&gt;--%>
-    <%--<script>--%>
-    <%--    document.addEventListener("DOMContentLoaded", function () {--%>
-
-    <%--        if (isDeleveloper()) {--%>
-    <%--            $('.hide').remove();--%>
-    <%--            $('#delUser').remove();--%>
-    <%--        } else {--%>
-    <%--            $('.hide').css('display', 'block');--%>
-    <%--        }--%>
-    <%--    });--%>
 </script>
+
+<%--Handle Role--%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (userCurrent.role == 'DEVELOPER') {
+            $('.hide').remove();
+            $('#del-user-button').remove();
+        }
+    });
+</script>
+
+<%-- Pagination --%>
 <script>
     $(document).ready(function () {
-        // Số lượng bản ghi trên mỗi trang
         var recordsPerPage = 3;
-        // Số lượng bản ghi trong danh sách
         var totalRecords = ${contracts.size()};
-        // Tính toán số lượng trang
         var totalPages = Math.ceil(totalRecords / recordsPerPage);
 
-        // Mặc định hiển thị trang đầu tiên
         showPage(1);
 
-        // Xử lý sự kiện khi người dùng nhấn vào nút "Next"
         $("#nextPage").click(function () {
             var currentPage = parseInt($("#pagination .active").text());
             if (currentPage < totalPages) {
@@ -1462,7 +1625,6 @@
             }
         });
 
-        // Xử lý sự kiện khi người dùng nhấn vào nút "Previous"
         $("#prevPage").click(function () {
             var currentPage = parseInt($("#pagination .active").text());
             if (currentPage > 1) {
@@ -1470,38 +1632,82 @@
             }
         });
 
-        // Xử lý hiển thị các bản ghi trên trang cụ thể
+        $("#pagination").on("click", "a.page-link", function () {
+            var page = parseInt($(this).text());
+            showPage(page);
+        });
+
         function showPage(page) {
             var startIndex = (page - 1) * recordsPerPage;
             var endIndex = startIndex + recordsPerPage;
 
-            // Hiển thị chỉ các bản ghi trong khoảng từ startIndex đến endIndex
             $("#customerTable tbody tr").hide();
             $("#customerTable tbody tr").slice(startIndex, endIndex).show();
 
-            // Cập nhật phân trang
             updatePagination(page);
         }
 
-        // Cập nhật phân trang với trang hiện tại
         function updatePagination(currentPage) {
             $("#pagination").empty();
 
-            // Hiển thị nút "Previous" nếu không phải trang đầu tiên
             if (currentPage > 1) {
                 $("#pagination").append('<li class="page-item"><a href="#" class="page-link">' + (currentPage - 1) + '</a></li>');
             }
 
-            // Hiển thị trang hiện tại
             $("#pagination").append('<li class="page-item active"><a href="#" class="page-link">' + currentPage + '</a></li>');
 
-            // Hiển thị nút "Next" nếu không phải trang cuối cùng
             if (currentPage < totalPages) {
                 $("#pagination").append('<li class="page-item"><a href="#" class="page-link">' + (currentPage + 1) + '</a></li>');
             }
         }
     });
+</script>
 
+<%--Notification--%>
+<script>
+    // Show modal notification
+    document.addEventListener("DOMContentLoaded", function () {
+        var result = localStorage.getItem('result');
+        if (result != null) notificationSuccess(localStorage.getItem('result'));
+        localStorage.clear()
+    });
+
+    // Notification Success
+    function notificationSuccess(result) {
+        var title;
+        var text;
+        var contractTab = document.querySelector('a[data-bs-toggle="tab"][href="#contractSession"]');
+        switch (result) {
+            case 'updateUserSuccess':
+                title = 'Update Success';
+                break;
+            case 'addContractSuccess':
+                title = 'Add Success';
+                contractTab.click();
+                break;
+            case 'updateContractSuccess':
+                title = 'Update Success';
+                contractTab.click();
+                break;
+            case 'delContractSuccess':
+                title = 'Deleted!';
+                text = 'Your file has been deleted.';
+                contractTab.click();
+                break;
+        }
+        Swal.fire(
+            {
+                title: title,
+                text: text,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+                cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                buttonsStyling: false,
+                showCloseButton: true
+            }
+        )
+    }
 </script>
 </body>
 </html>

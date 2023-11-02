@@ -39,7 +39,6 @@
             resume = #{resume},
             address = #{address},
             is_first_update_profile = #{isFirstUpdateProfile},
-            timesheets_code = #{timesheetsCode},
             gender = #{gender}
         WHERE id = #{id}
     </update>
@@ -96,7 +95,6 @@
             address = #{address},
             resume = #{resume},
             is_first_update_profile = #{isFirstUpdateProfile},
-            timesheets_code = #{timesheetsCode},
             gender = #{gender}
         WHERE id = #{id};
     </update>
