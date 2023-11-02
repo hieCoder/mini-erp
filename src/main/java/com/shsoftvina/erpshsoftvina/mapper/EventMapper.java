@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface EventMapper {
-    List<Event> getAllEventsByMonth(@Param("month") String month);
+    List<Event> getAllEventsByMonth(@Param("monthly") String month);
 
     void deleteEvent(@Param("id") String id);
 

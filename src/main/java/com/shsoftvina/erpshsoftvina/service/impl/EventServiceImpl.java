@@ -22,8 +22,8 @@ public class EventServiceImpl implements EventService {
     @Autowired
     private EventConverter eventConverter;
     @Override
-    public List<EventResponse> getAllEventsByMonth(String month) {
-        List<Event> events = eventMapper.getAllEventsByMonth(month);
+    public List<EventResponse> getAllEventsByMonth(String monthly) {
+        List<Event> events = eventMapper.getAllEventsByMonth(monthly);
         return eventConverter.convertToResponse(events);
     }
 
