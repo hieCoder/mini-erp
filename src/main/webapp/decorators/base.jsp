@@ -781,8 +781,8 @@
 
 <%--<!-- Dashboard init -->--%>
 <%--<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>--%>
-<!-- App js -->
-<script src="/assets/js/app.js"></script>
+<%--<!-- App js -->--%>
+<%--<script src="/assets/js/app.js"></script>--%>
 
 <%-- Custom --%>
 <script src="/assets/custom/js/main.js"></script>

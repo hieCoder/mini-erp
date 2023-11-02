@@ -725,7 +725,7 @@
     let listTypeFile = ""
     listTypeFileArr.forEach((item, index)=>{
         listTypeFile += "." + item
-        if(index<listTypeFileArr.length){
+        if(index<(listTypeFileArr.length-1)){
             listTypeFile += ","
         }
     })
@@ -763,7 +763,7 @@
             showAlertValidate(INVALID_FILES_TYPE)
             return
         }
-        if(!checkLimitSize(bytesToMB(fileSize),parseInt(maxFileSize))){
+        if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
             dropzoneEdit.removeFile(file)
             showAlertValidate(INVALID_FILES_SIZE)
             return
