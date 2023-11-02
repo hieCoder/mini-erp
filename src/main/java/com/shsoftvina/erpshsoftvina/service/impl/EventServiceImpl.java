@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.mapper.EventMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(String id) {
         eventMapper.deleteEvent(id);
+    }
+
+    @Override
+    public List<EventDashBoardResponse> getUpcomingEvent(String day) {
+        List<Event> events = eventMapper.getUpcomingEvents(day);
+        return eventConverter.convertToHomeResponse(events);
     }
 }

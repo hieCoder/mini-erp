@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,14 @@ public class EventApi {
         List<EventResponse> responseList = eventService.getAllEventsByMonth(month);
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<?> getUpcomingEvents(@RequestParam("day") String day) {
+        List<EventDashBoardResponse> responseList = eventService.getUpcomingEvent(day);
+//        DashBoardResponse dashBoardResponse =
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @PostMapping()
     public ResponseEntity<?> createEvent(@Valid EventCreateRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

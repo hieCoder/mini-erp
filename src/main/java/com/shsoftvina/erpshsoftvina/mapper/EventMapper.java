@@ -15,4 +15,6 @@ public interface EventMapper {
     void createEvent(Event event);
 
     void editEvent(Event event);
+
+    List<Event> getUpcomingEvents(@Param("day") String day);
 }

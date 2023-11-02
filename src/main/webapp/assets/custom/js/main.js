@@ -1,7 +1,7 @@
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
 const T_REGISTERED = 'REGISTERED';
-const T_POSTPONSED = 'POSTPONSED';
+const T_POSTPONED = 'POSTPONED';
 const T_CLOSED = 'CLOSED';
 
 const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
@@ -142,37 +142,6 @@ function bytesToMB(bytes) {
     return parseInt((bytes / (1024 * 1024)).toFixed(0))
 }
 
-function showFileUploaded(fileName, size, url) {
-
-    return "<div class='col-xxl-4 col-lg-6' data-name='" + fileName + "'>"
-        + "    <div class='border rounded border-dashed p-2'>"
-        + "        <div class='d-flex align-items-center'>"
-        + "            <div class='flex-shrink-0 me-3'>"
-        + "                <div class='avatar-sm'>"
-        + "                    <div class='avatar-title bg-light text-secondary rounded fs-24'>"
-        + "                        <i class='ri-file-download-line'></i>"
-        + "                    </div>"
-        + "                </div>"
-        + "            </div>"
-        + "            <div class='flex-grow-1 overflow-hidden'>"
-        + "                <h5 class='fs-13 mb-1'><a href='" + url + "' download data-toggle='tooltip' data-placement='bottom' title='" + fileName + "' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
-        + "                <div>" + bytesToMBShow(size) + " MB</div>"
-        + "            </div>"
-        + "            <div class='flex-shrink-0 ms-2'>"
-        + "                <div class='d-flex gap-1'>"
-        + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
-        + "                        <i class='ri-download-2-line' data-url='" + url + "'></i>"
-        + "                    </button>"
-        + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 deleteFileBtn'>"
-        + "                        <i class='ri-delete-bin-fill' data-name='" + fileName + "'></i>"
-        + "                    </button>"
-        + "                </div>"
-        + "            </div>"
-        + "        </div>"
-        + "    </div>"
-        + "</div>";
-}
-
 function downloadFiles(url) {
     var link = document.createElement('a');
     link.href = url;
@@ -246,8 +215,7 @@ function formatDateValueToValueOfInputDate(s) {
 
 function getFileNameFromPath(path) {
     var parts = path.split("/");
-    var lastPart = parts[parts.length - 1];
-    return lastPart;
+    return parts[parts.length - 1];
 }
 
 function isAdminOrUserLogin(idUser) {
@@ -330,9 +298,8 @@ function cutShortLink() {
                 } else {
                     truncatedFileName = remainingPart;
                 }
-            } else {
-                if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
-            }
+            } else if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
+            else truncatedFileName = fileName;
             element.textContent = truncatedFileName;
         }
     });
@@ -391,48 +358,6 @@ const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" sty
     '</span>' +
     '</span>' +
     '</button>';
-
-// function createLoadingIndicator() {
-//     if ($('#loading-indicator').length === 0) {
-//         var loadingIndicator = $('<div>', {
-//             id: 'loading-indicator',
-//             class: 'text-center',
-//             css: {
-//                 position: 'absolute',
-//                 top: '50%',
-//                 left: '50%',
-//                 transform: 'translate(-50%, -50%)'
-//             }
-//         });
-//
-//         var spinnerIcon = $('<i>', {
-//             class: 'fa fa-spinner fa-spin fa-3x'
-//         });
-//
-//         var loadingText = $('<p>', {
-//             text: 'Loading...'
-//         });
-//
-//         loadingIndicator.append(spinnerIcon, loadingText);
-//
-//         $('body').append(loadingIndicator);
-//     }
-// }
-//
-// function showLoading(contentId) {
-//     if ($('#loading-indicator').length === 0) {
-//         createLoadingIndicator();
-//     } else {
-//         $('#loading-indicator').show();
-//     }
-//
-//     $('#' + contentId).hide();
-// }
-//
-// function hideLoading(contentId) {
-//     $('#loading-indicator').hide();
-//     $('#' + contentId).show();
-// }
 
 async function handleFilesAsync(arrUrl, handleEachFunc) {
     var promises = arrUrl.map(function (url) {
