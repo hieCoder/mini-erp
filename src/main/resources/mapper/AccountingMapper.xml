@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AccountingMapper">
     <select id="findAllMonthlyHistory" resultMap="MonthYearFormatResultMap">
-        SELECT DISTINCT DATE_FORMAT(created_date, '%Y') AS year,
-        DATE_FORMAT(created_date, '%Y - %m') AS month_list
+        SELECT DISTINCT YEAR(created_date) AS year, DATE_FORMAT(created_date, '%m') AS month_list
         FROM ACCOUNTING
         WHERE status = 'ACTIVE'
-        ORDER BY created_date DESC
+        ORDER BY year DESC, month_list DESC
+
     </select>
     <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
         <id property="year" column="year" />
@@ -19,27 +19,27 @@
     <select id="getTotalRecordCountPerMonth" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ACCOUNTING
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
+        WHERE status ='ACTIVE'
         <choose>
             <when test="startDate != null and endDate != null">
                 <if test="startDate != null">
-                    AND created_date &gt;= #{startDate}
+                    AND pay_date &gt;= #{startDate}
                 </if>
-                AND created_date &lt;= #{endDate}
+                AND pay_date &lt;= #{endDate}
             </when>
             <when test="startDate != null and endDate == null">
-                AND created_date &gt;= #{startDate}
+                AND pay_date &gt;= #{startDate}
             </when>
             <when test="endDate != null and startDate == null">
-                AND created_date &lt;= #{endDate}
+                AND pay_date &lt;= #{endDate}
             </when>
         </choose>
     </select>
 
     <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
         INSERT
-        INTO ACCOUNTING (id,created_date,spending,remain, user_id, bill, title, status, note)
-        VALUES (#{id}, #{createdDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status}, #{note});
+        INTO ACCOUNTING (id,pay_date,spending,remain, user_id, bill, title, status, note,created_date)
+        VALUES (#{id}, #{payDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status}, #{note}, now());
     </insert>
 
     <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
@@ -65,21 +65,39 @@
     <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
         SELECT spending, remain, id
         FROM ACCOUNTING
-        WHERE created_date >= #{createdDate}
-        AND created_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
+        WHERE
+        <if test="payDate != null">
+            pay_date &gt;= #{payDate}
+            AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
+        </if>
+        <if test="payDate == null">
+            pay_date &gt;= LAST_DAY(CURRENT_DATE - INTERVAL 1 MONTH) + INTERVAL 1 DAY
+            AND pay_date &lt;= LAST_DAY(CURRENT_DATE)
+        </if>
           AND status ='ACTIVE'
-        ORDER BY created_date ASC
+        ORDER BY pay_date ASC
     </select>
 
-    <select id="findBeforeCurrentAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <select id="findBeforeCurrentAccounting" resultMap="accountingResultMap">
         SELECT spending, remain
         FROM ACCOUNTING
-        WHERE created_date &lt; #{createdDate}
-        AND created_date &gt;= DATE_FORMAT(#{createdDate}, '%Y-%m-01 00:00:00')
-        AND created_date &lt;= CONCAT(LAST_DAY(#{createdDate}), ' 23:59:59')
+        WHERE pay_date &lt; #{payDate}
+        AND pay_date &gt;= DATE_FORMAT(#{payDate}, '%Y-%m-01 00:00:00')
+        AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
         AND status = 'ACTIVE'
-        ORDER BY created_date DESC
+        ORDER BY pay_date DESC
         LIMIT 1;
+    </select>
+
+    <select id="findBeforeCreateAccounting" resultMap="accountingResultMap">
+        SELECT spending, remain
+        FROM ACCOUNTING
+        WHERE pay_date &lt; #{payDate}
+          AND pay_date &gt;= DATE_FORMAT(#{payDate}, '%Y-%m-01 00:00:00')
+          AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
+          AND status = 'ACTIVE'
+        ORDER BY pay_date DESC
+            LIMIT 1;
     </select>
 
     <select id="findAccountingByMonth" parameterType="org.apache.ibatis.session.RowBounds" resultMap="accountingResultMap" >
@@ -88,36 +106,50 @@
         INNER JOIN
         USER u
         ON a.user_id = u.id
-        WHERE DATE_FORMAT(a.created_date, '%Y-%m') = #{monthId} AND a.status ='ACTIVE'
+        WHERE a.status ='ACTIVE'
         <choose>
-            <when test="startDate != null and endDate != null">
-                <if test="startDate != null">
-                    AND a.created_date &gt;= #{startDate}
-                </if>
-                AND a.created_date &lt;= #{endDate}
-            </when>
-            <when test="startDate != null and endDate == null">
-                AND a.created_date &gt;= #{startDate}
-            </when>
-            <when test="endDate != null and startDate == null">
-                AND a.created_date &lt;= #{endDate}
-            </when>
+              <when test="startDate != null and endDate != null">
+                  <if test="startDate != null">
+                      AND a.pay_date &gt;= #{startDate}
+                  </if>
+                  AND a.pay_date &lt;= #{endDate}
+              </when>
+              <when test="startDate != null and endDate == null">
+                  AND a.pay_date &gt;= #{startDate}
+              </when>
+              <when test="endDate != null and startDate == null">
+                  AND a.pay_date &lt;= #{endDate}
+              </when>
         </choose>
-        ORDER BY a.created_date ASC
+        ORDER BY a.pay_date ASC
     </select>
 
     <select id="getTotalSpending" resultMap="totalSpendingResultMap">
         SELECT SUM(CASE WHEN spending &gt; 0 THEN spending ELSE 0 END) AS totalRevenue,
                SUM(CASE WHEN spending &lt; 0 THEN spending ELSE 0 END) AS totalExpense
         FROM ACCOUNTING
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
+        WHERE status ='ACTIVE'
+        <choose>
+                <when test="startDate != null and endDate != null">
+                    <if test="startDate != null">
+                        AND pay_date &gt;= #{startDate}
+                    </if>
+                    AND pay_date &lt;= #{endDate}
+                </when>
+                <when test="startDate != null and endDate == null">
+                    AND pay_date &gt;= #{startDate}
+                </when>
+                <when test="endDate != null and startDate == null">
+                    AND pay_date &lt;= #{endDate}
+                </when>
+        </choose>
     </select>
 
     <select id="getLatestRemain" resultType="java.lang.Long">
         SELECT remain
         FROM ACCOUNTING
-        WHERE DATE_FORMAT(created_date, '%Y-%m') = #{monthId} AND status ='ACTIVE'
-        ORDER BY created_date DESC
+        WHERE pay_date &lt;= #{endDate} AND status ='ACTIVE'
+        ORDER BY pay_date DESC
             LIMIT 1;
     </select>
 
@@ -142,6 +174,7 @@
         <result property="title" column="title"/>
         <result property="status" column="status"/>
         <result property="note" column="note"/>
+        <result property="payDate" column="pay_date"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         </association>
     </resultMap>

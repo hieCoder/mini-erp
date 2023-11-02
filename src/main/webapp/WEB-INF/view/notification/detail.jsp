@@ -531,15 +531,16 @@
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 <script src="/assets/js/notification/notification.js"></script>
 <script>
+    function refreshPage() {
+        location.reload();
+    }
 
     function generateClientID() {
         const timestamp = new Date().getTime();
         const random = Math.floor(Math.random() * 1000);
         return 'client-' + timestamp + '-' + random
     }
-    function refreshPage() {
-        location.reload();
-    }
+
     const clientID = generateClientID();
     var stompClient = Stomp.over(new SockJS("/websocket"));
 

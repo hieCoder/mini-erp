@@ -1,0 +1,55 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.EventMapper">
+    <select id="getAllEventsByMonth" resultMap="eventResultMap">
+        select *, u.fullname
+        from EVENT e
+                 inner join USER u on e.user_id = u.id
+        where DATE_FORMAT(start_date, '%Y-%m') = #{month}
+    </select>
+
+    <select id="findById" resultMap="eventResultMap">
+        select *
+        from EVENT
+        where id = #{id}
+    </select>
+
+    <delete id="deleteEvent">
+        DELETE
+        FROM EVENT
+        WHERE id = #{id}
+    </delete>
+
+    <insert id="createEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
+        INSERT INTO EVENT(id, start_date, end_date, title, content, type, user_id)
+        VALUES (#{id}, #{startDate}, #{endDate}, #{title}, #{content}, #{type}, #{user.id});
+    </insert>
+
+    <update id="editEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
+        UPDATE EVENT
+        SET start_date = #{startDate},
+            end_date   = #{endDate},
+            title      = #{title},
+            content    = #{content},
+            type       = #{type},
+            user_id    = #{user.id}
+        WHERE id = #{id}
+    </update>
+
+    <resultMap id="eventResultMap" type="com.shsoftvina.erpshsoftvina.entity.Event">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="content" column="content"/>
+        <result property="type" column="type"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+                     resultMap="userResultMap"/>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="user_id"/>
+        <result property="fullname" column="fullname"/>
+    </resultMap>
+</mapper>

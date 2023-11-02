@@ -40,7 +40,17 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input fs-15" type="checkbox" checked value="OPENED">
+                                                <input class="form-check-input fs-15 checkFilter allFilter" type="checkbox" value="ALL">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-dark">ALL</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" checked value="OPENED">
                                             </div>
                                         </td>
                                         <td>
@@ -51,7 +61,7 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input fs-15" type="checkbox" checked value="REOPENED">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" checked value="REOPENED">
                                             </div>
                                         </td>
                                         <td>
@@ -62,7 +72,7 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input fs-15" type="checkbox" value="REGISTERED">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" value="REGISTERED">
                                             </div>
                                         </td>
                                         <td>
@@ -73,7 +83,7 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input fs-15" type="checkbox" value="POSTPONED">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" value="POSTPONED">
                                             </div>
                                         </td>
                                         <td>
@@ -84,7 +94,7 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input fs-15" type="checkbox" value="CLOSED">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" value="CLOSED">
                                             </div>
                                         </td>
                                         <td>
@@ -110,19 +120,19 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body bg-soft-info">
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <i data-feather="calendar" class="text-info icon-dual-info"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="fs-15">Welcome to your Calendar!</h6>
-                                <p class="text-muted mb-0">Event that applications book will appear here. Click on an event to see the details and manage applicants event.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<%--                <div class="card">--%>
+<%--                    <div class="card-body bg-soft-info">--%>
+<%--                        <div class="d-flex">--%>
+<%--                            <div class="flex-shrink-0">--%>
+<%--                                <i data-feather="calendar" class="text-info icon-dual-info"></i>--%>
+<%--                            </div>--%>
+<%--                            <div class="flex-grow-1 ms-3">--%>
+<%--                                <h6 class="fs-15">Welcome to your Calendar!</h6>--%>
+<%--                                <p class="text-muted mb-0">Event that applications book will appear here. Click on an event to see the details and manage applicants event.</p>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
                 <!--end card-->
             </div> <!-- end col-->
 
@@ -170,7 +180,7 @@
                                         <h6 class="d-block fw-semibold mb-0"><span id="event-timepicker1-tag"></span> - <span id="event-timepicker2-tag"></span></h6>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center mb-2">
+                                <div class="d-flex align-items-center mb-2 d-none">
                                     <div class="flex-shrink-0 me-3">
                                         <i class="ri-map-pin-line text-muted fs-16"></i>
                                     </div>
@@ -192,12 +202,13 @@
                                     <div class="mb-3">
                                         <label class="form-label">Type</label>
                                         <select class="form-select d-none" name="category" id="event-category" required>
-                                            <option value="bg-soft-danger">Danger</option>
-                                            <option value="bg-soft-success">Success</option>
-                                            <option value="bg-soft-primary">Primary</option>
-                                            <option value="bg-soft-info">Info</option>
-                                            <option value="bg-soft-dark">Dark</option>
-                                            <option value="bg-soft-warning">Warning</option>
+                                            <option value="bg-danger text-light">Holiday</option>
+                                            <option value="bg-success text-light">Seminar</option>
+                                            <option value="bg-secondary text-light">Team building</option>
+                                            <option value="bg-primary text-light">Meeting</option>
+                                            <option value="bg-info text-light">Training</option>
+                                            <option value="bg-warning text-light">Party</option>
+                                            <option value="bg-dark text-light">Other</option>
                                         </select>
                                         <div class="invalid-feedback">Please select a valid event category</div>
                                     </div>
@@ -205,9 +216,9 @@
                                 <!--end col-->
                                 <div class="col-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Event Name</label>
+                                        <label class="form-label">Event Title</label>
                                         <input class="form-control d-none" placeholder="Enter event name" type="text" name="title" id="event-title" required value="" />
-                                        <div class="invalid-feedback">Please provide a valid event name</div>
+                                        <div class="invalid-feedback">Please provide a valid event title</div>
                                     </div>
                                 </div>
                                 <!--end col-->
@@ -244,7 +255,7 @@
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-12">
+                                <div class="col-12 d-none">
                                     <div class="mb-3">
                                         <label for="event-location">Location</label>
                                         <div>
@@ -257,7 +268,8 @@
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <label class="form-label">Description</label>
-                                        <textarea class="form-control d-none" id="event-description" placeholder="Enter a description" rows="3" spellcheck="false"></textarea>
+                                        <textarea class="form-control d-none" id="event-description" placeholder="Enter a description" rows="3" spellcheck="false" required></textarea>
+                                        <div class="invalid-feedback">Please provide a valid event description</div>
                                     </div>
                                 </div>
                                 <!--end col-->
@@ -281,6 +293,6 @@
 <!-- calendar min js -->
 <script src="/assets/libs/fullcalendar/main.min.js"></script>
 <!-- Calendar init -->
-<script src="/assets/js/pages/calendar.init.js"></script>
+<script src="/assets/js/schedule/schedule.js"></script>
 </body>
 </html>
