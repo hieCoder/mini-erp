@@ -2,6 +2,7 @@ var start_date = document.getElementById("event-start-date"), timepicker1 = docu
     timepicker2 = document.getElementById("timepicker2"), date_range = null, T_check = null;
 const baseUrlEvent = "/api/v1/events";
 const codeDisabled = ["BIRTHDAY", "OPENED", "REOPENED", "REGISTERED","POSTPONED", "CLOSED"]
+var statusCodePrevent = ["CLOSED", "REGISTERED", "POSTPONED"]
 const typeEnum = {
     "bg-danger text-light": "HOLIDAY",
     "bg-success text-light": "SEMINAR",
@@ -12,27 +13,26 @@ const typeEnum = {
     "bg-dark text-light": "OTHER",
 };
 
+
 const birthdayIcon = '<img src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIcon" alt="Cake" title="Cake" width="44" height="44">'
 function returnType(name){
     return typeEnum[name]
 }
 
-function originalStringDateToDate(input){
-    const parts = input.match(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/);
-
-    if (parts === null) {
-        throw new Error("Invalid date format. Expected 'dd/mm/yyyy hh:mm:ss'.");
+function getEventColor(code) {
+    const bgToCode = {};
+    for (const key in typeEnum) {
+        const bgValue = typeEnum[key];
+        bgToCode[bgValue] = key;
     }
+    return bgToCode[code];
+}
 
-    // Note: Months are 0-based in JavaScript, so we subtract 1 from the month.
-    const year = parseInt(parts[3], 10);
-    const month = parseInt(parts[2], 10) - 1;
-    const day = parseInt(parts[1], 10);
-    const hours = parseInt(parts[4], 10);
-    const minutes = parseInt(parts[5], 10);
-    const seconds = parseInt(parts[6], 10);
-
-    return new Date(year, month, day, hours, minutes, seconds);
+function originalStringDateToDate(originalDateISOString){
+// Create a Date object from the ISO 8601 string
+    const originalDate = new Date(originalDateISOString);
+    console.log(originalDate)
+    return originalDate
 }
 function alertInput(text){
     let html =
@@ -165,6 +165,7 @@ function addEventFunc(event, g, E){
             g.hide()
             upcomingEvent(CALENDAR_RESULT)
             event.id = rs.toString()
+            event.allDay = false
             E.addEvent(event)
         }
     }, function (error){
@@ -172,7 +173,7 @@ function addEventFunc(event, g, E){
         console.log(error)
     })
 }
-var statusCodePrevent = ["CLOSED", "REGISTERED", "POSTPONED"]
+
 var currentApiDate = ""
 let userId = "1"
 let CALENDAR_RESULT = []
@@ -439,67 +440,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var   E = new FullCalendar.Calendar(e, configE)
     currentApiDate = formatDateYYMM(E.getDate())
 
-    // async function fetchDataFromApisAndCallFunction() {
-    //     try {
-    //         const [data1, data2] = await Promise.all([
-    //             callAjaxByJsonWithData("/api/v1/schedules/" + userId +"?monthly="+currentApiDate,"GET",null,function (rs) {
-    //                 let CALENDAR_API = []
-    //                 if(rs) {
-    //                     rs.list.forEach(item=>{
-    //                         if(statusCodePrevent.includes(item.statusTask.code)){
-    //                             return
-    //                         }
-    //                         CALENDAR_API.push({
-    //                             id: item.id,
-    //                             code: item.statusTask.code,
-    //                             title: item.title,
-    //                             start: new Date(item.startDate),
-    //                             end: new Date(item.dueOrCloseDate),
-    //                             allDay: !0,
-    //                             className: getStatusColor(item.statusTask.code),
-    //                         })
-    //                     })
-    //                     resolve(CALENDAR_API)
-    //                 }
-    //             }, function (error){
-    //                 console.log("Error")
-    //                 console.log(error)
-    //             })
-    //             ,
-    //             callAjaxByJsonWithData(baseUrlEvent + "?month="+currentApiDate,"GET",null,function (rs) {
-    //                 let EVENT_API = []
-    //                 if(rs && rs.length >0){
-    //                     rs.forEach(item=>{
-    //                         EVENT_API.push({
-    //                             id: item.id,
-    //                             code: item.type.code,
-    //                             title: item.title,
-    //                             start: new Date(item.startDate),
-    //                             end: new Date(item.dueOrCloseDate),
-    //                             allDay: !0,
-    //                             className: getStatusColor(item.type.code),
-    //                         })
-    //                     })
-    //                 }
-    //                 resolve(EVENT_API)
-    //             }, function (error){
-    //                 console.log("Error")
-    //                 console.log(error)
-    //             })
-    //         ]);
-    //         // Xử lý kết quả từ cả hai API
-    //         console.log('Data from API 1:', data1);
-    //         console.log('Data from API 2:', data2);
-    //         renderCalendar(data1, data2);
-    //     } catch (error) {
-    //         console.error('An error occurred:', error);
-    //     }
-    // }
-    // function renderCalendar(data1, data2) {
-    //     console.log('Data from API 1 in yourFunction:', data1);
-    //     console.log('Data from API 2 in yourFunction:', data2);
-    // }
-    // fetchDataFromApisAndCallFunction().then(r => console.log(r))
     async function fetchCalendarData(userId, currentApiDate) {
         return new Promise((resolve, reject) => {
             callAjaxByJsonWithData(
@@ -549,10 +489,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 id: item.id,
                                 code: item.type.code,
                                 title: item.title,
+                                description: item.content,
                                 start: originalStringDateToDate(item.startDate),
                                 end: originalStringDateToDate(item.endDate),
-                                allDay: true,
-                                className: getStatusColor(item.type.code),
+                                allDay: false,
+                                className: getEventColor(item.type.code),
                             });
                         });
                     }
@@ -573,8 +514,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetchCalendarData(userId, currentApiDate),
                 fetchEventApiData(currentApiDate),
             ]);
-            console.log("Data from Calendar API:", calendarData.concat(eventApiData));
             CALENDAR_RESULT = calendarData.concat(eventApiData)
+            console.log(CALENDAR_RESULT)
             upcomingEvent(CALENDAR_RESULT)
             E.addEventSource(CALENDAR_RESULT);
             E.render()
@@ -625,7 +566,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let $elm = document.getElementsByClassName('fc-today-button')[0];
             $elm.addEventListener('click', function() {
                 let month = formatDateYYMM(E.getDate())
-                callApiData(userId, month, getFilter())
+                callApiData( month)
             });
         } catch (error) {
             console.error("An error occurred:", error);
@@ -647,7 +588,8 @@ document.addEventListener("DOMContentLoaded", function () {
             newArr = getFilter()
         }
         let apiDate = formatDateYYMM(E.getDate())
-        callApiData(1,apiDate, newArr)
+        statusCodePrevent  = newArr
+        callApiData(apiDate)
     })
 
     function getFilter(){
@@ -661,44 +603,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 newArr.push($(item).val())
             }
         })
+        statusCodePrevent = newArr
         return newArr
     }
 
     $(document).on("click",".fc-header-toolbar button",function (){
         let month = formatDateYYMM(E.getDate())
         if(currentApiDate != month){
-            callApiData(userId, month, getFilter())
+            callApiData(month)
         }
     })
-
-    function callApiData(userId,apiDate,newArr){
-        console.log(newArr)
-        CALENDAR_RESULT =[]
-        callAjaxByJsonWithData("/api/v1/schedules/" + userId +"?monthly="+apiDate,"GET",null,function (rs) {
-            if(rs){
-                currentApiDate = apiDate
-                rs.list.forEach(item=>{
-                    if(newArr.includes(item.statusTask.code)){
-                        return
-                    }
-                    CALENDAR_RESULT.push({
-                        id: item.id,
-                        code: item.statusTask.code,
-                        title: item.title,
-                        start: new Date(item.startDate),
-                        end: new Date(item.dueOrCloseDate),
-                        allDay: !0,
-                        className: getStatusColor(item.statusTask.code),
-                    })
-                })
-                E.getEventSources().forEach(eventSource => {
-                    eventSource.remove();
-                });
-                upcomingEvent(CALENDAR_RESULT)
-                E.addEventSource(CALENDAR_RESULT);
-                E.render()
-            }
-        })
+    async function fetchDataButton(currentApiDate) {
+        try {
+            CALENDAR_RESULT =[]
+            const [calendarData, eventApiData] = await Promise.all([
+                fetchCalendarData(userId, currentApiDate),
+                fetchEventApiData(currentApiDate),
+            ]);
+            CALENDAR_RESULT = calendarData.concat(eventApiData)
+            E.getEventSources().forEach(eventSource => {
+                eventSource.remove();
+            });
+            upcomingEvent(CALENDAR_RESULT)
+            E.addEventSource(CALENDAR_RESULT);
+            E.render()
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    }
+    function callApiData(apiDate){
+        fetchDataButton(apiDate)
     }
 });
 

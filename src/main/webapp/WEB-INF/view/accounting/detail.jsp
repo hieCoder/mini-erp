@@ -7,13 +7,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Accounting</title>
+    <title>Accounting Detail</title>
 </head>
 <body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">ACCOUNTING DETAIL</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/accounting">Accounting</a></li>
+                    <li class="breadcrumb-item active">Detail</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="card shadow">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">${account.title}</h4>
+            <h4 class="card-title mb-0 flex-grow-1" id="titleAccount">${account.title}</h4>
         </div>
         <div class="card-body" id="viewAccount" data-id="${account.id}">
             <div class="text-muted">
@@ -813,6 +829,10 @@
         })
     })
 </script>
+<!-- Widget init -->
+<script src="/assets/js/pages/widgets.init.js"></script>
+<!-- Sweet Alerts js -->
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 </body>
 </html>
 

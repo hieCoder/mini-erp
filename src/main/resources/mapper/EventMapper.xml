@@ -3,10 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.EventMapper">
     <select id="getAllEventsByMonth" resultMap="eventResultMap">
-        select *, u.fullname
+        select e.*, u.fullname, u.avatar
         from EVENT e
                  inner join USER u on e.user_id = u.id
-        where DATE_FORMAT(start_date, '%Y-%m') = #{month}
+        where DATE_FORMAT(e.END_DATE, '%Y-%m') = #{monthly}
+            OR DATE_FORMAT(e.START_DATE, '%Y-%m') = #{monthly};
+    </select>
+
+    <select id="getUpcomingEvents" resultMap="eventResultMap">
+        select e.*, u.fullname, u.avatar
+        from EVENT e
+                 inner join USER u on e.user_id = u.id
+        where DATE_FORMAT(e.START_DATE, '%Y-%m-%D') &gt; #{day};
     </select>
 
     <select id="findById" resultMap="eventResultMap">
@@ -51,5 +59,6 @@
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <id property="id" column="user_id"/>
         <result property="fullname" column="fullname"/>
+        <result property="avatar" column="avatar"/>
     </resultMap>
 </mapper>

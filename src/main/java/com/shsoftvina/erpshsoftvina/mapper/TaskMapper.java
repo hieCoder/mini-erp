@@ -26,4 +26,6 @@ public interface TaskMapper {
     Task findById(String id);
     List<Map<String, Object>> getTaskByHashtag(
             @Param("userId") String userId);
+    int changeStatusTasks(@Param("ids") String[] ids,
+                          @Param("status") String status);
 }

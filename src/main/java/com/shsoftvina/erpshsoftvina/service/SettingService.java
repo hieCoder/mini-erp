@@ -9,4 +9,5 @@ public interface SettingService {
     List<SettingResponse> findAll();
     SettingResponse findById(String id);
     int updateSetting(SettingUpdateRequest[] settingUpdateRequests);
+    SettingResponse findByCode(String code);
 }

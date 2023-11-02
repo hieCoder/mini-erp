@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_DIR" value="/src/main/resources/logs/"/>
+    <property name="LOG_DIR" value="/src/main/resources/logs"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -9,7 +9,7 @@
     </appender>
 
     <appender name="file-trace" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}trace.log</file>
+        <file>${LOG_DIR}/trace.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/trace_%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -20,7 +20,7 @@
     </appender>
 
     <appender name="file-error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}error.log</file>
+        <file>${LOG_DIR}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/error_%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -31,7 +31,7 @@
     </appender>
 
     <appender name="file-debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}debug.log</file>
+        <file>${LOG_DIR}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/debug_%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -53,7 +53,7 @@
 
     <root level="error">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="file-debug" />
+        <appender-ref ref="file-error" />
     </root>
 
 </configuration>

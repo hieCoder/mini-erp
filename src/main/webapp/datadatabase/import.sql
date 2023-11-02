@@ -143,3 +143,10 @@ values  ('1581aa3f-672c-4295-9564-09ecda9cb03c', '{"theSingleMostImportantThing"
         ('ac867ca3-ad8a-4733-9c24-a4fe17166f3b', '{"theSingleMostImportantThing":null,"lecture":null,"dailyEvaluation":null,"work":null,"reading":null}', '{"sixToTwelvePm":[],"twelveToSixPm":[],"sixToTwelveAm":[]}', '[]', '', '2023-10-18', '961c8858-a43c-4cab-b878-6dba81c8c291'),
         ('d61ef8fa-65ad-4ef1-897f-8292f05b894a', '{"theSingleMostImportantThing":{"target":"1","performance":false},"lecture":{"target":"Lecture 1","performance":false},"dailyEvaluation":{"target":"Gratitude diary, daily evaluation","performance":false},"work":{"target":"Meeting w customer","performance":false},"reading":{"target":"Reading 10 pages","performance":true}}', '{"sixToTwelvePm":[{"target":"6","performance":false},{"target":"7","performance":false},{"target":"8","performance":false}],"twelveToSixPm":[{"target":"xin chao canh","performance":true},{"target":"10","performance":false}],"sixToTwelveAm":[{"target":"11","performance":false},{"target":"23","performance":false},{"target":"14","performance":true}]}', '["111111111111111111ugh today’s work","111111111111111l for the birdsong I heard on my way to work today.","1111111111111"]', '', '2023-10-15', '1');
 
+insert into mini_erp.event (ID, TITLE, CONTENT, START_DATE, END_DATE, TYPE, USER_ID)
+values  ('111', 'going to restaurant', 'going to restaurant', '2023-11-05 15:14:41', '2023-11-05 20:14:41', 'SEMINAR', '1'),
+        ('123', 'going to church', 'going to church', '2023-10-29 15:13:16', '2023-10-29 18:13:16', 'PARTY', '1'),
+        ('321', 'going to pagoda', 'going to pagoda', '2023-11-01 15:14:11', '2023-11-01 19:14:11', 'MEETING', '2'),
+        ('456', 'going to market', 'going to market', '2023-11-01 15:14:11', '2023-11-06 15:14:11', 'HOLIDAY', '2'),
+        ('654', 'going to cafe', 'going to cafe', '2023-10-29 15:13:16', '2023-11-06 15:14:11', 'PARTY', '1');
+

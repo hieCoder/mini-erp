@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.mapper.EventMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.EventService;
@@ -24,8 +25,8 @@ public class EventServiceImpl implements EventService {
     @Autowired
     private EventConverter eventConverter;
     @Override
-    public List<EventResponse> getAllEventsByMonth(String month) {
-        List<Event> events = eventMapper.getAllEventsByMonth(month);
+    public List<EventResponse> getAllEventsByMonth(String monthly) {
+        List<Event> events = eventMapper.getAllEventsByMonth(monthly);
         return eventConverter.convertToResponse(events);
     }
 
@@ -71,5 +72,11 @@ public class EventServiceImpl implements EventService {
             System.out.println(e);
             return 0;
         }
+    }
+
+    @Override
+    public List<EventDashBoardResponse> getUpcomingEvent(String day) {
+        List<Event> events = eventMapper.getUpcomingEvents(day);
+        return eventConverter.convertToHomeResponse(events);
     }
 }

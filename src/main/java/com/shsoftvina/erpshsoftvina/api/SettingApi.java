@@ -27,6 +27,11 @@ public class SettingApi {
         return ResponseEntity.ok(settingService.findById(id));
     }
 
+    @GetMapping("/code")
+    public ResponseEntity<?> findByCode(@RequestParam("code") String code) {
+        return ResponseEntity.ok(settingService.findByCode(code));
+    }
+
     @PutMapping
     public ResponseEntity<?> updateSetting(@RequestBody SettingUpdateRequest[] settingUpdateRequest) {
         return ResponseEntity.ok(settingService.updateSetting(settingUpdateRequest));

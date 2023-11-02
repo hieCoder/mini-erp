@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface EventMapper {
-    List<Event> getAllEventsByMonth(@Param("month") String month);
+    List<Event> getAllEventsByMonth(@Param("monthly") String month);
 
     Event findById(@Param("id") String id);
 
@@ -17,4 +17,6 @@ public interface EventMapper {
     void createEvent(Event event);
 
     int editEvent(Event event);
+
+    List<Event> getUpcomingEvents(@Param("day") String day);
 }

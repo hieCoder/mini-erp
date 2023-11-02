@@ -11,8 +11,8 @@
             </column>
             <column name="TITLE" type="TEXT"/>
             <column name="CONTENT" type="TEXT"/>
-            <column name="START_DATE" type="DATETIME"/>
-            <column name="END_DATE" type="DATETIME"/>
+            <column name="START_DATE" type="VARCHAR(255)"/>
+            <column name="END_DATE" type="VARCHAR(255)"/>
             <column name="TYPE" type="VARCHAR(255)"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
         </createTable>

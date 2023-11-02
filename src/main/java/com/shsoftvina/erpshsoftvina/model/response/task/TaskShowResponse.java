@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.model.response.task;
 
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
+import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ public class TaskShowResponse {
     private String id;
     private EnumDto statusTask;
     private String title;
-    private String fullnameUser;
+    private IdAndFullnameUserResponse user;
     private String startDate;
     private String dueOrCloseDate;
     private Integer progress;

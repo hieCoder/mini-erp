@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.enums.event.EventTypeEnum;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -23,17 +24,31 @@ public class EventConverter {
         return events.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
 
+    public List<EventDashBoardResponse> convertToHomeResponse(List<Event> events) {
+        return events.stream().map(this::convertToHomeResponse).collect(Collectors.toList());
+    }
+
     public EventResponse convertToResponse(Event event) {
-        String parseStartDate = DateUtils.formatDateTime(event.getStartDate());
-        String parseEndDate = DateUtils.formatDateTime(event.getEndDate());
         return EventResponse.builder()
                 .content(event.getContent())
-                .endDate(parseEndDate)
-                .startDate(parseStartDate)
+                .endDate(event.getEndDate())
+                .startDate(event.getStartDate())
                 .id(event.getId())
                 .title(event.getTitle())
                 .type(EnumUtils.instance(event.getType()))
                 .user(userConverter.toIdAndFullnameUserResponse(event.getUser()))
+                .build();
+    }
+
+    public EventDashBoardResponse convertToHomeResponse(Event event) {
+        return EventDashBoardResponse.builder()
+                .content(event.getContent())
+                .endDate(event.getEndDate())
+                .startDate(event.getStartDate())
+                .id(event.getId())
+                .title(event.getTitle())
+                .type(EnumUtils.instance(event.getType()))
+                .user(userConverter.toFullnameAndAvatarResponse(event.getUser()))
                 .build();
     }
 
@@ -42,8 +57,8 @@ public class EventConverter {
                 .type(EnumUtils.getEnumFromValue(EventTypeEnum.class,request.getType()))
                 .id(ApplicationUtils.generateId())
                 .content(request.getContent())
-                .endDate(DateUtils.parseDateTime(request.getEndDate()))
-                .startDate(DateUtils.parseDateTime(request.getStartDate()))
+                .endDate(request.getEndDate())
+                .startDate(request.getStartDate())
                 .title(request.getTitle())
                 .build();
     }
@@ -53,8 +68,8 @@ public class EventConverter {
                 .type(EnumUtils.getEnumFromValue(EventTypeEnum.class,request.getType()))
                 .id(request.getId())
                 .content(request.getContent())
-                .endDate(DateUtils.parseDateTime(request.getEndDate()))
-                .startDate(DateUtils.parseDateTime(request.getStartDate()))
+                .endDate(request.getEndDate())
+                .startDate(request.getStartDate())
                 .title(request.getTitle())
                 .build();
     }
