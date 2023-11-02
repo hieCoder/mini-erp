@@ -2,8 +2,10 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -15,11 +17,10 @@ public class TimesheetsApi {
     @Autowired
     TimesheetsService timesheetsService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                     @RequestParam(name = "pageSize", required = false, defaultValue = "50") int pageSize
-    ) {
-        return ResponseEntity.ok(timesheetsService.findAll((page - 1) * pageSize, pageSize));
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> findAllByUserAndMonthYear(@RequestParam int year, @RequestParam int month,
+                                     @PathVariable String userId) {
+        return ResponseEntity.ok(timesheetsService.findAllByUserAndMonthYear(userId, year, month));
     }
 
     @GetMapping("/workingday/{userID}")
@@ -33,4 +34,12 @@ public class TimesheetsApi {
         return ResponseEntity.ok(workingDay);
     }
 
+    @PostMapping("/upload")
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
+
+        boolean isSuccess = timesheetsService.readExcelFile(file);
+        if(isSuccess) return new ResponseEntity<>(isSuccess, HttpStatus.OK);
+        return new ResponseEntity<>(isSuccess, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

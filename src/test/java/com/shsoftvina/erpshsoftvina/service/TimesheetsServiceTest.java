@@ -29,35 +29,6 @@ public class TimesheetsServiceTest {
     @Mock
     private TimesheetsConverter timesheetsConverter;
 
-    @Test
-    public void testFindAll() {
-        int start = 0;
-        int pageSize = 10;
-
-        List<Timesheets> mockData = new ArrayList<>();
-        for (int i = 0; i < pageSize; i++) {
-            mockData.add(new Timesheets());
-        }
-
-        when(timesheetsMapper.findAll(start, pageSize)).thenReturn(mockData);
-
-        when(timesheetsConverter.toResponse(Mockito.any())).thenAnswer(invocation -> {
-            Timesheets timesheets = invocation.getArgument(0);
-
-            TimesheetsResponse response = new TimesheetsResponse();
-
-            return response;
-        });
-
-        List<TimesheetsResponse> result = timesheetsService.findAll(start, pageSize);
-
-        Mockito.verify(timesheetsMapper).findAll(start, pageSize);
-
-        Mockito.verify(timesheetsConverter, Mockito.times(mockData.size())).toResponse(Mockito.any());
-
-        assertEquals(mockData.size(), result.size());
-    }
-
     @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);

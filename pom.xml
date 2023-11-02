@@ -219,7 +219,17 @@
             <artifactId>spring-websocket</artifactId>
             <version>${springframework.version}</version>
         </dependency>
-
+        <!-- Apache POI dependencies for Excel processing -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

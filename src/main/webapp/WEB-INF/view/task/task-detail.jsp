@@ -9,9 +9,6 @@
     <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
     <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
 
-    <!-- Sweet Alert css-->
-    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-
     <!-- dropzone css -->
     <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css" />
 </head>
@@ -577,9 +574,6 @@
 <script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <!-- quill js -->
 <script src="/assets/libs/quill/quill.min.js"></script>
-
-<!-- Sweet Alerts js -->
-<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 <!-- dropzone min -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>

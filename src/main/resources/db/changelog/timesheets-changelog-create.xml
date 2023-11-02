@@ -10,12 +10,9 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="WORK_DATE" type="DATE"/>
-            <column name="CHECKIN" type="TIME"/>
-            <column name="CHECKOUT" type="TIME"/>
-            <column name="OT" type="BIT"/>
-            <column name="USER_ID" type="VARCHAR(255)"/>
+            <column name="CONTENT" type="VARCHAR(255)"/>
+            <column name="TIMESHEETS_CODE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
 </databaseChangeLog>
 

@@ -171,3 +171,18 @@ function getMessageTypeFile(fileType){
 function convertMbToB(mb){
     return mb * 1024 * 1024;
 }
+
+function alertSuccess(mess){
+    Swal.fire(
+        {
+            title: 'Good job!',
+            text: mess,
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+            cancelButtonClass: 'btn btn-danger w-xs mt-2',
+            buttonsStyling: false,
+            showCloseButton: true
+        }
+    )
+}

@@ -11,9 +11,9 @@ import java.util.Map;
 @Mapper
 public interface TimesheetsMapper {
 
-    List<Timesheets> findAll(@Param("start") int start,
-                             @Param("pageSize") int pageSize
-    );
+    List<Timesheets> findAllByUserAndMonthYear(@Param("userId") String userId,
+                             @Param("year") int year, @Param("month") int month);
     List<Map<String, ?>> totalWorkingDateByYear(@Param("userID") String userID);
     List<Map<String, ?>> totalWorkingDateByMonth(@Param("userID") String userID, @Param("year") String year);
+    int insertTimesheetsBatch(List<Timesheets> list);
 }

@@ -9,9 +9,6 @@
     <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
     <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
     <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
-
-    <!-- Sweet Alert css-->
-    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -459,9 +456,6 @@
 <script src="/assets/libs/quill/quill.min.js"></script>
 <!-- init js -->
 <script src="/assets/js/pages/form-editor.init.js"></script>
-
-<!-- Sweet Alerts js -->
-<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 <script src="/assets/custom/js/task/task.js"></script>
 <script>

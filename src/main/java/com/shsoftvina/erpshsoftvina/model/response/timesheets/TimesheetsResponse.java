@@ -13,10 +13,6 @@ public class TimesheetsResponse{
 
     private String id;
     private String workDate;
-    private String checkin;
-    private String checkout;
-    private String fullnameUser;
-    private String totalOfficeHours;
-    private boolean ot;
-    private String otHours;
+    private String content;
+    private String timesheetsCode;
 }
