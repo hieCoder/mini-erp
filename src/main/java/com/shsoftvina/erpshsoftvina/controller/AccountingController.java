@@ -27,28 +27,30 @@ import java.time.LocalDate;
 public class AccountingController {
     private final AccountingService accountingService;
     private final SettingMapper settingMapper;
-    @GetMapping("/{monthId}")
-    public ModelAndView showAccountingList(@PathVariable("monthId") String monthId,
-                                           @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
+    @GetMapping()
+    public ModelAndView showAccountingList(@RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
                                            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
                                            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         ModelAndView modelAndView = new ModelAndView("accounting/homepage");
-        PageAccountListResponse listResponse = accountingService.findAccountingByMonth(monthId,page,size,startDate,endDate);
-        modelAndView.addObject("list",listResponse);
-        modelAndView.addObject("month",monthId);
-        return modelAndView;
-    }
+        if (startDate == null) {
+            LocalDate today = LocalDate.now();
+            startDate = today.withDayOfMonth(1);
+        }
 
-    @GetMapping()
-    public ModelAndView showAllMonthlyHistory() {
-        ModelAndView modelAndView = new ModelAndView("accounting/total-month");
-        MonthHistoryList monthHistoryList = accountingService.findAllMonthlyHistory();
+        if (endDate == null) {
+            LocalDate today = LocalDate.now();
+            endDate = today.withDayOfMonth(today.lengthOfMonth());
+        }
+        PageAccountListResponse listResponse = accountingService.findAccountingByMonth(page,size,startDate,endDate);
         Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
 
         SettingAllowanceResponse settings = new SettingAllowanceResponse(setting.getFileSize(),setting.getFileType(),setting.getImageType(),setting.getFileLimit());
-        modelAndView.addObject("monthList",monthHistoryList);
+
+        modelAndView.addObject("list",listResponse);
         modelAndView.addObject("setting",settings);
+
+//        modelAndView.addObject("month",monthId);
         return modelAndView;
     }
 

@@ -30,6 +30,18 @@ public class DateUtils {
         return null;
     }
 
+    public static Date parseDateTime(String date) {
+        if(date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            try {
+                return sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static String formatTime(Date date) {
         if(date != null){
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -88,9 +100,11 @@ public class DateUtils {
         return time.format(formatter);
     }
 
-    public static LocalDateTime toLocalDateTime(String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(time, formatter);
+    public static LocalDateTime toLocalDateTime(String dateString) {
+        LocalDate localDate = LocalDate.parse(dateString);
+        LocalTime currentTime = LocalTime.now();
+
+        return LocalDateTime.of(localDate, currentTime);
     }
 
     public static Date toDate(String dateString) {

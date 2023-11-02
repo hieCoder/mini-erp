@@ -48,6 +48,10 @@ public class NotificationController {
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("search", search);
+            Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
+            model.addAttribute("maxFileSize", setting.getFileSize());
+            model.addAttribute("listTypeFile", setting.getFileType());
+            model.addAttribute("uploadFileLimit", setting.getFileLimit());
             return "notification/get-list";
     }
 
@@ -65,16 +69,5 @@ public class NotificationController {
             model.addAttribute("listTypeFile", setting.getFileType());
             model.addAttribute("uploadFileLimit", setting.getFileLimit());
             return "notification/detail";
-    }
-
-    @GetMapping("/create")
-    public String getCreate( Model model){
-
-        applicationUtils.checkUserAllow();
-        Setting setting = settingMapper.findByCode(SettingConstant.NOTIFICATION_CODE);
-        model.addAttribute("maxFileSize", setting.getFileSize());
-        model.addAttribute("listTypeFile", setting.getFileType());
-        model.addAttribute("uploadFileLimit", setting.getFileLimit());
-        return "notification/create";
     }
 }

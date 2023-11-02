@@ -148,11 +148,20 @@
                 onDelete="CASCADE"/>
     </changeSet>
 
+
     <changeSet id="18" author="team2">
         <addForeignKeyConstraint baseTableName="TIMESHEETS"
-                                 baseColumnNames="TIMESHEETS_CODE"
+                             baseColumnNames="TIMESHEETS_CODE"
+                             referencedTableName="USER"
+                             referencedColumnNames="TIMESHEETS_CODE"
+                             constraintName="FK_TIMESHEETS_USER"/>
+    </changeSet>
+
+    <changeSet id="19" author="team2">
+        <addForeignKeyConstraint baseTableName="EVENT"
+                                 baseColumnNames="USER_ID"
                                  referencedTableName="USER"
-                                 referencedColumnNames="TIMESHEETS_CODE"
-                                 constraintName="FK_TIMESHEETS_USER"/>
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_EVENT_USER"/>
     </changeSet>
 </databaseChangeLog>
