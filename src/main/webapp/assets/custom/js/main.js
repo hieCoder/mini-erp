@@ -8,12 +8,58 @@ const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
 const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
 const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
 
-// const INVALID_FILES_LIMIT = 'INVALID_FILES_LIMIT';
-// const INVALID_FILES_FILESIZE = 'INVALID_FILES_FILESIZE';
-// const INVALID_FILES_FILETYPE = 'INVALID_FILES_FILETYPE';
+<!-- Load More Buttons -->
+
+const BtnLoadRemove = () => {
+    $('.btn-load').remove()
+}
+
+const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+
+const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+
+const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-grow flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+
+const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-grow flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
 
 // FUNCTION
-function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, formId) {
+function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     $.ajax({
         url: urlAPI,
         type: methodType,
@@ -21,16 +67,11 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callback, 
         contentType: false,
         data: formData,
         enctype: 'multipart/form-data',
-        success: function (response) {
-            callback(response);
-            resetForm(formId);
+        success: function(response) {
+            if(callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            resetForm(formId);
-            Swal.fire({
-                icon: 'error',
-                text: JSON.parse(xhr.responseText).message
-            });
+            if(callbackFail) callbackFail(xhr);
         }
     });
 }
@@ -139,7 +180,7 @@ function showFileUploaded(fileName, size, url, mode) {
 }
 
 function bytesToMB(bytes) {
-    return parseInt((bytes / (1024 * 1024)).toFixed(0))
+    return parseInt((bytes / (1024 * 1024)).toFixed(0));
 }
 
 function downloadFiles(url) {
@@ -152,22 +193,22 @@ function downloadFiles(url) {
 }
 
 function removeAlert() {
-    $(".alert-danger").remove()
+    $(".alert-danger").remove();
 }
 
 function checkLimitFile(count, limit) {
-    return count <= limit ? true : false
+    return count <= limit ? true : false;
 }
 
 function checkTypeFile(type, listType) {
     if (listType.includes(type)) {
-        return true
+        return true;
     }
 }
 
 function checkLimitSize(size, limit) {
     if (parseInt(size) <= limit) {
-        return true
+        return true;
     }
 }
 
@@ -213,11 +254,6 @@ function formatDateValueToValueOfInputDate(s) {
     return date.toISOString().slice(0, 10);
 }
 
-function getFileNameFromPath(path) {
-    var parts = path.split("/");
-    return parts[parts.length - 1];
-}
-
 function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
@@ -226,62 +262,47 @@ function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
 
-function createLoadingHtml() {
-    return `
-            <div class="text-center d-flex align-items-center justify-content-center">
-                <div class="custom-spinner d-flex align-items-center justify-content-center">
-                    <div class="dot"></div>
-                </div>
-            </div>
-        `;
-}
+// function createLoadingIndicator() {
+//     if ($('#loading-indicator').length === 0) {
+//         var loadingIndicator = $('<div>', {
+//             id: 'loading-indicator',
+//             class: 'text-center',
+//             css: {
+//                 position: 'absolute',
+//                 top: '50%',
+//                 left: '50%',
+//                 transform: 'translate(-50%, -50%)'
+//             }
+//         });
+//
+//         var spinnerIcon = $('<i>', {
+//             class: 'fa fa-spinner fa-spin fa-3x'
+//         });
+//
+//         var loadingText = $('<p>', {
+//             text: 'Loading...'
+//         });
+//
+//         loadingIndicator.append(spinnerIcon, loadingText);
+//
+//         $('body').append(loadingIndicator);
+//     }
+// }
 
-function resetForm(idForm) {
-    $('#' + idForm).find('*').prop('disabled', false);
-    $('div.custom-spinner').parent().remove();
-}
+// function showLoading(contentId) {
+//     if ($('#loading-indicator').length === 0) {
+//         createLoadingIndicator();
+//     } else {
+//         $('#loading-indicator').show();
+//     }
+//
+//     $('#' + contentId).hide();
+// }
 
-function createLoadingIndicator() {
-    if ($('#loading-indicator').length === 0) {
-        var loadingIndicator = $('<div>', {
-            id: 'loading-indicator',
-            class: 'text-center',
-            css: {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-            }
-        });
-
-        var spinnerIcon = $('<i>', {
-            class: 'fa fa-spinner fa-spin fa-3x'
-        });
-
-        var loadingText = $('<p>', {
-            text: 'Loading...'
-        });
-
-        loadingIndicator.append(spinnerIcon, loadingText);
-
-        $('body').append(loadingIndicator);
-    }
-}
-
-function showLoading(contentId) {
-    if ($('#loading-indicator').length === 0) {
-        createLoadingIndicator();
-    } else {
-        $('#loading-indicator').show();
-    }
-
-    $('#' + contentId).hide();
-}
-
-function hideLoading(contentId) {
-    $('#loading-indicator').hide();
-    $('#' + contentId).show();
-}
+// function hideLoading(contentId) {
+//     $('#loading-indicator').hide();
+//     $('#' + contentId).show();
+// }
 
 function cutShortLink() {
     var fileElements = document.querySelectorAll('a.cut-file-name');
@@ -304,60 +325,6 @@ function cutShortLink() {
         }
     });
 }
-
-function bytesToMBShow(bytes) {
-    return (bytes / (1024 * 1024)).toFixed(2)
-}
-
-<!-- Load More Buttons -->
-
-const BtnLoadRemove = () => {
-    $('.btn-load').remove()
-}
-
-const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-border flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
-
-const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-border flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
-
-const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-grow flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
-
-const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-grow flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
 
 async function handleFilesAsync(arrUrl, handleEachFunc) {
     var promises = arrUrl.map(function (url) {
@@ -403,4 +370,23 @@ function getMessageTypeFile(fileType) {
 
 function convertMbToB(mb) {
     return mb * 1024 * 1024;
+}
+
+function bytesToMBShow(bytes) {
+    return (bytes / (1024 * 1024)).toFixed(2)
+}
+
+function alertSuccess(mess){
+    Swal.fire(
+        {
+            title: 'Good job!',
+            text: mess,
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+            cancelButtonClass: 'btn btn-danger w-xs mt-2',
+            buttonsStyling: false,
+            showCloseButton: true
+        }
+    )
 }
