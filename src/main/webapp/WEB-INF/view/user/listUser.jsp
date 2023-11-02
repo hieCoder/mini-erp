@@ -75,8 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table border align-middle table-nowrap table-striped-columns mt-4"
-                               style="min-height: 300px">
+                        <table class="table border align-middle table-nowrap table-striped-columns mt-4">
                             <thead>
                             <tr>
                                 <th>NO.</th>

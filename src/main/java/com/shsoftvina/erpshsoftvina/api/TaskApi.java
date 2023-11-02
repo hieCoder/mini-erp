@@ -52,6 +52,11 @@ public class TaskApi {
         return ResponseEntity.ok(taskService.deleteById(id));
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteTasks(@RequestBody String[] ids){
+        return ResponseEntity.ok(taskService.deleteByIds(ids));
+    }
+
     @GetMapping("/hashtag/{userId}")
     public ResponseEntity<?> getTaskByHashtag(@PathVariable("userId") String userId){
         return ResponseEntity.ok(taskService.getTaskByHashtag(userId));

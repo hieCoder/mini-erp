@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public interface AccountingService {
     MonthHistoryList findAllMonthlyHistory();
 
-    PageAccountListResponse findAccountingByMonth(String monthId, Integer page, Integer size, LocalDate startTime, LocalDate endTime);
+    PageAccountListResponse findAccountingByMonth(Integer page, Integer size, LocalDate startTime, LocalDate endTime);
 
     int createAccounting(AccountingCreateRequest accountingCreateRequest);
 

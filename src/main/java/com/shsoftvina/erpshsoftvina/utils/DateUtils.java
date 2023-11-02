@@ -2,6 +2,7 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,6 +26,18 @@ public class DateUtils {
         if(date != null){
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             return sdf.format(date);
+        }
+        return null;
+    }
+
+    public static Date parseDateTime(String date) {
+        if(date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            try {
+                return sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -79,9 +92,11 @@ public class DateUtils {
         return time.format(formatter);
     }
 
-    public static LocalDateTime toLocalDateTime(String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(time, formatter);
+    public static LocalDateTime toLocalDateTime(String dateString) {
+        LocalDate localDate = LocalDate.parse(dateString);
+        LocalTime currentTime = LocalTime.now();
+
+        return LocalDateTime.of(localDate, currentTime);
     }
 
     public static String timeWork(Time startDate, Time endDate) {

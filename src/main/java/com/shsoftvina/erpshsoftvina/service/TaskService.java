@@ -19,4 +19,5 @@ public interface TaskService {
     List<StatusTaskCountsResponse> getStatusTaskCount();
     TaskDetailResponse findById(String id);
     List<Map<String, Object>> getTaskByHashtag(String userId);
+    int deleteByIds(String[] ids);
 }

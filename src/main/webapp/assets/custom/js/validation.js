@@ -12,8 +12,9 @@ function Validator(options){
             }
             // ckeditor
             else if(inputElement.nodeName === 'DIV'){
-                var id = inputElement.id;
-                var valEditor = $('#'+ id).html();
+
+                var valEditor = $(inputElement).html();
+
                 if(DEFAULT_VALUE_SNOW_EDITOR.includes(valEditor)) valEditor= '';
                 errorMessage =  rules[i](valEditor);
             }
@@ -57,14 +58,8 @@ function Validator(options){
                             });
                         });
 
-                        var initialDisabledState = $(obj).find('*').map(function() {
-                            return { element: this, isDisabled: $(this).prop('disabled') };
-                        }).get();
                         $(obj).find('*').prop('disabled', false);
                         var params = $(obj).serializeArray();
-                        $.each(initialDisabledState, function(index, item) {
-                            $(item.element).prop('disabled', item.isDisabled);
-                        });
 
                         $.each(params, function (i, v) {
                             formData.append(""+v.name+"", v.value);

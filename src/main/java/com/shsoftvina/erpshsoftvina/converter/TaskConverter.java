@@ -37,6 +37,9 @@ public class TaskConverter {
     @Autowired
     private TaskMapper taskMapper;
 
+    @Autowired
+    private UserConverter userConverter;
+
     public TaskShowResponse toResponse(Task task){
 
         if (task == null) return null;
@@ -52,7 +55,7 @@ public class TaskConverter {
                 .id(task.getId())
                 .statusTask(EnumUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
-                .fullnameUser(task.getUser()!=null?task.getUser().getFullname():null)
+                .user(userConverter.toIdAndFullnameUserResponse(task.getUser()))
                 .startDate(DateUtils.formatDate(task.getStartDate()))
                 .dueOrCloseDate(dueOrCloseDate)
                 .progress(task.getProgress())
@@ -152,8 +155,7 @@ public class TaskConverter {
                 .id(task.getId())
                 .statusTask(ApplicationUtils.instance(task.getStatusTask()))
                 .title(task.getTitle())
-                .idUser(task.getUser().getId())
-                .fullnameUser(task.getUser().getFullname())
+                .user(userConverter.toIdAndFullnameUserResponse(task.getUser()))
                 .createdDate(DateUtils.formatDate(task.getCreatedDate()))
                 .startDate(DateUtils.formatDate(task.getStartDate()))
                 .dueDate(DateUtils.formatDate(task.getDueDate()))
@@ -200,6 +202,7 @@ public class TaskConverter {
 
         return Task.builder()
                 .id(id)
+                .user(userMapper.findById(taskUpdateRequest.getUserId()))
                 .statusTask(statusTaskNew)
                 .title(taskUpdateRequest.getTitle())
                 .content(taskUpdateRequest.getContent())

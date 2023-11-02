@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class CreateNotificationRequest {
 
-    @NotBlank(message = "Field title is not filled")
     private String userId;
 
     @NotBlank(message = "Field title is not filled")

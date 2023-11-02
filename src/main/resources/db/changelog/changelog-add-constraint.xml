@@ -156,4 +156,12 @@
                 constraintName="FK_CONTRACT_PARENT"
                 onDelete="CASCADE"/>
     </changeSet>
+
+    <changeSet id="19" author="team2">
+        <addForeignKeyConstraint baseTableName="EVENT"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_EVENT_USER"/>
+    </changeSet>
 </databaseChangeLog>

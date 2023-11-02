@@ -79,7 +79,7 @@
 
                             <div class="form-group" id="amountGroup" style="display: none;">
                                 <label for="amount">Amount</label>
-                                <input type="text" class="form-control" id="amount" step="1" required pattern="[0-9]+">
+                                <input type="text" class="form-control" id="amount" value="0" step="1" required pattern="[0-9]+">
                             </div>
                             <script>
                                 var amount = $('input#amount').val()
@@ -331,6 +331,5 @@
         xhr.send(formData);
     }
 </script>
-<div id="loading" class="loading-spin">Loading...</div>
 </body>
 </html>
