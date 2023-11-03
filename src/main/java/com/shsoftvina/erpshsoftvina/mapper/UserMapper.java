@@ -15,6 +15,8 @@ public interface UserMapper {
 
     User findByEmail(@Param("email") String email);
 
+    User findByTimesheetsCode(@Param("timesheetsCode") String timesheetsCode);
+
     int registerUser(User user);
 
     int updateUserProfile(User user);

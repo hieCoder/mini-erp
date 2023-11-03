@@ -1,6 +1,6 @@
 .loader {
     position: relative;
-    top: 80%;
+    top: 100%;
     left: 50%;
 }
 
@@ -15,12 +15,12 @@
 
 .loader span:nth-child(1) {
     color: transparent;
-    -webkit-text-stroke: 0.3px #FF2A00;
+    -webkit-text-stroke: 0.3px #3f5088;
 }
 
 .loader span:nth-child(2) {
-    color: #FF4300;
-    -webkit-text-stroke: 1px #FF4300;
+    color: #3f5088;
+    -webkit-text-stroke: 1px #3f5088;
     animation: uiverse723 3s ease-in-out infinite;
 }
 

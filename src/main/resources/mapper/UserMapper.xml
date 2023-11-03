@@ -21,6 +21,12 @@
         where EMAIL = #{email}
     </select>
 
+    <select id="findByTimesheetsCode" parameterType="String" resultMap="userResultMap">
+        SELECT *
+        FROM USER
+        WHERE TIMESHEETS_CODE = #{timesheetsCode}
+    </select>
+
     <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE USER
         SET
@@ -38,7 +44,6 @@
             position = #{position},
             resume = #{resume},
             address = #{address},
-            is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode},
             gender = #{gender}
         WHERE id = #{id}
@@ -78,7 +83,7 @@
     </insert>
 
     <update id="activeUserRegister" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
-        UPDATE USER SET role = #{role} , status = #{status}, is_first_update_profile = #{isFirstUpdateProfile}, avatar = #{avatar} where id = #{id}
+        UPDATE USER SET role = #{role} , status = #{status}, avatar = #{avatar} where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="String">
@@ -95,7 +100,6 @@
             avatar = #{avatar},
             address = #{address},
             resume = #{resume},
-            is_first_update_profile = #{isFirstUpdateProfile},
             timesheets_code = #{timesheetsCode},
             gender = #{gender}
         WHERE id = #{id};

@@ -10,11 +10,17 @@
             OR DATE_FORMAT(e.START_DATE, '%Y-%m') = #{monthly};
     </select>
 
-    <select id="getUpcomingEvents" resultMap="eventResultMap">
+    <select id="getUpcomingEvents" parameterType="org.apache.ibatis.session.RowBounds" resultMap="eventResultMap">
         select e.*, u.fullname, u.avatar
         from EVENT e
                  inner join USER u on e.user_id = u.id
-        where DATE_FORMAT(e.START_DATE, '%Y-%m-%D') &gt; #{day};
+        where DATE_FORMAT(e.START_DATE, '%Y-%m-%D') &gt;= #{day};
+    </select>
+
+    <select id="getTotalRecordCountUpcoming" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM EVENT
+        where DATE_FORMAT(START_DATE, '%Y-%m-%D') &gt;= #{day};
     </select>
 
     <select id="findById" resultMap="eventResultMap">

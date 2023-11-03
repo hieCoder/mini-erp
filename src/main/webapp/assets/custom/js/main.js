@@ -71,7 +71,6 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
         }
     });
 }
-
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
@@ -98,10 +97,10 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
         contentType: "application/json",
         dataType: 'json',
         success: function (response) {
-            callbackSuccess(response);
+            if (callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            callbackFail(xhr);
+            if (callbackFail) callbackFail(xhr);
         }
     });
 }
