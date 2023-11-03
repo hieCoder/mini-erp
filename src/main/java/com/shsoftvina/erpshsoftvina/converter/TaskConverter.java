@@ -40,14 +40,15 @@ public class TaskConverter {
     @Autowired
     private UserConverter userConverter;
 
-    public TaskShowResponse toResponse(Task task){
+    public TaskShowResponse toResponse(Task task) {
 
         if (task == null) return null;
 
         Date dueDate = task.getDueDate();
         String dueOrCloseDate = null;
-        if(dueDate != null){
-            if(!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) dueOrCloseDate = "~ " + DateUtils.formatDate(task.getDueDate());
+        if (dueDate != null) {
+            if (!task.getStatusTask().equals(StatusTaskEnum.CLOSED))
+                dueOrCloseDate = "~ " + DateUtils.formatDate(task.getDueDate());
             else dueOrCloseDate = DateUtils.formatDate(task.getCloseDate());
         }
 
@@ -63,24 +64,25 @@ public class TaskConverter {
                 .build();
     }
 
-    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks,List<User> users){
+    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks, List<User> users) {
         List<ScheduleListResponse.TaskResponse> rs = new ArrayList<>();
 
         String createdOrStartDate = null;
         String dueOrCloseDate = null;
-        for (Task task: tasks){
-            if (task != null){
+        for (Task task : tasks) {
+            if (task != null) {
 
                 Date createdDate = task.getCreatedDate();
                 Date startDate = task.getStartDate();
-                if (startDate == null) createdOrStartDate =  DateUtils.formatDate(createdDate);
+                if (startDate == null) createdOrStartDate = DateUtils.formatDate(createdDate);
                 else createdOrStartDate = DateUtils.formatDate(startDate);
 
                 Date dueDate = task.getDueDate();
-                if(dueDate != null){
-                    if(!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) dueOrCloseDate = "~ " + DateUtils.formatDate(task.getDueDate());
-                    else dueOrCloseDate = DateUtils.formatDate(task.getCloseDate());
-                }
+                if (!task.getStatusTask().equals(StatusTaskEnum.CLOSED)) {
+                    if (dueDate == null) {
+                        dueOrCloseDate = createdOrStartDate;
+                    } else dueOrCloseDate = "~ " + DateUtils.formatDate(task.getDueDate());
+                } else dueOrCloseDate = DateUtils.formatDate(task.getCloseDate());
 
                 ScheduleListResponse.TaskResponse taskResponse = ScheduleListResponse.TaskResponse.builder()
                         .id(task.getId())
@@ -93,7 +95,7 @@ public class TaskConverter {
         }
         for (User user : users) {
             if (user != null) {
-                String startDate =DateUtils.formatDate(user.getDateOfBirth());
+                String startDate = DateUtils.formatDate(user.getDateOfBirth());
                 // Lấy năm hiện tại
                 SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
                 String currentYear = yearFormat.format(new Date());
@@ -107,7 +109,7 @@ public class TaskConverter {
                         .title("Happy Birthday to " + user.getFullname())
                         .startDate(newStartDate)
                         .dueOrCloseDate(newStartDate)
-                        .statusTask(new EnumDto("BIRTHDAY","Birthday")).build();
+                        .statusTask(new EnumDto("BIRTHDAY", "Birthday")).build();
                 rs.add(taskResponse);
             }
         }
@@ -135,11 +137,11 @@ public class TaskConverter {
         return statusTaskCounts.stream()
                 .map(statusTaskCount -> {
                     String statusTask = (String) statusTaskCount.get("statusTask");
-                    if(!statusTask.equals("")){
+                    if (!statusTask.equals("")) {
                         StatusTaskEnum statusEnum = EnumUtils.getEnumFromValue(StatusTaskEnum.class, statusTask);
                         long taskCount = (long) statusTaskCount.get("taskCount");
                         return new StatusTaskCountsResponse(EnumUtils.instance(statusEnum), taskCount);
-                    } else{
+                    } else {
                         long taskCount = (long) statusTaskCount.get("taskCount");
                         return new StatusTaskCountsResponse(new EnumDto("", "All"), taskCount);
                     }
@@ -147,7 +149,7 @@ public class TaskConverter {
                 .collect(Collectors.toList());
     }
 
-    public TaskDetailResponse toDetailResponse(Task task){
+    public TaskDetailResponse toDetailResponse(Task task) {
 
         if (task == null) return null;
 
@@ -177,7 +179,7 @@ public class TaskConverter {
         Task task = taskMapper.findById(id);
 
         Date startDate = task.getStartDate();
-        if (action.equals(ActionChangeStatusTaskEnum.OPEN.toString()) && startDate== null){
+        if (action.equals(ActionChangeStatusTaskEnum.OPEN.toString()) && startDate == null) {
             startDate = new Date();
         }
 
@@ -186,8 +188,8 @@ public class TaskConverter {
 
         Date closeDate = task.getCloseDate();
 
-        if(task.getStatusTask().equals(StatusTaskEnum.OPENED) || task.getStatusTask().equals(StatusTaskEnum.REOPENED)){
-            if(progress == 100) {
+        if (task.getStatusTask().equals(StatusTaskEnum.OPENED) || task.getStatusTask().equals(StatusTaskEnum.REOPENED)) {
+            if (progress == 100) {
                 statusTaskNew = StatusTaskEnum.CLOSED;
                 closeDate = new Date();
             }
@@ -195,7 +197,7 @@ public class TaskConverter {
                 progress = 100;
                 closeDate = new Date();
             }
-        } else if (!task.getStatusTask().equals(StatusTaskEnum.REOPENED) && statusTaskNew.equals(StatusTaskEnum.REOPENED)){
+        } else if (!task.getStatusTask().equals(StatusTaskEnum.REOPENED) && statusTaskNew.equals(StatusTaskEnum.REOPENED)) {
             progress = 0;
             closeDate = null;
         }
