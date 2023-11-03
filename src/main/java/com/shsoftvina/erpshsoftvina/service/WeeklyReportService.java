@@ -10,12 +10,8 @@ import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShow
 import java.util.List;
 
 public interface WeeklyReportService {
-    List<WeeklyReportDetailResponse> getAllWeeklyReport(String userRole,
-                                           String userId,
-                                           int start,
-                                           int pageSize);
-    long getTotalWeeklyReport(String userRole,
-                              String userId,
+    List<WeeklyReportDetailResponse> getAllWeeklyReportByUser(String userId, int start, int pageSize);
+    long getTotalWeeklyReportByUser(String userId,
                               int start,
                               int pageSize);
     WeeklyReportDetailResponse findById(String id);

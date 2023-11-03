@@ -21,19 +21,17 @@ public class WeeklyReportApi {
     TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<?> getAllWeeklyReport(@RequestParam(name = "userRole") String userRole,
-                                                @RequestParam(name = "userId") String userId,
+    public ResponseEntity<?> getAllWeeklyReportByUser(@RequestParam(name = "userId") String userId,
                                                 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(weeklyReportService.getAllWeeklyReport(userRole, userId, page, pageSize));
+        return ResponseEntity.ok(weeklyReportService.getAllWeeklyReportByUser(userId, page, pageSize));
     }
 
     @GetMapping("/count")
-    public ResponseEntity<?> getTotalWeeklyReport(@RequestParam(name = "userRole") String userRole,
-                                                @RequestParam(name = "userId") String userId,
+    public ResponseEntity<?> getTotalWeeklyReportByUser(@RequestParam(name = "userId") String userId,
                                                 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(weeklyReportService.getTotalWeeklyReport(userRole, userId, page, pageSize));
+        return ResponseEntity.ok(weeklyReportService.getTotalWeeklyReportByUser(userId, page, pageSize));
     }
 
     @GetMapping("/{id}")

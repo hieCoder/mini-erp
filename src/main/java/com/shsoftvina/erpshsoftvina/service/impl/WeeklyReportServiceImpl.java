@@ -39,19 +39,19 @@ public class WeeklyReportServiceImpl implements WeeklyReportService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public List<WeeklyReportDetailResponse> getAllWeeklyReport(String userRole, String userId, int start, int pageSize) {
+    public List<WeeklyReportDetailResponse> getAllWeeklyReportByUser(String userId, int start, int pageSize) {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
-        List<WeeklyReportDetailResponse> listWeeklyReport = weeklyReportMapper.getAllWeeklyReport(userRole, userId, rowBounds)
+        List<WeeklyReportDetailResponse> listWeeklyReport = weeklyReportMapper.getAllWeeklyReportByUser(userId, rowBounds)
                 .stream().map(weeklyReport -> weeklyReportConverter.toDetailResponse(weeklyReport)).collect(Collectors.toList());
         return listWeeklyReport;
     }
 
     @Override
-    public long getTotalWeeklyReport(String userRole, String userId, int start, int pageSize) {
+    public long getTotalWeeklyReportByUser(String userId, int start, int pageSize) {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
-        return weeklyReportMapper.getTotalWeeklyReport(userRole, userId, rowBounds);
+        return weeklyReportMapper.getTotalWeeklyReportByUser(userId, rowBounds);
     }
 
     @Override

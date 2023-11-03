@@ -39,10 +39,33 @@
             </div> <!-- end col-->
 
             <div class="col-xl-10">
-                <div class="card card-h-100">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 flex-grow-1">Weekly report</h5>
+                            <div class="flex-shrink-0">
+                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body border border-dashed border-end-0 border-start-0">
+                        <div class="row g-3">
+                            <div class="col-xxl-4 col-sm-4 d-flex align-items-center justify-content-start">
+                                <div style="margin-right: 5px;">Show entries: </div>
+                                <div>
+                                    <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+                        </div>
+                    </div>
                     <div class="card-body">
-                        <div class="table-responsive table-card mb-4">
-                            <table class="table align-middle table-nowrap mb-0 w-100" id="weekly-report-table">
+                        <div class="table-responsive table-card">
+                            <table class="table align-middle table-nowrap mb-0 w-100" style="margin-top: 0px!important;" id="weekly-report-table">
                                 <thead class="table-light text-muted">
                                 <tr>
                                     <th>ID</th>
@@ -55,9 +78,9 @@
                             </table>
                             <!--end table-->
                         </div>
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center mt-4">
                             <div class="pagination-wrap hstack gap-2">
-                                <ul id="pagination" class="pagination"></ul>
+                                <ul id="pagination" class="pagination mb-0"></ul>
                             </div>
                         </div>
                     </div>
@@ -71,6 +94,11 @@
 <script src="/assets/custom/js/weekly-report/weekly-report.js"></script>
 <script>
     var tableWR = '';
+    var pagingObj = {
+        page: 1,
+        pageSize: $('#page-count-select').val()
+    }
+
     $(document).ready(function (){
         callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
             rs.forEach(function (user, index) {
@@ -82,17 +110,20 @@
             var staffId = $(staffFirst).data('id');
 
             callAjaxByJsonWithData('/api/v1/users/'+staffId, 'GET', null, function (user) {
-                console.log(456);
-                var roleUser = user.role.code;
                 tableWR = $('#weekly-report-table').DataTable({
                     ajax: {
-                        url: getApiUrl(roleUser, staffId, 1, 10),
+                        url: getListApiUrl(staffId, 1, pagingObj.pageSize),
                         method: 'GET',
                         dataSrc: ''
                     },
                     columns: [
                         {data: 'id'},
-                        {data: 'title'},
+                        {
+                            data: 'title',
+                            render: function(data, type, row) {
+                                return `<a href="#" class="fw-medium link-primary">` + data + `</a>`;
+                            }
+                        },
                         {data: 'user.fullname'},
                         {data: 'createdDate'}
                     ],
@@ -102,20 +133,57 @@
                     paging: false,
                     info: false
                 });
+
+                //loadPaging();
+
+                $('#page-count-select').on('change', function() {
+                    var selectedValue = $(this).val();
+                    pagingObj.pageSize = selectedValue;
+                    console.log(selectedValue);
+                });
             });
         });
     });
 
-    // $(document).on('click', '.staff-name', function (e){
-    //     $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
-    //     $(this).addClass('text-decoration-underline');
-    //     var staffId = $(this).data('id');
-    //     callAjaxByJsonWithData('/api/v1/users/'+staffId, 'GET', null, function (user) {
-    //         console.log(123);
-    //         var roleUser = user.role.code;
-    //         tableWR.ajax.url(getApiUrl(roleUser, staffId, 1, 10)).load();
+    $(document).on('click', '.staff-name', function (e){
+        $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
+        $(this).addClass('text-decoration-underline');
+        var staffId = $(this).data('id');
+        callAjaxByJsonWithData('/api/v1/users/'+staffId, 'GET', null, function (user) {
+            tableWR.ajax.url(getListApiUrl(staffId, 1, pagingObj.pageSize)).load();
+        });
+    });
+
+
+
+    // function loadPaging(){
+    //     callAjaxByJsonWithData(getCountListApiUrl(), 'GET', null, function (totalItem) {
+    //
+    //         if (window.pagObj) {
+    //             window.pagObj.twbsPagination('destroy');
+    //         }
+    //
+    //         //paging
+    //         var totalPages = 0;
+    //         if(totalItem <= tasksRequest.pageSize) totalPages = 1;
+    //         else totalPages = Math.ceil(totalItem / tasksRequest.pageSize);
+    //         var currentPage = tasksRequest.page;
+    //
+    //         $(function () {
+    //             window.pagObj = $('#pagination').twbsPagination({
+    //                 totalPages: totalPages,
+    //                 startPage: currentPage,
+    //                 onPageClick: function (event, page) {
+    //                     if (currentPage != page) {
+    //                         pagingObj.page = page;
+    //                         tableWR.ajax.reload();
+    //                         currentPage = page;
+    //                     }
+    //                 }
+    //             });
+    //         });
     //     });
-    // });
+    // }
 </script>
 </body>
 </html>
