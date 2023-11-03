@@ -784,7 +784,8 @@
             rules:[
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#content-edit'),
-                Validator.isDayAfterTodayOrNull("#dueDateEdit", 'Due day is not before today'),
+                Validator.isRequired("#dueDateEdit"),
+                Validator.isDayAfterTodayOrNull("#dueDateEdit", 'Due day is not before today')
             ],
             onSubmit: function (formData) {
                 formData.append('id', idTask);

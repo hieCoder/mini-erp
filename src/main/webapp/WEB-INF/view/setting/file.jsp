@@ -4,44 +4,52 @@
     <title>Settings</title>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Setting file</h1>
-            <div class="row">
-                <div class="col-md-12">
-                    <form id="setting-file-form">
-                        <div class="table-responsive">
-                            <table id="datatable-setting-file" class="table">
-                                <thead>
-                                <tr>
-                                    <th>Component</th>
-                                    <th>Image type</th>
-                                    <th>File type</th>
-                                    <th>File limit</th>
-                                    <th>File size (Mb)</th>
-                                </tr>
-                                </thead>
-                            </table>
-                            <div class="mt-2 text-right">
-                                <b class="message-noti mr-2"></b>
-                                <button id="update-button" type="button" class="btn btn-primary">Update</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">File</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Setting system</a></li>
+                    <li class="breadcrumb-item active">File</li>
+                </ol>
             </div>
+
         </div>
     </div>
 </div>
+<%--<!-- end page title -->--%>
+
+<div class="row">
+    <div class="col-12">
+        <form id="setting-file-form">
+            <div>
+                <table id="datatable-setting-file" class="table">
+                    <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Image type</th>
+                        <th>File type</th>
+                        <th>File limit</th>
+                        <th>File size (Mb)</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="mb-1">
+                <button id="update-button" type="button" class="btn btn-success">Update</button>
+                <span class="message-noti ml-10"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-
-    var object = [];
-
-    var table;
     $(document).ready(function (){
 
-        table = $('#datatable-setting-file').DataTable({
+        $('#datatable-setting-file').DataTable({
             ajax: {
                 url: '/api/v1/settings',
                 method: 'GET',
@@ -57,25 +65,25 @@
                 {
                     data: 'imageType',
                     render: function(data, type, row) {
-                        return '<input name="imageType" type="text" value="' + data + '"/>';
+                        return '<input name="imageType" class="form-control" type="text" value="' + data + '"/>';
                     }
                 },
                 {
                     data: 'fileType',
                     render: function(data, type, row) {
-                        return '<input name="fileType" type="text" value="' + data + '"/>';
+                        return '<input name="fileType" class="form-control" type="text" value="' + data + '"/>';
                     }
                 },
                 {
                     data: 'fileLimit',
                     render: function(data, type, row) {
-                        return '<input name="fileLimit" min="0" type="number" value="' + data + '"/>';
+                        return '<input name="fileLimit" class="form-control" min="0" type="number" value="' + data + '"/>';
                     }
                 },
                 {
                     data: 'fileSize',
                     render: function(data, type, row) {
-                        return '<input name="fileSize" min="0" type="number" value="' + data + '"/>';
+                        return '<input name="fileSize" class="form-control" min="0" type="number" value="' + data + '"/>';
                     }
                 }
             ],
@@ -86,6 +94,7 @@
             info: false
         });
 
+        var object = [];
         $('#update-button').on('click', function () {
             object = [];
 
@@ -105,7 +114,7 @@
 
                 if(isBlank(imageType) || isBlank(fileType) || isBlank(fileLimit) || isBlank(fileSize)){
                     isValidate = false;
-                    $('.message-noti').text('All field is not empty');
+                    $('.message-noti').text('All field must not empty');
                     $('.message-noti').css('color', 'red');
                     object = null;
                 } else{
@@ -121,14 +130,8 @@
             });
 
             if(isValidate){
-
-                $('#update-button').after(createLoadingHtml());
-
                 callAjaxByJsonWithData('/api/v1/settings', 'PUT', object, function (rs) {
-                    Swal.fire({
-                        icon: 'success',
-                        text: 'Update success'
-                    }, 'setting-file-form');
+                    alertSuccess('Update success');
                 });
             }
         });
