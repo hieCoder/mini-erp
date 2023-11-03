@@ -14,26 +14,6 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
-
-
-
-
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-
-    <!-- jsvectormap css -->
-    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
-
-    <!--Swiper slider css-->
-    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
-
-
-
-
-
     <dec:head/>
 
     <!-- Sweet Alert css-->
@@ -59,22 +39,6 @@
     <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-
-
-
-
-
-    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-
-
     <script>
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
@@ -83,7 +47,6 @@
             avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
         };
     </script>
-
 </head>
 
 <body>
