@@ -28,7 +28,7 @@ public class WeeklyReportApi {
         return ResponseEntity.ok(weeklyReportService.getAllWeeklyReport(userRole, userId, page, pageSize));
     }
 
-    @GetMapping
+    @GetMapping("/count")
     public ResponseEntity<?> getTotalWeeklyReport(@RequestParam(name = "userRole") String userRole,
                                                 @RequestParam(name = "userId") String userId,
                                                 @RequestParam(name = "page", required = false, defaultValue = "1") int page,

@@ -31,20 +31,6 @@ public class WeeklyReportConverter {
     @Autowired
     private WeeklyReportMapper weeklyReportMapper;
 
-//    public WeeklyReportShowResponse toShowResponse(WeeklyReport weeklyReport) {
-//        if (weeklyReport == null) return null;
-//        return WeeklyReportShowResponse.builder()
-//                .id(weeklyReport.getId())
-//                .title(weeklyReport.getTitle())
-//                .fullnameUser(weeklyReport.getUser().getFullname())
-//                .createdDate(DateUtils.formatDateTime(weeklyReport.getCreatedDate()))
-//                .build();
-//    }
-//
-//    public List<WeeklyReportShowResponse> toListShowWeeklyReportResponse(List<WeeklyReport> listWeeklyReport) {
-//        return listWeeklyReport.stream().map(this::toShowResponse).collect(Collectors.toList());
-//    }
-
     public WeeklyReportDetailResponse toDetailResponse(WeeklyReport weeklyReport) {
         if (weeklyReport == null) return null;
         return WeeklyReportDetailResponse.builder()
