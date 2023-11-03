@@ -380,7 +380,7 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div class="row mt-2 border-top">
+                            <div class="row mt-2 border-top" id="uploadFileResume">
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -398,12 +398,10 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="hstack gap-2 justify-content-end">
-                                <button type="submit" class="btn btn-primary" id="save">Save</button>
-                                <a class="btn btn-soft-success cancle-button">Cancel</a>
+                                <button type="submit" class="btn btn-primary" id="saveFileResume">Save</button>
+                                <a class="btn btn-soft-success cancle-button" id="cancelFileResume">Cancel</a>
                             </div>
-
                         </div>
                         <!--end tab-pane-->
                         <%--========================== Contract =================================--%>
@@ -973,51 +971,60 @@
         }
     });
 
-    // Check Basic Information on Button Update Detail User
-    const form = document.getElementById('formUpdateUser');
-    const requiredFields = form.querySelectorAll("[required]");
-
-    requiredFields.forEach(function (field) {
-        field.addEventListener('blur', function () {
-            if (!field.value) {
-                field.classList.add("is-invalid");
-                field.classList.remove("is-valid");
-            } else if (field.validity.valid) {
-                field.classList.remove("is-invalid");
-                field.classList.add("is-valid");
-            } else {
-                field.classList.remove("is-valid");
-                field.classList.add("is-invalid");
-            }
-        });
-    });
-
-    // Hand user click button update User Detail
-    document.getElementById('updateDetail').addEventListener('click', function () {
-        let hasEmptyFields = false;
-        let hasInvalidFields = false;
+    document.addEventListener("DOMContentLoaded", function () {
+        // Check Basic Information on Button Update Detail User
+        const form = document.getElementById('formUpdateUser');
+        const requiredFields = form.querySelectorAll("[required]");
 
         requiredFields.forEach(function (field) {
             if (!field.value) {
-                hasEmptyFields = true;
-                field.classList.add("is-invalid");
-                field.classList.remove("is-valid");
-            } else if (!field.validity.valid) {
-                hasInvalidFields = true;
-                field.classList.remove("is-valid");
-                field.classList.add("is-invalid");
+                $('#saveFileResume').remove();
+                $('#uploadFileResume').remove();
+                $('#cancelFileResume').remove();
             }
+
+            field.addEventListener('blur', function () {
+                if (!field.value) {
+                    field.classList.add("is-invalid");
+                    field.classList.remove("is-valid");
+                } else if (field.validity.valid) {
+                    field.classList.remove("is-invalid");
+                    field.classList.add("is-valid");
+                } else {
+                    field.classList.remove("is-valid");
+                    field.classList.add("is-invalid");
+                }
+            });
         });
 
-        const errorMessage = document.getElementById("error-message");
-        if (hasEmptyFields) {
-            errorMessage.textContent = "Not filled in all required information!";
-        } else if (hasInvalidFields) {
-            errorMessage.textContent = "Some fields are incorrect!";
-        } else {
-            errorMessage.textContent = "";
-        }
+        // Hand user click button update User Detail
+        document.getElementById('updateDetail').addEventListener('click', function () {
+            let hasEmptyFields = false;
+            let hasInvalidFields = false;
+
+            requiredFields.forEach(function (field) {
+                if (!field.value) {
+                    hasEmptyFields = true;
+                    field.classList.add("is-invalid");
+                    field.classList.remove("is-valid");
+                } else if (!field.validity.valid) {
+                    hasInvalidFields = true;
+                    field.classList.remove("is-valid");
+                    field.classList.add("is-invalid");
+                }
+            });
+
+            const errorMessage = document.getElementById("error-message");
+            if (hasEmptyFields) {
+                errorMessage.textContent = "Not filled in all required information!";
+            } else if (hasInvalidFields) {
+                errorMessage.textContent = "Some fields are incorrect!";
+            } else {
+                errorMessage.textContent = "";
+            }
+        });
     });
+
 
     // Vali Date of birth
     document.addEventListener("DOMContentLoaded", function () {
@@ -1616,7 +1623,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         let table = new DataTable('#customerTable', {
             "pagingType": "full_numbers",
-            "pageLength": 3
+            "pageLength": 3,
+            "ordering": false
         });
     });
 </script>
