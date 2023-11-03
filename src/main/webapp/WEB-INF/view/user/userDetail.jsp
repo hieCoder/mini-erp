@@ -71,7 +71,7 @@
             </div>
             <!--end card-->
             <%--========================== Working Day =================================--%>
-            <div class="card hide">
+            <div class="card permission">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-grow-1">
@@ -106,7 +106,7 @@
                                 <i class="fas fa-home"></i> Basic Information
                             </a>
                         </li>
-                        <li class="nav-item hide">
+                        <li class="nav-item permission">
                             <a class="nav-link" data-bs-toggle="tab" href="#detailInformationSession" role="tab">
                                 <i class="far fa-user"></i> Detail Information
                             </a>
@@ -116,7 +116,7 @@
                                 <i class="far fa-envelope"></i> Resume
                             </a>
                         </li>
-                        <li class="nav-item hide">
+                        <li class="nav-item permission">
                             <a class="nav-link" data-bs-toggle="tab" href="#contractSession" role="tab">
                                 <i class="far fa-envelope"></i> Contract
                             </a>
@@ -165,7 +165,7 @@
                                     <div class="mb-3">
                                         <label for="dateOfBirth" class="form-label">Date of birth</label>
                                         <input type="date" class="form-control" id="dateOfBirth"
-                                               value="${user.dateOfBirth}" required max="now()">
+                                               value="${user.dateOfBirth}" required>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -348,7 +348,7 @@
                                         <div id="error-message" class="text-danger text-xl-end"
                                              style="font-size: 15px"></div>
                                         <button type="submit" class="btn btn-primary isSuccessUpdate"
-                                                id="detailUserBtn">Updates
+                                                id="updateDetail">Updates
                                         </button>
                                         <a class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
@@ -360,7 +360,7 @@
                         <!--end tab-pane-->
                         <%--========================== Resume =================================--%>
                         <div class="tab-pane" id="resumeSession" role="tabpanel">
-                            <div class="row border border-5">
+                            <div class="row">
                                 <c:forEach var="resume" items="${resumes}">
                                     <div class="col-md-2 mt-2 text-center delete-fileResume" style="position: relative">
                                                     <span class="custom-icon">
@@ -389,9 +389,9 @@
                                                     <h4 class="card-title mb-0">Resume File Upload</h4>
                                                 </div>
                                                 <div class="card-body">
-                                                    <input type="file" id="resumeFile" class="filepond filepond-input-multiple"
-                                                           name="newResumeFiles" data-allow-reorder="true"
-                                                           data-max-file-size="3MB" data-max-files="3" multiple>
+                                                    <input type="file" id="resumeFile"
+                                                           class="filepond filepond-input-multiple"
+                                                           data-allow-reorder="true" multiple>
                                                 </div>
                                             </div>
                                         </div>
@@ -400,7 +400,7 @@
                             </div>
 
                             <div class="hstack gap-2 justify-content-end">
-                                <button type="button" class="btn btn-primary" id="fileResume">Save</button>
+                                <button type="submit" class="btn btn-primary" id="save">Save</button>
                                 <a class="btn btn-soft-success cancle-button">Cancel</a>
                             </div>
 
@@ -807,8 +807,7 @@
                 <div class="mt-2 text-center">
                     <i class="ri-file-reduce-line" style="font-size: 100px; color: red"></i>
                     <div class="mt-2 pt-2 fs-15 mx-4 mx-sm-5">
-                        <h4>Are you Sure ?</h4>
-                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this File ?</p>
+                        <h4>Are you Sure Remove this File ?</h4>
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
@@ -864,11 +863,6 @@
 <%-------------------------------------------- Custom JAVASCRIPT--------------------------------------------%>
 <%--Handle User--%>
 <script>
-    // Show modal Delete User
-    document.getElementById('del-user-button').addEventListener('click', function () {
-        $('#deleteUserModal').modal('show');
-    });
-
     // Handle button 'X' Delete Resume
     document.addEventListener("DOMContentLoaded", function () {
         cutShortLink();
@@ -901,12 +895,9 @@
         document.getElementById("profile-img-file-input").value = "";
     });
 
-
+    // Handle Password
     var isNewPassword = false;
     var isFormValid = false;
-    var linkCancle = '/users';
-    if (userCurrent.role == 'DEVELOPER') linkCancle = '/home';
-    $('.cancle-button').attr('href', linkCancle);
 
     // Handle user click on "Change Password"
     document.getElementById('change-password-button').addEventListener('click', function (e) {
@@ -1000,7 +991,8 @@
         });
     });
 
-    document.getElementById('detailUserBtn').addEventListener('click', function () {
+    // Hand user click button update User Detail
+    document.getElementById('updateDetail').addEventListener('click', function () {
         let hasEmptyFields = false;
         let hasInvalidFields = false;
 
@@ -1026,6 +1018,29 @@
         }
     });
 
+    // Vali Date of birth
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy thẻ input date
+        var dateInput = document.getElementById("dateOfBirth");
+
+        // Lấy ngày hiện tại và đặt giá trị max cho thẻ input date
+        var today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute("max", today);
+    });
+
+    // File Resume
+    FilePond.registerPlugin(
+        FilePondPluginFileEncode,
+        FilePondPluginFileValidateSize,
+        FilePondPluginImageExifOrientation,
+        FilePondPluginImagePreview
+    );
+
+    var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
+
+    Array.from(inputMultipleElements).forEach(function (inputElement) {
+        FilePond.create(inputElement);
+    })
 
     Validator({
         form: '#formUpdateUser',
@@ -1053,6 +1068,16 @@
                 filenamesResume.push(fileName);
             });
 
+            inputMultipleElements.forEach(function (inputElement) {
+                var filePondInstance = FilePond.find(inputElement);
+
+                if (filePondInstance.getFiles().length > 0) {
+                    filePondInstance.getFiles().forEach(function (file) {
+                        formData.append('newResumeFiles', file.file);
+                    });
+                }
+            });
+
             var result = filenamesResume.join(",");
             formData.append('remainResumeFiles', result);
 
@@ -1074,6 +1099,11 @@
         }
     });
 
+    // Show modal Delete User
+    document.getElementById('del-user-button').addEventListener('click', function () {
+        $('#deleteUserModal').modal('show');
+    });
+
     // Handle when user click button "Confirm Delete User"
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -1091,79 +1121,68 @@
             }
         });
     });
-    // Handle when user click button "Confirm Delete User"
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     document.getElementById('fileResume').addEventListener('click', function (e) {
-    //         e.preventDefault();
-    //         var files = document.getElementById('resumeFile');
-    //         for (var i = 0; i < files.files.s; i++) {
-    //             console.log(files.files[i]);
-    //         }
-    //     })
-    //
-    // });
 </script>
 
 <%--Handle WorkingDay--%>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (!(userCurrent.role == 'DEVELOPER')) {
-            // Lấy tham chiếu đến các phần tử HTML
-            var yearSelect = document.getElementById('working-year');
-            var monthSelect = document.getElementById('working-month');
-            var totalWorkingDayInput = document.getElementById('totalWorkingDay');
+<%--<script>--%>
+<%--    document.addEventListener("DOMContentLoaded", function () {--%>
+<%--        if (!(userCurrent.role == 'DEVELOPER')) {--%>
+<%--            // Lấy tham chiếu đến các phần tử HTML--%>
+<%--            var yearSelect = document.getElementById('working-year');--%>
+<%--            var monthSelect = document.getElementById('working-month');--%>
+<%--            var totalWorkingDayInput = document.getElementById('totalWorkingDay');--%>
 
-            var data;
-            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}', 'GET', null, function (rs) {
-                data = rs;
-                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
-                data.forEach(function (entry) {
-                    var option = document.createElement('option');
-                    option.value = entry.year;
-                    option.textContent = entry.year;
-                    yearSelect.appendChild(option);
-                });
-            });
+<%--            var data;--%>
+<%--            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}', 'GET', null, function (rs) {--%>
+<%--                data = rs;--%>
+<%--                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';--%>
+<%--                data.forEach(function (entry) {--%>
+<%--                    var option = document.createElement('option');--%>
+<%--                    option.value = entry.year;--%>
+<%--                    option.textContent = entry.year;--%>
+<%--                    yearSelect.appendChild(option);--%>
+<%--                });--%>
+<%--            });--%>
 
-            // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
-            yearSelect.addEventListener('change', function () {
-                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}' + "?year=" + yearSelect.value, 'GET', null, function (rs) {
-                    var dataMonth = rs;
-                    // Xóa các option cũ trong dropdown year
-                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
+<%--            // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm--%>
+<%--            yearSelect.addEventListener('change', function () {--%>
+<%--                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}' + "?year=" + yearSelect.value, 'GET', null, function (rs) {--%>
+<%--                    var dataMonth = rs;--%>
+<%--                    // Xóa các option cũ trong dropdown year--%>
+<%--                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';--%>
 
-                    // Thêm các option mới từ dữ liệu API
-                    dataMonth.forEach(function (entry) {
-                        var option = document.createElement('option');
-                        option.value = entry.month;
-                        option.textContent = entry.month;
-                        monthSelect.appendChild(option);
-                    });
-                    monthSelect.addEventListener('change', function () {
-                        var selectedMonth = monthSelect.value;
-                        var selectedData = dataMonth.find(function (entry) {
-                            return entry.month === parseInt(selectedMonth);
-                        });
-                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                    });
+<%--                    // Thêm các option mới từ dữ liệu API--%>
+<%--                    dataMonth.forEach(function (entry) {--%>
+<%--                        var option = document.createElement('option');--%>
+<%--                        option.value = entry.month;--%>
+<%--                        option.textContent = entry.month;--%>
+<%--                        monthSelect.appendChild(option);--%>
+<%--                    });--%>
+<%--                    monthSelect.addEventListener('change', function () {--%>
+<%--                        var selectedMonth = monthSelect.value;--%>
+<%--                        var selectedData = dataMonth.find(function (entry) {--%>
+<%--                            return entry.month === parseInt(selectedMonth);--%>
+<%--                        });--%>
+<%--                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";--%>
+<%--                    });--%>
 
-                });
+<%--                });--%>
 
-                if (yearSelect.value != "") {
-                    var selectedYear = yearSelect.value;
-                    var selectedData = data.find(function (entry) {
-                        return entry.year === parseInt(selectedYear);
-                    });
-                    totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
-                    monthSelect.style.display = 'block';
-                } else {
-                    totalWorkingDayInput.value = null;
-                    monthSelect.style.display = 'none';
-                }
-            });
-        }
-    });
-</script>
+<%--                if (yearSelect.value != "") {--%>
+<%--                    var selectedYear = yearSelect.value;--%>
+<%--                    var selectedData = data.find(function (entry) {--%>
+<%--                        return entry.year === parseInt(selectedYear);--%>
+<%--                    });--%>
+<%--                    totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";--%>
+<%--                    monthSelect.style.display = 'block';--%>
+<%--                } else {--%>
+<%--                    totalWorkingDayInput.value = null;--%>
+<%--                    monthSelect.style.display = 'none';--%>
+<%--                }--%>
+<%--            });--%>
+<%--        }--%>
+<%--    });--%>
+<%--</script>--%>
 
 <%--Handle Contract--%>
 <script>
@@ -1591,7 +1610,7 @@
     });
 </script>
 
-<%--Pagination--%>
+<%--Data Table--%>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let table = new DataTable('#customerTable', {
@@ -1599,28 +1618,6 @@
             "pageLength": 3
         });
     });
-</script>
-
-<%--Data Table--%>
-<script>
-    FilePond.registerPlugin(
-        // encodes the file as base64 data
-        FilePondPluginFileEncode,
-        // validates the size of the file
-        FilePondPluginFileValidateSize,
-        // corrects mobile image orientation
-        FilePondPluginImageExifOrientation,
-        // previews dropped images
-        FilePondPluginImagePreview
-    );
-
-    var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
-
-    // loop over input elements
-    Array.from(inputMultipleElements).forEach(function(inputElement) {
-        // create a FilePond instance at the input element location
-        FilePond.create(inputElement);
-    })
 </script>
 
 <%--Notification--%>
@@ -1673,8 +1670,12 @@
 <%--Handle Role--%>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        var linkCancle = '/users';
+        if (isDeleveloper()) linkCancle = '/home';
+        $('.cancle-button').attr('href', linkCancle);
+
         if (isDeleveloper()) {
-            $('.hide').remove();
+            $('.permission').remove();
             $('#del-user-button').remove();
             $('#timeSheetsCode').prop('readonly', true);
             $('#timeSheetsCode').prop('disabled', true);
