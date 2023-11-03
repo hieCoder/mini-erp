@@ -68,4 +68,9 @@ public class TaskApi {
         int pageSize = listTaskRequest.getPageSize() != null?listTaskRequest.getPageSize():TaskConstant.pageSizeDefault;
         return ResponseEntity.ok(taskService.getTotalItem((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
     }
+
+    @GetMapping("/opened/{userId}")
+    public ResponseEntity<?> getOpenedTask(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok(taskService.getOpenedTask(userId));
+    }
 }

@@ -14,6 +14,7 @@ import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.task.DashboardTaskResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
@@ -141,5 +142,14 @@ public class TaskServiceImpl implements TaskService {
                 throw new NotFoundException(MessageErrorUtils.notFound("Id"));
         }
         return taskMapper.changeStatusTasks(ids, StatusDeleteTaskEnum.INACTIVE.toString());
+    }
+
+    @Override
+    public DashboardTaskResponse getOpenedTask(String userId) {
+        DashboardTaskResponse dashboardTask = new DashboardTaskResponse();
+        dashboardTask.setStatusTaskCounts(taskConverter.toListStatusTaskCountsResponse(taskMapper.getOpenedStatusTaskCounts(userId)));
+        List<TaskShowResponse> list = taskMapper.getOpenedTask(userId).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+        dashboardTask.setResponseList(list);
+        return dashboardTask;
     }
 }
