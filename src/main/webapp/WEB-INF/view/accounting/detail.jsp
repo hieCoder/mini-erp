@@ -802,7 +802,7 @@
             }
         }
 
-        callAjaxByDataFormWithDataForm2(baseUrlAccount + "edit", "POST", formData, function (rs) {
+        callAjaxByDataFormWithDataForm(baseUrlAccount + "edit", "POST", formData, function (rs) {
             if (rs) {
                 $("#titleAccount").text(rs.title);
                 $("#createdDateAccount").text(rs.createdDate);

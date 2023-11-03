@@ -1067,7 +1067,7 @@
                 }
             }
         }
-        callAjaxByDataFormWithDataForm2(baseUrlAccount, "POST", formData, function (rs) {
+        callAjaxByDataFormWithDataForm(baseUrlAccount, "POST", formData, function (rs) {
             loadPage(1);
             $("#createModal").modal("hide")
         }, function (error) {
