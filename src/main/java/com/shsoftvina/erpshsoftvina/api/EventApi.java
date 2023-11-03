@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.service.EventService;
@@ -26,9 +27,10 @@ public class EventApi {
     }
 
     @GetMapping("/upcoming")
-    public ResponseEntity<?> getUpcomingEvents(@RequestParam("day") String day) {
-        List<EventDashBoardResponse> responseList = eventService.getUpcomingEvent(day);
-//        DashBoardResponse dashBoardResponse =
+    public ResponseEntity<?> getUpcomingEvents(@RequestParam("day") String day,
+                                               @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
+                                               @RequestParam(name = "size", required = false, defaultValue = "3") Integer size) {
+        DashBoardResponse responseList = eventService.getUpcomingEvent(day,page,size);
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 

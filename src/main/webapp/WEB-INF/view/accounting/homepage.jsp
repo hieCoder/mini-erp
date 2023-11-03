@@ -194,7 +194,7 @@
                                                                     <i class="ri-more-fill align-middle"></i>
                                                                 </button>
                                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                                    <li><a href="#!" class="dropdown-item"><i
+                                                                    <li><a href="/accounting/detail/${a.id}" target="_blank" class="dropdown-item"><i
                                                                             class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                                         View</a>
                                                                     </li>
@@ -790,8 +790,14 @@
                                 "<td style=''><span class='badge badge-soft-danger'> " + account.user.fullname + "</span></td>" +
 
                                 "<td style=''><a href='javascript:void(0)' class='cut-file-name' data-bs-toggle='tooltip' data-bs-placement='bottom' title='" + account.note + "'>" + account.note + "</a></td>" +
-                                "<td style='display: none;'>" +
-                                "<div class='dropdown d-inline-block'><button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'><i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'><li><a href='#!' class='dropdown-item'><i class='ri-eye-fill align-bottom me-2 text-muted'></i>View</a></li><li><a class='dropdown-item edit-item-btn'><i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit</a></li><li><a class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a></li></ul></div></td><td><div class='dropdown d-inline-block'><button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'><i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'><li><a href='#!' class='dropdown-item'><i class='ri-eye-fill align-bottom me-2 text-muted'></i>View</a></li><li><a class='dropdown-item edit-item-btn'><i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit</a></li><li><a class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a></li></ul></div></td>";
+                                "<td style=''><div class='dropdown d-inline-block'>" +
+                                "<button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                                "<i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'>" +
+                                "<li><a href='/accounting/detail/" + account.id + "' target='_blank' class='dropdown-item'><i class='ri-eye-fill align-bottom me-2 text-muted'></i>View</a></li>" +
+                                "<li><a class='dropdown-item edit-item-btn'><i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit</a></li>" +
+                                "<li><a class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a>" +
+                                "</li></ul></div>" +
+                                "</td>";
                             totalExpense += account.expense;
                             totalRevenue += account.revenue;
                             totalRemain = account.remain;
