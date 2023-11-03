@@ -21,6 +21,12 @@
         where EMAIL = #{email}
     </select>
 
+    <select id="findByTimesheetsCode" parameterType="String" resultMap="userResultMap">
+        SELECT *
+        FROM USER
+        WHERE TIMESHEETS_CODE = #{timesheetsCode}
+    </select>
+
     <update id="updateUserDetail" parameterType="com.shsoftvina.erpshsoftvina.entity.User">
         UPDATE USER
         SET
