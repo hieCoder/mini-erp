@@ -55,7 +55,7 @@
                                 <div class="form-group">
                                     <label for="pageSize">Account pending:</label>
                                     <div class="input-group text-right">
-                                        <button data-toggle="modal" data-target="#modal-account-pending" type="button"
+                                        <button type="button" id="penddingModal"
                                                 class="btn btn-warning">View
                                         </button>
                                     </div>
@@ -80,9 +80,7 @@
                             <tr>
                                 <th>NO.</th>
                                 <th>ID</th>
-                                <th class="sortable-header">Username
-
-                                </th>
+                                <th class="sortable-header">Username</th>
                                 <th>User ID</th>
                                 <th>Department</th>
                                 <th>Position</th>
@@ -93,7 +91,7 @@
                                 <tr>
                                     <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>
                                     <td>${user.getId()}</td>
-                                    <td><a href="/users/${user.getId()}">${user.getFullname()}</a></td>
+                                    <td><a href="/users/${user.getId()}" style="color: blue">${user.getFullname()}</a></td>
                                     <td>${user.getEmail()}</td>
                                     <td>${user.getDepartment().getName()}</td>
                                     <td>${user.getPosition().getName()}</td>
@@ -153,117 +151,127 @@
     <!-- container-fluid -->
 </div>
 
-
-<!-- Modal Notification -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="resultModalLabel">Result</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="resultMessage">
-                <!-- Message Success -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal  approval -->
 <div class="modal fade" id="modal-account-pending" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">List account pending</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Account Pending</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
             </div>
-            <div class="modal-body">
-                <table id="datatable-account-pending" class="table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>User ID</th>
-                        <th>Created date</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+
+                <div class="modal-body">
+                    <table class="table align-middle table-nowrap table-striped-columns"
+                           id="pendingTable">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Username</th>
+                            <th>User ID</th>
+                            <th>Created date</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="list form-check-all">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
         </div>
     </div>
 </div>
 
+<!-- Modal  reject -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Confirm Reject</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" >Confirm Reject</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        ></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to reject this item?
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer border-top">
                 <button type="button" class="btn btn-danger" id="confirmReject">Reject</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
+<%-------------------------------------------- CODE JAVASCRIPT--------------------------------------------%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<!--datatable js-->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="/assets/js/pages/datatables.init.js"></script>
+<!-- List js -->
+<script src="/assets/libs/list.js/list.min.js"></script>
+<!-- Pagination js -->
+<script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+
+<%-------------------------------------------- CUSTOM JAVASCRIPT--------------------------------------------%>
 <script>
 
-    $(document).ready(function () {
-        table = $('#datatable-account-pending').DataTable({
+
+    document.getElementById('penddingModal').addEventListener('click', function () {
+        $('#modal-account-pending').modal('show');
+        // Tạo DataTable
+        let table = new DataTable('#pendingTable', {
+            pagingType: "full_numbers",
+            pageLength: 10,
+            ordering: false,
             ajax: {
                 url: '/api/v1/users?status=PENDING',
                 contentType: 'application/json',
                 method: 'GET',
-                dataSrc: 'listUser'
+                dataSrc: "listUser"
             },
             columns: [
                 {data: 'fullname'},
                 {data: 'email'},
                 {data: 'createdDate'},
                 {
+                    data: 'role',
                     render: function (data, type, row) {
-                        return '<select style="width: 150px;" class="form-control" id="exampleFormControlSelect1" name="role">' +
+                        return '<select style="width: 160px;" class="form-select" name="role">' +
                             '<option value="">-- Select role --</option>' +
-                            '<option value="OWNER">Owner</option>' +
-                            '<option value="MANAGER">Manager</option>' +
-                            '<option value="DEVELOPER">Developer</option>' +
+                            '<option value="OWNER" ' + (data === 'OWNER' ? 'selected' : '') + '>Owner</option>' +
+                            '<option value="MANAGER" ' + (data === 'MANAGER' ? 'selected' : '') + '>Manager</option>' +
+                            '<option value="DEVELOPER" ' + (data === 'DEVELOPER' ? 'selected' : '') + '>Developer</option>' +
                             '</select>';
                     }
                 },
                 {
                     render: function (data, type, row) {
-                        return '<button type="button" class="approval-btn btn btn-primary mr-1" data-status="ACTIVE" data-id="' + row.id + '">Approval</button>' +
-                            '<button type="button" class="reject-btn btn btn-danger mr-1" data-status="REJECT" data-id="' + row.id + '">Reject</button>';
+                        return '<button type="button" class="approval-btn btn btn-primary" data-status="ACTIVE" data-id="' + row.id + '">Approval</button>' +
+                            '<button type="button" class="reject-btn btn btn-danger ml-10" data-status="REJECT" data-id="' + row.id + '">Reject</button>';
                     }
                 }
-            ],
-            ordering: false,
-            searching: false,
-            lengthChange: false,
-            paging: false,
-            info: false
+            ]
         });
+        table.ajax.reload();
 
-        $('#datatable-account-pending').on('click', '.approval-btn', function () {
+        $('#pendingTable').on('click', '.approval-btn', function () {
             var data = table.row($(this).parents('tr')).data();
             var obj = {
                 email: data.email,
@@ -272,7 +280,6 @@
                 id: $(this).data('id')
             };
 
-            $('#datatable-account-pending').after(createLoadingHtml());
             callAjaxByJsonWithData('/api/v1/users/register/approval', 'PUT', obj, function (rs) {
                 if (rs) {
                     table.ajax.reload();
@@ -281,15 +288,13 @@
             });
         });
 
-
-        $('#datatable-account-pending').on('click', '.reject-btn', function () {
+        $('#pendingTable').on('click', '.reject-btn', function () {
 
             $('#confirmModal').modal('show');
 
             var id = $(this).data('id');
 
             $('#confirmReject').on('click', function () {
-                $('#datatable-account-pending').after(createLoadingHtml());
                 callAjaxByJsonWithData('/api/v1/users/register/reject/' + id, 'DELETE', null, function (rs) {
                     if (rs) {
                         table.ajax.reload();
@@ -301,11 +306,11 @@
             });
 
         });
-    });
+    })
 </script>
 
 <script>
-    // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
+    // // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
     document.getElementById("pageSize").addEventListener("change", function () {
         localStorage.setItem("selectedPageSize", this.value);
     });
@@ -322,18 +327,9 @@
         localStorage.setItem("selectedSort", this.value);
     });
 
-    // Notification Delete User Success
-    document.addEventListener('DOMContentLoaded', function () {
-        const result = sessionStorage.getItem('result');
-        if (result) {
-            $('#resultMessage').text(result === 'deleteSuccess' ? 'Delete User Success' : '');
-            $('#resultModal').modal('show');
-            sessionStorage.clear();
-        }
-    });
-
     // Khôi phục giá trị lựa chọn "Page Count," "Status," và "Search" từ Local Storage khi trang được load
     window.addEventListener("load", function () {
+        window.scrollTo(0, window.innerHeight / 3);
         var selectedPageSize = localStorage.getItem("selectedPageSize");
         if (selectedPageSize) {
             document.getElementById("pageSize").value = selectedPageSize;
@@ -354,40 +350,6 @@
             document.getElementById("search").value = selectedSearch;
         }
     });
-
-</script>
-
-<script>
-    // Show modal notification
-    document.addEventListener("DOMContentLoaded", function () {
-        var result = localStorage.getItem('result');
-        if (result != null) notificationSuccess(localStorage.getItem('result'));
-        localStorage.clear()
-    });
-
-    // Notification Success
-    function notificationSuccess(result) {
-        var title;
-        var text;
-
-        switch (result) {
-            case 'delUserSuccess':
-                title = 'Delete Success';
-                break;
-        }
-        Swal.fire(
-            {
-                title: title,
-                text: text,
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-                cancelButtonClass: 'btn btn-danger w-xs mt-2',
-                buttonsStyling: false,
-                showCloseButton: true
-            }
-        )
-    }
 </script>
 
 </body>
