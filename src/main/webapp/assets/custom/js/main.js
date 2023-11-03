@@ -1,12 +1,5 @@
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
-const T_REGISTERED = 'REGISTERED';
-const T_POSTPONED = 'POSTPONED';
-const T_CLOSED = 'CLOSED';
-
-const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
-const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
-const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
 
 <!-- Load More Buttons -->
 
@@ -74,23 +67,6 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
             if(callbackFail) callbackFail(xhr);
         }
     });
-}
-
-function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
-    $.ajax({
-        url: urlAPI,
-        type: methodType,
-        processData: false,
-        contentType: false,
-        data: formData,
-        enctype: 'multipart/form-data',
-        success: function (response) {
-            if (callback) callback(response);
-        },
-        error: function (xhr, status, error) {
-            if (callBackError) callBackError(xhr);
-        }
-    })
 }
 
 

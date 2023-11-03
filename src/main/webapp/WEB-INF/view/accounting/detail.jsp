@@ -671,7 +671,7 @@
 
     $(document).on("click", "button#deleteFileBtn", function () {
         let fileName = $("#deleteFileModal").attr("data-name")
-        $('div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
+        $('#editModal div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
         $("#deleteFileModal").modal("hide")
         dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
     })
@@ -749,7 +749,7 @@
                                     var contentLength = xhr.getResponseHeader('Content-Length');
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
                                     html += showFileUploaded(fileName, contentLength, url,"edit")
-                                    $(".showFilesUploaded").html(html)
+                                    $("#editModal div.showFilesUploaded").html(html)
                                     $("#editModal").modal("show")
                                 }
                             });
@@ -802,7 +802,7 @@
             }
         }
 
-        callAjaxByDataFormWithDataForm2(baseUrlAccount + "edit", "POST", formData, function (rs) {
+        callAjaxByDataFormWithDataForm(baseUrlAccount + "edit", "POST", formData, function (rs) {
             if (rs) {
                 $("#titleAccount").text(rs.title);
                 $("#createdDateAccount").text(rs.createdDate);

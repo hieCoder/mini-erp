@@ -977,7 +977,7 @@
                 }
             }
         }
-        callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
+        callAjaxByDataFormWithDataForm("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
             if(rs){
                 $('#notificationList a[href="/notifications/'+notificationId+'"]').text(rs.title)
                 INFORM_SUCCESS("Notification updated successfully.")
@@ -1111,7 +1111,7 @@
                     }
                }
             }
-            callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}","POST", formData ,function (rs){
+            callAjaxByDataFormWithDataForm("${apiURL}${pathMain}","POST", formData ,function (rs){
                 if(rs>0){
                     loadDatabase();
                     INFORM_SUCCESS("Notification created successfully.")

@@ -15,24 +15,9 @@
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
 
-
-
-
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-
-    <!-- jsvectormap css -->
-    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
-
-    <!--Swiper slider css-->
-    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
-
-
-
-
 
     <dec:head/>
 
@@ -55,23 +40,14 @@
 
     <%-- Custom --%>
     <link rel="stylesheet" href="/assets/custom/css/main.css">
+    <script src="/assets/custom/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 
-
-
-
-
     <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
-
-
-
-
-
-
 
 
 
@@ -860,26 +836,9 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 
-
-
-
-
-
-<!-- ckeditor -->
-<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-
-
-
-
-
-
-
-
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
 
-<%-- Custom --%>
-<script src="/assets/custom/js/main.js"></script>
 <script>
 
     var scheduleLink = '', managementTime = '';

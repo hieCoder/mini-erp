@@ -826,7 +826,7 @@
                     }
                 }
             }
-            callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
+            callAjaxByDataFormWithDataForm("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
                 console.log(rs)
                 if(rs){
                     $("h5.titleView strong").text(rs.title)
@@ -936,7 +936,7 @@
             $("#popupFormEditNotification .modal-footer button").each(function() {
                 $(this).prop("disabled", true);
             });
-            callAjaxByDataFormWithDataForm2(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
+            callAjaxByDataFormWithDataForm(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
                 var data = rs;
                 $("#titleNotification").text(data.title)
                 $("#contentNotification").text(data.content)
