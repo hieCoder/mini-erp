@@ -7,10 +7,13 @@ import com.shsoftvina.erpshsoftvina.mapper.EventMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.EventService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ public class EventServiceImpl implements EventService {
     private UserMapper userMapper;
     @Autowired
     private EventConverter eventConverter;
+    @Autowired
+    private ApplicationUtils applicationUtils;
     @Override
     public List<EventResponse> getAllEventsByMonth(String monthly) {
         List<Event> events = eventMapper.getAllEventsByMonth(monthly);
@@ -32,6 +37,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public String createEvent(EventCreateRequest request) {
+        applicationUtils.checkUserAllow();
         try{
             String id = Principal.getUserCurrent().getId();
             Event event = eventConverter.convertToEntity(request);
@@ -46,6 +52,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public int editEvent(EventEditRequest request) {
+        applicationUtils.checkUserAllow();
         try{
             Event checkEvent = eventMapper.findById(request.getId());
             if(checkEvent!= null){
@@ -65,6 +72,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public int deleteEvent(String id) {
+        applicationUtils.checkUserAllow();
         try{
             eventMapper.deleteEvent(id);
             return 1;
@@ -75,8 +83,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDashBoardResponse> getUpcomingEvent(String day) {
-        List<Event> events = eventMapper.getUpcomingEvents(day);
-        return eventConverter.convertToHomeResponse(events);
+    public DashBoardResponse getUpcomingEvent(String day, Integer page, Integer size) {
+        int offset = (page - 1) * size;
+        RowBounds rowBounds = new RowBounds(offset, size);
+        List<Event> events = eventMapper.getUpcomingEvents(day,rowBounds);
+        List<EventDashBoardResponse> list = eventConverter.convertToHomeResponse(events);
+        long totalRecordCount = eventMapper.getTotalRecordCountUpcoming(day);
+        long totalPage = (long) Math.ceil((double) totalRecordCount / size);
+        boolean hasNext = page < totalPage;
+        boolean hasPrevious = page > 1;
+        return new DashBoardResponse(list,page,totalPage,totalRecordCount,size,hasNext,hasPrevious);
     }
 }

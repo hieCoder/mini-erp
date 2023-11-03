@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.entity.Task;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +29,8 @@ public interface TaskMapper {
             @Param("userId") String userId);
     int changeStatusTasks(@Param("ids") String[] ids,
                           @Param("status") String status);
+
+    List<Task> getOpenedTask(@Param("userId") String userId);
+    List<Map<String, Object>> getOpenedStatusTaskCounts(@Param("userId") String userId);
+
 }

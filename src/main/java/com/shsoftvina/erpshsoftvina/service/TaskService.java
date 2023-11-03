@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.task.DashboardTaskResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
@@ -20,4 +21,6 @@ public interface TaskService {
     TaskDetailResponse findById(String id);
     List<Map<String, Object>> getTaskByHashtag(String userId);
     int deleteByIds(String[] ids);
+
+    DashboardTaskResponse getOpenedTask(String userId);
 }

@@ -208,26 +208,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
      aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -594,10 +574,7 @@
                         $("div.listComment").html(html);
                     }
                     if (data.clientId == clientID) {
-                        var modal = `<strong class="btn-success rounded-circle p-2">Comment posted successfully.</strong>
-                            `
-                        $("#successComment div.modal-body p").html(modal)
-                        $("#successComment").modal("show");
+                        popupSuccess("Comment posted successfully")
                         $("textarea#newCommentContent").val("")
                     }
                 }else if(data.clientId == clientID){
@@ -613,10 +590,7 @@
                 $("#editCommentModal").modal("hide")
 
                 if (data.clientId == clientID) {
-                        var modal = `<strong class="btn-success rounded-circle p-2">Edit Comment Successfully.</strong>
-                            `
-                        $("#successComment div.modal-body p").html(modal)
-                        $("#successComment").modal("show");
+                        popupSuccess("Edit Comment Successfully")
                 }
 
             }else if(data.clientId == clientID){
@@ -628,10 +602,7 @@
             if (data.id != null) {
                 $('div.simplebar-wrapper div[data-id="' + data.id + '"]').remove()
                 if (data.clientId == clientID) {
-                    var modal = `<strong class="btn-success rounded-circle p-2">Delete Comment Successfully.</strong>
-                            `
-                    $("#successComment div.modal-body p").html(modal)
-                    $("#successComment").modal("show");
+                     popupSuccess("Delete Comment Successfully")
                 }
             }else if(data.clientId == clientID){
                 refreshPage()
@@ -672,10 +643,7 @@
                     }
 
                     if (data.clientId == clientID) {
-                        var modal = `<strong class="btn-success rounded-circle p-2">Reply posted successfully.</strong>
-                            `
-                        $("#successComment div.modal-body p").html(modal)
-                        $("#successComment").modal("show");
+                        popupSuccess("Reply posted successfully")
                         $(".containerReply").remove()
                     }
                 }else if(data.clientId == clientID){
@@ -906,67 +874,6 @@
             quillView.setContents(content)
         }
         loadContent(${notification.content})
-        $(document).on("click", "#saveChangesButtonNotification", function (e) {
-            $("span.text-danger").remove()
-            var apiUrlNotification = baseUrlNotification + "/update/"
-            var notificationId = $("table#tableNotification").attr("data-id");
-            var title = document.getElementById("editNotificationTitle").value;
-            var content = document.getElementById("editNotificationContent").value;
-            var files = document.getElementById("editNotificationFile").files;
-            var oldFile = []
-            $("li.listFilesEdit").each(function () {
-                oldFile.push($(this).attr("data-name"));
-            });
-
-            if (title.trim() === "") {
-                $("input#editNotificationTitle").after(notFilled)
-                return false;
-            }
-            if (content.trim() === "") {
-                $("textarea#editNotificationContent").after(notFilled)
-                return false;
-            }
-            var formData = new FormData();
-            formData.append("title", title);
-            formData.append("content", content);
-            formData.append("oldFile", oldFile);
-            for (var i = 0; i < files.length; i++) {
-                formData.append("files", files[i]);
-            }
-            $("#popupFormEditNotification .modal-footer button").each(function() {
-                $(this).prop("disabled", true);
-            });
-            callAjaxByDataFormWithDataForm(apiUrlNotification + notificationId, 'POST', formData, function (rs) {
-                var data = rs;
-                $("#titleNotification").text(data.title)
-                $("#contentNotification").text(data.content)
-                $("#authorNotification").text(data.title)
-                $("#createdDateNotification").text(data.createdDate)
-                var xhtml = ''
-                if (data.files != null) {
-                    data.files.forEach((e) => {
-                        xhtml += '<a href="' + e + '" download class="btn btn-link text-primary">' + e.split("-")[1] + '</a>'
-                    })
-                }
-                $("#attachedFilesNotification").html(xhtml)
-                var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Notification Updated successfully.
-                        `
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-
-                $('div.custom-spinner').parent().remove()
-                $("#popupFormEditNotification .modal-footer button").each(function () {
-                    $(this).prop("disabled", false);
-                });
-                $("#popupFormEditNotification").modal("hide");
-            }, function () {
-                $('div.custom-spinner').parent().remove()
-                $("#popupFormEditNotification .modal-footer button").each(function () {
-                    $(this).prop("disabled", false);
-                });
-            });
-        });
 
         $(document).on("click", ".listFilesEdit button", function (e) {
             $("#deleteConfirmationModalFile #deleteFileButton").attr("data-name", $(this).attr("data-name"))

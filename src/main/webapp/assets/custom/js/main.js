@@ -1,5 +1,7 @@
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
+const U_OWNER = 'OWNER';
+const U_MANAGER = 'MANAGER';
 
 // loading
 const BtnLoadRemove = () => {
