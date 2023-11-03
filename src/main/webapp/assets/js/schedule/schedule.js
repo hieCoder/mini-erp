@@ -31,7 +31,6 @@ function getEventColor(code) {
 function originalStringDateToDate(originalDateISOString){
 // Create a Date object from the ISO 8601 string
     const originalDate = new Date(originalDateISOString);
-    console.log(originalDate)
     return originalDate
 }
 function alertInput(text){
@@ -440,6 +439,10 @@ document.addEventListener("DOMContentLoaded", function () {
     var   E = new FullCalendar.Calendar(e, configE)
     currentApiDate = formatDateYYMM(E.getDate())
 
+    function dateToString (date){
+        return date.toISOString().slice(0, 10)
+    }
+
     async function fetchCalendarData(userId, currentApiDate) {
         return new Promise((resolve, reject) => {
             callAjaxByJsonWithData(
@@ -485,16 +488,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     let EVENT_API = [];
                     if (rs && rs.length > 0) {
                         rs.forEach((item) => {
-                            EVENT_API.push({
+                            let data = {
                                 id: item.id,
                                 code: item.type.code,
                                 title: item.title,
                                 description: item.content,
                                 start: originalStringDateToDate(item.startDate),
-                                end: originalStringDateToDate(item.endDate),
-                                allDay: false,
                                 className: getEventColor(item.type.code),
-                            });
+                            }
+                            if(dateToString(originalStringDateToDate(item.startDate)) == dateToString(originalStringDateToDate(item.endDate))){
+                                data.allDay = false
+                            }else{
+                                data.allDay = true
+                                data.end = originalStringDateToDate(item.endDate)
+                            }
+                            EVENT_API.push(data)
                         });
                     }
                     resolve(EVENT_API);
