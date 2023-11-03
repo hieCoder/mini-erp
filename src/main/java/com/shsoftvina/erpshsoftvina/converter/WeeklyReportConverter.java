@@ -3,7 +3,9 @@ package com.shsoftvina.erpshsoftvina.converter;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyReport;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.mapper.WeeklyReportMapper;
 import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.CreateWeeklyReportRequest;
+import com.shsoftvina.erpshsoftvina.model.request.weeklyreport.UpdateWeeklyReportRequest;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.weeklyReport.WeeklyReportShowResponse;
@@ -21,41 +23,56 @@ import java.util.stream.Collectors;
 public class WeeklyReportConverter {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
-    public WeeklyReportShowResponse toShowResponse(WeeklyReport weeklyReport) {
-        if (weeklyReport == null) return null;
-        return WeeklyReportShowResponse.builder()
-                .id(weeklyReport.getId())
-                .title(weeklyReport.getTitle())
-                .fullnameUser(weeklyReport.getUser().getFullname())
-                .createdDate(DateUtils.formatDateTime(weeklyReport.getCreatedDate()))
-                .build();
-    }
+    @Autowired
+    private UserConverter userConverter;
 
-    public List<WeeklyReportShowResponse> toListShowWeeklyReportResponse(List<WeeklyReport> listWeeklyReport) {
-        return listWeeklyReport.stream().map(this::toShowResponse).collect(Collectors.toList());
-    }
+    @Autowired
+    private WeeklyReportMapper weeklyReportMapper;
+
+//    public WeeklyReportShowResponse toShowResponse(WeeklyReport weeklyReport) {
+//        if (weeklyReport == null) return null;
+//        return WeeklyReportShowResponse.builder()
+//                .id(weeklyReport.getId())
+//                .title(weeklyReport.getTitle())
+//                .fullnameUser(weeklyReport.getUser().getFullname())
+//                .createdDate(DateUtils.formatDateTime(weeklyReport.getCreatedDate()))
+//                .build();
+//    }
+//
+//    public List<WeeklyReportShowResponse> toListShowWeeklyReportResponse(List<WeeklyReport> listWeeklyReport) {
+//        return listWeeklyReport.stream().map(this::toShowResponse).collect(Collectors.toList());
+//    }
 
     public WeeklyReportDetailResponse toDetailResponse(WeeklyReport weeklyReport) {
         if (weeklyReport == null) return null;
         return WeeklyReportDetailResponse.builder()
                 .id(weeklyReport.getId())
                 .title(weeklyReport.getTitle())
-                .content(weeklyReport.getContent())
-                .fullnameUser(weeklyReport.getUser().getFullname())
+                .currentWeeklyContent(weeklyReport.getCurrentWeeklyContent())
+                .nextWeeklyContent(weeklyReport.getNextWeeklyContent())
+                .user(userConverter.toIdAndFullnameUserResponse(weeklyReport.getUser()))
                 .createdDate(DateUtils.formatDateTime(weeklyReport.getCreatedDate()))
                 .build();
     }
 
     public WeeklyReport toEntity(CreateWeeklyReportRequest createWeeklyReportRequest) {
-        if (createWeeklyReportRequest == null) return null;
         return WeeklyReport.builder()
                 .id(ApplicationUtils.generateId())
                 .title(createWeeklyReportRequest.getTitle())
-                .content(createWeeklyReportRequest.getContent())
+                .currentWeeklyContent(createWeeklyReportRequest.getCurrentWeeklyContent())
+                .nextWeeklyContent(createWeeklyReportRequest.getNextWeeklyContent())
                 .createdDate(new Date())
                 .user(userMapper.findById(createWeeklyReportRequest.getUserId()))
                 .build();
+    }
+
+    public WeeklyReport toEntity(UpdateWeeklyReportRequest updateWeeklyReportRequest) {
+        WeeklyReport weeklyReport = weeklyReportMapper.findById(updateWeeklyReportRequest.getId());
+        weeklyReport.setTitle(updateWeeklyReportRequest.getTitle());
+        weeklyReport.setCurrentWeeklyContent(updateWeeklyReportRequest.getCurrentWeeklyContent());
+        weeklyReport.setNextWeeklyContent(updateWeeklyReportRequest.getNextWeeklyContent());
+        return weeklyReport;
     }
 }

@@ -14,7 +14,8 @@ import java.util.Date;
 public class WeeklyReport {
     private String id;
     private String title;
-    private String content;
+    private String currentWeeklyContent;
+    private String nextWeeklyContent;
     private Date createdDate;
     private User user;
 }

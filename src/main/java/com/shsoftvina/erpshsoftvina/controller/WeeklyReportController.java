@@ -22,7 +22,7 @@ public class WeeklyReportController {
     @Autowired
     TaskService taskService;
 
-    @GetMapping
+    /*@GetMapping
     public ModelAndView showListWeeklyReport(@RequestParam(name = "search", required = false, defaultValue = "") String search,
                                              @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                              @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
@@ -34,6 +34,6 @@ public class WeeklyReportController {
         view.addObject("user", user);
         view.addObject("weeklyReports", weeklyReports);
         return view;
-    }
+    }*/
 
 }

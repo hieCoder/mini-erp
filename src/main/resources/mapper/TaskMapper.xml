@@ -40,7 +40,6 @@
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
-        ORDER BY t.START_DATE DESC
         LIMIT #{start}, #{pageSize}
     </select>
 
