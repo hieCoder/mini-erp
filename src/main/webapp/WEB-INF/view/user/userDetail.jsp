@@ -860,6 +860,7 @@
 <script src="/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js"></script>
 <!-- File upload js -->
 <script src="/assets/js/pages/form-file-upload.init.js"></script>
+
 <%-------------------------------------------- Custom JAVASCRIPT--------------------------------------------%>
 <%--Handle User--%>
 <script>
