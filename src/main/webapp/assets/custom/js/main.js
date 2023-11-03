@@ -280,7 +280,6 @@ function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
 
-
 // error messsage
 function getMessageLimitFile(limit) {
     return 'The number of files must be less than ' + limit;

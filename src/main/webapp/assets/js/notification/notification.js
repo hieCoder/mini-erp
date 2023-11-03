@@ -11,6 +11,10 @@ snowEditorData.modules = {
         ['direction', { 'align': [] }], ['link', 'image', 'video'], ['clean']]
 }
 
+const INVALID_FILLED=' <div class="alert alert-danger" role="alert">'+
+    '<strong> Invalid </strong> This field is not filled'+
+    '</div>'
+
 $(document).on("click","button.removeNotification", function (){
     let notificationId = $(this).parent().parent().attr("data-id")
     $("#deleteNotification").attr("data-id", notificationId)
@@ -45,6 +49,12 @@ $(document).on("click","#deleteNotificationBtn", function (){
     }
 })
 
+function checkEmptyString(text){
+    if (text.trim() === "" || !text) {
+        return true;
+    }
+}
+
 function downloadFiles(url){
     var link = document.createElement('a');
     link.href = url;
@@ -68,7 +78,6 @@ function checkTypeFile(type, listType){
 }
 
 function checkLimitSize(size, limit){
-    console.log(size + "+" + limit)
     if(parseInt(size)<= limit){
         return true
     }
