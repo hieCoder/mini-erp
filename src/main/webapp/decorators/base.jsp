@@ -14,7 +14,6 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
@@ -46,11 +45,6 @@
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-
-    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
-
-
-
     <script>
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
@@ -59,7 +53,6 @@
             avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
         };
     </script>
-
 </head>
 
 <body>
@@ -834,7 +827,6 @@
 
 <!-- Sweet Alerts js -->
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>

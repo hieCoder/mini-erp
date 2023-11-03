@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Detail</title>
+    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="row">

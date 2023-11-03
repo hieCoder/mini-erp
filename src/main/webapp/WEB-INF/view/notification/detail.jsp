@@ -192,6 +192,9 @@
                                 <label for="newCommentContent" class="form-label text-body">Leave a Comments</label>
                                 <textarea class="form-control bg-light border-light" id="newCommentContent" rows="3" placeholder="Enter your comment..."></textarea>
                             </div>
+                            <div class="col-12 alertComment">
+
+                            </div>
                             <div class="col-12 text-end">
 <%--                                <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>--%>
                                 <button class="btn btn-sm btn-success" id="newCommentBtn">Post Comments</button>
@@ -707,9 +710,6 @@
     }
 </script>
 <script>
-    const INVALID_FILLED=' <div class="alert alert-danger" role="alert">'+
-        '<strong> Invalid </strong> This field is not filled'+
-        '</div>'
     const INVALID_FILES_LIMIT=' <div class="alert alert-danger" role="alert">'+
         '<strong> Invalid </strong> Maximum Files is ${uploadFileLimit}'+
         '</div>'
@@ -1047,9 +1047,14 @@
         });
 
         $(document).on("click", "#newReplyBtn", function (e) {
+            removeAlert();
             var parentId = $(this).data("id");
             var content = $('textarea#newReplyContent').val();
             var notificationId = $("div#viewNotification").attr("data-id")
+            if(checkEmptyString(content)){
+                $(".alertReply").html(INVALID_FILLED)
+                return false;
+            }
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -1061,8 +1066,13 @@
             replyComment(jsonData)
         });
         $(document).on("click", "#newCommentBtn", function (e) {
+            removeAlert();
             var notificationId = $("div#viewNotification").attr("data-id")
             var content = $("textarea#newCommentContent").val()
+            if(checkEmptyString(content)){
+                $(".alertComment").html(INVALID_FILLED)
+                return false;
+            }
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -1095,6 +1105,7 @@
         })
 
         $(document).on("click","a.editCommentBtn", function (){
+            removeAlert()
             let id = $(this).parent().parent().attr("data-id")
             let content = $('div.simplebar-content-wrapper p.comment-content[data-id="'+ id +'"]').text()
             $("#editCommentModal").attr("data-id", id)
@@ -1110,6 +1121,8 @@
                     '<label for="newReplyContent" class="form-label text-body">Leave a Reply</label>'+
                     '<textarea class="form-control bg-light border-light" id="newReplyContent" rows="3" placeholder="Enter your reply..."></textarea>'+
                 '</div>'+
+                '<div class="alertReply">'+
+                '</div>'+
                 '<div class="col-12 text-end">'+
                     '<button class="btn btn-sm btn-success" data-id="'+id+'" id="newReplyBtn">Post Reply</button>'+
                 '</div>'+
@@ -1123,8 +1136,12 @@
         })
 
         $(document).on("click","#editCommentBtn", function (){
+            removeAlert()
             var contentEdit = $("#editContentComment").val()
-            console.log(contentEdit)
+            if(checkEmptyString(contentEdit)){
+                $("#editContentComment").parent().before(INVALID_FILLED)
+                return false;
+            }
             // Define the data you want to send (if needed)
             var id = $("#editCommentModal").attr("data-id")
             var data = {
