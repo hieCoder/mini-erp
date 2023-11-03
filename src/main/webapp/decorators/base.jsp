@@ -859,22 +859,6 @@
 <!-- Sweet Alerts js -->
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
-
-
-
-
-
-
-<!-- ckeditor -->
-<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-
-
-
-
-
-
-
-
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
 

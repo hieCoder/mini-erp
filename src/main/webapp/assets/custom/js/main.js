@@ -76,24 +76,6 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
     });
 }
 
-function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
-    $.ajax({
-        url: urlAPI,
-        type: methodType,
-        processData: false,
-        contentType: false,
-        data: formData,
-        enctype: 'multipart/form-data',
-        success: function (response) {
-            if (callback) callback(response);
-        },
-        error: function (xhr, status, error) {
-            if (callBackError) callBackError(xhr);
-        }
-    })
-}
-
-
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
