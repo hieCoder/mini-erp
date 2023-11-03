@@ -20,7 +20,7 @@
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks management</a></li>
                     <li class="breadcrumb-item active">Tasks List</li>
                 </ol>
             </div>
@@ -258,13 +258,6 @@
                         <tbody class="list form-check-all"></tbody>
                     </table>
                     <!--end table-->
-                    <div class="noresult" style="display: none">
-                        <div class="text-center">
-                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                            <h5 class="mt-2">Sorry! No Result Found</h5>
-                            <p class="text-muted mb-0">We've searched more than 200k+ tasks We did not find any tasks for you search.</p>
-                        </div>
-                    </div>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="pagination-wrap hstack gap-2">

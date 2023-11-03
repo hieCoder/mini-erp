@@ -11,7 +11,11 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateWeeklyReportRequest {
+public class UpdateWeeklyReportRequest {
+
+    @NotBlank
+    @NotBlank(message = "Field id is not filled")
+    private String id;
 
     @NotBlank(message = "Field title is not filled")
     private String title;
@@ -21,7 +25,4 @@ public class CreateWeeklyReportRequest {
 
     @NotBlank(message = "Field nextWeeklyContent is not filled")
     private String nextWeeklyContent;
-
-    @NotBlank(message = "Field userId is not filled")
-    private String userId;
 }

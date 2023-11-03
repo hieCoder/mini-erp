@@ -9,7 +9,7 @@
             <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="TITLE" type="TEXT"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
             <column name="CURRENT_WEEKLY_CONTENT" type="TEXT"/>
             <column name="NEXT_WEEKLY_CONTENT" type="TEXT"/>
             <column name="CREATED_DATE" type="DATETIME"/>
@@ -18,4 +18,3 @@
     </changeSet>
 
 </databaseChangeLog>
-
