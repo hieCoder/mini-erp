@@ -230,6 +230,11 @@
     }
 </style>
 <script>
+
+    const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
+    const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
+    const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
+
         let qresult = (name)=>{
             let array = {
                 sixToTwelvePm: "6~12pm",
