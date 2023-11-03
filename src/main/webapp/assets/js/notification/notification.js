@@ -21,6 +21,14 @@ $(document).on("click","button.removeNotification", function (){
     $("#deleteNotification").modal("show")
 })
 
+function popupSuccess(text){
+    var modal = `
+                        <strong class="btn-success rounded-circle p-2">${text}.</strong> 
+                        `
+    $("#successComment div.modal-body p").html(modal)
+    $("#successComment").modal("show");
+}
+
 $(document).on("click","button.deleteFileBtn",function (){
     let fileName = $(this).children().attr("data-name")
     $("#deleteFileModal").attr("data-name", fileName)

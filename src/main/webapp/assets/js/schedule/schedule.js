@@ -1,8 +1,11 @@
+
+
 var start_date = document.getElementById("event-start-date"), timepicker1 = document.getElementById("timepicker1"),
     timepicker2 = document.getElementById("timepicker2"), date_range = null, T_check = null;
 const baseUrlEvent = "/api/v1/events";
 const codeDisabled = ["BIRTHDAY", "OPENED", "REOPENED", "REGISTERED","POSTPONED", "CLOSED"]
 var statusCodePrevent = ["CLOSED", "REGISTERED", "POSTPONED"]
+const BIRTHDAY_CODE = "BIRTHDAY"
 const typeEnum = {
     "bg-danger text-light": "HOLIDAY",
     "bg-success text-light": "SEMINAR",
@@ -13,10 +16,15 @@ const typeEnum = {
     "bg-dark text-light": "OTHER",
 };
 
+var listBirthday = []
 
 const birthdayIcon = '<img src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIcon" alt="Cake" title="Cake" width="44" height="44">'
 function returnType(name){
     return typeEnum[name]
+}
+
+function dateToString (date){
+    return date.toISOString().slice(0, 10)
 }
 
 function getEventColor(code) {
@@ -31,9 +39,9 @@ function getEventColor(code) {
 function originalStringDateToDate(originalDateISOString){
 // Create a Date object from the ISO 8601 string
     const originalDate = new Date(originalDateISOString);
-    console.log(originalDate)
     return originalDate
 }
+
 function alertInput(text){
     let html =
         '<div class="col-12 mb-1">'+
@@ -64,6 +72,14 @@ function deleteEvent(y, v, g) {
         console.log("Error")
         console.log(error)
     })
+}
+
+function popupSuccess(text){
+    var modal = `
+                        <strong class="btn-success rounded-circle p-2">${text}.</strong> 
+                        `
+    $("#successComment div.modal-body p").html(modal)
+    $("#successComment").modal("show");
 }
 
 function updateEvent(event, calendar, v, g) {
@@ -100,17 +116,21 @@ function updateEvent(event, calendar, v, g) {
         $("#event-time").after(html)
         return false
     }
-
     callAjaxByJsonWithData(baseUrlEvent, "PUT", data, function (rs){
         if(rs > 0){
+                let allDay = true
+                if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
+                    allDay = false
+                }
+                v.setEnd(event.end)
                 v.setProp("id", event.id)
                 v.setProp("title", event.title)
                 v.setProp("classNames", event.className)
                 v.setStart(event.start)
-                v.setEnd(event.allDay)
-                v.setAllDay("")
+                v.setAllDay(allDay)
                 v.setExtendedProp("description", event.description)
                 v.setExtendedProp("location", event.location)
+            popupSuccess("The event updated successfully")
             calendar.render()
             g.hide()
         } else{
@@ -165,8 +185,13 @@ function addEventFunc(event, g, E){
             g.hide()
             upcomingEvent(CALENDAR_RESULT)
             event.id = rs.toString()
-            event.allDay = false
+            let allDay = true
+            if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
+                allDay = false
+            }
+            event.allDay = allDay
             E.addEvent(event)
+            popupSuccess("The event created successfully")
         }
     }, function (error){
         console.log("Have Error")
@@ -175,7 +200,8 @@ function addEventFunc(event, g, E){
 }
 
 var currentApiDate = ""
-let userId = "1"
+let idArr = window.location.href.split("/")
+let userId = idArr[idArr.length-1].replaceAll("#","")
 let CALENDAR_RESULT = []
 function formatDate(date) {
     const year = date.getFullYear();
@@ -234,12 +260,37 @@ function flatpicekrValueClear() {
 }
 
 function eventClicked() {
-    document.getElementById("form-event").classList.add("view-event"), document.getElementById("event-title").classList.replace("d-block", "d-none"), document.getElementById("event-category").classList.replace("d-block", "d-none"), document.getElementById("event-start-date").parentNode.classList.add("d-none"), document.getElementById("event-start-date").classList.replace("d-block", "d-none"), document.getElementById("event-time").setAttribute("hidden", !0), document.getElementById("timepicker1").parentNode.classList.add("d-none"), document.getElementById("timepicker1").classList.replace("d-block", "d-none"), document.getElementById("timepicker2").parentNode.classList.add("d-none"), document.getElementById("timepicker2").classList.replace("d-block", "d-none"), document.getElementById("event-location").classList.replace("d-block", "d-none"), document.getElementById("event-description").classList.replace("d-block", "d-none"), document.getElementById("event-start-date-tag").classList.replace("d-none", "d-block"), document.getElementById("event-timepicker1-tag").classList.replace("d-none", "d-block"), document.getElementById("event-timepicker2-tag").classList.replace("d-none", "d-block"), document.getElementById("event-location-tag").classList.replace("d-none", "d-block"), document.getElementById("event-description-tag").classList.replace("d-none", "d-block"), document.getElementById("btn-save-event").setAttribute("hidden", !0)
+    document.getElementById("form-event").classList.add("view-event"),
+        document.getElementById("event-title").classList.replace("d-block", "d-none"),
+        document.getElementById("event-category").classList.replace("d-block", "d-none"),
+        document.getElementById("event-start-date").parentNode.classList.add("d-none"),
+        document.getElementById("event-start-date").classList.replace("d-block", "d-none"),
+        document.getElementById("event-time").setAttribute("hidden", !0),
+        document.getElementById("timepicker1").parentNode.classList.add("d-none"),
+        document.getElementById("timepicker1").classList.replace("d-block", "d-none"),
+        document.getElementById("timepicker2").parentNode.classList.add("d-none"),
+        document.getElementById("timepicker2").classList.replace("d-block", "d-none"),
+        document.getElementById("event-location").classList.replace("d-block", "d-none"),
+        document.getElementById("event-description").classList.replace("d-block", "d-none"),
+        document.getElementById("event-start-date-tag").classList.replace("d-none", "d-block"),
+        document.getElementById("event-timepicker1-tag").classList.replace("d-none", "d-block"),
+        document.getElementById("event-timepicker2-tag").classList.replace("d-none", "d-block"),
+        document.getElementById("event-location-tag").classList.replace("d-none", "d-block"),
+        document.getElementById("event-description-tag").classList.replace("d-none", "d-block"),
+        document.getElementById("btn-save-event").setAttribute("hidden", !0)
 }
 
 function editEvent(e) {
     var t = e.getAttribute("data-id");
-    "new-event" == t ? (document.getElementById("modal-title").innerHTML = "", document.getElementById("modal-title").innerHTML = "Add Event", document.getElementById("btn-save-event").innerHTML = "Add Event", eventTyped()) : "edit-event" == t ? (e.innerHTML = "Cancel", e.setAttribute("data-id", "cancel-event"), document.getElementById("btn-save-event").innerHTML = "Update Event", e.removeAttribute("hidden"), eventTyped()) : (e.innerHTML = "Edit", e.setAttribute("data-id", "edit-event"), eventClicked())
+    "new-event" == t ? (document.getElementById("modal-title").innerHTML = "",
+        document.getElementById("modal-title").innerHTML = "Add Event",
+        document.getElementById("btn-save-event").innerHTML = "Add Event",
+        eventTyped()) : "edit-event" == t ? (e.innerHTML = "Cancel",
+        e.setAttribute("data-id", "cancel-event"),
+        document.getElementById("btn-save-event").innerHTML = "Update Event",
+        e.removeAttribute("hidden"), eventTyped()) : (e.innerHTML = "Edit",
+        e.setAttribute("data-id", "edit-event"),
+        eventClicked())
 }
 
 function eventTyped() {
@@ -252,8 +303,10 @@ function upcomingEvent(e) {
     }),
         document.getElementById("upcoming-event-list").innerHTML = null,
         Array.from(e).forEach(function (e) {
+        var event = e
         var t = e.title,
             n = (l = e.end ? (endUpdatedDay = new Date(e.end)).setDate(endUpdatedDay.getDate() - 1) : l) || void 0;
+
         n = "Invalid Date" == n || null == n ? null : (a = new Date(n).toLocaleDateString("en", {
             year: "numeric",
             month: "numeric",
@@ -274,9 +327,59 @@ function upcomingEvent(e) {
                 month: "short",
                 year: "numeric"
             }).split(" ").join(" ")), n ? " to " + n : ""), n = e.className.split("-"), i = e.description || "",
-            e = tConvert(getTime(e.start)),
+            e = tConvert(getTime(e.start));
             l = (e == (l = tConvert(getTime(l))) && (e = "Full day event", l = null), l ? " to " + l : "");
-        u_event = "<div class='card mb-3'>                        <div class='card-body'>                            <div class='d-flex mb-3'>                                <div class='flex-grow-1'><i class='mdi mdi-checkbox-blank-circle me-2 text-" + n[2] + "'></i><span class='fw-medium'>" + a + d + " </span></div>                                <div class='flex-shrink-0'><small class='badge badge-soft-primary ms-auto'>" + e + l + "</small></div>                            </div>                            <h6 class='card-title fs-16'> " + t + "</h6>                            <p class='text-muted text-truncate-two-lines mb-0'> " + i + "</p>                        </div>                    </div>", document.getElementById("upcoming-event-list").innerHTML += u_event
+
+            if(dateToString(originalStringDateToDate(event.start)) == dateToString(originalStringDateToDate(event.end))){
+                d = ""
+            }
+            let typeHtml =  ""
+            let codeType = ""
+            if(codeDisabled.includes(event.code)){
+                e = "Task"
+                l= ""
+                var startIndex = event.className.indexOf("-");
+                codeType = event.className.substring(startIndex);
+                typeHtml =  "<small class='badge badge"+ codeType +" ms-auto'>"+ event.code +"</small>"
+            }else{
+                let string = event.className.split(" ")[0]
+                var startIndex = string.indexOf("-");
+                codeType = event.className.substring(startIndex);
+                typeHtml =  "<small class='badge bg"+ codeType +" ms-auto'>"+ event.code +"</small>"
+                n[2] = "dark"
+            }
+
+            let iconBirthday = '<img '+
+                ' src = "https://cdn-icons-png.flaticon.com/512/2985/2985632.png"'+
+                ' className = "cakeIcon"'+
+                ' alt = "Cake"'+
+                ' title = "Cake"'+
+                ' width = "25"'+
+                ' height = "25" >'
+            let xhtml = "<i class='mdi mdi-checkbox-blank-circle me-2 text-" + n[2] + "'>"
+
+            if(event.code == BIRTHDAY_CODE){
+                e = "HAPPY BIRTHDAY"
+                l= ""
+                xhtml = iconBirthday
+            }
+
+            u_event = "<div class='card mb-3'>                        " +
+            "<div class='card-body'>                            " +
+            "<div class='d-flex mb-3'>                                " +
+            "<div class='flex-grow-1'>" + xhtml
+             +
+            "</i><span class='fw-medium'>" + a + d + " </span>" +
+            "</div>                                " +
+            "<div class='flex-shrink-0'>" +
+                typeHtml +
+            "</div>                           " +
+            " </div>                            " +
+            "<h6 class='card-title fs-16'> " + t + "</h6>                            " +
+            "<p class='text-muted text-truncate-two-lines mb-0'> " + i + "</p>                       " +
+            " </div>                   " +
+            " </div>",
+            document.getElementById("upcoming-event-list").innerHTML += u_event
     })
 }
 
@@ -290,8 +393,15 @@ function tConvert(e) {
 }
 
 var str_dt = function (e) {
-    var e = new Date(e),
-        t = "" + ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][e.getMonth()],
+    var e = new Date(e), t = "" + ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][e.getMonth()],
+        n = "" + e.getDate(), e = e.getFullYear();
+    return t.length < 2 && (t = "0" + t), [(n = n.length < 2 ? "0" + n : n) + " " + t, e].join(",")
+};
+
+var str_dt_end = function (e) {
+    var e = new Date(e)
+    e.setUTCDate(e.getUTCDate() - 1)
+    var t = "" + ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][e.getMonth()],
         n = "" + e.getDate(), e = e.getFullYear();
     return t.length < 2 && (t = "0" + t), [(n = n.length < 2 ? "0" + n : n) + " " + t, e].join(",")
 };
@@ -354,7 +464,9 @@ document.addEventListener("DOMContentLoaded", function () {
             $("img.cakeIcon").remove()
             removeAlert()
             let codeEvent = e.event._def.extendedProps.code
-                    document.getElementById("edit-event-btn").removeAttribute("hidden"),
+            let idEvent = e.event._def.publicId
+            let dateEvent = e.event._instance.range
+            document.getElementById("edit-event-btn").removeAttribute("hidden"),
                     document.getElementById("btn-save-event").setAttribute("hidden", !0),
                     document.getElementById("edit-event-btn").setAttribute("data-id", "edit-event")
                     document.getElementById("edit-event-btn").innerHTML = "Edit"
@@ -374,30 +486,80 @@ document.addEventListener("DOMContentLoaded", function () {
                     if(codeDisabled.includes(codeEvent)){
                         $("#edit-event-btn").addClass("d-none")
                         $("#btn-delete-event").addClass("d-none")
+                        $("#btn-link-task").attr("data-id", idEvent)
+                        $("#btn-link-task").removeClass("d-none")
+                        $(document).on("click","#btn-link-task", function (){
+                            var dataId = $(this).attr("data-id");
+                            var newTabURL = "/tasks/" + dataId;
+                            window.open(newTabURL, '_blank');
+                        })
                     } else{
-                        $("#edit-event-btn").removeClass("d-none")
-                        $("#btn-delete-event").removeClass("d-none")
+                        if(userCurrent.role == U_OWNER || userCurrent.role == U_MANAGER){
+                            $("#edit-event-btn").removeClass("d-none")
+                            $("#btn-delete-event").removeClass("d-none")
+                        }
+                        $("#btn-link-task").addClass("d-none")
                     }
-                    if(codeEvent === "BIRTHDAY"){
+                    if(codeEvent === BIRTHDAY_CODE){
                         $("#event-modal .modal-title").before(birthdayIcon)
+                        $("#btn-link-task").addClass("d-none")
                     }
                     g.show()
-            function t(e) {
-                var t = "" + ((e = new Date(e)).getMonth() + 1), n = "" + e.getDate();
-                return [e.getFullYear(), t = t.length < 2 ? "0" + t : t, n = n.length < 2 ? "0" + n : n].join("-")
+            function subtractDays(date, days) {
+                var newDate = new Date(date);
+                newDate.setDate(newDate.getDate() - days);
+                if (newDate.getDate() === 31 && [0, 2, 4, 6, 7, 9, 11].includes(newDate.getMonth())) {
+                    newDate.setDate(30); // Tháng có 31 ngày, sử dụng ngày 30
+                } else if (newDate.getDate() === 31 && newDate.getMonth() === 1) {
+                    if ((newDate.getFullYear() % 4 === 0 && newDate.getFullYear() % 100 !== 0) || newDate.getFullYear() % 400 === 0) {
+                        newDate.setDate(29);
+                    } else {
+                        newDate.setDate(28);
+                    }
+                }
+
+                if (newDate.getMonth() === 11) {
+                    newDate.setFullYear(newDate.getFullYear() - 1);
+                }
+
+                return newDate;
             }
-            var e = v.start, n = v.end, a = null == n ? str_dt(e) : str_dt(e) + " to " + str_dt(n),
-                e = null == n ? t(e) : t(e) + " to " + t(n), n = (flatpickr(start_date, {
+
+            function t(e, check) {
+                    if(check){
+                        e = subtractDays(e, 1)
+                        console.log(e)
+                    }
+                    var t = "" + ((e = new Date(e)).getMonth() + 1), n = "" + e.getDate();
+                    return [e.getFullYear(), t = t.length < 2 ? "0" + t : t, n = n.length < 2 ? "0" + n : n].join("-")
+            }
+
+            var e = v.start, n = v.end, a = null == n ? str_dt(e) : str_dt(e) + " to " + str_dt_end(n),
+                e = null == n ? t(e, false) : t(e, false) + " to " + t(n, true),
+                n = (flatpickr(start_date, {
                     defaultDate: e,
                     altInput: !0,
                     altFormat: "j F Y",
                     dateFormat: "Y-m-d",
                     mode: "range",
                     onChange: function (e, t, n) {
-                        1 < t.split("to").length ? document.getElementById("event-time").setAttribute("hidden", !0) : (document.getElementById("timepicker1").parentNode.classList.remove("d-none"), document.getElementById("timepicker1").classList.replace("d-none", "d-block"), document.getElementById("timepicker2").parentNode.classList.remove("d-none"), document.getElementById("timepicker2").classList.replace("d-none", "d-block"), document.getElementById("event-time").removeAttribute("hidden"))
+                        1 < t.split("to").length
+                            ?
+                                document.getElementById("event-time").setAttribute("hidden", !0)
+                            :  (document.getElementById("timepicker1").parentNode.classList.remove("d-none"),
+                                document.getElementById("timepicker1").classList.replace("d-none", "d-block"),
+                                document.getElementById("timepicker2").parentNode.classList.remove("d-none"),
+                                document.getElementById("timepicker2").classList.replace("d-none", "d-block"),
+                                document.getElementById("event-time").removeAttribute("hidden"))
                     }
-                }), document.getElementById("event-start-date-tag").innerHTML = a, getTime(v.start)), e = getTime(v.end);
-            n == e ? (document.getElementById("event-time").setAttribute("hidden", !0), flatpickr(document.getElementById("timepicker1"), {
+                }),
+                    document.getElementById("event-start-date-tag").innerHTML = (dateToString(originalStringDateToDate(dateEvent.start)) == dateToString(originalStringDateToDate(dateEvent.end))) ? a.split("to")[0] : a ,
+                    getTime(v.start)),
+                    e = getTime(v.end);
+            n == e ? ( document.getElementById("event-timepicker1-tag").innerHTML="",
+                         document.getElementById("event-timepicker2-tag").innerHTML="" ,
+                document.getElementById("event-time").setAttribute("hidden", !0),
+                flatpickr(document.getElementById("timepicker1"), {
                 enableTime: !0,
                 noCalendar: !0,
                 dateFormat: "H:i"
@@ -415,12 +577,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 noCalendar: !0,
                 dateFormat: "H:i",
                 defaultDate: e
-            }), document.getElementById("event-timepicker1-tag").innerHTML = tConvert(n), document.getElementById("event-timepicker2-tag").innerHTML = tConvert(e)), newEventData = null, d.innerText = v.title, document.getElementById("btn-delete-event").removeAttribute("hidden")
+            }), document.getElementById("event-timepicker1-tag").innerHTML = tConvert(n),
+                document.getElementById("event-timepicker2-tag").innerHTML = tConvert(e)),
+                codeEvent === BIRTHDAY_CODE ?( document.getElementById("event-timepicker1-tag").innerHTML="",
+                    document.getElementById("event-timepicker2-tag").innerHTML="") : "",
+                newEventData = null, d.innerText = v.title, document.getElementById("btn-delete-event").removeAttribute("hidden")
         },
         dateClick: function (e) {
-            $("img.cakeIcon").remove()
-            removeAlert()
-            o(e)
+            if( userCurrent.role == U_MANAGER || userCurrent.role == U_OWNER){
+                $("#btn-link-task").addClass("d-none")
+                $("img.cakeIcon").remove()
+                removeAlert()
+                o(e)
+            } else{
+                return false
+            }
         },
         events: null,
         // eventReceive: function (e) {
@@ -433,6 +604,19 @@ document.addEventListener("DOMContentLoaded", function () {
         //     };
         //     y.push(e), upcomingEvent(y)
         // },
+        dayCellDidMount: function (arg) {
+            function subtractDaysFromDate(inputDate) {
+                var currentDate = new Date(inputDate);
+                var year = currentDate.getFullYear();
+                var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                var day = currentDate.getDate().toString().padStart(2, '0');
+                return year + '-' + month + '-' + day;
+            }
+            if (listBirthday.includes(subtractDaysFromDate(arg.date))) {
+                var icon = '<img style="position: absolute; right: 80%;" src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIconCalendar" alt="Cake" title="Cake" width="25" height="25">';
+                $("td[data-date='"+subtractDaysFromDate(arg.date)+"'] .fc-daygrid-day-top > a").after(icon)
+            }
+        },
         datesSet: function(info) {
             return formatDateYYMM(info.view.currentStart)
         }
@@ -453,13 +637,18 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (statusCodePrevent.includes(item.statusTask.code)) {
                                 return;
                             }
+                            if(item.statusTask.code == BIRTHDAY_CODE) {
+                                if(!listBirthday.includes(item.startDate)){
+                                    listBirthday.push(item.startDate)
+                                }
+                            }
                             CALENDAR_API.push({
                                 id: item.id,
                                 code: item.statusTask.code,
                                 title: item.title,
                                 start: new Date(item.startDate),
                                 end: new Date(item.dueOrCloseDate),
-                                allDay: true,
+                                allDay: !0,
                                 className: getStatusColor(item.statusTask.code),
                             });
                         });
@@ -485,16 +674,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     let EVENT_API = [];
                     if (rs && rs.length > 0) {
                         rs.forEach((item) => {
-                            EVENT_API.push({
+                            let data = {
                                 id: item.id,
                                 code: item.type.code,
                                 title: item.title,
                                 description: item.content,
                                 start: originalStringDateToDate(item.startDate),
-                                end: originalStringDateToDate(item.endDate),
-                                allDay: false,
                                 className: getEventColor(item.type.code),
-                            });
+                            }
+                            if(dateToString(originalStringDateToDate(item.startDate)) == dateToString(originalStringDateToDate(item.endDate))){
+                                data.allDay = false
+                                data.end = originalStringDateToDate(item.endDate)
+                            }else{
+                                data.allDay = true
+                                data.end = originalStringDateToDate(item.endDate)
+                            }
+                            EVENT_API.push(data)
                         });
                     }
                     resolve(EVENT_API);
@@ -515,53 +710,62 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetchEventApiData(currentApiDate),
             ]);
             CALENDAR_RESULT = calendarData.concat(eventApiData)
-            console.log(CALENDAR_RESULT)
             upcomingEvent(CALENDAR_RESULT)
             E.addEventSource(CALENDAR_RESULT);
             E.render()
             i.addEventListener("submit", function (e) {
-                e.preventDefault();
-                var t,
-                    n,
-                    e = document.getElementById("event-title").value,
-                    a = document.getElementById("event-category").value,
-                    d = document.getElementById("event-start-date").value.split("to"),
-                    i = new Date(d[0].trim()),
-                    l = d[1] ? new Date(d[1].trim()) : "", o = null, r = document.getElementById("event-location").value,
-                    c = document.getElementById("event-description").value, s = document.getElementById("eventid").value,
-                    m = !1,
-                    u = (1 < d.length ? ((o = new Date(d[1])).setDate(o.getDate() + 1),
-                        d = new Date(d[0]), m = !0) : (t = d, u = document.getElementById("timepicker1").value.trim(),
-                        n = document.getElementById("timepicker2").value.trim(),
-                        d = new Date(d + "T" + u), o = new Date(t + "T" + n)), CALENDAR_RESULT.length + 1);
-                !1 === p[0].checkValidity() ?  p[0].classList.add("was-validated") :
-                    (v
-                        ? (
-                            t = CALENDAR_RESULT.findIndex(function (e) {
-                                return e.id == v.id
-                            }),
-                            CALENDAR_RESULT[t] && (CALENDAR_RESULT[t].title = e,
-                                CALENDAR_RESULT[t].start = d,
-                                CALENDAR_RESULT[t].end = l!="" ? l : o,
-                                CALENDAR_RESULT[t].allDay = m,
-                                CALENDAR_RESULT[t].className = a,
-                                CALENDAR_RESULT[t].description = c,
-                                CALENDAR_RESULT[t].location = r),
-                                updateEvent(CALENDAR_RESULT[t], E, v, g)
-                        )
-                        : (n = {
-                            id: u,
-                            title: e,
-                            start: d,
-                            end: o,
-                            allDay: m,
-                            className: a,
-                            description: c,
-                            location: r
-                        }, addEventFunc(n, g, E)))
+                if(userCurrent.role == U_OWNER || userCurrent.role == U_MANAGER) {
+                    e.preventDefault();
+                    var t,
+                        n,
+                        e = document.getElementById("event-title").value,
+                        a = document.getElementById("event-category").value,
+                        d = document.getElementById("event-start-date").value.split("to"),
+                        i = new Date(d[0].trim()),
+                        l = d[1] ? new Date(d[1].trim()) : "", o = null,
+                        r = document.getElementById("event-location").value,
+                        c = document.getElementById("event-description").value,
+                        s = document.getElementById("eventid").value,
+                        m = !1,
+                        u = (1 < d.length ? ((o = new Date(d[1])).setDate(o.getDate() + 1),
+                            d = new Date(d[0]), m = !0) : (t = d, u = document.getElementById("timepicker1").value.trim(),
+                            n = document.getElementById("timepicker2").value.trim(),
+                            d = new Date(d + "T" + u), o = new Date(t + "T" + n)), CALENDAR_RESULT.length + 1);
+                    !1 === p[0].checkValidity() ? p[0].classList.add("was-validated") :
+                        (v
+                            ? (
+                                t = CALENDAR_RESULT.findIndex(function (e) {
+                                    return e.id == v.id
+                                }),
+                                CALENDAR_RESULT[t] && (CALENDAR_RESULT[t].title = e,
+                                    CALENDAR_RESULT[t].start = d,
+                                    CALENDAR_RESULT[t].end = l != "" ? l : o,
+                                    CALENDAR_RESULT[t].allDay = m,
+                                    CALENDAR_RESULT[t].className = a,
+                                    CALENDAR_RESULT[t].description = c,
+                                    CALENDAR_RESULT[t].location = r),
+                                    updateEvent(CALENDAR_RESULT[t], E, v, g)
+                            )
+                            : (n = {
+                                id: u,
+                                title: e,
+                                start: d,
+                                end: o,
+                                allDay: m,
+                                className: a,
+                                description: c,
+                                location: r
+                            }, addEventFunc(n, g, E)))
+                } else{
+                    return false
+                }
             })
             document.getElementById("btn-delete-event").addEventListener("click", function (e) {
+                if(userCurrent.role == U_OWNER || userCurrent.role == U_MANAGER) {
                 deleteEvent(CALENDAR_RESULT, v, g)
+                } else{
+                    return false
+                }
             })
             let $elm = document.getElementsByClassName('fc-today-button')[0];
             $elm.addEventListener('click', function() {
@@ -607,9 +811,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return newArr
     }
 
+    let currentMonth = ""
     $(document).on("click",".fc-header-toolbar button",function (){
         let month = formatDateYYMM(E.getDate())
-        if(currentApiDate != month){
+        if(currentMonth != month){
+            currentMonth = month
             callApiData(month)
         }
     })
