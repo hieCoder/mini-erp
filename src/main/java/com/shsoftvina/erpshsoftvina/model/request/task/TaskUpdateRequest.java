@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -37,5 +38,6 @@ public class TaskUpdateRequest {
     @NotBlank(message = "Field content is not filled")
     private String content;
 
+    @NotNull(message = "Field dueDate is not filled")
     private Date dueDate;
 }
