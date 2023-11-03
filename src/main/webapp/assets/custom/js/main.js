@@ -296,10 +296,6 @@ function getMessageTypeFile(fileType) {
 
 
 
-
-
-
-
 // function createLoadingIndicator() {
 //     if ($('#loading-indicator').length === 0) {
 //         var loadingIndicator = $('<div>', {

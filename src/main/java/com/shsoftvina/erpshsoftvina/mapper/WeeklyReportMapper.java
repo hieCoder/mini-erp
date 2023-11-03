@@ -9,11 +9,8 @@ import java.util.List;
 
 @Mapper
 public interface WeeklyReportMapper {
-    List<WeeklyReport> getAllWeeklyReport(@Param("userRole") String userRole,
-                                          @Param("userId") String userId,
-                                          RowBounds rowBounds);
-    long getTotalWeeklyReport(@Param("userRole") String userRole,
-                              @Param("userId") String userId,
+    List<WeeklyReport> getAllWeeklyReportByUser(@Param("userId") String userId, RowBounds rowBounds);
+    long getTotalWeeklyReportByUser(@Param("userId") String userId,
                               RowBounds rowBounds);
     WeeklyReport findById(@Param("id") String id);
     int createWeeklyReport(WeeklyReport weeklyReport);

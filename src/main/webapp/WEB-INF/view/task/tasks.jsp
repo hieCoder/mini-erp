@@ -187,7 +187,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-danger add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -222,12 +222,14 @@
                         </div>
                         <!--end col-->
                         <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
-                            <label style="margin-right: 5px;">Show entries: </label>
-                            <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                            </select>
+                            <div style="margin-right: 5px;">Show entries: </div>
+                            <div>
+                                <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
                         </div>
                         <!--end col-->
                     </div>
@@ -236,8 +238,8 @@
             </div>
             <!--end card-body-->
             <div class="card-body">
-                <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap mb-0 w-100" id="tasksTable">
+                <div class="table-responsive table-card">
+                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin-top: 0px!important;" id="tasksTable">
                         <thead class="table-light text-muted">
                         <tr>
                             <th scope="col" style="width: 40px;">
@@ -259,9 +261,9 @@
                     </table>
                     <!--end table-->
                 </div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center mt-4">
                     <div class="pagination-wrap hstack gap-2">
-                        <ul id="pagination" class="pagination"></ul>
+                        <ul id="pagination" class="pagination mb-0"></ul>
                     </div>
                 </div>
             </div>
@@ -584,7 +586,6 @@
             $(function () {
                 window.pagObj = $('#pagination').twbsPagination({
                     totalPages: totalPages,
-                    visiblePages: <%=TaskConstant.visiblePages%>,
                     startPage: currentPage,
                     onPageClick: function (event, page) {
                         if (currentPage != page) {
