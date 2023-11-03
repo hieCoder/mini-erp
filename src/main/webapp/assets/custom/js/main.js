@@ -1,51 +1,43 @@
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
-const T_REGISTERED = 'REGISTERED';
-const T_POSTPONED = 'POSTPONED';
-const T_CLOSED = 'CLOSED';
 
-const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
-const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
-const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
-
-<!-- Load More Buttons -->
-
+// loading
 const BtnLoadRemove = () => {
     $('.btn-load').remove()
 }
 
-const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-border flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
-
-const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-border flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
-
-const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
-    '<span class="d-flex align-items-center">' +
-    '<span class="spinner-grow flex-shrink-0" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-    '</span>' +
-    '<span class="flex-grow-1 ms-2">' +
-    'Loading...' +
-    '</span>' +
-    '</span>' +
-    '</button>';
+// const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
+//     '<span class="d-flex align-items-center">' +
+//     '<span class="spinner-border flex-shrink-0" role="status">' +
+//     '<span class="visually-hidden">Loading...</span>' +
+//     '</span>' +
+//     '<span class="flex-grow-1 ms-2">' +
+//     'Loading...' +
+//     '</span>' +
+//     '</span>' +
+//     '</button>';
+//
+// const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
+//     '<span class="d-flex align-items-center">' +
+//     '<span class="spinner-border flex-shrink-0" role="status">' +
+//     '<span class="visually-hidden">Loading...</span>' +
+//     '</span>' +
+//     '<span class="flex-grow-1 ms-2">' +
+//     'Loading...' +
+//     '</span>' +
+//     '</span>' +
+//     '</button>';
+//
+// const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
+//     '<span class="d-flex align-items-center">' +
+//     '<span class="spinner-grow flex-shrink-0" role="status">' +
+//     '<span class="visually-hidden">Loading...</span>' +
+//     '</span>' +
+//     '<span class="flex-grow-1 ms-2">' +
+//     'Loading...' +
+//     '</span>' +
+//     '</span>' +
+//     '</button>';
 
 const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" style="margin-left: 8px">' +
     '<span class="d-flex align-items-center">' +
@@ -59,6 +51,8 @@ const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" sty
     '</button>';
 
 // FUNCTION
+
+// call api
 function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     $.ajax({
         url: urlAPI,
@@ -75,25 +69,6 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
         }
     });
 }
-
-function callAjaxByDataFormWithDataForm2(urlAPI, methodType, formData, callback, callBackError) {
-    $.ajax({
-        url: urlAPI,
-        type: methodType,
-        processData: false,
-        contentType: false,
-        data: formData,
-        enctype: 'multipart/form-data',
-        success: function (response) {
-            if (callback) callback(response);
-        },
-        error: function (xhr, status, error) {
-            if (callBackError) callBackError(xhr);
-        }
-    })
-}
-
-
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
@@ -112,7 +87,6 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSucces
         }
     });
 }
-
 function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callbackFail) {
     $.ajax({
         url: urlAPI,
@@ -129,6 +103,7 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
     });
 }
 
+// file
 function handleFiles(arrUrl, handleEachFunc) {
     arrUrl.forEach(function (url, index) {
         $.ajax({
@@ -142,7 +117,59 @@ function handleFiles(arrUrl, handleEachFunc) {
         });
     });
 }
+async function handleFilesAsync(arrUrl, handleEachFunc) {
+    var promises = arrUrl.map(function (url) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: "HEAD",
+                url: url,
+                success: function (data, status, xhr) {
+                    var fileSize = xhr.getResponseHeader('Content-Length');
+                    var fileName = url.substring(url.lastIndexOf("/") + 1);
+                    if (handleEachFunc) {
+                        handleEachFunc(fileName, fileSize, url);
+                    }
+                    resolve();
+                },
+                error: function (xhr, status, error) {
+                    reject(error);
+                }
+            });
+        });
+    });
 
+    await Promise.all(promises);
+}
+function bytesToMB(bytes) {
+    return parseInt((bytes / (1024 * 1024)).toFixed(0));
+}
+function convertMbToB(mb) {
+    return mb * 1024 * 1024;
+}
+function bytesToMBShow(bytes) {
+    return (bytes / (1024 * 1024)).toFixed(2)
+}
+function checkLimitFile(count, limit) {
+    return count <= limit ? true : false;
+}
+function checkTypeFile(type, listType) {
+    if (listType.includes(type)) {
+        return true;
+    }
+}
+function checkLimitSize(size, limit) {
+    if (parseInt(size) <= limit) {
+        return true;
+    }
+}
+function downloadFiles(url) {
+    var link = document.createElement('a');
+    link.href = url;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 function showFileUploaded(fileName, size, url, mode) {
     let html = ""
 
@@ -178,40 +205,16 @@ function showFileUploaded(fileName, size, url, mode) {
         + "    </div>"
         + "</div>";
 }
-
-function bytesToMB(bytes) {
-    return parseInt((bytes / (1024 * 1024)).toFixed(0));
+function convertExtensionsList(extensions) {
+    const extensionArray = extensions.split(',');
+    const formattedExtensions = extensionArray.map(extension => `.${extension.trim()}`);
+    return formattedExtensions.join(',');
 }
 
-function downloadFiles(url) {
-    var link = document.createElement('a');
-    link.href = url;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
+// alert
 function removeAlert() {
     $(".alert-danger").remove();
 }
-
-function checkLimitFile(count, limit) {
-    return count <= limit ? true : false;
-}
-
-function checkTypeFile(type, listType) {
-    if (listType.includes(type)) {
-        return true;
-    }
-}
-
-function checkLimitSize(size, limit) {
-    if (parseInt(size) <= limit) {
-        return true;
-    }
-}
-
 function showAlertValidate(html) {
     let xhtml = '<li class="mt-2" id=""> ' +
         html +
@@ -223,9 +226,7 @@ function showAlertValidate(html) {
     } else {
         $("#dropzone-preview-edit").html(xhtml)
     }
-
 }
-
 function showAlertValidateCreate(html) {
     let xhtml = '<li class="mt-2" id=""> ' +
         html +
@@ -239,28 +240,63 @@ function showAlertValidateCreate(html) {
     }
 
 }
+function alertSuccess(mess){
+    Swal.fire(
+        {
+            title: 'Success!',
+            text: mess,
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+            cancelButtonClass: 'btn btn-danger w-xs mt-2',
+            buttonsStyling: false,
+            showCloseButton: true
+        }
+    );
+}
 
+// money format
 function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
 }
 
-function isBlank(a) {
-    return a === '' || a === null;
-}
-
+// date format
 function formatDateValueToValueOfInputDate(s) {
     var dateArray = s.split('-');
     var date = new Date(Date.UTC(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2])));
     return date.toISOString().slice(0, 10);
 }
 
+// string utils
+function isBlank(a) {
+    return a === '' || a === null;
+}
+
+// login utils
 function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
-
 function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
+
+
+// error messsage
+function getMessageLimitFile(limit) {
+    return 'The number of files must be less than ' + limit;
+}
+function getMessageSizeFile(fileSize) {
+    return 'The size of the file must be less than ' + fileSize + ' Mb';
+}
+function getMessageTypeFile(fileType) {
+    return 'Files must be of the following types: ' + fileType;
+}
+
+
+
+
+
+
 
 // function createLoadingIndicator() {
 //     if ($('#loading-indicator').length === 0) {
@@ -304,6 +340,11 @@ function isDeleveloper() {
 //     $('#' + contentId).show();
 // }
 
+
+
+
+
+
 function cutShortLink() {
     var fileElements = document.querySelectorAll('a.cut-file-name');
 
@@ -326,67 +367,3 @@ function cutShortLink() {
     });
 }
 
-async function handleFilesAsync(arrUrl, handleEachFunc) {
-    var promises = arrUrl.map(function (url) {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                type: "HEAD",
-                url: url,
-                success: function (data, status, xhr) {
-                    var fileSize = xhr.getResponseHeader('Content-Length');
-                    var fileName = url.substring(url.lastIndexOf("/") + 1);
-                    if (handleEachFunc) {
-                        handleEachFunc(fileName, fileSize, url);
-                    }
-                    resolve();
-                },
-                error: function (xhr, status, error) {
-                    reject(error);
-                }
-            });
-        });
-    });
-
-    await Promise.all(promises);
-}
-
-function convertExtensionsList(extensions) {
-    const extensionArray = extensions.split(',');
-    const formattedExtensions = extensionArray.map(extension => `.${extension.trim()}`);
-    return formattedExtensions.join(',');
-}
-
-function getMessageLimitFile(limit) {
-    return 'The number of files must be less than ' + limit;
-}
-
-function getMessageSizeFile(fileSize) {
-    return 'The size of the file must be less than ' + fileSize + ' Mb';
-}
-
-function getMessageTypeFile(fileType) {
-    return 'Files must be of the following types: ' + fileType;
-}
-
-function convertMbToB(mb) {
-    return mb * 1024 * 1024;
-}
-
-function bytesToMBShow(bytes) {
-    return (bytes / (1024 * 1024)).toFixed(2)
-}
-
-function alertSuccess(mess){
-    Swal.fire(
-        {
-            title: 'Good job!',
-            text: mess,
-            icon: 'success',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-            cancelButtonClass: 'btn btn-danger w-xs mt-2',
-            buttonsStyling: false,
-            showCloseButton: true
-        }
-    )
-}
