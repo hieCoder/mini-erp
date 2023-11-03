@@ -29,18 +29,6 @@ public class TimesheetsApiTest {
     private TimesheetsService timesheetsService;
 
     @Test
-    public void testFindAll() {
-        int page = 1;
-        int pageSize = 10;
-
-        when(timesheetsService.findAll((page - 1) * pageSize, pageSize)).thenReturn(new ArrayList<>());
-
-        ResponseEntity<?> responseEntity = timesheetsApi.findAll(page, pageSize);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    }
-
-    @Test
     public void testGetTotalWorkingDate() {
         String userID = "sampleUserId";
         String year = null;

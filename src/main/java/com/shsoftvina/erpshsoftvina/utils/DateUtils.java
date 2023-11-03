@@ -58,6 +58,14 @@ public class DateUtils {
         return null;
     }
 
+    public static String formatHHMM(Date date) {
+        if(date != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            return sdf.format(date);
+        }
+        return null;
+    }
+
     public static String formatDate(LocalDate localDate) {
         if (localDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -99,19 +107,15 @@ public class DateUtils {
         return LocalDateTime.of(localDate, currentTime);
     }
 
-    public static String timeWork(Time startDate, Time endDate) {
-        if (startDate == null || endDate == null) return null;
-
-        LocalTime localStartTime = startDate.toLocalTime();
-        LocalTime localEndTime = endDate.toLocalTime();
-
-        Duration duration = Duration.between(localStartTime, localEndTime);
-
-        long hours = duration.toHours();
-        long minutes = (duration.toMinutes() % 60);
-        long seconds = duration.getSeconds() % 60;
-
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    public static Date toDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = dateFormat.parse(dateString);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static boolean isValidDate(String dateStr) {

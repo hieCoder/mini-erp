@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Management</title>
+    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <c:set var="totalExpense" value="0" scope="page"/>
@@ -1067,7 +1068,7 @@
                 }
             }
         }
-        callAjaxByDataFormWithDataForm2(baseUrlAccount, "POST", formData, function (rs) {
+        callAjaxByDataFormWithDataForm(baseUrlAccount, "POST", formData, function (rs) {
             loadPage(1);
             $("#createModal").modal("hide")
         }, function (error) {

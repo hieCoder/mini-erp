@@ -563,9 +563,6 @@
 
 <script src="/assets/js/notification/notification.js"></script>
 <script>
-    const INVALID_FILLED=' <div class="alert alert-danger" role="alert">'+
-        '<strong> Invalid </strong> This field is not filled'+
-        '</div>'
     const INVALID_FILES_LIMIT=' <div class="alert alert-danger" role="alert">'+
         '<strong> Invalid </strong> Maximum Files is ${uploadFileLimit}'+
         '</div>'
@@ -977,7 +974,7 @@
                 }
             }
         }
-        callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
+        callAjaxByDataFormWithDataForm("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
             if(rs){
                 $('#notificationList a[href="/notifications/'+notificationId+'"]').text(rs.title)
                 INFORM_SUCCESS("Notification updated successfully.")
@@ -1111,11 +1108,12 @@
                     }
                }
             }
-            callAjaxByDataFormWithDataForm2("${apiURL}${pathMain}","POST", formData ,function (rs){
+            callAjaxByDataFormWithDataForm("${apiURL}${pathMain}","POST", formData ,function (rs){
                 if(rs>0){
                     loadDatabase();
                     INFORM_SUCCESS("Notification created successfully.")
                     $("#formCreateNotication").modal("hide")
+                    $(".noresult").css("display", "none")
                 }
             },function (error){
                 console.log(error)

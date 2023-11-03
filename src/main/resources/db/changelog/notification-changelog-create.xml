@@ -11,7 +11,7 @@
             </column>
             <column name="TITLE" type="VARCHAR(255)"/>
             <column name="CONTENT" type="LONGTEXT"/>
-            <column name="FILES" type="VARCHAR(255)"/>
+            <column name="FILES" type="TEXT"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
