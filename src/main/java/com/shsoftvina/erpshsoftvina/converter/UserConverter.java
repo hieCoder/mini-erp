@@ -86,7 +86,6 @@ public class UserConverter {
                 .role(RoleEnum.valueOf(userActiveRequest.getRole()))
                 .email(userActiveRequest.getEmail())
                 .status(StatusUserEnum.valueOf(userActiveRequest.getStatus()))
-                .isFirstUpdateProfile(UserConstant.DEFAULT_FIRST_UPDATE_PROFILE)
                 .avatar(UserConstant.AVATAR_DEFAULT)
                 .build();
     }
@@ -117,7 +116,6 @@ public class UserConverter {
                 .resume(newResumeFileName)
                 .timesheetsCode(userUpdateRequest.getTimesheetsCode())
                 .atm(userUpdateRequest.getAtm())
-                .isFirstUpdateProfile(UserConstant.ACTIVE_FIRST_UPDATE_PROFILE)
                 .gender(EnumUtils.getEnumFromValue(GenderEnum.class, userUpdateRequest.getGender()))
                 .build();
     }

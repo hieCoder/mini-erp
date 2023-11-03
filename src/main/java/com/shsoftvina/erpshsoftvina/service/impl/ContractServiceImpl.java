@@ -43,8 +43,7 @@ public class ContractServiceImpl implements ContractService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public int addContract(CreateContractRequest createContractRequest) {
-
+    public ContractResponse addContract(CreateContractRequest createContractRequest) {
         String userId = createContractRequest.getUserId();
         if(userMapper.findById(userId) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
@@ -75,18 +74,17 @@ public class ContractServiceImpl implements ContractService {
             Contract c = contractConverter.toEntity(createContractRequest, fileNameContract);
             try {
                 contractMapper.addContract(c);
-                return 1;
+                return contractConverter.toResponse(contractMapper.findById(c.getId()));
             } catch (Exception e){
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
-                return 0;
+                return null;
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
     public ContractResponse findById(String id) {
-
         return contractConverter.toResponse(contractMapper.findById(id));
     };
 
