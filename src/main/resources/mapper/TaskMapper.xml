@@ -56,16 +56,14 @@
     <select id="getTotalItem" resultType="long">
         SELECT COUNT(*)
         FROM TASK t
-                 INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.STATUS = 'ACTIVE'
-          AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
-          AND (
-                    u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
-                    t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
-                    t.TITLE LIKE CONCAT('%', #{search}, '%')
-            )
-        ORDER BY t.START_DATE DESC
-            LIMIT #{start}, #{pageSize}
+        INNER JOIN USER u ON t.USER_ID = u.ID
+        WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
+        AND (
+                u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
+                t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
+                t.TITLE LIKE CONCAT('%', #{search}, '%')
+        )
+        LIMIT #{start}, #{pageSize}
     </select>
 
     <resultMap id="taskResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">

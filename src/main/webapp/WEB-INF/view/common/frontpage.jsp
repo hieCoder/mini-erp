@@ -140,7 +140,7 @@
                             <div>
                                 <p class="fw-medium text-muted mb-0">Opened Tasks</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold"><span
-                                        class="counter-value counter-opened-task" data-target="64.5">0</span></h2>
+                                        class="counter-value counter-opened-task" data-target="0">0</span></h2>
                                 <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i
                                         class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month
                                 </p>
@@ -163,7 +163,7 @@
                             <div>
                                 <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold"><span
-                                        class="counter-value counter-reopened-task" data-target="9">0</span></h2>
+                                        class="counter-value counter-reopened-task" data-target="0">0</span></h2>
                                 <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i
                                         class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month
                                 </p>

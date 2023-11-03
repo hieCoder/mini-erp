@@ -22,7 +22,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
 
-        String id = Principal.getUserCurrent().getId();
-        redirectStrategy.sendRedirect(request, response, "/users/" + id);
+        redirectStrategy.sendRedirect(request, response, "/dashboard");
     }
 }

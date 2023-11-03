@@ -44,6 +44,7 @@
             position = #{position},
             resume = #{resume},
             address = #{address},
+            timesheets_code = #{timesheetsCode},
             gender = #{gender}
         WHERE id = #{id}
     </update>
@@ -99,6 +100,7 @@
             avatar = #{avatar},
             address = #{address},
             resume = #{resume},
+            timesheets_code = #{timesheetsCode},
             gender = #{gender}
         WHERE id = #{id};
     </update>
