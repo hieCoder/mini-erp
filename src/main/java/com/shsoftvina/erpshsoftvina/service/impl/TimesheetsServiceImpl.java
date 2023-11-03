@@ -2,10 +2,13 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.converter.TimesheetsConverter;
 import com.shsoftvina.erpshsoftvina.entity.Timesheets;
+import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.TimesheetsMapper;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.response.timesheets.TimesheetsResponse;
 import com.shsoftvina.erpshsoftvina.service.TimesheetsService;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -23,10 +26,13 @@ import java.util.stream.Collectors;
 public class TimesheetsServiceImpl implements TimesheetsService {
 
     @Autowired
-    TimesheetsMapper timesheetsMapper;
+    private TimesheetsMapper timesheetsMapper;
 
     @Autowired
-    TimesheetsConverter timesheetsConverter;
+    private TimesheetsConverter timesheetsConverter;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public List<TimesheetsResponse> findAllByUserAndMonthYear(String userId, int year, int month) {
@@ -46,6 +52,9 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 
     @Override
     public boolean readExcelFile(MultipartFile file) {
+
+        boolean isFoundUserByTimesheetsCode = true;
+
         try {
             InputStream fis = file.getInputStream();
             Workbook workbook = new XSSFWorkbook(fis);
@@ -63,7 +72,12 @@ public class TimesheetsServiceImpl implements TimesheetsService {
                 if (cellShSoftVina != null && cellShSoftVina.getCellType() == CellType.STRING && "SH SOFT VINA".equals(cellShSoftVina.getStringCellValue())) {
 
                     Cell cellTimesheetsCode = row.getCell(8);
-                    String timesheetsCode = String.valueOf((int)cellTimesheetsCode.getNumericCellValue());;
+                    String timesheetsCode = String.valueOf((int)cellTimesheetsCode.getNumericCellValue());
+
+                    if(userMapper.findByTimesheetsCode(timesheetsCode) == null){
+                        isFoundUserByTimesheetsCode= false;
+                        throw new NotFoundException("Some user not exist in system");
+                    }
 
 
                     int[] indexCell ={2,6,7,8,11,16,18,21,24,25};
@@ -117,7 +131,7 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            if (!isFoundUserByTimesheetsCode) throw new NotFoundException("Some user not exist in system");
             return false;
         }
     }

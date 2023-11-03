@@ -14,10 +14,6 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
-
     <dec:head/>
 
     <!-- Sweet Alert css-->
@@ -38,8 +34,9 @@
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
     <%-- Custom --%>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
     <link rel="stylesheet" href="/assets/custom/css/main.css">
-    <script src="/assets/custom/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
@@ -830,6 +827,9 @@
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
+
+<%-- Custom --%>
+<script src="/assets/custom/js/main.js"></script>
 
 <script>
 
