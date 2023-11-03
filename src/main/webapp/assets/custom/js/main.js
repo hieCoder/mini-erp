@@ -69,6 +69,7 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
         }
     });
 }
+
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
@@ -164,6 +165,7 @@ function checkLimitSize(size, limit) {
 }
 function downloadFiles(url) {
     var link = document.createElement('a');
+    link.download = "";
     link.href = url;
     link.style.display = 'none';
     document.body.appendChild(link);

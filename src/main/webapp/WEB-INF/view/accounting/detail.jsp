@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Detail</title>
+    <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="row">
@@ -671,7 +672,7 @@
 
     $(document).on("click", "button#deleteFileBtn", function () {
         let fileName = $("#deleteFileModal").attr("data-name")
-        $('div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
+        $('#editModal div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
         $("#deleteFileModal").modal("hide")
         dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
     })
@@ -749,7 +750,7 @@
                                     var contentLength = xhr.getResponseHeader('Content-Length');
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
                                     html += showFileUploaded(fileName, contentLength, url,"edit")
-                                    $(".showFilesUploaded").html(html)
+                                    $("#editModal div.showFilesUploaded").html(html)
                                     $("#editModal").modal("show")
                                 }
                             });
