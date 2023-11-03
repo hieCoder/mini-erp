@@ -14,14 +14,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
-
     <dec:head/>
-
-    <!-- Sweet Alert css-->
-    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
@@ -38,8 +31,9 @@
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
     <%-- Custom --%>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
     <link rel="stylesheet" href="/assets/custom/css/main.css">
-    <script src="/assets/custom/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/assets/custom/js/jquery.twbsPagination.js"></script>
     <script src="/assets/custom/js/validation.js"></script>
@@ -105,11 +99,11 @@
     </div>
 </div>
 
-<%--<div class="customizer-setting d-none d-md-block">--%>
-<%--    <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">--%>
-<%--        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>--%>
-<%--    </div>--%>
-<%--</div>--%>
+<div class="customizer-setting d-none d-md-block">
+    <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
+        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
+    </div>
+</div>
 
 <!-- Theme Settings -->
 <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
@@ -830,6 +824,9 @@
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
+
+<%-- Custom --%>
+<script src="/assets/custom/js/main.js"></script>
 
 <script>
 

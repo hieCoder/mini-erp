@@ -10,7 +10,8 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="TITLE" type="TEXT"/>
-            <column name="CONTENT" type="TEXT"/>
+            <column name="CURRENT_WEEKLY_CONTENT" type="TEXT"/>
+            <column name="NEXT_WEEKLY_CONTENT" type="TEXT"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
         </createTable>

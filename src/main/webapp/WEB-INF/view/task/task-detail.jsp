@@ -756,7 +756,6 @@
 
     $(document).on('click', '.delete-file', function (e){
         var name = $(this).data('name');
-        console.log(name);
         $('#delete-file-comment').attr('data-name', name);
     });
 

@@ -69,7 +69,6 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
         }
     });
 }
-
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);

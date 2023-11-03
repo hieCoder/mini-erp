@@ -11,17 +11,19 @@
     </select>
 
     <select id="totalWorkingDateByYear" parameterType="String" resultType="java.util.Map">
-        SELECT YEAR(WORK_DATE) AS year, COUNT(*) AS workdays
-        FROM TIMESHEETS
-        WHERE USER_ID = #{userID}
+        SELECT YEAR(t.WORK_DATE) AS year, COUNT(*) AS workdays
+        FROM TIMESHEETS t
+        INNER JOIN USER u ON t.TIMESHEETS_CODE = u.TIMESHEETS_CODE
+        WHERE u.ID = #{userID}
         GROUP BY year
         ORDER BY year ASC;
     </select>
 
     <select id="totalWorkingDateByMonth" parameterType="String" resultType="java.util.Map">
-        SELECT MONTH(WORK_DATE) AS month, COUNT(*) AS workdays
-        FROM TIMESHEETS
-        WHERE USER_ID = #{userID} AND YEAR(WORK_DATE) = #{year}
+        SELECT MONTH(t.WORK_DATE) AS month, COUNT(*) AS workdays
+        FROM TIMESHEETS t
+        INNER JOIN USER u ON t.TIMESHEETS_CODE = u.TIMESHEETS_CODE
+        WHERE u.ID = #{userID} AND YEAR(t.WORK_DATE) = #{year}
         GROUP BY month
         ORDER BY month ASC;
     </select>

@@ -139,8 +139,10 @@
 
     $(document).on('click', '.btn-submit-file-import', function (e) {
         var formClass = '.import-timesheest-form';
-        if($(formClass + ' .file-import-input').val() == ''){
-            $(formClass + ' .form-message').text('This field is not filled');
+        var inputE = $(formClass + ' .file-import-input');
+        var errorE = $(formClass + ' .form-message');
+        if(inputE.val() == ''){
+            errorE.text('This field is not filled');
         } else{
             var formData=new FormData();
             var fileInput = $(formClass + ' input[type="file"]')[0];
@@ -149,8 +151,14 @@
                 var file = fileInput.files[0];
                 formData.append(fileInput.name, file);
                 callAjaxByDataFormWithDataForm('/api/v1/timesheets/upload', 'POST', formData, function (rs){
-                    $(formClass + ' .file-import-input').val('');
+                    inputE.val('');
                     alertSuccess('Import success');
+                }, function (err) {
+                    if('Some user not exist in system' == err.responseJSON.message){
+                        errorE.text('Some user not exist in system');
+                    } else{
+                        errorE.text('Import fail! Can not import');
+                    }
                 });
             }
         }

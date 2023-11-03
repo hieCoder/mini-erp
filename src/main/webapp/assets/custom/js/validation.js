@@ -56,14 +56,8 @@ function Validator(options){
                             });
                         });
 
-                        // var initialDisabledState = $(obj).find('*').map(function() {
-                        //     return { element: this, isDisabled: $(this).prop('disabled') };
-                        // }).get();
                         $(obj).find('*').prop('disabled', false);
                         var params = $(obj).serializeArray();
-                        // $.each(initialDisabledState, function(index, item) {
-                        //     $(item.element).prop('disabled', item.isDisabled);
-                        // });
 
                         $.each(params, function (i, v) {
                             formData.append(""+v.name+"", v.value);
