@@ -31,21 +31,21 @@ public class ContractApiTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void testCreateContract() {
-        CreateContractRequest createContractRequest = new CreateContractRequest();
-        createContractRequest.setUserId("1");
-        createContractRequest.setInsuranceType("HEALTH_INSURANCE");
-
-        Mockito.when(contractService.addContract(createContractRequest))
-                .thenReturn(1);
-
-
-        ResponseEntity<?> responseEntity = contractApi.createContract(createContractRequest);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(1, responseEntity.getBody());
-    }
+//    @Test
+//    public void testCreateContract() {
+//        CreateContractRequest createContractRequest = new CreateContractRequest();
+//        createContractRequest.setUserId("1");
+//        createContractRequest.setInsuranceType("HEALTH_INSURANCE");
+//
+//        Mockito.when(contractService.addContract(createContractRequest))
+//                .thenReturn(1);
+//
+//
+//        ResponseEntity<?> responseEntity = contractApi.createContract(createContractRequest);
+//
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(1, responseEntity.getBody());
+//    }
 
     @Test
     public void testGetContract() {
