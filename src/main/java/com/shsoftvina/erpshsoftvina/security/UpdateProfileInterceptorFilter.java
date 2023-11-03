@@ -40,7 +40,7 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
                     response.sendRedirect("/login");
                 }
                 User user = userMapper.findById(currentUser.getId());
-                if(!user.isFirstUpdateProfile() && !urlsAllow(request.getRequestURI())) {
+                if(!user.checkAcceptUpdateBasicInfo() && !urlsAllow(request.getRequestURI())) {
 
                     response.sendRedirect("/users/" + currentUser.getId());
                 }

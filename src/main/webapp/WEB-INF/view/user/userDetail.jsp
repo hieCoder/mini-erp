@@ -6,8 +6,19 @@
 <head>
     <title>User detail</title>
     <%-------------------- Css table -------------------%>
+
     <!-- Sweet Alert css-->
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+    <!-- Filepond css -->
+    <link rel="stylesheet" href="/assets/libs/filepond/filepond.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css">
 </head>
 <body>
 <form id="formUpdateUser">
@@ -18,11 +29,11 @@
             <div class="overlay-content">
                 <div class="text-end p-3">
                     <div class="p-0 ms-auto rounded-circle profile-photo-edit">
-<%--                        <input id="profile-foreground-img-file-input" type="file"--%>
-<%--                               class="profile-foreground-img-file-input">--%>
-<%--                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">--%>
-<%--                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover--%>
-<%--                        </label>--%>
+                        <%--                        <input id="profile-foreground-img-file-input" type="file"--%>
+                        <%--                               class="profile-foreground-img-file-input">--%>
+                        <%--                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">--%>
+                        <%--                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover--%>
+                        <%--                        </label>--%>
                     </div>
                 </div>
             </div>
@@ -162,7 +173,7 @@
                                         <label for="timeSheetsCode" class="form-label">TimeSheets Code</label>
                                         <input type="text" class="form-control"
                                                id="timeSheetsCode" name="timesheetsCode" value="${user.timesheetsCode}"
-                                               readonly disabled>
+                                        >
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-6">
@@ -186,7 +197,7 @@
                                         <button type="submit" class="btn btn-primary isSuccessUpdate"
                                         >Updates
                                         </button>
-                                        <a  class="btn btn-soft-success cancle-button">Cancel</a>
+                                        <a class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
                                 </div>
                             </div><!--end row-->
@@ -339,7 +350,7 @@
                                         <button type="submit" class="btn btn-primary isSuccessUpdate"
                                                 id="detailUserBtn">Updates
                                         </button>
-                                        <a  class="btn btn-soft-success cancle-button">Cancel</a>
+                                        <a class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
 
                                 </div>
@@ -349,7 +360,7 @@
                         <!--end tab-pane-->
                         <%--========================== Resume =================================--%>
                         <div class="tab-pane" id="resumeSession" role="tabpanel">
-                            <div class="row">
+                            <div class="row border border-5">
                                 <c:forEach var="resume" items="${resumes}">
                                     <div class="col-md-2 mt-2 text-center delete-fileResume" style="position: relative">
                                                     <span class="custom-icon">
@@ -369,14 +380,28 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div>
-
-
+                            <div class="row mt-2 border-top">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title mb-0">Resume File Upload</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="file" id="resumeFile" class="filepond filepond-input-multiple"
+                                                           name="newResumeFiles" data-allow-reorder="true"
+                                                           data-max-file-size="3MB" data-max-files="3" multiple>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="hstack gap-2 justify-content-end">
-                                <button type="submit" class="btn btn-primary">Save</button>
-                                <a  class="btn btn-soft-success cancle-button">Cancel</a>
+                                <button type="button" class="btn btn-primary" id="fileResume">Save</button>
+                                <a class="btn btn-soft-success cancle-button">Cancel</a>
                             </div>
 
                         </div>
@@ -452,30 +477,6 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
-                                        <div class="noresult" style="display: none">
-                                            <div class="text-center">
-                                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
-                                                           trigger="loop"
-                                                           colors="primary:#121331,secondary:#08a88a"
-                                                           style="width:75px;height:75px"></lord-icon>
-                                                <h5 class="mt-2">Sorry! No Result Found</h5>
-                                                <p class="text-muted mb-0">We've searched more than 150+ Orders
-                                                    We
-                                                    did
-                                                    not find any orders for you search.</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <div class="pagination-wrap hstack gap-2">
-                                                <a class="page-item pagination-prev" href="#" id="prevPage">
-                                                    Previous
-                                                </a>
-                                                <ul class="pagination listjs-pagination mb-0" id="pagination"></ul>
-                                                <a class="page-item pagination-next" href="#" id="nextPage">
-                                                    Next
-                                                </a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -738,7 +739,6 @@
     </div>
 </div>
 
-
 <%-- Modal Delete Contract --%>
 <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -821,15 +821,24 @@
 </div>
 
 <%-------------------------------------------- CODE JAVASCRIPT--------------------------------------------%>
-
 <script src="/assets/js/pages/profile-setting.init.js"></script>
 <script src="/assets/js/main.js"></script>
-<!-- List js -->
-<script src="/assets/libs/list.js/list.min.js"></script>
-<!-- Pagination js -->
-<script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
 
 <%-------------------------------------------- Table JAVASCRIPT--------------------------------------------%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<!--datatable js-->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="/assets/js/pages/datatables.init.js"></script>
 <!-- List js -->
 <script src="/assets/libs/list.js/list.min.js"></script>
 <!-- Pagination js -->
@@ -844,8 +853,14 @@
 <script src="/assets/js/pages/sweetalerts.init.js"></script>
 
 <%-------------------------------------------- Files JAVASCRIPT--------------------------------------------%>
-
-
+<!-- filepond js -->
+<script src="/assets/libs/filepond/filepond.min.js"></script>
+<script src="/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js"></script>
+<script src="/assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js"></script>
+<script src="/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js"></script>
+<!-- File upload js -->
+<script src="/assets/js/pages/form-file-upload.init.js"></script>
 <%-------------------------------------------- Custom JAVASCRIPT--------------------------------------------%>
 <%--Handle User--%>
 <script>
@@ -875,36 +890,6 @@
             $('#deleteResumeModal').modal('hide');
         });
     });
-
-
-    // document.getElementById('resume').addEventListener('change', function() {
-    //     document.getElementById('selectedFiles').style.display = 'block';
-    //     var selectedFiles = document.getElementById('resume').files;
-    //     var filesList = document.getElementById('listFiles');
-    //     for (var i = 0; i < selectedFiles.length; i++) {
-    //         var fileName = selectedFiles[i].name;
-    //         var listItem = document.createElement('div');
-    //         listItem.classList.add('col-md-3', 'm-3');
-    //         listItem.textContent = fileName;
-    //         filesList.appendChild(listItem);
-    //         cutShortLink();
-    //     }
-    // });
-
-    <%--    // Format filename--%>
-    <%--    function formatName(ClassName) {--%>
-    <%--        for (var i = 0; i < ClassName.length; i++) {--%>
-    <%--            var link = ClassName[i];--%>
-    <%--            var href = link.getAttribute("href");--%>
-    <%--            var fileName = href.substring(href.indexOf("-") + 1);--%>
-    <%--            if (fileName.length > 15) {--%>
-    <%--                var extension = fileName.substring(fileName.lastIndexOf("."));--%>
-    <%--                fileName = fileName.substring(0, 12) + "..." + extension;--%>
-    <%--            }--%>
-
-    <%--            link.textContent = fileName;--%>
-    <%--        }--%>
-    <%--    };--%>
 
     // Click button 'X' to delete avatar
     document.getElementById("profile-img-file-input").addEventListener("change", function (e) {
@@ -1106,7 +1091,17 @@
             }
         });
     });
-
+    // Handle when user click button "Confirm Delete User"
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     document.getElementById('fileResume').addEventListener('click', function (e) {
+    //         e.preventDefault();
+    //         var files = document.getElementById('resumeFile');
+    //         for (var i = 0; i < files.files.s; i++) {
+    //             console.log(files.files[i]);
+    //         }
+    //     })
+    //
+    // });
 </script>
 
 <%--Handle WorkingDay--%>
@@ -1367,17 +1362,14 @@
             formData.set('allowance', JSON.stringify(formDataObject));
 
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-                formData.append('parentId', rs.id);
-                callAnotherAjax();
-
+                setTimeout(function () {
+                    formData.append('parentId', rs.id);
+                    callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
+                        localStorage.setItem('result', 'addContractSuccess');
+                        location.reload();
+                    }, 'formAddContract');
+                }, 1000);
             }, 'formAddContract');
-            function callAnotherAjax() {
-                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-                    localStorage.setItem('result', 'addContractSuccess');
-                    location.reload();
-                }, 'formAddContract');
-            }
-            console.log(id);
         }
     });
 
@@ -1599,68 +1591,36 @@
     });
 </script>
 
-<%--Handle Role--%>
+<%--Pagination--%>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (userCurrent.role == 'DEVELOPER') {
-            $('.hide').remove();
-            $('#del-user-button').remove();
-        }
+    document.addEventListener('DOMContentLoaded', function () {
+        let table = new DataTable('#customerTable', {
+            "pagingType": "full_numbers",
+            "pageLength": 3
+        });
     });
 </script>
 
-<%-- Pagination --%>
+<%--Data Table--%>
 <script>
-    $(document).ready(function () {
-        var recordsPerPage = 3;
-        var totalRecords = ${contracts.size()};
-        var totalPages = Math.ceil(totalRecords / recordsPerPage);
+    FilePond.registerPlugin(
+        // encodes the file as base64 data
+        FilePondPluginFileEncode,
+        // validates the size of the file
+        FilePondPluginFileValidateSize,
+        // corrects mobile image orientation
+        FilePondPluginImageExifOrientation,
+        // previews dropped images
+        FilePondPluginImagePreview
+    );
 
-        showPage(1);
+    var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
 
-        $("#nextPage").click(function () {
-            var currentPage = parseInt($("#pagination .active").text());
-            if (currentPage < totalPages) {
-                showPage(currentPage + 1);
-            }
-        });
-
-        $("#prevPage").click(function () {
-            var currentPage = parseInt($("#pagination .active").text());
-            if (currentPage > 1) {
-                showPage(currentPage - 1);
-            }
-        });
-
-        $("#pagination").on("click", "a.page-link", function () {
-            var page = parseInt($(this).text());
-            showPage(page);
-        });
-
-        function showPage(page) {
-            var startIndex = (page - 1) * recordsPerPage;
-            var endIndex = startIndex + recordsPerPage;
-
-            $("#customerTable tbody tr").hide();
-            $("#customerTable tbody tr").slice(startIndex, endIndex).show();
-
-            updatePagination(page);
-        }
-
-        function updatePagination(currentPage) {
-            $("#pagination").empty();
-
-            if (currentPage > 1) {
-                $("#pagination").append('<li class="page-item"><a href="#" class="page-link">' + (currentPage - 1) + '</a></li>');
-            }
-
-            $("#pagination").append('<li class="page-item active"><a href="#" class="page-link">' + currentPage + '</a></li>');
-
-            if (currentPage < totalPages) {
-                $("#pagination").append('<li class="page-item"><a href="#" class="page-link">' + (currentPage + 1) + '</a></li>');
-            }
-        }
-    });
+    // loop over input elements
+    Array.from(inputMultipleElements).forEach(function(inputElement) {
+        // create a FilePond instance at the input element location
+        FilePond.create(inputElement);
+    })
 </script>
 
 <%--Notification--%>
@@ -1708,6 +1668,18 @@
             }
         )
     }
+</script>
+
+<%--Handle Role--%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (isDeleveloper()) {
+            $('.hide').remove();
+            $('#del-user-button').remove();
+            $('#timeSheetsCode').prop('readonly', true);
+            $('#timeSheetsCode').prop('disabled', true);
+        }
+    });
 </script>
 </body>
 </html>

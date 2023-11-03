@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
 import com.shsoftvina.erpshsoftvina.enums.user.*;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,11 +38,19 @@ public class User implements UserDetails {
     private PositionEnum position;
     private String resume;
     private String address;
-    private boolean isFirstUpdateProfile;
     private String timesheetsCode;
     private List<Contract> contracts;
     private Date createdDate;
     private GenderEnum gender;
+
+    public boolean checkAcceptUpdateBasicInfo(){
+        return !StringUtils.isBlank(fullname)
+                && dateOfBirth != null
+                && !StringUtils.isBlank(phone)
+                && !StringUtils.isBlank(emergencyPhone)
+                && !StringUtils.isBlank(address)
+                && gender != null;
+    }
 
     // Override the getAuthorities method to provide user roles as granted authorities.
     @Override

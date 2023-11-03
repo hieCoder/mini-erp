@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.service;
 
-import com.shsoftvina.erpshsoftvina.entity.Contract;
 import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
