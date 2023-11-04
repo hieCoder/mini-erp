@@ -206,7 +206,7 @@
                             <div class="input-light">
                                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
                                     <option value="" selected>All</option>
-                                    <option value="REGISTER">Registered</option>
+                                    <option value="REGISTERED">Registered</option>
                                     <option value="OPENED">Opened</option>
                                     <option value="POSTPONED">Postponed</option>
                                     <option value="REOPENED">Reopend</option>
@@ -239,7 +239,7 @@
             <!--end card-body-->
             <div class="card-body">
                 <div class="table-responsive table-card">
-                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin-top: 0px!important;" id="tasksTable">
+                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="tasksTable">
                         <thead class="table-light text-muted">
                         <tr>
                             <th scope="col" style="width: 40px;">
@@ -261,7 +261,7 @@
                     </table>
                     <!--end table-->
                 </div>
-                <div class="d-flex justify-content-center mt-4">
+                <div class="d-flex justify-content-center">
                     <div class="pagination-wrap hstack gap-2">
                         <ul id="pagination" class="pagination mb-0"></ul>
                     </div>
@@ -482,7 +482,14 @@
                     return JSON.stringify(tasksRequest);
                 },
                 dataSrc: function (json) {
-                    if(json.length != 0) loadPaging();
+                    if(json.length != 0) {
+                        loadPaging();
+                        $('#pagination').addClass('mt-4');
+                    }
+                    else {
+                        removePagingIfExsit();
+                        $('#pagination').removeClass('mt-4');
+                    }
                     return json;
                 }
             },
@@ -522,7 +529,7 @@
                                             </li>`;
                         }
                         return `<div class="d-flex">
-                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary">` + data + `</a></div>
+                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary text-decoration-underline" href="/tasks/`+ row.id +`">` + data + `</a></div>
                                     <div class="flex-shrink-0 ms-4">
                                         <ul class="list-inline tasks-list-menu mb-0">
                                             <li class="list-inline-item"><a href="/tasks/`+ row.id +`"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>`
@@ -558,24 +565,28 @@
         $('#filter-btn').on('click', function() {
             tasksRequest.search = $('#search-input').val();
             tasksRequest.statusTask = $('#idStatus').val();
+            tasksRequest.page = 1;
             tableTask.ajax.reload();
         });
 
         $('#page-count-select').on('change', function() {
             var selectedValue = $(this).val();
-            tasksRequest.pageSize = selectedValue;
             tasksRequest.page = 1;
+            tasksRequest.pageSize = selectedValue;
             tableTask.ajax.reload();
-            loadPaging();
         });
     });
+
+    function removePagingIfExsit(){
+        if (window.pagObj) {
+            window.pagObj.twbsPagination('destroy');
+        }
+    }
 
     function loadPaging(){
         callAjaxByJsonWithData('/api/v1/tasks/count', 'POST', tasksRequest, function (totalItem) {
 
-            if (window.pagObj) {
-                window.pagObj.twbsPagination('destroy');
-            }
+            removePagingIfExsit();
 
             //paging
             var totalPages = 0;

@@ -48,10 +48,8 @@ public class WeeklyReportServiceImpl implements WeeklyReportService {
     }
 
     @Override
-    public long getTotalWeeklyReportByUser(String userId, int start, int pageSize) {
-        int offset = (start - 1) * pageSize;
-        RowBounds rowBounds = new RowBounds(offset, pageSize);
-        return weeklyReportMapper.getTotalWeeklyReportByUser(userId, rowBounds);
+    public long getTotalWeeklyReportByUser(String userId) {
+        return weeklyReportMapper.getTotalWeeklyReportByUser(userId);
     }
 
     @Override

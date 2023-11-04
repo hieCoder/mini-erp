@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.mapper;
 import com.shsoftvina.erpshsoftvina.entity.Task;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,13 +12,10 @@ import java.util.Map;
 @Mapper
 public interface TaskMapper {
 
-    List<Task> findAll(@Param("start") int start,
-                       @Param("pageSize") int pageSize,
-                       @Param("statusTask") String statusTask,
-                       @Param("search") String search);
-    long getTotalItem(@Param("start") int start,
-                      @Param("pageSize") int pageSize,
-                      @Param("statusTask") String statusTask,
+    List<Task> findAll(@Param("statusTask") String statusTask,
+                       @Param("search") String search,
+                       RowBounds rowBounds);
+    long getTotalItem(@Param("statusTask") String statusTask,
                       @Param("search") String search);
     int registerTask(Task task);
     int updateTask(Task task);

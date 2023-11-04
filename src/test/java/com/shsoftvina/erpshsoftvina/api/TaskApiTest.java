@@ -156,7 +156,7 @@ public class TaskApiTest {
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
 
-        when(taskService.getTotalItem(0, 10, "REGISTERED", "sample search")).thenReturn(42L);
+        when(taskService.getTotalItem("REGISTERED", "sample search")).thenReturn(42L);
 
         ResponseEntity<?> responseEntity = taskApi.getTotalItem(listTaskRequest);
 
@@ -170,7 +170,7 @@ public class TaskApiTest {
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
 
-        when(taskService.getTotalItem(0, TaskConstant.pageSizeDefault, "REGISTERED", "sample search")).thenReturn(42L);
+        when(taskService.getTotalItem("REGISTERED", "sample search")).thenReturn(42L);
 
         ResponseEntity<?> responseEntity = taskApi.getTotalItem(listTaskRequest);
 

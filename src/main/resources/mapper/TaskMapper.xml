@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TaskMapper">
 
-    <select id="findAll" resultMap="taskResultMap">
+    <select id="findAll" parameterType="org.apache.ibatis.session.RowBounds" resultMap="taskResultMap">
         SELECT t.ID           AS task_id,
                t.STATUS_TASK  AS task_status_task,
                t.TITLE        AS task_title,
@@ -28,29 +28,6 @@
                     t.TITLE LIKE CONCAT('%', #{search}, '%')
             )
         ORDER BY t.CREATED_DATE DESC
-            LIMIT #{start}, #{pageSize}
-    </select>
-
-    <select id="getOpenedTask" resultMap="taskResultMap">
-        SELECT t.ID           AS task_id,
-               t.STATUS_TASK  AS task_status_task,
-               t.TITLE        AS task_title,
-               t.USER_ID      AS task_user_id,
-               t.CREATED_DATE AS task_created_date,
-               t.START_DATE   AS task_start_date,
-               t.DUE_DATE     AS task_due_date,
-               t.CLOSE_DATE   AS task_close_date,
-               t.PRIORITY     AS task_priority,
-               t.PROGRESS     AS task_progress,
-               t.STATUS       AS task_status,
-               t.CONTENT      AS task_content,
-               u.ID           AS user_id,
-               u.FULLNAME     AS user_fullname
-        FROM TASK t
-                 INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.STATUS = 'ACTIVE' AND u.ID = #{userId}
-          AND  t.STATUS_TASK in ('OPENED','REOPENED')
-        ORDER BY t.CREATED_DATE ASC
     </select>
 
     <select id="getTotalItem" resultType="long">
@@ -63,7 +40,6 @@
                 t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                 t.TITLE LIKE CONCAT('%', #{search}, '%')
         )
-        LIMIT #{start}, #{pageSize}
     </select>
 
     <resultMap id="taskResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">
@@ -143,20 +119,6 @@
         SELECT '' AS STATUS_TASK, COUNT(task.id) as taskCount
         FROM TASK
         WHERE STATUS = 'ACTIVE'
-    </select>
-
-    <select id="getOpenedStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
-        SELECT all_statuses.status AS STATUS_TASK, COUNT(task.id) as taskCount
-        FROM (SELECT 'OPENED' AS status
-              UNION ALL
-              SELECT 'REOPENED') AS all_statuses
-                 LEFT JOIN TASK AS task ON all_statuses.status = task.STATUS_TASK AND task.STATUS = 'ACTIVE'
-        WHERE task.user_id = #{userId}
-        GROUP BY all_statuses.status
-        UNION ALL
-        SELECT '' AS STATUS_TASK, COUNT(task.id) as taskCount
-        FROM TASK
-        WHERE STATUS = 'ACTIVE' AND user_id = #{userId}
     </select>
 
     <resultMap id="statusTaskCountResultMap" type="java.util.Map">
@@ -278,4 +240,40 @@
         <result property="id" column="id"/>
         <result property="title" column="title"/>
     </resultMap>
+
+    <select id="getOpenedTask" resultMap="taskResultMap">
+        SELECT t.ID           AS task_id,
+               t.STATUS_TASK  AS task_status_task,
+               t.TITLE        AS task_title,
+               t.USER_ID      AS task_user_id,
+               t.CREATED_DATE AS task_created_date,
+               t.START_DATE   AS task_start_date,
+               t.DUE_DATE     AS task_due_date,
+               t.CLOSE_DATE   AS task_close_date,
+               t.PRIORITY     AS task_priority,
+               t.PROGRESS     AS task_progress,
+               t.STATUS       AS task_status,
+               t.CONTENT      AS task_content,
+               u.ID           AS user_id,
+               u.FULLNAME     AS user_fullname
+        FROM TASK t
+                 INNER JOIN USER u ON t.USER_ID = u.ID
+        WHERE t.STATUS = 'ACTIVE' AND u.ID = #{userId}
+          AND  t.STATUS_TASK in ('OPENED','REOPENED')
+        ORDER BY t.CREATED_DATE ASC
+    </select>
+
+    <select id="getOpenedStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
+        SELECT all_statuses.status AS STATUS_TASK, COUNT(task.id) as taskCount
+        FROM (SELECT 'OPENED' AS status
+              UNION ALL
+              SELECT 'REOPENED') AS all_statuses
+                 LEFT JOIN TASK AS task ON all_statuses.status = task.STATUS_TASK AND task.STATUS = 'ACTIVE'
+        WHERE task.user_id = #{userId}
+        GROUP BY all_statuses.status
+        UNION ALL
+        SELECT '' AS STATUS_TASK, COUNT(task.id) as taskCount
+        FROM TASK
+        WHERE STATUS = 'ACTIVE' AND user_id = #{userId}
+    </select>
 </mapper>

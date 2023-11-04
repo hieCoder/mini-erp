@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface TaskService {
     List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search);
-    long getTotalItem(int start, int pageSize, String statusTask, String search);
+    long getTotalItem(String statusTask, String search);
     int registerTask(TaskRegisterRequest taskRegisterRequest);
     int updateTask(TaskUpdateRequest taskUpdateRequest);
     int deleteById(String id);

@@ -27,11 +27,9 @@ public class WeeklyReportApi {
         return ResponseEntity.ok(weeklyReportService.getAllWeeklyReportByUser(userId, page, pageSize));
     }
 
-    @GetMapping("/count")
-    public ResponseEntity<?> getTotalWeeklyReportByUser(@RequestParam(name = "userId") String userId,
-                                                @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(weeklyReportService.getTotalWeeklyReportByUser(userId, page, pageSize));
+    @GetMapping("/count/{userId}")
+    public ResponseEntity<?> getTotalWeeklyReportByUser(@PathVariable(name = "userId") String userId) {
+        return ResponseEntity.ok(weeklyReportService.getTotalWeeklyReportByUser(userId));
     }
 
     @GetMapping("/{id}")

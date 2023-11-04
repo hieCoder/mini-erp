@@ -24,6 +24,7 @@ import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,12 +51,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search) {
-        return taskMapper.findAll(start, pageSize, statusTask, search).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+        int offset = (start - 1) * pageSize;
+        RowBounds rowBounds = new RowBounds(offset, pageSize);
+        return taskMapper.findAll(statusTask, search, rowBounds).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
     }
 
     @Override
-    public long getTotalItem(int start, int pageSize, String statusTask, String search) {
-        return taskMapper.getTotalItem(start, pageSize, statusTask, search);
+    public long getTotalItem(String statusTask, String search) {
+        return taskMapper.getTotalItem(statusTask, search);
     }
 
     @Override
