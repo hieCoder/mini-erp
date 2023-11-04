@@ -19,7 +19,7 @@ public interface TaskService {
     int deleteById(String id);
     List<StatusTaskCountsResponse> getStatusTaskCount();
     TaskDetailResponse findById(String id);
-    List<Map<String, Object>> getTaskByHashtag(String userId);
+    List<Map<String, Object>> getTaskByHashtag(String userId, String hashtag);
     int deleteByIds(String[] ids);
 
     DashboardTaskResponse getOpenedTask(String userId);

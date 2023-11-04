@@ -12,9 +12,13 @@ function Validator(options){
             }
             // ckeditor
             else if(inputElement.nodeName === 'DIV'){
-                var valEditor = $(inputElement).html();
-                if(DEFAULT_VALUE_SNOW_EDITOR.includes(valEditor)) valEditor= '';
-                errorMessage =  rules[i](valEditor);
+                if (inputElement.classList.contains('snow-editor')) {
+                    var valEditor = $(inputElement).html();
+                    if(DEFAULT_VALUE_SNOW_EDITOR.includes(valEditor)) valEditor= '';
+                    errorMessage =  rules[i](valEditor);
+                } else{
+                    errorMessage =  rules[i](inputElement.innerHTML);
+                }
             }
             // <image>
             else if(inputElement.nodeName === 'IMG'){

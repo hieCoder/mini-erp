@@ -230,10 +230,10 @@
     </select>
 
     <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
-        SELECT t.id, t.title
+        SELECT t.ID, t.TITLE
         FROM TASK t
-                 INNER JOIN USER u ON t.user_id = u.id
-        WHERE u.id = #{userId}
+                 INNER JOIN USER u ON t.USER_ID = u.ID
+        WHERE u.ID = #{userId} AND t.CONTENT LIKE CONCAT('%#', #{hashtag}, '%')
     </select>
 
     <resultMap id="TaskByHashTagResultMap" type="java.util.Map">

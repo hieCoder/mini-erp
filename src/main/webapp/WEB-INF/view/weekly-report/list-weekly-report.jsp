@@ -44,7 +44,7 @@
                         <div class="d-flex align-items-center">
                             <h5 class="card-title mb-0 flex-grow-1">Weekly report</h5>
                             <div class="flex-shrink-0">
-                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
+                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#createReport"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
                             </div>
                         </div>
                     </div>
@@ -54,9 +54,9 @@
                                 <div style="margin-right: 5px;">Show entries: </div>
                                 <div>
                                     <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
                                     </select>
                                 </div>
                             </div>
@@ -72,7 +72,6 @@
                                     <th>Title</th>
                                     <th>Username</th>
                                     <th>Created date</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -91,6 +90,41 @@
         <!--end row-->
     </div>
 </div> <!-- end row-->
+
+<!-- create modal -->
+<div class="modal fade" id="createReport" tabindex="-1" aria-labelledby="createReportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportLabel">Create weekly report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="create-wr-form">
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input name="title" type="text" class="form-control" id="title">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="this-week-content" class="col-form-label">This week's content:</label>
+                        <div class="form-control" id="this-week-content" contenteditable="true"></div>
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="next-week-content" class="col-form-label">Next week's content:</label>
+                        <div class="form-control" id="next-week-content" contenteditable="true"></div>
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success" style="margin-right:2px;">Create</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="/assets/custom/js/weekly-report/weekly-report.js"></script>
 <script>
@@ -150,17 +184,11 @@
                     {
                         data: 'title',
                         render: function(data, type, row) {
-                            return `<a href="#" class="fw-medium link-primary text-decoration-underline">` + data + `</a>`;
+                            return `<a href="/weekly-reports/`+ row.id +`" class="fw-medium link-primary text-decoration-underline">` + data + `</a>`;
                         }
                     },
                     {data: 'user.fullname'},
-                    {data: 'createdDate'},
-                    {
-                        data: 'id',
-                        render: function(data, type, row) {
-                            return `<button class="btn btn-primary">Edit</button>`;
-                        }
-                    }
+                    {data: 'createdDate'}
                 ],
                 ordering: false,
                 searching: false,
@@ -176,6 +204,23 @@
                 tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
                     pagingObj.page, pagingObj.pageSize)).load();
             });
+        });
+
+        Validator({
+            form:'#create-wr-form',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title'),
+                Validator.isRequired('#this-week-content'),
+                Validator.isRequired('#next-week-content')
+            ],
+            onSubmit: function (formData) {
+                console.log(123);
+                // formData.append('content', $('#content').html());
+                // callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
+                //     window.location.href = "/tasks?registerSuccess";
+                // });
+            }
         });
     });
 
