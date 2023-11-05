@@ -108,8 +108,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="this-week-content" class="col-form-label">This week's content:</label>
-                        <div class="form-control" id="this-week-content" contenteditable="true"></div>
+                        <div class="form-control content-report" id="this-week-content" contenteditable="true"></div>
                         <small class="form-message"></small>
+                        <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
@@ -222,6 +223,45 @@
                 // });
             }
         });
+    });
+
+    $(document).on('input', '.content-report', function (e){
+
+        const enteredText = $(this).html();
+        const wordsArray = enteredText.split(' ');
+
+        if (wordsArray.length > 0) {
+            const lastWord = wordsArray[wordsArray.length - 1];
+            if (lastWord.includes('#')) {
+                const contentAfterHashtag = lastWord.split('#').pop();
+                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+contentAfterHashtag,
+                    'GET', null, function (rs) {
+                    var ulElement = $('.list-title-by-hashtag');
+                    ulElement.empty();
+                    rs.forEach(function (e) {
+                        ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
+                            ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
+                    });
+                });
+            }
+        }
+    });
+
+    $(document).on('click', '.hashtag-e', function (e){
+        var taskTitle = $(this).text();
+        var taskId = $(this).data('task-id');
+        var aE = `<a href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+
+        const containerListHashtag = $(this).closest('.list-title-by-hashtag');
+        const contentE = containerListHashtag.siblings('.content-report');
+
+        if (lastIndex !== -1) {
+            const lastIndex = contentE.html().lastIndexOf('#');
+            const newContent = contentE.html().substring(0, lastIndex) + aE;
+            contentE.empty().append(newContent);
+        }
+
+        containerListHashtag.empty();
     });
 
     function removePagingIfExsit(){
