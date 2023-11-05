@@ -216,11 +216,15 @@
                 Validator.isRequired('#next-week-content')
             ],
             onSubmit: function (formData) {
-                console.log(123);
-                // formData.append('content', $('#content').html());
-                // callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
-                //     window.location.href = "/tasks?registerSuccess";
-                // });
+                var data = {};
+                formData.forEach((value, key) => data[key] = value);
+                console.log(data);
+                formData.append("currentWeeklyContent", $('#this-week-content').html());
+                formData.append("nextWeeklyContent", $('#next-week-content').html());
+                formData.append("userId", userCurrent.id);
+                callAjaxByJsonWithDataForm("/api/v1/weekly-reports", "POST", formData, function (rs) {
+                    alertSuccess("Create success");
+                });
             }
         });
     });
@@ -228,23 +232,31 @@
     $(document).on('input', '.content-report', function (e){
 
         const enteredText = $(this).html();
-        const wordsArray = enteredText.split(' ');
-
-        if (wordsArray.length > 0) {
-            const lastWord = wordsArray[wordsArray.length - 1];
-            if (lastWord.includes('#')) {
-                const contentAfterHashtag = lastWord.split('#').pop();
-                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+contentAfterHashtag,
-                    'GET', null, function (rs) {
-                    var ulElement = $('.list-title-by-hashtag');
-                    ulElement.empty();
-                    rs.forEach(function (e) {
-                        ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
-                            ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
-                    });
-                });
-            }
+        console.log(enteredText);
+        const regex = /#([^#\s]*)(?:\s|&nbsp;)*$/;
+        if(regex.test(enteredText)){
+            console.log(123);
         }
+
+        // const enteredText = $(this).html();
+        // console.log(enteredText)
+        // const wordsArray = enteredText.split(' ');
+        //
+        // if (wordsArray.length > 0) {
+        //     const lastWord = wordsArray[wordsArray.length - 1];
+        //     if (lastWord.includes('#')) {
+        //         const contentAfterHashtag = lastWord.split('#').pop();
+        //         callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+contentAfterHashtag,
+        //             'GET', null, function (rs) {
+        //             var ulElement = $('.list-title-by-hashtag');
+        //             ulElement.empty();
+        //             rs.forEach(function (e) {
+        //                 ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
+        //                     ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
+        //             });
+        //         });
+        //     }
+        // }
     });
 
     $(document).on('click', '.hashtag-e', function (e){
@@ -255,8 +267,8 @@
         const containerListHashtag = $(this).closest('.list-title-by-hashtag');
         const contentE = containerListHashtag.siblings('.content-report');
 
+        const lastIndex = contentE.html().lastIndexOf('#');
         if (lastIndex !== -1) {
-            const lastIndex = contentE.html().lastIndexOf('#');
             const newContent = contentE.html().substring(0, lastIndex) + aE;
             contentE.empty().append(newContent);
         }
