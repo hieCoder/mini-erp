@@ -51,26 +51,26 @@
                 <div id="customerList">
                     <div class="row g-4 mb-3">
                         <div class="col-sm-auto d-flex justify-content-end align-items-center">
-                                <div style="display: inline-block" class="dataTables_length"><label class="m-0">Show
-                                    <select id="pageSizeSelect"
-                                            name="example_length"
-                                            aria-controls="example"
-                                            class="form-select form-select-sm">
-                                        <option <c:if test='${pageSize  == 10}'>selected</c:if>>10</option>
-                                        <option <c:if test='${pageSize  == 15}'>selected</c:if>>15</option>
-                                        <option <c:if test='${pageSize  == 20}'>selected</c:if>>20</option>
-                                    </select> entries</label></div>
-                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                            <div style="display: inline-block" class="dataTables_length"><label class="m-0">Show
+                                <select id="pageSizeSelect"
+                                        name="example_length"
+                                        aria-controls="example"
+                                        class="form-select form-select-sm">
+                                    <option <c:if test='${pageSize  == 10}'>selected</c:if>>10</option>
+                                    <option <c:if test='${pageSize  == 15}'>selected</c:if>>15</option>
+                                    <option <c:if test='${pageSize  == 20}'>selected</c:if>>20</option>
+                                </select> entries</label></div>
+                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
                                 <button type="button" class="btn btn-success addNotification" style="margin-left: 8px"><i class="ri-add-line align-bottom me-1"></i> Add</button>
                                 <button type="button" class="btn btn-danger showListInactive" style="margin-left: 8px"><i class=" ri-delete-bin-line align-bottom me-1"></i> Inactive List</button>
-                        </c:if>
+                            </c:if>
                         </div>
                         <div class="col-sm d-flex justify-content-end align-items-center">
-                                <div class="search-box ms-2">
-                                    <input id="searchInput" type="text" class="form-control search" placeholder="Search Title or Author">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                                <button class="btn btn-sm btn-primary" id="searchButton" style="margin-left: 8px">Search</button>
+                            <div class="search-box ms-2">
+                                <input id="searchInput" type="text" class="form-control search" placeholder="Search Title or Author">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                            <button class="btn btn-sm btn-primary" id="searchButton" style="margin-left: 8px">Search</button>
                         </div>
                     </div>
 
@@ -82,21 +82,21 @@
                                 <th data-sort="email">Title</th>
                                 <th data-sort="phone">Author</th>
                                 <th data-sort="date">Created Date</th>
-                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
-                                <th data-sort="action">Action</th>
-                            </c:if>
+                                <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                                    <th data-sort="action">Action</th>
+                                </c:if>
                             </tr>
                             </thead>
                             <tbody id="notificationList" class="list form-check-all">
-                                <c:forEach items="${listNotification}" varStatus="loop" var="notification">
-                                    <tr class="">
-                                        <td class="number">${(loop.index + 1) + (currentPage-1)*pageSize }</td>
-                                        <td class="fw-bold title">
-                                            <a target="_blank" href="<c:url value='/notifications/${notification.id}'/>">${notification.title}</a>
-                                        </td>
-                                        <td class="author">${notification.user.fullname}</td>
-                                        <td class="createdDate">${notification.createdDate}</td>
-                                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                            <c:forEach items="${listNotification}" varStatus="loop" var="notification">
+                                <tr class="">
+                                    <td class="number">${(loop.index + 1) + (currentPage-1)*pageSize }</td>
+                                    <td class="fw-bold title">
+                                        <a target="_blank" href="<c:url value='/notifications/${notification.id}'/>">${notification.title}</a>
+                                    </td>
+                                    <td class="author">${notification.user.fullname}</td>
+                                    <td class="createdDate">${notification.createdDate}</td>
+                                    <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
                                         <td>
                                             <div class="d-flex gap-2" data-id="${notification.id}">
                                                 <div class="viewNotification">
@@ -110,9 +110,9 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        </c:if>
-                                    </tr>
-                                </c:forEach>
+                                    </c:if>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                         <div class="noresult" style="display: none">
@@ -170,17 +170,17 @@
             <div class="modal-body">
                 <div class="table-responsive">
                     <table id="inactiveNotificationTable" class="table align-middle table-nowrap">
-                            <thead class="table-light">
-                            <tr>
-                                <th scope="col">No.</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Author</th>
-                                <th scope="col">Created Date</th>
-                            </tr>
-                            </thead>
-                            <tbody id="inactiveNotificationList" class="list form-check-all">
-                            </tbody>
-                        </table>
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Created Date</th>
+                        </tr>
+                        </thead>
+                        <tbody id="inactiveNotificationList" class="list form-check-all">
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
@@ -203,7 +203,7 @@
                     <div class="card-body">
                         <div class="text-muted">
                             <h5 class="mb-3 fw-semibold text-uppercase titleView">
-                               <strong class="fw-bolder fst-italic fs-4"> </strong>
+                                <strong class="fw-bolder fst-italic fs-4"> </strong>
                             </h5>
                         </div>
                         <div class="text-muted">
@@ -430,10 +430,10 @@
                                                     <div class="d-flex p-2">
                                                         <div class="flex-shrink-0 me-3">
                                                             <div class="avatar-sm">
-                                                            <div class="avatar-title bg-light text-secondary rounded fs-24">
-                                                                <i class="ri-file-upload-line"></i>
+                                                                <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                    <i class="ri-file-upload-line"></i>
+                                                                </div>
                                                             </div>
-                                                        </div>
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
@@ -561,7 +561,7 @@
     </div>
 </div>
 
-<script src="/assets/js/notification/notification.js"></script>
+<script src="/assets/custom/js/notification/notification.js"></script>
 <script>
     const INVALID_FILES_LIMIT=' <div class="alert alert-danger" role="alert">'+
         '<strong> Invalid </strong> Maximum Files is ${uploadFileLimit}'+
@@ -575,7 +575,7 @@
         '<strong> Invalid </strong> Maximum Size Files is ${maxFileSize}'+
         '</div>'
 
-    function displayPagination() {
+    function displayPagination(allItem, pageSize) {
         var currentUrl = window.location.search;
         var params = new URLSearchParams(currentUrl);
         var currentPage = !params.get('page') ? 1 : parseInt(params.get('page'));
@@ -602,11 +602,6 @@
             $("#formCreateNotication").modal("show")
         })
 
-        // $(document).on("click", "li.viewNotification", function (e) {
-        //     let main = $(this)
-        //     let idNotification = main.parent().attr("data-id")
-        //     $("#viewNotification").modal("show")
-        // })
         $(document).on("click", "li.paginate_button", function (e) {
             var currentUrl = window.location.search;
             var params = new URLSearchParams(currentUrl);
@@ -676,7 +671,7 @@
                                 '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
                                 '<td>' + notification.user.fullname + '</td>' +
                                 '<td>' + notification.createdDate + '</td>' +
-                                 htmlAdmin+
+                                htmlAdmin+
                                 '</tr>'
                         })
                         tbodyElement.innerHTML = xhtml
@@ -689,7 +684,7 @@
                 function (error){
                     console.log("Call API Error")
                     console.log(error)
-            })
+                })
         })
         const pageSizeSelect = document.getElementById("pageSizeSelect");
 
@@ -698,7 +693,7 @@
             updateUrl(selectedValue);
         });
 
-        const updateUrl = (selectedValue) => {
+        var updateUrl = (selectedValue) => {
             let currentUrl = window.location.href;
             if (currentUrl.includes("pageSize=")) {
                 currentUrl = currentUrl.replace(/(pageSize=)[^\&]+/, "pageSize=" + selectedValue);
@@ -792,19 +787,19 @@
             })
         });
     })
-        let checkSearch = (number) => {
-            var url = new URL(window.location.href);
-            var params = url.searchParams;
-            var paramValue = params.get("search");
-            if((number === 0 && paramValue) || number === 0){
-                $(".noresult").css("display", "block")
-                $("ul.pagination ").addClass("d-none")
-            } else{
-                $(".noresult").css("display", "none")
-                $("ul.pagination ").removeClass("d-none")
-            }
+    let checkSearch = (number) => {
+        var url = new URL(window.location.href);
+        var params = url.searchParams;
+        var paramValue = params.get("search");
+        if((number === 0 && paramValue) || number === 0){
+            $(".noresult").css("display", "block")
+            $("ul.pagination ").addClass("d-none")
+        } else{
+            $(".noresult").css("display", "none")
+            $("ul.pagination ").removeClass("d-none")
         }
-        checkSearch(${listNotification.size()});
+    }
+    checkSearch(${listNotification.size()});
 </script>
 <!-- quill js -->
 <script src="/assets/libs/quill/quill.min.js"></script>
@@ -822,68 +817,68 @@
         theme: 'bubble', // Specify theme in configuration
         readOnly: true,  // Set the editor to read-only mode
     });
-        function loadDatabase(){
-            var currentUrl = window.location.search;
-            var params = new URLSearchParams(currentUrl);
-            var page = !params.get('page') ? 1 : parseInt(params.get('page'));
-            var pageSize = !params.get('pageSize') ? 10 : parseInt(params.get('pageSize'));
-            var search = !params.get('search') ? "" : params.get('search');
-            let currentGet = "?page=" +page +"&pageSize="+pageSize+"&search="+search
-            var apiUrl = baseUrlNotification + currentGet
-            var tbodyElement = document.getElementById("notificationList");
-            callAjaxByJsonWithData(apiUrl, "GET", null,
-                function (rs) {
-                    if(rs){
-                        history.pushState(null, null, currentUrl);
-                        let xhtml =""
-                        var currentURL = window.location.href;
-                        var urlParams = new URLSearchParams(currentURL);
-                        var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
-                        rs.forEach(function (notification, index) {
-                            let pageInt = (parseInt(page) - 1) * pageSize
-                            xhtml += '<tr class="">' +
-                                '<td>' + (index + pageInt + 1) + '</td>' +
-                                '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
-                                '<td>' + notification.user.fullname + '</td>' +
-                                '<td>' + notification.createdDate + '</td>' +
-                                '<td>' +
-                                '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
-                                '<div class="viewNotification">'+
-                                '<button class="btn btn-sm btn-info viewNotification">View</button>'+
-                                ' </div>'+
-                                '<div class="editNotification">'+
-                                '<button class="btn btn-sm btn-success editNotification">Edit</button>'+
-                                '</div>'+
-                                '<div class="removeNotification">'+
-                                '<button class="btn btn-sm btn-danger removeNotification">Remove</button>'+
-                                '</div>'+
-                                '    </div>' +
-                                '</td>'+
-                                '</tr>'
-                        })
-                        tbodyElement.innerHTML = xhtml
-                        tbodyElement.classList.remove("hidden")
-                        displayPagination()
-                    } else{
-                        console.log("Data API Error")
-                    }
-                },
-                function (error){
-                    console.log("Call API Error")
-                    console.log(error)
-                })
-        }
+
+    function loadDatabase(){
+        var currentUrl = window.location.search;
+        var params = new URLSearchParams(currentUrl);
+        var page = !params.get('page') ? 1 : parseInt(params.get('page'));
+        var pageSize = !params.get('pageSize') ? 10 : parseInt(params.get('pageSize'));
+        var search = !params.get('search') ? "" : params.get('search');
+        let currentGet = "?page=" +page +"&pageSize="+pageSize+"&search="+search
+        var apiUrl = baseUrlNotification + currentGet
+        var tbodyElement = document.getElementById("notificationList");
+        callAjaxByJsonWithData(apiUrl, "GET", null,
+            function (rs) {
+                if(rs){
+                    history.pushState(null, null, currentUrl);
+                    let xhtml =""
+                    var currentURL = window.location.href;
+                    var urlParams = new URLSearchParams(currentURL);
+                    var pageSize = urlParams.get("pageSize") ? urlParams.get("pageSize") : 10
+                    rs.forEach(function (notification, index) {
+                        let pageInt = (parseInt(page) - 1) * pageSize
+                        xhtml += '<tr class="">' +
+                            '<td>' + (index + pageInt + 1) + '</td>' +
+                            '<td class="fw-bold"><a target="_blank" href="/notifications/' + notification.id + '">' + notification.title + '</a></td>' +
+                            '<td>' + notification.user.fullname + '</td>' +
+                            '<td>' + notification.createdDate + '</td>' +
+                            '<td>' +
+                            '    <div class="d-flex gap-2" data-id="'+ notification.id +  '">' +
+                            '<div class="viewNotification">'+
+                            '<button class="btn btn-sm btn-info viewNotification">View</button>'+
+                            ' </div>'+
+                            '<div class="editNotification">'+
+                            '<button class="btn btn-sm btn-success editNotification">Edit</button>'+
+                            '</div>'+
+                            '<div class="removeNotification">'+
+                            '<button class="btn btn-sm btn-danger removeNotification">Remove</button>'+
+                            '</div>'+
+                            '    </div>' +
+                            '</td>'+
+                            '</tr>'
+                    })
+                    tbodyElement.innerHTML = xhtml
+                    tbodyElement.classList.remove("hidden")
+                } else{
+                    console.log("Data API Error")
+                }
+            },
+            function (error){
+                console.log("Call API Error")
+                console.log(error)
+            })
+    }
 
     function loadFilesName(fileNameArr, mode){
         let html =""
         handleFiles(fileNameArr, function handleEachFunc (fileName, fileSize, url) {
-                html += showFileUploaded(fileName, fileSize, url, mode)
+            html += showFileUploaded(fileName, fileSize, url, mode)
             if(mode == "view") {
                 $("#viewNotification .showFilesUploaded").html(html)
             }else if(mode == "edit"){
                 $("#formEditNotification .showFilesUploaded").html(html)
             }
-            })
+        })
         if(mode == "view"){
             $("#viewNotification").modal("show")
         } else if(mode == "edit"){
@@ -892,6 +887,8 @@
     }
     $(document).on("click","button.editNotification",function (){
         Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
+        $(this).addClass("d-none")
+        $(this).before(loadingBtnSm("success"))
         let notificationId = $(this).parent().parent().attr("data-id")
         let apiUrlNotification = baseUrlNotification
         if(notificationId){
@@ -909,6 +906,8 @@
                     }else{
                         $("#formEditNotification").modal("show")
                     }
+                    BtnLoadRemove()
+                    $("button.editNotification").removeClass("d-none")
                 },
                 function (error){
                     console.log(error)
@@ -918,34 +917,39 @@
     })
 
     $(document).on("click","button.viewNotification", function (){
-            let notificationId = $(this).parent().parent().attr("data-id")
-            $("#viewNotification").attr("data-id", notificationId)
-            let apiUrlNotification = baseUrlNotification
-            if(notificationId){
-                callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
-                    function (rs) {
-                        console.log(rs)
-                        $("#viewNotification h5.titleView strong").text(rs.title)
-                        $("#viewNotification h5.createdDate").text(rs.createdDate)
-                        let contentParse = JSON.parse(rs.content)
-                        quillView.setContents(contentParse)
-                        let urlFiles = rs.files ? rs.files : []
-                        let fileLength = rs.files ? rs.files.length : 0
-                        if(fileLength>0){
-                            loadFilesName(urlFiles, "view");
-                        }else{
-                            $("#viewNotification").modal("show")
-                        }
-                    },
-                    function (error){
-                        console.log(error)
+        $(this).addClass("d-none")
+        $(this).before(loadingBtnSm("info"))
+        let notificationId = $(this).parent().parent().attr("data-id")
+        $("#viewNotification").attr("data-id", notificationId)
+        let apiUrlNotification = baseUrlNotification
+        if(notificationId){
+            callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'GET', null,
+                function (rs) {
+                    $("#viewNotification h5.titleView strong").text(rs.title)
+                    $("#viewNotification h5.createdDate").text(rs.createdDate)
+                    let contentParse = JSON.parse(rs.content)
+                    quillView.setContents(contentParse)
+                    let urlFiles = rs.files ? rs.files : []
+                    let fileLength = rs.files ? rs.files.length : 0
+                    if(fileLength>0){
+                        loadFilesName(urlFiles, "view");
+                    }else{
+                        $("#viewNotification").modal("show")
                     }
-                )
-            }
-        })
+                    $("button.viewNotification").removeClass("d-none")
+                    BtnLoadRemove()
+                },
+                function (error){
+                    console.log(error)
+                }
+            )
+        }
+    })
 
     $(document).on("click","button.editBtn", function(){
         removeAlert()
+        $(this).addClass("d-none")
+        $(this).before(BtnPrimaryLoad)
         let notificationId = $("#formEditNotification").attr("data-id")
         let title = $("#titleEdit").val()
         let contentCheck = $("div#formEditNotification .ql-editor").html().toString()
@@ -979,6 +983,8 @@
                 $('#notificationList a[href="/notifications/'+notificationId+'"]').text(rs.title)
                 INFORM_SUCCESS("Notification updated successfully.")
                 $("#formEditNotification").modal("hide")
+                BtnLoadRemove()
+                $("button.editBtn").removeClass("d-none")
             }
         },function (error){
             console.log(error)
@@ -988,137 +994,141 @@
 
 
     $(document).on("click","button.downFileBtn",function (){
-            let dataUrl = $(this).children().attr("data-url")
-            downloadFiles(dataUrl)
-        })
+        let dataUrl = $(this).children().attr("data-url")
+        downloadFiles(dataUrl)
+    })
 
-        $(document).on("click","button#deleteFileBtn",function (){
-            let fileName = $("#deleteFileModal").attr("data-name")
-            $('div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
-            $("#deleteFileModal").modal("hide")
-            dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
-        })
+    $(document).on("click","button#deleteFileBtn",function (){
+        let fileName = $("#deleteFileModal").attr("data-name")
+        $('div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
+        $("#deleteFileModal").modal("hide")
+        dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
+    })
 
-        let listTypeFileArr = "${listTypeFile}".split(",")
-        let listTypeFile = ""
-        listTypeFileArr.forEach((item, index)=>{
-            listTypeFile += "." + item
-            if(index<listTypeFileArr.length){
-                listTypeFile += ","
-            }
-        })
-        let maxFileSize = "${maxFileSize}"
-        let uploadFileLimit = "${uploadFileLimit}"
+    let listTypeFileArr = "${listTypeFile}".split(",")
+    let listTypeFile = ""
+    listTypeFileArr.forEach((item, index)=>{
+        listTypeFile += "." + item
+        if(index<listTypeFileArr.length){
+            listTypeFile += ","
+        }
+    })
+    let maxFileSize = "${maxFileSize}"
+    let uploadFileLimit = "${uploadFileLimit}"
 
     var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
-        dropzonePreviewNode.id = "";
-        var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
-        dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
-        var dropzone = new Dropzone("#dropzoneCreate", {
-            url: 'https://httpbin.org/post',
-            method: "post",
-            previewTemplate: previewTemplate,
-            previewsContainer: "#dropzone-preview",
-            acceptedFiles: listTypeFile,
-            maxFilesize: parseInt(convertMbToB(maxFileSize)),
-            maxFiles: parseInt(uploadFileLimit) ,
-            uploadMultiple:true,
-            autoProcessQueue: false,
-        });
+    dropzonePreviewNode.id = "";
+    var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
+    dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
+    var dropzone = new Dropzone("#dropzoneCreate", {
+        url: 'https://httpbin.org/post',
+        method: "post",
+        previewTemplate: previewTemplate,
+        previewsContainer: "#dropzone-preview",
+        acceptedFiles: listTypeFile,
+        maxFilesize: parseInt(convertMbToB(maxFileSize)),
+        maxFiles: parseInt(uploadFileLimit) ,
+        uploadMultiple:true,
+        autoProcessQueue: false,
+    });
 
-         var dropzonePreviewNodeEdit = document.querySelector("#dropzone-preview-list-edit");
-         var previewTemplateEdit = dropzonePreviewNodeEdit.parentNode.innerHTML;
-         dropzonePreviewNodeEdit.id = "";
-         dropzonePreviewNodeEdit.parentNode.removeChild(dropzonePreviewNodeEdit);
-         var dropzoneEdit = new Dropzone("#dropzoneEdit", {
-             url: 'https://httpbin.org/post',
-             method: "post",
-             previewTemplate: previewTemplateEdit,
-             previewsContainer: "#dropzone-preview-edit",
-             acceptedFiles: listTypeFile,
-             maxFilesize: parseInt(convertMbToB(maxFileSize)),
-             maxFiles: parseInt(uploadFileLimit) ,
-             uploadMultiple:true,
-             autoProcessQueue: false,
-         });
+    var dropzonePreviewNodeEdit = document.querySelector("#dropzone-preview-list-edit");
+    var previewTemplateEdit = dropzonePreviewNodeEdit.parentNode.innerHTML;
+    dropzonePreviewNodeEdit.id = "";
+    dropzonePreviewNodeEdit.parentNode.removeChild(dropzonePreviewNodeEdit);
+    var dropzoneEdit = new Dropzone("#dropzoneEdit", {
+        url: 'https://httpbin.org/post',
+        method: "post",
+        previewTemplate: previewTemplateEdit,
+        previewsContainer: "#dropzone-preview-edit",
+        acceptedFiles: listTypeFile,
+        maxFilesize: parseInt(convertMbToB(maxFileSize)),
+        maxFiles: parseInt(uploadFileLimit) ,
+        uploadMultiple:true,
+        autoProcessQueue: false,
+    });
 
-        dropzone.on("addedfile", function (file) {
-            removeAlert();
-            let files = dropzone.files
-            const fileExtension = file.name.split('.').pop();
-            const fileSize = file.size
-            if(!checkLimitFile(files.length,parseInt(uploadFileLimit))){
-                dropzone.removeFile(file)
-                showAlertValidateCreate(INVALID_FILES_LIMIT)
-            }
-            if(!checkTypeFile(fileExtension, listTypeFileArr)){
-                dropzone.removeFile(file)
-                showAlertValidateCreate(INVALID_FILES_TYPE)
-            }
-            if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
-                dropzone.removeFile(file)
-                showAlertValidateCreate(INVALID_FILES_SIZE)
-            }
-        });
+    dropzone.on("addedfile", function (file) {
+        removeAlert();
+        let files = dropzone.files
+        const fileExtension = file.name.split('.').pop();
+        const fileSize = file.size
+        if(!checkLimitFile(files.length,parseInt(uploadFileLimit))){
+            dropzone.removeFile(file)
+            showAlertValidateCreate(INVALID_FILES_LIMIT)
+        }
+        if(!checkTypeFile(fileExtension, listTypeFileArr)){
+            dropzone.removeFile(file)
+            showAlertValidateCreate(INVALID_FILES_TYPE)
+        }
+        if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
+            dropzone.removeFile(file)
+            showAlertValidateCreate(INVALID_FILES_SIZE)
+        }
+    });
 
-        dropzoneEdit.on("addedfile", function (file) {
-            removeAlert();
-            let files = dropzoneEdit.files
-            const fileExtension = file.name.split('.').pop();
-            const fileSize = file.size
-            if(!checkLimitFile(files.length, parseInt(dropzoneEdit.options.maxFiles))){
-                dropzoneEdit.removeFile(file)
-                showAlertValidate(INVALID_FILES_LIMIT)
-                return
-            }
-            if(!checkTypeFile(fileExtension, listTypeFileArr)){
-                dropzoneEdit.removeFile(file)
-                showAlertValidate(INVALID_FILES_TYPE)
-                return
-            }
-            if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
-                dropzoneEdit.removeFile(file)
-                showAlertValidate(INVALID_FILES_SIZE)
-                return
-            }
-        });
+    dropzoneEdit.on("addedfile", function (file) {
+        removeAlert();
+        let files = dropzoneEdit.files
+        const fileExtension = file.name.split('.').pop();
+        const fileSize = file.size
+        if(!checkLimitFile(files.length, parseInt(dropzoneEdit.options.maxFiles))){
+            dropzoneEdit.removeFile(file)
+            showAlertValidate(INVALID_FILES_LIMIT)
+            return
+        }
+        if(!checkTypeFile(fileExtension, listTypeFileArr)){
+            dropzoneEdit.removeFile(file)
+            showAlertValidate(INVALID_FILES_TYPE)
+            return
+        }
+        if(!checkLimitSize(fileSize,convertMbToB(maxFileSize))){
+            dropzoneEdit.removeFile(file)
+            showAlertValidate(INVALID_FILES_SIZE)
+            return
+        }
+    });
 
-        $(document).on("click","button.createBtn", function (){
-            removeAlert()
-            let title = $("#titleCreate").val()
-            let contentCheck = $("#formCreateNotication .ql-editor").html().toString()
-            let content = JSON.stringify(quillCreate.getContents())
-            if (title.trim() === "") {
-                $("input#titleCreate").parent().after(INVALID_FILLED)
-                return false;
-            }
-            if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
-                $("div#contentCreate").parent().after(INVALID_FILLED)
-                return false;
-            }
-            var formData = new FormData();
-            formData.append("title", title);
-            formData.append("content", content);
-            formData.append("userId", ${userId});
-            if(dropzone.files.length>0){
-                for (let i = 0; i < dropzone.files.length; i++) {
-                    let file = dropzone.files[i]
-                    if(file.accepted){
-                        formData.append("files", file);
-                    }
-               }
-            }
-            callAjaxByDataFormWithDataForm("${apiURL}${pathMain}","POST", formData ,function (rs){
-                if(rs>0){
-                    loadDatabase();
-                    INFORM_SUCCESS("Notification created successfully.")
-                    $("#formCreateNotication").modal("hide")
-                    $(".noresult").css("display", "none")
+    $(document).on("click","button.createBtn", function (){
+        removeAlert()
+        $(this).addClass("d-none")
+        $(this).before(BtnPrimaryLoad)
+        let title = $("#titleCreate").val()
+        let contentCheck = $("#formCreateNotication .ql-editor").html().toString()
+        let content = JSON.stringify(quillCreate.getContents())
+        if (title.trim() === "") {
+            $("input#titleCreate").parent().after(INVALID_FILLED)
+            return false;
+        }
+        if (contentCheck.trim() == "<p><br></p>" || contentCheck.trim() == "") {
+            $("div#contentCreate").parent().after(INVALID_FILLED)
+            return false;
+        }
+        var formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("userId", ${userId});
+        if(dropzone.files.length>0){
+            for (let i = 0; i < dropzone.files.length; i++) {
+                let file = dropzone.files[i]
+                if(file.accepted){
+                    formData.append("files", file);
                 }
-            },function (error){
-                console.log(error)
-            })
+            }
+        }
+        callAjaxByDataFormWithDataForm("${apiURL}${pathMain}","POST", formData ,function (rs){
+            if(rs>0){
+                loadDatabase();
+                INFORM_SUCCESS("Notification created successfully.")
+                $("#formCreateNotication").modal("hide")
+                $(".noresult").css("display", "none")
+            }
+            BtnLoadRemove()
+            $("button.createBtn").removeClass("d-none")
+        },function (error){
+            console.log(error)
         })
+    })
 </script>
 </body>
 </html>

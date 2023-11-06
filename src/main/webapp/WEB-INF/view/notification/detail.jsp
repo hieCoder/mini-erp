@@ -57,68 +57,68 @@
             <div class="card-header">
                 <h4 class="card-title mb-0">Notification Detail</h4>
             </div><!-- end card header -->
-                <div id="viewNotification" class="card-body" data-id="${notification.id}">
-                            <div class="text-muted">
-                                <h5 class="mb-3 fw-semibold text-uppercase titleView">
-                                    <strong class="fw-bolder fst-italic fs-4">${notification.title}</strong>
-                                </h5>
-                            </div>
-                            <div class="text-muted">
-                                <div id="contentView">
-                                </div>
-                                <div class="pt-3 border-top border-top-dashed mt-4">
-                                    <div class="row">
-
-                                        <div class="col-lg-3 col-sm-6">
-                                            <div>
-                                                <p class="mb-2 text-uppercase fw-medium">Create Date :</p>
-                                                <h5 class="fs-15 mb-0 createdDate">${notification.createdDate}</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="pt-3 border-top border-top-dashed mt-4">
-                                    <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
-                                    <div class="row g-3 showFilesUploaded">
-                                    </div>
-                                    <!-- end row -->
-                                </div>
+            <div id="viewNotification" class="card-body" data-id="${notification.id}">
+                <div class="text-muted">
+                    <h5 class="mb-3 fw-semibold text-uppercase titleView">
+                        <strong class="fw-bolder fst-italic fs-4">${notification.title}</strong>
+                    </h5>
+                </div>
+                <div class="text-muted">
+                    <div id="contentView">
                     </div>
-                    <div class="d-flex gap-2 justify-content-end mt-2" data-id="${notification.id}">
-                        <c:if test="${(userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)) && notification.status.equals(StatusNotificationEnum.ACTIVE)}">
-                            <div class="editNotification">
-                                <button class="btn btn-sm btn-success editNotification">Edit</button>
+                    <div class="pt-3 border-top border-top-dashed mt-4">
+                        <div class="row">
+
+                            <div class="col-lg-3 col-sm-6">
+                                <div>
+                                    <p class="mb-2 text-uppercase fw-medium">Create Date :</p>
+                                    <h5 class="fs-15 mb-0 createdDate">${notification.createdDate}</h5>
+                                </div>
                             </div>
-                            <div class="removeNotification">
-                                <button class="btn btn-sm btn-danger removeNotification">Remove</button>
-                            </div>
-                        </c:if>
-                        <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
-                            <div class="notificationDeleted">
-                                <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted" disabled>Deleted</button>
-                            </div>
-                        </c:if>
-                        <div class="backToList">
-                            <button class="btn btn-sm btn-dark backToList">Back to list</button>
                         </div>
                     </div>
+
+                    <div class="pt-3 border-top border-top-dashed mt-4">
+                        <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                        <div class="row g-3 showFilesUploaded">
+                        </div>
+                        <!-- end row -->
+                    </div>
                 </div>
+                <div class="d-flex gap-2 justify-content-end mt-2" data-id="${notification.id}">
+                    <c:if test="${(userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)) && notification.status.equals(StatusNotificationEnum.ACTIVE)}">
+                        <div class="editNotification">
+                            <button class="btn btn-sm btn-success editNotification">Edit</button>
+                        </div>
+                        <div class="removeNotification">
+                            <button class="btn btn-sm btn-danger removeNotification">Remove</button>
+                        </div>
+                    </c:if>
+                    <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
+                        <div class="notificationDeleted">
+                            <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted" disabled>Deleted</button>
+                        </div>
+                    </c:if>
+                    <div class="backToList">
+                        <button class="btn btn-sm btn-dark backToList">Back to list</button>
+                    </div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Comments</h4>
-<%--                    <div class="flex-shrink-0">--%>
-<%--                        <div class="dropdown card-header-dropdown">--%>
-<%--                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
-<%--                                <span class="text-muted">Recent<i class="mdi mdi-chevron-down ms-1"></i></span>--%>
-<%--                            </a>--%>
-<%--                            <div class="dropdown-menu dropdown-menu-end">--%>
-<%--                                <a class="dropdown-item" href="#">Recent</a>--%>
-<%--                                <a class="dropdown-item" href="#">Top Rated</a>--%>
-<%--                                <a class="dropdown-item" href="#">Previous</a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
+                    <%--                    <div class="flex-shrink-0">--%>
+                    <%--                        <div class="dropdown card-header-dropdown">--%>
+                    <%--                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+                    <%--                                <span class="text-muted">Recent<i class="mdi mdi-chevron-down ms-1"></i></span>--%>
+                    <%--                            </a>--%>
+                    <%--                            <div class="dropdown-menu dropdown-menu-end">--%>
+                    <%--                                <a class="dropdown-item" href="#">Recent</a>--%>
+                    <%--                                <a class="dropdown-item" href="#">Top Rated</a>--%>
+                    <%--                                <a class="dropdown-item" href="#">Previous</a>--%>
+                    <%--                            </div>--%>
+                    <%--                        </div>--%>
+                    <%--                    </div>--%>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div data-simplebar class="px-3 mx-n3 mb-2">
@@ -130,51 +130,51 @@
                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                                     <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
                                         <div class="simplebar-content listComment" data-id="${notification.id}" style="padding: 0px 16px;">
-                        <c:forEach items="${notification.comments}" var="comment">
-                                            <div class="d-flex mb-2 commentParent" data-id="${comment.id}">
-                                                <div class="flex-shrink-0">
-                                                <img src="${comment.avatarUser}" alt="Avatar" class="avatar-xs rounded-circle">
-                                            </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                <h5 class="fs-13">${comment.fullnameUser} <small class="text-muted ms-2">${comment.createdDate}</small></h5>
-                                                <p class="text-muted comment-content" data-id="${comment.id}">${comment.content}</p>
-                                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
-                                                <a href="javascript: void(0);" class="badge text-muted bg-light replyCommentBtn"><i class="mdi mdi-reply"></i> Reply</a>
-                                            </c:if>
-                                            <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
-                                                <a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn"><i class="mdi mdi-pencil"></i> Edit</a>
-                                                <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn"><i class="mdi mdi-delete"></i> Delete</a>
-                                            </c:if>
-                                                    <div id="commentChildList-${comment.id}" class="mt-2">
-                                                        <c:if test="${not empty comment.childComments}">
-                                                            <c:forEach items="${comment.childComments}" var="childComment">
-                                                            <div class="d-flex mb-2" data-id="${childComment.id}">
-                                                                <div class="flex-shrink-0">
-                                                                        <img src="${childComment.avatarUser}" alt="avatar" class="avatar-xs rounded-circle">
-                                                                    </div>
-                                                                    <div  class="flex-grow-1 ms-3">
+                                            <c:forEach items="${notification.comments}" var="comment">
+                                                <div class="d-flex mb-2 commentParent" data-id="${comment.id}">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="${comment.avatarUser}" alt="Avatar" class="avatar-xs rounded-circle">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h5 class="fs-13">${comment.fullnameUser} <small class="text-muted ms-2">${comment.createdDate}</small></h5>
+                                                        <p class="text-muted comment-content" data-id="${comment.id}">${comment.content}</p>
+                                                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
+                                                            <a href="javascript: void(0);" class="badge text-muted bg-light replyCommentBtn"><i class="mdi mdi-reply"></i> Reply</a>
+                                                        </c:if>
+                                                        <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
+                                                            <a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn"><i class="mdi mdi-pencil"></i> Edit</a>
+                                                            <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn"><i class="mdi mdi-delete"></i> Delete</a>
+                                                        </c:if>
+                                                        <div id="commentChildList-${comment.id}" class="mt-2">
+                                                            <c:if test="${not empty comment.childComments}">
+                                                                <c:forEach items="${comment.childComments}" var="childComment">
+                                                                    <div class="d-flex mb-2" data-id="${childComment.id}">
+                                                                        <div class="flex-shrink-0">
+                                                                            <img src="${childComment.avatarUser}" alt="avatar" class="avatar-xs rounded-circle">
+                                                                        </div>
+                                                                        <div  class="flex-grow-1 ms-3">
                                                                             <h5 class="fs-13">${childComment.fullnameUser} <small class="text-muted ms-2">${childComment.createdDate}</small></h5>
                                                                             <p class="text-muted comment-content" data-id="${childComment.id}">${childComment.content}</p>
                                                                             <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER) || comment.userId.equals(userId)}">
                                                                                 <a href="javascript: void(0);" class="badge text-muted bg-light editCommentBtn"><i class="mdi mdi-pencil"></i> Edit</a>
                                                                                 <a href="javascript: void(0);" class="badge text-muted bg-light deleteCommentBtn"><i class="mdi mdi-delete"></i> Delete</a>
                                                                             </c:if>
+                                                                        </div>
                                                                     </div>
-                                                            </div>
-                                                            </c:forEach>
-                                                        </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </div>
                                                     </div>
-                                            </div>
-                                            </div>
-                        </c:forEach>
+                                                </div>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <div class="simplebar-placeholder" style="width: 0px; height: 300px">
+                            <div class="simplebar-placeholder" style="width: 0px; height: 300px">
 
+                            </div>
                         </div>
-                    </div>
                         <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
                             <div class="simplebar-scrollbar" style="width: 0px; display: none;">
 
@@ -196,7 +196,7 @@
 
                             </div>
                             <div class="col-12 text-end">
-<%--                                <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>--%>
+                                <%--                                <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>--%>
                                 <button class="btn btn-sm btn-success" id="newCommentBtn">Post Comments</button>
                             </div>
                         </div>
@@ -328,10 +328,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Content:</label>
-                        <textarea class="form-control" id="editContentComment" rows="4"></textarea>
-                    </div>
+                <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Content:</label>
+                    <textarea class="form-control" id="editContentComment" rows="4"></textarea>
+                </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                     <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn w-sm btn-primary " id="editCommentBtn">Update</button>
@@ -512,7 +512,7 @@
 <script src="/assets/libs/quill/quill.min.js"></script>
 <!-- dropzone js -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
-<script src="/assets/js/notification/notification.js"></script>
+<script src="/assets/custom/js/notification/notification.js"></script>
 <script>
     function refreshPage() {
         location.reload();
@@ -556,24 +556,27 @@
                             '<i class="mdi mdi-reply"></i> Reply </a>'
                     }
                     var html = ' <div class="d-flex mb-2 commentParent" data-id="'+data.id+'">'+
-                                '<div class="flex-shrink-0">'+
-                                '<img src="'+data.avatarUser+'" alt="Avatar" class="avatar-xs rounded-circle">'+
-                                '</div>'+
-                                '<div class="flex-grow-1 ms-3">'+
-                                '<h5 class="fs-13">'+data.fullnameUser+'<small class="text-muted ms-2">'+data.createdDate+'</small></h5>'+
-                                '<p class="text-muted comment-content" data-id="'+data.id+'">'+data.content+'</p>'+
-                                buttonReply+
-                                buttonHtml+
-                                '<div id="commentChildList-'+data.id+'" class="mt-2">'+
-                                '</div>'+
-                                '</div>'+
-                                '</div>'
+                        '<div class="flex-shrink-0">'+
+                        '<img src="'+data.avatarUser+'" alt="Avatar" class="avatar-xs rounded-circle">'+
+                        '</div>'+
+                        '<div class="flex-grow-1 ms-3">'+
+                        '<h5 class="fs-13">'+data.fullnameUser+'<small class="text-muted ms-2">'+data.createdDate+'</small></h5>'+
+                        '<p class="text-muted comment-content" data-id="'+data.id+'">'+data.content+'</p>'+
+                        buttonReply+
+                        buttonHtml+
+                        '<div id="commentChildList-'+data.id+'" class="mt-2">'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'
                     if ($('.listComment div.commentParent').length > 0 ) {
-                            $("div.listComment div.commentParent:first").before(html);
+                        $("div.listComment div.commentParent:first").before(html);
                     } else{
                         $("div.listComment").html(html);
                     }
                     if (data.clientId == clientID) {
+                        $("textarea#newCommentContent").prop("disabled", false)
+                        $("#newCommentBtn").removeClass("d-none")
+                        BtnLoadRemove()
                         popupSuccess("Comment posted successfully")
                         $("textarea#newCommentContent").val("")
                     }
@@ -588,11 +591,11 @@
                 var $pElement = $('div.simplebar-wrapper p.comment-content[data-id="'+ data.id +'"]')
                 $pElement.text(data.content)
                 $("#editCommentModal").modal("hide")
-
                 if (data.clientId == clientID) {
-                        popupSuccess("Edit Comment Successfully")
+                    $("#editCommentBtn").removeClass("d-none")
+                    BtnLoadRemove()
+                    popupSuccess("Edit Comment Successfully")
                 }
-
             }else if(data.clientId == clientID){
                 refreshPage()
             }
@@ -602,7 +605,7 @@
             if (data.id != null) {
                 $('div.simplebar-wrapper div[data-id="' + data.id + '"]').remove()
                 if (data.clientId == clientID) {
-                     popupSuccess("Delete Comment Successfully")
+                    popupSuccess("Delete Comment Successfully")
                 }
             }else if(data.clientId == clientID){
                 refreshPage()
@@ -766,6 +769,8 @@
 
         $(document).on("click","button.editBtn", function(){
             removeAlert()
+            $(this).addClass("d-none")
+            $(this).before(BtnPrimaryLoad)
             let notificationId = $("#formEditNotification").attr("data-id")
             let title = $("#titleEdit").val()
             let contentCheck = $("div#formEditNotification .ql-editor").html().toString()
@@ -800,10 +805,14 @@
                     $("h5.titleView strong").text(rs.title)
                     let contentParse = JSON.parse(rs.content)
                     quillView.setContents(contentParse)
-                    loadFilesName(rs.files);
+                    if(rs.files && rs.files.length>0){
+                        loadFilesName(rs.files);
+                    }
                     INFORM_SUCCESS("Notification updated successfully.")
                     $("#formEditNotification").modal("hide")
                 }
+                BtnLoadRemove()
+                $("button.editBtn").removeClass("d-none")
             },function (error){
                 console.log(error)
             })
@@ -812,6 +821,8 @@
 
         $(document).on("click","button.editNotification",function (){
             Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
+            $(this).addClass("d-none")
+            $(this).before(loadingBtnSm("success"))
             let notificationId = $(this).parent().parent().attr("data-id")
             let apiUrlNotification = baseUrlNotification
             if(notificationId){
@@ -842,6 +853,8 @@
                         }else{
                             $("#formEditNotification").modal("show")
                         }
+                        BtnLoadRemove()
+                        $("button.editNotification").removeClass("d-none")
                     },
                     function (error){
                         console.log(error)
@@ -865,10 +878,10 @@
         }
 
         <c:forEach items="${notification.files}" var="value" varStatus="loop">
-            fileNameArr.push('${value}');
-            <c:if test="${loop.index + 1 == fn:length(notification.files)}">
-                loadFilesName(fileNameArr);
-            </c:if>
+        fileNameArr.push('${value}');
+        <c:if test="${loop.index + 1 == fn:length(notification.files)}">
+        loadFilesName(fileNameArr);
+        </c:if>
         </c:forEach>
         function loadContent(content){
             quillView.setContents(content)
@@ -884,9 +897,13 @@
         });
 
         $(document).on("click", "#deleteNotificationButton", function (e) {
+            $(this).addClass("d-none")
+            $(this).before(loadingBtnSm("danger"))
             var notificationId = $("#deleteNotification").attr("data-id");
             var apiUrlNotification = baseUrlNotification;
             callAjaxByJsonWithData(apiUrlNotification + "/" + notificationId, 'DELETE', null, function (rs) {
+                BtnLoadRemove()
+                $("#deleteNotificationButton").removeClass("d-none")
                 $("#deleteNotification").modal("hide");
             });
         });
@@ -962,6 +979,9 @@
                 $(".alertReply").html(INVALID_FILLED)
                 return false;
             }
+            $(this).addClass("d-none")
+            $(this).before(loadingBtnSm("success"))
+            $("textarea#newReplyContent").prop("disabled", true)
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -980,6 +1000,9 @@
                 $(".alertComment").html(INVALID_FILLED)
                 return false;
             }
+            $("textarea#newCommentContent").prop("disabled", true)
+            $(this).addClass("d-none")
+            $(this).before(loadingBtnSm("success"))
             var data = {
                 content: content,
                 notificationId: notificationId,
@@ -1025,15 +1048,15 @@
             let id = $(this).parent().parent().attr("data-id")
             let html = '<div class="row g-3 containerReply">'+
                 '<div class="col-12">'+
-                    '<label for="newReplyContent" class="form-label text-body">Leave a Reply</label>'+
-                    '<textarea class="form-control bg-light border-light" id="newReplyContent" rows="3" placeholder="Enter your reply..."></textarea>'+
+                '<label for="newReplyContent" class="form-label text-body">Leave a Reply</label>'+
+                '<textarea class="form-control bg-light border-light" id="newReplyContent" rows="3" placeholder="Enter your reply..."></textarea>'+
                 '</div>'+
                 '<div class="alertReply">'+
                 '</div>'+
                 '<div class="col-12 text-end">'+
-                    '<button class="btn btn-sm btn-success" data-id="'+id+'" id="newReplyBtn">Post Reply</button>'+
+                '<button class="btn btn-sm btn-success" data-id="'+id+'" id="newReplyBtn">Post Reply</button>'+
                 '</div>'+
-            '</div>'
+                '</div>'
             let $elementReply = "div#commentChildList-" + id
             if($($elementReply).children().length > 0){
                 $($elementReply).children().first().before(html)
@@ -1049,6 +1072,8 @@
                 $("#editContentComment").parent().before(INVALID_FILLED)
                 return false;
             }
+            $(this).addClass("d-none")
+            $(this).before(BtnPrimaryLoad)
             // Define the data you want to send (if needed)
             var id = $("#editCommentModal").attr("data-id")
             var data = {

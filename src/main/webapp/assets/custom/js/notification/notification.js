@@ -21,6 +21,15 @@ $(document).on("click","button.removeNotification", function (){
     $("#deleteNotification").modal("show")
 })
 
+function loadingBtnSm(type){
+    return `<button class="btn btn-sm btn-${type} btn-load">
+    <span class="d-flex align-items-center">
+        <span class="spinner-border flex-shrink-0" role="status">
+        </span>
+    </span>
+    </button>`
+}
+
 function popupSuccess(text){
     var modal = `
                         <strong class="btn-success rounded-circle p-2">${text}.</strong> 
@@ -44,6 +53,8 @@ $(document).on("click","button.backToList", function (){
 })
 
 $(document).on("click","#deleteNotificationBtn", function (){
+    $(this).addClass("d-none")
+    $(this).before(loadingBtnSm("danger"))
     let notificationId = $("#deleteNotification").attr("data-id")
     let apiUrlNotification = baseUrlNotification;
     if(notificationId){
@@ -52,6 +63,8 @@ $(document).on("click","#deleteNotificationBtn", function (){
                 loadDatabase();
                 $("#deleteSuccessNotification").modal("show");
             }
+            BtnLoadRemove()
+            $("#deleteNotificationBtn").removeClass("d-none")
             $("#deleteNotification").modal("hide")
         });
     }
