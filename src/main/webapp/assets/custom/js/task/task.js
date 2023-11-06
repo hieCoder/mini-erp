@@ -7,6 +7,10 @@ const T_REOPENED = 'REOPENED';
 
 const S_TASK_COMMENT = 'TASK_COMMENT';
 
+const INVALID_FILES_LIMIT = 'INVALID_FILES_LIMIT';
+const INVALID_FILES_FILESIZE = 'INVALID_FILES_FILESIZE';
+const INVALID_FILES_FILETYPE = 'INVALID_FILES_FILETYPE';
+
 const DEFAULT_VALUE_SNOW_EDITOR = [
     `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
     `<div class="ql-editor" data-gramm="false" contenteditable="true"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,

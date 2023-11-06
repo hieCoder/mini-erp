@@ -37,7 +37,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Total Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-total-task" data-target="234">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-total-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"> <i class="ri-arrow-up-line align-middle"></i> 17.32 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -58,7 +58,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Closed Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-closed-task" data-target="116.21">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-closed-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 2.52 % </span> vs. previous month</p>
                     </div>
                     <div>
@@ -79,7 +79,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Opened Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-opened-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-opened-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -100,7 +100,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-reopend-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-reopend-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -121,7 +121,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Postponed Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-postponed-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-postponed-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -142,7 +142,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Registered Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-registered-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-registered-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -187,7 +187,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -216,8 +216,13 @@
                         </div>
                         <!--end col-->
                         <div class="col-xxl-1 col-sm-4">
-                            <button id="filter-btn" type="button" class="btn btn-primary w-100"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                Filters
+                            <button id="filter-btn" type="button" class="btn btn-primary btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none"></span>
+                                    <span class="flex-grow-1 ms-2">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Filters
+                                    </span>
+                                </span>
                             </button>
                         </div>
                         <!--end col-->
@@ -285,7 +290,12 @@
                     <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
                         your information from our database.</p>
                     <div class="hstack gap-2 justify-content-center remove">
-                        <button class="btn btn-danger" id="delete-task" data-id="">Yes, Delete It</button>
+                        <button class="btn btn-danger btn-load" id="delete-task" data-id="">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Yes, Delete It</span>
+                            </span>
+                        </button>
                         <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="delete-task-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
                     </div>
                 </div>
@@ -344,7 +354,12 @@
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success" id="add-btn">Register</button>
+                        <button type="submit" class="btn btn-success btn-load">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Register</span>
+                            </span>
+                        </button>
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -465,12 +480,13 @@
 
     $(document).ready(function (){
         callAjaxByJsonWithData('/api/v1/tasks/status-task-count', 'GET', null, function (rs) {
-            $(".counter-total-task").attr("data-target", getTaskCountByCode(rs, T_ALL));
-            $(".counter-closed-task").attr("data-target", getTaskCountByCode(rs, T_CLOSED));
-            $(".counter-postponed-task").attr("data-target", getTaskCountByCode(rs, T_POSTPONED));
-            $(".counter-opened-task").attr("data-target", getTaskCountByCode(rs, T_OPENED));
-            $(".counter-registered-task").attr("data-target", getTaskCountByCode(rs, T_REGISTERED));
-            $(".counter-reopend-task").attr("data-target", getTaskCountByCode(rs, T_REOPENED));
+            //$(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
+            $(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
+            $(".counter-closed-task").text(getTaskCountByCode(rs, T_CLOSED));
+            $(".counter-postponed-task").text(getTaskCountByCode(rs, T_POSTPONED));
+            $(".counter-opened-task").text(getTaskCountByCode(rs, T_OPENED));
+            $(".counter-registered-task").text(getTaskCountByCode(rs, T_REGISTERED));
+            $(".counter-reopend-task").text(getTaskCountByCode(rs, T_REOPENED));
         });
 
         tableTask = $('#tasksTable').DataTable({
@@ -566,7 +582,13 @@
             tasksRequest.search = $('#search-input').val();
             tasksRequest.statusTask = $('#idStatus').val();
             tasksRequest.page = 1;
-            tableTask.ajax.reload();
+
+            var btn = $(this);
+            btn.find('.spinner-border').removeClass('d-none');
+
+            tableTask.ajax.reload(function () {
+                btn.find('.spinner-border').addClass('d-none');
+            });
         });
 
         $('#page-count-select').on('change', function() {
@@ -616,10 +638,10 @@
         var isFirstTimeOpenModalRegister = true;
         $('#registerTaskModal').on('shown.bs.modal', function() {
             var selectElement = $('#selectUsername');
-            selectElement.empty();
 
             // username
             if(isDeleveloper()){
+                selectElement.empty();
                 $('.username-register-task').text(userCurrent.fullname);
                 var option = $('<option></option>');
                 option.attr('value', userCurrent.id);
@@ -627,6 +649,7 @@
                 selectElement.append(option);
             } else{
                 if (isFirstTimeOpenModalRegister) {
+                    selectElement.empty();
                     callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
                         rs.forEach(function(user) {
                             var option = $('<option></option>');
@@ -657,6 +680,9 @@
                 ],
                 onSubmit: function (formData) {
                     formData.append('content', $('#content').html());
+
+                    $('#registerTaskForm .spinner-border').removeClass('d-none');
+
                     callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
                         window.location.href = "/tasks?registerSuccess";
                     });
@@ -672,6 +698,7 @@
 
     $(document).on('click', '#delete-task', function (e) {
         var idTask = $(this).attr('data-id');
+        $('#deleteTaskModal .spinner-border').removeClass('d-none')
         callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
             window.location.href = "/tasks?deleteSuccess";
         });
@@ -753,6 +780,8 @@
             $('#title-edit').val(rs.title);
 
             $('#content-edit').html(rs.content);
+            $('#editTaskForm .ql-toolbar.ql-snow').remove();
+            activeEditor("#editTaskForm");
 
             var statusCode = rs.statusTask.code;
             $('#statusTaskEdit').replaceWith('<span id="statusTaskEdit" class="badge ' + getStatusColor(statusCode) + '">' + statusCode + '</span>');
