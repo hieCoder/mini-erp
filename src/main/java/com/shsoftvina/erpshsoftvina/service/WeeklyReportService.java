@@ -11,10 +11,8 @@ import java.util.List;
 
 public interface WeeklyReportService {
     List<WeeklyReportDetailResponse> getAllWeeklyReportByUser(String userId, int start, int pageSize);
-    long getTotalWeeklyReportByUser(String userId,
-                              int start,
-                              int pageSize);
+    long getTotalWeeklyReportByUser(String userId);
     WeeklyReportDetailResponse findById(String id);
     int createWeeklyReport(CreateWeeklyReportRequest createWeeklyReportRequest);
-    int updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest);
+    WeeklyReportDetailResponse updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest);
 }

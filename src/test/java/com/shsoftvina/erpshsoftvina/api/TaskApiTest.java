@@ -136,19 +136,6 @@ public class TaskApiTest {
     }
 
     @Test
-    public void testGetTaskByHashtag() {
-        String userId = "sampleUserId";
-
-        List<?> mockResponse = Collections.singletonList(Collections.emptyMap());
-        when(taskService.getTaskByHashtag(userId)).thenReturn((List<Map<String, Object>>) mockResponse);
-
-        ResponseEntity<?> responseEntity = taskApi.getTaskByHashtag(userId);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(mockResponse, responseEntity.getBody());
-    }
-
-    @Test
     public void testGetTotalItem() {
         ListTaskRequest listTaskRequest = new ListTaskRequest();
         listTaskRequest.setPage(1);
@@ -156,7 +143,7 @@ public class TaskApiTest {
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
 
-        when(taskService.getTotalItem(0, 10, "REGISTERED", "sample search")).thenReturn(42L);
+        when(taskService.getTotalItem("REGISTERED", "sample search")).thenReturn(42L);
 
         ResponseEntity<?> responseEntity = taskApi.getTotalItem(listTaskRequest);
 
@@ -170,7 +157,7 @@ public class TaskApiTest {
         listTaskRequest.setStatusTask("REGISTERED");
         listTaskRequest.setSearch("sample search");
 
-        when(taskService.getTotalItem(0, TaskConstant.pageSizeDefault, "REGISTERED", "sample search")).thenReturn(42L);
+        when(taskService.getTotalItem("REGISTERED", "sample search")).thenReturn(42L);
 
         ResponseEntity<?> responseEntity = taskApi.getTotalItem(listTaskRequest);
 

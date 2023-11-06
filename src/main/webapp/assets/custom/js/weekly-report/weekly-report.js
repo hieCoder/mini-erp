@@ -15,5 +15,5 @@ function getListApiUrl(userId, page, pageSize) {
 }
 
 function getCountListApiUrl(userId, page, pageSize) {
-    return '/api/v1/weekly-reports/count?userId='+userId+'&page='+page+'&pageSize='+pageSize;
+    return '/api/v1/weekly-reports/count/'+userId;
 }
