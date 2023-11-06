@@ -72,14 +72,14 @@ public class WeeklyReportServiceImpl implements WeeklyReportService {
     }
 
     @Override
-    public int updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest) {
+    public WeeklyReportDetailResponse updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest) {
         WeeklyReport weeklyReport = weeklyReportMapper.findById(updateWeeklyReportRequest.getId());
         if (weeklyReport == null) throw new NotFoundException(MessageErrorUtils.notFound("id"));
         try{
             weeklyReport = weeklyReportConverter.toEntity(updateWeeklyReportRequest);
             weeklyReportMapper.updateWeeklyReport(weeklyReport);
-            return 1;
+            return weeklyReportConverter.toDetailResponse(weeklyReport);
         }catch (Exception e){}
-        return 0;
+        return null;
     }
 }

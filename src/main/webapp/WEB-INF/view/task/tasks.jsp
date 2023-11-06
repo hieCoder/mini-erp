@@ -789,7 +789,9 @@
             rules:[
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#content-edit'),
-                Validator.isRequired("#dueDateEdit"),
+                Validator.isThen("#dueDateEdit", function () {
+                    return $('#selectActionEdit').val();
+                }),
                 Validator.isDayAfterTodayOrNull("#dueDateEdit", 'Due day is not before today')
             ],
             onSubmit: function (formData) {

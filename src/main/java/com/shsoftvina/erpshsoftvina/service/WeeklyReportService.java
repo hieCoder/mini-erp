@@ -14,5 +14,5 @@ public interface WeeklyReportService {
     long getTotalWeeklyReportByUser(String userId);
     WeeklyReportDetailResponse findById(String id);
     int createWeeklyReport(CreateWeeklyReportRequest createWeeklyReportRequest);
-    int updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest);
+    WeeklyReportDetailResponse updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest);
 }

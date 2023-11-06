@@ -39,6 +39,15 @@
             </div> <!-- end col-->
 
             <div class="col-xl-10 list-wr-container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <c:if test="${param.createSuccess != null}">
+                            <div class="alert alert-success mb-2">
+                                Create success!
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex align-items-center">
@@ -114,8 +123,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
-                        <div class="form-control" id="next-week-content" contenteditable="true"></div>
+                        <div class="form-control content-report" id="next-week-content" contenteditable="true"></div>
                         <small class="form-message"></small>
+                        <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-success" style="margin-right:2px;">Create</button>
@@ -223,7 +233,7 @@
                 formData.append("nextWeeklyContent", $('#next-week-content').html());
                 formData.append("userId", userCurrent.id);
                 callAjaxByJsonWithDataForm("/api/v1/weekly-reports", "POST", formData, function (rs) {
-                    alertSuccess("Create success");
+                    window.location.href = "/weekly-reports?createSuccess";
                 });
             }
         });
@@ -231,38 +241,41 @@
 
     $(document).on('input', '.content-report', function (e){
 
-        const enteredText = $(this).html();
-        console.log(enteredText);
-        const regex = /#([^#\s]*)(?:\s|&nbsp;)*$/;
-        if(regex.test(enteredText)){
-            console.log(123);
-        }
+        const contentReportE = $(this);
+        var ulElement = $(contentReportE).siblings('.list-title-by-hashtag');
 
-        // const enteredText = $(this).html();
-        // console.log(enteredText)
-        // const wordsArray = enteredText.split(' ');
-        //
-        // if (wordsArray.length > 0) {
-        //     const lastWord = wordsArray[wordsArray.length - 1];
-        //     if (lastWord.includes('#')) {
-        //         const contentAfterHashtag = lastWord.split('#').pop();
-        //         callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+contentAfterHashtag,
-        //             'GET', null, function (rs) {
-        //             var ulElement = $('.list-title-by-hashtag');
-        //             ulElement.empty();
-        //             rs.forEach(function (e) {
-        //                 ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
-        //                     ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
-        //             });
-        //         });
-        //     }
-        // }
+        const enteredText = contentReportE.html();
+        const lastIndexOfHash = enteredText.lastIndexOf('#');
+
+        if (lastIndexOfHash !== -1) {
+            const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
+            if (textAfterLastHash.indexOf("&nbsp;") === -1 && textAfterLastHash.indexOf(" ") === -1) {
+                var hashtag = '';
+                if (textAfterLastHash.indexOf('<') !== -1) {
+                    const indexOfLessThan = textAfterLastHash.indexOf('<');
+                    hashtag = textAfterLastHash.slice(0, indexOfLessThan);
+                } else {
+                    hashtag = textAfterLastHash;
+                }
+
+                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+hashtag,
+                    'GET', null, function (rs) {
+                        ulElement.empty();
+                        rs.forEach(function (e) {
+                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
+                                ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
+                        });
+                    });
+            }
+        } else{
+            ulElement.empty();
+        }
     });
 
     $(document).on('click', '.hashtag-e', function (e){
         var taskTitle = $(this).text();
         var taskId = $(this).data('task-id');
-        var aE = `<a href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+        var aE = `<a class="fw-bold" href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
 
         const containerListHashtag = $(this).closest('.list-title-by-hashtag');
         const contentE = containerListHashtag.siblings('.content-report');
@@ -272,6 +285,8 @@
             const newContent = contentE.html().substring(0, lastIndex) + aE;
             contentE.empty().append(newContent);
         }
+
+        focusElement(contentE);
 
         containerListHashtag.empty();
     });

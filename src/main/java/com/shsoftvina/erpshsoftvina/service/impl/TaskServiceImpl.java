@@ -103,6 +103,9 @@ public class TaskServiceImpl implements TaskService {
                         task.getStatusTask().equals(StatusTaskEnum.CLOSED))
         ) throw new NotAllowException(MessageErrorUtils.notAllow("Progress"));
 
+        if(task.getStatus().equals(StatusTaskEnum.REGISTERED) && taskUpdateRequest.getAction() != null && taskUpdateRequest.getDueDate() == null)
+            throw new NotAllowException(MessageErrorUtils.notAllow("Due date"));
+
         try {
             Task t = taskConverter.toEntity(taskUpdateRequest);
             taskMapper.updateTask(t);

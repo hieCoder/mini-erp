@@ -16,8 +16,10 @@ function Validator(options){
                     var valEditor = $(inputElement).html();
                     if(DEFAULT_VALUE_SNOW_EDITOR.includes(valEditor)) valEditor= '';
                     errorMessage =  rules[i](valEditor);
-                } else{
-                    errorMessage =  rules[i](inputElement.innerHTML);
+                } else if(inputElement.classList.contains('content-report')){
+                    var val = inputElement.innerHTML;
+                    if(val == '<br>') val = '';
+                    errorMessage =  rules[i](val);
                 }
             }
             // <image>
@@ -173,7 +175,19 @@ Validator.isPhoneVN=function(selector){
         }
     };
 }
-
+Validator.isThen=function(selector, getValueRequired, message){
+    return {
+        selector: selector,
+        test: function (value) {
+            if(getValueRequired() == ''){
+                return undefined;
+            } else{
+                if(!value) return message||'This field is not filled';
+                return undefined;
+            }
+        }
+    };
+}
 
 // Validator.isNumberGreaterEqualThan=function(selector, min){
 //     return {
