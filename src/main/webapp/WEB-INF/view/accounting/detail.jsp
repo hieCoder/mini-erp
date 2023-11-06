@@ -434,12 +434,10 @@
         </div>
     </div>
 </div>
+<script src="/assets/custom/js/notification/notification.js"></script>
 <script>
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
-    const INVALID_FILLED = ' <div class="alert alert-danger" role="alert">' +
-        '<strong> Invalid </strong> This field is not filled' +
-        '</div>'
     const INVALID_FILES_LIMIT = ' <div class="alert alert-danger" role="alert">' +
         '<strong> Invalid </strong> Maximum Files is ${setting.uploadFileLimit}' +
         '</div>'
@@ -451,8 +449,6 @@
     const INVALID_FILES_SIZE = ' <div class="alert alert-danger" role="alert">' +
         '<strong> Invalid </strong> Maximum Size Files is ${setting.maxFileSize}' +
         '</div>'
-    var imageType = "${setting.listTypeImage}";
-    var fileType = "${setting.listTypeFile}";
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#editModal #validFileText");
@@ -646,6 +642,9 @@
         let html = ""
         handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
             html += showFileUploaded(fileName, fileSize, url, "view")
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            })
             $("#viewAccount .showFilesUploaded").html(html)
         })
     }
@@ -675,10 +674,6 @@
         $('#editModal div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
         $("#deleteFileModal").modal("hide")
         dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
-    })
-
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
     })
 
     let listTypeFileArr = validExtensions
@@ -730,8 +725,10 @@
         }
     });
 
-    $(document).on("click", ".editAccount", function () {
+    $(document).on("click", "button.editAccount", function () {
         Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
+        $(this).addClass("d-none")
+        $(this).before(BtnPrimaryLoad)
         let accountId = $(this).parent().attr("data-id")
         if (accountId) {
             callAjaxByJsonWithData(baseUrlAccount + "detail/" + accountId, 'GET', null,
@@ -751,13 +748,12 @@
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
                                     html += showFileUploaded(fileName, contentLength, url,"edit")
                                     $("#editModal div.showFilesUploaded").html(html)
-                                    $("#editModal").modal("show")
                                 }
                             });
                         });
-                    } else {
-                        $("#editModal").modal("show")
                     }
+                    BtnLoadRemove();
+                    $("button.editAccount").removeClass("d-none");
                 },
                 function (error) {
                     console.log(error)
@@ -767,7 +763,9 @@
     })
 
     $(document).on("click", "button.editBtn", function () {
-        removeAlert()
+        removeAlert();
+        $(this).addClass("d-none")
+        $(this).before(BtnPrimaryLoad)
         let accountId = $("#editModal").attr("data-id")
         let title = $("#editTitle").val()
         let note = $("#editNote").val()
@@ -818,6 +816,8 @@
                 })
                 loadFilesName(fileNameArr);
                 $('#editModal').modal('hide');
+                BtnLoadRemove()
+                $("button.editBtn").removeClass("d-none")
                 $('#successModal div.modal-body').text("The request has been completed successfully.")
                 $('#successModal').modal('show');
                 $('#editBill').val("");
