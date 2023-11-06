@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.mapper;
 import com.shsoftvina.erpshsoftvina.entity.Event;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface EventMapper {
 
     int editEvent(Event event);
 
-    List<Event> getUpcomingEvents(@Param("day") String day);
+    List<Event> getUpcomingEvents(@Param("day") String day, RowBounds rowBounds);
+
+    long getTotalRecordCountUpcoming(@Param("day") String day);
 }

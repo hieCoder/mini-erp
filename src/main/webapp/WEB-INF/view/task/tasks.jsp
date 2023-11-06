@@ -20,7 +20,7 @@
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks management</a></li>
                     <li class="breadcrumb-item active">Tasks List</li>
                 </ol>
             </div>
@@ -187,7 +187,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-danger add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -206,7 +206,7 @@
                             <div class="input-light">
                                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
                                     <option value="" selected>All</option>
-                                    <option value="REGISTER">Registered</option>
+                                    <option value="REGISTERED">Registered</option>
                                     <option value="OPENED">Opened</option>
                                     <option value="POSTPONED">Postponed</option>
                                     <option value="REOPENED">Reopend</option>
@@ -222,12 +222,14 @@
                         </div>
                         <!--end col-->
                         <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
-                            <label style="margin-right: 5px;">Show entries: </label>
-                            <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                            </select>
+                            <div style="margin-right: 5px;">Show entries: </div>
+                            <div>
+                                <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
                         </div>
                         <!--end col-->
                     </div>
@@ -236,8 +238,8 @@
             </div>
             <!--end card-body-->
             <div class="card-body">
-                <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap mb-0 w-100" id="tasksTable">
+                <div class="table-responsive table-card">
+                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="tasksTable">
                         <thead class="table-light text-muted">
                         <tr>
                             <th scope="col" style="width: 40px;">
@@ -258,17 +260,10 @@
                         <tbody class="list form-check-all"></tbody>
                     </table>
                     <!--end table-->
-                    <div class="noresult" style="display: none">
-                        <div class="text-center">
-                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                            <h5 class="mt-2">Sorry! No Result Found</h5>
-                            <p class="text-muted mb-0">We've searched more than 200k+ tasks We did not find any tasks for you search.</p>
-                        </div>
-                    </div>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="pagination-wrap hstack gap-2">
-                        <ul id="pagination" class="pagination"></ul>
+                        <ul id="pagination" class="pagination mb-0"></ul>
                     </div>
                 </div>
             </div>
@@ -487,7 +482,14 @@
                     return JSON.stringify(tasksRequest);
                 },
                 dataSrc: function (json) {
-                    if(json.length != 0) loadPaging();
+                    if(json.length != 0) {
+                        loadPaging();
+                        $('#pagination').addClass('mt-4');
+                    }
+                    else {
+                        removePagingIfExsit();
+                        $('#pagination').removeClass('mt-4');
+                    }
                     return json;
                 }
             },
@@ -527,7 +529,7 @@
                                             </li>`;
                         }
                         return `<div class="d-flex">
-                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary">` + data + `</a></div>
+                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary text-decoration-underline" href="/tasks/`+ row.id +`">` + data + `</a></div>
                                     <div class="flex-shrink-0 ms-4">
                                         <ul class="list-inline tasks-list-menu mb-0">
                                             <li class="list-inline-item"><a href="/tasks/`+ row.id +`"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>`
@@ -563,24 +565,28 @@
         $('#filter-btn').on('click', function() {
             tasksRequest.search = $('#search-input').val();
             tasksRequest.statusTask = $('#idStatus').val();
+            tasksRequest.page = 1;
             tableTask.ajax.reload();
         });
 
         $('#page-count-select').on('change', function() {
             var selectedValue = $(this).val();
-            tasksRequest.pageSize = selectedValue;
             tasksRequest.page = 1;
+            tasksRequest.pageSize = selectedValue;
             tableTask.ajax.reload();
-            loadPaging();
         });
     });
+
+    function removePagingIfExsit(){
+        if (window.pagObj) {
+            window.pagObj.twbsPagination('destroy');
+        }
+    }
 
     function loadPaging(){
         callAjaxByJsonWithData('/api/v1/tasks/count', 'POST', tasksRequest, function (totalItem) {
 
-            if (window.pagObj) {
-                window.pagObj.twbsPagination('destroy');
-            }
+            removePagingIfExsit();
 
             //paging
             var totalPages = 0;
@@ -591,7 +597,6 @@
             $(function () {
                 window.pagObj = $('#pagination').twbsPagination({
                     totalPages: totalPages,
-                    visiblePages: <%=TaskConstant.visiblePages%>,
                     startPage: currentPage,
                     onPageClick: function (event, page) {
                         if (currentPage != page) {
@@ -784,7 +789,9 @@
             rules:[
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#content-edit'),
-                Validator.isRequired("#dueDateEdit"),
+                Validator.isThen("#dueDateEdit", function () {
+                    return $('#selectActionEdit').val();
+                }),
                 Validator.isDayAfterTodayOrNull("#dueDateEdit", 'Due day is not before today')
             ],
             onSubmit: function (formData) {

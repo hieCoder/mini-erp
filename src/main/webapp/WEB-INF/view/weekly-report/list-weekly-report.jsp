@@ -3,456 +3,327 @@
 <html>
 <head>
     <title>Weekly report</title>
-
-    <style>
-        /* CSS để tạo dropdown */
-        .mention-container {
-            border: 1px solid #ccc;
-            padding: 10px;
-            position: relative;
-        }
-
-        .mention-dropdown {
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            margin-left: 134px;
-            max-height: 150px;
-            overflow-y: auto;
-            cursor: pointer;
-            display: none;
-        }
-
-        #contentContainer a:hover {
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
-<form id="form" action="/weekly-reports" method="GET">
-    <div class="container">
-        <h1 class="mt-4">List Weekly Report</h1>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="search">Search:</label>
-                    <div class="input-group">
-                        <input id="search" name="search" type="text" class="form-control" placeholder="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Weekly report</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks management</a></li>
+                    <li class="breadcrumb-item active">Weekly report</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-xl-2 list-staff-container">
+                <div>
+                    <h5 class="mb-1">Staffs</h5>
+                    <p class="text-muted">Click to any staff to see info about weekly report of that staff</p>
+                    <div class="pe-2 me-n1 mb-3" data-simplebar style="height: 818px">
+                        <div id="staff-list"></div>
+                    </div>
+                </div>
+                <!--end card-->
+            </div> <!-- end col-->
+
+            <div class="col-xl-10 list-wr-container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <c:if test="${param.createSuccess != null}">
+                            <div class="alert alert-success mb-2">
+                                Create success!
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 flex-grow-1">Weekly report</h5>
+                            <div class="flex-shrink-0">
+                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#createReport"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body border border-dashed border-end-0 border-start-0">
+                        <div class="row g-3">
+                            <div class="col-xxl-4 col-sm-4 d-flex align-items-center justify-content-start">
+                                <div style="margin-right: 5px;">Show entries: </div>
+                                <div>
+                                    <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive table-card">
+                            <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="weekly-report-table">
+                                <thead class="table-light text-muted">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Username</th>
+                                    <th>Created date</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <!--end table-->
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="pagination-wrap hstack gap-2">
+                                <ul id="pagination" class="pagination mb-0"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-success px-4 create-weeklyReport-button">Add Weekly Report</button>
-            </div>
+            </div><!-- end col -->
         </div>
-        <table class="table mt-2 table-bordered">
-            <thead>
-            <tr>
-                <th>NO.</th>
-                <th>Report ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Created Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="weeklyReport" items="${weeklyReports.getListWeeklyReport()}" varStatus="loop">
-                <tr>
-                    <th scope="row">${(weeklyReports.pageNumber - 1) * weeklyReports.pageSize + loop.index + 1}</th>
-                    <td>${weeklyReport.getId()}</td>
-                    <td><a href="${weeklyReport.getId()}"
-                           class="weeklyReportDetail-button">${weeklyReport.getTitle()}</a></td>
-                    <td>${weeklyReport.getFullnameUser()}</td>
-                    <td>${weeklyReport.getCreatedDate()}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <!-- Pagination -->
-        <div class="row justify-content-center">
-            <ul class="pagination">
-                <li class="page-item">
-                    <c:if test="${weeklyReports.hasPrevious}">
-                        <button class="page-link" type="submit" name="page" value="1"><<</button>
-                    </c:if>
-                </li>
-                <li class="page-item">
-                    <c:if test="${weeklyReports.hasPrevious}">
-                        <button class="page-link" type="submit" name="page" value="${weeklyReports.pageNumber - 1}"><
-                        </button>
-                    </c:if>
-                </li>
-                <c:forEach var="page" begin="1" end="${weeklyReports.totalPages}">
-                    <c:choose>
-                        <c:when test="${page == weeklyReports.pageNumber}">
-                            <li class="page-item active"><a class="page-link" href="#">${page}</a></li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item">
-                                <button class="page-link" type="submit" name="page" value="${page}">${page}</button>
-                            </li>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-                <li class="page-item">
-                    <c:if test="${weeklyReports.hasNext}">
-                        <button class="page-link" type="submit" name="page" value="${weeklyReports.pageNumber + 1}">>
-                        </button>
-                    </c:if>
-                </li>
-                <li class="page-item">
-                    <c:if test="${weeklyReports.hasNext}">
-                        <button class="page-link" type="submit" name="page" value="${weeklyReports.totalPages}">>>
-                        </button>
-                    </c:if>
-                </li>
-            </ul>
-        </div>
+        <!--end row-->
     </div>
-</form>
+</div> <!-- end row-->
 
-<!-- Modal Add Weekly Report -->
-<div class="modal fade" id="addWeeklyReportModal" tabindex="-1" role="dialog"
-     aria-labelledby="addWeeklyReportModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<!-- create modal -->
+<div class="modal fade" id="createReport" tabindex="-1" aria-labelledby="createReportLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-center">Add Weekly Report</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="createReportLabel">Create weekly report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Username:</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly id="fullname" class="form-control-plaintext font-weight-bold"
-                                   value='' disabled>
-                        </div>
+                <form id="create-wr-form">
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input name="title" type="text" class="form-control" id="title">
+                        <small class="form-message"></small>
                     </div>
-                    <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label">Title:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="title" placeholder="Title here" required>
-                            <span class="errorMessage" style="color: red;"></span>
-                        </div>
+                    <div class="mb-3">
+                        <label for="this-week-content" class="col-form-label">This week's content:</label>
+                        <div class="form-control content-report" id="this-week-content" contenteditable="true"></div>
+                        <small class="form-message"></small>
+                        <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Content:</label>
-                        <div class="col-sm-10">
-                            <div id="contentContainer" contenteditable="true" class="form-control mention-container overflow-auto" style="min-height: 100px">
-                                <!-- Content will be edited here -->
-
-                            </div>
-                            <span class="errorMessage" style="color: red;"></span>
-                        </div>
+                    <div class="mb-3">
+                        <label for="next-week-content" class="col-form-label">Next week's content:</label>
+                        <div class="form-control content-report" id="next-week-content" contenteditable="true"></div>
+                        <small class="form-message"></small>
+                        <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
-                    <div id="mentionDropdown" class="mention-dropdown">
-                        <!-- Mention suggestions will be displayed here -->
+                    <div class="mb-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success" style="margin-right:2px;">Create</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button value="${user.id}" type="button" class="btn btn-primary" id="addWeeklyReportButton">Submit
-                </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Weekly Report Detail -->
-<div class="modal fade" id="WeeklyReportDetailModal" tabindex="-1" role="dialog"
-     aria-labelledby="WeeklyReportDetailModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">Weekly Report Detail</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    <div class="form-group row">
-                        <label for="fullnameUser" class="col-sm-2 col-form-label">Username:</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext font-weight-bold" id="fullnameUser" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="titleWeeklyReport" class="col-sm-2 col-form-label">Title:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="titleWeeklyReport" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="contentWeeklyReport" class="col-sm-2 col-form-label">Content:</label>
-                        <div class="col-sm-10" id="contentWeeklyReport">
-
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="createDate" class="col-sm-2 col-form-label">Create Date</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="createDate" readonly>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Notification Success -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="resultModalLabel">Result</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="resultMessage">
-                <!-- Message Success -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<%-------------------------------- Code Javascript -------------------------------------%>
+<script src="/assets/custom/js/weekly-report/weekly-report.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-       $('#fullname').val(userCurrent.fullname);
-    });
-    // Handle search
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get input search
-        var searchInput = document.getElementById("search");
+    var tableWR = '';
+    var pagingObj = {
+        staffId: '',
+        page: 1,
+        pageSize: $('#page-count-select').val()
+    }
 
-        // Check Role Of User
-        var roleUser = "${user.getRole().getValue()}";
+    $(document).ready(function (){
 
-        // setup placeholder of input search flow Role User
-        if (roleUser === "Owner") {
-            searchInput.placeholder = "Search by title or author";
-        } else {
-            searchInput.placeholder = "Search by title";
+        if(isDeleveloper()){
+            $('.list-staff-container').remove();
+            $('.list-wr-container').toggleClass('col-xl-10 col-xl-12');
+            pagingObj.staffId = userCurrent.id;
+        } else{
+            callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                rs.forEach(function (user, index) {
+                    var staff = createStaffE(user);
+                    $('#staff-list').append(staff);
+                });
+                var staffFirst = $('#staff-list').find('.staff-name').first();
+                staffFirst.addClass('text-decoration-underline');
+                pagingObj.staffId = $(staffFirst).data('id');
+            });
+
+            $(document).on('click', '.staff-name', function (e){
+                $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
+                $(this).addClass('text-decoration-underline');
+                pagingObj.staffId = $(this).data('id');
+                pagingObj.page = 1;
+                tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+                    pagingObj.page, pagingObj.pageSize)).load();
+            });
         }
 
-    });
-
-    // Handle when user click button "Add Weekly Report"
-    document.addEventListener("DOMContentLoaded", function () {
-        var createButtons = document.querySelectorAll(".create-weeklyReport-button");
-
-        // Show weeklyReport
-        createButtons.forEach(function (button) {
-            button.addEventListener("click", function () {
-                $("#addWeeklyReportModal").modal("show");
-            });
-        });
-
-        // Show dropdown titles task when user used key '#' in content weeklyReport
-        // Get content and Get dropdown of tasks
-        var contentContainer = document.getElementById("contentContainer");
-        var mentionDropdown = document.getElementById("mentionDropdown");
-        var hashPressed = false;
-        // Handle when user used key "#" in content
-        contentContainer.addEventListener("input", function () {
-            var content = contentContainer.innerText;
-
-            // check content contain '#'
-            if (content.includes("#")) {
-                hashPressed = true;
-            }
-
-            if (hashPressed && content.charAt(content.length - 1) === "#") {
-                $('.modal-footer').after(createLoadingHtml());
-                // Get titles form API
-                var userId = ${user.id};
-
-                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+ userId, 'GET', null, function (rs) {
-                    // Get Id and Title of Tasks From response Data API
-                    var responseData = rs;
-                    var taskId = responseData.map(function (task) {
-                        return task.id;
-                    });
-                    var titles = responseData.map(function (task) {
-                        return task.title;
-                    });
-                    mentionDropdown.innerHTML = "Task:";
-                    // Show dropdown titles tasks
-                    if (titles.length != 0) {
-                        titles.forEach(function (title) {
-                            var mentionItem = document.createElement("div");
-                            mentionItem.classList.add("dropdown-item");
-                            mentionItem.classList.add("border");
-                            mentionItem.textContent = title;
-                            $('div.custom-spinner').parent().remove();
-                            // Handle when user choose one of the titles
-                            mentionItem.addEventListener("click", function () {
-                                var selectedTitle = mentionItem.textContent;
-                                var selectedTaskId = taskId[titles.indexOf(selectedTitle)];
-                                var updatedContent = contentContainer.innerHTML + '<a href="/tasks/' + selectedTaskId + '">' + selectedTitle + '</a> ';
-                                contentContainer.innerHTML = updatedContent;
-                                var divs = contentContainer.querySelectorAll("div");
-                                divs.forEach(function (div) {
-                                    var span = document.createElement("span");
-                                    span.textContent = div.textContent;
-                                    contentContainer.replaceChild(span, div);
-                                    contentContainer.insertBefore(document.createElement("br"), span);
-                                });
-                                mentionDropdown.style.display = "none";
-                            });
-                            mentionDropdown.appendChild(mentionItem);
-                        });
-                    } else {
-                        $('div.custom-spinner').parent().remove();
-                        mentionDropdown.innerHTML += " No tasks";
+        callAjaxByJsonWithData('/api/v1/users/'+pagingObj.staffId, 'GET', null, function (user) {
+            tableWR = $('#weekly-report-table').DataTable({
+                ajax: {
+                    url: getListApiUrl(pagingObj.staffId, 1, pagingObj.pageSize),
+                    method: 'GET',
+                    dataSrc: function (json) {
+                        if(json.length != 0) {
+                            loadPaging();
+                            $('#pagination').addClass('mt-4');
+                        }
+                        else {
+                            removePagingIfExsit();
+                            $('#pagination').removeClass('mt-4');
+                        }
+                        return json;
                     }
-                    mentionDropdown.style.display = "block";
+                },
+                columns: [
+                    {data: 'id'},
+                    {
+                        data: 'title',
+                        render: function(data, type, row) {
+                            return `<a href="/weekly-reports/`+ row.id +`" class="fw-medium link-primary text-decoration-underline">` + data + `</a>`;
+                        }
+                    },
+                    {data: 'user.fullname'},
+                    {data: 'createdDate'}
+                ],
+                ordering: false,
+                searching: false,
+                lengthChange: false,
+                paging: false,
+                info: false
+            });
+
+            $('#page-count-select').on('change', function() {
+                var selectedValue = $(this).val();
+                pagingObj.page = 1;
+                pagingObj.pageSize = selectedValue;
+                tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+                    pagingObj.page, pagingObj.pageSize)).load();
+            });
+        });
+
+        Validator({
+            form:'#create-wr-form',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title'),
+                Validator.isRequired('#this-week-content'),
+                Validator.isRequired('#next-week-content')
+            ],
+            onSubmit: function (formData) {
+                var data = {};
+                formData.forEach((value, key) => data[key] = value);
+                console.log(data);
+                formData.append("currentWeeklyContent", $('#this-week-content').html());
+                formData.append("nextWeeklyContent", $('#next-week-content').html());
+                formData.append("userId", userCurrent.id);
+                callAjaxByJsonWithDataForm("/api/v1/weekly-reports", "POST", formData, function (rs) {
+                    window.location.href = "/weekly-reports?createSuccess";
                 });
-            } else {
-                hashPressed = false;
-                mentionDropdown.style.display = "none";
             }
         });
     });
 
-    // Handle when user click button "Submit" in modal Add Weekly Report
-    document.getElementById('addWeeklyReportButton').addEventListener('click', function () {
-        $(this).prop("disabled", true)
-        var contentContainerE = document.getElementById("contentContainer");
-        var valuaContent = contentContainerE.innerText;
+    $(document).on('input', '.content-report', function (e){
 
-        var titleE = document.getElementById("title");
-        var valueTitle = titleE.value;
+        const contentReportE = $(this);
+        var ulElement = $(contentReportE).siblings('.list-title-by-hashtag');
 
-        var isValidate = true;
+        const enteredText = contentReportE.html();
+        const lastIndexOfHash = enteredText.lastIndexOf('#');
 
-        var errorMessageSpan = contentContainerE.nextElementSibling;
-        if (valuaContent.trim() === "") {
-            errorMessageSpan.textContent = "This field is not filled";
-            isValidate = false;
-        } else{
-            errorMessageSpan.textContent = '';
-        }
+        if (lastIndexOfHash !== -1) {
+            const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
+            if (textAfterLastHash.indexOf("&nbsp;") === -1 && textAfterLastHash.indexOf(" ") === -1) {
+                var hashtag = '';
+                if (textAfterLastHash.indexOf('<') !== -1) {
+                    const indexOfLessThan = textAfterLastHash.indexOf('<');
+                    hashtag = textAfterLastHash.slice(0, indexOfLessThan);
+                } else {
+                    hashtag = textAfterLastHash;
+                }
 
-        errorMessageSpan = titleE.nextElementSibling;
-        if(valueTitle.trim() === ""){
-            errorMessageSpan.textContent = "This field is not filled";
-            isValidate = false;
-        }else{
-            errorMessageSpan.textContent = '';
-        }
-
-        if(isValidate) {
-            $('form .errorMessage').text('');
-            $('.modal-footer').after(createLoadingHtml());
-            // Get Data in form
-            var userId = this.value;
-            var title = document.getElementById("title").value;
-            var content = document.getElementById("contentContainer").outerHTML;
-            var data = {
-                title: title,
-                content: content,
-                userId: userId
-            };
-
-            callAjaxByJsonWithData('/api/v1/weekly-reports', 'POST', data, function (rs){
-                sessionStorage.setItem('result', 'addWeeklyReportSuccess');
-                $('div.custom-spinner').parent().remove();
-                $(this).prop("disabled", false)
-                location.reload();
-            });
-        } else{
-            $(this).prop("disabled", false)
-        }
-    });
-
-    // Handle when user click on link Title
-    document.addEventListener("DOMContentLoaded", function () {
-        var detailButtons = document.querySelectorAll(".weeklyReportDetail-button");
-
-        // Show modal Edit Contract
-        detailButtons.forEach(function (button) {
-            button.addEventListener("click", function (event) {
-                $("#WeeklyReportDetailModal").modal("show");
-                $('.modal-footer').after(createLoadingHtml());
-
-                var id = button.getAttribute("href");
-
-                callAjaxByJsonWithData('/api/v1/weekly-reports/'+id, 'GET', null, function (rs) {
-                    var responseData = rs;
-
-                    // Assign response Data weekly report to fields
-                    document.getElementById("titleWeeklyReport").value = responseData.title;
-                    var contentWeeklyReport = document.getElementById("contentWeeklyReport");
-                    contentWeeklyReport.innerHTML = responseData.content;
-
-                    // Attach click event to anchor tags
-                    var anchorTags = contentWeeklyReport.querySelectorAll("a");
-                    anchorTags.forEach(function (anchor) {
-                        anchor.addEventListener("click", function (event) {
-                            // Handle click event for anchor tags here
-                            // For example, you can open the link in a new tab:
-                            window.open(anchor.getAttribute("href"));
-                            event.preventDefault(); // Prevent the default behavior of the anchor
+                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+hashtag,
+                    'GET', null, function (rs) {
+                        ulElement.empty();
+                        rs.forEach(function (e) {
+                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
+                                ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
                         });
                     });
-                    document.getElementById("fullnameUser").value = responseData.fullnameUser;
-                    document.getElementById("createDate").value = responseData.createdDate;
-                    $('div.custom-spinner').parent().remove();
-                    $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
-                });
+            }
+        } else{
+            ulElement.empty();
+        }
+    });
 
-                event.preventDefault();
+    $(document).on('click', '.hashtag-e', function (e){
+        var taskTitle = $(this).text();
+        var taskId = $(this).data('task-id');
+        var aE = `<a class="fw-bold" href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+
+        const containerListHashtag = $(this).closest('.list-title-by-hashtag');
+        const contentE = containerListHashtag.siblings('.content-report');
+
+        const lastIndex = contentE.html().lastIndexOf('#');
+        if (lastIndex !== -1) {
+            const newContent = contentE.html().substring(0, lastIndex) + aE;
+            contentE.empty().append(newContent);
+        }
+
+        focusElement(contentE);
+
+        containerListHashtag.empty();
+    });
+
+    function removePagingIfExsit(){
+        if (window.pagObj) {
+            window.pagObj.twbsPagination('destroy');
+        }
+    }
+
+    function loadPaging(){
+        callAjaxByJsonWithData(getCountListApiUrl(pagingObj.staffId), 'GET', null, function (totalItem) {
+
+            removePagingIfExsit();
+
+            //paging
+            var totalPages = 0;
+            if(totalItem <= pagingObj.pageSize) totalPages = 1;
+            else totalPages = Math.ceil(totalItem / pagingObj.pageSize);
+            var currentPage = pagingObj.page;
+
+            $(function () {
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    startPage: currentPage,
+                    onPageClick: function (event, page) {
+                        if (currentPage != page) {
+                            pagingObj.page = page;
+                            tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+                                pagingObj.page, pagingObj.pageSize)).load();
+                            currentPage = page;
+                        }
+                    }
+                });
             });
         });
-    });
-
-    // Notification Add weekly Report Success
-    document.addEventListener('DOMContentLoaded', function () {
-        const result = sessionStorage.getItem('result');
-        if (result) {
-            $('#resultMessage').text(result === 'addWeeklyReportSuccess' ? 'Add Weekly Report Success' : '');
-            $('#resultModal').modal('show');
-            sessionStorage.clear();
-        }
-    });
-
-    // Save value to Local Storage
-    document.getElementById("search").addEventListener("input", function () {
-        localStorage.setItem("searchWeeklyReport", this.value);
-    });
-
-    // Restore the "Search" value from Local Storage when the page is loaded
-    window.addEventListener("load", function () {
-        var selectedSearch = localStorage.getItem("searchWeeklyReport");
-        if (selectedSearch) {
-            document.getElementById("search").value = selectedSearch;
-        }
-    });
-
-    // Disable Modify Content Weekly Report
-    $("#WeeklyReportDetailModal div.form-control.mention-container").prop("contenteditable",false)
+    }
 </script>
-
 </body>
 </html>

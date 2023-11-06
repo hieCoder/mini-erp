@@ -1,5 +1,7 @@
 // CONSTANT
 const U_DEVELOPER = 'DEVELOPER';
+const U_OWNER = 'OWNER';
+const U_MANAGER = 'MANAGER';
 
 // loading
 const BtnLoadRemove = () => {
@@ -95,10 +97,10 @@ function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callb
         contentType: "application/json",
         dataType: 'json',
         success: function (response) {
-            callbackSuccess(response);
+            if (callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            callbackFail(xhr);
+            if (callbackFail) callbackFail(xhr);
         }
     });
 }
@@ -292,11 +294,15 @@ function getMessageTypeFile(fileType) {
     return 'Files must be of the following types: ' + fileType;
 }
 
-
-
-
-
-
+// focus pointer to end element
+function focusElement(element) {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    range.selectNodeContents(element[0]);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
 
 // function createLoadingIndicator() {
 //     if ($('#loading-indicator').length === 0) {

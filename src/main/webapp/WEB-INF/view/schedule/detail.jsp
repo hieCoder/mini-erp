@@ -1,77 +1,323 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 10/25/2023
-  Time: 12:15 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<!doctype html>
-<html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+    session.setAttribute("pathMain", "/notifications/");
+    session.setAttribute("apiURL", "/api/v1");
+%>
+<c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}"/>
+<html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Schedule Detail</title>
-    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
-    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/schedule/dist/tui-calendar.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/schedule/default.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/schedule/icons.css">
+    <!-- fullcalendar css -->
+    <link href="/assets/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div class="container" style="margin-top: 6%">
-    <div class="code-html">
-        <div id="menu" class="mb-3 font-weight-bold">
-          <span id="menu-navi">
-                <button type="button" class="btn btn-default btn-sm move-today font-weight-bold" data-action="move-today">Today</button>
-                <button type="button" class="btn btn-default btn-sm move-day font-weight-bold " data-action="move-prev">
-                  <i class="calendar-icon ic-arrow-line-left font-weight-bold d-flex flex-column align-items-center" data-action="move-prev"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm move-day " data-action="move-next">
-                  <i class="calendar-icon ic-arrow-line-right font-weight-bold d-flex flex-column align-items-center" data-action="move-next"></i>
-                </button>
-          </span>
-            <span id="renderRange" class="render-range"></span>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Schedule Detail</h4>
         </div>
-
-        <div id="calendar"></div>
     </div>
 </div>
-<style>
-    .tui-full-calendar-weekday-grid-header .tui-full-calendar-weekday-grid-more-schedules{
-        color: #fb0072;
-        font-size: 13px;
-        font-style: italic;
-    }
-</style>
-<script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
-<script src="https://uicdn.toast.com/tui.time-picker/v2.0.3/tui-time-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
-<script src="/assets/css/schedule/dist/tui-calendar.js"></script>
-<script src="/assets/js/schedule/data/calendars.js"></script>
-<script src="/assets/js/schedule/data/schedules.js"></script>
-<script type="text/javascript" class="code-js">
-    var templates = {
-        popupDetailDate: function(allDay ,start, end) {
-            var isSameDate = moment(start._date).isSame(moment(end._date));
-            var startFormat = moment(start._date).format('YYYY.MM.DD')
-            var endFormat = moment(end._date).format('YYYY.MM.DD')
-            if (isSameDate) {
-                return moment(start).format('YYYY.MM.DD')
-            }
-            return startFormat + ' ~ ' + endFormat
-        },
-    };
-    var cal = new tui.Calendar('#calendar', {
-        defaultView: 'month',
-        template: templates,
-        useCreationPopup: false,
-        useDetailPopup: true,
-        isReadOnly: true,
-    });
-</script>
-<script src="/assets/js/schedule/default.js"></script>
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-xl-3">
+                <div>
+                <h5 class="mb-2">Filter Status</h5>
+                    <div class="card">
+                        <!-- end card header -->
+                        <div class="card-body">
+                            <div class="table-responsive table-card">
+                                <table class="table table-sm table-borderless table-nowrap table-centered align-middle mb-0 filterStatus">
+                                    <thead class="table-light text-muted">
+                                    </thead>
+                                    <!-- end thead -->
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter allFilter" type="checkbox" value="ALL">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-dark">ALL</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" checked value="OPENED">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-warning">OPENED</span>
+                                        </td>
+                                    </tr>
+                                    <!-- end -->
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" checked value="REOPENED">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-info">REOPENED</span>
+                                        </td>
+                                    </tr>
+                                    <!-- end -->
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" value="REGISTERED">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-secondary">REGISTERED</span>
+                                        </td>
+                                    </tr>
+                                    <!-- end -->
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" value="POSTPONED">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-danger">POSTPONED</span>
+                                        </td>
+                                    </tr>
+                                    <!-- end -->
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15 checkFilter" type="checkbox" value="CLOSED">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-success">CLOSED</span>
+                                        </td>
+                                    </tr>
+                                    <!-- end -->
+                                    </tbody>
+                                    <!-- end tbody -->
+                                </table>
+                                <!-- end table -->
+                            </div>
+                        </div>
+                        <!-- end cardbody -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <div>
+                    <h5 class="mb-1">Upcoming Events</h5>
+                    <p class="text-muted">Don't miss scheduled events</p>
+                    <div class="pe-2 me-n1 mb-3" data-simplebar style="height: 400px">
+                        <div id="upcoming-event-list"></div>
+                    </div>
+                </div>
+
+<%--                <div class="card">--%>
+<%--                    <div class="card-body bg-soft-info">--%>
+<%--                        <div class="d-flex">--%>
+<%--                            <div class="flex-shrink-0">--%>
+<%--                                <i data-feather="calendar" class="text-info icon-dual-info"></i>--%>
+<%--                            </div>--%>
+<%--                            <div class="flex-grow-1 ms-3">--%>
+<%--                                <h6 class="fs-15">Welcome to your Calendar!</h6>--%>
+<%--                                <p class="text-muted mb-0">Event that applications book will appear here. Click on an event to see the details and manage applicants event.</p>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+                <!--end card-->
+            </div> <!-- end col-->
+
+            <div class="col-xl-9">
+                <div class="card card-h-100">
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div><!-- end col -->
+        </div>
+        <!--end row-->
+
+        <div style='clear:both'></div>
+
+        <!-- Add New Event MODAL -->
+        <div class="modal fade" id="event-modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <div class="modal-header p-3 bg-soft-info">
+                        <h5 class="modal-title" id="modal-title">Event</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form class="needs-validation" name="event-form" id="form-event" novalidate>
+                            <div class="text-end">
+                                <a href="#" class="btn btn-sm btn-soft-primary" id="edit-event-btn" data-id="edit-event" onclick="editEvent(this)" role="button">Edit</a>
+                            </div>
+                            <div class="event-details">
+                                <div class="d-flex mb-2">
+                                    <div class="flex-grow-1 d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                            <i class="ri-calendar-event-line text-muted fs-16"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="d-block fw-semibold mb-0" id="event-start-date-tag"></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="flex-shrink-0 me-3">
+                                        <i class="ri-time-line text-muted fs-16"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="d-block fw-semibold mb-0"><span id="event-timepicker1-tag"></span> - <span id="event-timepicker2-tag"></span></h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2 d-none">
+                                    <div class="flex-shrink-0 me-3">
+                                        <i class="ri-map-pin-line text-muted fs-16"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="d-block fw-semibold mb-0"> <span id="event-location-tag"></span></h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <i class="ri-discuss-line text-muted fs-16"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="d-block text-muted mb-0" id="event-description-tag"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row event-form">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Type</label>
+                                        <select class="form-select d-none" name="category" id="event-category" required>
+                                            <option value="bg-danger text-light">Holiday</option>
+                                            <option value="bg-success text-light">Seminar</option>
+                                            <option value="bg-secondary text-light">Team building</option>
+                                            <option value="bg-primary text-light">Meeting</option>
+                                            <option value="bg-info text-light">Training</option>
+                                            <option value="bg-warning text-light">Party</option>
+                                            <option value="bg-dark text-light">Other</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a valid event category</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Event Title</label>
+                                        <input class="form-control d-none" placeholder="Enter event name" type="text" name="title" id="event-title" required value="" />
+                                        <div class="invalid-feedback">Please provide a valid event title</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label>Event Date</label>
+                                        <div class="input-group d-none">
+                                            <input type="text" id="event-start-date" class="form-control flatpickr flatpickr-input" placeholder="Select date" readonly required>
+                                            <span class="input-group-text"><i class="ri-calendar-event-line"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-12" id="event-time">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Start Time</label>
+                                                <div class="input-group d-none">
+                                                    <input id="timepicker1" type="text" class="form-control flatpickr flatpickr-input" placeholder="Select start time" readonly>
+                                                    <span class="input-group-text"><i class="ri-time-line"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">End Time</label>
+                                                <div class="input-group d-none">
+                                                    <input id="timepicker2" type="text" class="form-control flatpickr flatpickr-input" placeholder="Select end time" readonly>
+                                                    <span class="input-group-text"><i class="ri-time-line"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-12 d-none">
+                                    <div class="mb-3">
+                                        <label for="event-location">Location</label>
+                                        <div>
+                                            <input type="text" class="form-control d-none" name="event-location" id="event-location" placeholder="Event location">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <input type="hidden" id="eventid" name="eventid" value="" />
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control d-none" id="event-description" placeholder="Enter a description" rows="3" spellcheck="false" required></textarea>
+                                        <div class="invalid-feedback">Please provide a valid event description</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-primary" id="btn-link-task">Link to task</button>
+                                <button type="button" class="btn btn-soft-danger" id="btn-delete-event"><i class="ri-close-line align-bottom"></i> Delete</button>
+                                <button type="submit" class="btn btn-success" id="btn-save-event">Add Event</button>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- end modal-content-->
+            </div> <!-- end modal dialog-->
+        </div> <!-- end modal-->
+        <!-- end modal-->
+    </div>
+</div> <!-- end row-->
+</div>
+<div class="modal fade zoomIn" id="successComment" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover" style="width:150px;height:150px">
+                    </lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Successful !</h4>
+                        <p class="text-muted mx-4 mb-0">
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+<script type="text/javascript" src="/assets/libs/flatpickr/flatpickr.min.js"></script>
+<!-- calendar min js -->
+<script src="/assets/libs/fullcalendar/main.min.js"></script>
+<!-- Calendar init -->
+<script src="/assets/js/schedule/schedule.js"></script>
 </body>
 </html>

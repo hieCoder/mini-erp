@@ -3,81 +3,53 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.WeeklyReportMapper">
 
-    <select id="getAllWeeklyReport" parameterType="org.apache.ibatis.session.RowBounds"
-            resultMap="weeklyReportResultMap">
-        SELECT w.id           AS weeklyReport_id,
-               w.title        AS weeklyReport_title,
-               w.user_id      AS weeklyReport_user_id,
-               u.fullname     AS user_fullname,
-               w.created_date AS weeklyReport_created_date
+    <select id="getAllWeeklyReportByUser" parameterType="org.apache.ibatis.session.RowBounds" resultMap="weeklyReportDetailResultMap">
+        SELECT w.*, u.ID, u.FULLNAME
         FROM WEEKLY_REPORT w
-                 INNER JOIN USER u ON w.user_id = u.id
-        WHERE (
-                      (#{userRole} = 'OWNER' AND (w.title LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%'))
-                      OR
-                      (#{userRole} != 'OWNER' AND (w.user_id = #{userId} AND w.title LIKE '%' #{searchTerm} '%'))
-                  )
+        INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.USER_ID = #{userId}
+        ORDER BY w.CREATED_DATE DESC
     </select>
 
-    <select id="getTotalWeeklyReport" resultType="java.lang.Long">
+    <select id="getTotalWeeklyReportByUser" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM WEEKLY_REPORT w
-                 INNER JOIN USER u ON w.user_id = u.id
-        WHERE (
-                      (#{userRole} = 'OWNER' AND (w.title LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(u.fullname, ' ', -1) LIKE '%' #{searchTerm} '%'))
-                      OR
-                      (#{userRole} != 'OWNER' AND (w.user_id = #{userId} AND w.title LIKE '%' #{searchTerm} '%'))
-                  )
+        INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.USER_ID = #{userId}
     </select>
 
-    <select id="getAllWeeklyReportByUserId" resultMap="weeklyReportResultMap">
-        SELECT w.id           AS weeklyReport_id,
-               w.title        AS weeklyReport_title,
-               w.user_id      AS weeklyReport_user_id,
-               u.fullname     AS user_fullname,
-               w.created_date AS weeklyReport_created_date
+    <select id="findById" resultMap="weeklyReportDetailResultMap">
+        SELECT w.*, u.ID, u.FULLNAME
         FROM WEEKLY_REPORT w
-                 INNER JOIN USER u ON w.user_id = u.id
-        WHERE u.id = #{userId} LIMIT #{page}
-            , #{pageSize}
+        INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.ID = #{id}
     </select>
 
-    <resultMap id="weeklyReportResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyReport">
-        <id property="id" column="weeklyReport_id"/>
-        <result property="title" column="weeklyReport_title"/>
-        <result property="createdDate" column="weeklyReport_created_date"/>
-        <association property="user" column="weeklyReport_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+    <resultMap id="weeklyReportDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyReport">
+        <id property="id" column="ID"/>
+        <result property="title" column="TITLE"/>
+        <result property="currentWeeklyContent" column="CURRENT_WEEKLY_CONTENT"/>
+        <result property="nextWeeklyContent" column="NEXT_WEEKLY_CONTENT"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap"/>
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="weeklyReport_user_id"/>
-        <result property="fullname" column="user_fullname"/>
-    </resultMap>
-
-    <select id="findById" resultMap="weeklyReportDetailResultMap">
-        SELECT w.id           AS weeklyReport_id,
-               w.title        AS weeklyReport_title,
-               w.content      AS weeklyReport_content,
-               w.user_id      AS weeklyReport_user_id,
-               u.fullname     AS user_fullname,
-               w.created_date AS weeklyReport_created_date
-        FROM WEEKLY_REPORT w
-                 INNER JOIN USER u ON w.user_id = u.id
-        WHERE w.id = #{id}
-    </select>
-
-    <resultMap id="weeklyReportDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyReport">
-        <id property="id" column="weeklyReport_id"/>
-        <result property="title" column="weeklyReport_title"/>
-        <result property="content" column="weeklyReport_content"/>
-        <result property="createdDate" column="weeklyReport_created_date"/>
-        <association property="user" column="weeklyReport_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
-                     resultMap="userResultMap"/>
+        <id property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
     </resultMap>
 
     <insert id="createWeeklyReport" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyReport">
-        insert into WEEKLY_REPORT (id, title, content, created_date, user_id)
-            value (#{id}, #{title}, #{content}, #{createdDate}, #{user.id})
+        INSERT INTO WEEKLY_REPORT (ID, TITLE, CURRENT_WEEKLY_CONTENT, NEXT_WEEKLY_CONTENT, CREATED_DATE, USER_ID)
+            VALUES (#{id}, #{title}, #{currentWeeklyContent}, #{nextWeeklyContent}, #{createdDate}, #{user.id})
     </insert>
+
+    <update id="updateWeeklyReport" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
+        UPDATE WEEKLY_REPORT SET
+            TITLE = #{title},
+            CURRENT_WEEKLY_CONTENT = #{currentWeeklyContent},
+            NEXT_WEEKLY_CONTENT = #{nextWeeklyContent}
+        WHERE ID = #{id};
+    </update>
 </mapper>

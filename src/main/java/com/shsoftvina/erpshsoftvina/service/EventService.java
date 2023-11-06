@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
+import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 
@@ -16,5 +17,5 @@ public interface EventService {
 
     int deleteEvent(String id);
 
-    List<EventDashBoardResponse> getUpcomingEvent(String day);
+    DashBoardResponse getUpcomingEvent(String day, Integer page, Integer size);
 }
