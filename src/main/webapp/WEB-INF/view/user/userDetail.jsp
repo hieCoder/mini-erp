@@ -139,7 +139,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="phone" class="form-label">Phone Number</label>
-                                        <input type="text" class="form-control"
+                                        <input type="number" class="form-control"
                                                id="phone" name="phone" placeholder="0123456789"
                                                value="${user.phone}" required pattern="[0-9]{10}">
                                     </div>
@@ -147,7 +147,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="emergencyPhone" class="form-label">Emergency Phone</label>
-                                        <input type="text" class="form-control"
+                                        <input type="number" class="form-control"
                                                id="emergencyPhone" name="emergencyPhone" placeholder="0123456789"
                                                value="${user.emergencyPhone}" required
                                                pattern="[0-9]{10}">
@@ -398,6 +398,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mt-2" id="alertFileType" style="display: none">
+                                <!-- Alert Type File -->
+                                <div class="alert alert-danger alert-border-left alert-dismissible fade show" role="alert">
+                                    <i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload image files
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+
+                            </div>
                             <div class="hstack gap-2 justify-content-end">
                                 <button type="submit" class="btn btn-primary" id="saveFileResume">Save</button>
                                 <a class="btn btn-soft-success cancle-button" id="cancelFileResume">Cancel</a>
@@ -486,6 +494,32 @@
         </div>
         <!--end col-->
     </div>
+
+    <%--Modal Delete File Resume--%>
+    <div class="modal fade zoomIn show" id="deleteResumeModal" tabindex="-1" aria-modal="true" role="dialog"
+         style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-2 text-center">
+                        <i class="ri-file-reduce-line" style="font-size: 100px; color: red"></i>
+                        <div class="mt-2 pt-2 fs-15 mx-4 mx-sm-5">
+                            <h4>Are you Sure Remove this File ?</h4>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn w-sm btn-primary" id="confirm-del-resume">Yes, Delete It!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 <footer class="footer">
     <div class="container-fluid">
@@ -518,7 +552,7 @@
                         <div class="mb-3">
                             <label for="addBasicSalary" class="form-label">Basic Salary:</label>
                             <input type="text" class="form-control" id="addBasicSalary" name="basicSalary"
-                                   oninput="formatCurrency(this)" required/>
+                                   oninput="formatNumber(this)" required/>
                         </div>
                         <div class="mb-3">
                             <label id="valAllowance">Allowance:</label>
@@ -528,7 +562,7 @@
                                         <div class="form-group">
                                             <label for="telephone" class="form-label">Telephone:</label>
                                             <input type="text" class="form-control" id="telephone"
-                                                   oninput="formatCurrency(this)" required>
+                                                   oninput="formatNumber(this)" required>
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -536,7 +570,7 @@
                                         <div class="form-group">
                                             <label for="meal" class="form-label">Meal:</label>
                                             <input type="text" class="form-control" id="meal"
-                                                   oninput="formatCurrency(this)" required>
+                                                   oninput="formatNumber(this)" required>
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -546,7 +580,7 @@
                                         <div class="form-group">
                                             <label for="gasoline" class="form-label">Gasoline:</label>
                                             <input type="text" class="form-control" id="gasoline"
-                                                   oninput="formatCurrency(this)" required>
+                                                   oninput="formatNumber(this)" required>
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -554,7 +588,7 @@
                                         <div class="form-group">
                                             <label for="uniform" class="form-label">Uniform:</label>
                                             <input type="text" class="form-control" id="uniform"
-                                                   oninput="formatCurrency(this)" required>
+                                                   oninput="formatNumber(this)" required>
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -564,7 +598,7 @@
                                         <div class="form-group">
                                             <label for="attendance" class="form-label">Attendance:</label>
                                             <input type="text" class="form-control" id="attendance"
-                                                   oninput="formatCurrency(this)" required>
+                                                   oninput="formatNumber(this)" required>
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -572,7 +606,7 @@
                                         <div class="form-group">
                                             <label for="other" class="form-label">Other:</label>
                                             <input type="text" class="form-control" id="other"
-                                                   oninput="formatCurrency(this)" required>
+                                                   oninput="formatNumber(this)" required>
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -604,7 +638,7 @@
                         <div class="mb-3">
                             <label for="addInsuranceMoney" class="form-label">Insurance Money:</label>
                             <input type="text" class="form-control" id="addInsuranceMoney" name="insuranceMoney"
-                                   oninput="formatCurrency(this)" required>
+                                   oninput="formatNumber(this)" required>
                             <small class="form-message"></small>
                         </div>
 
@@ -641,7 +675,7 @@
                         <div class="mb-3">
                             <label for="editBasicSalary" class="form-label">Basic Salary:</label>
                             <input type="text" class="form-control" id="editBasicSalary" name="basicSalary"
-                                   oninput="formatCurrency(this)" required/>
+                                   oninput="formatNumber(this)" required/>
                         </div>
                         <div class="mb-3">
                             <label>Allowance:</label>
@@ -680,7 +714,7 @@
                         <div class="mb-3">
                             <label for="editInsuranceMoney" class="form-label">Insurance Money:</label>
                             <input type="text" class="form-control" id="editInsuranceMoney" name="insuranceMoney"
-                                   oninput="formatCurrency(this)" required>
+                                   oninput="formatNumber(this)" required>
                             <small class="form-message"></small>
                         </div>
 
@@ -792,34 +826,8 @@
     </div>
 </div>
 
-<%--Modal Delete File Resume--%>
-<div class="modal fade zoomIn show" id="deleteResumeModal" tabindex="-1" aria-modal="true" role="dialog"
-     style="display: none;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                ></button>
-            </div>
-            <div class="modal-body">
-                <div class="mt-2 text-center">
-                    <i class="ri-file-reduce-line" style="font-size: 100px; color: red"></i>
-                    <div class="mt-2 pt-2 fs-15 mx-4 mx-sm-5">
-                        <h4>Are you Sure Remove this File ?</h4>
-                    </div>
-                </div>
-                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn w-sm btn-primary" id="confirm-del-resume">Yes, Delete It!</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <%-------------------------------------------- CODE JAVASCRIPT--------------------------------------------%>
 <script src="/assets/js/pages/profile-setting.init.js"></script>
-<script src="/assets/js/main.js"></script>
 
 <%-------------------------------------------- Table JAVASCRIPT--------------------------------------------%>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -837,17 +845,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="/assets/js/pages/datatables.init.js"></script>
 <!-- List js -->
-<script src="/assets/libs/list.js/list.min.js"></script>
+<%--<script src="/assets/libs/list.js/list.min.js"></script>--%>
 <!-- Pagination js -->
 <script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
 <!-- listjs init -->
-<script src="/assets/js/pages/listjs.init.js"></script>
+<%--<script src="/assets/js/pages/listjs.init.js"></script>--%>
 
 <%-------------------------------------------- Alerts JAVASCRIPT--------------------------------------------%>
 <!-- Sweet Alerts js -->
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <!-- Sweet alert init js-->
-<script src="/assets/js/pages/sweetalerts.init.js"></script>
+<%--<script src="/assets/js/pages/sweetalerts.init.js"></script>--%>
 
 <%-------------------------------------------- Files JAVASCRIPT--------------------------------------------%>
 <!-- filepond js -->
@@ -857,7 +865,7 @@
 <script src="/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js"></script>
 <script src="/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js"></script>
 <!-- File upload js -->
-<script src="/assets/js/pages/form-file-upload.init.js"></script>
+<%--<script src="/assets/js/pages/form-file-upload.init.js"></script>--%>
 
 <%-------------------------------------------- Custom JAVASCRIPT--------------------------------------------%>
 <%--Handle User--%>
@@ -880,8 +888,12 @@
             if (selectedDeleteFileResume) {
                 selectedDeleteFileResume.remove();
             }
-            $('#deleteResumeModal').modal('hide');
+            sessionStorage.setItem('result2', 'delResumeSuccess');
         });
+    });
+
+    document.getElementById('saveFileResume').addEventListener('click', function () {
+        sessionStorage.setItem('result2', 'saveResumeSuccess');
     });
 
     // Click button 'X' to delete avatar
@@ -943,7 +955,6 @@
                             newPasswordInput.classList.remove("is-valid");
                             newPasswordInput.classList.add("is-invalid");
                             errorFormatPassword.textContent = "Password must have at least 6 characters and include letters, numbers and special characters!";
-                            resetForm('formUpdateUser');
                             isFormValid = false;
                         }
                     }
@@ -957,7 +968,6 @@
                             confirmPasswordInput.classList.remove("is-valid");
                             confirmPasswordInput.classList.add("is-invalid");
                             errorConfirm.textContent = "Passwords do not match!";
-                            resetForm('formUpdateUser');
                             isFormValid = false;
                         }
                     }
@@ -1026,12 +1036,9 @@
     });
 
 
-    // Vali Date of birth
+    // Validate Date of birth
     document.addEventListener("DOMContentLoaded", function () {
-        // Lấy thẻ input date
         var dateInput = document.getElementById("dateOfBirth");
-
-        // Lấy ngày hiện tại và đặt giá trị max cho thẻ input date
         var today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute("max", today);
     });
@@ -1039,15 +1046,38 @@
     // File Resume
     FilePond.registerPlugin(
         FilePondPluginFileEncode,
-        FilePondPluginFileValidateSize,
         FilePondPluginImageExifOrientation,
         FilePondPluginImagePreview
     );
 
     var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
+    var alertFileType = document.getElementById('alertFileType');
 
     Array.from(inputMultipleElements).forEach(function (inputElement) {
-        FilePond.create(inputElement);
+        const pond = FilePond.create(inputElement);
+
+        pond.on('addfile', (error, file) => {
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            if (file.fileSize > 100 * 1024 * 1024) { // 100MB
+                alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You can upload files larger than 100MB';
+                alertFileType.style.display = 'block';
+                pond.removeFile(file.id);
+            }
+
+            if (file.fileType.includes('image')) {
+                alertFileType.style.display = 'block';
+                alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload image files';
+                pond.removeFile(file.id);
+            }
+
+            if (!(file.fileSize > 100 * 1024 * 1024) && !file.fileType.includes('image')) {
+                alertFileType.style.display = 'none';
+            }
+        });
     })
 
     Validator({
@@ -1088,12 +1118,14 @@
 
             var result = filenamesResume.join(",");
             formData.append('remainResumeFiles', result);
-
+            var htmlElement = document.documentElement; // Lấy thẻ html
             if (isNewPassword) {
                 var newPassword = document.getElementById('newPassword').value;
                 if (newPassword != '' && isFormValid == true) {
                     callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                         localStorage.setItem('result', 'updateUserSuccess');
+                        // htmlElement.setAttribute("data-preloader", "block");
+                        addSpinnerAfterClass("isSuccessUpdate");
                         location.href = "/users/" + '${user.id}';
                     }, 'formUpdateUser');
                 }
@@ -1101,6 +1133,8 @@
                 formData.delete('password');
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     localStorage.setItem('result', 'updateUserSuccess');
+                    addSpinnerAfterClass("isSuccessUpdate");
+                    // htmlElement.setAttribute("data-preloader", "block");
                     location.href = "/users/" + '${user.id}';
                 }, 'formUpdateUser');
             }
@@ -1129,6 +1163,23 @@
             }
         });
     });
+
+    function addSpinnerAfterClass(className) {
+        const elements = document.getElementsByClassName(className);
+
+        for (let i = 0; i < elements.length; i++) {
+            const spinnerDiv = document.createElement("div");
+            spinnerDiv.className = "spinner-border text-primary";
+            spinnerDiv.setAttribute("role", "status");
+
+            const spinnerSpan = document.createElement("span");
+            spinnerSpan.className = "sr-only";
+            spinnerSpan.innerText = "Loading...";
+
+            spinnerDiv.appendChild(spinnerSpan);
+            elements[i].insertAdjacentElement('beforebegin', spinnerDiv);
+        }
+    }
 </script>
 
 <%--Handle WorkingDay--%>
@@ -1209,7 +1260,7 @@
     }
 
     // Format money is number
-    function formatCurrency(input) {
+    function formatNumber(input) {
         let value = input.value.replace(/,/g, '');
 
         // Only Number
@@ -1220,6 +1271,7 @@
 
         input.value = value;
     }
+
 
     // Format File Name Contract
     document.addEventListener("DOMContentLoaded", function () {
@@ -1268,7 +1320,7 @@
                             <div class="form-group">
                                 <label for="value">Value</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control value" oninput="formatCurrency(this)" required>
+                                    <input type="text" class="form-control value" oninput="formatNumber(this)" required>
                                     <div class="input-group-append ml-2">
                                         <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput(this)"></i>
                                     </div>
@@ -1311,7 +1363,7 @@
                             <div class="form-group">
                                 <label for="value">Value</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control newValue" oninput="formatCurrency(this)" required>
+                                    <input type="text" class="form-control newValue" oninput="formatNumber(this)" required>
                                     <div class="input-group-append ml-2">
                                         <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput2(this)"></i>
                                     </div>
@@ -1450,7 +1502,7 @@
                             input.classList.add("form-control", "value");
                             input.id = "edit" + key;
                             input.value = value;
-                            input.setAttribute("oninput", "formatCurrency(this)");
+                            input.setAttribute("oninput", "formatNumber(this)");
                             input.required = true;
 
                             var small = document.createElement("small");
@@ -1634,8 +1686,12 @@
     // Show modal notification
     document.addEventListener("DOMContentLoaded", function () {
         var result = localStorage.getItem('result');
-        if (result != null) notificationSuccess(localStorage.getItem('result'));
-        localStorage.clear()
+        var result2 = sessionStorage.getItem('result2');
+        if (result2 != null) notificationSuccess(sessionStorage.getItem('result2'));
+        else if (result != null) notificationSuccess(localStorage.getItem('result'));
+
+        localStorage.clear();
+        sessionStorage.clear();
     });
 
     // Notification Success
@@ -1643,7 +1699,17 @@
         var title;
         var text;
         var contractTab = document.querySelector('a[data-bs-toggle="tab"][href="#contractSession"]');
+        var resumeTab = document.querySelector('a[data-bs-toggle="tab"][href="#resumeSession"]');
         switch (result) {
+            case 'saveResumeSuccess':
+                title = 'Save Success';
+                resumeTab.click();
+                break;
+            case 'delResumeSuccess':
+                title = 'Deleted!';
+                text = 'Your file has been deleted.';
+                resumeTab.click();
+                break;
             case 'updateUserSuccess':
                 title = 'Update Success';
                 break;
@@ -1666,7 +1732,6 @@
                 title: title,
                 text: text,
                 icon: 'success',
-                showCancelButton: true,
                 confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
                 cancelButtonClass: 'btn btn-danger w-xs mt-2',
                 buttonsStyling: false,

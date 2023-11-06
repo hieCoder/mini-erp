@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Users</title>
+    <!-- Sweet Alert css-->
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="page-content">
@@ -91,7 +93,8 @@
                                 <tr>
                                     <th scope="row">${(users.pageNumber - 1) * users.pageSize + loop.index + 1}</th>
                                     <td>${user.getId()}</td>
-                                    <td><a href="/users/${user.getId()}" style="color: blue">${user.getFullname()}</a></td>
+                                    <td><a href="/users/${user.getId()}" style="color: blue">${user.getFullname()}</a>
+                                    </td>
                                     <td>${user.getEmail()}</td>
                                     <td>${user.getDepartment().getName()}</td>
                                     <td>${user.getPosition().getName()}</td>
@@ -161,28 +164,28 @@
                         id="close-modal"></button>
             </div>
 
-                <div class="modal-body">
-                    <table class="table align-middle table-nowrap table-striped-columns"
-                           id="pendingTable">
-                        <thead class="table-light">
-                        <tr>
-                            <th>Username</th>
-                            <th>User ID</th>
-                            <th>Created date</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody class="list form-check-all">
+            <div class="modal-body">
+                <table class="table align-middle table-nowrap table-striped-columns"
+                       id="pendingTable">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Username</th>
+                        <th>User ID</th>
+                        <th>Created date</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <div class="hstack gap-2 justify-content-end">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                 </div>
-                <div class="modal-footer">
-                    <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+            </div>
 
         </div>
     </div>
@@ -193,9 +196,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" >Confirm Reject</h5>
+                <h5 class="modal-title">Confirm Reject</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        ></button>
+                ></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to reject this item?
@@ -228,13 +231,17 @@
 <!-- Pagination js -->
 <script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
 
+<%-------------------------------------------- ALERTS JAVASCRIPT--------------------------------------------%>
+<!-- Sweet Alerts js -->
+<script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
 
 <%-------------------------------------------- CUSTOM JAVASCRIPT--------------------------------------------%>
 <script>
 
-
     document.getElementById('penddingModal').addEventListener('click', function () {
         $('#modal-account-pending').modal('show');
+        $('#pendingTable').DataTable().destroy();
         // Tạo DataTable
         let table = new DataTable('#pendingTable', {
             pagingType: "full_numbers",
@@ -271,8 +278,22 @@
         });
         table.ajax.reload();
 
-        $('#pendingTable').on('click', '.approval-btn', function () {
+        $('#pendingTable').on('click', '.approval-btn', function (event) {
+
             var data = table.row($(this).parents('tr')).data();
+            // if (this.position == null) {
+            //     Swal.fire(
+            //         {
+            //             title: 'Oops...',
+            //             text: 'You must choose a role!',
+            //             icon: 'error',
+            //             confirmButtonClass: 'btn btn-primary w-xs mt-2',
+            //             buttonsStyling: false,
+            //             showCloseButton: true
+            //         }
+            //     )
+            // }
+
             var obj = {
                 email: data.email,
                 role: $(this).closest('tr').find('select[name="role"]').val(),
@@ -284,6 +305,7 @@
                 if (rs) {
                     table.ajax.reload();
                 }
+                sessionStorage.setItem('result', 'approvalSuccess')
                 location.reload();
             });
         });
@@ -299,9 +321,9 @@
                     if (rs) {
                         table.ajax.reload();
                     }
+                    sessionStorage.setItem('result', 'rejectSuccess')
                     location.reload();
                 });
-
                 $('#confirmModal').modal('hide');
             });
 
@@ -352,5 +374,40 @@
     });
 </script>
 
+<%--Notification--%>
+<script>
+    // Show modal notification
+    document.addEventListener("DOMContentLoaded", function () {
+        var result = sessionStorage.getItem('result');
+        if (result != null) notificationSuccess(sessionStorage.getItem('result'));
+        sessionStorage.clear();
+    });
+
+    // Notification Success
+    function notificationSuccess(result) {
+        var title;
+        var text;
+
+        switch (result) {
+            case 'approvalSuccess':
+                title = 'Approval Success';
+                break;
+            case 'rejectSuccess':
+                title = 'Reject Success';
+                break;
+        }
+        Swal.fire(
+            {
+                title: title,
+                text: text,
+                icon: 'success',
+                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+                cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                buttonsStyling: false,
+                showCloseButton: true
+            }
+        )
+    }
+</script>
 </body>
 </html>
