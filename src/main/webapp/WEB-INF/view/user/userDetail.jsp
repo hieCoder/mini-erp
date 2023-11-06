@@ -1118,7 +1118,7 @@
 
             var result = filenamesResume.join(",");
             formData.append('remainResumeFiles', result);
-            var htmlElement = document.documentElement; // Lấy thẻ html
+            // var htmlElement = document.documentElement;
             if (isNewPassword) {
                 var newPassword = document.getElementById('newPassword').value;
                 if (newPassword != '' && isFormValid == true) {
