@@ -216,8 +216,13 @@
                         </div>
                         <!--end col-->
                         <div class="col-xxl-1 col-sm-4">
-                            <button id="filter-btn" type="button" class="btn btn-primary w-100"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                Filters
+                            <button id="filter-btn" type="button" class="btn btn-primary btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none"></span>
+                                    <span class="flex-grow-1 ms-2">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Filters
+                                    </span>
+                                </span>
                             </button>
                         </div>
                         <!--end col-->
@@ -285,7 +290,12 @@
                     <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
                         your information from our database.</p>
                     <div class="hstack gap-2 justify-content-center remove">
-                        <button class="btn btn-danger" id="delete-task" data-id="">Yes, Delete It</button>
+                        <button class="btn btn-danger btn-load" id="delete-task" data-id="">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Yes, Delete It</span>
+                            </span>
+                        </button>
                         <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="delete-task-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
                     </div>
                 </div>
@@ -344,7 +354,12 @@
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success">Register</button>
+                        <button type="submit" class="btn btn-success btn-load">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Register</span>
+                            </span>
+                        </button>
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -567,7 +582,13 @@
             tasksRequest.search = $('#search-input').val();
             tasksRequest.statusTask = $('#idStatus').val();
             tasksRequest.page = 1;
-            tableTask.ajax.reload();
+
+            var btn = $(this);
+            btn.find('.spinner-border').removeClass('d-none');
+
+            tableTask.ajax.reload(function () {
+                btn.find('.spinner-border').addClass('d-none');
+            });
         });
 
         $('#page-count-select').on('change', function() {
@@ -659,6 +680,9 @@
                 ],
                 onSubmit: function (formData) {
                     formData.append('content', $('#content').html());
+
+                    $('#registerTaskForm .spinner-border').removeClass('d-none');
+
                     callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
                         window.location.href = "/tasks?registerSuccess";
                     });
@@ -674,6 +698,7 @@
 
     $(document).on('click', '#delete-task', function (e) {
         var idTask = $(this).attr('data-id');
+        $('#deleteTaskModal .spinner-border').removeClass('d-none')
         callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
             window.location.href = "/tasks?deleteSuccess";
         });
