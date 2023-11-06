@@ -72,23 +72,28 @@
             <!--end card-->
             <%--========================== Working Day =================================--%>
             <div class="card permission">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
+                <div class="card-body" style="text-align: center">
+                    <div class="d-flex align-items-center mb-4">
                         <div class="flex-grow-1">
                             <h5 class="card-title mb-0">Total Working Day</h5>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <select class="form-control" id="working-year">
-                            <option value="">-- Select year --</option>
-                        </select>
-                        <select class="form-control" id="working-month" style="display: none;">
-                            <option>-- Select month --</option>
-                        </select>
+                    <div id="workingDaySession" style="display: none">
+                        <div class="input-group">
+                            <select class="form-control" id="working-year">
+                                <option value="">-- Select year --</option>
+                            </select>
+                            <select class="form-control" id="working-month" style="display: none;">
+                                <option>-- Select month --</option>
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <input type="text" class="form-control" id="totalWorkingDay" readonly
+                                   placeholder="Result" disabled>
+                        </div>
                     </div>
-                    <div class="input-group mt-2">
-                        <input type="text" class="form-control" id="totalWorkingDay" readonly
-                               placeholder="Result" disabled>
+                    <div class="spinner-border text-primary" role="status" id="loadingWorking" style="display: none">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>
@@ -194,7 +199,7 @@
                                 </div><!--end col-->
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
-                                        <button type="submit" class="btn btn-primary isSuccessUpdate"
+                                        <button type="submit" class="btn btn-primary" onclick="addLoadingPrimary(this)"
                                         >Updates
                                         </button>
                                         <a class="btn btn-soft-success cancle-button">Cancel</a>
@@ -347,7 +352,7 @@
                                     <div class="hstack gap-2 justify-content-end">
                                         <div id="error-message" class="text-danger text-xl-end"
                                              style="font-size: 15px"></div>
-                                        <button type="submit" class="btn btn-primary isSuccessUpdate"
+                                        <button type="submit" class="btn btn-primary" onclick="addLoadingPrimary(this)"
                                                 id="updateDetail">Updates
                                         </button>
                                         <a class="btn btn-soft-success cancle-button">Cancel</a>
@@ -400,14 +405,19 @@
                             </div>
                             <div class="row mt-2" id="alertFileType" style="display: none">
                                 <!-- Alert Type File -->
-                                <div class="alert alert-danger alert-border-left alert-dismissible fade show" role="alert">
-                                    <i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload image files
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <div class="alert alert-danger alert-border-left alert-dismissible fade show"
+                                     role="alert">
+                                    <i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> -
+                                    You cannot upload image files
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
                                 </div>
 
                             </div>
                             <div class="hstack gap-2 justify-content-end">
-                                <button type="submit" class="btn btn-primary" id="saveFileResume">Save</button>
+                                <button type="submit" class="btn btn-primary" id="saveFileResume"
+                                        onclick="addLoadingPrimary(this)">Save
+                                </button>
                                 <a class="btn btn-soft-success cancle-button" id="cancelFileResume">Cancel</a>
                             </div>
                         </div>
@@ -513,7 +523,8 @@
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                         <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn w-sm btn-primary" id="confirm-del-resume">Yes, Delete It!
+                        <button type="submit" class="btn w-sm btn-primary" id="confirm-del-resume"
+                                onclick="addLoadingPrimary(this)">Yes, Delete It!
                         </button>
                     </div>
                 </div>
@@ -650,7 +661,9 @@
                     </div>
                     <div class="modal-footer">
                         <div class="hstack gap-2 justify-content-end">
-                            <button type="submit" class="btn btn-success" id="add-btn">Add Contract</button>
+                            <button type="submit" class="btn btn-success" id="add-btn">Add
+                                Contract
+                            </button>
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -726,7 +739,10 @@
                     </div>
                     <div class="modal-footer">
                         <div class="hstack gap-2 justify-content-end">
-                            <button type="submit" class="btn btn-success" id="edit-confirm-btn">Confirm</button>
+                            <button type="submit" class="btn btn-success" id="edit-confirm-btn"
+                                    onclick="addLoadingSuccess(this)">
+                                Confirm
+                            </button>
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -1085,8 +1101,8 @@
         errorSelector: '.form-message',
         rules: [],
         onSubmit: function (formData) {
+            disableBtn();
 
-            // $('.container-button').after(createLoadingHtml());
             formData.append('id', '${user.id}');
 
             // ADD dateOfBirth after format
@@ -1118,14 +1134,12 @@
 
             var result = filenamesResume.join(",");
             formData.append('remainResumeFiles', result);
-            // var htmlElement = document.documentElement;
+
             if (isNewPassword) {
                 var newPassword = document.getElementById('newPassword').value;
                 if (newPassword != '' && isFormValid == true) {
                     callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                         localStorage.setItem('result', 'updateUserSuccess');
-                        // htmlElement.setAttribute("data-preloader", "block");
-                        addSpinnerAfterClass("isSuccessUpdate");
                         location.href = "/users/" + '${user.id}';
                     }, 'formUpdateUser');
                 }
@@ -1133,8 +1147,6 @@
                 formData.delete('password');
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     localStorage.setItem('result', 'updateUserSuccess');
-                    addSpinnerAfterClass("isSuccessUpdate");
-                    // htmlElement.setAttribute("data-preloader", "block");
                     location.href = "/users/" + '${user.id}';
                 }, 'formUpdateUser');
             }
@@ -1183,65 +1195,74 @@
 </script>
 
 <%--Handle WorkingDay--%>
-<%--<script>--%>
-<%--    document.addEventListener("DOMContentLoaded", function () {--%>
-<%--        if (!(userCurrent.role == 'DEVELOPER')) {--%>
-<%--            // Lấy tham chiếu đến các phần tử HTML--%>
-<%--            var yearSelect = document.getElementById('working-year');--%>
-<%--            var monthSelect = document.getElementById('working-month');--%>
-<%--            var totalWorkingDayInput = document.getElementById('totalWorkingDay');--%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (!(userCurrent.role == 'DEVELOPER')) {
+            var loadingWorking = document.getElementById('loadingWorking');
+            var workingSession = document.getElementById('workingDaySession');
+            loadingWorking.style.display = 'inline-block';
+            // Lấy tham chiếu đến các phần tử HTML
+            var yearSelect = document.getElementById('working-year');
+            var monthSelect = document.getElementById('working-month');
+            var totalWorkingDayInput = document.getElementById('totalWorkingDay');
 
-<%--            var data;--%>
-<%--            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}', 'GET', null, function (rs) {--%>
-<%--                data = rs;--%>
-<%--                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';--%>
-<%--                data.forEach(function (entry) {--%>
-<%--                    var option = document.createElement('option');--%>
-<%--                    option.value = entry.year;--%>
-<%--                    option.textContent = entry.year;--%>
-<%--                    yearSelect.appendChild(option);--%>
-<%--                });--%>
-<%--            });--%>
+            var data;
+            callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}', 'GET', null, function (rs) {
+                loadingWorking.style.display = 'none';
+                workingSession.style.display = 'block';
+                data = rs;
+                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+                data.forEach(function (entry) {
+                    var option = document.createElement('option');
+                    option.value = entry.year;
+                    option.textContent = entry.year;
+                    yearSelect.appendChild(option);
+                });
+            });
 
-<%--            // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm--%>
-<%--            yearSelect.addEventListener('change', function () {--%>
-<%--                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}' + "?year=" + yearSelect.value, 'GET', null, function (rs) {--%>
-<%--                    var dataMonth = rs;--%>
-<%--                    // Xóa các option cũ trong dropdown year--%>
-<%--                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';--%>
+            // Thêm sự kiện nghe cho việc thay đổi lựa chọn năm
+            yearSelect.addEventListener('change', function () {
+                loadingWorking.style.display = 'inline-block';
+                workingSession.style.display = 'none';
+                callAjaxByJsonWithData('/api/v1/timesheets/workingday/' + '${user.id}' + "?year=" + yearSelect.value, 'GET', null, function (rs) {
+                    loadingWorking.style.display = 'none';
+                    workingSession.style.display = 'block';
+                    var dataMonth = rs;
+                    // Xóa các option cũ trong dropdown year
+                    monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
 
-<%--                    // Thêm các option mới từ dữ liệu API--%>
-<%--                    dataMonth.forEach(function (entry) {--%>
-<%--                        var option = document.createElement('option');--%>
-<%--                        option.value = entry.month;--%>
-<%--                        option.textContent = entry.month;--%>
-<%--                        monthSelect.appendChild(option);--%>
-<%--                    });--%>
-<%--                    monthSelect.addEventListener('change', function () {--%>
-<%--                        var selectedMonth = monthSelect.value;--%>
-<%--                        var selectedData = dataMonth.find(function (entry) {--%>
-<%--                            return entry.month === parseInt(selectedMonth);--%>
-<%--                        });--%>
-<%--                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";--%>
-<%--                    });--%>
+                    // Thêm các option mới từ dữ liệu API
+                    dataMonth.forEach(function (entry) {
+                        var option = document.createElement('option');
+                        option.value = entry.month;
+                        option.textContent = entry.month;
+                        monthSelect.appendChild(option);
+                    });
+                    monthSelect.addEventListener('change', function () {
+                        var selectedMonth = monthSelect.value;
+                        var selectedData = dataMonth.find(function (entry) {
+                            return entry.month === parseInt(selectedMonth);
+                        });
+                        totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                    });
 
-<%--                });--%>
+                });
 
-<%--                if (yearSelect.value != "") {--%>
-<%--                    var selectedYear = yearSelect.value;--%>
-<%--                    var selectedData = data.find(function (entry) {--%>
-<%--                        return entry.year === parseInt(selectedYear);--%>
-<%--                    });--%>
-<%--                    totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";--%>
-<%--                    monthSelect.style.display = 'block';--%>
-<%--                } else {--%>
-<%--                    totalWorkingDayInput.value = null;--%>
-<%--                    monthSelect.style.display = 'none';--%>
-<%--                }--%>
-<%--            });--%>
-<%--        }--%>
-<%--    });--%>
-<%--</script>--%>
+                if (yearSelect.value != "") {
+                    var selectedYear = yearSelect.value;
+                    var selectedData = data.find(function (entry) {
+                        return entry.year === parseInt(selectedYear);
+                    });
+                    totalWorkingDayInput.value = "TotalWorkDay: " + selectedData.workdays + " Days";
+                    monthSelect.style.display = 'block';
+                } else {
+                    totalWorkingDayInput.value = null;
+                    monthSelect.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
 
 <%--Handle Contract--%>
 <script>
@@ -1413,6 +1434,7 @@
         errorSelector: '.form-message',
         rules: [],
         onSubmit: function (formData) {
+            disableBtn();
 
             var telPhone = document.getElementById('telephone').value;
             var meal = document.getElementById('meal').value;
@@ -1440,6 +1462,9 @@
             formData.append('userId', '${user.id}');
             formData.set('allowance', JSON.stringify(formDataObject));
 
+            var addContractBtn = document.getElementById('add-btn');
+            addContractBtn.disabled = true;
+            addLoadingSuccess(addContractBtn);
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 setTimeout(function () {
                     formData.append('parentId', rs.id);
@@ -1542,6 +1567,8 @@
                         errorSelector: '.form-message',
                         rules: [],
                         onSubmit: function (formData) {
+                            disableBtn();
+
                             var formUpdateContract = document.getElementById('editContractForm');
                             var titles = formUpdateContract.querySelectorAll('.title');
                             var values = formUpdateContract.querySelectorAll('.value');
@@ -1563,6 +1590,8 @@
                             formData.append('allowance', JSON.stringify(formDataObject));
                             formData.append('userId', '${user.id}');
                             formData.append('parentId', editContractId);
+                            document.getElementById('edit-confirm-btn').disabled = true;
+
                             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
 
                             }, 'formAddContract');
@@ -1600,6 +1629,16 @@
                     showCloseButton: true
                 }).then(function (result) {
                     if (result.value) {
+                        Swal.close();
+
+                        Swal.fire({
+                            title: 'Loading...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        disableBtn();
                         callAjaxByJsonWithData('/api/v1/contracts/' + delContractId, 'DELETE', null, function (rs) {
                             localStorage.setItem('result', 'delContractSuccess');
                             location.reload();
@@ -1626,7 +1665,7 @@
                 }
 
                 if (contractIdHistory) {
-                    table = $('#table-history-contract').DataTable({
+                    var table = $('#table-history-contract').DataTable({
                         ajax: {
                             url: '/api/v1/contracts/' + contractIdHistory,
                             contentType: 'application/json',
@@ -1755,6 +1794,66 @@
             $('#timeSheetsCode').prop('disabled', true);
         }
     });
+</script>
+
+<%--Loading Button--%>
+<script>
+    // Loading Success Button
+    function addLoadingSuccess(element) {
+        element.classList.add("btn-load");
+        var content = element.textContent;
+        element.innerHTML = `
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2 loading-success">
+
+                </span>
+            </span>
+        `;
+
+        document.querySelector('.loading-success').textContent = content;
+    }
+
+    // Loading Primary
+    function addLoadingPrimary(element) {
+        element.classList.add("btn-load");
+        var content = element.textContent;
+        element.innerHTML = `
+            <span class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </span>
+            <span class="flex-grow-1 ms-2 loading-primary">
+
+            </span>
+        </span>
+        `;
+
+        document.querySelector('.loading-primary').textContent = content;
+    }
+</script>
+
+<%--Disable Button--%>
+<script>
+    function disableBtn() {
+        document.querySelectorAll('.btn-primary').forEach(function (e) {
+            e.disabled = true;
+        });
+
+        document.querySelectorAll('.btn-success').forEach(function (e) {
+            e.disabled = true;
+        });
+
+        document.querySelectorAll('.btn-warning').forEach(function (e) {
+            e.disabled = true;
+        });
+
+        document.querySelectorAll('.btn-danger').forEach(function (e) {
+            e.disabled = true;
+        });
+    }
 </script>
 </body>
 </html>
