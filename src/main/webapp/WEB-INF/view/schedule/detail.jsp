@@ -13,6 +13,11 @@
     <title>Schedule Detail</title>
     <!-- fullcalendar css -->
     <link href="/assets/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        #calendar .fc-event {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <div class="row">
@@ -27,7 +32,7 @@
         <div class="row">
             <div class="col-xl-3">
                 <div>
-                <h5 class="mb-2">Filter Status</h5>
+                    <h5 class="mb-2">Filter Status</h5>
                     <div class="card">
                         <!-- end card header -->
                         <div class="card-body">
@@ -120,19 +125,19 @@
                     </div>
                 </div>
 
-<%--                <div class="card">--%>
-<%--                    <div class="card-body bg-soft-info">--%>
-<%--                        <div class="d-flex">--%>
-<%--                            <div class="flex-shrink-0">--%>
-<%--                                <i data-feather="calendar" class="text-info icon-dual-info"></i>--%>
-<%--                            </div>--%>
-<%--                            <div class="flex-grow-1 ms-3">--%>
-<%--                                <h6 class="fs-15">Welcome to your Calendar!</h6>--%>
-<%--                                <p class="text-muted mb-0">Event that applications book will appear here. Click on an event to see the details and manage applicants event.</p>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
+                <%--                <div class="card">--%>
+                <%--                    <div class="card-body bg-soft-info">--%>
+                <%--                        <div class="d-flex">--%>
+                <%--                            <div class="flex-shrink-0">--%>
+                <%--                                <i data-feather="calendar" class="text-info icon-dual-info"></i>--%>
+                <%--                            </div>--%>
+                <%--                            <div class="flex-grow-1 ms-3">--%>
+                <%--                                <h6 class="fs-15">Welcome to your Calendar!</h6>--%>
+                <%--                                <p class="text-muted mb-0">Event that applications book will appear here. Click on an event to see the details and manage applicants event.</p>--%>
+                <%--                            </div>--%>
+                <%--                        </div>--%>
+                <%--                    </div>--%>
+                <%--                </div>--%>
                 <!--end card-->
             </div> <!-- end col-->
 
@@ -313,11 +318,35 @@
     </div>
 </div>
 
+<div class="modal fade zoomIn" id="deleteEventModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure?</h4>
+                        <p class="text-muted mx-4 mb-0">
+                            Are you Sure You want to Remove this Event?
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-danger " id="deleteEventBtn">Yes, Delete It!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
 <script type="text/javascript" src="/assets/libs/flatpickr/flatpickr.min.js"></script>
 <!-- calendar min js -->
 <script src="/assets/libs/fullcalendar/main.min.js"></script>
 <!-- Calendar init -->
-<script src="/assets/js/schedule/schedule.js"></script>
+<script src="/assets/custom/js/schedule/schedule.js"></script>
 </body>
 </html>
