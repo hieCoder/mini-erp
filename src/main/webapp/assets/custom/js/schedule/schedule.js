@@ -1,5 +1,19 @@
 
+const loadScheduleBtn = `<button class="btn btn-outline-none btn-load loadSchedule border-0" disabled>
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="spinner-border flex-shrink-0"
+                                                                  role="status">
+                                                                <span class="visually-hidden">Loading...</span>
+                                                            </span>
+                                                        </span>
+                       </button>`
+function loadSchedule(){
+    $("button.fc-today-button.btn.btn-primary").after(loadScheduleBtn)
+}
 
+function removeLoadSchedule(){
+    $("button.loadSchedule").remove()
+}
 var start_date = document.getElementById("event-start-date"), timepicker1 = document.getElementById("timepicker1"),
     timepicker2 = document.getElementById("timepicker2"), date_range = null, T_check = null;
 const baseUrlEvent = "/api/v1/events";
@@ -111,6 +125,7 @@ function deleteEvent(y, v, g) {
             if (v) {
                 for (var t = 0; t < y.length; t++) y[t].id == v.id && (y.splice(t, 1), t--);
                 upcomingEvent(y), v.remove(), v = null, g.hide()
+                $("#deleteSuccessEvent").modal("show")
             }
         } else{
             refreshPage()
@@ -535,6 +550,10 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         datesSet: function(info) {
             return formatDateYYMM(info.view.currentStart)
+        },
+        viewDidMount: function (e){
+            $("#containerSchedule").css("visibility", "visible");
+            $("div.containerLoading").addClass("d-none")
         }
     }
     var   E = new FullCalendar.Calendar(e, configE)
@@ -702,7 +721,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     fetchData();
-
     $(document).on("change","table.filterStatus input", function(){
         let newArr = []
         let $element = $(this)
@@ -756,12 +774,22 @@ document.addEventListener("DOMContentLoaded", function () {
             upcomingEvent(CALENDAR_RESULT)
             E.addEventSource(CALENDAR_RESULT);
             E.render()
+            removeLoadSchedule()
+            return true;
         } catch (error) {
             console.error("An error occurred:", error);
         }
     }
-    function callApiData(apiDate){
-        fetchDataButton(apiDate)
+    function callApiData(apiDate, g, textSuccess){
+        loadSchedule()
+        fetchDataButton(apiDate).then(r =>{
+           if(r && g && textSuccess){
+               popupSuccess("The event created successfully")
+               g.hide()
+               $("#btn-save-event").removeClass("d-none")
+               BtnLoadRemove()
+           }
+        })
     }
 
     function updateEvent(event, calendar, v, g) {
@@ -824,16 +852,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 // v.setExtendedProp("description", event.description)
                 // v.setExtendedProp("location", event.location)
                 // console.log(v)
-                popupSuccess("The event updated successfully")
+                // popupSuccess("The event updated successfully")
                 // calendar.render()
                 CALENDAR_RESULT =[]
-                callApiData(currentMonth!=""? currentMonth : currentApiDate)
-                g.hide()
+                callApiData(currentMonth!=""? currentMonth : currentApiDate, g, "The event updated successfully")
             } else{
                 refreshPage()
             }
-            $("#btn-save-event").removeClass("d-none")
-            BtnLoadRemove()
         }, function (error){
             console.log("Error")
             console.log(error)
@@ -876,7 +901,7 @@ document.addEventListener("DOMContentLoaded", function () {
             startDate: startDate,
             endDate: endDate,
         }
-        callAjaxByJsonWithData(baseUrlEvent,"POST", data, function (rs){
+        callAjaxByJsonWithData(baseUrlEvent,"POST", data, async function (rs){
             if(rs){
                 // event.code = type
                 //                 // CALENDAR_RESULT.push(event)
@@ -890,12 +915,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 //                 // event.allDay = allDay
                 //                 // E.addEvent(event)
                 CALENDAR_RESULT =[]
-                callApiData(currentMonth!=""? currentMonth : currentApiDate)
-                g.hide()
-                popupSuccess("The event created successfully")
+                callApiData(currentMonth!=""? currentMonth : currentApiDate, g, "The event created successfully")
+            } else{
+                $("#btn-save-event").removeClass("d-none")
+                BtnLoadRemove()
             }
-            $("#btn-save-event").removeClass("d-none")
-            BtnLoadRemove()
         }, function (error){
             console.log("Have Error")
             BtnLoadRemove()
