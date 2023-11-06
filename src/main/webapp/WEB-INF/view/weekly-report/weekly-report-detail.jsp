@@ -82,7 +82,12 @@
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary" style="margin-right:2px;">Edit</button>
+                        <button type="submit" class="btn btn-primary btn-load">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Edit</span>
+                            </span>
+                        </button>
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -157,8 +162,11 @@
                 formData.append("currentWeeklyContent", $('#this-week-content').html());
                 formData.append("nextWeeklyContent", $('#next-week-content').html());
                 formData.append("id", ${wr.id});
+
+                $('#edit-wr-form .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithDataForm("/api/v1/weekly-reports", "PUT", formData, function (rs) {
 
+                    $('#edit-wr-form .spinner-border').addClass('d-none');
                     $('#editReport').modal('hide');
 
                     $('#title-show').text(rs.title);

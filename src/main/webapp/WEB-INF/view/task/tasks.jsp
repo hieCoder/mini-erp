@@ -450,7 +450,12 @@
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success" id="update-task-btn">Update</button>
+                        <button type="submit" class="btn btn-success btn-load" id="update-task-btn">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Update</span>
+                            </span>
+                        </button>
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -744,7 +749,7 @@
 
     $(document).on('click', '#delete-task', function (e) {
         var idTask = $(this).attr('data-id');
-        $('#deleteTaskModal .spinner-border').removeClass('d-none')
+        $('#deleteTaskModal .spinner-border').removeClass('d-none');
         callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
             window.location.href = "/tasks?deleteSuccess";
         });
@@ -838,6 +843,7 @@
                 formData.append('id', idTask);
                 formData.append('content', $('#content-edit').html());
 
+                $('#editTaskForm .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {
                     window.location.href = "/tasks?updateSuccess";
                 });

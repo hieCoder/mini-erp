@@ -241,7 +241,12 @@ function showReplyCommentForm(id){
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-start">
-                            <button type="submit" class="btn btn-success">Reply</button>
+                            <button type="submit" class="btn btn-success btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                    <span class="flex-grow-1">Reply</span>
+                                </span>
+                            </button>
                             <button type="button" class="btn btn-ligh close-reply-form">Close</button>
                         </div>
                     </div>
@@ -454,7 +459,12 @@ async function showEditCommentForm(comment){
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-start">
-                            <button type="submit" class="btn btn-success">Edit</button>
+                            <button type="submit" class="btn btn-success btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                    <span class="flex-grow-1">Edit</span>
+                                </span>
+                            </button>
                             <button type="button" class="btn btn-ligh close-edit-form">Close</button>
                         </div>
                     </div>
