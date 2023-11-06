@@ -7,7 +7,6 @@ const U_MANAGER = 'MANAGER';
 const BtnLoadRemove = () => {
     $('.btn-load').remove()
 }
-
 const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
     '<span class="d-flex align-items-center">' +
     '<span class="spinner-border flex-shrink-0" role="status">' +
@@ -18,7 +17,6 @@ const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="
     '</span>' +
     '</span>' +
     '</button>';
-//
 const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
     '<span class="d-flex align-items-center">' +
     '<span class="spinner-border flex-shrink-0" role="status">' +
