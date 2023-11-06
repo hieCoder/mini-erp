@@ -92,6 +92,59 @@
 </div>
 <script>
     $(document).ready(function (){
+
+        $(document).on('input', '.content-report', function (e){
+
+            const contentReportE = $(this);
+            var ulElement = $(contentReportE).siblings('.list-title-by-hashtag');
+
+            const enteredText = contentReportE.html();
+            const lastIndexOfHash = enteredText.lastIndexOf('#');
+
+            if (lastIndexOfHash !== -1) {
+                const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
+                if (textAfterLastHash.indexOf("&nbsp;") === -1 && textAfterLastHash.indexOf(" ") === -1) {
+                    var hashtag = '';
+                    if (textAfterLastHash.indexOf('<') !== -1) {
+                        const indexOfLessThan = textAfterLastHash.indexOf('<');
+                        hashtag = textAfterLastHash.slice(0, indexOfLessThan);
+                    } else {
+                        hashtag = textAfterLastHash;
+                    }
+
+                    callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+hashtag,
+                        'GET', null, function (rs) {
+                            ulElement.empty();
+                            rs.forEach(function (e) {
+                                ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
+                                    ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
+                            });
+                        });
+                }
+            } else{
+                ulElement.empty();
+            }
+        });
+
+        $(document).on('click', '.hashtag-e', function (e){
+            var taskTitle = $(this).text();
+            var taskId = $(this).data('task-id');
+            var aE = `<a class="fw-bold" href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+
+            const containerListHashtag = $(this).closest('.list-title-by-hashtag');
+            const contentE = containerListHashtag.siblings('.content-report');
+
+            const lastIndex = contentE.html().lastIndexOf('#');
+            if (lastIndex !== -1) {
+                const newContent = contentE.html().substring(0, lastIndex) + aE;
+                contentE.empty().append(newContent);
+            }
+
+            focusElement(contentE);
+
+            containerListHashtag.empty();
+        });
+
         Validator({
             form:'#edit-wr-form',
             errorSelector: '.form-message',

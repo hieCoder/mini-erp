@@ -187,7 +187,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -344,7 +344,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success" id="add-btn">Register</button>
+                        <button type="submit" class="btn btn-success">Register</button>
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -616,10 +616,10 @@
         var isFirstTimeOpenModalRegister = true;
         $('#registerTaskModal').on('shown.bs.modal', function() {
             var selectElement = $('#selectUsername');
-            selectElement.empty();
 
             // username
             if(isDeleveloper()){
+                selectElement.empty();
                 $('.username-register-task').text(userCurrent.fullname);
                 var option = $('<option></option>');
                 option.attr('value', userCurrent.id);
@@ -627,6 +627,7 @@
                 selectElement.append(option);
             } else{
                 if (isFirstTimeOpenModalRegister) {
+                    selectElement.empty();
                     callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
                         rs.forEach(function(user) {
                             var option = $('<option></option>');
@@ -753,6 +754,8 @@
             $('#title-edit').val(rs.title);
 
             $('#content-edit').html(rs.content);
+            $('#editTaskForm .ql-toolbar.ql-snow').remove();
+            activeEditor("#editTaskForm");
 
             var statusCode = rs.statusTask.code;
             $('#statusTaskEdit').replaceWith('<span id="statusTaskEdit" class="badge ' + getStatusColor(statusCode) + '">' + statusCode + '</span>');

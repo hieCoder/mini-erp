@@ -27,7 +27,7 @@
                     t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                     t.TITLE LIKE CONCAT('%', #{search}, '%')
             )
-        ORDER BY t.CREATED_DATE DESC
+        ORDER BY t.ID DESC
     </select>
 
     <select id="getTotalItem" resultType="long">
