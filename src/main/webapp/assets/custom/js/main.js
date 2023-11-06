@@ -294,7 +294,15 @@ function getMessageTypeFile(fileType) {
     return 'Files must be of the following types: ' + fileType;
 }
 
-
+// focus pointer to end element
+function focusElement(element) {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    range.selectNodeContents(element[0]);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
 
 // function createLoadingIndicator() {
 //     if ($('#loading-indicator').length === 0) {
