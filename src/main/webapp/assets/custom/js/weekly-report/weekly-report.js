@@ -10,6 +10,10 @@ function createStaffE(staff){
                             </div>`;
 }
 
-function getApiUrl(userRole, userId, page, pageSize) {
-    return '/api/v1/weekly-reports?userRole='+ userRole+'&userId='+userId+'&page='+page+'&pageSize='+page;
+function getListApiUrl(userId, page, pageSize) {
+    return '/api/v1/weekly-reports?userId='+userId+'&page='+page+'&pageSize='+pageSize;
+}
+
+function getCountListApiUrl(userId, page, pageSize) {
+    return '/api/v1/weekly-reports/count?userId='+userId+'&page='+page+'&pageSize='+pageSize;
 }

@@ -3,18 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.WeeklyReportMapper">
 
-    <select id="getAllWeeklyReport" parameterType="org.apache.ibatis.session.RowBounds" resultMap="weeklyReportDetailResultMap">
+    <select id="getAllWeeklyReportByUser" parameterType="org.apache.ibatis.session.RowBounds" resultMap="weeklyReportDetailResultMap">
         SELECT w.*, u.ID, u.FULLNAME
         FROM WEEKLY_REPORT w
         INNER JOIN USER u ON w.USER_ID = u.ID
-        WHERE #{userRole} = 'OWNER' OR w.USER_ID = #{userId}
+        WHERE w.USER_ID = #{userId}
+        ORDER BY w.CREATED_DATE DESC
     </select>
 
-    <select id="getTotalWeeklyReport" parameterType="org.apache.ibatis.session.RowBounds" resultType="java.lang.Long">
+    <select id="getTotalWeeklyReportByUser" parameterType="org.apache.ibatis.session.RowBounds" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM WEEKLY_REPORT w
         INNER JOIN USER u ON w.USER_ID = u.ID
-        WHERE #{userRole} = 'OWNER' OR w.USER_ID = #{userId}
+        WHERE w.USER_ID = #{userId}
     </select>
 
     <select id="findById" resultMap="weeklyReportDetailResultMap">
