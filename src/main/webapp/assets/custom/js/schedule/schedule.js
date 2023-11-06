@@ -1,9 +1,24 @@
 
+const loadScheduleBtn = `<button class="btn btn-outline-none btn-load loadSchedule border-0" disabled>
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="spinner-border flex-shrink-0"
+                                                                  role="status">
+                                                                <span class="visually-hidden">Loading...</span>
+                                                            </span>
+                                                        </span>
+                       </button>`
+function loadSchedule(){
+    $("button.fc-today-button.btn.btn-primary").after(loadScheduleBtn)
+}
 
+function removeLoadSchedule(){
+    $("button.loadSchedule").remove()
+}
 var start_date = document.getElementById("event-start-date"), timepicker1 = document.getElementById("timepicker1"),
     timepicker2 = document.getElementById("timepicker2"), date_range = null, T_check = null;
 const baseUrlEvent = "/api/v1/events";
 const codeDisabled = ["BIRTHDAY", "OPENED", "REOPENED", "REGISTERED","POSTPONED", "CLOSED"]
+const codeEvents = ["HOLIDAY","SEMINAR","TEAM_BUILDING","MEETING","TRAINING","PARTY","OTHER",]
 var statusCodePrevent = ["CLOSED", "REGISTERED", "POSTPONED"]
 const BIRTHDAY_CODE = "BIRTHDAY"
 const typeEnum = {
@@ -15,7 +30,7 @@ const typeEnum = {
     "bg-warning text-light": "PARTY",
     "bg-dark text-light": "OTHER",
 };
-
+let currentMonth = ""
 var listBirthday = []
 
 const birthdayIcon = '<img src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIcon" alt="Cake" title="Cake" width="44" height="44">'
@@ -36,6 +51,52 @@ function getEventColor(code) {
     return bgToCode[code];
 }
 
+function subtractDays(date, days) {
+    var newDate = new Date(date);
+    newDate.setDate(newDate.getDate() - days);
+    if (newDate.getDate() === 31 && [0, 2, 4, 6, 7, 9, 11].includes(newDate.getMonth())) {
+        newDate.setDate(30);
+    } else if (newDate.getDate() === 31 && newDate.getMonth() === 1) {
+        if ((newDate.getFullYear() % 4 === 0 && newDate.getFullYear() % 100 !== 0) || newDate.getFullYear() % 400 === 0) {
+            newDate.setDate(29);
+        } else {
+            newDate.setDate(28);
+        }
+    }
+
+    if (newDate.getMonth() === 11) {
+        newDate.setFullYear(newDate.getFullYear() - 1);
+    }
+
+    return newDate;
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+
+    while (result.getDate() !== (date.getDate() + days)) {
+        result = new Date(result.getFullYear(), result.getMonth(), 0);
+        days -= (date.getDate() + days - result.getDate());
+        result.setDate(1);
+        result.setMonth(result.getMonth() + 1);
+
+        if (result.getMonth() === 1) {
+            if ((result.getFullYear() % 4 === 0 && (result.getFullYear() % 100 !== 0 || result.getFullYear() % 400 === 0)) && result.getDate() > 29) {
+                result.setDate(29);
+            } else if (result.getDate() > 28) {
+                result.setDate(28);
+            }
+        }
+
+        if (result.getDate() > 30) {
+            result.setDate(30);
+        }
+    }
+
+    return result;
+}
+
 function originalStringDateToDate(originalDateISOString){
 // Create a Date object from the ISO 8601 string
     const originalDate = new Date(originalDateISOString);
@@ -44,10 +105,10 @@ function originalStringDateToDate(originalDateISOString){
 
 function alertInput(text){
     let html =
-        '<div class="col-12 mb-1">'+
+        '<div class="col-12 mb-1 alert-danger">'+
         '<div class="alert alert-danger alert-dismissible alert-outline fade show mb-xl-0" role="alert">'+
         '<strong> '+text+' </strong>'+ '</div>'+
-    '</div>'
+        '</div>'
     return html
 }
 
@@ -64,13 +125,16 @@ function deleteEvent(y, v, g) {
             if (v) {
                 for (var t = 0; t < y.length; t++) y[t].id == v.id && (y.splice(t, 1), t--);
                 upcomingEvent(y), v.remove(), v = null, g.hide()
+                $("#deleteSuccessEvent").modal("show")
             }
         } else{
             refreshPage()
         }
+        BtnLoadRemove()
     }, function (error){
         console.log("Error")
         console.log(error)
+        BtnLoadRemove()
     })
 }
 
@@ -82,122 +146,11 @@ function popupSuccess(text){
     $("#successComment").modal("show");
 }
 
-function updateEvent(event, calendar, v, g) {
-    let type = returnType(event.className)
-    let title = event.title
-    let content = event.description
-    let startDate = event.start
-    let endDate = event.end
-    let id = event.id
-    let data = {
-        id: id,
-        type: type,
-        title: title,
-        content: content,
-        startDate: startDate,
-        endDate: endDate,
-    }
-    if(startDate.toString() === "Invalid Date"){
-        let html = alertInput("Start Time Invalid")
-        if($("#event-start-date").val() == ""){
-            $("#event-start-date").parent().parent().after(html)
-        } else{
-            $("#event-time").after(html)
-        }
-        return false
-    }
-    if(endDate.toString() === "Invalid Date"){
-        let html = alertInput("End Time Invalid")
-        $("#event-time").after(html)
-        return false
-    }
-    if(startDate >= endDate){
-        let html = alertInput("Start Time and End Time Invalid")
-        $("#event-time").after(html)
-        return false
-    }
-    callAjaxByJsonWithData(baseUrlEvent, "PUT", data, function (rs){
-        if(rs > 0){
-                let allDay = true
-                if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
-                    allDay = false
-                }
-                v.setEnd(event.end)
-                v.setProp("id", event.id)
-                v.setProp("title", event.title)
-                v.setProp("classNames", event.className)
-                v.setStart(event.start)
-                v.setAllDay(allDay)
-                v.setExtendedProp("description", event.description)
-                v.setExtendedProp("location", event.location)
-            popupSuccess("The event updated successfully")
-            calendar.render()
-            g.hide()
-        } else{
-            refreshPage()
-        }
-    }, function (error){
-        console.log("Error")
-        console.log(error)
-    })
-}
 
 function refreshPage() {
     location.reload();
 }
 
-function addEventFunc(event, g, E){
-    removeAlert()
-    let type = returnType(event.className)
-    let title = event.title
-    let content = event.description
-    let startDate = event.start
-    let endDate = event.end
-    if(startDate.toString() == "Invalid Date"){
-        let html = alertInput("Start Time Invalid")
-        if($("#event-start-date").val() == ""){
-            $("#event-start-date").parent().parent().after(html)
-        } else{
-            $("#event-time").after(html)
-        }
-        return false
-    }
-    if(endDate.toString() == "Invalid Date"){
-        let html = alertInput("End Time Invalid")
-        $("#event-time").after(html)
-        return false
-    }
-    if(startDate >= endDate){
-        let html = alertInput("Start Time and End Time Invalid")
-        $("#event-time").after(html)
-        return false
-    }
-    let data = {
-        type: type,
-        title: title,
-        content: content,
-        startDate: startDate,
-        endDate: endDate,
-    }
-    callAjaxByJsonWithData(baseUrlEvent,"POST", data, function (rs){
-        if(rs){
-            CALENDAR_RESULT.push(event)
-            g.hide()
-            upcomingEvent(CALENDAR_RESULT)
-            event.id = rs.toString()
-            let allDay = true
-            if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
-                allDay = false
-            }
-            event.allDay = allDay
-            E.addEvent(event)
-            popupSuccess("The event created successfully")
-        }
-    }, function (error){
-        console.log("Have Error")
-        console.log(error)
-    })
-}
 
 var currentApiDate = ""
 let idArr = window.location.href.split("/")
@@ -298,36 +251,44 @@ function eventTyped() {
 }
 
 function upcomingEvent(e) {
+    var currentDate = new Date()
     e.sort(function (e, t) {
         return new Date(e.start) - new Date(t.start)
-    }),
+    })
+        let newArr = []
+        e.map(event=>{
+             if (event.start >=currentDate || event.end >=currentDate){
+                 newArr.push(event)
+             }
+        })
+        e = newArr
         document.getElementById("upcoming-event-list").innerHTML = null,
         Array.from(e).forEach(function (e) {
-        var event = e
-        var t = e.title,
-            n = (l = e.end ? (endUpdatedDay = new Date(e.end)).setDate(endUpdatedDay.getDate() - 1) : l) || void 0;
+            var event = e
+            var t = e.title,
+                n = (l = e.end ? (endUpdatedDay = new Date(e.end)).setDate(endUpdatedDay.getDate() - 1) : l) || void 0;
 
-        n = "Invalid Date" == n || null == n ? null : (a = new Date(n).toLocaleDateString("en", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric"
-        }), new Date(a).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "short",
-            year: "numeric"
-        }).split(" ").join(" "));
-        (e.start ? str_dt(e.start) : null) === (l ? str_dt(l) : null) && (n = null);
-        var a = e.start,
-            d = (a = "Invalid Date" === a || void 0 === a ? null : (d = new Date(a).toLocaleDateString("en", {
+            n = "Invalid Date" == n || null == n ? null : (a = new Date(n).toLocaleDateString("en", {
                 year: "numeric",
                 month: "numeric",
                 day: "numeric"
-            }), new Date(d).toLocaleDateString("en-GB", {
+            }), new Date(a).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "short",
                 year: "numeric"
-            }).split(" ").join(" ")), n ? " to " + n : ""), n = e.className.split("-"), i = e.description || "",
-            e = tConvert(getTime(e.start));
+            }).split(" ").join(" "));
+            (e.start ? str_dt(e.start) : null) === (l ? str_dt(l) : null) && (n = null);
+            var a = e.start,
+                d = (a = "Invalid Date" === a || void 0 === a ? null : (d = new Date(a).toLocaleDateString("en", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric"
+                }), new Date(d).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                }).split(" ").join(" ")), n ? " to " + n : ""), n = e.className.split("-"), i = e.description || "",
+                e = tConvert(getTime(e.start));
             l = (e == (l = tConvert(getTime(l))) && (e = "Full day event", l = null), l ? " to " + l : "");
 
             if(dateToString(originalStringDateToDate(event.start)) == dateToString(originalStringDateToDate(event.end))){
@@ -365,22 +326,22 @@ function upcomingEvent(e) {
             }
 
             u_event = "<div class='card mb-3'>                        " +
-            "<div class='card-body'>                            " +
-            "<div class='d-flex mb-3'>                                " +
-            "<div class='flex-grow-1'>" + xhtml
-             +
-            "</i><span class='fw-medium'>" + a + d + " </span>" +
-            "</div>                                " +
-            "<div class='flex-shrink-0'>" +
+                "<div class='card-body'>                            " +
+                "<div class='d-flex mb-3'>                                " +
+                "<div class='flex-grow-1'>" + xhtml
+                +
+                "</i><span class='fw-medium'>" + a + d + " </span>" +
+                "</div>                                " +
+                "<div class='flex-shrink-0'>" +
                 typeHtml +
-            "</div>                           " +
-            " </div>                            " +
-            "<h6 class='card-title fs-16'> " + t + "</h6>                            " +
-            "<p class='text-muted text-truncate-two-lines mb-0'> " + i + "</p>                       " +
-            " </div>                   " +
-            " </div>",
-            document.getElementById("upcoming-event-list").innerHTML += u_event
-    })
+                "</div>                           " +
+                " </div>                            " +
+                "<h6 class='card-title fs-16'> " + t + "</h6>                            " +
+                "<p class='text-muted text-truncate-two-lines mb-0'> " + i + "</p>                       " +
+                " </div>                   " +
+                " </div>",
+                document.getElementById("upcoming-event-list").innerHTML += u_event
+        })
 }
 
 function getTime(e) {
@@ -408,8 +369,6 @@ var str_dt_end = function (e) {
 
 document.addEventListener("DOMContentLoaded", function () {
     flatPickrInit();
-    // let arrId = window.location.href.split("/")
-    // userId = arrId[idArr.length-1]
     var g = new bootstrap.Modal(document.getElementById("event-modal"), {keyboard: !1}),
 
         d = (document.getElementById("event-modal"), document.getElementById("modal-title")),
@@ -439,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var configE = {
         timeZone: "local",
         editable: false,
-        droppable: !0,
+        droppable: false,
         selectable: !0,
         navLinks: !0,
         initialView: r(),
@@ -466,78 +425,56 @@ document.addEventListener("DOMContentLoaded", function () {
             let codeEvent = e.event._def.extendedProps.code
             let idEvent = e.event._def.publicId
             let dateEvent = e.event._instance.range
+            let checkAllDay = e.event._def.allDay
             document.getElementById("edit-event-btn").removeAttribute("hidden"),
-                    document.getElementById("btn-save-event").setAttribute("hidden", !0),
-                    document.getElementById("edit-event-btn").setAttribute("data-id", "edit-event")
-                    document.getElementById("edit-event-btn").innerHTML = "Edit"
-                    eventClicked(),
-                    flatPickrInit(),
-                    flatpicekrValueClear(),
-                    i.reset(),
-                    v = e.event,
-                    document.getElementById("modal-title").innerHTML = "",
-                    document.getElementById("event-location-tag").innerHTML = void 0 === v.extendedProps.location ? "No Location" : v.extendedProps.location,
-                    document.getElementById("event-description-tag").innerHTML = void 0 === v.extendedProps.description ? "No Description" : v.extendedProps.description,
-                    document.getElementById("event-title").value = v.title,
-                    document.getElementById("event-location").value = void 0 === v.extendedProps.location ? "No Location" : v.extendedProps.location,
-                    document.getElementById("event-description").value = void 0 === v.extendedProps.description ? "No Description" : v.extendedProps.description,
-                    document.getElementById("eventid").value = v.id, v.classNames[0] && (c.destroy(),
-                    (c = new Choices("#event-category", {searchEnabled: !1})).setChoiceByValue(v.classNames[0]));
-                    if(codeDisabled.includes(codeEvent)){
-                        $("#edit-event-btn").addClass("d-none")
-                        $("#btn-delete-event").addClass("d-none")
-                        $("#btn-link-task").attr("data-id", idEvent)
-                        $("#btn-link-task").removeClass("d-none")
-                        $(document).on("click","#btn-link-task", function (){
-                            var dataId = $(this).attr("data-id");
-                            var newTabURL = "/tasks/" + dataId;
-                            window.open(newTabURL, '_blank');
-                        })
-                    } else{
-                        if(userCurrent.role == U_OWNER || userCurrent.role == U_MANAGER){
-                            $("#edit-event-btn").removeClass("d-none")
-                            $("#btn-delete-event").removeClass("d-none")
-                        }
-                        $("#btn-link-task").addClass("d-none")
-                    }
-                    if(codeEvent === BIRTHDAY_CODE){
-                        $("#event-modal .modal-title").before(birthdayIcon)
-                        $("#btn-link-task").addClass("d-none")
-                    }
-                    g.show()
-            function subtractDays(date, days) {
-                var newDate = new Date(date);
-                newDate.setDate(newDate.getDate() - days);
-                if (newDate.getDate() === 31 && [0, 2, 4, 6, 7, 9, 11].includes(newDate.getMonth())) {
-                    newDate.setDate(30); // Tháng có 31 ngày, sử dụng ngày 30
-                } else if (newDate.getDate() === 31 && newDate.getMonth() === 1) {
-                    if ((newDate.getFullYear() % 4 === 0 && newDate.getFullYear() % 100 !== 0) || newDate.getFullYear() % 400 === 0) {
-                        newDate.setDate(29);
-                    } else {
-                        newDate.setDate(28);
-                    }
+                document.getElementById("btn-save-event").setAttribute("hidden", !0),
+                document.getElementById("edit-event-btn").setAttribute("data-id", "edit-event")
+            document.getElementById("edit-event-btn").innerHTML = "Edit"
+            eventClicked(),
+                flatPickrInit(),
+                flatpicekrValueClear(),
+                i.reset(),
+                v = e.event,
+                document.getElementById("modal-title").innerHTML = "",
+                document.getElementById("event-location-tag").innerHTML = void 0 === v.extendedProps.location ? "No Location" : v.extendedProps.location,
+                document.getElementById("event-description-tag").innerHTML = void 0 === v.extendedProps.description ? "No Description" : v.extendedProps.description,
+                document.getElementById("event-title").value = v.title,
+                document.getElementById("event-location").value = void 0 === v.extendedProps.location ? "No Location" : v.extendedProps.location,
+                document.getElementById("event-description").value = void 0 === v.extendedProps.description ? "No Description" : v.extendedProps.description,
+                document.getElementById("eventid").value = v.id, (c.destroy(),
+                (c = new Choices("#event-category", {searchEnabled: !1})).setChoiceByValue(getEventColor(codeEvent)));
+            if(codeDisabled.includes(codeEvent)) {
+                $("#edit-event-btn").addClass("d-none")
+                $("#btn-delete-event").addClass("d-none")
+                $("#btn-link-task").attr("data-id", idEvent)
+                $("#btn-link-task").removeClass("d-none")
+            } else{
+                if(userCurrent.role === U_OWNER || userCurrent.role === U_MANAGER){
+                    $("#edit-event-btn").removeClass("d-none")
+                    $("#btn-delete-event").removeClass("d-none")
+                }else{
+                    $("#edit-event-btn").addClass("d-none")
+                    $("#btn-delete-event").addClass("d-none")
                 }
-
-                if (newDate.getMonth() === 11) {
-                    newDate.setFullYear(newDate.getFullYear() - 1);
-                }
-
-                return newDate;
+                $("#btn-link-task").addClass("d-none")
             }
-
+            if(codeEvent === BIRTHDAY_CODE){
+                $("#event-modal .modal-title").before(birthdayIcon)
+                $("#btn-link-task").addClass("d-none")
+            }
+            g.show()
             function t(e, check) {
-                    if(check){
-                        e = subtractDays(e, 1)
-                        console.log(e)
-                    }
-                    var t = "" + ((e = new Date(e)).getMonth() + 1), n = "" + e.getDate();
-                    return [e.getFullYear(), t = t.length < 2 ? "0" + t : t, n = n.length < 2 ? "0" + n : n].join("-")
+                if(check){
+                    e = subtractDays(e, 1)
+                }
+                var t = "" + ((e = new Date(e)).getMonth() + 1), n = "" + e.getDate();
+                return [e.getFullYear(), t = t.length < 2 ? "0" + t : t, n = n.length < 2 ? "0" + n : n].join("-")
             }
 
             var e = v.start, n = v.end, a = null == n ? str_dt(e) : str_dt(e) + " to " + str_dt_end(n),
                 e = null == n ? t(e, false) : t(e, false) + " to " + t(n, true),
                 n = (flatpickr(start_date, {
-                    defaultDate: e,
+                    defaultDate: checkAllDay ? e : e.split("to")[0],
                     altInput: !0,
                     altFormat: "j F Y",
                     dateFormat: "Y-m-d",
@@ -545,7 +482,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     onChange: function (e, t, n) {
                         1 < t.split("to").length
                             ?
-                                document.getElementById("event-time").setAttribute("hidden", !0)
+                            document.getElementById("event-time").setAttribute("hidden", !0)
                             :  (document.getElementById("timepicker1").parentNode.classList.remove("d-none"),
                                 document.getElementById("timepicker1").classList.replace("d-none", "d-block"),
                                 document.getElementById("timepicker2").parentNode.classList.remove("d-none"),
@@ -553,17 +490,21 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById("event-time").removeAttribute("hidden"))
                     }
                 }),
-                    document.getElementById("event-start-date-tag").innerHTML = (dateToString(originalStringDateToDate(dateEvent.start)) == dateToString(originalStringDateToDate(dateEvent.end))) ? a.split("to")[0] : a ,
+                    document.getElementById("event-start-date-tag").innerHTML =
+                        (dateToString(originalStringDateToDate(dateEvent.start)) == dateToString(originalStringDateToDate(dateEvent.end)))
+                            ? a.split("to")[0] :
+                            a ,
                     getTime(v.start)),
-                    e = getTime(v.end);
+                e = getTime(v.end);
+
             n == e ? ( document.getElementById("event-timepicker1-tag").innerHTML="",
-                         document.getElementById("event-timepicker2-tag").innerHTML="" ,
+                document.getElementById("event-timepicker2-tag").innerHTML="" ,
                 document.getElementById("event-time").setAttribute("hidden", !0),
                 flatpickr(document.getElementById("timepicker1"), {
-                enableTime: !0,
-                noCalendar: !0,
-                dateFormat: "H:i"
-            }), flatpickr(document.getElementById("timepicker2"), {
+                    enableTime: !0,
+                    noCalendar: !0,
+                    dateFormat: "H:i"
+                }), flatpickr(document.getElementById("timepicker2"), {
                 enableTime: !0,
                 noCalendar: !0,
                 dateFormat: "H:i"
@@ -594,16 +535,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
         events: null,
-        // eventReceive: function (e) {
-        //     e = {
-        //         id: parseInt(e.event.id),
-        //         title: e.event.title,
-        //         start: e.event.start,
-        //         allDay: e.event.allDay,
-        //         className: e.event.classNames[0]
-        //     };
-        //     y.push(e), upcomingEvent(y)
-        // },
         dayCellDidMount: function (arg) {
             function subtractDaysFromDate(inputDate) {
                 var currentDate = new Date(inputDate);
@@ -619,6 +550,10 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         datesSet: function(info) {
             return formatDateYYMM(info.view.currentStart)
+        },
+        viewDidMount: function (e){
+            $("#containerSchedule").css("visibility", "visible");
+            $("div.containerLoading").addClass("d-none")
         }
     }
     var   E = new FullCalendar.Calendar(e, configE)
@@ -761,12 +696,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             document.getElementById("btn-delete-event").addEventListener("click", function (e) {
+                $("#deleteEventModal").modal("show")
+            })
+
+            document.getElementById("deleteEventBtn").addEventListener("click", function (e) {
+                $("#deleteEventModal").modal("hide")
+                $("#btn-delete-event").addClass("d-none")
+                $("#btn-delete-event").before(BtnDangerLoad)
                 if(userCurrent.role == U_OWNER || userCurrent.role == U_MANAGER) {
-                deleteEvent(CALENDAR_RESULT, v, g)
+                    deleteEvent(CALENDAR_RESULT, v, g)
                 } else{
                     return false
                 }
             })
+
             let $elm = document.getElementsByClassName('fc-today-button')[0];
             $elm.addEventListener('click', function() {
                 let month = formatDateYYMM(E.getDate())
@@ -778,11 +721,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     fetchData();
-
     $(document).on("change","table.filterStatus input", function(){
         let newArr = []
         let $element = $(this)
-        console.log($element.val())
         if($element.val() === "ALL" && $element.prop("checked")){
             $("input.checkFilter").prop("checked", true)
         } else if($element.val() === "ALL" && !$element.prop("checked")){
@@ -811,7 +752,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return newArr
     }
 
-    let currentMonth = ""
+
     $(document).on("click",".fc-header-toolbar button",function (){
         let month = formatDateYYMM(E.getDate())
         if(currentMonth != month){
@@ -833,13 +774,165 @@ document.addEventListener("DOMContentLoaded", function () {
             upcomingEvent(CALENDAR_RESULT)
             E.addEventSource(CALENDAR_RESULT);
             E.render()
+            removeLoadSchedule()
+            return true;
         } catch (error) {
             console.error("An error occurred:", error);
         }
     }
-    function callApiData(apiDate){
-        fetchDataButton(apiDate)
+    function callApiData(apiDate, g, textSuccess){
+        loadSchedule()
+        fetchDataButton(apiDate).then(r =>{
+           if(r && g && textSuccess){
+               popupSuccess("The event created successfully")
+               g.hide()
+               $("#btn-save-event").removeClass("d-none")
+               BtnLoadRemove()
+           }
+        })
     }
+
+    function updateEvent(event, calendar, v, g) {
+        removeAlert()
+        let type = returnType(event.className)
+        let title = event.title
+        let content = event.description
+        let startDate = event.start
+        let endDate = event.end
+        let id = event.id
+        if(startDate.toString() === "Invalid Date"){
+            let html = alertInput("Start Time Invalid")
+            if($("#event-start-date").val() == ""){
+                $("#event-start-date").parent().parent().after(html)
+            } else{
+                $("#event-time").after(html)
+            }
+            return false
+        }
+        if(endDate.toString() === "Invalid Date"){
+            let html = alertInput("End Time Invalid")
+            $("#event-time").after(html)
+            return false
+        }
+        if(startDate >= endDate){
+            let html = alertInput("Start Time and End Time Invalid")
+            $("#event-time").after(html)
+            return false
+        }
+        $("#btn-save-event").addClass("d-none")
+        $("#btn-save-event").before(BtnSuccessLoad)
+        let data = {
+            id: id,
+            type: type,
+            title: title,
+            content: content,
+            startDate: startDate,
+        }
+        if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
+            data.endDate = endDate
+        } else{
+            data.endDate = addDays(endDate, 1)
+        }
+        callAjaxByJsonWithData(baseUrlEvent, "PUT", data, function (rs){
+            if(rs > 0){
+                // let allDay = true
+                // if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
+                //     allDay = false
+                //     v.setEnd(event.end)
+                // } else{
+                //     console.log(addDays(endDate, 1))
+                //     v.setEnd(addDays(endDate, 1))
+                // }
+                // v.setProp("id", event.id)
+                // v.setProp("title", event.title)
+                // v.setProp("classNames", event.className)
+                // v.setStart(event.start)
+                // v.setAllDay(allDay)
+                // v.setExtendedProp("code", typeEnum[event.className])
+                // v.setExtendedProp("description", event.description)
+                // v.setExtendedProp("location", event.location)
+                // console.log(v)
+                // popupSuccess("The event updated successfully")
+                // calendar.render()
+                CALENDAR_RESULT =[]
+                callApiData(currentMonth!=""? currentMonth : currentApiDate, g, "The event updated successfully")
+            } else{
+                refreshPage()
+            }
+        }, function (error){
+            console.log("Error")
+            console.log(error)
+            $("#btn-save-event").removeClass("d-none")
+            BtnLoadRemove()
+        })
+    }
+    function addEventFunc(event, g, E){
+        removeAlert()
+        let type = returnType(event.className)
+        let title = event.title
+        let content = event.description
+        let startDate = event.start
+        let endDate = event.end
+        if(startDate.toString() == "Invalid Date"){
+            let html = alertInput("Start Time Invalid")
+            if($("#event-start-date").val() == ""){
+                $("#event-start-date").parent().parent().after(html)
+            } else{
+                $("#event-time").after(html)
+            }
+            return false
+        }
+        if(endDate.toString() == "Invalid Date"){
+            let html = alertInput("End Time Invalid")
+            $("#event-time").after(html)
+            return false
+        }
+        if(startDate >= endDate){
+            let html = alertInput("Start Time and End Time Invalid")
+            $("#event-time").after(html)
+            return false
+        }
+        $("#btn-save-event").addClass("d-none")
+        $("#btn-save-event").before(BtnSuccessLoad)
+        let data = {
+            type: type,
+            title: title,
+            content: content,
+            startDate: startDate,
+            endDate: endDate,
+        }
+        callAjaxByJsonWithData(baseUrlEvent,"POST", data, async function (rs){
+            if(rs){
+                // event.code = type
+                //                 // CALENDAR_RESULT.push(event)
+                                // g.hide()
+                //                 // upcomingEvent(CALENDAR_RESULT)
+                //                 // event.id = rs.toString()
+                //                 // let allDay = true
+                //                 // if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
+                //                 //     allDay = false
+                //                 // }
+                //                 // event.allDay = allDay
+                //                 // E.addEvent(event)
+                CALENDAR_RESULT =[]
+                callApiData(currentMonth!=""? currentMonth : currentApiDate, g, "The event created successfully")
+            } else{
+                $("#btn-save-event").removeClass("d-none")
+                BtnLoadRemove()
+            }
+        }, function (error){
+            console.log("Have Error")
+            BtnLoadRemove()
+            $("#btn-save-event").removeClass("d-none")
+            console.log(error)
+        })
+    }
+
+    $(document).on("click","#btn-link-task", function (){
+        var dataId = $(this).attr("data-id");
+        var newTabURL = "/tasks/" + dataId;
+        window.open(newTabURL, '_blank');
+    })
 });
 
 

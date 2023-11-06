@@ -104,17 +104,20 @@
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab">
-                                Comments (5)
+<%--                                Comments (5)--%>
+    Comments
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab">
-                                Attachments File (4)
+<%--                                Attachments File (4)--%>
+    Attachments File
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#profile-1" role="tab">
-                                Time Entries (9 hrs 13 min)
+<%--                                Time Entries (9 hrs 13 min)--%>
+    Time Entries
                             </a>
                         </li>
                     </ul>

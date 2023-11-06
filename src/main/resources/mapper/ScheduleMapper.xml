@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ScheduleMapper">
-    <select id="getScheduleDetailByMonth" parameterType="String" resultMap="scheduleDetailResultMap">
+    <select id="getScheduleDetailByMonth" resultMap="scheduleDetailResultMap">
         SELECT t.ID, t.TITLE, t.STATUS_TASK, t.CREATED_DATE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE
         FROM TASK t
                  INNER JOIN USER u ON t.USER_ID = u.ID
@@ -10,16 +10,24 @@
           AND t.STATUS = 'ACTIVE'
           AND (
                 (t.START_DATE IS NULL AND
-                 (DATE_FORMAT(t.CREATED_DATE, '%Y-%m') = #{monthly} OR DATE_FORMAT(t.DUE_DATE, '%Y-%m') = #{monthly})
+                 ((DATE_FORMAT(t.CREATED_DATE, '%Y-%m') &gt;= #{prevMonth} AND
+                  DATE_FORMAT(t.CREATED_DATE, '%Y-%m') &lt;= #{nextMonth}) OR
+                  (DATE_FORMAT(t.DUE_DATE, '%Y-%m') &gt;= #{prevMonth} AND DATE_FORMAT(t.DUE_DATE, '%Y-%m') &lt;= #{nextMonth}))
                     )
                 OR
-                (t.START_DATE IS NOT NULL AND (
+                (t.START_DATE IS NOT NULL AND ((
                             DATE_FORMAT(
                                     CASE
                                         WHEN t.STATUS_TASK != 'CLOSED' THEN t.DUE_DATE
                                         WHEN t.STATUS_TASK = 'CLOSED' THEN t.CLOSE_DATE
-                                        END, '%Y-%m') = #{monthly}
-                        OR DATE_FORMAT(t.START_DATE, '%Y-%m') = #{monthly}
+                                        END, '%Y-%m') &gt;= #{prevMonth} AND DATE_FORMAT(
+                                                                                CASE
+                                                                                    WHEN t.STATUS_TASK != 'CLOSED' THEN t.DUE_DATE
+                                                                                    WHEN t.STATUS_TASK = 'CLOSED'
+                                                                                        THEN t.CLOSE_DATE
+                                                                                    END, '%Y-%m') &lt;= #{nextMonth})
+                        OR (DATE_FORMAT(t.START_DATE, '%Y-%m') &gt;= #{prevMonth} AND
+                            DATE_FORMAT(t.START_DATE, '%Y-%m') &lt;= #{nextMonth})
                     ))
             );
     </select>

@@ -14,13 +14,14 @@
         select e.*, u.fullname, u.avatar
         from EVENT e
                  inner join USER u on e.user_id = u.id
-        where DATE_FORMAT(e.START_DATE, '%Y-%m-%D') &gt;= #{day};
+        where e.START_DATE &gt;= #{day}
+        order by e.START_DATE asc;
     </select>
 
     <select id="getTotalRecordCountUpcoming" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM EVENT
-        where DATE_FORMAT(START_DATE, '%Y-%m-%D') &gt;= #{day};
+        where START_DATE &gt;= #{day};
     </select>
 
     <select id="findById" resultMap="eventResultMap">

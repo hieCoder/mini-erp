@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -75,8 +76,10 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             user = userMapper.findById(id);
-            if (Principal.getUserCurrent().getRole() == null) throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
-        } catch (Exception e) {}
+            if (Principal.getUserCurrent().getRole() == null)
+                throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
+        } catch (Exception e) {
+        }
         return userConverter.toUserDetailResponse(user);
     }
 
@@ -93,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean activeUserRegisterRequest(UserActiveRequest userActiveRequest) {
 
-        if(userActiveRequest.getStatus().equals(StatusUserEnum.ACTIVE)){
+        if (userActiveRequest.getStatus().equals(StatusUserEnum.ACTIVE)) {
             if (!EnumUtils.isExistInEnum(RoleEnum.class, userActiveRequest.getRole()))
                 throw new NotFoundException(MessageErrorUtils.notFound("Role"));
         }
@@ -151,12 +154,12 @@ public class UserServiceImpl implements UserService {
         String newAvatarName = null;
         List<String> newResumeFileNameList = new ArrayList<>();
 
-        if(avatarFile!= null){
+        if (avatarFile != null) {
             applicationUtils.checkValidateImage(User.class, avatarFile);
-            newAvatarName =FileUtils.formatNameImage(avatarFile);
-            if(!FileUtils.saveImageToServer(request, uploadDir, avatarFile, newAvatarName)) return 0;
+            newAvatarName = FileUtils.formatNameImage(avatarFile);
+            if (!FileUtils.saveImageToServer(request, uploadDir, avatarFile, newAvatarName)) return 0;
         }
-        if(newResumeFiles!=null){
+        if (newResumeFiles != null) {
 
             Setting setting = settingMapper.findByCode(SettingConstant.USER_CODE);
             if (!FileUtils.isAllowedFileSize(newResumeFiles, setting.getFileSize()))
@@ -165,26 +168,26 @@ public class UserServiceImpl implements UserService {
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
 
             newResumeFileNameList = FileUtils.saveMultipleFilesToServer(request, uploadDir, newResumeFiles);
-            if(newResumeFileNameList==null) {
-                if(newAvatarName!=null) FileUtils.deleteImageFromServer(request, uploadDir, newAvatarName);
+            if (newResumeFileNameList == null) {
+                if (newAvatarName != null) FileUtils.deleteImageFromServer(request, uploadDir, newAvatarName);
                 return 0;
             }
         }
 
-        String newAvatarFileToDB = avatarFile!= null?newAvatarName:user.getAvatar();
+        String newAvatarFileToDB = avatarFile != null ? newAvatarName : user.getAvatar();
         String newResumeFilesToDB = null;
-        if(StringUtils.isBlank(remainResumeFiles)){
+        if (StringUtils.isBlank(remainResumeFiles)) {
             newResumeFilesToDB = String.join(",", newResumeFileNameList);
-        } else{
-            if(!newResumeFileNameList.isEmpty()){
+        } else {
+            if (!newResumeFileNameList.isEmpty()) {
                 newResumeFilesToDB = remainResumeFiles + "," + String.join(",", newResumeFileNameList);
             } else newResumeFilesToDB = remainResumeFiles;
         }
 
         User userUpdate = null;
-        if(Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)){
+        if (Principal.getUserCurrent().getRole().equals(RoleEnum.DEVELOPER)) {
             userUpdate = userConverter.toUpdateBasic(userUpdateRequest, newAvatarFileToDB, newResumeFilesToDB);
-        } else{
+        } else {
             userUpdate = userConverter.toUpdateDetail(userUpdateRequest, newAvatarFileToDB, newResumeFilesToDB);
         }
 
@@ -199,10 +202,10 @@ public class UserServiceImpl implements UserService {
                 userMapper.updateUserDetail(userUpdate);
             }
 
-            if(!avatarNameOld.equals(avatarNameNew) && !avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)){
+            if (!avatarNameOld.equals(avatarNameNew) && !avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)) {
                 FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
             }
-            if(!resumeNameOld.equals(resumeNameNew)){
+            if (!resumeNameOld.equals(resumeNameNew)) {
                 String deleteFiles = StringUtils.getDifference(resumeNameOld, remainResumeFiles);
                 FileUtils.deleteMultipleFilesToServer(request, uploadDir, deleteFiles);
             }
@@ -215,6 +218,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Map<String, Object>> getAllFullname() {
-        return userMapper.getAllFullname();
+        List<Map<String, Object>> maps = userMapper.getAllFullname();
+        updateValueInList(maps, "avatar");
+        return maps;
+    }
+
+    public void updateValueInList(List<Map<String, Object>> maps, String oldKey) {
+        for (Map<String, Object> map : maps) {
+            if (map.containsKey(oldKey)) {
+                Object oldValue = map.get(oldKey);
+                String newValue = FileUtils.getPathUpload(User.class, oldValue.toString());
+                map.put(oldKey, newValue);
+            }
+        }
     }
 }

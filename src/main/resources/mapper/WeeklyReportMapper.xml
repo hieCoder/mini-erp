@@ -36,7 +36,7 @@
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="ID"/>
+        <id property="id" column="USER_ID"/>
         <result property="fullname" column="FULLNAME"/>
     </resultMap>
 

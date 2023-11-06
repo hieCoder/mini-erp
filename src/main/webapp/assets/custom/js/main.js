@@ -7,28 +7,26 @@ const U_MANAGER = 'MANAGER';
 const BtnLoadRemove = () => {
     $('.btn-load').remove()
 }
-
-// const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
-//     '<span class="d-flex align-items-center">' +
-//     '<span class="spinner-border flex-shrink-0" role="status">' +
-//     '<span class="visually-hidden">Loading...</span>' +
-//     '</span>' +
-//     '<span class="flex-grow-1 ms-2">' +
-//     'Loading...' +
-//     '</span>' +
-//     '</span>' +
-//     '</button>';
-//
-// const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
-//     '<span class="d-flex align-items-center">' +
-//     '<span class="spinner-border flex-shrink-0" role="status">' +
-//     '<span class="visually-hidden">Loading...</span>' +
-//     '</span>' +
-//     '<span class="flex-grow-1 ms-2">' +
-//     'Loading...' +
-//     '</span>' +
-//     '</span>' +
-//     '</button>';
+const BtnPrimaryLoad = '<button class="btn btn-outline-primary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
+const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
 //
 // const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
 //     '<span class="d-flex align-items-center">' +

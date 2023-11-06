@@ -27,7 +27,7 @@
                     t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
                     t.TITLE LIKE CONCAT('%', #{search}, '%')
             )
-        ORDER BY t.CREATED_DATE DESC
+        ORDER BY t.ID DESC
     </select>
 
     <select id="getTotalItem" resultType="long">
@@ -103,7 +103,7 @@
     </update>
 
     <select id="getStatusTaskCounts" resultType="map" resultMap="statusTaskCountResultMap">
-        SELECT all_statuses.status AS STATUS_TASK, COUNT(task.id) as taskCount
+        SELECT all_statuses.status AS STATUS_TASK, COUNT(task.ID) as taskCount
         FROM (SELECT 'REGISTERED' AS status
               UNION ALL
               SELECT 'OPENED'
@@ -116,8 +116,8 @@
                  LEFT JOIN TASK AS task ON all_statuses.status = task.STATUS_TASK AND task.STATUS = 'ACTIVE'
         GROUP BY all_statuses.status
         UNION ALL
-        SELECT '' AS STATUS_TASK, COUNT(task.id) as taskCount
-        FROM TASK
+        SELECT '' AS STATUS_TASK, COUNT(task.ID) as taskCount
+        FROM TASK task
         WHERE STATUS = 'ACTIVE'
     </select>
 
