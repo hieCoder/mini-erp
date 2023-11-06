@@ -11,7 +11,7 @@
         ORDER BY w.CREATED_DATE DESC
     </select>
 
-    <select id="getTotalWeeklyReportByUser" parameterType="org.apache.ibatis.session.RowBounds" resultType="java.lang.Long">
+    <select id="getTotalWeeklyReportByUser" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM WEEKLY_REPORT w
         INNER JOIN USER u ON w.USER_ID = u.ID
@@ -36,7 +36,7 @@
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="ID"/>
+        <id property="id" column="USER_ID"/>
         <result property="fullname" column="FULLNAME"/>
     </resultMap>
 

@@ -804,6 +804,7 @@
 
 
 <script>
+    var htmlElement = document.documentElement;
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
     const INVALID_FILLED = ' <div class="alert alert-danger" role="alert">' +
@@ -906,7 +907,6 @@
             });
 
             yearSelect.addEventListener('change', function () {
-                // $('#account-day').after(createLoadingHtml());
                 callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
                     var dataMonth = rs;
                     monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
@@ -920,7 +920,6 @@
                             })
                         }
                     });
-                    $('div.custom-spinner').parent().remove();
                     if (yearSelect.value !== "") {
                         monthSelect.style.display = 'block';
                     } else {
@@ -936,17 +935,20 @@
                 let pickMonth = defaultDate.getMonth() + 1;
                 let formattedTextStartDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-01';
                 localStorage.setItem("selectedDateStart", formattedDateToText(formattedTextStartDate));
+                document.getElementById("datePickerStart").value = formattedDateToText(formattedTextStartDate);
 
                 let lastDay = new Date(pickYear, pickMonth, 0);
                 let lastDayOfMonth = lastDay.getDate();
                 let formattedTextEndDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-' + lastDayOfMonth;
                 localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
+                document.getElementById("datePickerEnd").value = formattedDateToText(formattedTextEndDate);
                 loadPage(1);
             });
         }
     });
 
     function loadPage(page) {
+        htmlElement.setAttribute("data-preloader", "block");
         var selectedPageSize = document.getElementById("pageCount").value;
         var selectedDateStart = localStorage.getItem("selectedDateStart") || null;
         var selectedDateEnd = localStorage.getItem("selectedDateEnd") || null;
@@ -1010,8 +1012,10 @@
                     totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td class="text-success">' + formatCurrency(totalRevenue) + '</td>'
                         + '<td class="text-danger">' + formatCurrency(totalExpense) + '</td>'
                         + '<td class="text-primary">' + formatCurrency(totalRemain) + '</td>';
+                    htmlElement.setAttribute("data-preloader", "disable");
                 } else {
                     $('#errorModal').modal('show');
+                    htmlElement.setAttribute("data-preloader", "disable");
                 }
             }
         };

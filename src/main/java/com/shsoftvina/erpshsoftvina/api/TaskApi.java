@@ -24,7 +24,7 @@ public class TaskApi {
     public ResponseEntity<?> findAll(@RequestBody ListTaskRequest listTaskRequest) {
         Integer page = listTaskRequest.getPage() != null?listTaskRequest.getPage():1;
         int pageSize = listTaskRequest.getPageSize() != null?listTaskRequest.getPageSize(): TaskConstant.pageSizeDefault;
-        return ResponseEntity.ok(taskService.findAll((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
+        return ResponseEntity.ok(taskService.findAll(page, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
     }
 
     @PostMapping("/register")
@@ -58,15 +58,14 @@ public class TaskApi {
     }
 
     @GetMapping("/hashtag/{userId}")
-    public ResponseEntity<?> getTaskByHashtag(@PathVariable("userId") String userId){
-        return ResponseEntity.ok(taskService.getTaskByHashtag(userId));
+    public ResponseEntity<?> getTaskByHashtag(@PathVariable("userId") String userId,
+                                              @RequestParam String hashtag){
+        return ResponseEntity.ok(taskService.getTaskByHashtag(userId, hashtag));
     }
 
     @PostMapping("/count")
     public ResponseEntity<?> getTotalItem(@RequestBody ListTaskRequest listTaskRequest){
-        Integer page = listTaskRequest.getPage() != null?listTaskRequest.getPage():1;
-        int pageSize = listTaskRequest.getPageSize() != null?listTaskRequest.getPageSize():TaskConstant.pageSizeDefault;
-        return ResponseEntity.ok(taskService.getTotalItem((page-1) * pageSize, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
+        return ResponseEntity.ok(taskService.getTotalItem(listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
     }
 
     @GetMapping("/opened/{userId}")

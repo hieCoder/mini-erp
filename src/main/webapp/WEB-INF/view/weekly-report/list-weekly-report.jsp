@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-12">
         <div class="row">
-            <div class="col-xl-2">
+            <div class="col-xl-2 list-staff-container">
                 <div>
                     <h5 class="mb-1">Staffs</h5>
                     <p class="text-muted">Click to any staff to see info about weekly report of that staff</p>
@@ -38,13 +38,22 @@
                 <!--end card-->
             </div> <!-- end col-->
 
-            <div class="col-xl-10">
+            <div class="col-xl-10 list-wr-container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <c:if test="${param.createSuccess != null}">
+                            <div class="alert alert-success mb-2">
+                                Create success!
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex align-items-center">
                             <h5 class="card-title mb-0 flex-grow-1">Weekly report</h5>
                             <div class="flex-shrink-0">
-                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
+                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#createReport"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
                             </div>
                         </div>
                     </div>
@@ -65,7 +74,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive table-card">
-                            <table class="table align-middle table-nowrap mb-0 w-100" style="margin-top: 0px!important;" id="weekly-report-table">
+                            <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="weekly-report-table">
                                 <thead class="table-light text-muted">
                                 <tr>
                                     <th>ID</th>
@@ -78,7 +87,7 @@
                             </table>
                             <!--end table-->
                         </div>
-                        <div class="d-flex justify-content-center mt-4">
+                        <div class="d-flex justify-content-center">
                             <div class="pagination-wrap hstack gap-2">
                                 <ul id="pagination" class="pagination mb-0"></ul>
                             </div>
@@ -91,99 +100,230 @@
     </div>
 </div> <!-- end row-->
 
+<!-- create modal -->
+<div class="modal fade" id="createReport" tabindex="-1" aria-labelledby="createReportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportLabel">Create weekly report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="create-wr-form">
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input name="title" type="text" class="form-control" id="title">
+                        <small class="form-message"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="this-week-content" class="col-form-label">This week's content:</label>
+                        <div class="form-control content-report" id="this-week-content" contenteditable="true"></div>
+                        <small class="form-message"></small>
+                        <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
+                    </div>
+                    <div class="mb-3">
+                        <label for="next-week-content" class="col-form-label">Next week's content:</label>
+                        <div class="form-control content-report" id="next-week-content" contenteditable="true"></div>
+                        <small class="form-message"></small>
+                        <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success" style="margin-right:2px;">Create</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="/assets/custom/js/weekly-report/weekly-report.js"></script>
 <script>
     var tableWR = '';
     var pagingObj = {
+        staffId: '',
         page: 1,
         pageSize: $('#page-count-select').val()
     }
 
     $(document).ready(function (){
-        callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
-            rs.forEach(function (user, index) {
-                var staff = createStaffE(user);
-                $('#staff-list').append(staff);
-            });
-            var staffFirst = $('#staff-list').find('.staff-name').first();
-            staffFirst.addClass('text-decoration-underline');
-            var staffId = $(staffFirst).data('id');
 
-            callAjaxByJsonWithData('/api/v1/users/'+staffId, 'GET', null, function (user) {
-                tableWR = $('#weekly-report-table').DataTable({
-                    ajax: {
-                        url: getListApiUrl(staffId, 1, pagingObj.pageSize),
-                        method: 'GET',
-                        dataSrc: ''
+        if(isDeleveloper()){
+            $('.list-staff-container').remove();
+            $('.list-wr-container').toggleClass('col-xl-10 col-xl-12');
+            pagingObj.staffId = userCurrent.id;
+        } else{
+            callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                rs.forEach(function (user, index) {
+                    var staff = createStaffE(user);
+                    $('#staff-list').append(staff);
+                });
+                var staffFirst = $('#staff-list').find('.staff-name').first();
+                staffFirst.addClass('text-decoration-underline');
+                pagingObj.staffId = $(staffFirst).data('id');
+            });
+
+            $(document).on('click', '.staff-name', function (e){
+                $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
+                $(this).addClass('text-decoration-underline');
+                pagingObj.staffId = $(this).data('id');
+                pagingObj.page = 1;
+                tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+                    pagingObj.page, pagingObj.pageSize)).load();
+            });
+        }
+
+        callAjaxByJsonWithData('/api/v1/users/'+pagingObj.staffId, 'GET', null, function (user) {
+            tableWR = $('#weekly-report-table').DataTable({
+                ajax: {
+                    url: getListApiUrl(pagingObj.staffId, 1, pagingObj.pageSize),
+                    method: 'GET',
+                    dataSrc: function (json) {
+                        if(json.length != 0) {
+                            loadPaging();
+                            $('#pagination').addClass('mt-4');
+                        }
+                        else {
+                            removePagingIfExsit();
+                            $('#pagination').removeClass('mt-4');
+                        }
+                        return json;
+                    }
+                },
+                columns: [
+                    {data: 'id'},
+                    {
+                        data: 'title',
+                        render: function(data, type, row) {
+                            return `<a href="/weekly-reports/`+ row.id +`" class="fw-medium link-primary text-decoration-underline">` + data + `</a>`;
+                        }
                     },
-                    columns: [
-                        {data: 'id'},
-                        {
-                            data: 'title',
-                            render: function(data, type, row) {
-                                return `<a href="#" class="fw-medium link-primary">` + data + `</a>`;
-                            }
-                        },
-                        {data: 'user.fullname'},
-                        {data: 'createdDate'}
-                    ],
-                    ordering: false,
-                    searching: false,
-                    lengthChange: false,
-                    paging: false,
-                    info: false
+                    {data: 'user.fullname'},
+                    {data: 'createdDate'}
+                ],
+                ordering: false,
+                searching: false,
+                lengthChange: false,
+                paging: false,
+                info: false
+            });
+
+            $('#page-count-select').on('change', function() {
+                var selectedValue = $(this).val();
+                pagingObj.page = 1;
+                pagingObj.pageSize = selectedValue;
+                tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+                    pagingObj.page, pagingObj.pageSize)).load();
+            });
+        });
+
+        Validator({
+            form:'#create-wr-form',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title'),
+                Validator.isRequired('#this-week-content'),
+                Validator.isRequired('#next-week-content')
+            ],
+            onSubmit: function (formData) {
+                var data = {};
+                formData.forEach((value, key) => data[key] = value);
+                console.log(data);
+                formData.append("currentWeeklyContent", $('#this-week-content').html());
+                formData.append("nextWeeklyContent", $('#next-week-content').html());
+                formData.append("userId", userCurrent.id);
+                callAjaxByJsonWithDataForm("/api/v1/weekly-reports", "POST", formData, function (rs) {
+                    window.location.href = "/weekly-reports?createSuccess";
                 });
+            }
+        });
+    });
 
-                //loadPaging();
+    $(document).on('input', '.content-report', function (e){
 
-                $('#page-count-select').on('change', function() {
-                    var selectedValue = $(this).val();
-                    pagingObj.pageSize = selectedValue;
-                    console.log(selectedValue);
+        const contentReportE = $(this);
+        var ulElement = $(contentReportE).siblings('.list-title-by-hashtag');
+
+        const enteredText = contentReportE.html();
+        const lastIndexOfHash = enteredText.lastIndexOf('#');
+
+        if (lastIndexOfHash !== -1) {
+            const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
+            if (textAfterLastHash.indexOf("&nbsp;") === -1 && textAfterLastHash.indexOf(" ") === -1) {
+                var hashtag = '';
+                if (textAfterLastHash.indexOf('<') !== -1) {
+                    const indexOfLessThan = textAfterLastHash.indexOf('<');
+                    hashtag = textAfterLastHash.slice(0, indexOfLessThan);
+                } else {
+                    hashtag = textAfterLastHash;
+                }
+
+                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+hashtag,
+                    'GET', null, function (rs) {
+                        ulElement.empty();
+                        rs.forEach(function (e) {
+                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
+                                ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
+                        });
+                    });
+            }
+        } else{
+            ulElement.empty();
+        }
+    });
+
+    $(document).on('click', '.hashtag-e', function (e){
+        var taskTitle = $(this).text();
+        var taskId = $(this).data('task-id');
+        var aE = `<a class="fw-bold" href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+
+        const containerListHashtag = $(this).closest('.list-title-by-hashtag');
+        const contentE = containerListHashtag.siblings('.content-report');
+
+        const lastIndex = contentE.html().lastIndexOf('#');
+        if (lastIndex !== -1) {
+            const newContent = contentE.html().substring(0, lastIndex) + aE;
+            contentE.empty().append(newContent);
+        }
+
+        focusElement(contentE);
+
+        containerListHashtag.empty();
+    });
+
+    function removePagingIfExsit(){
+        if (window.pagObj) {
+            window.pagObj.twbsPagination('destroy');
+        }
+    }
+
+    function loadPaging(){
+        callAjaxByJsonWithData(getCountListApiUrl(pagingObj.staffId), 'GET', null, function (totalItem) {
+
+            removePagingIfExsit();
+
+            //paging
+            var totalPages = 0;
+            if(totalItem <= pagingObj.pageSize) totalPages = 1;
+            else totalPages = Math.ceil(totalItem / pagingObj.pageSize);
+            var currentPage = pagingObj.page;
+
+            $(function () {
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    startPage: currentPage,
+                    onPageClick: function (event, page) {
+                        if (currentPage != page) {
+                            pagingObj.page = page;
+                            tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+                                pagingObj.page, pagingObj.pageSize)).load();
+                            currentPage = page;
+                        }
+                    }
                 });
             });
         });
-    });
-
-    $(document).on('click', '.staff-name', function (e){
-        $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
-        $(this).addClass('text-decoration-underline');
-        var staffId = $(this).data('id');
-        callAjaxByJsonWithData('/api/v1/users/'+staffId, 'GET', null, function (user) {
-            tableWR.ajax.url(getListApiUrl(staffId, 1, pagingObj.pageSize)).load();
-        });
-    });
-
-
-
-    // function loadPaging(){
-    //     callAjaxByJsonWithData(getCountListApiUrl(), 'GET', null, function (totalItem) {
-    //
-    //         if (window.pagObj) {
-    //             window.pagObj.twbsPagination('destroy');
-    //         }
-    //
-    //         //paging
-    //         var totalPages = 0;
-    //         if(totalItem <= tasksRequest.pageSize) totalPages = 1;
-    //         else totalPages = Math.ceil(totalItem / tasksRequest.pageSize);
-    //         var currentPage = tasksRequest.page;
-    //
-    //         $(function () {
-    //             window.pagObj = $('#pagination').twbsPagination({
-    //                 totalPages: totalPages,
-    //                 startPage: currentPage,
-    //                 onPageClick: function (event, page) {
-    //                     if (currentPage != page) {
-    //                         pagingObj.page = page;
-    //                         tableWR.ajax.reload();
-    //                         currentPage = page;
-    //                     }
-    //                 }
-    //             });
-    //         });
-    //     });
-    // }
+    }
 </script>
 </body>
 </html>

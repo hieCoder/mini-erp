@@ -200,6 +200,8 @@
 </div>
 
 <script>
+    var htmlElement = document.documentElement;
+    htmlElement.setAttribute("data-preloader", "block");
     const currentDay = new Date();
 
     const day = String(currentDay.getDate()).padStart(2, '0');
@@ -379,7 +381,7 @@
                     xhtml += '<li class="list-group-item ps-0">' +
                         '<div class="d-flex align-items-start">' +
                         '<div class="flex-grow-1">' +
-                        '<label class="form-check-label mb-0 ps-2" for="task_one"><a href="/tasks/' + task.id + '" target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + task.title + '" >' + task.title + '</a></label>' +
+                        '<label class="form-check-label mb-0 ps-2" for="task_one"><a href="/tasks/' + task.id + '" target="_blank">' + task.title + '</a></label>' +
                         '</div>' +
                         '<div class="flex-shrink-0 ms-2">' +
                         '<p class="text-muted fs-12 mb-0">' + task.dueOrCloseDate + '</p>' +
@@ -390,14 +392,12 @@
                 $(".counter-opened-task").text(getTaskCountByCode(data.statusTaskCounts, T_OPENED));
                 $(".counter-reopened-task").text(getTaskCountByCode(data.statusTaskCounts, T_REOPENED));
                 taskBodyElement.innerHTML = xhtml;
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                })
             }
         }, function (error) {
             console.log("Call API Error")
             console.log(error)
         })
+        htmlElement.setAttribute("data-preloader", "disable");
     })
 </script>
 </body>

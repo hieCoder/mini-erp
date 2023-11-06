@@ -37,7 +37,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Total Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-total-task" data-target="234">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-total-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"> <i class="ri-arrow-up-line align-middle"></i> 17.32 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -58,7 +58,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Closed Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-closed-task" data-target="116.21">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-closed-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 2.52 % </span> vs. previous month</p>
                     </div>
                     <div>
@@ -79,7 +79,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Opened Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-opened-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-opened-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -100,7 +100,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-reopend-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-reopend-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -121,7 +121,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Postponed Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-postponed-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-postponed-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -142,7 +142,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Registered Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value counter-registered-task" data-target="64.5">0</span></h2>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-registered-task">0</span></h2>
                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
@@ -187,7 +187,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -206,7 +206,7 @@
                             <div class="input-light">
                                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
                                     <option value="" selected>All</option>
-                                    <option value="REGISTER">Registered</option>
+                                    <option value="REGISTERED">Registered</option>
                                     <option value="OPENED">Opened</option>
                                     <option value="POSTPONED">Postponed</option>
                                     <option value="REOPENED">Reopend</option>
@@ -239,7 +239,7 @@
             <!--end card-body-->
             <div class="card-body">
                 <div class="table-responsive table-card">
-                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin-top: 0px!important;" id="tasksTable">
+                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="tasksTable">
                         <thead class="table-light text-muted">
                         <tr>
                             <th scope="col" style="width: 40px;">
@@ -261,7 +261,7 @@
                     </table>
                     <!--end table-->
                 </div>
-                <div class="d-flex justify-content-center mt-4">
+                <div class="d-flex justify-content-center">
                     <div class="pagination-wrap hstack gap-2">
                         <ul id="pagination" class="pagination mb-0"></ul>
                     </div>
@@ -344,7 +344,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success" id="add-btn">Register</button>
+                        <button type="submit" class="btn btn-success">Register</button>
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -465,12 +465,13 @@
 
     $(document).ready(function (){
         callAjaxByJsonWithData('/api/v1/tasks/status-task-count', 'GET', null, function (rs) {
-            $(".counter-total-task").attr("data-target", getTaskCountByCode(rs, T_ALL));
-            $(".counter-closed-task").attr("data-target", getTaskCountByCode(rs, T_CLOSED));
-            $(".counter-postponed-task").attr("data-target", getTaskCountByCode(rs, T_POSTPONED));
-            $(".counter-opened-task").attr("data-target", getTaskCountByCode(rs, T_OPENED));
-            $(".counter-registered-task").attr("data-target", getTaskCountByCode(rs, T_REGISTERED));
-            $(".counter-reopend-task").attr("data-target", getTaskCountByCode(rs, T_REOPENED));
+            //$(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
+            $(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
+            $(".counter-closed-task").text(getTaskCountByCode(rs, T_CLOSED));
+            $(".counter-postponed-task").text(getTaskCountByCode(rs, T_POSTPONED));
+            $(".counter-opened-task").text(getTaskCountByCode(rs, T_OPENED));
+            $(".counter-registered-task").text(getTaskCountByCode(rs, T_REGISTERED));
+            $(".counter-reopend-task").text(getTaskCountByCode(rs, T_REOPENED));
         });
 
         tableTask = $('#tasksTable').DataTable({
@@ -482,7 +483,14 @@
                     return JSON.stringify(tasksRequest);
                 },
                 dataSrc: function (json) {
-                    if(json.length != 0) loadPaging();
+                    if(json.length != 0) {
+                        loadPaging();
+                        $('#pagination').addClass('mt-4');
+                    }
+                    else {
+                        removePagingIfExsit();
+                        $('#pagination').removeClass('mt-4');
+                    }
                     return json;
                 }
             },
@@ -522,7 +530,7 @@
                                             </li>`;
                         }
                         return `<div class="d-flex">
-                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary">` + data + `</a></div>
+                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary text-decoration-underline" href="/tasks/`+ row.id +`">` + data + `</a></div>
                                     <div class="flex-shrink-0 ms-4">
                                         <ul class="list-inline tasks-list-menu mb-0">
                                             <li class="list-inline-item"><a href="/tasks/`+ row.id +`"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>`
@@ -558,24 +566,28 @@
         $('#filter-btn').on('click', function() {
             tasksRequest.search = $('#search-input').val();
             tasksRequest.statusTask = $('#idStatus').val();
+            tasksRequest.page = 1;
             tableTask.ajax.reload();
         });
 
         $('#page-count-select').on('change', function() {
             var selectedValue = $(this).val();
-            tasksRequest.pageSize = selectedValue;
             tasksRequest.page = 1;
+            tasksRequest.pageSize = selectedValue;
             tableTask.ajax.reload();
-            loadPaging();
         });
     });
+
+    function removePagingIfExsit(){
+        if (window.pagObj) {
+            window.pagObj.twbsPagination('destroy');
+        }
+    }
 
     function loadPaging(){
         callAjaxByJsonWithData('/api/v1/tasks/count', 'POST', tasksRequest, function (totalItem) {
 
-            if (window.pagObj) {
-                window.pagObj.twbsPagination('destroy');
-            }
+            removePagingIfExsit();
 
             //paging
             var totalPages = 0;
@@ -605,10 +617,10 @@
         var isFirstTimeOpenModalRegister = true;
         $('#registerTaskModal').on('shown.bs.modal', function() {
             var selectElement = $('#selectUsername');
-            selectElement.empty();
 
             // username
             if(isDeleveloper()){
+                selectElement.empty();
                 $('.username-register-task').text(userCurrent.fullname);
                 var option = $('<option></option>');
                 option.attr('value', userCurrent.id);
@@ -616,6 +628,7 @@
                 selectElement.append(option);
             } else{
                 if (isFirstTimeOpenModalRegister) {
+                    selectElement.empty();
                     callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
                         rs.forEach(function(user) {
                             var option = $('<option></option>');
@@ -742,6 +755,8 @@
             $('#title-edit').val(rs.title);
 
             $('#content-edit').html(rs.content);
+            $('#editTaskForm .ql-toolbar.ql-snow').remove();
+            activeEditor("#editTaskForm");
 
             var statusCode = rs.statusTask.code;
             $('#statusTaskEdit').replaceWith('<span id="statusTaskEdit" class="badge ' + getStatusColor(statusCode) + '">' + statusCode + '</span>');
@@ -778,7 +793,9 @@
             rules:[
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#content-edit'),
-                Validator.isRequired("#dueDateEdit"),
+                Validator.isThen("#dueDateEdit", function () {
+                    return $('#selectActionEdit').val();
+                }),
                 Validator.isDayAfterTodayOrNull("#dueDateEdit", 'Due day is not before today')
             ],
             onSubmit: function (formData) {
