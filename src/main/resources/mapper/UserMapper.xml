@@ -140,13 +140,15 @@
     </resultMap>
 
     <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">
-        SELECT ID, FULLNAME
+        SELECT ID, FULLNAME, AVATAR, POSITION
         FROM USER;
     </select>
 
     <resultMap id="fullnameResultMap" type="java.util.Map">
         <result property="id" column="ID"/>
         <result property="fullname" column="FULLNAME"/>
+        <result property="avatar" column="AVATAR"/>
+        <result property="position" column="POSITION"/>
     </resultMap>
 
     <resultMap id="birthdayResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">

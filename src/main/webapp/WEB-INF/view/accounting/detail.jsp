@@ -451,8 +451,6 @@
     const INVALID_FILES_SIZE = ' <div class="alert alert-danger" role="alert">' +
         '<strong> Invalid </strong> Maximum Size Files is ${setting.maxFileSize}' +
         '</div>'
-    var imageType = "${setting.listTypeImage}";
-    var fileType = "${setting.listTypeFile}";
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#editModal #validFileText");
@@ -646,6 +644,9 @@
         let html = ""
         handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
             html += showFileUploaded(fileName, fileSize, url, "view")
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            })
             $("#viewAccount .showFilesUploaded").html(html)
         })
     }
@@ -675,10 +676,6 @@
         $('#editModal div.showFilesUploaded > div[data-name="' + fileName + '"]').remove();
         $("#deleteFileModal").modal("hide")
         dropzoneEdit.options.maxFiles = dropzoneEdit.options.maxFiles + 1;
-    })
-
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
     })
 
     let listTypeFileArr = validExtensions
