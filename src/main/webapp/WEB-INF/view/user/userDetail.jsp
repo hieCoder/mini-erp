@@ -146,7 +146,8 @@
                                         <label for="phone" class="form-label">Phone Number</label>
                                         <input type="number" class="form-control"
                                                id="phone" name="phone" placeholder="0123456789"
-                                               value="${user.phone}" required pattern="[0-9]{10}">
+                                               value="${user.phone}" oninput="this.value = this.value.slice(0, 10)"
+                                               required>
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-6">
@@ -154,8 +155,8 @@
                                         <label for="emergencyPhone" class="form-label">Emergency Phone</label>
                                         <input type="number" class="form-control"
                                                id="emergencyPhone" name="emergencyPhone" placeholder="0123456789"
-                                               value="${user.emergencyPhone}" required
-                                               pattern="[0-9]{10}">
+                                               value="${user.emergencyPhone}"
+                                               oninput="this.value = this.value.slice(0, 10)" required>
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-12">
@@ -199,8 +200,8 @@
                                 </div><!--end col-->
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
-                                        <button type="submit" class="btn btn-primary" onclick="addLoadingPrimary(this)"
-                                        >Updates
+                                        <button type="submit" class="btn btn-primary" id="updateBasic">
+                                            Updates
                                         </button>
                                         <a class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
@@ -352,8 +353,7 @@
                                     <div class="hstack gap-2 justify-content-end">
                                         <div id="error-message" class="text-danger text-xl-end"
                                              style="font-size: 15px"></div>
-                                        <button type="submit" class="btn btn-primary" onclick="addLoadingPrimary(this)"
-                                                id="updateDetail">Updates
+                                        <button type="submit" class="btn btn-primary" id="updateDetail">Updates
                                         </button>
                                         <a class="btn btn-soft-success cancle-button">Cancel</a>
                                     </div>
@@ -407,16 +407,12 @@
                                 <!-- Alert Type File -->
                                 <div class="alert alert-danger alert-border-left alert-dismissible fade show"
                                      role="alert">
-                                    <i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> -
-                                    You cannot upload image files
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
+                                    <%--Show Message Error--%>
                                 </div>
-
                             </div>
                             <div class="hstack gap-2 justify-content-end">
                                 <button type="submit" class="btn btn-primary" id="saveFileResume"
-                                        onclick="addLoadingPrimary(this)">Save
+                                        onclick="addLoadingPrimary(this)" disabled>Save
                                 </button>
                                 <a class="btn btn-soft-success cancle-button" id="cancelFileResume">Cancel</a>
                             </div>
@@ -532,21 +528,6 @@
         </div>
     </div>
 </form>
-<footer class="footer">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <script>document.write(new Date().getFullYear())</script>
-                © Velzon.
-            </div>
-            <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block">
-                    Design & Develop by Themesbrand
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 
 <%--Modal Add Contract--%>
 <form id="formAddContract">
@@ -997,8 +978,8 @@
         }
     });
 
+    // Check Basic Information on Button Update Detail User
     document.addEventListener("DOMContentLoaded", function () {
-        // Check Basic Information on Button Update Detail User
         const form = document.getElementById('formUpdateUser');
         const requiredFields = form.querySelectorAll("[required]");
 
@@ -1042,7 +1023,7 @@
 
             const errorMessage = document.getElementById("error-message");
             if (hasEmptyFields) {
-                errorMessage.textContent = "Not filled in all required information!";
+                errorMessage.textContent = "Basic information has not been filled in yet!";
             } else if (hasInvalidFields) {
                 errorMessage.textContent = "Some fields are incorrect!";
             } else {
@@ -1061,9 +1042,7 @@
 
     // File Resume
     FilePond.registerPlugin(
-        FilePondPluginFileEncode,
-        FilePondPluginImageExifOrientation,
-        FilePondPluginImagePreview
+        FilePondPluginFileEncode
     );
 
     var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
@@ -1093,6 +1072,19 @@
             if (!(file.fileSize > 100 * 1024 * 1024) && !file.fileType.includes('image')) {
                 alertFileType.style.display = 'none';
             }
+
+            var saveBtn = document.getElementById('saveFileResume');
+
+            if (pond.getFiles().length > 0) {
+                saveBtn.disabled = false;
+            } else saveBtn.disabled = true;
+
+            pond.on('removefile', (file) => {
+                if (pond.getFiles().length > 0) {
+                    saveBtn.disabled = false;
+                } else saveBtn.disabled = true;
+            });
+
         });
     })
 
@@ -1101,9 +1093,9 @@
         errorSelector: '.form-message',
         rules: [],
         onSubmit: function (formData) {
+            addLoadingPrimary(document.getElementById('updateDetail'));
+            addLoadingPrimary(document.getElementById('updateBasic'));
             disableBtn();
-
-            formData.append('id', '${user.id}');
 
             // ADD dateOfBirth after format
             var dobString = document.getElementById('dateOfBirth').value;
@@ -1134,7 +1126,7 @@
 
             var result = filenamesResume.join(",");
             formData.append('remainResumeFiles', result);
-
+            formData.append('id', '${user.id}');
             if (isNewPassword) {
                 var newPassword = document.getElementById('newPassword').value;
                 if (newPassword != '' && isFormValid == true) {
@@ -1167,9 +1159,18 @@
 
         // Handler button Delete in modal Delete
         deleteUserButtons.addEventListener("click", function () {
+            disableBtn();
+            $('#deleteUserModal').modal('hide');
+            Swal.fire({
+                title: 'Wait a minute...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
             if (userId) {
                 callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
-                    localStorage.setItem('result', 'delUserSuccess');
+                    sessionStorage.setItem('result', 'delUserSuccess');
                     window.location.href = "/users";
                 });
             }
@@ -1632,7 +1633,7 @@
                         Swal.close();
 
                         Swal.fire({
-                            title: 'Loading...',
+                            title: 'Wait a minute...',
                             allowOutsideClick: false,
                             didOpen: () => {
                                 Swal.showLoading();
@@ -1686,7 +1687,8 @@
                                 data: 'contract',
                                 render: function (data, type, row) {
                                     if (data != null) {
-                                        return '<a class="cut-file-name" href="' + data + '">' + data + '</a>';
+                                        var fileName = data.substring(data.lastIndexOf('/') + 1);
+                                        return '<a class="cut-file-name" href="' + data + '" data-toggle="tooltip" data-bs-placement="bottom" title="' + fileName + '">' + data + '</a>';
                                     }
                                     return '';
                                 }
@@ -1700,6 +1702,9 @@
                         info: false,
                         initComplete: function () {
                             cutShortLink();
+                            $(function () {
+                                $('[data-toggle="tooltip"]').tooltip();
+                            })
                         }
                     });
                 }
@@ -1822,17 +1827,35 @@
         var content = element.textContent;
         element.innerHTML = `
             <span class="d-flex align-items-center">
-            <span class="spinner-border flex-shrink-0" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </span>
-            <span class="flex-grow-1 ms-2 loading-primary">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2 loading-primary">
 
+                </span>
             </span>
-        </span>
         `;
 
         document.querySelector('.loading-primary').textContent = content;
     }
+
+    // Loading Danger
+    // function addLoadingDanger(element) {
+    //     element.classList.add("btn-load");
+    //     var content = element.textContent;
+    //     element.innerHTML = `
+    //         <span class="d-flex align-items-center">
+    //             <span class="spinner-border flex-shrink-0" role="status">
+    //                 <span class="visually-hidden">Loading...</span>
+    //             </span>
+    //             <span class="flex-grow-1 ms-2 loading-da">
+    //
+    //             </span>
+    //         </span>
+    //     `;
+    //
+    //     document.querySelector('.loading-primary').textContent = content;
+    // }
 </script>
 
 <%--Disable Button--%>
