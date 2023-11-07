@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -221,6 +222,11 @@ public class UserServiceImpl implements UserService {
         List<Map<String, Object>> maps = userMapper.getAllFullname();
         updateValueInList(maps, "avatar");
         return maps;
+    }
+
+    @Override
+    public List<User> findUserBirthdayToday(LocalDate date) {
+        return userMapper.getTodayBirthday(date);
     }
 
     public void updateValueInList(List<Map<String, Object>> maps, String oldKey) {

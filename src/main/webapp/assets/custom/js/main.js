@@ -29,15 +29,15 @@ const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" s
     '</button>';
 //
 // const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
-//     '<span class="d-flex align-items-center">' +
-//     '<span class="spinner-grow flex-shrink-0" role="status">' +
-//     '<span class="visually-hidden">Loading...</span>' +
-//     '</span>' +
-//     '<span class="flex-grow-1 ms-2">' +
-//     'Loading...' +
-//     '</span>' +
-//     '</span>' +
-//     '</button>';
+// '<span class="d-flex align-items-center">' +
+// '<span class="spinner-grow flex-shrink-0" role="status">' +
+// '<span class="visually-hidden">Loading...</span>' +
+// '</span>' +
+// '<span class="flex-grow-1 ms-2">' +
+// 'Loading...' +
+// '</span>' +
+// '</span>' +
+// '</button>';
 
 const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" style="margin-left: 8px">' +
     '<span class="d-flex align-items-center">' +
@@ -176,34 +176,34 @@ function showFileUploaded(fileName, size, url, mode) {
 
     if (mode === "edit") {
         html = "<button type='button' class='btn btn-icon text-muted btn-sm fs-18 deleteFileBtn'>"
-            + "    <i class='ri-delete-bin-fill' data-name='" + fileName + "'></i>"
-            + "  </button>"
+            + " <i class='ri-delete-bin-fill' data-name='" + fileName + "'></i>"
+            + " </button>"
     }
 
     return "<div class='col-xxl-4 col-lg-6' data-name='" + fileName + "'>"
-        + "    <div class='border rounded border-dashed p-2'>"
-        + "        <div class='d-flex align-items-center'>"
-        + "            <div class='flex-shrink-0 me-3'>"
-        + "                <div class='avatar-sm'>"
-        + "                    <div class='avatar-title bg-light text-secondary rounded fs-24'>"
-        + "                        <i class='ri-file-download-line'></i>"
-        + "                    </div>"
-        + "                </div>"
-        + "            </div>"
-        + "            <div class='flex-grow-1 overflow-hidden'>"
-        + "                <h5 class='fs-13 mb-1'><a href='" + url + "' download data-toggle='tooltip' data-placement='bottom' title='" + fileName + "' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
-        + "                <div>" + bytesToMBShow(size) + " MB</div>"
-        + "            </div>"
-        + "            <div class='flex-shrink-0 ms-2'>"
-        + "                <div class='d-flex gap-1'>"
-        + "                    <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
-        + "                        <i class='ri-download-2-line' data-url='" + url + "'></i>"
-        + "                    </button>"
+        + " <div class='border rounded border-dashed p-2'>"
+        + " <div class='d-flex align-items-center'>"
+        + " <div class='flex-shrink-0 me-3'>"
+        + " <div class='avatar-sm'>"
+        + " <div class='avatar-title bg-light text-secondary rounded fs-24'>"
+        + " <i class='ri-file-download-line'></i>"
+        + " </div>"
+        + " </div>"
+        + " </div>"
+        + " <div class='flex-grow-1 overflow-hidden'>"
+        + " <h5 class='fs-13 mb-1'><a href='" + url + "' download data-toggle='tooltip' data-placement='bottom' title='" + fileName + "' class='text-body text-truncate d-block'>" + fileName + "</a></h5>"
+        + " <div>" + bytesToMBShow(size) + " MB</div>"
+        + " </div>"
+        + " <div class='flex-shrink-0 ms-2'>"
+        + " <div class='d-flex gap-1'>"
+        + " <button type='button' class='btn btn-icon text-muted btn-sm fs-18 downFileBtn'>"
+        + " <i class='ri-download-2-line' data-url='" + url + "'></i>"
+        + " </button>"
         + html
-        + "                </div>"
-        + "            </div>"
-        + "        </div>"
-        + "    </div>"
+        + " </div>"
+        + " </div>"
+        + " </div>"
+        + " </div>"
         + "</div>";
 }
 function convertExtensionsList(extensions) {
@@ -311,45 +311,45 @@ function focusElement(element) {
 }
 
 // function createLoadingIndicator() {
-//     if ($('#loading-indicator').length === 0) {
-//         var loadingIndicator = $('<div>', {
-//             id: 'loading-indicator',
-//             class: 'text-center',
-//             css: {
-//                 position: 'absolute',
-//                 top: '50%',
-//                 left: '50%',
-//                 transform: 'translate(-50%, -50%)'
-//             }
-//         });
+// if ($('#loading-indicator').length === 0) {
+// var loadingIndicator = $('<div>', {
+// id: 'loading-indicator',
+// class: 'text-center',
+// css: {
+// position: 'absolute',
+// top: '50%',
+// left: '50%',
+// transform: 'translate(-50%, -50%)'
+// }
+// });
 //
-//         var spinnerIcon = $('<i>', {
-//             class: 'fa fa-spinner fa-spin fa-3x'
-//         });
+// var spinnerIcon = $('<i>', {
+// class: 'fa fa-spinner fa-spin fa-3x'
+// });
 //
-//         var loadingText = $('<p>', {
-//             text: 'Loading...'
-//         });
+// var loadingText = $('<p>', {
+// text: 'Loading...'
+// });
 //
-//         loadingIndicator.append(spinnerIcon, loadingText);
+// loadingIndicator.append(spinnerIcon, loadingText);
 //
-//         $('body').append(loadingIndicator);
-//     }
+// $('body').append(loadingIndicator);
+// }
 // }
 
 // function showLoading(contentId) {
-//     if ($('#loading-indicator').length === 0) {
-//         createLoadingIndicator();
-//     } else {
-//         $('#loading-indicator').show();
-//     }
+// if ($('#loading-indicator').length === 0) {
+// createLoadingIndicator();
+// } else {
+// $('#loading-indicator').show();
+// }
 //
-//     $('#' + contentId).hide();
+// $('#' + contentId).hide();
 // }
 
 // function hideLoading(contentId) {
-//     $('#loading-indicator').hide();
-//     $('#' + contentId).show();
+// $('#loading-indicator').hide();
+// $('#' + contentId).show();
 // }
 
 

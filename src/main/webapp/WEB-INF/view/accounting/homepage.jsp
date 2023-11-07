@@ -9,11 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Management</title>
     <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
+    <script src="../../../assets/custom/js/accounting/accounting.js"></script>
 </head>
 <body>
 <c:set var="totalExpense" value="0" scope="page"/>
 <c:set var="totalRevenue" value="0" scope="page"/>
-<div class="row">
+<div class="row position-relative">
     <div class="col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">ACCOUNTING</h4>
@@ -27,312 +28,316 @@
 
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="shadow p-3 bg-white rounded">
-        <div class="row">
-            <div class="col-12">
-                <h3 class="text-center">Accounting ${month}</h3>
-            </div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-md-4 col-xl-6">
-                <div class="form-group">
-                    <label for="account-day" class="form-label mb-0 text-muted">Filter by year: </label>
-                    <div class="input-group" id="account-day">
-                        <select class="form-select rounded-pill" aria-label="Default select example" id="account-year">
-                            <option value="">-- Select year --</option>
-                        </select>
-                        <select class="form-select rounded-pill" aria-label="Default select example" id="account-month"
-                                style="display: none;">
-                            <option value="">-- Select month --</option>
-                        </select>
-                    </div>
+    <div class="row" id="containerAccounting" style="visibility: hidden;">
+        <div class="shadow p-3 bg-white rounded">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-center">Accounting ${month}</h3>
                 </div>
             </div>
-            <div class="col-md-4 col-xl-6">
-                <div class="form-group">
-                    <label for="datePickerStart" class="form-label mb-0 text-muted">Start Date</label>
-                    <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"
-                           data-date-format="d M, Y" data-deafult-date="" id="datePickerStart">
-                    <label for="datePickerEnd" class="form-label mb- mt-3 text-muted">End Date</label>
-                    <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"
-                           data-date-format="d M, Y" data-deafult-date="" id="datePickerEnd">
-                </div>
-                <button type="button" class="btn btn-primary btn-label rounded-pill mt-3" onclick="loadPage(1)"><i
-                        class="ri-equalizer-fill label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header border-0">
-                        <div class="d-flex align-items-center">
-                            <h5 class="card-title mb-0 flex-grow-1">Accounting Datatable</h5>
-                            <div class="flex-shrink-0">
-                                <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal"
-                                        data-bs-target="#createModal"><i
-                                        class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i> Create
-                                    Account
-                                </button>
-                                <%--                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>--%>
+            <div class="row mt-1">
+                <div class="col-md-4 col-xl-6">
+                    <div class="form-group">
+                        <label for="account-day" class="form-label mb-0 text-muted">Filter by year: </label>
+                        <div class="input-group" id="account-day">
+                            <select class="form-select rounded-pill" aria-label="Default select example"
+                                    id="account-year">
+                                <option value="">-- Select year --</option>
+                            </select>
+                            <div class="d-flex justify-content-center align-items-center d-none yearLoading">
+                                <span class="spinner-grow flex-shrink-0" role="status">
+                                    <span class="visually-hidden"> Loading...</span>
+                                </span>
                             </div>
+                            <select class="form-select rounded-pill" aria-label="Default select example"
+                                    id="account-month"
+                                    style="display: none;">
+                                <option value="">-- Select month --</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="dataTables_length" id="example_length"><label for="pageCount"
-                                                                                              class="form-label">Show
-                                        <select
-                                                name="example_length"
-                                                aria-controls="example"
-                                                class="form-select form-select-sm" id="pageCount">
-                                            <option selected value="10">10</option>
-                                            <option value="15">15</option>
-                                            <option value="20">20</option>
-                                        </select> entries</label></div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div id="example_filter" class="dataTables_filter"><label>Search:<input
-                                            type="search"
-                                            class="form-control form-control-sm"
-                                            placeholder=""
-                                            aria-controls="example"></label>
+                </div>
+                <div class="col-md-4 col-xl-6">
+                    <div class="form-group">
+                        <label for="datePickerStart" class="form-label mb-0 text-muted">Start Date</label>
+                        <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"
+                               data-date-format="d M, Y" data-deafult-date="" id="datePickerStart">
+                        <label for="datePickerEnd" class="form-label mb- mt-3 text-muted">End Date</label>
+                        <input type="text" class="form-control flatpickr-input" data-provider="flatpickr"
+                               data-date-format="d M, Y" data-deafult-date="" id="datePickerEnd">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-label rounded-pill mt-3" onclick="loadPage(1)"><i
+                            class="ri-equalizer-fill label-icon align-middle rounded-pill fs-16 me-2"></i> Filter
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <div class="d-flex align-items-center">
+                                <h5 class="card-title mb-0 flex-grow-1">Accounting Datatable</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="example_length"><label for="pageCount" class="form-label">Show
+                                            <select
+                                                    name="example_length"
+                                                    aria-controls="example"
+                                                    class="form-select form-select-sm" id="pageCount">
+                                                <option selected value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                            </select> entries</label></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="example_filter" class="dataTables_filter mb-2">
+                                            <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#createModal">
+                                                <i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i>
+                                                Create Account
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table
-                                            class="table table-bordered dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed"
-                                            style="width: 100%;" aria-describedby="example_info">
-                                        <thead>
-                                        <tr>
-                                            <th data-ordering="false"tabindex="0"
-                                                aria-controls="example" rowspan="1" colspan="1" style="width: 43.4px;"
-                                                aria-label="SR No.: activate to sort column ascending">NO.
-                                            </th>
-                                            <th data-ordering="false"tabindex="0"
-                                                aria-controls="example" rowspan="1" colspan="1" style="width: 34.4px;"
-                                                aria-label="ID: activate to sort column ascending">TRANSACTION ID
-                                            </th>
-                                            <th data-ordering="false" tabindex="0"
-                                                aria-controls="example" rowspan="1" colspan="1" style="width: 81.4px;"
-                                                aria-label="Purchase ID: activate to sort column ascending">PAY DATE
-                                            </th>
-                                            <th data-ordering="false" tabindex="0"
-                                                aria-controls="example" rowspan="1" colspan="1" style="width: 200.4px;"
-                                                aria-label="Title: activate to sort column ascending">TITLE
-                                            </th>
-                                            <th data-ordering="false"tabindex="0"
-                                                aria-controls="example" rowspan="1" colspan="1" style="width: 74.4px;"
-                                                aria-label="User: activate to sort column ascending">REVENUE
-                                            </th>
-                                            <th tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" style="width: 84.4px;"
-                                                aria-label="Assigned To: activate to sort column ascending">EXPENSE
-                                            </th>
-                                            <th tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" style="width: 76.4px;"
-                                                aria-label="Created By: activate to sort column ascending">BALANCE
-                                            </th>
-                                            <th tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" style="width: 83.4px;"
-                                                aria-label="Create Date: activate to sort column ascending">CREATED BY
-                                            </th>
-                                            <th tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" style="width: 48.4px;"
-                                                aria-label="Status: activate to sort column ascending">
-                                                NOTE
-                                            </th>
-                                            <th tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" style="width: 62.4px;"
-                                                aria-label="Priority: activate to sort column ascending">ACTION
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="table-body">
-                                        <c:choose>
-                                            <c:when test="${requestScope.list.accountResponseList != null}">
-                                                <c:forEach varStatus="loop" var="a"
-                                                           items="${requestScope.list.accountResponseList}">
-                                                    <tr class="odd">
-                                                        <td>${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</td>
-                                                        <td><a href="/accounting/detail/${a.id}"><c:out
-                                                                value="${a.id}"/></a>
-                                                        </td>
-                                                        <td style=""><c:out value="${a.payDate}"/></td>
-                                                        <td style=""><c:out value="${a.title}"/></td>
-                                                        <td class="${a.revenue > 0 ? 'text-bg-success' : ''}">
-                                                            <fmt:formatNumber
-                                                                    type="number" value="${a.revenue}"
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table
+                                                class="table table-bordered dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed"
+                                                style="width: 100%;" aria-describedby="example_info">
+                                            <thead>
+                                            <tr>
+                                                <th data-ordering="false" tabindex="0"
+                                                    aria-controls="example" rowspan="1" colspan="1"
+                                                    style="width: 43.4px;"
+                                                    aria-label="SR No.: activate to sort column ascending">NO.
+                                                </th>
+                                                <th data-ordering="false" tabindex="0"
+                                                    aria-controls="example" rowspan="1" colspan="1"
+                                                    style="width: 34.4px;"
+                                                    aria-label="ID: activate to sort column ascending">TRANSACTION ID
+                                                </th>
+                                                <th data-ordering="false" tabindex="0"
+                                                    aria-controls="example" rowspan="1" colspan="1"
+                                                    style="width: 81.4px;"
+                                                    aria-label="Purchase ID: activate to sort column ascending">PAY DATE
+                                                </th>
+                                                <th data-ordering="false" tabindex="0"
+                                                    aria-controls="example" rowspan="1" colspan="1"
+                                                    style="width: 200.4px;"
+                                                    aria-label="Title: activate to sort column ascending">TITLE
+                                                </th>
+                                                <th data-ordering="false" tabindex="0"
+                                                    aria-controls="example" rowspan="1" colspan="1"
+                                                    style="width: 74.4px;"
+                                                    aria-label="User: activate to sort column ascending">REVENUE
+                                                </th>
+                                                <th tabindex="0" aria-controls="example" rowspan="1"
+                                                    colspan="1" style="width: 84.4px;"
+                                                    aria-label="Assigned To: activate to sort column ascending">EXPENSE
+                                                </th>
+                                                <th tabindex="0" aria-controls="example" rowspan="1"
+                                                    colspan="1" style="width: 76.4px;"
+                                                    aria-label="Created By: activate to sort column ascending">BALANCE
+                                                </th>
+                                                <th tabindex="0" aria-controls="example" rowspan="1"
+                                                    colspan="1" style="width: 83.4px;"
+                                                    aria-label="Create Date: activate to sort column ascending">CREATED
+                                                    BY
+                                                </th>
+                                                <th tabindex="0" aria-controls="example" rowspan="1"
+                                                    colspan="1" style="width: 48.4px;"
+                                                    aria-label="Status: activate to sort column ascending">
+                                                    NOTE
+                                                </th>
+                                                <th tabindex="0" aria-controls="example" rowspan="1"
+                                                    colspan="1" style="width: 62.4px;"
+                                                    aria-label="Priority: activate to sort column ascending">ACTION
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="table-body">
+                                            <c:choose>
+                                                <c:when test="${requestScope.list.accountResponseList != null}">
+                                                    <c:forEach varStatus="loop" var="a"
+                                                               items="${requestScope.list.accountResponseList}">
+                                                        <tr class="odd">
+                                                            <td>${(list.pageNumber - 1) * list.pageSize + loop.index + 1}</td>
+                                                            <td><a href="/accounting/detail/${a.id}"><c:out
+                                                                    value="${a.id}"/></a>
+                                                            </td>
+                                                            <td style=""><c:out value="${a.payDate}"/></td>
+                                                            <td style=""><c:out value="${a.title}"/></td>
+                                                            <td class="${a.revenue > 0 ? 'text-bg-success' : ''}">
+                                                                <fmt:formatNumber
+                                                                        type="number" value="${a.revenue}"
+                                                                        pattern="#,##0 ₫"/></td>
+                                                            <td class="${a.expense < 0 ? 'text-bg-danger' : ''}">
+                                                                <fmt:formatNumber
+                                                                        type="number" value="${a.expense}"
+                                                                        pattern="#,##0 ₫"/></td>
+                                                            <td class="text-bg-primary"><fmt:formatNumber
+                                                                    type="number" value="${a.remain}"
                                                                     pattern="#,##0 ₫"/></td>
-                                                        <td class="${a.expense < 0 ? 'text-bg-danger' : ''}">
-                                                            <fmt:formatNumber
-                                                                    type="number" value="${a.expense}"
-                                                                    pattern="#,##0 ₫"/></td>
-                                                        <td class="text-bg-primary"><fmt:formatNumber
-                                                                type="number" value="${a.remain}"
-                                                                pattern="#,##0 ₫"/></td>
-                                                        <td style=""><span
-                                                                class="badge badge-soft-danger">${a.user.fullname}</span>
-                                                        </td>
-                                                        <td style="">
-                                                            <a href="javascript:void(0)"
-                                                               class="cut-file-name"
-                                                               data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                               title="${a.note}">${a.note}</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown d-inline-block">
-                                                                <button class="btn btn-soft-secondary btn-sm dropdown"
-                                                                        type="button"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <i class="ri-more-fill align-middle"></i>
-                                                                </button>
-                                                                <ul class="dropdown-menu dropdown-menu-end" data-id="${a.id}">
-                                                                    <li><a href="/accounting/detail/${a.id}" target="_blank" class="dropdown-item"><i
-                                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                                        View</a>
-                                                                    </li>
-                                                                    <li><a class="dropdown-item edit-item-btn"><i
-                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                                        Edit</a></li>
-                                                                    <li class="deleteModal">
-                                                                        <a class="dropdown-item remove-item-btn" href="#">
-                                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                                            Delete
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                            <td style=""><span
+                                                                    class="badge badge-soft-danger">${a.user.fullname}</span>
+                                                            </td>
+                                                            <td style="">
+                                                                <a href="javascript:void(0)"
+                                                                   class="cut-file-name"
+                                                                   data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                   title="${a.note}">${a.note}</a>
+                                                            </td>
+                                                            <td>
+                                                                <div class="dropdown d-inline-block">
+                                                                    <button class="btn btn-soft-secondary btn-sm dropdown"
+                                                                            type="button"
+                                                                            data-bs-toggle="dropdown"
+                                                                            aria-expanded="false">
+                                                                        <i class="ri-more-fill align-middle"></i>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu dropdown-menu-end"
+                                                                        data-id="${a.id}">
+                                                                        <li><a href="/accounting/detail/${a.id}"
+                                                                               target="_blank" class="dropdown-item"><i
+                                                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                                            View</a>
+                                                                        </li>
+                                                                        <li class="deleteModal">
+                                                                            <a class="dropdown-item remove-item-btn"
+                                                                               href="#">
+                                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                                                Delete
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <c:set var="totalExpense" value="${totalExpense + a.expense}"
+                                                               scope="page"/>
+                                                        <c:set var="totalRevenue" value="${totalRevenue + a.revenue}"
+                                                               scope="page"/>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <tr>
+                                                        <td colspan='10' class='text-center fw-bold'>NOT FOUND DATA IN
+                                                            THIS
+                                                            DURATION
                                                         </td>
                                                     </tr>
-                                                    <c:set var="totalExpense" value="${totalExpense + a.expense}"
-                                                           scope="page"/>
-                                                    <c:set var="totalRevenue" value="${totalRevenue + a.revenue}"
-                                                           scope="page"/>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <tr>
-                                                    <td colspan='10' class='text-center fw-bold'>NOT FOUND DATA IN THIS
-                                                        DURATION
-                                                    </td>
-                                                </tr>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
-                                        Showing 1 to
-                                        10 of 14 entries
+                                                </c:otherwise>
+                                            </c:choose>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-                                        <ul class="pagination" id="pagination">
-                                            <c:choose>
-                                                <c:when test="${list.hasPrevious}">
-                                                    <li class="paginate_button page-item previous"
-                                                        id="first"><a
-                                                            aria-controls="example" data-dt-idx="0"
-                                                            tabindex="0"
-                                                            class="page-link" onclick="loadPage(1)">First</a></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li class="paginate_button page-item previous disabled"
-                                                        id="first"><a
-                                                            aria-controls="example" data-dt-idx="0"
-                                                            tabindex="0"
-                                                            class="page-link" onclick="loadPage(1)">First</a></li>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <c:choose>
-                                                <c:when test="${list.hasPrevious}">
-                                                    <li class="paginate_button page-item previous"
-                                                        id="previous"><a
-                                                            aria-controls="example" data-dt-idx="0"
-                                                            tabindex="0"
-                                                            class="page-link"
-                                                            onclick="loadPage(${list.pageNumber - 1})">Previous</a></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li class="paginate_button page-item previous disabled"
-                                                        id="previous"><a
-                                                            aria-controls="example" data-dt-idx="0"
-                                                            tabindex="0"
-                                                            class="page-link"
-                                                            onclick="loadPage(${list.pageNumber - 1})">Previous</a></li>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <c:forEach var="page" begin="1" end="${list.totalPages}">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+                                            <ul class="pagination" id="pagination">
                                                 <c:choose>
-                                                    <c:when test="${page == list.pageNumber}">
-                                                        <li class="paginate_button page-item active"><a
-                                                                style="cursor: pointer"
-                                                                aria-controls="example"
-                                                                data-dt-idx="1"
+                                                    <c:when test="${list.hasPrevious}">
+                                                        <li class="paginate_button page-item previous"
+                                                            id="first"><a
+                                                                aria-controls="example" data-dt-idx="0"
                                                                 tabindex="0"
-                                                                class="page-link">${page}</a>
+                                                                class="page-link" onclick="loadPage(1)">First</a></li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li class="paginate_button page-item previous disabled"
+                                                            id="first"><a
+                                                                aria-controls="example" data-dt-idx="0"
+                                                                tabindex="0"
+                                                                class="page-link" onclick="loadPage(1)">First</a></li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:choose>
+                                                    <c:when test="${list.hasPrevious}">
+                                                        <li class="paginate_button page-item previous"
+                                                            id="previous"><a
+                                                                aria-controls="example" data-dt-idx="0"
+                                                                tabindex="0"
+                                                                class="page-link"
+                                                                onclick="loadPage(${list.pageNumber - 1})">Previous</a>
                                                         </li>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <li class="paginate_button page-item"><a
-                                                                style="cursor: pointer"
-                                                                aria-controls="example"
-                                                                data-dt-idx="1"
+                                                        <li class="paginate_button page-item previous disabled"
+                                                            id="previous"><a
+                                                                aria-controls="example" data-dt-idx="0"
                                                                 tabindex="0"
                                                                 class="page-link"
-                                                                onclick="loadPage(${page})">${page}</a>
+                                                                onclick="loadPage(${list.pageNumber - 1})">Previous</a>
                                                         </li>
                                                     </c:otherwise>
                                                 </c:choose>
-                                            </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${list.hasNext}">
-                                                    <li class="paginate_button page-item next"
-                                                        id="next"><a
-                                                            style="cursor: pointer"
-                                                            aria-controls="example" data-dt-idx="3"
-                                                            tabindex="0"
-                                                            class="page-link"
-                                                            onclick="loadPage(${list.pageNumber + 1})">Next</a></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li class="paginate_button page-item next disabled"
-                                                        id="next"><a
-                                                            aria-controls="example" data-dt-idx="3"
-                                                            tabindex="0"
-                                                            class="page-link"
-                                                            onclick="loadPage(${list.pageNumber + 1})">Next</a></li>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <c:choose>
-                                                <c:when test="${list.hasNext}">
-                                                    <li class="paginate_button page-item next" id="last"><a
-                                                            style="cursor: pointer"
-                                                            aria-controls="example" data-dt-idx="3"
-                                                            tabindex="0"
-                                                            class="page-link"
-                                                            onclick="loadPage(${list.totalPages})">Last</a></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li class="paginate_button page-item next disabled" id="last"><a
-                                                            aria-controls="example" data-dt-idx="3"
-                                                            tabindex="0"
-                                                            class="page-link"
-                                                            onclick="loadPage(${list.totalPages})">Last</a></li>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </ul>
+                                                <c:forEach var="page" begin="1" end="${list.totalPages}">
+                                                    <c:choose>
+                                                        <c:when test="${page == list.pageNumber}">
+                                                            <li class="paginate_button page-item active"><a
+                                                                    style="cursor: pointer"
+                                                                    aria-controls="example"
+                                                                    data-dt-idx="1"
+                                                                    tabindex="0"
+                                                                    class="page-link">${page}</a>
+                                                            </li>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <li class="paginate_button page-item"><a
+                                                                    style="cursor: pointer"
+                                                                    aria-controls="example"
+                                                                    data-dt-idx="1"
+                                                                    tabindex="0"
+                                                                    class="page-link"
+                                                                    onclick="loadPage(${page})">${page}</a>
+                                                            </li>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                                <c:choose>
+                                                    <c:when test="${list.hasNext}">
+                                                        <li class="paginate_button page-item next"
+                                                            id="next"><a
+                                                                style="cursor: pointer"
+                                                                aria-controls="example" data-dt-idx="3"
+                                                                tabindex="0"
+                                                                class="page-link"
+                                                                onclick="loadPage(${list.pageNumber + 1})">Next</a></li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li class="paginate_button page-item next disabled"
+                                                            id="next"><a
+                                                                aria-controls="example" data-dt-idx="3"
+                                                                tabindex="0"
+                                                                class="page-link"
+                                                                onclick="loadPage(${list.pageNumber + 1})">Next</a></li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:choose>
+                                                    <c:when test="${list.hasNext}">
+                                                        <li class="paginate_button page-item next" id="last"><a
+                                                                style="cursor: pointer"
+                                                                aria-controls="example" data-dt-idx="3"
+                                                                tabindex="0"
+                                                                class="page-link"
+                                                                onclick="loadPage(${list.totalPages})">Last</a></li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li class="paginate_button page-item next disabled" id="last"><a
+                                                                aria-controls="example" data-dt-idx="3"
+                                                                tabindex="0"
+                                                                class="page-link"
+                                                                onclick="loadPage(${list.totalPages})">Last</a></li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -340,44 +345,53 @@
                     </div>
                 </div>
             </div>
+            <div class="table-responsive table-card">
+                <table class="table table-nowrap table-hover mb-0 mt-4">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Total Revenue</th>
+                        <th scope="col">Total Expense</th>
+                        <th scope="col">Ending Balance</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="total">
+                        <th>Page ${list.pageNumber}</th>
+                        <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}"
+                                                                   pattern="#,##0 ₫"/></td>
+                        <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}"
+                                                                  pattern="#,##0 ₫"/></td>
+                        <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}"
+                                                                   pattern="#,##0 ₫"/></td>
+                    </tr>
+                    <tr>
+                        <th>Total in Month</th>
+                        <td class="text-success" id="totalRevenue"><fmt:formatNumber type="number"
+                                                                                     value="${list.totalList.totalRevenue}"
+                                                                                     pattern="#,##0 ₫"/></td>
+                        <td class="text-danger" id="totalExpense"><fmt:formatNumber type="number"
+                                                                                    value="${list.totalList.totalExpense}"
+                                                                                    pattern="#,##0 ₫"/></td>
+                        <td class="text-primary" id="totalRemain"><fmt:formatNumber type="number"
+                                                                                    value="${list.totalList.totalRemain}"
+                                                                                    pattern="#,##0 ₫"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="table-responsive table-card">
-            <table class="table table-nowrap table-hover mb-0 mt-4">
-                <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Total Revenue</th>
-                    <th scope="col">Total Expense</th>
-                    <th scope="col">Ending Balance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr id="total">
-                    <th>Page ${list.pageNumber}</th>
-                    <td class="text-success"><fmt:formatNumber type="number" value="${totalRevenue}"
-                                                               pattern="#,##0 ₫"/></td>
-                    <td class="text-danger"><fmt:formatNumber type="number" value="${totalExpense}"
-                                                              pattern="#,##0 ₫"/></td>
-                    <td class="text-primary"><fmt:formatNumber type="number" value="${totalRevenue + totalExpense}"
-                                                               pattern="#,##0 ₫"/></td>
-                </tr>
-                <tr>
-                    <th>Total in Month</th>
-                    <td class="text-success" id="totalRevenue"><fmt:formatNumber type="number"
-                                                                                 value="${list.totalList.totalRevenue}"
-                                                                                 pattern="#,##0 ₫"/></td>
-                    <td class="text-danger" id="totalExpense"><fmt:formatNumber type="number"
-                                                                                value="${list.totalList.totalExpense}"
-                                                                                pattern="#,##0 ₫"/></td>
-                    <td class="text-primary" id="totalRemain"><fmt:formatNumber type="number"
-                                                                                value="${list.totalList.totalRemain}"
-                                                                                pattern="#,##0 ₫"/></td>
-                </tr>
-                </tbody>
-            </table>
+    </div>
+    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+         class="containerLoading d-flex align-items-center justify-content-center full-height">
+        <div>
+            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
     </div>
 </div>
+
 <div class="modal zoomIn" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -807,7 +821,7 @@
     var htmlElement = document.documentElement;
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
-    const INVALID_FILLED = ' <div class="alert alert-danger" role="alert">' +
+    const INVALID_FILLED_TEXT = ' <div class="alert alert-danger" role="alert">' +
         '<strong> Invalid </strong> This field is not filled' +
         '</div>'
     const INVALID_FILES_LIMIT = ' <div class="alert alert-danger" role="alert">' +
@@ -834,36 +848,6 @@
         var formattedTextEndDate = currentYear + '-' + (currentMonth < 10 ? '0' : '') + currentMonth + '-' + lastDayOfMonth;
         document.getElementById("datePickerEnd").value = formattedDateToText(formattedTextEndDate);
         localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
-    }
-
-    function formattedDateToText(inputDate) {
-        const dateObj = new Date(inputDate);
-
-        const monthNames = [
-            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ];
-
-        const day = dateObj.getDate();
-        const month = monthNames[dateObj.getMonth()];
-        const year = dateObj.getFullYear();
-
-        return day + " " + month + ', ' + year;
-    }
-
-    function formattedDate(inputDate) {
-        if (inputDate !== null) {
-            const dateObj = new Date(inputDate);
-
-            const year = dateObj.getFullYear();
-            let month = dateObj.getMonth() + 1;
-            let day = dateObj.getDate();
-
-            month = month < 10 ? "0" + month : month;
-            day = day < 10 ? "0" + day : day;
-
-            return year + "-" + month + "-" + day;
-        } else return "";
     }
 
     document.getElementById("pageCount").addEventListener("change", function () {
@@ -904,9 +888,12 @@
                     option.textContent = entry.year;
                     yearSelect.appendChild(option);
                 });
+                $("#containerAccounting").css("visibility", "visible");
+                $("div.containerLoading").addClass("d-none");
             });
 
             yearSelect.addEventListener('change', function () {
+                $("div.yearLoading").removeClass("d-none");
                 callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
                     var dataMonth = rs;
                     monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
@@ -925,7 +912,9 @@
                     } else {
                         monthSelect.style.display = 'none';
                     }
+                    $("div.yearLoading").addClass("d-none");
                 });
+
             });
 
             monthSelect.addEventListener('change', function () {
@@ -948,7 +937,7 @@
     });
 
     function loadPage(page) {
-        htmlElement.setAttribute("data-preloader", "block");
+        $("div.containerLoading").removeClass("d-none");
         var selectedPageSize = document.getElementById("pageCount").value;
         var selectedDateStart = localStorage.getItem("selectedDateStart") || null;
         var selectedDateEnd = localStorage.getItem("selectedDateEnd") || null;
@@ -985,13 +974,12 @@
                                 "<td class='text-bg-primary'>" + formatCurrency(account.remain) + "</td>" +
                                 "<td style=''><span class='badge badge-soft-danger'> " + account.user.fullname + "</span></td>" +
 
-                                "<td style=''><a href='javascript:void(0)' class='cut-file-name' data-toggle='tooltip' data-placement='bottom' title='" + account.note + "'>" + account.note + "</a></td>" +
+                                "<td style=''><a href='javascript:void(0)' class='cut-file-name' data-toggle='tooltip' data-bs-placement='bottom' title='" + account.note + "'>" + account.note + "</a></td>" +
                                 "<td style=''><div class='dropdown d-inline-block'>" +
                                 "<button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'>" +
-                                "<i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'>" +
+                                "<i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end' data-id='" + account.id + "'>" +
                                 "<li><a href='/accounting/detail/" + account.id + "' target='_blank' class='dropdown-item'><i class='ri-eye-fill align-bottom me-2 text-muted'></i>View</a></li>" +
-                                "<li><a class='dropdown-item edit-item-btn'><i class='ri-pencil-fill align-bottom me-2 text-muted'></i>Edit</a></li>" +
-                                "<li><a class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a>" +
+                                "<li class='deleteModal'><a href='javascript: void(0);' class='dropdown-item remove-item-btn'><i class='ri-delete-bin-fill align-bottom me-2 text-muted'></i>Delete</a>" +
                                 "</li></ul></div>" +
                                 "</td>";
                             totalExpense += account.expense;
@@ -1012,10 +1000,10 @@
                     totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td class="text-success">' + formatCurrency(totalRevenue) + '</td>'
                         + '<td class="text-danger">' + formatCurrency(totalExpense) + '</td>'
                         + '<td class="text-primary">' + formatCurrency(totalRemain) + '</td>';
-                    htmlElement.setAttribute("data-preloader", "disable");
+                    $("div.containerLoading").addClass("d-none")
                 } else {
                     $('#errorModal').modal('show');
-                    htmlElement.setAttribute("data-preloader", "disable");
+                    $("div.containerLoading").addClass("d-none")
                 }
             }
         };
@@ -1075,120 +1063,6 @@
             amountGroup.style.display = 'none';
         }
     });
-
-    $(document).on("change", "#createBill", function (event) {
-        const billFiles = event.target.files;
-        var countFile = billFiles.length;
-        var countCurrentFile = $("li.listFilesEdit").length;
-        if ((countFile + countCurrentFile) >${setting.uploadFileLimit}) {
-            let modal = `
-                        <strong class="btn-danger rounded-circle p-2">Invalid!</strong> Maximum Files is ${setting.uploadFileLimit}.
-                        `
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
-            $(this).val('')
-            return;
-        }
-        for (var i = 0; i < billFiles.length; i++) {
-            var fileName = billFiles[i].name;
-            var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
-            if (!validExtensions.includes(fileExtension) || billFiles[i].size > convertMaxFileSize("${setting.maxFileSize}")) {
-                let modal = '<strong class="btn-danger rounded-circle p-2">Invalid!</strong> File must be ' +
-                    validFileUpload +
-                    ' and not over ' + "${setting.maxFileSize}" + 'MB.';
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-                $(this).val('')
-                return;
-            }
-        }
-    });
-
-    function convertMaxFileSize(string) {
-        var maxFileSizeWithoutMB = string.replace("MB", "");
-        return parseFloat(maxFileSizeWithoutMB) * 1024 * 1024;
-    }
-
-    function sendCreateForm() {
-        var xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "/api/v1/accounts", true);
-
-        var title = document.getElementById("createTitle").value;
-        var note = document.getElementById("createNote").value;
-        var transaction = document.getElementById("transactionType").value;
-        var payDate = document.getElementById("createPayDate").value;
-        var input = document.getElementById("amount").value;
-        var amount = Number(input.replace(/[^0-9.]/g, ''));
-        var billInput = document.getElementById("createBill");
-        var billFiles = billInput.files;
-
-        if (!title || !amount || isNaN(amount)) {
-            alert("Title, note and amount are required and amount must be a number.");
-            return;
-        }
-
-        if (transaction === 'expense') {
-            amount = -amount;
-        }
-
-        var formData = new FormData();
-
-        formData.append("title", title);
-        formData.append("note", note);
-        formData.append("userId", userCurrent.id);
-        formData.append("expense", amount);
-        formData.append("payDate", payDate);
-
-        for (var i = 0; i < billFiles.length; i++) {
-            formData.append("bill", billFiles[i]);
-        }
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 201) {
-                    $.ajax({
-                        url: "/api/v1/accounts",
-                        beforeSend: function (xhr) {
-                            xhr.overrideMimeType("text/plain; charset=x-user-defined");
-                        }
-                    })
-                        .done(function (data) {
-                            var responseData = JSON.parse(data);
-                            $('#yearList').html('');
-                            $.each(responseData.monthList, function (index, date) {
-                                var yearItem = $('<li/>').addClass('list-group-item year-item').attr('data-toggle', 'collapse').attr('href', '#months' + index).text(date.year);
-                                $('#yearList').append(yearItem);
-
-                                var monthsContainer = $('<div/>').addClass('collapse').attr('id', 'months' + index);
-                                var monthList = $('<ul/>').addClass('list-group');
-
-                                $.each(date.month, function (index, month) {
-                                    var monthItem = $('<li/>').addClass('list-group-item').text(month).on('click', function () {
-                                    });
-                                    monthList.append(monthItem);
-                                });
-
-                                monthsContainer.append(monthList);
-                                $('#yearList').append(monthsContainer);
-                            });
-                            $('#createNote').val("");
-                            $('#createBill').val("");
-                            $('#createTitle').val("");
-                            $('#amount').val("");
-                            $('#amountGroup').css('display', 'none');
-                            $('#transactionType').val("");
-                            $('#createModal').modal('hide');
-                            $('#successModal div.modal-body').text("The request has been completed successfully.")
-                            $('#successModal').modal('show');
-                        });
-                } else {
-                    $('#createModal').modal('hide');
-                    $('#errorModal').modal('show');
-                }
-            }
-        };
-        xhr.send(formData);
-    }
 </script>
 <!-- dropzone js -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
@@ -1247,7 +1121,7 @@
     });
 
     $(document).on("click", "button.createBtn", function () {
-        removeAlert()
+        removeAlert();
         let title = $("#createTitle").val()
         let note = $("#createNote").val()
         let transaction = $("#transactionType").val()
@@ -1258,7 +1132,19 @@
             amount = -amount;
         }
         if (title.trim() === "") {
-            $("input#createTitle").parent().after(INVALID_FILLED)
+            $("input#createTitle").parent().after(INVALID_FILLED_TEXT)
+            return false;
+        }
+        if (!payDate) {
+            $("input#createPayDate").parent().after(INVALID_FILLED_TEXT)
+            return false;
+        }
+        if (!transaction) {
+            $("select#transactionType").parent().after(INVALID_FILLED_TEXT)
+            return false;
+        }
+        if (!amount) {
+            $("input#amount").parent().after(INVALID_FILLED_TEXT)
             return false;
         }
         var formData = new FormData();
@@ -1275,9 +1161,15 @@
                 }
             }
         }
+        $(this).addClass("d-none")
+        $(this).before(BtnPrimaryLoad)
         callAjaxByDataFormWithDataForm(baseUrlAccount, "POST", formData, function (rs) {
+            BtnLoadRemove()
+            $("button.createBtn").removeClass("d-none")
+            $("#createModal").modal("hide");
+            $('#successModal div.modal-body').text("The request has been completed successfully.")
+            $('#successModal').modal('show');
             loadPage(1);
-            $("#createModal").modal("hide")
         }, function (error) {
             console.log(error)
         })
@@ -1298,8 +1190,16 @@
             showCloseButton: true,
             reverseButtons: true
         }).then(function (result) {
-            if (result.value) {
-                console.log(accountId)
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Loading',
+                    text: 'Please wait...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 let xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
@@ -1312,7 +1212,7 @@
                                 buttonsStyling: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.replace(document.referrer);
+                                    loadPage(1);
                                 }
                             });
                         } else {
