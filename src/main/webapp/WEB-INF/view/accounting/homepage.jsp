@@ -1169,6 +1169,17 @@
             $("#createModal").modal("hide");
             $('#successModal div.modal-body').text("The request has been completed successfully.")
             $('#successModal').modal('show');
+            let yearSelect = document.getElementById('account-year');
+            callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
+                let data = rs;
+                yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+                data.monthList.forEach(function (entry) {
+                    let option = document.createElement('option');
+                    option.value = entry.year;
+                    option.textContent = entry.year;
+                    yearSelect.appendChild(option);
+                });
+            });
             loadPage(1);
         }, function (error) {
             console.log(error)
