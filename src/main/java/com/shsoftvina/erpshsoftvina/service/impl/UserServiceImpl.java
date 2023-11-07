@@ -234,6 +234,9 @@ public class UserServiceImpl implements UserService {
             if (map.containsKey(oldKey)) {
                 Object oldValue = map.get(oldKey);
                 String newValue = FileUtils.getPathUpload(User.class, oldValue.toString());
+                if(newValue == null) {
+                    newValue = "/upload/user/avatar-default.jpg" ;
+                }
                 map.put(oldKey, newValue);
             }
         }
