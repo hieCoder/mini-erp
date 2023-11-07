@@ -5,11 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
 public interface EventMapper {
-    List<Event> getAllEventsByMonth(@Param("monthly") String month);
+    List<Event> getAllEventsByMonth(@Param("prevMonth") LocalDate prevMonth, @Param("nextMonth") LocalDate nextMonth);
 
     Event findById(@Param("id") String id);
 
