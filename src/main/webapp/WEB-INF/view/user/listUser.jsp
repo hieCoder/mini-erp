@@ -22,7 +22,9 @@
                                         <input id="search" name="search" type="text" class="form-control"
                                                placeholder="Search by username or userid">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit">Search</button>
+                                            <button class="btn btn-primary" type="submit"
+                                                    onclick="addLoadingPrimary(this)">Search
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -33,7 +35,6 @@
                                     <div class="input-group">
                                         <select id="statusUser" name="status" class="form-select"
                                                 onchange="this.form.submit()">
-                                            <
                                             <option value="ACTIVE">ACTIVE</option>
                                             <option value="INACTIVE">INACTIVE</option>
                                         </select>
@@ -64,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-4">
+                        <div class="row mt-4 mb-4">
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="sort">Sort By Username</label>
@@ -77,7 +78,14 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table border align-middle table-nowrap table-striped-columns mt-4">
+                        <div class="row" id="loadingTable" style="display:none;">
+                            <div class="col-md-12">
+                                <div class="spinner-border text-primary" style="height: 15px; width: 15px" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table border align-middle table-nowrap table-striped-columns">
                             <thead>
                             <tr>
                                 <th>NO.</th>
@@ -201,7 +209,7 @@
                 ></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to reject this item?
+                Are you sure you want to reject this account?
             </div>
             <div class="modal-footer border-top">
                 <button type="button" class="btn btn-danger" id="confirmReject">Reject</button>
@@ -279,20 +287,22 @@
         table.ajax.reload();
 
         $('#pendingTable').on('click', '.approval-btn', function (event) {
-
             var data = table.row($(this).parents('tr')).data();
-            // if (this.position == null) {
-            //     Swal.fire(
-            //         {
-            //             title: 'Oops...',
-            //             text: 'You must choose a role!',
-            //             icon: 'error',
-            //             confirmButtonClass: 'btn btn-primary w-xs mt-2',
-            //             buttonsStyling: false,
-            //             showCloseButton: true
-            //         }
-            //     )
-            // }
+            var selectedRole = $(this).closest('tr').find('select[name="role"]').val();
+
+            if (!selectedRole) {
+                Swal.fire(
+                    {
+                        title: 'You must choose a role!',
+                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                        buttonsStyling: false,
+                        showCloseButton: true
+                    }
+                )
+            } else {
+                Swal.close();
+                showAlertLoading();
+            }
 
             var obj = {
                 email: data.email,
@@ -317,6 +327,8 @@
             var id = $(this).data('id');
 
             $('#confirmReject').on('click', function () {
+                $('#confirmModal').modal('hide');
+                showAlertLoading();
                 callAjaxByJsonWithData('/api/v1/users/register/reject/' + id, 'DELETE', null, function (rs) {
                     if (rs) {
                         table.ajax.reload();
@@ -324,7 +336,6 @@
                     sessionStorage.setItem('result', 'rejectSuccess')
                     location.reload();
                 });
-                $('#confirmModal').modal('hide');
             });
 
         });
@@ -333,11 +344,14 @@
 
 <script>
     // // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
+    var loadingTable = document.getElementById('loadingTable');
     document.getElementById("pageSize").addEventListener("change", function () {
+        loadingTable.style.display = 'block';
         localStorage.setItem("selectedPageSize", this.value);
     });
 
     document.getElementById("statusUser").addEventListener("change", function () {
+        loadingTable.style.display = 'block';
         localStorage.setItem("selectedStatus", this.value);
     });
 
@@ -346,6 +360,7 @@
     });
 
     document.getElementById("sort").addEventListener("input", function () {
+        loadingTable.style.display = 'block';
         localStorage.setItem("selectedSort", this.value);
     });
 
@@ -383,6 +398,24 @@
         sessionStorage.clear();
     });
 
+    // Loading Primary
+    function addLoadingPrimary(element) {
+        element.classList.add("btn-load");
+        var content = element.textContent;
+        element.innerHTML = `
+            <span class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </span>
+            <span class="flex-grow-1 ms-2 loading-primary">
+
+            </span>
+        </span>
+        `;
+
+        document.querySelector('.loading-primary').textContent = content;
+    }
+
     // Notification Success
     function notificationSuccess(result) {
         var title;
@@ -394,6 +427,9 @@
                 break;
             case 'rejectSuccess':
                 title = 'Reject Success';
+                break;
+            case 'delUserSuccess':
+                title = 'Delete User Success';
                 break;
         }
         Swal.fire(
