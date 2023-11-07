@@ -15,6 +15,8 @@ import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleListResponse getScheduleDetail(String userId, Date startDate, Date endDate) {
-
+        applicationUtils.checkUserAllow(userId);
         if (startDate != null && endDate != null){
             if (startDate.compareTo(endDate) > 0){
                 throw new InvalidException(MessageErrorUtils.invalid());
@@ -49,18 +51,20 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Task> tasks = scheduleMapper.getScheduleDetail(userId, startDate, endDate);
         List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users);
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
-        applicationUtils.checkUserAllow(userId);
         return new ScheduleListResponse(list, user);
     }
 
     @Override
     public ScheduleListResponse getScheduleDetail(String userId, String monthly) {
+        applicationUtils.checkUserAllow(userId);
         String firstDayOfMonth = monthly + "-01";
-        List<Task> tasks = scheduleMapper.getScheduleDetailByMonth(userId, monthly);
-        List<User> users = userMapper.getUserBirthday(firstDayOfMonth);
+        LocalDate currentDate = LocalDate.parse(firstDayOfMonth);
+        LocalDate previousDate = currentDate.minusMonths(1);
+        LocalDate lastDayOfNextMonth = currentDate.plusMonths(1).with(TemporalAdjusters.lastDayOfMonth());
+        List<Task> tasks = scheduleMapper.getScheduleDetailByMonth(userId, previousDate, lastDayOfNextMonth);
+        List<User> users = userMapper.getUserBirthday(previousDate,lastDayOfNextMonth);
         List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users);
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
-        applicationUtils.checkUserAllow(userId);
         return new ScheduleListResponse(list, user);
     }
 }

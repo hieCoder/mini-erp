@@ -111,44 +111,44 @@
                                             style="width: 100%;" aria-describedby="example_info">
                                         <thead>
                                         <tr>
-                                            <th data-ordering="false" class="sorting" tabindex="0"
+                                            <th data-ordering="false"tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 43.4px;"
                                                 aria-label="SR No.: activate to sort column ascending">NO.
                                             </th>
-                                            <th data-ordering="false" class="sorting" tabindex="0"
+                                            <th data-ordering="false"tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 34.4px;"
                                                 aria-label="ID: activate to sort column ascending">TRANSACTION ID
                                             </th>
-                                            <th data-ordering="false" class="sorting" tabindex="0"
+                                            <th data-ordering="false" tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 81.4px;"
                                                 aria-label="Purchase ID: activate to sort column ascending">PAY DATE
                                             </th>
-                                            <th data-ordering="false" class="sorting" tabindex="0"
+                                            <th data-ordering="false" tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 200.4px;"
                                                 aria-label="Title: activate to sort column ascending">TITLE
                                             </th>
-                                            <th data-ordering="false" class="sorting" tabindex="0"
+                                            <th data-ordering="false"tabindex="0"
                                                 aria-controls="example" rowspan="1" colspan="1" style="width: 74.4px;"
                                                 aria-label="User: activate to sort column ascending">REVENUE
                                             </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" style="width: 84.4px;"
                                                 aria-label="Assigned To: activate to sort column ascending">EXPENSE
                                             </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" style="width: 76.4px;"
                                                 aria-label="Created By: activate to sort column ascending">BALANCE
                                             </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" style="width: 83.4px;"
                                                 aria-label="Create Date: activate to sort column ascending">CREATED BY
                                             </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" style="width: 48.4px;"
                                                 aria-label="Status: activate to sort column ascending">
                                                 NOTE
                                             </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" style="width: 62.4px;"
                                                 aria-label="Priority: activate to sort column ascending">ACTION
                                             </th>
@@ -193,7 +193,7 @@
                                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <i class="ri-more-fill align-middle"></i>
                                                                 </button>
-                                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="dropdown-menu dropdown-menu-end" data-id="${a.id}">
                                                                     <li><a href="/accounting/detail/${a.id}" target="_blank" class="dropdown-item"><i
                                                                             class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                                         View</a>
@@ -201,8 +201,8 @@
                                                                     <li><a class="dropdown-item edit-item-btn"><i
                                                                             class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                                         Edit</a></li>
-                                                                    <li>
-                                                                        <a class="dropdown-item remove-item-btn">
+                                                                    <li class="deleteModal">
+                                                                        <a class="dropdown-item remove-item-btn" href="#">
                                                                             <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                                             Delete
                                                                         </a>
@@ -609,7 +609,202 @@
     </div>
 </div>
 
+<div class="modal zoomIn" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Your edit form content goes here -->
+                                <form enctype="multipart/form-data">
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="editTitle">Title</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" id="editTitle"
+                                                   value="${account.title}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="transactionType">Transaction Type</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <select class="form-control" id="transactionEditType" required>
+                                                <option value="">--Select Option--</option>
+                                                <option value="revenue" ${account.revenue > 0 ? 'selected' : ''}>
+                                                    Revenue
+                                                </option>
+                                                <option value="expense" ${account.expense < 0 ? 'selected' : ''}>
+                                                    Expense
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" id="amountEditGroup">
+                                        <div class="col-lg-3">
+                                            <label for="amountEdit">Amount</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" id="amountEdit" step="1"
+                                                   value="${account.revenue > 0 ? account.revenue : -account.expense}"
+                                                   required
+                                                   pattern="[0-9]+">
+                                        </div>
+                                    </div>
+                                    <script>
+                                        var amount = $('input#amount').val()
+                                        $('input#amount').val(formatNumberToVND(amount));
+
+                                        function formatNumberToVND(number) {
+                                            var parts = number.toString().split('.');
+                                            var formattedNumber = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                            if (parts.length > 1) {
+                                                formattedNumber += '.' + parts[1];
+                                            }
+                                            return formattedNumber;
+                                        }
+
+                                        $(document).ready(function () {
+                                            $(document).ready(function () {
+                                                var input = $('#amount');
+                                                input.on('keydown', function (event) {
+                                                    var value = input.val();
+                                                    var charCode = event.which;
+                                                    if (charCode === 190 || charCode === 110) {
+                                                        if (value.indexOf('.') !== -1) {
+                                                            event.preventDefault();
+                                                        }
+                                                    }
+                                                    if ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode !== 190 && charCode !== 110) {
+                                                        if (charCode !== 8 && charCode !== 46) {
+                                                            event.preventDefault();
+                                                        }
+                                                    }
+                                                });
+
+                                                input.on('keyup', function () {
+                                                    var value = input.val().replace(/[^0-9.]/g, '');
+                                                    input.val(formatNumberToVND(value));
+                                                });
+                                            });
+                                        })
+                                    </script>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
+                                            <label for="editNote">Note</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <textarea class="form-control" id="editNote"
+                                                      required>${account.note}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="pt-3 border-top border-top-dashed mt-4">
+                                            <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                            <div class="row g-3 showFilesUploaded">
+                                            </div>
+                                            <!-- end row -->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Attached files</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center col-6">File Format</th>
+                                        <th class="text-center col-3">Maximum Size</th>
+                                        <th class="text-center col-3">Maximum Files</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-center col-6">${setting.listTypeFile},${setting.listTypeImage}</td>
+                                        <td class="text-center col-3">${setting.maxFileSize} MB</td>
+                                        <td class="text-center col-3">${setting.uploadFileLimit}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <p class="text-muted">Add Attached files here.</p>
+
+                                    <div class="dropzone" id="dropzoneEdit">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple="multiple">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+
+                                            <h5>Drop files here or click to upload.</h5>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview-edit">
+                                        <li class="mt-2" id="dropzone-preview-list-edit">
+                                            <!-- This is used as the file preview template -->
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="d-flex p-2">
+                                                        <div class="flex-shrink-0 me-3">
+                                                            <div class="avatar-sm">
+                                                                <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                    <i class="ri-file-upload-line"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger"
+                                                                    data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3 pt-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!-- end dropzon-preview -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary editBtn" type="submit">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
+    var htmlElement = document.documentElement;
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
     const INVALID_FILLED = ' <div class="alert alert-danger" role="alert">' +
@@ -712,7 +907,6 @@
             });
 
             yearSelect.addEventListener('change', function () {
-                // $('#account-day').after(createLoadingHtml());
                 callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
                     var dataMonth = rs;
                     monthSelect.innerHTML = '<option value="">-- Select Month --</option>';
@@ -726,7 +920,6 @@
                             })
                         }
                     });
-                    $('div.custom-spinner').parent().remove();
                     if (yearSelect.value !== "") {
                         monthSelect.style.display = 'block';
                     } else {
@@ -742,17 +935,20 @@
                 let pickMonth = defaultDate.getMonth() + 1;
                 let formattedTextStartDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-01';
                 localStorage.setItem("selectedDateStart", formattedDateToText(formattedTextStartDate));
+                document.getElementById("datePickerStart").value = formattedDateToText(formattedTextStartDate);
 
                 let lastDay = new Date(pickYear, pickMonth, 0);
                 let lastDayOfMonth = lastDay.getDate();
                 let formattedTextEndDate = pickYear + '-' + (pickMonth < 10 ? '0' : '') + pickMonth + '-' + lastDayOfMonth;
                 localStorage.setItem("selectedDateEnd", formattedDateToText(formattedTextEndDate));
+                document.getElementById("datePickerEnd").value = formattedDateToText(formattedTextEndDate);
                 loadPage(1);
             });
         }
     });
 
     function loadPage(page) {
+        htmlElement.setAttribute("data-preloader", "block");
         var selectedPageSize = document.getElementById("pageCount").value;
         var selectedDateStart = localStorage.getItem("selectedDateStart") || null;
         var selectedDateEnd = localStorage.getItem("selectedDateEnd") || null;
@@ -789,7 +985,7 @@
                                 "<td class='text-bg-primary'>" + formatCurrency(account.remain) + "</td>" +
                                 "<td style=''><span class='badge badge-soft-danger'> " + account.user.fullname + "</span></td>" +
 
-                                "<td style=''><a href='javascript:void(0)' class='cut-file-name' data-bs-toggle='tooltip' data-bs-placement='bottom' title='" + account.note + "'>" + account.note + "</a></td>" +
+                                "<td style=''><a href='javascript:void(0)' class='cut-file-name' data-toggle='tooltip' data-placement='bottom' title='" + account.note + "'>" + account.note + "</a></td>" +
                                 "<td style=''><div class='dropdown d-inline-block'>" +
                                 "<button class='btn btn-soft-secondary btn-sm dropdown' type='button' data-bs-toggle='dropdown' aria-expanded='false'>" +
                                 "<i class='ri-more-fill align-middle'></i></button><ul class='dropdown-menu dropdown-menu-end'>" +
@@ -806,6 +1002,9 @@
                         $("#totalExpense").text(formatCurrency(responseData.totalList.totalExpense))
                         $("#totalRemain").text(formatCurrency(responseData.totalList.totalRemain))
                         cutShortLink();
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                        })
                     }
 
                     updatePagination(responseData);
@@ -813,8 +1012,10 @@
                     totalSpend.innerHTML = '<th>Page ' + page + '</th>' + '<td class="text-success">' + formatCurrency(totalRevenue) + '</td>'
                         + '<td class="text-danger">' + formatCurrency(totalExpense) + '</td>'
                         + '<td class="text-primary">' + formatCurrency(totalRemain) + '</td>';
+                    htmlElement.setAttribute("data-preloader", "disable");
                 } else {
                     $('#errorModal').modal('show');
+                    htmlElement.setAttribute("data-preloader", "disable");
                 }
             }
         };
@@ -1081,6 +1282,62 @@
             console.log(error)
         })
     })
+
+    $(document).on('click', '.deleteModal', function () {
+        let accountId = $(this).parent().attr("data-id")
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-primary w-xs ms-2 mt-2',
+            cancelButtonClass: 'btn btn-danger w-xs mt-2',
+            buttonsStyling: false,
+            showCloseButton: true,
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                console.log(accountId)
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your accounting has been deleted.',
+                                icon: 'success',
+                                confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                buttonsStyling: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.replace(document.referrer);
+                                }
+                            });
+                        } else {
+                            $('#deleteModal').modal('hide');
+                            $('#errorModal').modal('show');
+                        }
+                    }
+                }
+                xhr.open("DELETE", "/api/v1/accounts/" + accountId, true);
+                xhr.send();
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Your information is remained :)',
+                    icon: 'error',
+                    confirmButtonClass: 'btn btn-primary mt-2',
+                    buttonsStyling: false
+                })
+            }
+        });
+    });
+
 </script>
 <!--datatable js-->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -1092,6 +1349,8 @@
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="/assets/js/pages/datatables.init.js"></script>
+<!-- Sweet Alerts js -->
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 </body>
 </html>
 

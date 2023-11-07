@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +43,5 @@ public interface UserMapper {
                       @Param("searchTerm") String searchTerm,
                       @Param("sortDirection") String sortDirection);
 
-    List<User> getUserBirthday(@Param("monthly") String monthly);
+    List<User> getUserBirthday(@Param("prevMonth") LocalDate prevMonth,@Param("nextMonth") LocalDate nextMonth );
 }

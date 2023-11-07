@@ -272,7 +272,7 @@
         WHERE task.user_id = #{userId}
         GROUP BY all_statuses.status
         UNION ALL
-        SELECT '' AS STATUS_TASK, COUNT(task.id) as taskCount
+        SELECT '' AS STATUS_TASK, COUNT(id) as taskCount
         FROM TASK
         WHERE STATUS = 'ACTIVE' AND user_id = #{userId}
     </select>

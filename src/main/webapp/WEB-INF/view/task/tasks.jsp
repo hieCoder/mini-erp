@@ -631,6 +631,52 @@
             });
         });
     }
+
+    $(document).on('click', '#delete-mul-task', function (e) {
+        var checkedIds = [];
+        $('#tasksTable input[type="checkbox"]:checked').not('#checkAll').each(function () {
+            var id = $(this).data('id');
+            checkedIds.push(id);
+        });
+
+        if (checkedIds.length != 0) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn btn-primary w-xs me-2 mt-2",
+                cancelButtonClass: "btn btn-danger w-xs mt-2",
+                confirmButtonText: "Yes, delete it!",
+                buttonsStyling: false,
+                showCloseButton: true
+            }).then(function (e) {
+                if (e.isConfirmed) {
+                    Swal.close();
+
+                    Swal.fire({
+                        title: 'Loading...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    callAjaxByJsonWithData("/api/v1/tasks/", "DELETE", checkedIds, function (rs) {
+                        tableTask.ajax.reload();
+                        Swal.close();
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "Please select at least one checkbox",
+                confirmButtonClass: "btn btn-info",
+                buttonsStyling: false,
+                showCloseButton: true
+            });
+        }
+    });
 </script>
 <script>
 
@@ -709,41 +755,6 @@
             $('#tasksTable input[type="checkbox"]').prop('checked', true);
         } else {
             $('#tasksTable input[type="checkbox"]').prop('checked', false);
-        }
-    });
-
-    $(document).on('click', '#delete-mul-task', function (e) {
-        var checkedIds = [];
-        $('#tasksTable input[type="checkbox"]:checked').not('#checkAll').each(function () {
-            var id = $(this).data('id');
-            checkedIds.push(id);
-        });
-
-        if (checkedIds.length != 0) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn btn-primary w-xs me-2 mt-2",
-                cancelButtonClass: "btn btn-danger w-xs mt-2",
-                confirmButtonText: "Yes, delete it!",
-                buttonsStyling: false,
-                showCloseButton: true
-            }).then(function (e) {
-                if (e.value) {
-                    callAjaxByJsonWithData("/api/v1/tasks/", "DELETE", checkedIds, function (rs) {
-                        window.location.href = "/tasks?deleteSuccess";
-                    });
-                }
-            });
-        } else {
-            Swal.fire({
-                title: "Please select at least one checkbox",
-                confirmButtonClass: "btn btn-info",
-                buttonsStyling: false,
-                showCloseButton: true
-            });
         }
     });
 

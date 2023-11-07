@@ -17,6 +17,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
@@ -31,7 +33,11 @@ public class EventServiceImpl implements EventService {
     private ApplicationUtils applicationUtils;
     @Override
     public List<EventResponse> getAllEventsByMonth(String monthly) {
-        List<Event> events = eventMapper.getAllEventsByMonth(monthly);
+        String firstDayOfMonth = monthly + "-01";
+        LocalDate currentDate = LocalDate.parse(firstDayOfMonth);
+        LocalDate previousDate = currentDate.minusMonths(1);
+        LocalDate lastDayOfNextMonth = currentDate.plusMonths(1).with(TemporalAdjusters.lastDayOfMonth());
+        List<Event> events = eventMapper.getAllEventsByMonth(previousDate,lastDayOfNextMonth);
         return eventConverter.convertToResponse(events);
     }
 
