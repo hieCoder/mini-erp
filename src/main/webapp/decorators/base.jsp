@@ -835,6 +835,8 @@
         scheduleLink = '/schedules/detail/' + userCurrent.id;
         //managementTime = '/management-time';
     } else {
+        $('.manager-menu').removeClass('d-none');
+
         scheduleLink = '/schedules';
         //managementTime = '/management-time/' + userCurrent.id;
     }

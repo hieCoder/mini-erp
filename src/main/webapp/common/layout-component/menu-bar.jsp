@@ -66,8 +66,8 @@
                     </a>
                 </li>
 
-                <li class="menu-title manager-menu"><i class="ri-more-fill"></i> <span>Human management</span></li>
-                <li class="nav-item manager-menu">
+                <li class="menu-title d-none manager-menu"><i class="ri-more-fill"></i> <span>Human management</span></li>
+                <li class="nav-item d-none manager-menu">
                     <a class="nav-link menu-link" href="#sidebarHuman" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForms">
                         <i class="ri-file-list-3-line"></i> <span>Human management</span>
                     </a>
@@ -83,15 +83,15 @@
                     </div>
                 </li>
 
-                <li class="menu-title manager-menu"><i class="ri-more-fill"></i> <span>Accounting management</span></li>
-                <li class="nav-item manager-menu">
+                <li class="menu-title d-none manager-menu"><i class="ri-more-fill"></i> <span>Accounting management</span></li>
+                <li class="nav-item d-none manager-menu">
                     <a href="/accounting" class="nav-link menu-link">
                         <i class="ri-account-circle-line"></i> <span>Accounting</span>
                     </a>
                 </li>
 
-                <li class="menu-title manager-menu"><i class="ri-more-fill"></i> <span>Setting system</span></li>
-                <li class="nav-item manager-menu">
+                <li class="menu-title d-none manager-menu"><i class="ri-more-fill"></i> <span>Setting system</span></li>
+                <li class="nav-item d-none manager-menu">
                     <a class="nav-link menu-link" href="#sidebarSetting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForms">
                         <i class="ri-share-line"></i> <span>Setting system</span>
                     </a>
