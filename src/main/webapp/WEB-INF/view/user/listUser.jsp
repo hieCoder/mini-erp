@@ -22,7 +22,7 @@
                                         <input id="search" name="search" type="text" class="form-control"
                                                placeholder="Search by username or userid">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit">Search</button>
+                                            <button class="btn btn-primary" type="submit" onclick="addLoadingPrimary(this)">Search</button>
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                 ></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to reject this item?
+                Are you sure you want to reject this account?
             </div>
             <div class="modal-footer border-top">
                 <button type="button" class="btn btn-danger" id="confirmReject">Reject</button>
@@ -279,20 +279,29 @@
         table.ajax.reload();
 
         $('#pendingTable').on('click', '.approval-btn', function (event) {
-
             var data = table.row($(this).parents('tr')).data();
-            // if (this.position == null) {
-            //     Swal.fire(
-            //         {
-            //             title: 'Oops...',
-            //             text: 'You must choose a role!',
-            //             icon: 'error',
-            //             confirmButtonClass: 'btn btn-primary w-xs mt-2',
-            //             buttonsStyling: false,
-            //             showCloseButton: true
-            //         }
-            //     )
-            // }
+            var selectedRole = $(this).closest('tr').find('select[name="role"]').val();
+
+            if (!selectedRole) {
+                    Swal.fire(
+                        {
+                            title: 'You must choose a role!',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+            } else {
+                Swal.close();
+
+                Swal.fire({
+                    title: 'Wait a minute...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
 
             var obj = {
                 email: data.email,
@@ -317,6 +326,14 @@
             var id = $(this).data('id');
 
             $('#confirmReject').on('click', function () {
+                $('#confirmModal').modal('hide');
+                Swal.fire({
+                    title: 'Wait a minute...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 callAjaxByJsonWithData('/api/v1/users/register/reject/' + id, 'DELETE', null, function (rs) {
                     if (rs) {
                         table.ajax.reload();
@@ -324,7 +341,6 @@
                     sessionStorage.setItem('result', 'rejectSuccess')
                     location.reload();
                 });
-                $('#confirmModal').modal('hide');
             });
 
         });
@@ -383,6 +399,24 @@
         sessionStorage.clear();
     });
 
+    // Loading Primary
+    function addLoadingPrimary(element) {
+        element.classList.add("btn-load");
+        var content = element.textContent;
+        element.innerHTML = `
+            <span class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </span>
+            <span class="flex-grow-1 ms-2 loading-primary">
+
+            </span>
+        </span>
+        `;
+
+        document.querySelector('.loading-primary').textContent = content;
+    }
+
     // Notification Success
     function notificationSuccess(result) {
         var title;
@@ -394,6 +428,9 @@
                 break;
             case 'rejectSuccess':
                 title = 'Reject Success';
+                break;
+            case 'delUserSuccess':
+                title = 'Delete User Success';
                 break;
         }
         Swal.fire(
