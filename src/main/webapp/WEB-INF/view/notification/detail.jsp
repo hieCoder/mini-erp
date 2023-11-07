@@ -51,9 +51,16 @@
     </style>
 </head>
 <body>
-<div class="row notificationDetail">
+<div class="row position-relative notificationDetail" style="min-height: 80vh">
     <div class="col-lg-12">
-        <div class="card">
+        <div style="width: 3rem; height: 3rem; position: absolute; z-index: 999;top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center full-height">
+            <div>
+                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div id="containerDetail" class="card d-none">
             <div class="card-header">
                 <h4 class="card-title mb-0">Notification Detail</h4>
             </div><!-- end card header -->
@@ -196,7 +203,6 @@
 
                             </div>
                             <div class="col-12 text-end">
-                                <%--                                <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1"><i class="ri-attachment-line fs-16"></i></button>--%>
                                 <button class="btn btn-sm btn-success" id="newCommentBtn">Post Comments</button>
                             </div>
                         </div>
@@ -606,8 +612,11 @@
                 $('div.simplebar-wrapper div[data-id="' + data.id + '"]').remove()
                 if (data.clientId == clientID) {
                     popupSuccess("Delete Comment Successfully")
+                    $("#deleteCommentModal").modal("hide")
+                    BtnLoadRemove()
+                    $("#deleteCommentBtn").removeClass("d-none")
                 }
-            }else if(data.clientId == clientID){
+            }else {
                 refreshPage()
             }
         });
@@ -1031,7 +1040,8 @@
             };
             var jsonData = JSON.stringify(data);
             deleteComment(jsonData)
-            $("#deleteCommentModal").modal("hide")
+            $(this).addClass("d-none")
+            $(this).before(BtnDangerLoad)
         })
 
         $(document).on("click","a.editCommentBtn", function (){
@@ -1085,6 +1095,9 @@
             var jsonData = JSON.stringify(data);
             editComment(jsonData);
         })
+
+        $("#containerDetail").removeClass("d-none")
+        $(".containerLoading").remove()
 
     });
 </script>
