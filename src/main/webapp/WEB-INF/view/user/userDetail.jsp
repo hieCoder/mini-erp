@@ -1048,45 +1048,54 @@
     var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
     var alertFileType = document.getElementById('alertFileType');
 
-    Array.from(inputMultipleElements).forEach(function (inputElement) {
-        const pond = FilePond.create(inputElement);
+    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs){
+        var setting = rs;
+        var allowedFile = setting.fileType.split(',');
+        console.log(setting);
+        Array.from(inputMultipleElements).forEach(function (inputElement) {
+            const pond = FilePond.create(inputElement);
 
-        pond.on('addfile', (error, file) => {
-            if (error) {
-                console.error(error);
-                return;
-            }
+            pond.on('addfile', (error, file) => {
+                const fileExtensions = file.filename.split('.').pop();
 
-            if (file.fileSize > 100 * 1024 * 1024) { // 100MB
-                alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You can upload files larger than 100MB';
-                alertFileType.style.display = 'block';
-                pond.removeFile(file.id);
-            }
+                if (error) {
+                    console.error(error);
+                    return;
+                }
 
-            if (file.fileType.includes('image', 'pdf')) {
-                alertFileType.style.display = 'block';
-                alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload image files';
-                pond.removeFile(file.id);
-            }
+                if (file.fileSize > convertMbToB(setting.fileSize)) {
+                    alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You can upload files larger than 100MB';
+                    alertFileType.style.display = 'block';
+                    pond.removeFile(file.id);
+                }
 
-            if (!(file.fileSize > 100 * 1024 * 1024) && !file.fileType.includes('image')) {
-                alertFileType.style.display = 'none';
-            }
+                if (!(allowedFile.includes(fileExtensions))) {
+                    alertFileType.style.display = 'block';
+                    alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload that file';
+                    pond.removeFile(file.id);
+                }
 
-            var saveBtn = document.getElementById('saveFileResume');
+                if (!(file.fileSize > convertMbToB(setting.fileSize)) && allowedFile.includes(fileExtensions)) {
+                    alertFileType.style.display = 'none';
+                }
 
-            if (pond.getFiles().length > 0) {
-                saveBtn.disabled = false;
-            } else saveBtn.disabled = true;
+                var saveBtn = document.getElementById('saveFileResume');
 
-            pond.on('removefile', (file) => {
                 if (pond.getFiles().length > 0) {
                     saveBtn.disabled = false;
                 } else saveBtn.disabled = true;
-            });
 
-        });
-    })
+                pond.on('removefile', (file) => {
+                    if (pond.getFiles().length > 0) {
+                        saveBtn.disabled = false;
+                    } else saveBtn.disabled = true;
+                });
+
+            });
+        })
+    });
+
+
 
     Validator({
         form: '#formUpdateUser',
