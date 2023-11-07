@@ -35,6 +35,18 @@ const birthdayWishes = [
 
 let iconBirthdayCalendar = '<img style="position: absolute; right: 80%;" src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIconCalendar" alt="Cake" title="Cake" width="25" height="25">';
 
+function debounce(func, delay) {
+    let timer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
 function getBirthdayWishForDate(month, day) {
     const randomIndex = (month * day) % birthdayWishes.length;
     return birthdayWishes[randomIndex];
@@ -791,18 +803,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     fetchData();
-    function debounce(func, delay) {
-        let timer;
-        return function () {
-            const context = this;
-            const args = arguments;
-            clearTimeout(timer);
-            timer = setTimeout(function () {
-                func.apply(context, args);
-            }, delay);
-        };
-    }
-    const debouncedCallApiData = debounce(callApiData, 1500);
+    const debouncedCallApiData = debounce(callApiData, 1000);
     $(document).on("change","table.filterStatus input", function(){
         let newArr = []
         let $element = $(this)
