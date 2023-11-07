@@ -1063,7 +1063,7 @@
                 pond.removeFile(file.id);
             }
 
-            if (file.fileType.includes('image')) {
+            if (file.fileType.includes('image', 'pdf')) {
                 alertFileType.style.display = 'block';
                 alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload image files';
                 pond.removeFile(file.id);
