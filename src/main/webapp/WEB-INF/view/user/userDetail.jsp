@@ -1048,45 +1048,52 @@
     var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
     var alertFileType = document.getElementById('alertFileType');
 
-    Array.from(inputMultipleElements).forEach(function (inputElement) {
-        const pond = FilePond.create(inputElement);
+    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+        var setting = rs;
+        var allowedFile = setting.fileType.split(',');
 
-        pond.on('addfile', (error, file) => {
-            if (error) {
-                console.error(error);
-                return;
-            }
+        Array.from(inputMultipleElements).forEach(function (inputElement) {
+            const pond = FilePond.create(inputElement);
 
-            if (file.fileSize > 100 * 1024 * 1024) { // 100MB
-                alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You can upload files larger than 100MB';
-                alertFileType.style.display = 'block';
-                pond.removeFile(file.id);
-            }
+            pond.on('addfile', (error, file) => {
+                const fileExtensions = file.filename.split('.').pop();
 
-            if (file.fileType.includes('image')) {
-                alertFileType.style.display = 'block';
-                alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload image files';
-                pond.removeFile(file.id);
-            }
+                if (error) {
+                    console.error(error);
+                    return;
+                }
 
-            if (!(file.fileSize > 100 * 1024 * 1024) && !file.fileType.includes('image')) {
-                alertFileType.style.display = 'none';
-            }
+                if (file.fileSize > convertMbToB(setting.fileSize)) {
+                    alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You can upload files larger than 100MB';
+                    alertFileType.style.display = 'block';
+                    pond.removeFile(file.id);
+                }
 
-            var saveBtn = document.getElementById('saveFileResume');
+                if (!(allowedFile.includes(fileExtensions))) {
+                    alertFileType.style.display = 'block';
+                    alertFileType.querySelector('.alert').innerHTML = '<i class="ri-error-warning-line me-3 align-middle"></i> <strong>Danger</strong> - You cannot upload that file';
+                    pond.removeFile(file.id);
+                }
 
-            if (pond.getFiles().length > 0) {
-                saveBtn.disabled = false;
-            } else saveBtn.disabled = true;
+                if (!(file.fileSize > convertMbToB(setting.fileSize)) && allowedFile.includes(fileExtensions)) {
+                    alertFileType.style.display = 'none';
+                }
 
-            pond.on('removefile', (file) => {
+                var saveBtn = document.getElementById('saveFileResume');
+
                 if (pond.getFiles().length > 0) {
                     saveBtn.disabled = false;
                 } else saveBtn.disabled = true;
-            });
 
-        });
-    })
+                pond.on('removefile', (file) => {
+                    if (pond.getFiles().length > 0) {
+                        saveBtn.disabled = false;
+                    } else saveBtn.disabled = true;
+                });
+
+            });
+        })
+    });
 
     Validator({
         form: '#formUpdateUser',
@@ -1420,8 +1427,45 @@
     }
 
     // Show modal Add Contract
-    document.getElementById('add-contract-button').addEventListener('click', function () {
+    document.getElementById('add-contract-button').addEventListener('click', function (e) {
         $('#addContractModal').modal('show');
+        var fileAddContract = document.getElementById('newContract');
+        fileAddContract.addEventListener('change', function () {
+            callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+                var setting = rs;
+                var allowedFile = setting.fileType.split(',');
+                var fileName = fileAddContract.files[0].name.split('.').pop();
+                var fileSize = fileAddContract.files[0].size;
+
+                if (fileSize > convertMbToB(setting.fileSize)) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'You cannot upload this file!',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    fileAddContract.value = null;
+                }
+
+                if (!(allowedFile.includes(fileName))) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'You cannot upload this file!',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    fileAddContract.value = null;
+                }
+            });
+        });
     });
 
     Validator({
@@ -1487,6 +1531,8 @@
                 var editContractId = this.value;
                 e.preventDefault();
                 $('#editContractModal').modal('show');
+
+                // Call Api get Data Contract Detail
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
                     var allowance = JSON.parse(rs.allowance);
@@ -1555,7 +1601,46 @@
 
                 });
 
+                var fileEditContract = document.getElementById('editContract');
+                fileEditContract.addEventListener('change', function () {
+                    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+                        var setting = rs;
+                        var allowedFile = setting.fileType.split(',');
+                        var fileName = fileEditContract.files[0].name.split('.').pop();
+                        var fileSize = fileEditContract.files[0].size;
 
+                        if (fileSize > convertMbToB(setting.fileSize)) {
+                            Swal.fire(
+                                {
+                                    title: 'Oops...',
+                                    text: 'You cannot upload this file!',
+                                    icon: 'error',
+                                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                    buttonsStyling: false,
+                                    showCloseButton: true
+                                }
+                            )
+                            fileEditContract.value = null;
+                        }
+
+                        if (!(allowedFile.includes(fileName))) {
+                            Swal.fire(
+                                {
+                                    title: 'Oops...',
+                                    text: 'You cannot upload this file!',
+                                    icon: 'error',
+                                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                    buttonsStyling: false,
+                                    showCloseButton: true
+                                }
+                            )
+                            fileEditContract.value = null;
+                        }
+
+                    });
+                });
+
+                // Click button Confirm edit Contract
                 if (editContractId) {
                     Validator({
                         form: '#editContractForm',
