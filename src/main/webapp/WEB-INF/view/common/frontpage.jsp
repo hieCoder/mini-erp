@@ -11,10 +11,16 @@
     <div class="col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">DASHBOARD</h4>
-<%--            <c:if test="${user.birthday != null}">--%>
-            <marquee class="marquee-text" behavior="scroll" direction="left" scrollamount="15">Chữ chạy trên trang web
-            </marquee>
-<%--            </c:if>--%>
+            <c:if test="${requestScope.list != null}">
+                <c:if test="${not empty requestScope.list}">
+                    <marquee class="marquee-text" behavior="scroll" direction="left" scrollamount="15">
+                        Happy Birthday To
+                        <c:forEach items="${requestScope.list}" var="person" varStatus="loop">
+                            ${person.fullname}${!loop.last ? ', ' : ''}
+                        </c:forEach>
+                    </marquee>
+                </c:if>
+            </c:if>
         </div>
     </div>
 </div>

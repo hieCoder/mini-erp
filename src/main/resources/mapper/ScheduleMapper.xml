@@ -10,24 +10,23 @@
           AND t.STATUS = 'ACTIVE'
           AND (
                 (t.START_DATE IS NULL AND
-                 ((DATE_FORMAT(t.CREATED_DATE, '%Y-%m') &gt;= #{prevMonth} AND
-                  DATE_FORMAT(t.CREATED_DATE, '%Y-%m') &lt;= #{nextMonth}) OR
-                  (DATE_FORMAT(t.DUE_DATE, '%Y-%m') &gt;= #{prevMonth} AND DATE_FORMAT(t.DUE_DATE, '%Y-%m') &lt;= #{nextMonth}))
+                 ((t.CREATED_DATE &gt;= #{prevMonth} AND
+                  t.CREATED_DATE &lt;= #{nextMonth}) OR
+                  (t.DUE_DATE &gt;= #{prevMonth} AND t.DUE_DATE &lt;= #{nextMonth}))
                     )
                 OR
                 (t.START_DATE IS NOT NULL AND ((
-                            DATE_FORMAT(
                                     CASE
                                         WHEN t.STATUS_TASK != 'CLOSED' THEN t.DUE_DATE
                                         WHEN t.STATUS_TASK = 'CLOSED' THEN t.CLOSE_DATE
-                                        END, '%Y-%m') &gt;= #{prevMonth} AND DATE_FORMAT(
+                                        END &gt;= #{prevMonth} AND
                                                                                 CASE
                                                                                     WHEN t.STATUS_TASK != 'CLOSED' THEN t.DUE_DATE
                                                                                     WHEN t.STATUS_TASK = 'CLOSED'
                                                                                         THEN t.CLOSE_DATE
-                                                                                    END, '%Y-%m') &lt;= #{nextMonth})
-                        OR (DATE_FORMAT(t.START_DATE, '%Y-%m') &gt;= #{prevMonth} AND
-                            DATE_FORMAT(t.START_DATE, '%Y-%m') &lt;= #{nextMonth})
+                                                                                    END &lt;= #{nextMonth})
+                        OR (t.START_DATE &gt;= #{prevMonth} AND
+                            t.START_DATE &lt;= #{nextMonth})
                     ))
             );
     </select>

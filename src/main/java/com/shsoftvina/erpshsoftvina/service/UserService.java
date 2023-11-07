@@ -1,12 +1,14 @@
 package com.shsoftvina.erpshsoftvina.service;
 
 
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +35,5 @@ public interface UserService {
 
     List<Map<String, Object>> getAllFullname();
 
+    List<User> findUserBirthdayToday(LocalDate date);
 }
