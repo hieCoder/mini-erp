@@ -212,7 +212,7 @@
                 Are you sure you want to reject this account?
             </div>
             <div class="modal-footer border-top">
-                <button type="button" class="btn btn-danger" id="confirmReject">Reject</button>
+                <button type="button" class="btn btn-danger" id="confirmReject" data-id="">Reject</button>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -301,45 +301,45 @@
                 )
             } else {
                 Swal.close();
-                showAlertLoading();
+                var swal = showAlertLoading();
+
+                var obj = {
+                    email: data.email,
+                    role: $(this).closest('tr').find('select[name="role"]').val(),
+                    status: $(this).data('status'),
+                    id: $(this).data('id')
+                };
+
+                callAjaxByJsonWithData('/api/v1/users/register/approval', 'PUT', obj, function (rs) {
+                    if (rs) {
+                        table.ajax.reload(function () {
+                            swal.close();
+                        });
+                    }
+                });
             }
-
-            var obj = {
-                email: data.email,
-                role: $(this).closest('tr').find('select[name="role"]').val(),
-                status: $(this).data('status'),
-                id: $(this).data('id')
-            };
-
-            callAjaxByJsonWithData('/api/v1/users/register/approval', 'PUT', obj, function (rs) {
-                if (rs) {
-                    table.ajax.reload();
-                }
-                sessionStorage.setItem('result', 'approvalSuccess')
-                location.reload();
-            });
         });
 
         $('#pendingTable').on('click', '.reject-btn', function () {
 
             $('#confirmModal').modal('show');
 
-            var id = $(this).data('id');
-
-            $('#confirmReject').on('click', function () {
-                $('#confirmModal').modal('hide');
-                showAlertLoading();
-                callAjaxByJsonWithData('/api/v1/users/register/reject/' + id, 'DELETE', null, function (rs) {
-                    if (rs) {
-                        table.ajax.reload();
-                    }
-                    sessionStorage.setItem('result', 'rejectSuccess')
-                    location.reload();
-                });
-            });
-
+            $('#confirmReject').attr('data-id', $(this).data('id'));
         });
-    })
+
+        $('#confirmReject').on('click', function () {
+            $('#confirmModal').modal('hide');
+            var swal = showAlertLoading();
+            var id = $(this).data('id');
+            callAjaxByJsonWithData('/api/v1/users/register/reject/' + id, 'DELETE', null, function (rs) {
+                if (rs) {
+                    table.ajax.reload(function () {
+                        swal.close();
+                    });
+                }
+            });
+        });
+    });
 </script>
 
 <script>

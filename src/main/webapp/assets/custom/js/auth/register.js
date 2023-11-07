@@ -14,6 +14,7 @@ $(document).ready(function () {
             }, 'Password is not macth')
         ],
         onSubmit: function (formData) {
+            $('#registerForm .spinner-border').removeClass('d-none');
             callAjaxByJsonWithDataForm("/api/v1/auth/register", "POST", formData, function (rs) {
                 window.location.href = "/login?registerSuccess";
             }, function (err) {
