@@ -1048,10 +1048,10 @@
     var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
     var alertFileType = document.getElementById('alertFileType');
 
-    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs){
+    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
         var setting = rs;
         var allowedFile = setting.fileType.split(',');
-        console.log(setting);
+
         Array.from(inputMultipleElements).forEach(function (inputElement) {
             const pond = FilePond.create(inputElement);
 
@@ -1094,8 +1094,6 @@
             });
         })
     });
-
-
 
     Validator({
         form: '#formUpdateUser',
@@ -1429,8 +1427,45 @@
     }
 
     // Show modal Add Contract
-    document.getElementById('add-contract-button').addEventListener('click', function () {
+    document.getElementById('add-contract-button').addEventListener('click', function (e) {
         $('#addContractModal').modal('show');
+        var fileAddContract = document.getElementById('newContract');
+        fileAddContract.addEventListener('change', function () {
+            callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+                var setting = rs;
+                var allowedFile = setting.fileType.split(',');
+                var fileName = fileAddContract.files[0].name.split('.').pop();
+                var fileSize = fileAddContract.files[0].size;
+
+                if (fileSize > convertMbToB(setting.fileSize)) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'You cannot upload this file!',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    fileAddContract.value = null;
+                }
+
+                if (!(allowedFile.includes(fileName))) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'You cannot upload this file!',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    fileAddContract.value = null;
+                }
+            });
+        });
     });
 
     Validator({
@@ -1496,6 +1531,8 @@
                 var editContractId = this.value;
                 e.preventDefault();
                 $('#editContractModal').modal('show');
+
+                // Call Api get Data Contract Detail
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
                     var allowance = JSON.parse(rs.allowance);
@@ -1564,7 +1601,46 @@
 
                 });
 
+                var fileEditContract = document.getElementById('editContract');
+                fileEditContract.addEventListener('change', function () {
+                    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+                        var setting = rs;
+                        var allowedFile = setting.fileType.split(',');
+                        var fileName = fileEditContract.files[0].name.split('.').pop();
+                        var fileSize = fileEditContract.files[0].size;
 
+                        if (fileSize > convertMbToB(setting.fileSize)) {
+                            Swal.fire(
+                                {
+                                    title: 'Oops...',
+                                    text: 'You cannot upload this file!',
+                                    icon: 'error',
+                                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                    buttonsStyling: false,
+                                    showCloseButton: true
+                                }
+                            )
+                            fileEditContract.value = null;
+                        }
+
+                        if (!(allowedFile.includes(fileName))) {
+                            Swal.fire(
+                                {
+                                    title: 'Oops...',
+                                    text: 'You cannot upload this file!',
+                                    icon: 'error',
+                                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                    buttonsStyling: false,
+                                    showCloseButton: true
+                                }
+                            )
+                            fileEditContract.value = null;
+                        }
+
+                    });
+                });
+
+                // Click button Confirm edit Contract
                 if (editContractId) {
                     Validator({
                         form: '#editContractForm',
