@@ -1161,13 +1161,7 @@
         deleteUserButtons.addEventListener("click", function () {
             disableBtn();
             $('#deleteUserModal').modal('hide');
-            Swal.fire({
-                title: 'Wait a minute...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
+            showAlertLoading();
             if (userId) {
                 callAjaxByJsonWithData('/api/v1/users/' + userId, 'DELETE', null, function (rs) {
                     sessionStorage.setItem('result', 'delUserSuccess');
@@ -1632,13 +1626,7 @@
                     if (result.value) {
                         Swal.close();
 
-                        Swal.fire({
-                            title: 'Wait a minute...',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
+                        showAlertLoading();
                         disableBtn();
                         callAjaxByJsonWithData('/api/v1/contracts/' + delContractId, 'DELETE', null, function (rs) {
                             localStorage.setItem('result', 'delContractSuccess');

@@ -22,7 +22,9 @@
                                         <input id="search" name="search" type="text" class="form-control"
                                                placeholder="Search by username or userid">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit" onclick="addLoadingPrimary(this)">Search</button>
+                                            <button class="btn btn-primary" type="submit"
+                                                    onclick="addLoadingPrimary(this)">Search
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -33,7 +35,6 @@
                                     <div class="input-group">
                                         <select id="statusUser" name="status" class="form-select"
                                                 onchange="this.form.submit()">
-                                            <
                                             <option value="ACTIVE">ACTIVE</option>
                                             <option value="INACTIVE">INACTIVE</option>
                                         </select>
@@ -64,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-4">
+                        <div class="row mt-4 mb-4">
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="sort">Sort By Username</label>
@@ -77,7 +78,14 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table border align-middle table-nowrap table-striped-columns mt-4">
+                        <div class="row" id="loadingTable" style="display:none;">
+                            <div class="col-md-12">
+                                <div class="spinner-border text-primary" style="height: 15px; width: 15px" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table border align-middle table-nowrap table-striped-columns">
                             <thead>
                             <tr>
                                 <th>NO.</th>
@@ -283,24 +291,17 @@
             var selectedRole = $(this).closest('tr').find('select[name="role"]').val();
 
             if (!selectedRole) {
-                    Swal.fire(
-                        {
-                            title: 'You must choose a role!',
-                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
-                            buttonsStyling: false,
-                            showCloseButton: true
-                        }
-                    )
+                Swal.fire(
+                    {
+                        title: 'You must choose a role!',
+                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                        buttonsStyling: false,
+                        showCloseButton: true
+                    }
+                )
             } else {
                 Swal.close();
-
-                Swal.fire({
-                    title: 'Wait a minute...',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
+                showAlertLoading();
             }
 
             var obj = {
@@ -327,13 +328,7 @@
 
             $('#confirmReject').on('click', function () {
                 $('#confirmModal').modal('hide');
-                Swal.fire({
-                    title: 'Wait a minute...',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
+                showAlertLoading();
                 callAjaxByJsonWithData('/api/v1/users/register/reject/' + id, 'DELETE', null, function (rs) {
                     if (rs) {
                         table.ajax.reload();
@@ -349,11 +344,14 @@
 
 <script>
     // // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
+    var loadingTable = document.getElementById('loadingTable');
     document.getElementById("pageSize").addEventListener("change", function () {
+        loadingTable.style.display = 'block';
         localStorage.setItem("selectedPageSize", this.value);
     });
 
     document.getElementById("statusUser").addEventListener("change", function () {
+        loadingTable.style.display = 'block';
         localStorage.setItem("selectedStatus", this.value);
     });
 
@@ -362,6 +360,7 @@
     });
 
     document.getElementById("sort").addEventListener("input", function () {
+        loadingTable.style.display = 'block';
         localStorage.setItem("selectedSort", this.value);
     });
 
