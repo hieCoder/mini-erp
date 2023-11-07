@@ -188,7 +188,12 @@
                                         </div>
                                     </div>
                                     <div class="hstack gap-2 justify-content-start">
-                                        <button type="submit" class="btn btn-success">Comment</button>
+                                        <button type="submit" class="btn btn-success btn-load">
+                                            <span class="d-flex align-items-center">
+                                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                                <span class="flex-grow-1">Comment</span>
+                                            </span>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -540,10 +545,15 @@
                 <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
                 <div class="mt-4 text-center">
                     <h4>You are about to delete a task comment ?</h4>
-                    <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
+                    <p class="text-muted fs-14 mb-4">Deleting your task comment will remove all of
                         your information from our database.</p>
                     <div class="hstack gap-2 justify-content-center remove">
-                        <button class="btn btn-danger" id="delete-comment" data-id="">Yes, Delete It</button>
+                        <button class="btn btn-danger btn-load" id="delete-comment" data-id="">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Yes, Delete It</span>
+                            </span>
+                        </button>
                         <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
                     </div>
                 </div>
@@ -585,6 +595,7 @@
 <script>
     $(document).ready(function() {
         var idTask = ${id};
+        var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
             $('.task-username').text(rs.user.fullname);
             $('.task-id').text(rs.id);
@@ -600,13 +611,17 @@
             $('.task-content').html(getContentViewOfEditorSnow(rs.content));
 
             // LIST OF COMMENT
-            rs.comments.forEach(function (comment) {
-                createCommentForm(comment)
-                    .then(function (commentHTML) {
+            var commentPromises = rs.comments.map(function (comment) {
+                return createCommentForm(comment).then(function (commentHTML) {
                         $('#comment-list').append(commentHTML);
                     }).catch(function (error) {
                         console.error(error);
-                    });
+                });
+            });
+            Promise.all(commentPromises).then(function () {
+                    swal.close();
+                }).catch(function (error) {
+                    console.error(error);
             });
 
             // Post a comment
@@ -629,7 +644,9 @@
                             formData.append('fileList', file);
                         });
 
+                        $('.post-comment-form .spinner-border').removeClass('d-none');
                         callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
+                            $('.post-comment-form .spinner-border').addClass('d-none');
                             createCommentForm(rs)
                                 .then(function (commentHTML) {
                                     $('#comment-list').append(commentHTML);
@@ -652,8 +669,10 @@
 
     $(document).on('click', '#delete-comment', function (e) {
         var id = $(this).attr('data-id');
+        $('#deleteCommentModal .spinner-border').removeClass('d-none');
         callAjaxByJsonWithData("/api/v1/comment-task/" + id, "DELETE", null, function (rs) {
             $(".comment-container[data-id='" + id + "']").remove();
+            $('#deleteCommentModal .spinner-border').addClass('d-none');
             $('#deleteCommentModal').modal('hide');
         });
     });
@@ -686,6 +705,7 @@
                     formData.append('fileList', file);
                 });
 
+                $('.reply-comment-form[data-id="'+ id+ '"] .spinner-border').removeClass('d-none');
                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
                     createCommentForm(rs)
                         .then(function (commentHTML) {
@@ -707,6 +727,8 @@
     $(document).on('click', '.btn-edit', function (e){
         var id = $(this).data('id');
         var editContainer = $(".form-edit[data-id='" + id + "']");
+
+        var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/comment-task/'+id, 'GET', null, function (rs) {
 
             showEditCommentForm(rs)
@@ -718,6 +740,9 @@
                     var dropzone = '';
                     callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK_COMMENT, 'GET', null, function (setting) {
                         dropzone = activeFile(".form-edit[data-id='" + id + "']", setting);
+                        swal.close();
+                    }, function (err) {
+                        swal.close();
                     });
 
                     Validator({
@@ -740,6 +765,7 @@
                                 formData.append('newFiles', file);
                             });
 
+                            $('.edit-comment-form[data-id="'+ id+ '"] .spinner-border').removeClass('d-none');
                             callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
                                 createCommentForm(rs)
                                     .then(function (commentHTML) {

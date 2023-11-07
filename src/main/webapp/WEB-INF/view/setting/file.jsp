@@ -39,7 +39,12 @@
                 </table>
             </div>
             <div class="mb-1">
-                <button id="update-button" type="button" class="btn btn-success">Update</button>
+                <button id="update-button" type="button" class="btn btn-success btn-load">
+                    <span class="d-flex align-items-center">
+                        <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                        <span class="flex-grow-1">Update</span>
+                    </span>
+                </button>
                 <span class="message-noti ml-10"></span>
             </div>
         </form>
@@ -130,7 +135,9 @@
             });
 
             if(isValidate){
+                $('#setting-file-form .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithData('/api/v1/settings', 'PUT', object, function (rs) {
+                    $('#setting-file-form .spinner-border').addClass('d-none');
                     alertSuccess('Update success');
                 });
             }
