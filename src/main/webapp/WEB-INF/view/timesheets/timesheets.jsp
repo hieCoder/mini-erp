@@ -39,7 +39,12 @@
                                     <input name="file" class="form-control form-control-sm file-import-input" type="file">
                                     <small class="form-message" style="color:red;"></small>
                                     <div>
-                                        <button type="button" class="btn btn-success waves-effect waves-light btn-sm btn-submit-file-import mt-1">Submit</button>
+                                        <button type="button" class="btn btn-success btn-load btn-submit-file-import btn-sm mt-1">
+                                            <span class="d-flex align-items-center">
+                                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                                <span class="flex-grow-1">Submit</span>
+                                            </span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -86,6 +91,7 @@
 
     $(document).ready(function (){
 
+        var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs){
             rs.forEach(function(user, index) {
                 var staff = createStaffE(user);
@@ -94,6 +100,11 @@
             $('#staff-list').find('.staff-name').first().addClass('text-decoration-underline');
 
             function handleCalendarViewChange(info) {
+
+                if(!swal.isVisible()){
+                    showAlertLoading();
+                }
+
                 var newDate = info.view.currentStart;
 
                 var dateObj = new Date(newDate);
@@ -104,6 +115,7 @@
                 var dataId =staffCurent.getAttribute('data-id');
                 callAjaxByJsonWithData('/api/v1/timesheets/'+dataId+'?year='+year+"&month="+month, 'GET', null, function (data) {
                     calendar.setOption('events', convertListTimesheetToCalendar(data));
+                    swal.close();
                 });
             }
 
@@ -132,9 +144,19 @@
         $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
         $(this).addClass('text-decoration-underline');
         var staffId = $(this).data('id');
+
+        var spinnerE = $(this).closest('.card-body').find('.spinner-border');
+        spinnerE.removeClass('d-none');
         callAjaxByJsonWithData('/api/v1/timesheets/'+staffId+'?year='+year+"&month="+month, 'GET', null, function (data) {
             calendar.setOption('events', convertListTimesheetToCalendar(data));
+            spinnerE.addClass('d-none');
         });
+    });
+
+    $(document).on('change', '.file-import-input', function(e) {
+        var formClass = '.import-timesheest-form';
+        var errorE = $(formClass + ' .form-message');
+        errorE.text('');
     });
 
     $(document).on('click', '.btn-submit-file-import', function (e) {
@@ -150,8 +172,13 @@
             if (fileInput.files.length > 0) {
                 var file = fileInput.files[0];
                 formData.append(fileInput.name, file);
+
+                var spinnerE =  $('.import-timesheest-form .spinner-border');
+                spinnerE.removeClass('d-none');
                 callAjaxByDataFormWithDataForm('/api/v1/timesheets/upload', 'POST', formData, function (rs){
+                    spinnerE.addClass('d-none');
                     inputE.val('');
+                    errorE.text('');
                     alertSuccess('Import success');
                 }, function (err) {
                     if('Some user not exist in system' == err.responseJSON.message){
@@ -159,6 +186,7 @@
                     } else{
                         errorE.text('Import fail! Can not import');
                     }
+                    spinnerE.addClass('d-none');
                 });
             }
         }

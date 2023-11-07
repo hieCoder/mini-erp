@@ -5,6 +5,9 @@ function createStaffE(staff){
                                         <div class="flex-grow-1"><i
                                                 class="mdi mdi-checkbox-blank-circle me-2 text-info"></i>
                                                 <a data-id="`+staff.id+`" href="#" class="fw-medium staff-name">`+staff.fullname+`</a></div>
+                                        <span class="btn-load">
+                                            <span class="spinner-border flex-shrink-0 d-none"></span>
+                                        </span>
                                     </div>
                                     <p class="text-muted text-truncate-two-lines mb-0"></p></div>
                             </div>`;

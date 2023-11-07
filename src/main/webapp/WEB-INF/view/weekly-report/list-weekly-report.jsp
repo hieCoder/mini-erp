@@ -41,11 +41,7 @@
             <div class="col-xl-10 list-wr-container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <c:if test="${param.createSuccess != null}">
-                            <div class="alert alert-success mb-2">
-                                Create success!
-                            </div>
-                        </c:if>
+                        <div class="alert alert-success mb-2 d-none"></div>
                     </div>
                 </div>
                 <div class="card">
@@ -61,12 +57,15 @@
                         <div class="row g-3">
                             <div class="col-xxl-4 col-sm-4 d-flex align-items-center justify-content-start">
                                 <div style="margin-right: 5px;">Show entries: </div>
-                                <div>
+                                <div class="page-count-item-container d-flex align-items-center align-items-center">
                                     <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
                                         <option value="10">10</option>
                                         <option value="15">15</option>
                                         <option value="20">20</option>
                                     </select>
+                                    <span class="btn-load ml-10">
+                                        <span class="spinner-border flex-shrink-0 d-none"></span>
+                                    </span>
                                 </div>
                             </div>
                             <!--end col-->
@@ -128,7 +127,7 @@
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success btn-load">
+                        <button type="submit" class="btn btn-success btn-load" style="margin-right: 3px;">
                                 <span class="d-flex align-items-center">
                                     <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
                                     <span class="flex-grow-1">Create</span>
@@ -153,32 +152,27 @@
 
     $(document).ready(function (){
 
-        if(isDeleveloper()){
-            $('.list-staff-container').remove();
-            $('.list-wr-container').toggleClass('col-xl-10 col-xl-12');
-            pagingObj.staffId = userCurrent.id;
-        } else{
-            callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
-                rs.forEach(function (user, index) {
-                    var staff = createStaffE(user);
-                    $('#staff-list').append(staff);
+        new Promise(function (resolve, reject) {
+            if (isDeleveloper()) {
+                $('.list-staff-container').remove();
+                $('.list-wr-container').toggleClass('col-xl-10 col-xl-12');
+                pagingObj.staffId = userCurrent.id;
+                resolve();
+            } else {
+                var swal = showAlertLoading();
+                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                    rs.forEach(function (user, index) {
+                        var staff = createStaffE(user);
+                        $('#staff-list').append(staff);
+                    });
+                    var staffFirst = $('#staff-list').find('.staff-name').first();
+                    staffFirst.addClass('text-decoration-underline');
+                    swal.close();
+                    pagingObj.staffId = $(staffFirst).data('id');
+                    resolve();
                 });
-                var staffFirst = $('#staff-list').find('.staff-name').first();
-                staffFirst.addClass('text-decoration-underline');
-                pagingObj.staffId = $(staffFirst).data('id');
-            });
-
-            $(document).on('click', '.staff-name', function (e){
-                $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
-                $(this).addClass('text-decoration-underline');
-                pagingObj.staffId = $(this).data('id');
-                pagingObj.page = 1;
-                tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
-                    pagingObj.page, pagingObj.pageSize)).load();
-            });
-        }
-
-        callAjaxByJsonWithData('/api/v1/users/'+pagingObj.staffId, 'GET', null, function (user) {
+            }
+        }).then(function () {
             tableWR = $('#weekly-report-table').DataTable({
                 ajax: {
                     url: getListApiUrl(pagingObj.staffId, 1, pagingObj.pageSize),
@@ -212,15 +206,16 @@
                 paging: false,
                 info: false
             });
-
-            $('#page-count-select').on('change', function() {
-                var selectedValue = $(this).val();
-                pagingObj.page = 1;
-                pagingObj.pageSize = selectedValue;
-                tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
-                    pagingObj.page, pagingObj.pageSize)).load();
-            });
+        }).catch(function (error) {
+                console.error(error);
         });
+    });
+
+    $(document).on('shown.bs.modal', '#createReport', function() {
+
+        $('#title').val('');
+        $('#this-week-content').html('');
+        $('#next-week-content').html('');
 
         Validator({
             form:'#create-wr-form',
@@ -231,18 +226,46 @@
                 Validator.isRequired('#next-week-content')
             ],
             onSubmit: function (formData) {
-                var data = {};
-                formData.forEach((value, key) => data[key] = value);
-                console.log(data);
                 formData.append("currentWeeklyContent", $('#this-week-content').html());
                 formData.append("nextWeeklyContent", $('#next-week-content').html());
                 formData.append("userId", userCurrent.id);
 
                 $('#create-wr-form .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithDataForm("/api/v1/weekly-reports", "POST", formData, function (rs) {
-                    window.location.href = "/weekly-reports?createSuccess";
+                    tableWR.ajax.reload(function () {
+                        $('#create-wr-form .spinner-border').addClass('d-none');
+                        $("#createReport").modal("hide");
+                        showAlert(SUCCESS_ALERT, 'Create success');
+                    });
                 });
             }
+        });
+    });
+
+    $(document).on('click', '.staff-name', function (e){
+        $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
+        $(this).addClass('text-decoration-underline');
+        pagingObj.staffId = $(this).data('id');
+        pagingObj.page = 1;
+
+        var spinnerE = $(this).closest('.card-body').find('.spinner-border');
+        spinnerE.removeClass('d-none');
+        tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+            pagingObj.page, pagingObj.pageSize)).load(function (){
+            spinnerE.addClass('d-none');
+        });
+    });
+
+    $(document).on('change', '#page-count-select', function() {
+        var selectedValue = $(this).val();
+        pagingObj.page = 1;
+        pagingObj.pageSize = selectedValue;
+
+        var selectContainerE = $(this).closest('.page-count-item-container');
+        selectContainerE.find('.spinner-border').removeClass('d-none');
+        tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
+            pagingObj.page, pagingObj.pageSize)).load(function () {
+            selectContainerE.find('.spinner-border').addClass('d-none');
         });
     });
 

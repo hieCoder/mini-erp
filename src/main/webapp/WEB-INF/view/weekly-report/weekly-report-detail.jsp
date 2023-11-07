@@ -66,23 +66,23 @@
                 <form id="edit-wr-form">
                     <div class="mb-3">
                         <label for="title" class="col-form-label">Title:</label>
-                        <input name="title" type="text" class="form-control" id="title" value="${wr.title}">
+                        <input name="title" type="text" class="form-control" id="title">
                         <small class="form-message"></small>
                     </div>
                     <div class="mb-3">
                         <label for="this-week-content" class="col-form-label">This week's content:</label>
-                        <div class="form-control content-report" id="this-week-content" contenteditable="true">${wr.currentWeeklyContent}</div>
+                        <div class="form-control content-report" id="this-week-content" contenteditable="true"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
-                        <div class="form-control content-report" id="next-week-content" contenteditable="true">${wr.nextWeeklyContent}</div>
+                        <div class="form-control content-report" id="next-week-content" contenteditable="true"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary btn-load">
+                        <button type="submit" class="btn btn-primary btn-load" style="margin-right: 3px;">
                             <span class="d-flex align-items-center">
                                 <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
                                 <span class="flex-grow-1">Edit</span>
@@ -174,6 +174,16 @@
                     $('#next-week-content-show').html(rs.nextWeeklyContent);
                 });
             }
+        });
+    });
+
+    $(document).on('shown.bs.modal', '#editReport', function() {
+        var swal = showAlertLoading();
+        callAjaxByJsonWithData("/api/v1/weekly-reports/" + ${wr.id}, "GET", null, function (rs) {
+            $('#title').val(rs.title);
+            $('#this-week-content').html(rs.currentWeeklyContent);
+            $('#next-week-content').html(rs.nextWeeklyContent);
+            swal.close();
         });
     });
 </script>

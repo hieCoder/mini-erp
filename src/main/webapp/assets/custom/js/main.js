@@ -247,13 +247,21 @@ function alertSuccess(mess){
             title: 'Success!',
             text: mess,
             icon: 'success',
-            showCancelButton: true,
             confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-            cancelButtonClass: 'btn btn-danger w-xs mt-2',
             buttonsStyling: false,
             showCloseButton: true
         }
     );
+}
+function showAlertLoading() {
+    Swal.fire({
+        title: 'Wait a minute...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    return Swal;
 }
 
 // money format

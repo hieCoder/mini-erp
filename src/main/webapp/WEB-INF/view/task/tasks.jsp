@@ -162,21 +162,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-         <c:if test="${param.registerSuccess != null}">
-            <div class="alert alert-success">
-                Register success!
-            </div>
-        </c:if>
-        <c:if test="${param.deleteSuccess != null}">
-            <div class="alert alert-success">
-                Delete success!
-            </div>
-        </c:if>
-        <c:if test="${param.updateSuccess != null}">
-            <div class="alert alert-success">
-                Update success!
-            </div>
-        </c:if>
+        <div class="alert alert-success d-none"></div>
     </div>
 </div>
 
@@ -228,12 +214,15 @@
                         <!--end col-->
                         <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
                             <div style="margin-right: 5px;">Show entries: </div>
-                            <div>
+                            <div class="d-flex align-items-center align-items-center">
                                 <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
                                     <option value="10">10</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
                                 </select>
+                                <span class="btn-load ml-10">
+                                    <span class="spinner-border flex-shrink-0 d-none"></span>
+                                </span>
                             </div>
                         </div>
                         <!--end col-->
@@ -484,14 +473,13 @@
     var tableTask = null;
 
     $(document).ready(function (){
-        callAjaxByJsonWithData('/api/v1/tasks/status-task-count', 'GET', null, function (rs) {
-            //$(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
-            $(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
-            $(".counter-closed-task").text(getTaskCountByCode(rs, T_CLOSED));
-            $(".counter-postponed-task").text(getTaskCountByCode(rs, T_POSTPONED));
-            $(".counter-opened-task").text(getTaskCountByCode(rs, T_OPENED));
-            $(".counter-registered-task").text(getTaskCountByCode(rs, T_REGISTERED));
-            $(".counter-reopend-task").text(getTaskCountByCode(rs, T_REOPENED));
+
+        var swal = showAlertLoading();
+
+        loadCountStatus().then(function (rs) {
+            swal.close();
+        }).catch(function (error) {
+            console.error("Error loading task counts:", error);
         });
 
         tableTask = $('#tasksTable').DataTable({
@@ -597,10 +585,17 @@
         });
 
         $('#page-count-select').on('change', function() {
-            var selectedValue = $(this).val();
+
+            var selectE = $(this);
+            var selectedValue = selectE.val();
             tasksRequest.page = 1;
             tasksRequest.pageSize = selectedValue;
-            tableTask.ajax.reload();
+
+            var divParent = selectE.closest('div');
+            divParent.find('.spinner-border').removeClass('d-none');
+            tableTask.ajax.reload(function () {
+                divParent.find('.spinner-border').addClass('d-none');
+            });
         });
     });
 
@@ -659,17 +654,13 @@
                 if (e.isConfirmed) {
                     Swal.close();
 
-                    Swal.fire({
-                        title: 'Loading...',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-
+                    var swal = showAlertLoading();
                     callAjaxByJsonWithData("/api/v1/tasks/", "DELETE", checkedIds, function (rs) {
-                        tableTask.ajax.reload();
-                        Swal.close();
+                        tableTask.ajax.reload(function () {
+                            loadCountStatus();
+                            swal.close();
+                            showAlert(SUCCESS_ALERT, 'Delete success!');
+                        });
                     });
                 }
             });
@@ -682,63 +673,71 @@
             });
         }
     });
-</script>
-<script>
 
-    $(document).ready(function() {
-        var isFirstTimeOpenModalRegister = true;
-        $('#registerTaskModal').on('shown.bs.modal', function() {
-            var selectElement = $('#selectUsername');
+    var isFirstTimeOpenModalRegister = true;
+    $(document).on('shown.bs.modal', '#registerTaskModal', function() {
+        var selectElement = $('#selectUsername');
 
-            // username
-            if(isDeleveloper()){
+        // username
+        if(isDeleveloper()){
+            selectElement.empty();
+            $('.username-register-task').text(userCurrent.fullname);
+            var option = $('<option></option>');
+            option.attr('value', userCurrent.id);
+            option.text(userCurrent.fullname);
+            selectElement.append(option);
+        } else{
+            if (isFirstTimeOpenModalRegister) {
+                var swal = showAlertLoading();
+
                 selectElement.empty();
-                $('.username-register-task').text(userCurrent.fullname);
-                var option = $('<option></option>');
-                option.attr('value', userCurrent.id);
-                option.text(userCurrent.fullname);
-                selectElement.append(option);
-            } else{
-                if (isFirstTimeOpenModalRegister) {
-                    selectElement.empty();
-                    callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
-                        rs.forEach(function(user) {
-                            var option = $('<option></option>');
-                            option.attr('value', user.id);
-                            option.text(user.fullname);
+                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
+                    rs.forEach(function(user) {
+                        var option = $('<option></option>');
+                        option.attr('value', user.id);
+                        option.text(user.fullname);
 
-                            if (user.id == userCurrent.id) {
-                                option.attr('selected', 'selected');
-                            }
+                        if (user.id == userCurrent.id) {
+                            option.attr('selected', 'selected');
+                        }
 
-                            selectElement.append(option);
-                        });
-
-                        isFirstTimeOpenModalRegister = false;
+                        selectElement.append(option);
                     });
 
-                    $('#selectUsername').removeClass('d-none');
-                }
+                    swal.close();
+
+                    isFirstTimeOpenModalRegister = false;
+                });
+
+                $('#selectUsername').removeClass('d-none');
             }
+        }
+        $('#title').val('');
+        $('#content .ql-editor').html('<p><br></p>');
+        $('#dueDate').val('');
+        $('#registerTaskForm .spinner-border').addClass('d-none');
 
-            Validator({
-                form:'#registerTaskForm',
-                errorSelector: '.form-message',
-                rules:[
-                    Validator.isRequired('#title'),
-                    Validator.isRequired('#content'),
-                    Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
-                ],
-                onSubmit: function (formData) {
-                    formData.append('content', $('#content').html());
+        Validator({
+            form:'#registerTaskForm',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title'),
+                Validator.isRequired('#content'),
+                Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
+            ],
+            onSubmit: function (formData) {
+                formData.append('content', $('#content').html());
 
-                    $('#registerTaskForm .spinner-border').removeClass('d-none');
-
-                    callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
-                        window.location.href = "/tasks?registerSuccess";
+                $('#registerTaskForm .spinner-border').removeClass('d-none');
+                callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
+                    tableTask.ajax.reload(function () {
+                        $('#registerTaskForm .spinner-border').addClass('d-none');
+                        $("#registerTaskModal").modal("hide");
+                        showAlert(SUCCESS_ALERT, 'Register success!');
+                        loadCountStatus();
                     });
-                }
-            });
+                });
+            }
         });
     });
 
@@ -751,7 +750,12 @@
         var idTask = $(this).attr('data-id');
         $('#deleteTaskModal .spinner-border').removeClass('d-none');
         callAjaxByJsonWithData("/api/v1/tasks/" + idTask, "DELETE", null, function (rs) {
-            window.location.href = "/tasks?deleteSuccess";
+            tableTask.ajax.reload(function () {
+                $('#deleteTaskModal .spinner-border').addClass('d-none');
+                $("#deleteTaskModal").modal("hide");
+                showAlert(SUCCESS_ALERT, 'Delete success!');
+                loadCountStatus();
+            });
         });
     });
 
@@ -765,6 +769,7 @@
 
     $(document).on('click', '.edit-item-task-btn', function (e) {
         var idTask = $(this).data('id');
+
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
 
             var selectElement = $('#selectUsernameEdit');
@@ -777,6 +782,7 @@
                 option.text(rs.user.fullname);
                 selectElement.append(option);
             } else{
+                var swal = showAlertLoading();
                 callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(users) {
                     users.forEach(function(user) {
                         var option = $('<option></option>');
@@ -789,6 +795,7 @@
 
                         selectElement.append(option);
                     });
+                    swal.close();
                 });
                 $('#selectUsernameEdit').removeClass('d-none');
             }
@@ -845,7 +852,13 @@
 
                 $('#editTaskForm .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {
-                    window.location.href = "/tasks?updateSuccess";
+
+                    tableTask.ajax.reload(function () {
+                        $('#editTaskForm .spinner-border').addClass('d-none');
+                        $("#editTaskModal").modal("hide");
+                        showAlert(SUCCESS_ALERT, 'Update success!');
+                        loadCountStatus();
+                    });
                 });
             }
         });

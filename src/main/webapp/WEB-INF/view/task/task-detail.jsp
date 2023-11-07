@@ -595,6 +595,7 @@
 <script>
     $(document).ready(function() {
         var idTask = ${id};
+        var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
             $('.task-username').text(rs.user.fullname);
             $('.task-id').text(rs.id);
@@ -610,13 +611,17 @@
             $('.task-content').html(getContentViewOfEditorSnow(rs.content));
 
             // LIST OF COMMENT
-            rs.comments.forEach(function (comment) {
-                createCommentForm(comment)
-                    .then(function (commentHTML) {
+            var commentPromises = rs.comments.map(function (comment) {
+                return createCommentForm(comment).then(function (commentHTML) {
                         $('#comment-list').append(commentHTML);
                     }).catch(function (error) {
                         console.error(error);
-                    });
+                });
+            });
+            Promise.all(commentPromises).then(function () {
+                    swal.close();
+                }).catch(function (error) {
+                    console.error(error);
             });
 
             // Post a comment
@@ -722,6 +727,8 @@
     $(document).on('click', '.btn-edit', function (e){
         var id = $(this).data('id');
         var editContainer = $(".form-edit[data-id='" + id + "']");
+
+        var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/comment-task/'+id, 'GET', null, function (rs) {
 
             showEditCommentForm(rs)
@@ -733,6 +740,9 @@
                     var dropzone = '';
                     callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK_COMMENT, 'GET', null, function (setting) {
                         dropzone = activeFile(".form-edit[data-id='" + id + "']", setting);
+                        swal.close();
+                    }, function (err) {
+                        swal.close();
                     });
 
                     Validator({
