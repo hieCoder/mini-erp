@@ -44,4 +44,6 @@ public interface UserMapper {
                       @Param("sortDirection") String sortDirection);
 
     List<User> getUserBirthday(@Param("prevMonth") LocalDate prevMonth,@Param("nextMonth") LocalDate nextMonth );
+
+    List<User> getTodayBirthday(@Param("date") LocalDate date);
 }
