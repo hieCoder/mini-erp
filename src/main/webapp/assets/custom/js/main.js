@@ -288,6 +288,9 @@ function isAdminOrUserLogin(idUser) {
 function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
+function isOwner() {
+    return userCurrent.role == U_OWNER;
+}
 
 // error messsage
 function getMessageLimitFile(limit) {

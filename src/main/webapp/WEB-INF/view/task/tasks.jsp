@@ -530,7 +530,7 @@
                     render: function(data, type, row) {
                         var editAndRemoveE = '';
                         if(isAdminOrUserLogin(row.user.id)){
-                            editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#editTaskModal" data-id="` + row.id + `" data-bs-toggle="modal"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
+                            editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#editTaskModal" data-id="` + row.id + `"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
                                             <li class="list-inline-item">
                                                 <a class="remove-item-task-btn" data-bs-toggle="modal" href="#deleteTaskModal" data-id="` + row.id + `">
                                                     <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
@@ -770,6 +770,7 @@
     $(document).on('click', '.edit-item-task-btn', function (e) {
         var idTask = $(this).data('id');
 
+        var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
 
             var selectElement = $('#selectUsernameEdit');
@@ -782,7 +783,6 @@
                 option.text(rs.user.fullname);
                 selectElement.append(option);
             } else{
-                var swal = showAlertLoading();
                 callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(users) {
                     users.forEach(function(user) {
                         var option = $('<option></option>');
@@ -819,8 +819,10 @@
 
             $('#selectProgressEdit').val(rs.progress);
 
-            if(rs.dueDate){
+            if(!isBlank(rs.dueDate)){
                 $('#dueDateEdit').val(formatDateValueToValueOfInputDate(rs.dueDate));
+            } else{
+                $('#dueDateEdit').val('');
             }
 
             $('#selectPriorityEdit').val(rs.priority.code);
@@ -833,6 +835,9 @@
             if(statusCode == T_POSTPONED){
                 $('#selectPriorityEdit').prop('disabled', true);
             } else $('#selectPriorityEdit').prop('disabled', false);
+
+            $('#editTaskModal').modal('show');
+            swal.close();
         });
 
         Validator({

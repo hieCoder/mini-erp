@@ -153,7 +153,7 @@
     $(document).ready(function (){
 
         new Promise(function (resolve, reject) {
-            if (isDeleveloper()) {
+            if (!isOwner()) {
                 $('.list-staff-container').remove();
                 $('.list-wr-container').toggleClass('col-xl-10 col-xl-12');
                 pagingObj.staffId = userCurrent.id;
