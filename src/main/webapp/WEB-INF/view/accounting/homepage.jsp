@@ -14,7 +14,7 @@
 <body>
 <c:set var="totalExpense" value="0" scope="page"/>
 <c:set var="totalRevenue" value="0" scope="page"/>
-<div class="row position-relative">
+<div class="row position-relative" style="min-height: 80vh">
     <div class="col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">ACCOUNTING</h4>
@@ -28,7 +28,15 @@
 
         </div>
     </div>
-    <div class="row" id="containerAccounting" style="visibility: hidden;">
+    <div style="width: 3rem; height: 3rem; z-index: 999; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+         class="containerLoading d-flex align-items-center justify-content-center full-height">
+        <div>
+            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div class="row d-none" id="containerAccounting">
         <div class="shadow p-3 bg-white rounded">
             <div class="row">
                 <div class="col-12">
@@ -44,12 +52,12 @@
                                     id="account-year">
                                 <option value="">-- Select year --</option>
                             </select>
-                            <div class="d-flex justify-content-center align-items-center d-none yearLoading">
+                            <div class="d-flex justify-content-center align-items-center d-none yearLoading ms-2">
                                 <span class="spinner-grow flex-shrink-0" role="status">
                                     <span class="visually-hidden"> Loading...</span>
                                 </span>
                             </div>
-                            <select class="form-select rounded-pill" aria-label="Default select example"
+                            <select class="form-select rounded-pill ms-2" aria-label="Default select example"
                                     id="account-month"
                                     style="display: none;">
                                 <option value="">-- Select month --</option>
@@ -379,14 +387,6 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-         class="containerLoading d-flex align-items-center justify-content-center full-height">
-        <div>
-            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
             </div>
         </div>
     </div>
@@ -888,7 +888,7 @@
                     option.textContent = entry.year;
                     yearSelect.appendChild(option);
                 });
-                $("#containerAccounting").css("visibility", "visible");
+                $("#containerAccounting").removeClass("d-none")
                 $("div.containerLoading").addClass("d-none");
             });
 

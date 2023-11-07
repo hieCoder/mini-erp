@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <div data-simplebar="init" style="height: 242px;" class="mx-n3">
+                <div data-simplebar="init" style="min-height: 80vh;" class="mx-n3">
                     <div class="simplebar-wrapper" style="margin: 0px;">
                         <div class="simplebar-height-auto-observer-wrapper">
                             <div class="simplebar-height-auto-observer"></div>
@@ -51,10 +51,10 @@
                         <div class="simplebar-mask">
                             <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                                 <div class="simplebar-content-wrapper" tabindex="0" role="region"
-                                     aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                                     aria-label="scrollable content">
                                     <div class="simplebar-content" style="padding: 0px;">
                                         <ul class="list list-group list-group-flush mb-0">
-                                            <c:forEach varStatus="loop" var="user" items="${requestScope.list}">
+                                            <c:forEach varStatus="loop" var="user" items="${list}">
                                                 <li class="list-group-item" data-id="${user.id}">
                                                     <div class="d-flex">
                                                         <div class="flex-grow-1">
