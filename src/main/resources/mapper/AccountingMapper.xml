@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AccountingMapper">
     <select id="findAllMonthlyHistory" resultMap="MonthYearFormatResultMap">
-        SELECT DISTINCT YEAR(created_date) AS year, DATE_FORMAT(created_date, '%m') AS month_list
+        SELECT DISTINCT YEAR(pay_date) AS year, DATE_FORMAT(pay_date, '%m') AS month_list
         FROM ACCOUNTING
         WHERE status = 'ACTIVE'
         ORDER BY year DESC, month_list DESC

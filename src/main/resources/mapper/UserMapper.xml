@@ -147,7 +147,7 @@
 
     <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">
         SELECT ID, FULLNAME, AVATAR, POSITION
-        FROM USER;
+        FROM USER WHERE STATUS = 'ACTIVE';
     </select>
 
     <resultMap id="fullnameResultMap" type="java.util.Map">
