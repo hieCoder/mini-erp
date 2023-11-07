@@ -9,6 +9,12 @@
         WHERE (MONTH(DATE_OF_BIRTH) &gt;= MONTH(#{prevMonth}) AND MONTH(DATE_OF_BIRTH) &lt;= MONTH(#{nextMonth})) AND status = 'ACTIVE'
     </select>
 
+    <select id="getTodayBirthday" resultMap="birthdayResultMap">
+        SELECT ID,FULLNAME, DATE_OF_BIRTH
+        FROM USER
+        WHERE DATE_OF_BIRTH = #{date} AND status = 'ACTIVE'
+    </select>
+
     <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM USER
