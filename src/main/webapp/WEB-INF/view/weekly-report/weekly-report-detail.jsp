@@ -46,7 +46,7 @@
                     <label class="col-form-label">Created date:&nbsp</label>${wr.createdDate}
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editReport" data-bs-whatever="@mdo">Edit</button>
+                    <button type="button" class="btn btn-primary" id="edit-btn">Edit</button>
                 </div>
             </div>
         </div>
@@ -177,13 +177,14 @@
         });
     });
 
-    $(document).on('shown.bs.modal', '#editReport', function() {
+    $(document).on('click', '#edit-btn', function() {
         var swal = showAlertLoading();
         callAjaxByJsonWithData("/api/v1/weekly-reports/" + ${wr.id}, "GET", null, function (rs) {
             $('#title').val(rs.title);
             $('#this-week-content').html(rs.currentWeeklyContent);
             $('#next-week-content').html(rs.nextWeeklyContent);
             swal.close();
+            $('#editReport').modal('show');
         });
     });
 </script>
