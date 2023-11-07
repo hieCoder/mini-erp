@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Detail</title>
     <link href="/assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css">
+    <script src="../../../assets/custom/js/accounting/accounting.js"></script>
 </head>
 <body>
 <div class="row">
@@ -438,12 +439,15 @@
 <script>
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
+    const INVALID_FILLED_TEXT = ' <div class="alert alert-danger" role="alert">' +
+        '<strong> Invalid </strong> This field is not filled' +
+        '</div>'
     const INVALID_FILES_LIMIT = ' <div class="alert alert-danger" role="alert">' +
         '<strong> Invalid </strong> Maximum Files is ${setting.uploadFileLimit}' +
         '</div>'
 
     const INVALID_FILES_TYPE = ' <div class="alert alert-danger" role="alert">' +
-        '<strong> Invalid </strong> File type allowed: ${setting.listTypeFile}' + 'and ${setting.listTypeImage}' +
+        '<strong> Invalid </strong> File type allowed: ${setting.listTypeFile}' + ' and ${setting.listTypeImage}' +
         '</div>'
 
     const INVALID_FILES_SIZE = ' <div class="alert alert-danger" role="alert">' +
@@ -468,11 +472,21 @@
             showCloseButton: true,
             reverseButtons: true
         }).then(function (result) {
-            if (result.value) {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Loading',
+                    text: 'Please wait...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 let xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
+                            Swal.close();
                             Swal.fire({
                                 title: 'Deleted!',
                                 text: 'Your accounting has been deleted.',
@@ -481,6 +495,15 @@
                                 buttonsStyling: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
+                                    Swal.fire({
+                                        title: 'Loading',
+                                        text: 'Please wait...',
+                                        allowOutsideClick: false,
+                                        showConfirmButton: false,
+                                        willOpen: () => {
+                                            Swal.showLoading();
+                                        }
+                                    });
                                     window.location.replace(document.referrer);
                                 }
                             });
@@ -525,129 +548,12 @@
         }
     });
 
-
-    // function editAccount(accountId) {
-    //     var xhr = new XMLHttpRequest();
-    //
-    //     xhr.open("POST", "/api/v1/accounts/edit", true);
-    //
-    //     var title = document.getElementById("editTitle").value;
-    //     var note = document.getElementById("editNote").value;
-    //     var transaction = document.getElementById("transactionType").value;
-    //     var input = document.getElementById("amount").value;
-    //     var amount = Number(input.replace(/[^0-9.]/g, ''))
-    //
-    //     var billInput = document.getElementById("editBill");
-    //     var billFiles = billInput.files;
-    //     var oldFile = []
-    //     $("li.listFilesEdit").each(function () {
-    //         oldFile.push($(this).attr("data-name"));
-    //     });
-    //
-    //     if (!title || !amount || isNaN(amount)) {
-    //         alert("Title and amount are required and amount must be a number.");
-    //         loading.style.display = "none";
-    //         return;
-    //     }
-    //
-    //     if (transaction === 'expense') {
-    //         amount = -amount;
-    //     }
-    //
-    //     var formData = new FormData();
-    //     formData.append("title", title);
-    //     formData.append("note", note);
-    //     formData.append("id", accountId);
-    //     formData.append("oldFile", oldFile);
-    //     formData.append("userId", userCurrent.id);
-    //     formData.append("expense", amount);
-    //
-    //     for (var i = 0; i < billFiles.length; i++) {
-    //         formData.append("bill", billFiles[i]);
-    //     }
-    //
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4) {
-    //             if (xhr.status === 302) {
-    //                 var responseData = JSON.parse(xhr.responseText);
-    //                 $("#titleAccount").text(responseData.title);
-    //                 $("#createdDateAccount").text(responseData.createdDate);
-    //                 $("#revenueAccount").text(formatCurrency(responseData.revenue));
-    //                 $("#expenseAccount").text(formatCurrency(responseData.expense));
-    //                 $("#remainAccount").text(formatCurrency(responseData.remain));
-    //                 $("#fullnameAccount").text(responseData.user.fullname);
-    //                 $("#noteAccount").text(responseData.note);
-    //                 var xhtml = '';
-    //                 if (responseData.bill != null && responseData.bill.length > 0) {
-    //                     responseData.bill.forEach((e) => {
-    //                         xhtml += '<div class="col-md-4 text-center">';
-    //                         var fileExtension = e.substring(e.lastIndexOf('.') + 1);
-    //                         if (imageType.includes(fileExtension)) {
-    //                             var img = document.createElement('img');
-    //                             img.width = 50;
-    //                             img.height = 50;
-    //                             img.src = e;
-    //                             img.alt = '';
-    //                             xhtml += img.outerHTML;
-    //                         }
-    //                         if (fileType.includes(fileExtension)) {
-    //                             var file = document.createElement('img');
-    //                             file.width = 50;
-    //                             file.height = 50;
-    //                             file.src = "/upload/common/" + fileExtension + ".png";
-    //                             file.alt = '';
-    //                             xhtml += file.outerHTML;
-    //                         }
-    //                         var subStringBill = e.substring(e.indexOf('-') + 1);
-    //                         xhtml += '<br><a href="' + e + '" download target="_blank" data-toggle="tooltip" data-placement="bottom" title="' + subStringBill + '">' +
-    //                             '<span class="shortened-text" style="display:inline-block;width: 250px">' + subStringBill + '</span></a></div>';
-    //                     })
-    //                 }
-    //                 $("#attachedFilesNotification").html(xhtml);
-    //                 var editLink = document.getElementById("editLink");
-    //                 var billContent = '';
-    //                 if (responseData.bill !== null && responseData.bill.length > 0) {
-    //                     responseData.bill.forEach(function (file) {
-    //                         billContent += '<li class="list-group-item listFilesEdit" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
-    //                         billContent += '<a href="' + file + '" download="" target="_blank" id="resumeLink">' + file.substring(file.indexOf('-') + 1) + '</a>';
-    //                         billContent += '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModalFile" data-name="' + file.substring(file.lastIndexOf('/') + 1) + '">';
-    //                         billContent += '<span>×</span>';
-    //                         billContent += '</button>';
-    //                         billContent += '</li>';
-    //                     });
-    //                 }
-    //                 $('#editModal').modal('hide');
-    //                 $('#successModal div.modal-body').text("The request has been completed successfully.")
-    //                 $('#successModal').modal('show');
-    //                 editLink.innerHTML = billContent;
-    //                 $('#editBill').val("");
-    //             } else {
-    //                 $('#editModal').modal('hide');
-    //                 $('#errorModal').modal('show');
-    //             }
-    //         }
-    //     };
-    //     xhr.send(formData);
-    // }
-
-    function goBack() {
-        window.location.replace(document.referrer);
-    }
 </script>
 <!-- dropzone js -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 
 <script>
-    function loadFilesName(fileNameArr) {
-        let html = ""
-        handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
-            html += showFileUploaded(fileName, fileSize, url, "view")
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-            })
-            $("#viewAccount .showFilesUploaded").html(html)
-        })
-    }
+
     document.addEventListener("DOMContentLoaded", function () {
         let fileNameArr = []
         <c:forEach items="${account.bill}" var="value" varStatus="loop">
@@ -776,7 +682,15 @@
             amount = -amount;
         }
         if (title.trim() === "") {
-            $("input#editTitle").parent().after(INVALID_FILLED)
+            $("input#createTitle").parent().after(INVALID_FILLED_TEXT)
+            return false;
+        }
+        if (!transaction) {
+            $("select#transactionType").parent().after(INVALID_FILLED_TEXT)
+            return false;
+        }
+        if (!amount) {
+            $("input#amount").parent().after(INVALID_FILLED_TEXT)
             return false;
         }
         var oldFile = []
@@ -830,8 +744,6 @@
         })
     })
 </script>
-<!-- Widget init -->
-<script src="/assets/js/pages/widgets.init.js"></script>
 <!-- Sweet Alerts js -->
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 </body>

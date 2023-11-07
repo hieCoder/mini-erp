@@ -1,3 +1,65 @@
+const birthdayWishes = [
+    "Wishing you a day filled with love and laughter. Happy Birthday!",
+    "May this year be filled with happiness and success. Happy Birthday!",
+    "On your special day, may all your dreams come true. Happy Birthday!",
+    "Another year older, but just as fabulous as ever. Happy Birthday!",
+    "Here's to a year of new adventures and wonderful memories. Happy Birthday!",
+    "May your birthday be as bright and beautiful as you are. Happy Birthday!",
+    "Wishing you all the joy and love in the world on your birthday. Happy Birthday!",
+    "A year wiser, a year bolder, and a year more amazing. Happy Birthday!",
+    "To the world, you may be one person, but to me, you are the world. Happy Birthday!",
+    "May your day be filled with surprises, laughter, and everything you love. Happy Birthday!",
+    "On your special day, I hope you feel as cherished as you have made me feel. Happy Birthday!",
+    "Wishing you a year of incredible experiences and great accomplishments. Happy Birthday!",
+    "Today, we celebrate the incredible person you are. Happy Birthday!",
+    "May your birthday be the start of a year filled with good luck, good health, and much happiness. Happy Birthday!",
+    "Another year of laughter, joy, and adventure awaits. Happy Birthday!",
+    "You're not getting older, you're getting better! Happy Birthday!",
+    "May your day be as beautiful and bright as your smile. Happy Birthday!",
+    "Wishing you a day of relaxation and happiness. Happy Birthday!",
+    "Here's to a year filled with new opportunities and exciting possibilities. Happy Birthday!",
+    "May your birthday be the beginning of a year filled with love and laughter. Happy Birthday!",
+    "Every day with you is special, but today is a little extra special. Happy Birthday!",
+    "You are a year older, a year wiser, and a year more incredible. Happy Birthday!",
+    "Wishing you a day that's as wonderful as you are. Happy Birthday!",
+    "May this year bring you everything your heart desires. Happy Birthday!",
+    "Another year of making wonderful memories. Happy Birthday!",
+    "Cheers to a fantastic year ahead! Happy Birthday!",
+    "May your day be filled with love, laughter, and all the things that make you smile. Happy Birthday!",
+    "You're not just a year older, you're a year more amazing. Happy Birthday!",
+    "Wishing you the happiest of birthdays filled with love and joy. Happy Birthday!",
+    "Today, we celebrate you and all the happiness you bring to our lives. Happy Birthday!",
+    "May your birthday be the start of a year filled with great accomplishments. Happy Birthday!",
+    "You're not getting older, you're getting better! Happy Birthday!",
+];
+
+let iconBirthdayCalendar = '<img style="position: absolute; right: 80%;" src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIconCalendar" alt="Cake" title="Cake" width="25" height="25">';
+
+function debounce(func, delay) {
+    let timer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
+function getBirthdayWishForDate(month, day) {
+    const randomIndex = (month * day) % birthdayWishes.length;
+    return birthdayWishes[randomIndex];
+}
+
+function replaceObjectById(array, objectId, newObject) {
+    const index = array.findIndex((item) => item.id === objectId);
+    if (index !== -1) {
+        array[index] = newObject;
+    }
+}
+
+let callingApi = false
 
 const loadScheduleBtn = `<button class="btn btn-outline-none btn-load loadSchedule border-0" disabled>
                                                         <span class="d-flex align-items-center">
@@ -7,6 +69,15 @@ const loadScheduleBtn = `<button class="btn btn-outline-none btn-load loadSchedu
                                                             </span>
                                                         </span>
                        </button>`
+
+function subtractDaysFromDate(inputDate) {
+    let currentDate = new Date(inputDate);
+    let year = currentDate.getFullYear();
+    let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    let day = currentDate.getDate().toString().padStart(2, '0');
+    return year + '-' + month + '-' + day;
+}
+
 function loadSchedule(){
     $("button.fc-today-button.btn.btn-primary").after(loadScheduleBtn)
 }
@@ -38,10 +109,6 @@ function returnType(name){
     return typeEnum[name]
 }
 
-function dateToString (date){
-    return date.toISOString().slice(0, 10)
-}
-
 function getEventColor(code) {
     const bgToCode = {};
     for (const key in typeEnum) {
@@ -50,6 +117,34 @@ function getEventColor(code) {
     }
     return bgToCode[code];
 }
+
+const taskCode = {
+    'bg-soft-secondary': 'REGISTERED',
+    'bg-soft-warning': 'OPENED',
+    'bg-soft-danger' :'POSTPONED',
+    'bg-soft-info' : 'REOPENED',
+    'bg-soft-success' : 'CLOSED',
+    'bg-soft-primary' :'BIRTHDAY'
+}
+
+function returnTaskCode(name){
+    return taskCode[name]
+}
+
+function getStatusColor(code){
+    const bgToCode = {};
+    for (const key in taskCode) {
+        const bgValue = taskCode[key];
+        bgToCode[bgValue] = key;
+    }
+    return bgToCode[code];
+}
+
+function dateToString (date){
+    return date.toISOString().slice(0, 10)
+}
+
+
 
 function subtractDays(date, days) {
     var newDate = new Date(date);
@@ -121,12 +216,16 @@ function checkEmptyString(text){
 function deleteEvent(y, v, g) {
     let id = v._def.publicId
     callAjaxByJsonWithData(baseUrlEvent + "/" + id, "DELETE", null, function (rs){
-        if(rs > 0){
+        if(rs > 0) {
             if (v) {
                 for (var t = 0; t < y.length; t++) y[t].id == v.id && (y.splice(t, 1), t--);
-                upcomingEvent(y), v.remove(), v = null, g.hide()
+                // upcomingEvent(y),
+                    v.remove(),
+                    v = null,
+                    g.hide()
                 $("#deleteSuccessEvent").modal("show")
             }
+            upcomingEvent(CALENDAR_RESULT)
         } else{
             refreshPage()
         }
@@ -170,33 +269,7 @@ function formatDateYYMM(date) {
     return year + '-' + month
 }
 
-function getStatusColor(code){
-    var colorClass = '';
-    switch (code) {
-        case 'REGISTERED':
-            colorClass = 'bg-soft-secondary';
-            break;
-        case 'OPENED':
-            colorClass = 'bg-soft-warning';
-            break;
-        case 'POSTPONED':
-            colorClass = 'bg-soft-danger';
-            break;
-        case 'REOPENED':
-            colorClass = 'bg-soft-info';
-            break;
-        case 'CLOSED':
-            colorClass = 'bg-soft-success';
-            break;
-        case 'BIRTHDAY':
-            colorClass = 'bg-soft-primary';
-            break;
-        default:
-            colorClass = '';
-            break;
-    }
-    return colorClass;
-}
+
 
 function flatPickrInit() {
     var e = {enableTime: !0, noCalendar: !0};
@@ -417,9 +490,11 @@ document.addEventListener("DOMContentLoaded", function () {
             var e = CALENDAR_RESULT.findIndex(function (e) {
                 return e.id == t.event.id
             });
-            CALENDAR_RESULT[e] && (CALENDAR_RESULT[e].title = t.event.title, CALENDAR_RESULT[e].start = t.event.start, CALENDAR_RESULT[e].end = t.event.end || null, CALENDAR_RESULT[e].allDay = t.event.allDay, CALENDAR_RESULT[e].className = t.event.classNames[0], CALENDAR_RESULT[e].description = t.event._def.extendedProps.description || "", CALENDAR_RESULT[e].location = t.event._def.extendedProps.location || ""), upcomingEvent(CALENDAR_RESULT)
+            CALENDAR_RESULT[e] && (CALENDAR_RESULT[e].title = t.event.title, CALENDAR_RESULT[e].start = t.event.start, CALENDAR_RESULT[e].end = t.event.end || null, CALENDAR_RESULT[e].allDay = t.event.allDay, CALENDAR_RESULT[e].className = t.event.classNames[0], CALENDAR_RESULT[e].description = t.event._def.extendedProps.description || "", CALENDAR_RESULT[e].location = t.event._def.extendedProps.location || "")
+                // ,  upcomingEvent(CALENDAR_RESULT)
         },
         eventClick: function (e) {
+            if(callingApi) return
             $("img.cakeIcon").remove()
             removeAlert()
             let codeEvent = e.event._def.extendedProps.code
@@ -443,7 +518,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("event-description").value = void 0 === v.extendedProps.description ? "No Description" : v.extendedProps.description,
                 document.getElementById("eventid").value = v.id, (c.destroy(),
                 (c = new Choices("#event-category", {searchEnabled: !1})).setChoiceByValue(getEventColor(codeEvent)));
+            let typeHtml =""
             if(codeDisabled.includes(codeEvent)) {
+                let colorCode = getStatusColor(codeEvent)
+                let startIndex = colorCode.indexOf("-");
+                let codeType = colorCode.substring(startIndex);
+                typeHtml =  "<small class='badge badge"+ codeType +" ms-auto p-2'>"+ codeEvent +"</small>"
                 $("#edit-event-btn").addClass("d-none")
                 $("#btn-delete-event").addClass("d-none")
                 $("#btn-link-task").attr("data-id", idEvent)
@@ -456,11 +536,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     $("#edit-event-btn").addClass("d-none")
                     $("#btn-delete-event").addClass("d-none")
                 }
+                let string = getEventColor(codeEvent).split(" ")[0]
+                let startIndex = string.indexOf("-");
+                let codeType = string.substring(startIndex);
+                typeHtml =  "<small class='badge bg"+ codeType +" ms-auto p-2'>"+ codeEvent +"</small>"
                 $("#btn-link-task").addClass("d-none")
             }
+            document.getElementById("event-status-tag").innerHTML = typeHtml
             if(codeEvent === BIRTHDAY_CODE){
+                let date = dateToString(originalStringDateToDate(dateEvent.start)).split("-")
                 $("#event-modal .modal-title").before(birthdayIcon)
                 $("#btn-link-task").addClass("d-none")
+                console.log(date)
+                document.getElementById("event-description-tag").innerHTML = getBirthdayWishForDate(date[1], date[2])
             }
             g.show()
             function t(e, check) {
@@ -525,6 +613,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 newEventData = null, d.innerText = v.title, document.getElementById("btn-delete-event").removeAttribute("hidden")
         },
         dateClick: function (e) {
+            if (callingApi) return
             if( userCurrent.role == U_MANAGER || userCurrent.role == U_OWNER){
                 $("#btn-link-task").addClass("d-none")
                 $("img.cakeIcon").remove()
@@ -535,17 +624,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
         events: null,
-        dayCellDidMount: function (arg) {
-            function subtractDaysFromDate(inputDate) {
-                var currentDate = new Date(inputDate);
-                var year = currentDate.getFullYear();
-                var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-                var day = currentDate.getDate().toString().padStart(2, '0');
-                return year + '-' + month + '-' + day;
-            }
+        dayCellDidMount: async function(arg) {
             if (listBirthday.includes(subtractDaysFromDate(arg.date))) {
-                var icon = '<img style="position: absolute; right: 80%;" src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIconCalendar" alt="Cake" title="Cake" width="25" height="25">';
-                $("td[data-date='"+subtractDaysFromDate(arg.date)+"'] .fc-daygrid-day-top > a").after(icon)
+                $("td[data-date='"+subtractDaysFromDate(arg.date)+"'] .fc-daygrid-day-top > a").after(iconBirthdayCalendar)
             }
         },
         datesSet: function(info) {
@@ -649,6 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
             E.addEventSource(CALENDAR_RESULT);
             E.render()
             i.addEventListener("submit", function (e) {
+                $("#btn-delete-event").prop("disabled", true)
                 if(userCurrent.role == U_OWNER || userCurrent.role == U_MANAGER) {
                     e.preventDefault();
                     var t,
@@ -721,6 +803,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     fetchData();
+    const debouncedCallApiData = debounce(callApiData, 1000);
     $(document).on("change","table.filterStatus input", function(){
         let newArr = []
         let $element = $(this)
@@ -734,7 +817,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         let apiDate = formatDateYYMM(E.getDate())
         statusCodePrevent  = newArr
-        callApiData(apiDate)
+        debouncedCallApiData(apiDate);
     })
 
     function getFilter(){
@@ -771,24 +854,35 @@ document.addEventListener("DOMContentLoaded", function () {
             E.getEventSources().forEach(eventSource => {
                 eventSource.remove();
             });
-            upcomingEvent(CALENDAR_RESULT)
+            // upcomingEvent(CALENDAR_RESULT)
             E.addEventSource(CALENDAR_RESULT);
             E.render()
-            removeLoadSchedule()
-            return true;
+            removeLoadSchedule(CALENDAR_RESULT)
+            return CALENDAR_RESULT;
         } catch (error) {
             console.error("An error occurred:", error);
         }
     }
+
     function callApiData(apiDate, g, textSuccess){
+        callingApi = true
         loadSchedule()
+        $("#containerSchedule input").prop("disabled", true)
+        $("#containerSchedule button").prop("disabled", true)
         fetchDataButton(apiDate).then(r =>{
-           if(r && g && textSuccess){
+           if(r && g && textSuccess) {
                popupSuccess("The event created successfully")
                g.hide()
                $("#btn-save-event").removeClass("d-none")
                BtnLoadRemove()
            }
+            $("#btn-delete-event").prop("disabled", false)
+            $("#containerSchedule input").prop("disabled", false)
+            callingApi = false
+            $("#containerSchedule button").prop("disabled", false)
+            listBirthday.forEach(day=>{
+                $("td[data-date='"+day+"'] .fc-daygrid-day-top > a").after(iconBirthdayCalendar)
+            })
         })
     }
 
@@ -832,28 +926,14 @@ document.addEventListener("DOMContentLoaded", function () {
             data.endDate = endDate
         } else{
             data.endDate = addDays(endDate, 1)
+            event.end = addDays(event.end, 1)
         }
+
         callAjaxByJsonWithData(baseUrlEvent, "PUT", data, function (rs){
             if(rs > 0){
-                // let allDay = true
-                // if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
-                //     allDay = false
-                //     v.setEnd(event.end)
-                // } else{
-                //     console.log(addDays(endDate, 1))
-                //     v.setEnd(addDays(endDate, 1))
-                // }
-                // v.setProp("id", event.id)
-                // v.setProp("title", event.title)
-                // v.setProp("classNames", event.className)
-                // v.setStart(event.start)
-                // v.setAllDay(allDay)
-                // v.setExtendedProp("code", typeEnum[event.className])
-                // v.setExtendedProp("description", event.description)
-                // v.setExtendedProp("location", event.location)
-                // console.log(v)
-                // popupSuccess("The event updated successfully")
-                // calendar.render()
+                event.code = type
+                replaceObjectById(CALENDAR_RESULT, event.id, event)
+                upcomingEvent(CALENDAR_RESULT)
                 CALENDAR_RESULT =[]
                 callApiData(currentMonth!=""? currentMonth : currentApiDate, g, "The event updated successfully")
             } else{
@@ -866,7 +946,7 @@ document.addEventListener("DOMContentLoaded", function () {
             BtnLoadRemove()
         })
     }
-    function addEventFunc(event, g, E){
+    function addEventFunc(event, g){
         removeAlert()
         let type = returnType(event.className)
         let title = event.title
@@ -903,17 +983,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         callAjaxByJsonWithData(baseUrlEvent,"POST", data, async function (rs){
             if(rs){
-                // event.code = type
-                //                 // CALENDAR_RESULT.push(event)
-                                // g.hide()
-                //                 // upcomingEvent(CALENDAR_RESULT)
-                //                 // event.id = rs.toString()
-                //                 // let allDay = true
-                //                 // if(dateToString(originalStringDateToDate(startDate)) == dateToString(originalStringDateToDate(endDate))){
-                //                 //     allDay = false
-                //                 // }
-                //                 // event.allDay = allDay
-                //                 // E.addEvent(event)
+                event.id = rs
+                event.code = type
+                CALENDAR_RESULT.push(event)
+                upcomingEvent(CALENDAR_RESULT)
                 CALENDAR_RESULT =[]
                 callApiData(currentMonth!=""? currentMonth : currentApiDate, g, "The event created successfully")
             } else{

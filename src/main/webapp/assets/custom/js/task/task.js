@@ -18,6 +18,9 @@ const DEFAULT_VALUE_SNOW_EDITOR = [
     `<div class="ql-editor" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
 ];
 
+const SUCCESS_ALERT = 'SUCCESS_ALERT';
+const DANGER_ALERT = 'DANGER_ALERT';
+
 function getTaskCountByCode(rs, code) {
     for (let i = 0; i < rs.length; i++) {
         if (rs[i].statusTask.code === code) {
@@ -241,7 +244,12 @@ function showReplyCommentForm(id){
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-start">
-                            <button type="submit" class="btn btn-success">Reply</button>
+                            <button type="submit" class="btn btn-success btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                    <span class="flex-grow-1">Reply</span>
+                                </span>
+                            </button>
                             <button type="button" class="btn btn-ligh close-reply-form">Close</button>
                         </div>
                     </div>
@@ -454,11 +462,43 @@ async function showEditCommentForm(comment){
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-start">
-                            <button type="submit" class="btn btn-success">Edit</button>
+                            <button type="submit" class="btn btn-success btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                    <span class="flex-grow-1">Edit</span>
+                                </span>
+                            </button>
                             <button type="button" class="btn btn-ligh close-edit-form">Close</button>
                         </div>
                     </div>
             </form>`;
         resolve(commentHTML);
+    });
+}
+
+function showAlert(type, mess){
+    var className = '';
+    if(type == SUCCESS_ALERT){
+        className = '.alert.alert-success';
+    } else if(type == DANGER_ALERT){
+        className = '.alert.alert-danger';
+    }
+    $(className).text(mess);
+    $(className).removeClass('d-none');
+}
+
+function loadCountStatus(){
+    return new Promise(function (resolve, reject) {
+        callAjaxByJsonWithData('/api/v1/tasks/status-task-count', 'GET', null, function (rs) {
+            $(".counter-total-task").text(getTaskCountByCode(rs, T_ALL));
+            $(".counter-closed-task").text(getTaskCountByCode(rs, T_CLOSED));
+            $(".counter-postponed-task").text(getTaskCountByCode(rs, T_POSTPONED));
+            $(".counter-opened-task").text(getTaskCountByCode(rs, T_OPENED));
+            $(".counter-registered-task").text(getTaskCountByCode(rs, T_REGISTERED));
+            $(".counter-reopend-task").text(getTaskCountByCode(rs, T_REOPENED));
+            resolve(rs);
+        }, function (error) {
+            reject(error);
+        });
     });
 }

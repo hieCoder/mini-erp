@@ -38,12 +38,23 @@
         #viewNotification .ql-bubble{
             border: none
         }
+        .full-height {
+            min-height: 80vh;
+        }
     </style>
 </head>
 <body>
-<div class="row">
+
+<div class="row position-relative" style="min-height: 80vh">
     <div class="col-lg-12">
-        <div class="card">
+        <div style="width: 3rem; height: 3rem; position: absolute; z-index: 999;top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center full-height">
+            <div>
+                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div id="containerList" class="card d-none">
             <div class="card-header">
                 <h4 class="card-title mb-0">Notification List</h4>
             </div><!-- end card header -->
@@ -59,7 +70,11 @@
                                     <option <c:if test='${pageSize  == 10}'>selected</c:if>>10</option>
                                     <option <c:if test='${pageSize  == 15}'>selected</c:if>>15</option>
                                     <option <c:if test='${pageSize  == 20}'>selected</c:if>>20</option>
-                                </select> entries</label></div>
+                                </select> entries</label>
+                            </div>
+                            <span class="spinner-grow flex-shrink-0 loadingPageSize d-none" role="status" style="margin-left: 8px">
+                                    <span class="visually-hidden">Loading...</span>
+                            </span>
                             <c:if test="${userRole.equals(RoleEnum.OWNER) || userRole.equals(RoleEnum.MANAGER)}">
                                 <button type="button" class="btn btn-success addNotification" style="margin-left: 8px"><i class="ri-add-line align-bottom me-1"></i> Add</button>
                                 <button type="button" class="btn btn-danger showListInactive" style="margin-left: 8px"><i class=" ri-delete-bin-line align-bottom me-1"></i> Inactive List</button>
@@ -70,7 +85,7 @@
                                 <input id="searchInput" type="text" class="form-control search" placeholder="Search Title or Author">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
-                            <button class="btn btn-sm btn-primary" id="searchButton" style="margin-left: 8px">Search</button>
+                            <button class="btn btn-primary" id="searchButton" style="margin-left: 8px">Search</button>
                         </div>
                     </div>
 
@@ -123,7 +138,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-center align-items-center paginationElement">
+                    <div class="d-flex justify-content-center align-items-center paginationElement d-none">
                         <div class="pagination-wrap hstack gap-2">
                             <div class="dataTables_paginate paging_simple_numbers" <c:if test="${totalPages <= 1}">class="invisible"</c:if> >
                                 <ul class="pagination listjs-pagination mb-0" id="paginationList">
@@ -151,6 +166,11 @@
                             </div>
 
                         </div>
+                    </div>
+                    <div class = "d-flex justify-content-center align-items-center mt-2 d-none loadingDot">
+                        <span class= "spinner-grow flex-shrink-0" role = "status" >
+                            <span  class= "visually-hidden" > Loading...</span>
+                         </span>
                     </div>
                 </div>
             </div><!-- end card -->
@@ -591,10 +611,12 @@
         } else {
             $("li.linkEnd").removeClass("d-none")
         }
+        $(".paginationElement").removeClass("d-none")
     }
-
+    displayPagination()
     document.addEventListener("DOMContentLoaded", function () {
-        displayPagination()
+        $("#containerList").removeClass("d-none")
+        $(".containerLoading").remove()
         $("button.addNotification").click(function () {
             Dropzone.forElement('#dropzoneCreate').removeAllFiles(true)
             $("#titleCreate").val("")
@@ -640,6 +662,7 @@
             var apiUrl = baseUrlNotification + currentUrl
             var tbodyElement = document.getElementById("notificationList");
             tbodyElement.classList.add("hidden")
+            $(".loadingDot").removeClass("d-none")
             callAjaxByJsonWithData(apiUrl, "GET", null,
                 function (rs) {
                     if(rs){
@@ -680,6 +703,7 @@
                     } else{
                         console.log("Data API Error")
                     }
+                    $(".loadingDot").addClass("d-none")
                 },
                 function (error){
                     console.log("Call API Error")
@@ -689,6 +713,7 @@
         const pageSizeSelect = document.getElementById("pageSizeSelect");
 
         pageSizeSelect.addEventListener("change", () => {
+            $("span.loadingPageSize").removeClass("d-none")
             const selectedValue = pageSizeSelect.value;
             updateUrl(selectedValue);
         });
@@ -708,6 +733,8 @@
         };
 
         function searchNotification() {
+            $("#searchButton").addClass("d-none")
+            $("#searchButton").after(BtnPrimaryLoad)
             var keyword = searchInput.value;
             var currentUrl = window.location.href;
 

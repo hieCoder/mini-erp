@@ -14,5 +14,9 @@
             <column name="TIMESHEETS_CODE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="team2">
+        <addUniqueConstraint columnNames="WORK_DATE, TIMESHEETS_CODE" constraintName="UNIQUE_WORK_DATE_TIMESHEETS_CODE" tableName="TIMESHEETS"/>
+    </changeSet>
 </databaseChangeLog>
 

@@ -1,10 +1,17 @@
+const SUCCESS_ALERT = 'SUCCESS_ALERT';
+const DANGER_ALERT = 'DANGER_ALERT';
+
 function createStaffE(staff){
     return `<div class="card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <div class="flex-grow-1"><i
-                                                class="mdi mdi-checkbox-blank-circle me-2 text-info"></i>
-                                                <a data-id="`+staff.id+`" href="#" class="fw-medium staff-name">`+staff.fullname+`</a></div>
+                                        <div class="flex-grow-1">
+                                            <i class="mdi mdi-checkbox-blank-circle me-2 text-info"></i>
+                                            <a data-id="`+staff.id+`" href="#" class="fw-medium staff-name">`+staff.fullname+`</a>
+                                        </div>
+                                        <span class="btn-load">
+                                            <span class="spinner-border flex-shrink-0 d-none"></span>
+                                        </span>
                                     </div>
                                     <p class="text-muted text-truncate-two-lines mb-0"></p></div>
                             </div>`;
@@ -16,4 +23,15 @@ function getListApiUrl(userId, page, pageSize) {
 
 function getCountListApiUrl(userId, page, pageSize) {
     return '/api/v1/weekly-reports/count/'+userId;
+}
+
+function showAlert(type, mess){
+    var className = '';
+    if(type == SUCCESS_ALERT){
+        className = '.alert.alert-success';
+    } else if(type == DANGER_ALERT){
+        className = '.alert.alert-danger';
+    }
+    $(className).text(mess);
+    $(className).removeClass('d-none');
 }
