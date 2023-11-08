@@ -90,6 +90,25 @@
                     </a>
                 </li>
 
+
+
+                <li class="menu-title"><i class="ri-more-fill"></i> <span>Time management</span></li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarTime" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForms">
+                        <i class="ri-share-line"></i> <span>Time management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTime">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="/management-time" class="nav-link">Management time</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/books" class="nav-link">Book</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <li class="menu-title d-none manager-menu"><i class="ri-more-fill"></i> <span>Setting system</span></li>
                 <li class="nav-item d-none manager-menu">
                     <a class="nav-link menu-link" href="#sidebarSetting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForms">

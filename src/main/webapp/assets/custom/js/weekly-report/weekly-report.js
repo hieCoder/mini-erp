@@ -1,6 +1,3 @@
-const SUCCESS_ALERT = 'SUCCESS_ALERT';
-const DANGER_ALERT = 'DANGER_ALERT';
-
 function createStaffE(staff){
     return `<div class="card mb-3">
                                 <div class="card-body">
@@ -23,15 +20,4 @@ function getListApiUrl(userId, page, pageSize) {
 
 function getCountListApiUrl(userId, page, pageSize) {
     return '/api/v1/weekly-reports/count/'+userId;
-}
-
-function showAlert(type, mess){
-    var className = '';
-    if(type == SUCCESS_ALERT){
-        className = '.alert.alert-success';
-    } else if(type == DANGER_ALERT){
-        className = '.alert.alert-danger';
-    }
-    $(className).text(mess);
-    $(className).removeClass('d-none');
 }

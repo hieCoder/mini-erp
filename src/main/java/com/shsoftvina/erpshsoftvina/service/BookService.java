@@ -10,9 +10,8 @@ import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import java.util.List;
 
 public interface BookService {
-    PageBookListRespone fillAll(String searchTerm,
-                              int start,
-                              int pageSize);
+    List<ShowBookResponse> findAll(String searchTerm, int start, int pageSize);
+    long getTotalItem(String search);
     int createBook(BookCreateRequest bookCreateRequest);
     BookDetailResponse findById(String id);
     int updateBook(BookUpdateRequest bookUpdateRequest);

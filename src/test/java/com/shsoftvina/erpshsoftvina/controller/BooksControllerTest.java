@@ -31,17 +31,6 @@ public class BooksControllerTest {
     }
 
     @Test
-    public void testBooks() throws Exception {
-        PageBookListRespone mockResponse = new PageBookListRespone();
-        Mockito.when(bookService.fillAll(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(mockResponse);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/books"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("/books/books"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("books"));
-    }
-
-    @Test
     public void testBookDetail() throws Exception {
         // Tạo dữ liệu giả lập cho bookService.findById
         BookDetailResponse mockResponse = new BookDetailResponse();

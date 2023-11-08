@@ -20,8 +20,12 @@ public class BookApi {
     public ResponseEntity<?> findAll(@RequestParam(name = "search", required = false, defaultValue = "") String search,
                                      @RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                      @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize) {
+        return ResponseEntity.ok(bookService.findAll(search, page, pageSize));
+    }
 
-        return ResponseEntity.ok(bookService.fillAll(search, page, pageSize));
+    @GetMapping("/count")
+    public ResponseEntity<?> getTotalItem(@RequestParam(name = "search", required = false, defaultValue = "") String search) {
+        return ResponseEntity.ok(bookService.getTotalItem(search));
     }
 
     @GetMapping("/{id}")

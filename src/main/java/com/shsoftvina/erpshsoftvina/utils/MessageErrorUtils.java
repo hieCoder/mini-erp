@@ -40,4 +40,8 @@ public class MessageErrorUtils {
     public static String invalid(){
         return "Data is invalid";
     }
+
+    public static String missing(String s){
+        return s + " can not be missing";
+    }
 }

@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.converter.BookConverter;
 import com.shsoftvina.erpshsoftvina.entity.Book;
 import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.exception.MissingException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
@@ -40,17 +41,16 @@ public class BookServiceImpl implements BookService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public PageBookListRespone fillAll(String searchTerm, int start, int pageSize) {
+    public List<ShowBookResponse> findAll(String searchTerm, int start, int pageSize) {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
         List<Book> books = bookMapper.findAll(searchTerm, rowBounds);
-        List<ShowBookResponse> showBooks = bookConverter.toListShowBookResponse(books);
-        long totalRecordBook = bookMapper.totalBook(searchTerm);
-        long totalPage = (long) Math.ceil((double) totalRecordBook / pageSize);
-        boolean hasNext = start < totalPage;
-        boolean hasPrevious = start > 1;
+        return bookConverter.toListShowBookResponse(books);
+    }
 
-        return new PageBookListRespone(showBooks, start, totalPage, pageSize, hasNext, hasPrevious);
+    @Override
+    public long getTotalItem(String search) {
+        return bookMapper.totalBook(search);
     }
 
     @Override
@@ -68,6 +68,8 @@ public class BookServiceImpl implements BookService {
             bookImageFileName = FileUtils.formatNameImage(bookImage);
             isSaveImageSuccess = FileUtils.saveImageToServer(
                     request, BookConstant.UPLOAD_FILE_DIR, bookCreateRequest.getImage(), bookImageFileName);
+        } else{
+            throw new MissingException(MessageErrorUtils.missing("image"));
         }
 
         if(isSaveImageSuccess){
