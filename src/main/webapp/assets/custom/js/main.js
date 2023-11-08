@@ -146,8 +146,11 @@ function bytesToMB(bytes) {
 function convertMbToB(mb) {
     return mb * 1024 * 1024;
 }
+function bToKbShow(bytes) {
+    return (bytes / 1024).toFixed(2);
+}
 function bytesToMBShow(bytes) {
-    return (bytes / (1024 * 1024)).toFixed(2)
+    return (bytes / (1024 * 1024)).toFixed(2);
 }
 function checkLimitFile(count, limit) {
     return count <= limit ? true : false;
