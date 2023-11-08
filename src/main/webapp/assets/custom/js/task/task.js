@@ -107,7 +107,7 @@ function createFile(file, isShowDeleteIcon) {
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="`+file.fileName+`">`+file.fileName+`</a></h5>
-                                                    <div>`+file.fileSize+`</div>
+                                                    <div>`+bToKbShow(file.fileSize)+`Kb</div>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <div class="d-flex gap-1 align-items-center">
@@ -318,7 +318,8 @@ function activeFile(classNameOfForm, setting) {
         var files = dropzone.files;
         var fileExtension = file.name.split('.').pop();
 
-        if(files.length > parseInt(dropzone.options.maxFiles)){
+        var fileCountCurrent = $(classNameOfForm).find('.file-container-item').length;
+        if(files.length + fileCountCurrent > parseInt(dropzone.options.maxFiles)){
             dropzone.removeFile(file);
             errorE.innerHTML = createMessError(INVALID_FILES_LIMIT, setting);
         } else if(!setting.fileType.includes(fileExtension)){

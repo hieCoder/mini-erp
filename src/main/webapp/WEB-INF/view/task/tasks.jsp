@@ -505,6 +505,7 @@
             columns: [
                 {
                     render: function(data, type, row) {
+                        if(!isAdminOrUserLogin(row.user.id)) return '';
                         return `<th scope="row">
                             <div class="form-check">
                                 <input data-id="` + row.id + `" class="form-check-input" type="checkbox" name="chk_child" value="option1">
@@ -657,6 +658,8 @@
                     var swal = showAlertLoading();
                     callAjaxByJsonWithData("/api/v1/tasks/", "DELETE", checkedIds, function (rs) {
                         tableTask.ajax.reload(function () {
+                            $('#checkAll').prop('checked', false);
+
                             loadCountStatus();
                             swal.close();
                             showAlert(SUCCESS_ALERT, 'Delete success!');
