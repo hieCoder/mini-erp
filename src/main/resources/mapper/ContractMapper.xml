@@ -4,9 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
 
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance_type,
-                              insurance_money, status, HISTORY_ID)
-            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, #{createdDate}, #{user.id}, #{insuranceType}, #{insuranceMoney}, #{status}, #{parentContract.id})
+        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance, status, HISTORY_ID)
+            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, #{createdDate}, #{user.id}, #{insurance}, #{status}, #{parentContract.id})
     </insert>
 
     <select id="findById" resultMap="contractResultMap">
@@ -17,8 +16,7 @@
             c.CONTRACT AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
-            c.INSURANCE_TYPE AS contract_insurance_type,
-            c.INSURANCE_MONEY AS contract_insurance_money,
+            c.INSURANCE AS contract_insurance,
             c.HISTORY_ID AS contract_history_id,
             c.USER_ID AS contract_user_id,
             u.fullname AS user_fullname
@@ -35,8 +33,7 @@
                 c.CONTRACT AS contract_contractFile,
                 c.CREATED_DATE AS contract_created_date,
                 c.STATUS AS contract_status,
-                c.INSURANCE_TYPE AS contract_insurance_type,
-                c.INSURANCE_MONEY AS contract_insurance_money,
+                c.INSURANCE AS contract_insurance,
                 c.HISTORY_ID AS contract_history_id,
                 c.USER_ID AS contract_user_id,
                 u.fullname AS user_fullname
@@ -47,13 +44,12 @@
           AND c.HISTORY_ID IS NULL
     </select>
 
-    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
+    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
         UPDATE CONTRACT
         SET basic_salary    = #{basicSalary},
             allowance       = #{allowance},
             contract        = #{contract},
-            insurance_type  = #{insuranceType},
-            insurance_money = #{insuranceMoney}
+            insurance  = #{insurance}
         WHERE id = #{id};
     </update>
 
@@ -72,8 +68,7 @@
         <result property="contract" column="contract_contractFile"/>
         <result property="createdDate" column="contract_created_date"/>
         <result property="status" column="contract_status"/>
-        <result property="insuranceType" column="contract_insurance_type"/>
-        <result property="insuranceMoney" column="contract_insurance_money"/>
+        <result property="insurance" column="contract_insurance"/>
         <association property="user" column="contract_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
         <collection property="historyContract" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Contract"
                     select="getHistoryContract"/>
@@ -92,8 +87,7 @@
             c.CONTRACT AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
-            c.INSURANCE_TYPE AS contract_insurance_type,
-            c.INSURANCE_MONEY AS contract_insurance_money,
+            c.INSURANCE AS contract_insurance,
             c.HISTORY_ID AS contract_history_id,
             c.USER_ID AS contract_user_id,
             u.fullname AS user_fullname

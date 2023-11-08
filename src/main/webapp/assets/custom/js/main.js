@@ -3,6 +3,9 @@ const U_DEVELOPER = 'DEVELOPER';
 const U_OWNER = 'OWNER';
 const U_MANAGER = 'MANAGER';
 
+const SUCCESS_ALERT = 'SUCCESS_ALERT';
+const DANGER_ALERT = 'DANGER_ALERT';
+
 // loading
 const BtnLoadRemove = () => {
     $('.btn-load').remove()
@@ -263,6 +266,17 @@ function showAlertLoading() {
     });
     return Swal;
 }
+function showAlert(type, mess){
+    var className = '';
+    if(type == SUCCESS_ALERT){
+        className = '.alert.alert-success';
+    } else if(type == DANGER_ALERT){
+        className = '.alert.alert-danger';
+    }
+    $(className).text(mess);
+    $(className).removeClass('d-none');
+}
+
 
 // money format
 function formatCurrency(amount) {

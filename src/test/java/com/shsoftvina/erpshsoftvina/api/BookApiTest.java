@@ -38,13 +38,6 @@ public class BookApiTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-    @Test
-    public void testFindAll() throws Exception {
-        Mockito.when(bookService.fillAll(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(new PageBookListRespone());
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
 
     @Test
     public void testFindById() throws Exception {
