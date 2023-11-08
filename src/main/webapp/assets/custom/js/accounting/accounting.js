@@ -6,6 +6,7 @@ function convertMaxFileSize(string) {
 }
 
 function loadFilesName(fileNameArr) {
+    $("div.yearLoading").removeClass("d-none");
     let html = ""
     handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
         html += showFileUploaded(fileName, fileSize, url, "view")
@@ -14,6 +15,7 @@ function loadFilesName(fileNameArr) {
         })
         $("#viewAccount .showFilesUploaded").html(html)
     })
+    $("div.yearLoading").addClass("d-none");
 }
 
 

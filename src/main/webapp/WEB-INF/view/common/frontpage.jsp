@@ -49,7 +49,12 @@
                         <div class="align-items-center mt-2 row g-3 text-center text-sm-start">
                             <div class="col-sm" id="showTotal">
                             </div>
-                            <div class="col-sm-auto">
+                            <div class="col-sm-auto d-flex">
+                                <div class="d-flex justify-content-center align-items-center d-none pageLoading me-2">
+                                                <span class="spinner-grow flex-shrink-0" role="status">
+                                                    <span class="visually-hidden"> Loading...</span>
+                                                </span>
+                                </div>
                                 <ul class="pagination pagination-separated pagination-sm justify-content-center justify-content-sm-start mb-0"
                                     id="pagination">
                                 </ul>
@@ -220,6 +225,7 @@
     var taskBodyElement = document.getElementById("taskList");
 
     function loadPage(page) {
+        $("div.pageLoading").removeClass("d-none");
         callAjaxByJsonWithData('/api/v1/events/upcoming?day=' + dateString + '&page=' + page, 'GET', null, function (rs) {
             if (rs) {
                 let data = rs;
@@ -260,6 +266,7 @@
                 }
                 eventBodyElement.innerHTML = xhtml;
                 updatePagination(data, "pagination");
+                $("div.pageLoading").addClass("d-none");
             } else {
                 console.log("Data API Error")
             }

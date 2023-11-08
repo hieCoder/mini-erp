@@ -162,7 +162,7 @@
     <!-- container-fluid -->
 </div>
 
-<!-- Modal  approval -->
+<!-- Modal approval -->
 <div class="modal fade" id="modal-account-pending" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -199,7 +199,7 @@
     </div>
 </div>
 
-<!-- Modal  reject -->
+<!-- Modal reject -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -246,7 +246,6 @@
 
 <%-------------------------------------------- CUSTOM JAVASCRIPT--------------------------------------------%>
 <script>
-
     document.getElementById('penddingModal').addEventListener('click', function () {
         $('#modal-account-pending').modal('show');
         $('#pendingTable').DataTable().destroy();
@@ -314,6 +313,8 @@
                     if (rs) {
                         table.ajax.reload(function () {
                             swal.close();
+                            localStorage.setItem('viewPending', 'showViewPending');
+                            location.reload();
                         });
                     }
                 });
@@ -335,6 +336,7 @@
                 if (rs) {
                     table.ajax.reload(function () {
                         swal.close();
+                        modalSuccess('Reject Success!', '');
                     });
                 }
             });
@@ -343,7 +345,7 @@
 </script>
 
 <script>
-    // // Lưu giá trị lựa chọn "Page Count," "Status," và "Search" vào Local Storage khi thay đổi
+    // Save the "Page Count," "Status," and "Search" selection values to Local Storage when changed
     var loadingTable = document.getElementById('loadingTable');
     document.getElementById("pageSize").addEventListener("change", function () {
         loadingTable.style.display = 'block';
@@ -364,7 +366,7 @@
         localStorage.setItem("selectedSort", this.value);
     });
 
-    // Khôi phục giá trị lựa chọn "Page Count," "Status," và "Search" từ Local Storage khi trang được load
+    // Restore the "Page Count," "Status," and "Search" selection values from Local Storage when the page is loaded
     window.addEventListener("load", function () {
         window.scrollTo(0, window.innerHeight / 3);
         var selectedPageSize = localStorage.getItem("selectedPageSize");
@@ -386,6 +388,14 @@
         if (selectedSearch) {
             document.getElementById("search").value = selectedSearch;
         }
+
+        var viewPending = localStorage.getItem("viewPending");
+        if (viewPending) {
+            window.scrollTo(0, 0);
+            modalSuccess('Approval Success!', '')
+            $('#modal-account-pending').modal('show');
+            localStorage.clear();
+        }
     });
 </script>
 
@@ -395,8 +405,23 @@
     document.addEventListener("DOMContentLoaded", function () {
         var result = sessionStorage.getItem('result');
         if (result != null) notificationSuccess(sessionStorage.getItem('result'));
+
         sessionStorage.clear();
     });
+
+    function modalSuccess(title, message) {
+        Swal.fire(
+            {
+                title: title,
+                text: message,
+                icon: 'success',
+                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+                cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                buttonsStyling: false,
+                showCloseButton: true
+            }
+        )
+    }
 
     // Loading Primary
     function addLoadingPrimary(element) {
@@ -419,30 +444,13 @@
     // Notification Success
     function notificationSuccess(result) {
         var title;
-        var text;
 
         switch (result) {
-            case 'approvalSuccess':
-                title = 'Approval Success';
-                break;
-            case 'rejectSuccess':
-                title = 'Reject Success';
-                break;
             case 'delUserSuccess':
                 title = 'Delete User Success';
                 break;
         }
-        Swal.fire(
-            {
-                title: title,
-                text: text,
-                icon: 'success',
-                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-                cancelButtonClass: 'btn btn-danger w-xs mt-2',
-                buttonsStyling: false,
-                showCloseButton: true
-            }
-        )
+        modalSuccess(title, '');
     }
 </script>
 </body>
