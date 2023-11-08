@@ -71,7 +71,7 @@
             </div>
             <!--end card-->
             <%--========================== Working Day =================================--%>
-            <div class="card permission">
+            <div class="card permission d-none">
                 <div class="card-body" style="text-align: center">
                     <div class="d-flex align-items-center mb-4">
                         <div class="flex-grow-1">
@@ -98,7 +98,7 @@
                 </div>
             </div>
             <div class="card">
-                <button type="button" class="btn btn-danger" id="del-user-button">Delete User</button>
+                <button type="button" class="btn btn-danger d-none" id="del-user-button">Delete User</button>
             </div>
         </div>
         <!--end col-->
@@ -111,7 +111,7 @@
                                 <i class="fas fa-home"></i> Basic Information
                             </a>
                         </li>
-                        <li class="nav-item permission">
+                        <li class="nav-item permission d-none">
                             <a class="nav-link" data-bs-toggle="tab" href="#detailInformationSession" role="tab">
                                 <i class="far fa-user"></i> Detail Information
                             </a>
@@ -121,7 +121,7 @@
                                 <i class="far fa-envelope"></i> Resume
                             </a>
                         </li>
-                        <li class="nav-item permission">
+                        <li class="nav-item permission d-none">
                             <a class="nav-link" data-bs-toggle="tab" href="#contractSession" role="tab">
                                 <i class="far fa-envelope"></i> Contract
                             </a>
@@ -179,7 +179,7 @@
                                         <label for="timeSheetsCode" class="form-label">TimeSheets Code</label>
                                         <input type="text" class="form-control"
                                                id="timeSheetsCode" name="timesheetsCode" value="${user.timesheetsCode}"
-                                        >
+                                        readonly disabled>
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-6">
@@ -1048,10 +1048,10 @@
     var inputMultipleElements = document.querySelectorAll('input.filepond-input-multiple');
     var alertFileType = document.getElementById('alertFileType');
 
-    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs){
+    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
         var setting = rs;
         var allowedFile = setting.fileType.split(',');
-        console.log(setting);
+
         Array.from(inputMultipleElements).forEach(function (inputElement) {
             const pond = FilePond.create(inputElement);
 
@@ -1094,8 +1094,6 @@
             });
         })
     });
-
-
 
     Validator({
         form: '#formUpdateUser',
@@ -1429,8 +1427,45 @@
     }
 
     // Show modal Add Contract
-    document.getElementById('add-contract-button').addEventListener('click', function () {
+    document.getElementById('add-contract-button').addEventListener('click', function (e) {
         $('#addContractModal').modal('show');
+        var fileAddContract = document.getElementById('newContract');
+        fileAddContract.addEventListener('change', function () {
+            callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+                var setting = rs;
+                var allowedFile = setting.fileType.split(',');
+                var fileName = fileAddContract.files[0].name.split('.').pop();
+                var fileSize = fileAddContract.files[0].size;
+
+                if (fileSize > convertMbToB(setting.fileSize)) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'You cannot upload this file!',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    fileAddContract.value = null;
+                }
+
+                if (!(allowedFile.includes(fileName))) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'You cannot upload this file!',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    fileAddContract.value = null;
+                }
+            });
+        });
     });
 
     Validator({
@@ -1496,6 +1531,8 @@
                 var editContractId = this.value;
                 e.preventDefault();
                 $('#editContractModal').modal('show');
+
+                // Call Api get Data Contract Detail
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
                     var allowance = JSON.parse(rs.allowance);
@@ -1564,7 +1601,46 @@
 
                 });
 
+                var fileEditContract = document.getElementById('editContract');
+                fileEditContract.addEventListener('change', function () {
+                    callAjaxByJsonWithData('/api/v1/settings/code?code=USER', 'GET', null, function (rs) {
+                        var setting = rs;
+                        var allowedFile = setting.fileType.split(',');
+                        var fileName = fileEditContract.files[0].name.split('.').pop();
+                        var fileSize = fileEditContract.files[0].size;
 
+                        if (fileSize > convertMbToB(setting.fileSize)) {
+                            Swal.fire(
+                                {
+                                    title: 'Oops...',
+                                    text: 'You cannot upload this file!',
+                                    icon: 'error',
+                                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                    buttonsStyling: false,
+                                    showCloseButton: true
+                                }
+                            )
+                            fileEditContract.value = null;
+                        }
+
+                        if (!(allowedFile.includes(fileName))) {
+                            Swal.fire(
+                                {
+                                    title: 'Oops...',
+                                    text: 'You cannot upload this file!',
+                                    icon: 'error',
+                                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                    buttonsStyling: false,
+                                    showCloseButton: true
+                                }
+                            )
+                            fileEditContract.value = null;
+                        }
+
+                    });
+                });
+
+                // Click button Confirm edit Contract
                 if (editContractId) {
                     Validator({
                         form: '#editContractForm',
@@ -1789,11 +1865,11 @@
         if (isDeleveloper()) linkCancle = '/home';
         $('.cancle-button').attr('href', linkCancle);
 
-        if (isDeleveloper()) {
-            $('.permission').remove();
-            $('#del-user-button').remove();
-            $('#timeSheetsCode').prop('readonly', true);
-            $('#timeSheetsCode').prop('disabled', true);
+        if (!isDeleveloper()) {
+            $('.permission').removeClass('d-none');
+            $('#del-user-button').removeClass('d-none');
+            $('#timeSheetsCode').prop('readonly', false);
+            $('#timeSheetsCode').prop('disabled', false);
         }
     });
 </script>
