@@ -83,7 +83,6 @@ public class AccountingServiceImpl implements AccountingService {
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
         Accounting beforeCreateAccounting = accountingMapper.findBeforeCurrentAccounting(DateUtils.toLocalDateTime(accountingCreateRequest.getPayDate()));
-        System.out.println(beforeCreateAccounting);
         long latestRemain = 0L;
         if (beforeCreateAccounting != null) {
             latestRemain = beforeCreateAccounting.getRemain();
@@ -104,7 +103,6 @@ public class AccountingServiceImpl implements AccountingService {
                 accountingMapper.createAccounting(newAccounting);
                 List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(beforeCreateAccounting);
                 for (Accounting accounting : remainRecordInMonthList) {
-                    System.out.println(latestRemain);
                     latestRemain += accounting.getExpense();
                     accounting.setRemain(latestRemain);
                 }
