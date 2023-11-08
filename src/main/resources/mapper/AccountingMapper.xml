@@ -7,7 +7,6 @@
         FROM ACCOUNTING
         WHERE status = 'ACTIVE'
         ORDER BY year DESC, month_list DESC
-
     </select>
     <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
         <id property="year" column="year" />
@@ -48,7 +47,8 @@
         user_id = #{user.id},
         bill = #{bill},
         title = #{title},
-        note = #{note}
+        note = #{note},
+        pay_date = #{payDate}
         WHERE id = #{id}
     </update>
 
@@ -67,7 +67,7 @@
         FROM ACCOUNTING
         WHERE
         <if test="payDate != null">
-            pay_date &gt;= #{payDate}
+            pay_date &gt; #{payDate}
             AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
         </if>
         <if test="payDate == null">
@@ -79,7 +79,7 @@
     </select>
 
     <select id="findBeforeCurrentAccounting" resultMap="accountingResultMap">
-        SELECT spending, remain
+        SELECT spending, remain, pay_date
         FROM ACCOUNTING
         WHERE pay_date &lt; #{payDate}
         AND pay_date &gt;= DATE_FORMAT(#{payDate}, '%Y-%m-01 00:00:00')
@@ -87,17 +87,6 @@
         AND status = 'ACTIVE'
         ORDER BY pay_date DESC
         LIMIT 1;
-    </select>
-
-    <select id="findBeforeCreateAccounting" resultMap="accountingResultMap">
-        SELECT spending, remain
-        FROM ACCOUNTING
-        WHERE pay_date &lt; #{payDate}
-          AND pay_date &gt;= DATE_FORMAT(#{payDate}, '%Y-%m-01 00:00:00')
-          AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
-          AND status = 'ACTIVE'
-        ORDER BY pay_date DESC
-            LIMIT 1;
     </select>
 
     <select id="findAccountingByMonth" parameterType="org.apache.ibatis.session.RowBounds" resultMap="accountingResultMap" >

@@ -243,7 +243,7 @@
                         '</div>' +
                         '<div class="col">' +
                         '<h5 class="text-muted mt-0 mb-1 fs-13">' + event.type.code + '</h5>' +
-                        '<a href="javascript: void(0);" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
+                        '<a style="cursor: default" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
                         '</div>' +
                         '<div class="col-sm-auto">' +
                         '<div class="avatar-group">' +
@@ -360,12 +360,12 @@
                         '</div>' +
                         '<div class="col">' +
                         '<h5 class="text-muted mt-0 mb-1 fs-13">' + event.type.code + '</h5>' +
-                        '<a href="javascript: void(0);" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
+                        '<a style="cursor: default" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
                         '</div>' +
                         '<div class="col-sm-auto">' +
                         '<div class="avatar-group">' +
                         '<div class="avatar-group-item">' +
-                        '<a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip" ' +
+                        '<a style="cursor: default" class="d-inline-block" data-bs-toggle="tooltip" ' +
                         'data-bs-placement="top" title="" data-bs-original-title="Stine Nielsen">' +
                         '<img src="' + event.user.avatar + '" alt="" class="rounded-circle avatar-xxs">' +
                         '</a>' +

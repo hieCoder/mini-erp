@@ -191,6 +191,14 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-lg-3">
+                                            <label for="editPayDate">Pay date</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="date" class="form-control" id="editPayDate" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3">
                                             <label for="transactionType">Transaction Type</label>
                                         </div>
                                         <div class="col-lg-9">
@@ -217,6 +225,7 @@
                                         </div>
                                     </div>
                                     <script>
+                                        convertPayDate('${account.payDate}');
                                         var amount = $('input#amount').val()
                                         $('input#amount').val(formatNumberToVND(amount));
 
@@ -688,6 +697,7 @@
         $(this).before(BtnPrimaryLoad)
         let accountId = $("#editModal").attr("data-id")
         let title = $("#editTitle").val()
+        let payDate = $("#editPayDate").val()
         let note = $("#editNote").val()
         let transaction = $("#transactionType").val()
         let input = document.getElementById("amount").value;
@@ -696,7 +706,11 @@
             amount = -amount;
         }
         if (title.trim() === "") {
-            $("input#createTitle").parent().after(INVALID_FILLED_TEXT)
+            $("input#editTitle").parent().after(INVALID_FILLED_TEXT)
+            return false;
+        }
+        if (!payDate) {
+            $("input#editPayDate").parent().after(INVALID_FILLED_TEXT)
             return false;
         }
         if (!transaction) {
@@ -716,6 +730,7 @@
         formData.append("title", title);
         formData.append("note", note);
         formData.append("id", accountId);
+        formData.append("payDate",payDate);
         formData.append("oldFile", oldFile);
         formData.append("userId", userCurrent.id);
         formData.append("expense", amount);
@@ -733,6 +748,7 @@
             if (rs) {
                 $("#titleAccount").text(rs.title);
                 $("#createdDateAccount").text(rs.createdDate);
+                $("#payDateAccount").text(rs.payDate);
                 $("#revenueAccount").text(formatCurrency(rs.revenue));
                 $("#expenseAccount").text(formatCurrency(rs.expense));
                 $("#remainAccount").text(formatCurrency(rs.remain));
