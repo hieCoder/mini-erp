@@ -11,7 +11,7 @@ import java.util.List;
 public interface EventService {
     List<EventResponse> getAllEventsByMonth(String month);
 
-    String createEvent(EventCreateRequest request);
+    EventResponse createEvent(EventCreateRequest request);
 
     int editEvent(EventEditRequest request);
 

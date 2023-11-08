@@ -2,6 +2,8 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +42,14 @@ public class NotificationApi {
     }
 
     //    Create New Notification
+    @MessageMapping("/createNotification")
+    @SendTo("/notification/createNotification")
     @PostMapping
     public ResponseEntity<?> createNoti(@Valid CreateNotificationRequest createNotificationRequest) {
-        return ResponseEntity.ok(notificationService.createNoti(createNotificationRequest));
+        NotificationDetailResponse rs = notificationService.createNoti(createNotificationRequest);
+        rs.setCategoryPush("Notifications");
+        if(rs != null) simpMessagingTemplate.convertAndSend("/notification/createNotification", rs);
+        return ResponseEntity.ok(rs);
     }
 
     //    Update Notification
@@ -57,8 +64,9 @@ public class NotificationApi {
     @SendTo("/notification/deleteNotification")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delNoti(@PathVariable("id") String id) {
-        simpMessagingTemplate.convertAndSend("/notification/deleteNotification", id);
-        return ResponseEntity.ok(notificationService.delNoti(id));
+        boolean rs = notificationService.delNoti(id);
+        if(rs) simpMessagingTemplate.convertAndSend("/notification/deleteNotification", id);
+        return ResponseEntity.ok(rs);
     }
 
     @GetMapping("/{id}")

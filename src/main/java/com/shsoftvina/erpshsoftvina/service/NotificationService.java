@@ -10,7 +10,7 @@ import java.util.List;
 public interface NotificationService {
     List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search);
     List<NotificationShowResponse> getInactiveNoti(int start, int pageSize);
-    int createNoti(CreateNotificationRequest createNotificationRequest);
+    NotificationDetailResponse createNoti(CreateNotificationRequest createNotificationRequest);
     NotificationDetailResponse updateNotification(UpdateNotificationRequest updateNotificationRequest, String id);
     boolean delNoti(String id);
     NotificationDetailResponse findById(String id);

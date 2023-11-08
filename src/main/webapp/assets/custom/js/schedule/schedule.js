@@ -983,7 +983,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         callAjaxByJsonWithData(baseUrlEvent,"POST", data, async function (rs){
             if(rs){
-                event.id = rs
+                event.id = rs.id
                 event.code = type
                 CALENDAR_RESULT.push(event)
                 upcomingEvent(CALENDAR_RESULT)

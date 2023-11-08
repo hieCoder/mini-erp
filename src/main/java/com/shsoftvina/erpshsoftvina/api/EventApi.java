@@ -9,6 +9,9 @@ import com.shsoftvina.erpshsoftvina.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/events")
 public class EventApi {
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
     @Autowired
     private EventService eventService;
     @GetMapping()
@@ -34,12 +41,17 @@ public class EventApi {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
+    @MessageMapping("/createEvent")
+    @SendTo("/notification/createEvent")
     @PostMapping()
-    public ResponseEntity<String> createEvent(@Valid @RequestBody EventCreateRequest request, BindingResult bindingResult) {
+    public ResponseEntity<?> createEvent(@Valid @RequestBody EventCreateRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(eventService.createEvent(request));
+        EventResponse eventResponse = eventService.createEvent(request);
+        eventResponse.setCategoryPush("Events");
+        if(eventResponse != null) simpMessagingTemplate.convertAndSend("/notification/createEvent", eventResponse);
+        return ResponseEntity.ok(eventResponse);
     }
     @PutMapping()
     public ResponseEntity<?> editEvent(@Valid @RequestBody EventEditRequest request, BindingResult bindingResult) {

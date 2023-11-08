@@ -355,11 +355,6 @@ function focusElement(element) {
 // $('#' + contentId).show();
 // }
 
-
-
-
-
-
 function cutShortLink() {
     var fileElements = document.querySelectorAll('a.cut-file-name');
 
@@ -381,4 +376,74 @@ function cutShortLink() {
         }
     });
 }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+        .then(function(registration) {
+            console.log('Service Worker registered with scope:', registration.scope);
+                    if (Notification.permission !== "granted") {
+                        Notification.requestPermission().then(function (permission) {
+                            if (permission === "granted") {
+                                let stompClient = Stomp.over(new SockJS("/websocket"));
+                                stompClient.connect({}, function (frame) {
+                                    stompClient.subscribe("/notification/createNotification", function (rs) {
+                                        let data = JSON.parse(rs.body)
+                                        if(data.idUser === userCurrent.id){
+                                            return false
+                                        } else {
+                                            let notification = new Notification(data.categoryPush, {
+                                                icon: "/assets/images/icon-push.png",
+                                                body: data.title,
+                                                requireInteraction: true,
+                                                tag: data.categoryPush,
+                                                renotify: true
+                                            });
 
+                                        }
+                                    })
+                                })
+                            }
+                        });
+                    }
+                    else {
+                        let stompClient = Stomp.over(new SockJS("/websocket"));
+                        stompClient.connect({}, function (frame) {
+                            stompClient.subscribe("/notification/createNotification", function (rs) {
+                                let data = JSON.parse(rs.body)
+                                if(data.idUser == userCurrent.id){
+                                    return false
+                                } else {
+                                    let notification = new Notification(data.categoryPush, {
+                                        icon: "/assets/images/icon-push.png",
+                                        body: data.title,
+                                        requireInteraction: true,
+                                        tag: data.categoryPush,
+                                        renotify: true
+                                    });
+                                    notification.onclick = function () {
+                                        window.open('/' + data.categoryPush.toLowerCase() + '/' + data.id, '_blank');
+                                    };
+                                }
+                            })
+                            stompClient.subscribe("/notification/createEvent", function (rs) {
+                                let data = JSON.parse(rs.body)
+                                if(data.user.id == userCurrent.id){
+                                    return false
+                                } else {
+                                    let notification = new Notification(data.categoryPush, {
+                                        icon: "/assets/images/icon-event.png",
+                                        body: data.title,
+                                        requireInteraction: true,
+                                        tag: data.categoryPush,
+                                        renotify: true
+                                    });
+                                    notification.onclick = function () {
+                                            window.open('/schedules/detail/' + userCurrent.id, '_blank');
+                                    }
+                                }
+                            })
+                        })
+                    }
+        }).catch(function(error) {
+        console.log('Service Worker registration failed:', error);
+    });
+}
