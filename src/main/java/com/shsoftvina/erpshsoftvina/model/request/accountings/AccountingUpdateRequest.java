@@ -34,4 +34,7 @@ public class AccountingUpdateRequest {
     private String title;
 
     private String note;
+
+    @NotBlank(message = "Field is not filled")
+    private String payDate;
 }
