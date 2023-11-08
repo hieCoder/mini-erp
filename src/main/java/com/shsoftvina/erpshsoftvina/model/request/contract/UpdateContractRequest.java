@@ -20,7 +20,6 @@ public class UpdateContractRequest {
 
     private String basicSalary;
     private String allowance;
-    private String insuranceType;
-    private String insuranceMoney;
+    private String insurance;
     private MultipartFile contract;
 }

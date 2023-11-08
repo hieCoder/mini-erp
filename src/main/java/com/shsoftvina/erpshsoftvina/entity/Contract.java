@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.entity;
 
-import com.shsoftvina.erpshsoftvina.enums.contract.InsuranceTypeEnum;
 import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +21,7 @@ public class Contract {
     private String contract;
     private Date createdDate;
     private User user;
-    private InsuranceTypeEnum insuranceType;
-    private String insuranceMoney;
+    private String insurance;
     private StatusContractEnum status;
     private Contract parentContract;
     private List<Contract> historyContract;

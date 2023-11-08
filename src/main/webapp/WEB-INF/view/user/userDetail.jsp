@@ -179,7 +179,7 @@
                                         <label for="timeSheetsCode" class="form-label">TimeSheets Code</label>
                                         <input type="text" class="form-control"
                                                id="timeSheetsCode" name="timesheetsCode" value="${user.timesheetsCode}"
-                                        readonly disabled>
+                                               readonly disabled>
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-6">
@@ -440,8 +440,7 @@
                                             <tr>
                                                 <th>Basic Salary</th>
                                                 <th width="200">Allowance</th>
-                                                <th>Insurance Type</th>
-                                                <th>JInsurance Money</th>
+                                                <%--                                                <th>Insurance</th>--%>
                                                 <th>File Contract</th>
                                                 <th>Action</th>
                                             </tr>
@@ -452,8 +451,8 @@
                                                     <td>${contract.basicSalary}</td>
                                                     <td class="format-allowance" data-simplebar
                                                         style="max-height: 200px;">${contract.allowance}</td>
-                                                    <td>${contract.insuranceType.name}</td>
-                                                    <td>${contract.insuranceMoney}</td>
+                                                        <%--                                                    <td>${contract.insurance}</td>--%>
+
                                                     <td>
                                                         <c:set var="contractPath" value="${contract.getContract()}"/>
                                                         <c:set var="fileNameContract"
@@ -620,18 +619,29 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="addInsuranceType" class="form-label">Insurance Type</label>
-                            <select class="form-control" id="addInsuranceType" name="insuranceType" required>
-                                <option value="HEALTH_INSURANCE">Health insurance</option>
-                                <option value="SOCIAL_INSURANCE">Social insurance</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="addInsuranceMoney" class="form-label">Insurance Money:</label>
-                            <input type="text" class="form-control" id="addInsuranceMoney" name="insuranceMoney"
-                                   oninput="formatNumber(this)" required>
-                            <small class="form-message"></small>
+
+                        <div class="container">
+                            <div class="mb-3">
+                                <label class="form-label">Insurance Type</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="addHealthInsuranceCheckbox"
+                                           value="HEALTH_INSURANCE">
+                                    <label class="form-check-label" for="addHealthInsuranceCheckbox">Health
+                                        insurance</label>
+                                    <input type="text" class="form-control d-none" id="addHealthInsuranceInput"
+                                           placeholder="Enter Value Health Insurance" oninput="formatNumber(this)"
+                                    >
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="addSocialInsuranceCheckbox"
+                                           value="SOCIAL_INSURANCE">
+                                    <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
+                                        insurance</label>
+                                    <input type="text" class="form-control d-none" id="addSocialInsuranceInput"
+                                           placeholder="Enter Value Social Insurance" oninput="formatNumber(this)"
+                                    >
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -699,17 +709,25 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editInsuranceType" class="form-label">Insurance Type</label>
-                            <select class="form-control" id="editInsuranceType" name="insuranceType" required>
-                                <option value="HEALTH_INSURANCE">Health insurance</option>
-                                <option value="SOCIAL_INSURANCE">Social insurance</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editInsuranceMoney" class="form-label">Insurance Money:</label>
-                            <input type="text" class="form-control" id="editInsuranceMoney" name="insuranceMoney"
-                                   oninput="formatNumber(this)" required>
-                            <small class="form-message"></small>
+                            <label class="form-label">Insurance Type</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="HEALTH_INSURANCE"
+                                       id="editHealthInsuranceCheckbox"
+                                >
+                                <label class="form-check-label" for="editHealthInsuranceCheckbox">Health
+                                    insurance</label>
+                                <input type="text" class="form-control d-none" id="editHealthInsuranceInput"
+                                       placeholder="Enter Value Health Insurance" oninput="formatNumber(this)">
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="SOCIAL_INSURANCE"
+                                       id="editSocialInsuranceCheckbox"
+                                >
+                                <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
+                                    insurance</label>
+                                <input type="text" class="form-control d-none" id="editSocialInsuranceInput"
+                                       placeholder="Enter Value Social Insurance" oninput="formatNumber(this)">
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -751,7 +769,6 @@
                             <th>Basic Salary</th>
                             <th>Allowance</th>
                             <th>Insurance Type</th>
-                            <th>Insurance Money</th>
                             <th>Contract</th>
                             <th>Create Date</th>
                         </tr>
@@ -865,6 +882,13 @@
 <%--<script src="/assets/js/pages/form-file-upload.init.js"></script>--%>
 
 <%-------------------------------------------- Custom JAVASCRIPT--------------------------------------------%>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    });
+</script>
+
 <%--Handle User--%>
 <script>
     // Handle button 'X' Delete Resume
@@ -1268,34 +1292,6 @@
 
 <%--Handle Contract--%>
 <script>
-    // Function formatAllowance
-    function allowanceFormat(data) {
-        var data = JSON.parse(data);
-        var keyValueString = '';
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + 'đ' + '<br><br>';
-            }
-        }
-        keyValueString = keyValueString.slice(0, -2);
-
-        return keyValueString;
-    }
-
-    // Format money is number
-    function formatNumber(input) {
-        let value = input.value.replace(/,/g, '');
-
-        // Only Number
-        value = value.replace(/\D/g, '');
-
-        // insert ',' after every 3 digits
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-        input.value = value;
-    }
-
-
     // Format File Name Contract
     document.addEventListener("DOMContentLoaded", function () {
         var elementContract = document.querySelectorAll('a.contractLink');
@@ -1426,6 +1422,72 @@
         if (editInputCount < 4) document.getElementById('editAllowanceButton').style.display = 'inline-block';
     }
 
+    // Format Allowance
+    function allowanceFormat(data) {
+        var data = JSON.parse(data);
+        var keyValueString = '';
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + 'đ' + '<br><br>';
+            }
+        }
+        keyValueString = keyValueString.slice(0, -2);
+
+        return keyValueString;
+    }
+
+    // Format money is number
+    function formatNumber(input) {
+        let value = input.value.replace(/,/g, '');
+
+        // Only Number
+        value = value.replace(/\D/g, '');
+
+        // insert ',' after every 3 digits
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        input.value = value;
+    }
+
+    // Format Insurance
+    function insuranceFormat(data) {
+        var jsonArray = JSON.parse(data);
+        var resultArray = [];
+        var keyValueString = '';
+
+        jsonArray.forEach(item => {
+            const key = item.code;
+            const value = item.money;
+            resultArray.push({key, value});
+        });
+
+        for (var i = 0; i < resultArray.length; i++) {
+            if (resultArray[i].value != null && resultArray[i].value !== "") {
+                keyValueString += '<strong>' + resultArray[i].key + '</strong>' + ' : ' + resultArray[i].value + 'đ' + '<br><br>';
+            }
+        }
+        return keyValueString;
+    }
+
+    // Click checkbox ADD Insurance Type
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#addHealthInsuranceCheckbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('#addHealthInsuranceInput').removeClass('d-none');
+            } else {
+                $('#addHealthInsuranceInput').addClass('d-none');
+            }
+        });
+
+        $('#addSocialInsuranceCheckbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('#addSocialInsuranceInput').removeClass('d-none');
+            } else {
+                $('#addSocialInsuranceInput').addClass('d-none');
+            }
+        });
+    });
+
     // Show modal Add Contract
     document.getElementById('add-contract-button').addEventListener('click', function (e) {
         $('#addContractModal').modal('show');
@@ -1498,6 +1560,23 @@
                 }
             }
 
+            var codeInsurance = document.getElementById('addHealthInsuranceCheckbox').value;
+            var moneyInsurance = document.getElementById('addHealthInsuranceInput').value;
+            var codeSocialInsurance = document.getElementById('addSocialInsuranceCheckbox').value;
+            var moneySocialInsurance = document.getElementById('addSocialInsuranceInput').value;
+            var strings = [codeInsurance, moneyInsurance, codeSocialInsurance, moneySocialInsurance];
+
+            var objects = [];
+            for (var i = 0; i < strings.length; i += 2) {
+                if (i + 1 < strings.length) {
+                    var obj = {code: strings[i], money: strings[i + 1]};
+                    objects.push(obj);
+                }
+            }
+
+            var insurance = JSON.stringify(objects);
+
+            formData.append('insurance', insurance);
             formData.append('userId', '${user.id}');
             formData.set('allowance', JSON.stringify(formDataObject));
 
@@ -1525,6 +1604,44 @@
             else elementAllowance.style.display = 'none';
         });
 
+        $('#editContractModal').on('shown.bs.modal', function () {
+            var editHealth = document.getElementById('editHealthInsuranceInput');
+            var editSocial = document.getElementById('editSocialInsuranceInput');
+
+            if (editHealth.value == null || editHealth.value == '') {
+                $("#editHealthInsuranceCheckbox").prop("checked", false);
+                $('#editHealthInsuranceInput').addClass('d-none');
+            } else {
+                $("#editHealthInsuranceCheckbox").prop("checked", true);
+                $('#editHealthInsuranceInput').removeClass('d-none');
+            }
+
+            if (editSocial.value == null || editSocial.value == '') {
+                $("#editSocialInsuranceCheckbox").prop("checked", false);
+                $('#editSocialInsuranceInput').addClass('d-none');
+            } else {
+                $("#editSocialInsuranceCheckbox").prop("checked", true);
+                $('#editSocialInsuranceInput').removeClass('d-none');
+            }
+
+            // Click checkbox EDIT Insurance Type
+            $('#editHealthInsuranceCheckbox').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#editHealthInsuranceInput').removeClass('d-none');
+                } else {
+                    $('#editHealthInsuranceInput').addClass('d-none');
+                }
+            });
+
+            $('#editSocialInsuranceCheckbox').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#editSocialInsuranceInput').removeClass('d-none');
+                } else {
+                    $('#editSocialInsuranceInput').addClass('d-none');
+                }
+            });
+        });
+
         var editContractBtn = document.querySelectorAll('.edit-contract-btn');
         editContractBtn.forEach(function (button) {
             button.addEventListener('click', function (e) {
@@ -1535,12 +1652,12 @@
                 // Call Api get Data Contract Detail
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
-                    var allowance = JSON.parse(rs.allowance);
 
+                    var allowance = JSON.parse(rs.allowance);
                     var divRow;
                     var count = 0;
-
                     var exitElement = document.getElementById('exitElement');
+
                     if (exitElement.querySelectorAll('.row').length > 0) $('#exitElement').empty();
 
                     for (var key in allowance) {
@@ -1588,17 +1705,19 @@
                         }
                     }
 
-                    var selectElement = document.getElementById("editInsuranceType");
-                    var editInsuranceType = rs.insuranceType.name;
-                    for (var i = 0; i < selectElement.options.length; i++) {
-                        if (selectElement.options[i].text === editInsuranceType) {
-                            selectElement.insertBefore(selectElement.options[i], selectElement.options[0]);
-                            break;
+                    var insurance = JSON.parse(rs.insurance);
+                    var editHealth = document.getElementById('editHealthInsuranceInput');
+                    var editSocial = document.getElementById('editSocialInsuranceInput');
+                    var editHealthCheckBox = document.getElementById('editHealthInsuranceCheckbox');
+                    var editSocialCheckBox = document.getElementById('editSocialInsuranceCheckbox');
+
+                    for (var i = 0; i < insurance.length; i++) {
+                        if (insurance[i].code === editHealthCheckBox.value) {
+                            editHealth.value = insurance[i].money
+                        } else if (insurance[i].code === editSocialCheckBox.value) {
+                            editSocial.value = insurance[i].money
                         }
                     }
-                    selectElement.selectedIndex = 0;
-                    document.getElementById("editInsuranceMoney").value = rs.insuranceMoney;
-
                 });
 
                 var fileEditContract = document.getElementById('editContract');
@@ -1636,7 +1755,6 @@
                             )
                             fileEditContract.value = null;
                         }
-
                     });
                 });
 
@@ -1667,6 +1785,23 @@
                                 }
                             }
 
+                            var codeInsurance = document.getElementById('editHealthInsuranceCheckbox').value;
+                            var moneyInsurance = document.getElementById('editHealthInsuranceInput').value;
+                            var codeSocialInsurance = document.getElementById('editSocialInsuranceCheckbox').value;
+                            var moneySocialInsurance = document.getElementById('editSocialInsuranceInput').value;
+                            var strings = [codeInsurance, moneyInsurance, codeSocialInsurance, moneySocialInsurance];
+
+                            var objects = [];
+                            for (var i = 0; i < strings.length; i += 2) {
+                                if (i + 1 < strings.length) {
+                                    var obj = {code: strings[i], money: strings[i + 1]};
+                                    objects.push(obj);
+                                }
+                            }
+
+                            var insurance = JSON.stringify(objects);
+
+                            formData.append('insurance', insurance);
                             formData.append('allowance', JSON.stringify(formDataObject));
                             formData.append('userId', '${user.id}');
                             formData.append('parentId', editContractId);
@@ -1754,8 +1889,12 @@
                                     return allowanceFormat(data);
                                 }
                             },
-                            {data: 'insuranceType.name'},
-                            {data: 'insuranceMoney'},
+                            {
+                                data: 'insurance',
+                                render: function (data, type, row) {
+                                    return insuranceFormat(data);
+                                }
+                            },
                             {
                                 data: 'contract',
                                 render: function (data, type, row) {
