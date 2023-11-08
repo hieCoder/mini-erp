@@ -38,7 +38,7 @@ public class BookApi {
         return ResponseEntity.ok(bookService.createBook(bookCreateRequest));
     }
 
-    @PostMapping("/update")
+    @PostMapping("/updation")
     public ResponseEntity<?> updateBook(BookUpdateRequest bookUpdateRequest) {
         return ResponseEntity.ok(bookService.updateBook(bookUpdateRequest));
     }

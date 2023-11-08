@@ -99,7 +99,7 @@ public class BookServiceImpl implements BookService {
 
         MultipartFile bookFile = bookUpdateRequest.getImage();
 
-        String fileNameBook = null;
+        String fileNameBook = null, oldImage = book.getImage();
         boolean isSaveBookSuccess = true;
 
         if(bookFile != null){
@@ -108,25 +108,25 @@ public class BookServiceImpl implements BookService {
             fileNameBook = FileUtils.formatNameImage(bookFile);
             isSaveBookSuccess = FileUtils.saveImageToServer(
                     request, BookConstant.UPLOAD_FILE_DIR, bookUpdateRequest.getImage(), fileNameBook);
-        }else isSaveBookSuccess = false;
+        } else{
+            fileNameBook = oldImage;
+        }
 
         Book b;
         if(isSaveBookSuccess){
             b = bookConverter.toEntity(bookUpdateRequest, fileNameBook);
             try {
                 bookMapper.updateBook(b);
-                FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, book.getImage());
+                if(!fileNameBook.equals(oldImage)){
+                    FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, oldImage);
+                }
                 return 1;
             } catch (Exception e){
                 FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, fileNameBook);
                 return 0;
             }
-        } else {
-            fileNameBook = book.getImage();
-            b = bookConverter.toEntity(bookUpdateRequest, fileNameBook);
-            bookMapper.updateBook(b);
-            return 1;
         }
+        return 0;
     }
 
     @Override

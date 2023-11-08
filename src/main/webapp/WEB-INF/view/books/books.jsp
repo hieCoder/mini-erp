@@ -218,7 +218,7 @@
                         <button type="submit" class="btn btn-success btn-load">
                             <span class="d-flex align-items-center">
                                 <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
-                                <span class="flex-grow-1">Add</span>
+                                <span class="flex-grow-1">Edit</span>
                             </span>
                         </button>
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
@@ -229,6 +229,31 @@
     </div>
 </div>
 <!--end modal-->
+
+<div class="modal fade flip" id="deleteBookModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 text-center">
+                    <h4>You are about to delete a book ?</h4>
+                    <p class="text-muted fs-14 mb-4">Deleting your book will remove all of
+                        your information from our database.</p>
+                    <div class="hstack gap-2 justify-content-center remove">
+                        <button class="btn btn-danger btn-load" id="delete-book" data-id="">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Yes, Delete It</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="delete-task-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end delete modal -->
 
 <script>
 
@@ -296,7 +321,7 @@
                                         <button data-id="`+row.id+ `" class="btn btn-sm btn-success edit-book-btn">Edit</button>
                                     </div>
                                     <div class="remove">
-                                        <button data-id="`+row.id+`" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
+                                        <button data-bs-toggle="modal" href="#deleteBookModal" data-id="`+row.id+`" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
                                     </div>
                         </div>`;
                     }
@@ -463,241 +488,26 @@
             }
         });
     });
+
+    $(document).on('click', '.remove-book-btn', function (e) {
+        var idBook = $(this).data('id');
+        $('#delete-book').attr('data-id', idBook);
+    });
+
+    $(document).on('click', '#delete-book', function (e) {
+        var idBook = $(this).attr('data-id');
+
+        $('#deleteBookModal .spinner-border').removeClass('d-none');
+        callAjaxByJsonWithData("/api/v1/books/" + idBook, "DELETE", null, function (rs) {
+
+            table.ajax.url(getUrlApiBooks(objPaging.search,
+                objPaging.page, objPaging.pageSize)).load(function () {
+                $('#deleteBookModal .spinner-border').addClass('d-none');
+                $("#deleteBookModal").modal("hide");
+                showAlert(SUCCESS_ALERT, 'Delete success');
+            });
+        });
+    });
 </script>
-
-<%--<!-- Modal Delete Book -->--%>
-<%--<div class="modal fade" id="deleteBookModal" tabindex="-1" role="dialog" aria-labelledby="deleteBookModalLabel"--%>
-<%--     aria-hidden="true">--%>
-<%--    <div class="modal-dialog modal-dialog-centered" role="document">--%>
-<%--        <div class="modal-content">--%>
-<%--            <div class="modal-body">--%>
-<%--                Are you sure to delete this book ?--%>
-<%--            </div>--%>
-<%--            <div class="modal-footer container-button-delete-user">--%>
-<%--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--%>
-<%--                <button type="button" class="btn btn-danger confirm-del-button">Delete</button>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-<%--<!-- Modal Notification  -->--%>
-<%--<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"--%>
-<%--     aria-hidden="true">--%>
-<%--    <div class="modal-dialog modal-dialog-centered" role="document">--%>
-<%--        <div class="modal-content">--%>
-<%--            <div class="modal-header">--%>
-<%--                <h4 class="modal-title" id="resultModalLabel">Result</h4>--%>
-<%--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--                    <span aria-hidden="true">&times;</span>--%>
-<%--                </button>--%>
-<%--            </div>--%>
-<%--            <div class="modal-body" id="resultMessage">--%>
-<%--                <!-- Message Success -->--%>
-<%--            </div>--%>
-<%--            <div class="modal-footer">--%>
-<%--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-<%--<script>--%>
-
-<%--    // Handle when user click button 'Add Book'--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        var addButton = document.querySelectorAll('.add-book-button');--%>
-
-<%--        addButton.forEach(function (button) {--%>
-<%--            button.addEventListener('click', function () {--%>
-<%--                $('#addBookModal').modal('show');--%>
-<%--            });--%>
-<%--        });--%>
-
-<%--        var submitButton = document.getElementById('addBookButton');--%>
-<%--        submitButton.addEventListener('click', function () {--%>
-<%--            var titleE = document.getElementById('title');--%>
-<%--            var authorE = document.getElementById('author');--%>
-<%--            var linkE = document.getElementById('link');--%>
-<%--            var image = document.getElementById('image');--%>
-
-<%--            var valueTitle = titleE.value;--%>
-<%--            var valueAuthor = authorE.value;--%>
-<%--            var valueLink = linkE.value;--%>
-
-<%--            var isValidate = true;--%>
-
-<%--            var errorMessageSpan = titleE.nextElementSibling;--%>
-<%--            if (valueTitle === "") {--%>
-<%--                errorMessageSpan.textContent = "This field is not filled";--%>
-<%--                isValidate = false;--%>
-<%--            } else {--%>
-<%--                errorMessageSpan.textContent = '';--%>
-<%--            }--%>
-
-<%--            errorMessageSpan = authorE.nextElementSibling;--%>
-<%--            if (valueAuthor === "") {--%>
-<%--                errorMessageSpan.textContent = "This field is not filled";--%>
-<%--                isValidate = false;--%>
-<%--            } else {--%>
-<%--                errorMessageSpan.textContent = '';--%>
-<%--            }--%>
-
-<%--            errorMessageSpan = linkE.nextElementSibling;--%>
-<%--            if (valueLink === "") {--%>
-<%--                errorMessageSpan.textContent = "This field is not filled";--%>
-<%--                isValidate = false;--%>
-<%--            } else {--%>
-<%--                errorMessageSpan.textContent = '';--%>
-<%--            }--%>
-
-<%--            errorMessageSpan = image.nextElementSibling;--%>
-<%--            if (image.files.length === 0) {--%>
-<%--                errorMessageSpan.textContent = "This field is not filled";--%>
-<%--                isValidate = false;--%>
-<%--            } else {--%>
-<%--                errorMessageSpan.textContent = '';--%>
-<%--            }--%>
-
-<%--            if (isValidate) {--%>
-<%--                var formData = new FormData--%>
-<%--                formData.append('title', valueTitle);--%>
-<%--                formData.append('author', valueAuthor);--%>
-<%--                formData.append('link', valueLink);--%>
-<%--                formData.append('fullnameUser', userCurrent.fullname);--%>
-
-<%--                if (image.files.length > 0) {--%>
-<%--                    formData.append('image', image.files[0]);--%>
-<%--                }--%>
-
-<%--                callAjaxByDataFormWithDataForm('/api/v1/books', 'POST', formData, function (rs) {--%>
-<%--                    sessionStorage.setItem('result', 'addBookSuccess');--%>
-<%--                    location.reload();--%>
-<%--                })--%>
-<%--            };--%>
-<%--        });--%>
-<%--    });--%>
-
-<%--    // Handle when user click button 'Delete Book'--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        var delButtons = document.querySelectorAll(".del-book-button");--%>
-<%--        var confirmDelButton = document.querySelector(".confirm-del-button");--%>
-<%--        var bookId;--%>
-
-<%--        // Xử lý khi nút Delete được nhấn--%>
-<%--        delButtons.forEach(function (button) {--%>
-<%--            button.addEventListener("click", function () {--%>
-<%--                bookId = button.value;--%>
-<%--                confirmDelButton.addEventListener('click', function () {--%>
-<%--                    if (bookId) {--%>
-<%--                        callAjaxByJsonWithData('/api/v1/books/' + bookId, 'DELETE', null, function (rs) {--%>
-<%--                            sessionStorage.setItem('result', 'delBookSuccess');--%>
-<%--                            location.reload();--%>
-<%--                        })--%>
-<%--                    }--%>
-<%--                })--%>
-<%--            });--%>
-<%--        });--%>
-<%--    });--%>
-
-<%--    // Handle when user click button 'Edit Book'--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        var editButton = document.querySelectorAll('.edit-book-button');--%>
-<%--        var bookId;--%>
-
-<%--        editButton.forEach(function (button) {--%>
-<%--            button.addEventListener('click', function () {--%>
-<%--                bookId = button.value;--%>
-<%--                $('#editBookModal').modal('show');--%>
-
-<%--                callAjaxByJsonWithData('/api/v1/books/' + bookId, 'GET', null, function (rs) {--%>
-<%--                    var responseData = rs;--%>
-
-<%--                    // Đổ dữ liệu từ API vào các trường của modal--%>
-<%--                    document.getElementById('editTitle').value = responseData.book.title;--%>
-<%--                    document.getElementById('editAuthor').value = responseData.book.author;--%>
-<%--                    document.getElementById('editLink').value = responseData.book.link;--%>
-<%--                    $('.img-edit-book').attr('src', responseData.book.image);--%>
-
-<%--                    var submitButton = document.getElementById('editBookButton');--%>
-<%--                    submitButton.addEventListener('click', function () {--%>
-<%--                        var title = document.getElementById('editTitle').value;--%>
-<%--                        var author = document.getElementById('editAuthor').value;--%>
-<%--                        var link = document.getElementById('editLink').value;--%>
-<%--                        var image = document.getElementById('editImage');--%>
-
-<%--                        var formData = new FormData--%>
-<%--                        formData.append('id', bookId);--%>
-<%--                        formData.append('title', title);--%>
-<%--                        formData.append('author', author);--%>
-<%--                        formData.append('link', link);--%>
-
-<%--                        if (image.files.length != 0) {--%>
-<%--                            formData.append('image', image.files[0]);--%>
-<%--                        }--%>
-
-<%--                        callAjaxByDataFormWithDataForm('/api/v1/books/update', 'POST', formData, function (rs) {--%>
-<%--                            sessionStorage.setItem('result', 'updateBookSuccess');--%>
-<%--                            location.reload();--%>
-<%--                        })--%>
-<%--                    });--%>
-<%--                });--%>
-<%--            });--%>
-<%--        });--%>
-<%--    });--%>
-
-<%--    // Notification--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        const result = sessionStorage.getItem('result');--%>
-<%--        if (result) {--%>
-<%--            let message;--%>
-<%--            switch (result) {--%>
-<%--                case 'addBookSuccess':--%>
-<%--                    message = 'Add Book Success';--%>
-<%--                    break;--%>
-<%--                case 'updateBookSuccess':--%>
-<%--                    message = 'Update Book Success';--%>
-<%--                    break;--%>
-<%--                case 'delBookSuccess':--%>
-<%--                    message = 'Delete Book Success';--%>
-<%--                    break;--%>
-<%--                default:--%>
-<%--                    message = 'Unknown Result';--%>
-<%--            }--%>
-<%--            $('#resultMessage').text(message);--%>
-<%--            $('#resultModal').modal('show');--%>
-<%--            sessionStorage.clear();--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        var addButton = document.querySelector('.add-book-button');--%>
-<%--        var actionColumn = document.querySelectorAll('th')[6];--%>
-<%--        var actionValue = document.querySelectorAll('.action');--%>
-
-<%--        if (userCurrent.role === 'DEVELOPER') {--%>
-<%--            addButton.remove();--%>
-<%--            actionColumn.remove();--%>
-<%--            actionValue.forEach(function (element) {--%>
-<%--                element.remove();--%>
-<%--            });--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    // Get value Search save to Local Storage--%>
-<%--    document.getElementById("search").addEventListener("input", function () {--%>
-<%--        localStorage.setItem("searchBook", this.value);--%>
-<%--    });--%>
-
-<%--    // Restore "Search" value from Local Storage--%>
-<%--    window.addEventListener("load", function () {--%>
-<%--        var selectedSearch = localStorage.getItem("searchBook");--%>
-<%--        if (selectedSearch) {--%>
-<%--            document.getElementById("search").value = selectedSearch;--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--</script>--%>
-
 </body>
 </html>

@@ -23,11 +23,8 @@ public class BooksController {
     @GetMapping("/{id}")
     public ModelAndView bookDetail(@PathVariable("id") String id) {
         ModelAndView view = new ModelAndView("/books/bookDetail");
-
         BookDetailResponse bookDetail = bookService.findById(id);
-
         view.addObject("bookDetail", bookDetail);
-
         return view;
     }
 }
