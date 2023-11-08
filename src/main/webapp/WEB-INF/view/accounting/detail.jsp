@@ -97,7 +97,8 @@
                                     <p class="text-uppercase fw-medium text-muted mb-3">Total Expense</p>
                                     <h4 class="fs-4 mb-3"><span id="expenseAccount"><fmt:formatNumber type="number"
                                                                                                       value="${account.expense}"
-                                                                                                      pattern="#,##0 ₫"/></span></h4>
+                                                                                                      pattern="#,##0 ₫"/></span>
+                                    </h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -122,7 +123,8 @@
                                     <p class="text-uppercase fw-medium text-muted mb-3">Balance</p>
                                     <h4 class="fs-4 mb-3"><span id="remainAccount"><fmt:formatNumber type="number"
                                                                                                      value="${account.remain}"
-                                                                                                     pattern="#,##0 ₫"/></span></h4>
+                                                                                                     pattern="#,##0 ₫"/></span>
+                                    </h4>
                                     <p class="text-muted mb-0">From $1,750.04 last year</p>
                                 </div>
                                 <div class="flex-shrink-0 align-self-center">
@@ -141,6 +143,11 @@
             </div>
             <div class="pt-3 border-top border-top-dashed mt-4">
                 <h6 class="mb-3 fw-semibold text-uppercase">Bills</h6>
+                <div class="d-flex justify-content-center align-items-center fileLoading ms-2">
+                                <span class="spinner-grow flex-shrink-0" role="status">
+                                    <span class="visually-hidden"> Loading...</span>
+                                </span>
+                </div>
                 <div class="row g-3 showFilesUploaded">
                 </div>
             </div>
@@ -262,6 +269,11 @@
                                     <div class="row mb-3">
                                         <div class="pt-3 border-top border-top-dashed mt-4">
                                             <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                            <div class="d-flex justify-content-center align-items-center fileLoading ms-2">
+                                                <span class="spinner-grow flex-shrink-0" role="status">
+                                                    <span class="visually-hidden"> Loading...</span>
+                                                </span>
+                                            </div>
                                             <div class="row g-3 showFilesUploaded">
                                             </div>
                                             <!-- end row -->
@@ -633,6 +645,7 @@
 
     $(document).on("click", "button.editAccount", function () {
         Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
+        $("div.fileLoading").removeClass("d-none");
         $(this).addClass("d-none")
         $(this).before(BtnPrimaryLoad)
         let accountId = $(this).parent().attr("data-id")
@@ -652,8 +665,9 @@
                                 success: function (data, status, xhr) {
                                     var contentLength = xhr.getResponseHeader('Content-Length');
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
-                                    html += showFileUploaded(fileName, contentLength, url,"edit")
-                                    $("#editModal div.showFilesUploaded").html(html)
+                                    html += showFileUploaded(fileName, contentLength, url, "edit")
+                                    $("#editModal div.showFilesUploaded").html(html);
+                                    $("div.fileLoading").addClass("d-none");
                                 }
                             });
                         });
@@ -725,7 +739,7 @@
                 $("#fullnameAccount").text(rs.user.fullname);
                 $("#noteAccount").text(rs.note);
                 let fileNameArr = []
-                rs.bill.forEach(item=>{
+                rs.bill.forEach(item => {
                     fileNameArr.push(item);
                 })
                 loadFilesName(fileNameArr);
