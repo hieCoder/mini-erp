@@ -173,7 +173,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerTaskModal"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <button id="register-task-btn" class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -505,6 +505,7 @@
             columns: [
                 {
                     render: function(data, type, row) {
+                        if(!isAdminOrUserLogin(row.user.id)) return '';
                         return `<th scope="row">
                             <div class="form-check">
                                 <input data-id="` + row.id + `" class="form-check-input" type="checkbox" name="chk_child" value="option1">
@@ -530,7 +531,7 @@
                     render: function(data, type, row) {
                         var editAndRemoveE = '';
                         if(isAdminOrUserLogin(row.user.id)){
-                            editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#editTaskModal" data-id="` + row.id + `"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
+                            editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#" data-id="` + row.id + `"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
                                             <li class="list-inline-item">
                                                 <a class="remove-item-task-btn" data-bs-toggle="modal" href="#deleteTaskModal" data-id="` + row.id + `">
                                                     <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
@@ -657,6 +658,8 @@
                     var swal = showAlertLoading();
                     callAjaxByJsonWithData("/api/v1/tasks/", "DELETE", checkedIds, function (rs) {
                         tableTask.ajax.reload(function () {
+                            $('#checkAll').prop('checked', false);
+
                             loadCountStatus();
                             swal.close();
                             showAlert(SUCCESS_ALERT, 'Delete success!');
@@ -675,10 +678,14 @@
     });
 
     var isFirstTimeOpenModalRegister = true;
-    $(document).on('shown.bs.modal', '#registerTaskModal', function() {
-        var selectElement = $('#selectUsername');
+    $(document).on('click', '#register-task-btn', function() {
 
-        // username
+        $('#title').val('');
+        $('#content .ql-editor').html('<p><br></p>');
+        $('#dueDate').val('');
+        $('#registerTaskForm .spinner-border').addClass('d-none');
+
+        var selectElement = $('#selectUsername');
         if(isDeleveloper()){
             selectElement.empty();
             $('.username-register-task').text(userCurrent.fullname);
@@ -686,12 +693,16 @@
             option.attr('value', userCurrent.id);
             option.text(userCurrent.fullname);
             selectElement.append(option);
+
+            $('#registerTaskModal').modal('show');
         } else{
             if (isFirstTimeOpenModalRegister) {
-                var swal = showAlertLoading();
-
                 selectElement.empty();
+
+                var swal = showAlertLoading();
                 callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
+                    $('#selectUsername').removeClass('d-none');
+
                     rs.forEach(function(user) {
                         var option = $('<option></option>');
                         option.attr('value', user.id);
@@ -705,17 +716,16 @@
                     });
 
                     swal.close();
+                    $('#registerTaskModal').modal('show');
 
                     isFirstTimeOpenModalRegister = false;
                 });
-
-                $('#selectUsername').removeClass('d-none');
+            } else{
+                $('#registerTaskModal').modal('show');
             }
         }
-        $('#title').val('');
-        $('#content .ql-editor').html('<p><br></p>');
-        $('#dueDate').val('');
-        $('#registerTaskForm .spinner-border').addClass('d-none');
+
+
 
         Validator({
             form:'#registerTaskForm',
@@ -773,33 +783,6 @@
         var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
 
-            var selectElement = $('#selectUsernameEdit');
-            selectElement.empty();
-            // username
-            if(isDeleveloper()){
-                $('.username-edit-task').text(rs.user.fullname);
-                var option = $('<option></option>');
-                option.attr('value', rs.user.id);
-                option.text(rs.user.fullname);
-                selectElement.append(option);
-            } else{
-                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(users) {
-                    users.forEach(function(user) {
-                        var option = $('<option></option>');
-                        option.attr('value', user.id);
-                        option.text(user.fullname);
-
-                        if (user.id == rs.user.id) {
-                            option.attr('selected', 'selected');
-                        }
-
-                        selectElement.append(option);
-                    });
-                    swal.close();
-                });
-                $('#selectUsernameEdit').removeClass('d-none');
-            }
-
             $('#title-edit').val(rs.title);
 
             $('#content-edit').html(rs.content);
@@ -836,8 +819,38 @@
                 $('#selectPriorityEdit').prop('disabled', true);
             } else $('#selectPriorityEdit').prop('disabled', false);
 
-            $('#editTaskModal').modal('show');
-            swal.close();
+            var selectElement = $('#selectUsernameEdit');
+            selectElement.empty();
+            // username
+            if(isDeleveloper()){
+                $('.username-edit-task').text(rs.user.fullname);
+                var option = $('<option></option>');
+                option.attr('value', rs.user.id);
+                option.text(rs.user.fullname);
+                selectElement.append(option);
+
+                swal.close();
+                $('#editTaskModal').modal('show');
+            } else{
+                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(users) {
+                    users.forEach(function(user) {
+                        var option = $('<option></option>');
+                        option.attr('value', user.id);
+                        option.text(user.fullname);
+
+                        if (user.id == rs.user.id) {
+                            option.attr('selected', 'selected');
+                        }
+
+                        selectElement.append(option);
+                    });
+
+                    $('#selectUsernameEdit').removeClass('d-none');
+
+                    swal.close();
+                    $('#editTaskModal').modal('show');
+                });
+            }
         });
 
         Validator({

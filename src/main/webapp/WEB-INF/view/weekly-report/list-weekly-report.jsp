@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-12">
         <div class="row">
-            <div class="col-xl-2 list-staff-container">
+            <div class="col-xl-2 list-staff-container d-none">
                 <div>
                     <h5 class="mb-1">Staffs</h5>
                     <p class="text-muted">Click to any staff to see info about weekly report of that staff</p>
@@ -38,7 +38,7 @@
                 <!--end card-->
             </div> <!-- end col-->
 
-            <div class="col-xl-10 list-wr-container">
+            <div class="col-xl-12 list-wr-container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-success mb-2 d-none"></div>
@@ -155,11 +155,14 @@
         new Promise(function (resolve, reject) {
             if (!isOwner()) {
                 $('.list-staff-container').remove();
-                $('.list-wr-container').toggleClass('col-xl-10 col-xl-12');
                 pagingObj.staffId = userCurrent.id;
                 resolve();
             } else {
                 var swal = showAlertLoading();
+
+                $('.list-staff-container').removeClass('d-none');
+                $('.list-wr-container').toggleClass('col-xl-12 col-xl-10');
+
                 callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
                     rs.forEach(function (user, index) {
                         var staff = createStaffE(user);

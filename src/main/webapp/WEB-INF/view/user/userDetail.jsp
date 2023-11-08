@@ -435,7 +435,7 @@
 
                                         </div>
                                         <table class="table align-middle table-nowrap table-striped-columns"
-                                               id="customerTable">
+                                               id="contractTable">
                                             <thead class="table-light">
                                             <tr>
                                                 <th>Basic Salary</th>
@@ -1423,7 +1423,7 @@
     function delInput2(element) {
         editInputCount--;
         element.closest('.newAllowance').remove();
-        if (editInputCount < 4) document.getElementById('edit-allowance-btn').style.display = 'inline-block';
+        if (editInputCount < 4) document.getElementById('editAllowanceButton').style.display = 'inline-block';
     }
 
     // Show modal Add Contract
@@ -1790,9 +1790,10 @@
 <%--Data Table--%>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let table = new DataTable('#customerTable', {
+        let table = new DataTable('#contractTable', {
             "pagingType": "full_numbers",
             "pageLength": 3,
+            "lengthMenu": [3, 5, 10],
             "ordering": false
         });
     });

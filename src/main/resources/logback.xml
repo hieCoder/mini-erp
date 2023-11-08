@@ -8,17 +8,6 @@
         </layout>
     </appender>
 
-    <appender name="file-trace" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/trace.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/trace_%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <appender name="file-error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -41,14 +30,30 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="error" additivity="false">
+    <appender name="file-info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/info_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.shsoftvina.erpshsoftvina" level="error" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="file-error" />
     </logger>
 
-    <logger name="com.shsoftvina.erpshsoftvina.controller" level="trace" additivity="false">
+    <logger name="com.shsoftvina.erpshsoftvina" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="file-trace" />
+        <appender-ref ref="file-debug" />
+    </logger>
+
+    <logger name="com.shsoftvina.erpshsoftvina" level="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="file-info" />
     </logger>
 
     <root level="error">
