@@ -24,11 +24,8 @@ public class CreateContractRequest {
     @NotBlank(message = "Field allowance is not filled")
     private String allowance;
 
-    @NotBlank(message = "Field insuranceType is not filled")
-    private String insuranceType;
-
-    @NotBlank(message = "Field insuranceMoney is not filled")
-    private String insuranceMoney;
+    @NotBlank(message = "Field insurance is not filled")
+    private String insurance;
 
     private String parentId;
     private MultipartFile contract;

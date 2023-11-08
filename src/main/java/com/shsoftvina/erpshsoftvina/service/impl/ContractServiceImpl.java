@@ -3,7 +3,6 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.constant.ContractConstant;
 import com.shsoftvina.erpshsoftvina.converter.ContractConverter;
 import com.shsoftvina.erpshsoftvina.entity.Contract;
-import com.shsoftvina.erpshsoftvina.enums.contract.InsuranceTypeEnum;
 import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ContractMapper;
@@ -13,14 +12,12 @@ import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.IIOException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -48,8 +45,6 @@ public class ContractServiceImpl implements ContractService {
         if(userMapper.findById(userId) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
-        if(!EnumUtils.isExistInEnum(InsuranceTypeEnum.class, createContractRequest.getInsuranceType()))
-            throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
 
         String parentId = createContractRequest.getParentId();
         Contract contract = null;
@@ -96,9 +91,6 @@ public class ContractServiceImpl implements ContractService {
 
         if(contract == null) throw new NotFoundException("id");
 
-        if(!EnumUtils.isExistInEnum(InsuranceTypeEnum.class, updateContractRequest.getInsuranceType()))
-            throw new NotFoundException(MessageErrorUtils.notFound("insuranceType"));
-
         MultipartFile contractFile = updateContractRequest.getContract();
 
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
@@ -126,7 +118,11 @@ public class ContractServiceImpl implements ContractService {
         } else {
             fileNameContract = contract.getContract();
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
-            contractMapper.updateContract(c);
+            try{
+                contractMapper.updateContract(c);
+            }catch (Exception e) {
+                System.out.println(e);
+            }
             return 1;
         }
     }
