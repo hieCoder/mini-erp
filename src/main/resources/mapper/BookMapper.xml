@@ -7,6 +7,7 @@
         SELECT *
         FROM BOOK b
         WHERE b.TITLE LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(b.CREATED_BY, ' ', -1) LIKE '%' #{searchTerm} '%'
+        ORDER BY b.ID DESC
     </select>
 
     <select id="totalBook" resultType="java.lang.Long">

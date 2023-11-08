@@ -39,8 +39,7 @@ public class ContractConverter {
                 .contract(contractFileName)
                 .createdDate(new Date())
                 .user(userMapper.findById(createContractRequest.getUserId()))
-                .insuranceMoney(createContractRequest.getInsuranceMoney())
-                .insuranceType(EnumUtils.getEnumFromValue(InsuranceTypeEnum.class, createContractRequest.getInsuranceType()))
+                .insurance(createContractRequest.getInsurance())
                 .parentContract(contract)
                 .status(StatusContractEnum.ACTIVE).build();
     }
@@ -53,8 +52,7 @@ public class ContractConverter {
                 .id(contract.getId())
                 .basicSalary(contract.getBasicSalary())
                 .allowance(contract.getAllowance())
-                .insuranceType(EnumUtils.instance(contract.getInsuranceType()))
-                .insuranceMoney(contract.getInsuranceMoney())
+                .insurance((contract.getInsurance()))
                 .contract(FileUtils.getPathUpload(Contract.class, contract.getContract()))
                 .createdDate(DateUtils.formatDateTime(contract.getCreatedDate()))
                 .historyContract(toListResponseHistory(contract.getHistoryContract()))
@@ -75,8 +73,7 @@ public class ContractConverter {
                 .basicSalary(updateContractRequest.getBasicSalary())
                 .allowance(updateContractRequest.getAllowance())
                 .contract(contractFileName)
-                .insuranceMoney(updateContractRequest.getInsuranceMoney())
-                .insuranceType(EnumUtils.getEnumFromValue(
-                        InsuranceTypeEnum.class, updateContractRequest.getInsuranceType())).build();
+                .insurance(updateContractRequest.getInsurance())
+                .build();
     }
 }

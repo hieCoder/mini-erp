@@ -15,25 +15,16 @@ public class BooksController {
     BookService bookService;
 
     @GetMapping
-    public ModelAndView books(@RequestParam(name = "search", required = false, defaultValue = "") String search,
-                              @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                              @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize) {
+    public ModelAndView books() {
         ModelAndView view = new ModelAndView("/books/books");
-
-        PageBookListRespone books = bookService.fillAll(search, page, pageSize);
-
-        view.addObject("books", books);
         return view;
     }
 
     @GetMapping("/{id}")
     public ModelAndView bookDetail(@PathVariable("id") String id) {
         ModelAndView view = new ModelAndView("/books/bookDetail");
-
         BookDetailResponse bookDetail = bookService.findById(id);
-
         view.addObject("bookDetail", bookDetail);
-
         return view;
     }
 }
