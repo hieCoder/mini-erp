@@ -23,4 +23,5 @@ public class EventResponse {
     private String content;
     private IdAndFullnameUserResponse user;
     private EnumDto type;
+    private String categoryPush;
 }

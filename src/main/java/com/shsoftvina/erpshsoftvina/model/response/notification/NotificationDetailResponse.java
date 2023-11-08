@@ -23,4 +23,5 @@ public class NotificationDetailResponse {
     private String fullnameUser;
     private String idUser;
     private List<CommentNotificationResponse> comments;
+    private String categoryPush;
 }

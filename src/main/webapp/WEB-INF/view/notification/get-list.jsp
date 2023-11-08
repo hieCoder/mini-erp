@@ -1144,7 +1144,7 @@
             }
         }
         callAjaxByDataFormWithDataForm("${apiURL}${pathMain}","POST", formData ,function (rs){
-            if(rs>0){
+            if(rs!=null){
                 loadDatabase();
                 INFORM_SUCCESS("Notification created successfully.")
                 $("#formCreateNotication").modal("hide")
