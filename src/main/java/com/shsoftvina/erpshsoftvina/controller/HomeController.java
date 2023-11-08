@@ -20,7 +20,6 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("common/frontpage");
         LocalDate date = LocalDate.now();
         List<User> userResponse= userService.findUserBirthdayToday(date);
-        System.out.println(userResponse);
         modelAndView.addObject("list",userResponse);
         return modelAndView;
     }
