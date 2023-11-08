@@ -1,4 +1,3 @@
-const DB_NAME = 'pushDB';
 const DB_VERSION = 1;
 
 function openDB(DB_NAME, DB_VERSION ,STORE_NAME) {
@@ -47,12 +46,12 @@ function checkAndAddNotification(db, id, STORE_NAME) {
 
 self.addEventListener('message', function(event) {
     let data = event.data.data
-    openDB(DB_NAME, DB_VERSION, data.categoryPush).then(db => {
+    openDB(data.categoryPush, DB_VERSION, data.categoryPush).then(db => {
         checkAndAddNotification(db, data.id, data.categoryPush).then(result => {
             if (result.shouldNotify) {
                 self.registration.showNotification(data.categoryPush, {
                         body: data.title,
-                        icon: '/assets/images/icon-event.png',
+                        icon: `/assets/images/icon-${data.categoryPush=="Notifications" ?"push":"event" }.png`,
                         tag: data.categoryPush,
                         renotify: true,
                         requireInteraction: true,
@@ -65,3 +64,22 @@ self.addEventListener('message', function(event) {
         console.error('Could not manage IndexedDB', error);
     });
 });
+
+self.addEventListener('notificationclick', function(event) {
+    console.log('[Service Worker] Notification click Received.');
+    event.notification.close();
+    event.waitUntil(
+        self.client.openWindow('https://example.com', '_blank')
+    );
+});
+
+// let notification = new Notification(data.categoryPush, {
+//     icon: "/assets/images/icon-push.png",
+//     body: data.title,
+//     requireInteraction: true,
+//     tag: data.categoryPush,
+//     renotify: true
+// });
+// notification.onclick = function () {
+//     window.open('/' + data.categoryPush.toLowerCase() + '/' + data.id, '_blank');
+// };

@@ -146,11 +146,8 @@ function bytesToMB(bytes) {
 function convertMbToB(mb) {
     return mb * 1024 * 1024;
 }
-function bToKbShow(bytes) {
-    return (bytes / 1024).toFixed(2);
-}
 function bytesToMBShow(bytes) {
-    return (bytes / (1024 * 1024)).toFixed(2);
+    return (bytes / (1024 * 1024)).toFixed(2)
 }
 function checkLimitFile(count, limit) {
     return count <= limit ? true : false;
@@ -393,16 +390,33 @@ if ('serviceWorker' in navigator) {
                                         if(data.idUser === userCurrent.id){
                                             return false
                                         } else {
-                                            let notification = new Notification(data.categoryPush, {
-                                                icon: "/assets/images/icon-push.png",
-                                                body: data.title,
-                                                requireInteraction: true,
-                                                tag: data.categoryPush,
-                                                renotify: true
-                                            });
-
+                                            if (navigator.serviceWorker.controller) {
+                                                console.log('Service Worker controller is available.');
+                                                navigator.serviceWorker.controller.postMessage({
+                                                    type: 'NEW_MESSAGE',
+                                                    data: data
+                                                });
+                                            } else {
+                                                console.log('Service Worker controller is not available.');
+                                            }
                                         }
                                     })
+                                })
+                                stompClient.subscribe("/notification/createEvent", function (rs) {
+                                    let data = JSON.parse(rs.body)
+                                    if(data.idUser === userCurrent.id){
+                                        return false
+                                    } else {
+                                        if (navigator.serviceWorker.controller) {
+                                            console.log('Service Worker controller is available.');
+                                            navigator.serviceWorker.controller.postMessage({
+                                                type: 'NEW_MESSAGE',
+                                                data: data
+                                            });
+                                        } else {
+                                            console.log('Service Worker controller is not available.');
+                                        }
+                                    }
                                 })
                             }
                         });
@@ -415,32 +429,31 @@ if ('serviceWorker' in navigator) {
                                 if(data.idUser == userCurrent.id){
                                     return false
                                 } else {
-                                    let notification = new Notification(data.categoryPush, {
-                                        icon: "/assets/images/icon-push.png",
-                                        body: data.title,
-                                        requireInteraction: true,
-                                        tag: data.categoryPush,
-                                        renotify: true
-                                    });
-                                    notification.onclick = function () {
-                                        window.open('/' + data.categoryPush.toLowerCase() + '/' + data.id, '_blank');
-                                    };
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('Service Worker controller is available.');
+                                        navigator.serviceWorker.controller.postMessage({
+                                            type: 'NEW_MESSAGE',
+                                            data: data
+                                        });
+                                    } else {
+                                        console.log('Service Worker controller is not available.');
+                                    }
                                 }
                             })
                             stompClient.subscribe("/notification/createEvent", function (rs) {
                                 let data = JSON.parse(rs.body)
+                                console.log(navigator.serviceWorker.controller)
                                 if(data.user.id == userCurrent.id){
                                     return false
                                 } else {
-                                    let notification = new Notification(data.categoryPush, {
-                                        icon: "/assets/images/icon-event.png",
-                                        body: data.title,
-                                        requireInteraction: true,
-                                        tag: data.categoryPush,
-                                        renotify: true
-                                    });
-                                    notification.onclick = function () {
-                                            window.open('/schedules/detail/' + userCurrent.id, '_blank');
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('Service Worker controller is available.');
+                                        navigator.serviceWorker.controller.postMessage({
+                                            type: 'NEW_MESSAGE',
+                                            data: data
+                                        });
+                                    } else {
+                                        console.log('Service Worker controller is not available.');
                                     }
                                 }
                             })
