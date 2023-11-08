@@ -143,7 +143,7 @@
             </div>
             <div class="pt-3 border-top border-top-dashed mt-4">
                 <h6 class="mb-3 fw-semibold text-uppercase">Bills</h6>
-                <div class="d-flex justify-content-center align-items-center yearLoading ms-2">
+                <div class="d-flex justify-content-center align-items-center fileLoading ms-2">
                                 <span class="spinner-grow flex-shrink-0" role="status">
                                     <span class="visually-hidden"> Loading...</span>
                                 </span>
@@ -269,10 +269,10 @@
                                     <div class="row mb-3">
                                         <div class="pt-3 border-top border-top-dashed mt-4">
                                             <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
-                                            <div class="d-flex justify-content-center align-items-center yearLoading ms-2">
-                                <span class="spinner-grow flex-shrink-0" role="status">
-                                    <span class="visually-hidden"> Loading...</span>
-                                </span>
+                                            <div class="d-flex justify-content-center align-items-center fileLoading ms-2">
+                                                <span class="spinner-grow flex-shrink-0" role="status">
+                                                    <span class="visually-hidden"> Loading...</span>
+                                                </span>
                                             </div>
                                             <div class="row g-3 showFilesUploaded">
                                             </div>
@@ -645,7 +645,7 @@
 
     $(document).on("click", "button.editAccount", function () {
         Dropzone.forElement('#dropzoneEdit').removeAllFiles(true)
-        $("div.yearLoading").removeClass("d-none");
+        $("div.fileLoading").removeClass("d-none");
         $(this).addClass("d-none")
         $(this).before(BtnPrimaryLoad)
         let accountId = $(this).parent().attr("data-id")
@@ -667,7 +667,7 @@
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
                                     html += showFileUploaded(fileName, contentLength, url, "edit")
                                     $("#editModal div.showFilesUploaded").html(html);
-                                    $("div.yearLoading").addClass("d-none");
+                                    $("div.fileLoading").addClass("d-none");
                                 }
                             });
                         });
