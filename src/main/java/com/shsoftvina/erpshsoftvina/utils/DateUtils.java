@@ -91,14 +91,15 @@ public class DateUtils {
         return time.format(formatter);
     }
 
-    public static String formatMonthYear(LocalDateTime time) {
+    public static String formatDate(LocalDateTime time) {
 
         // Define a DateTimeFormatter for the desired format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Format the LocalDateTime to a string
         return time.format(formatter);
     }
+
 
     public static LocalDateTime toLocalDateTime(String dateString) {
         LocalDate localDate = LocalDate.parse(dateString);

@@ -14,6 +14,7 @@
             <c:if test="${requestScope.list != null}">
                 <c:if test="${not empty requestScope.list}">
                     <marquee class="marquee-text" behavior="scroll" direction="left" scrollamount="15">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIconCalendar" alt="Cake" title="Cake" width="25" height="25">
                         Happy Birthday To
                         <c:forEach items="${requestScope.list}" var="person" varStatus="loop">
                             ${person.fullname}${!loop.last ? ', ' : ''}
@@ -243,7 +244,7 @@
                         '</div>' +
                         '<div class="col">' +
                         '<h5 class="text-muted mt-0 mb-1 fs-13">' + event.type.code + '</h5>' +
-                        '<a href="javascript: void(0);" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
+                        '<a style="cursor: default" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
                         '</div>' +
                         '<div class="col-sm-auto">' +
                         '<div class="avatar-group">' +
@@ -329,7 +330,7 @@
                             '<img src="assets/images/small/img-1.jpg" class="rounded img-fluid" style="height: 60px;" alt="">' +
                             '</div>' +
                             '<div class="flex-grow-1 ms-3">' +
-                            '<h6 class="mb-1 lh-base"><a href="/notifications/' + notification.id + '" class="text-reset">' + notification.title + '</a></h6>' +
+                            '<h6 class="mb-1 lh-base"><a href="/notifications/' + notification.id + '" class="text-reset" target="_blank">' + notification.title + '</a></h6>' +
                             '<p class="text-muted fs-12 mb-0">' + notification.createdDate + ' <i class="mdi mdi-circle-medium align-middle mx-1"></i>' + notification.user.fullname + '</p>' +
                             '</div>' +
                             '</div><!-- end -->';
@@ -360,12 +361,12 @@
                         '</div>' +
                         '<div class="col">' +
                         '<h5 class="text-muted mt-0 mb-1 fs-13">' + event.type.code + '</h5>' +
-                        '<a href="javascript: void(0);" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
+                        '<a style="cursor: default" class="text-reset fs-14 mb-0">' + event.title + '</a>' +
                         '</div>' +
                         '<div class="col-sm-auto">' +
                         '<div class="avatar-group">' +
                         '<div class="avatar-group-item">' +
-                        '<a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip" ' +
+                        '<a style="cursor: default" class="d-inline-block" data-bs-toggle="tooltip" ' +
                         'data-bs-placement="top" title="" data-bs-original-title="Stine Nielsen">' +
                         '<img src="' + event.user.avatar + '" alt="" class="rounded-circle avatar-xxs">' +
                         '</a>' +
