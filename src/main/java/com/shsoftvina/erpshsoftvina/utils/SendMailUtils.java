@@ -2,12 +2,14 @@ package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 
 @Component
 public class SendMailUtils {
@@ -15,20 +17,27 @@ public class SendMailUtils {
     @Autowired
     JavaMailSender javaMailSender;
 
-    public Boolean sendEmail(DataMailDto dataMailDto) {
+    public Boolean sendEmail(DataMailDto dataMailDto) throws MessagingException {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true,"utf-8");
 
+            helper.setFrom("tuyenlam987@gmail.com","SH SOFT VINA");
             helper.setTo(dataMailDto.getTo());
             helper.setSubject(dataMailDto.getSubject());
-            helper.setText(dataMailDto.getContent());
+            helper.setText(dataMailDto.getContent(),true);
+
+            ClassPathResource resource = new ClassPathResource("logo.png");
+            System.out.println(resource);
+            helper.addInline("logoImage",resource);
 
             javaMailSender.send(mimeMessage);
             return true;
         } catch (MessagingException e) {
             e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
         return false;
     }
