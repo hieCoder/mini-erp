@@ -43,7 +43,12 @@
                         <h3 class="mt-2 font-weight-bold">Your Feelings</h3>
                         <div class="col-md-12">
                             <div class="p-3">
-                                <form>
+                                <div class="text-center loading-feeling">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <form class="d-none feeling">
                                     <div class="form-group mb-2">
                                         <label for="quotes1">Feel 1:</label>
                                         <input type="text" class="form-control quote" id="quotes1">
@@ -83,8 +88,13 @@
                         <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
                         <div class="col-md-12">
                             <div class="p-3">
+                                <div class="text-center loading-feeling">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
                                 <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">
-                                    <div class="row border mb-2">
+                                    <div class="row border mb-2 d-none feeling">
                                         <div class="col-md-2 d-flex flex-column justify-content-center align-items-center border-end">
                                             <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"
                                                  alt="User Avatar" width="70px">
@@ -114,27 +124,24 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
     $(document).ready(function () {
-        //var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/feeling-of-book/' + '${bookDetail.book.id}' + '/' + userCurrent.id, 'GET', null, function (rs) {
             rs.quotes.forEach(function (quote, index) {
                 $('#quotes' + (index + 1)).val(quote);
             });
 
+            $('.feeling').removeClass('d-none');
+            $('.loading-feeling').addClass('d-none');
             $('#update').removeClass('d-none');
             $('#update').attr('data-id', rs.id);
-
             $('#submit').addClass('d-none');
-
-            //swal.close();
         }, function (rs) {
-            //swal.close();
+            $('.feeling').removeClass('d-none');
+            $('.loading-feeling').addClass('d-none');
         });
     });
 
     $('#update').click(function () {
-
         var id = $(this).data('id');
-
         var quoteElements = document.querySelectorAll('form .quote');
         var valueArray = Array.from(quoteElements).map(e => e.value);
         var isCheckUpdate = valueArray.every(item => item == '');
@@ -165,7 +172,6 @@
 
     $('#submit').click(function () {
         var bookId = '${bookDetail.book.id}';
-
         var quoteElements = document.querySelectorAll('form .quote');
         var valueArray = Array.from(quoteElements).map(e => e.value);
         var isCheckUpdate = valueArray.every(item => item == '');
@@ -218,6 +224,7 @@
         });
     });
 </script>
+
 <%--Notification--%>
 <script>
     $(document).ready(function () {
