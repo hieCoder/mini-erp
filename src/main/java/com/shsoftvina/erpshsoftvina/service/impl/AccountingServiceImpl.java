@@ -102,13 +102,9 @@ public class AccountingServiceImpl implements AccountingService {
             try {
                 accountingMapper.createAccounting(newAccounting);
                 List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(beforeCreateAccounting);
-                Long beforeRemain = 0L;
-                if (beforeCreateAccounting != null) {
-                    beforeRemain = beforeCreateAccounting.getRemain();
-                }
                 for (Accounting accounting : remainRecordInMonthList) {
-                    beforeRemain += accounting.getExpense();
-                    accounting.setRemain(beforeRemain);
+                    latestRemain += accounting.getExpense();
+                    accounting.setRemain(latestRemain);
                 }
                 accountingMapper.updateRecordsBatch(remainRecordInMonthList);
             } catch (Exception e) {
@@ -157,25 +153,44 @@ public class AccountingServiceImpl implements AccountingService {
         assert newFilesUpdate != null;
         newFiles.addAll(newFilesUpdate);
         Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, newFiles);
-        try {
-            accountingMapper.updateAccounting(updateAccounting);
-            if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
-                Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(currentAccounting.getPayDate());
-                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(currentAccounting);
-                Long beforeRemain = 0L;
-                if (beforeCurrentAccounting != null) {
-                    beforeRemain = beforeCurrentAccounting.getRemain();
+        if (DateUtils.formatDate(currentAccounting.getPayDate()).equals(accountingUpdateRequest.getPayDate())) {
+            try {
+                updateAccounting.setPayDate(currentAccounting.getPayDate());
+                accountingMapper.updateAccounting(updateAccounting);
+                if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
+                    Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(currentAccounting.getPayDate());
+                    List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(beforeCurrentAccounting);
+                    Long beforeRemain = 0L;
+                    if (beforeCurrentAccounting != null) {
+                        beforeRemain = beforeCurrentAccounting.getRemain();
+                    }
+                    for (Accounting accounting : remainRecordInMonthList) {
+                        beforeRemain += accounting.getExpense();
+                        accounting.setRemain(beforeRemain);
+                    }
+                    accountingMapper.updateRecordsBatch(remainRecordInMonthList);
                 }
+                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+            } catch (Exception e) {
+                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+                return null;
+            }
+        } else {
+            try {
+                accountingMapper.updateAccounting(updateAccounting);
+                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(null);
+                Long beforeRemain = 0L;
                 for (Accounting accounting : remainRecordInMonthList) {
                     beforeRemain += accounting.getExpense();
                     accounting.setRemain(beforeRemain);
                 }
                 accountingMapper.updateRecordsBatch(remainRecordInMonthList);
+
+                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+            } catch (Exception e) {
+                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+                return null;
             }
-            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
-        } catch (Exception e) {
-            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
-            return null;
         }
         return findAccountingById(accountingUpdateRequest.getId());
     }

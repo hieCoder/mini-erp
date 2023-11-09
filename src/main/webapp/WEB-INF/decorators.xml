@@ -4,6 +4,7 @@
 
     <excludes>
         <pattern>/forbidden</pattern>
+        <pattern>/404-page</pattern>
         <pattern>/api*</pattern>
         <pattern>/logout</pattern>
     </excludes>

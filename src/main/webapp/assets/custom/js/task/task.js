@@ -18,9 +18,6 @@ const DEFAULT_VALUE_SNOW_EDITOR = [
     `<div class="ql-editor" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
 ];
 
-const SUCCESS_ALERT = 'SUCCESS_ALERT';
-const DANGER_ALERT = 'DANGER_ALERT';
-
 function getTaskCountByCode(rs, code) {
     for (let i = 0; i < rs.length; i++) {
         if (rs[i].statusTask.code === code) {
@@ -107,7 +104,7 @@ function createFile(file, isShowDeleteIcon) {
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="`+file.fileName+`">`+file.fileName+`</a></h5>
-                                                    <div>`+file.fileSize+`</div>
+                                                    <div>`+bToKbShow(file.fileSize)+`Kb</div>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <div class="d-flex gap-1 align-items-center">
@@ -318,7 +315,8 @@ function activeFile(classNameOfForm, setting) {
         var files = dropzone.files;
         var fileExtension = file.name.split('.').pop();
 
-        if(files.length > parseInt(dropzone.options.maxFiles)){
+        var fileCountCurrent = $(classNameOfForm).find('.file-container-item').length;
+        if(files.length + fileCountCurrent > parseInt(dropzone.options.maxFiles)){
             dropzone.removeFile(file);
             errorE.innerHTML = createMessError(INVALID_FILES_LIMIT, setting);
         } else if(!setting.fileType.includes(fileExtension)){
@@ -474,17 +472,6 @@ async function showEditCommentForm(comment){
             </form>`;
         resolve(commentHTML);
     });
-}
-
-function showAlert(type, mess){
-    var className = '';
-    if(type == SUCCESS_ALERT){
-        className = '.alert.alert-success';
-    } else if(type == DANGER_ALERT){
-        className = '.alert.alert-danger';
-    }
-    $(className).text(mess);
-    $(className).removeClass('d-none');
 }
 
 function loadCountStatus(){

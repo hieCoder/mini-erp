@@ -82,6 +82,7 @@ public class AccountingConverter {
                 .id(accountingUpdateRequest.getId())
                 .bill(FileUtils.convertMultipartFileArrayToString(listFileNameSaveFileSuccess))
                 .note(accountingUpdateRequest.getNote())
+                .payDate(DateUtils.toLocalDateTime(accountingUpdateRequest.getPayDate()))
                 .build();
     }
 

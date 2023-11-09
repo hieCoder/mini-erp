@@ -21,6 +21,25 @@
     <link rel="stylesheet" href="/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css">
 </head>
 <body>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Profile</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Human management</a></li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<%--<!-- end page title -->--%>
+
 <form id="formUpdateUser">
     <%--==========================================New Code======================================================--%>
     <div class="position-relative mx-n4 mt-n4">

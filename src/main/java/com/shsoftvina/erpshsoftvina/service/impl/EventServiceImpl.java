@@ -42,14 +42,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public String createEvent(EventCreateRequest request) {
+    public EventResponse createEvent(EventCreateRequest request) {
         applicationUtils.checkUserAllow();
         try{
             String id = Principal.getUserCurrent().getId();
             Event event = eventConverter.convertToEntity(request);
             event.setUser(userMapper.findById(id));
             eventMapper.createEvent(event);
-            return event.getId();
+            return eventConverter.convertToResponse(event);
         } catch(Exception e){
             System.out.println(e);
             return null;

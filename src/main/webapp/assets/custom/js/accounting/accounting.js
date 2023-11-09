@@ -6,7 +6,7 @@ function convertMaxFileSize(string) {
 }
 
 function loadFilesName(fileNameArr) {
-    $("div.yearLoading").removeClass("d-none");
+    $("div.fileLoading").removeClass("d-none");
     let html = ""
     handleFiles(fileNameArr, function handleEachFunc(fileName, fileSize, url) {
         html += showFileUploaded(fileName, fileSize, url, "view")
@@ -15,7 +15,7 @@ function loadFilesName(fileNameArr) {
         })
         $("#viewAccount .showFilesUploaded").html(html)
     })
-    $("div.yearLoading").addClass("d-none");
+    $("div.fileLoading").addClass("d-none");
 }
 
 
@@ -51,4 +51,11 @@ function formattedDate(inputDate) {
 
         return year + "-" + month + "-" + day;
     } else return "";
+}
+
+function convertPayDate(inputString) {
+    const [datePart, timePart] = inputString.split(' ');
+    const [day, month, year] = datePart.split('/');
+
+    document.getElementById("editPayDate").value = `${year}-${month}-${day}`;
 }

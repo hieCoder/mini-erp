@@ -14,7 +14,7 @@
 <body>
 <c:set var="totalExpense" value="0" scope="page"/>
 <c:set var="totalRevenue" value="0" scope="page"/>
-<div class="row position-relative" style="min-height: 80vh">
+<div class="position-relative mb-4" style="min-height: 80vh">
     <div class="col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">ACCOUNTING</h4>
@@ -40,7 +40,7 @@
         <div class="shadow p-3 bg-white rounded">
             <div class="row">
                 <div class="col-12">
-                    <h3 class="text-center">Accounting ${month}</h3>
+                    <h3 class="text-center">Accounting</h3>
                 </div>
             </div>
             <div class="row mt-1">

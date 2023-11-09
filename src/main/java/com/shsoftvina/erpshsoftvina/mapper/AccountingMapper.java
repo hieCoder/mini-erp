@@ -37,7 +37,5 @@ public interface AccountingMapper {
     void updateRecordsBatch(List<Accounting> remainRecordInMonthList);
 
     void deleteAccounting(String id);
-
-    Accounting findBeforeCreateAccounting(LocalDateTime payDate);
 }
 

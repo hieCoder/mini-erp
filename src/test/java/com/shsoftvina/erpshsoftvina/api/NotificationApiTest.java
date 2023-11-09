@@ -56,6 +56,7 @@ public class NotificationApiTest {
     @Test
     public void testCreateNoti() {
         CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest();
+        NotificationDetailResponse notificationDetailResponse = new NotificationDetailResponse();
         String userId = "1";
         String title  = "test title";
         String content = "test content";
@@ -67,11 +68,11 @@ public class NotificationApiTest {
         createNotificationRequest.setContent(content);
         createNotificationRequest.setFiles(files);
 
-        when(notificationService.createNoti(createNotificationRequest)).thenReturn(1);
+        when(notificationService.createNoti(createNotificationRequest)).thenReturn(notificationDetailResponse);
         ResponseEntity<?> responseEntity = notificationApi.createNoti(createNotificationRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(1, responseEntity.getBody());
+        assertEquals(notificationDetailResponse, responseEntity.getBody());
     }
 
     @Test

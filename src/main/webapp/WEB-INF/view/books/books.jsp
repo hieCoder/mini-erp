@@ -5,435 +5,509 @@
     <title>Books</title>
 </head>
 <body>
-<form id="form" action="/books" method="GET">
-    <div class="container">
-        <h1 class="mt-4">BOOKS</h1>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="search">Search</label>
-                    <div class="input-group">
-                        <input id="search" name="search" type="text" class="form-control" placeholder="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </div>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Book</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Time management</a></li>
+                    <li class="breadcrumb-item active">Book</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<%--<!-- end page title -->--%>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="alert alert-success d-none"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">All books</h5>
+                    <div class="flex-shrink-0">
+                        <button data-bs-toggle="modal" data-bs-target="#addBookModal" id="add-book-btn" class="btn btn-success d-none"><i class="ri-add-line align-bottom me-1"></i> Add book</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-2 text-right">
-                <button type="button" class="btn btn-success px-4 add-book-button">Add Book</button>
+            <div class="card-body border border-dashed border-end-0 border-start-0">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-xxl-9 col-sm-12">
+                            <div class="search-box">
+                                <input id="search-input" type="text" class="form-control search bg-light border-light" placeholder="Search by title, username">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-1 col-sm-4">
+                            <button id="filter-btn" type="button" class="btn btn-primary btn-load">
+                                <span class="d-flex align-items-center">
+                                    <span class="spinner-border flex-shrink-0 d-none"></span>
+                                    <span class="flex-grow-1 ms-2">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Filters
+                                    </span>
+                                </span>
+                            </button>
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
+                            <div style="margin-right: 5px;">Show entries: </div>
+                            <div class="page-count-item-container d-flex align-items-center align-items-center">
+                                <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                                <span class="btn-load ml-10">
+                                    <span class="spinner-border flex-shrink-0 d-none"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </form>
             </div>
+            <!--end card-body-->
+            <div class="card-body">
+                <div class="table-responsive table-card">
+                    <table id="datatable-book" class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Book</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Created by</th>
+                            <th>Created date</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="pagination-wrap hstack gap-2">
+                        <ul id="pagination" class="pagination mb-0"></ul>
+                    </div>
+                </div>
+            </div>
+            <!--end card-body-->
         </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">NO.</th>
-                <th scope="col">Book</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">FullName</th>
-                <th scope="col">Created Date</th>
-                <th scope="col">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="book" items="${books.books}" varStatus="loop">
-                <tr>
-                    <th scope="row">${(books.pageNumber - 1) * books.pageSize + loop.index + 1}</th>
-                    <td><img src="${book.image}" alt="Book Image" width="100" height="100"></td>
-                    <td><a href="/books/${book.id}" class="text-decoration-none">${book.title}</a></td>
-                    <td>${book.author}</td>
-                    <td>${book.createdBy}</td>
-                    <td>${book.createdDate}</td>
-                    <td class="action">
-                        <button value="${book.id}" type="button"
-                                class="btn btn-primary mb-2 edit-book-button">Edit
-                        </button>
-                        <button value="${book.id}" type="button" class="btn btn-danger mb-2 del-book-button"
-                                data-toggle="modal" data-target="#deleteBookModal">Delete
-                        </button>
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <!-- Pagination -->
-        <div class="row justify-content-center">
-            <ul class="pagination">
-                <li class="page-item">
-                    <c:if test="${books.hasPrevious}">
-                        <button class="page-link" type="submit" name="page" value="1"><<</button>
-                    </c:if>
-                </li>
-                <li class="page-item">
-                    <c:if test="${books.hasPrevious}">
-                        <button class="page-link" type="submit" name="page" value="${books.pageNumber - 1}"><</button>
-                    </c:if>
-                </li>
-                <c:forEach var="page" begin="1" end="${books.totalPages}">
-                    <c:choose>
-                        <c:when test="${page == books.pageNumber}">
-                            <li class="page-item active"><a class="page-link" href="#">${page}</a></li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item">
-                                <button class="page-link" type="submit" name="page" value="${page}">${page}</button>
-                            </li>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-                <li class="page-item">
-                    <c:if test="${books.hasNext}">
-                        <button class="page-link" type="submit" name="page" value="${books.pageNumber + 1}">></button>
-                    </c:if>
-                </li>
-                <li class="page-item">
-                    <c:if test="${books.hasNext}">
-                        <button class="page-link" type="submit" name="page" value="${books.totalPages}">>></button>
-                    </c:if>
-                </li>
-            </ul>
-        </div>
+        <!--end card-->
     </div>
-</form>
+    <!--end col-->
+</div>
+<!--end row-->
 
 <!-- Modal Add Book -->
-<div class="modal fade" id="addBookModal" tabindex="-1" role="dialog"
-     aria-labelledby="addBookModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">Add Book</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div class="modal fade zoomIn" id="addBookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-soft-info">
+                <h5 class="modal-title" id="exampleModalLabel">Add book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label">Title:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="title" placeholder="Title here" required>
-                            <span class="errorMessage" style="color: red;"></span>
+            <form id="addBookForm">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="title-add" class="form-label">Title</label>
+                                <input type="text" id="title-add" name="title" class="form-control" placeholder="Title"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="author-add" class="form-label">Author</label>
+                                <input type="text" id="author-add" name="author" class="form-control" placeholder="Author"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="link-add" class="form-label">Link</label>
+                                <input type="text" id="link-add" name="link" class="form-control" placeholder="Link"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="image-add" class="form-label">Image</label>
+                                <input type="file" id="image-add" name="image" class="form-control file-image" accept="image/*" placeholder="Image"/>
+                                <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-add" class="image-preview d-none">
+                                <small class="form-message"></small>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="author" class="col-sm-2 col-form-label">Author:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="author" placeholder="Author here" required>
-                            <span class="errorMessage" style="color: red;"></span>
-                        </div>
+                    <!--end row-->
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="submit" class="btn btn-success btn-load">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Add</span>
+                            </span>
+                        </button>
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
-                    <div class="form-group row">
-                        <label for="link" class="col-sm-2 col-form-label">Link:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="link" placeholder="Link here" required>
-                            <span class="errorMessage" style="color: red;"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="image" class="col-sm-2 col-form-label">Book Image:</label>
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control" id="image" required>
-                            <span class="errorMessage" style="color: red;"></span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="addBookButton">Submit</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<!--end modal-->
 
 <!-- Modal Edit Book -->
-<div class="modal fade" id="editBookModal" tabindex="-1" role="dialog"
-     aria-labelledby="editBookModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">Edit Book</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div class="modal fade zoomIn" id="editBookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-soft-info">
+                <h5 class="modal-title" id="exampleModalLabel">Edit book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    <div class="form-group row">
-                        <label for="editTitle" class="col-sm-2 col-form-label">Title:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editTitle">
+            <form id="editBookForm">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="title-add" class="form-label">Title</label>
+                                <input type="text" id="title-edit" name="title" class="form-control" placeholder="Title"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="author-add" class="form-label">Author</label>
+                                <input type="text" id="author-edit" name="author" class="form-control" placeholder="Author"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="link-add" class="form-label">Link</label>
+                                <input type="text" id="link-edit" name="link" class="form-control" placeholder="Link"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="image-add" class="form-label">Image</label>
+                                <input type="file" id="image-edit" name="image" class="form-control file-image" accept="image/*" placeholder="Image"/>
+                                <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-edit" class="image-preview d-none">
+                                <small class="form-message"></small>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="editAuthor" class="col-sm-2 col-form-label">Author:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editAuthor">
-                        </div>
+                    <!--end row-->
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="submit" class="btn btn-success btn-load">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Edit</span>
+                            </span>
+                        </button>
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
                     </div>
-                    <div class="form-group row">
-                        <label for="editLink" class="col-sm-2 col-form-label">Link:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editLink">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="editImage" class="col-sm-2 col-form-label">Image Book:</label>
-                        <img style="margin-left: 15px;" class="img-edit-book" height="200" alt="img view">
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control mt-2" id="editImage" required>
-                            <small class="text-muted ml-2">Choose New Image For Book</small>
-                            <span class="errorMessage" style="color: red;"></span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="editBookButton">Submit
-                </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<!--end modal-->
 
-<!-- Modal Delete Book -->
-<div class="modal fade" id="deleteBookModal" tabindex="-1" role="dialog" aria-labelledby="deleteBookModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade flip" id="deleteBookModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body">
-                Are you sure to delete this book ?
-            </div>
-            <div class="modal-footer container-button-delete-user">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger confirm-del-button">Delete</button>
+            <div class="modal-body p-5 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 text-center">
+                    <h4>You are about to delete a book ?</h4>
+                    <p class="text-muted fs-14 mb-4">Deleting your book will remove all of
+                        your information from our database.</p>
+                    <div class="hstack gap-2 justify-content-center remove">
+                        <button class="btn btn-danger btn-load" id="delete-book" data-id="">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Yes, Delete It</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="delete-task-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal Notification  -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="resultModalLabel">Result</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="resultMessage">
-                <!-- Message Success -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--end delete modal -->
 
 <script>
 
-    // Handle when user click button 'Add Book'
-    document.addEventListener('DOMContentLoaded', function () {
-        var addButton = document.querySelectorAll('.add-book-button');
+    function getUrlApiBooks(search, page, pageSize) {
+        return '/api/v1/books?search='+search+'&page='+page+'&pageSize='+pageSize;
+    }
 
-        addButton.forEach(function (button) {
-            button.addEventListener('click', function () {
-                $('#addBookModal').modal('show');
-            });
-        });
+    function getCountListApiUrl(search) {
+        return '/api/v1/books/count?search='+search;
+    }
 
-        var submitButton = document.getElementById('addBookButton');
-        submitButton.addEventListener('click', function () {
-            var titleE = document.getElementById('title');
-            var authorE = document.getElementById('author');
-            var linkE = document.getElementById('link');
-            var image = document.getElementById('image');
+    var objPaging = {
+        search:'',
+        page: 1,
+        pageSize: $('#page-count-select').val()
+    }
 
-            var valueTitle = titleE.value;
-            var valueAuthor = authorE.value;
-            var valueLink = linkE.value;
+    var table = null;
 
-            var isValidate = true;
+    $(document).ready(function (){
 
-            var errorMessageSpan = titleE.nextElementSibling;
-            if (valueTitle === "") {
-                errorMessageSpan.textContent = "This field is not filled";
-                isValidate = false;
-            } else {
-                errorMessageSpan.textContent = '';
-            }
+        if(isDeleveloper()){
+            $('#add-book-btn').remove();
+        } else{
+            $('#add-book-btn').removeClass('d-none');
+        }
 
-            errorMessageSpan = authorE.nextElementSibling;
-            if (valueAuthor === "") {
-                errorMessageSpan.textContent = "This field is not filled";
-                isValidate = false;
-            } else {
-                errorMessageSpan.textContent = '';
-            }
-
-            errorMessageSpan = linkE.nextElementSibling;
-            if (valueLink === "") {
-                errorMessageSpan.textContent = "This field is not filled";
-                isValidate = false;
-            } else {
-                errorMessageSpan.textContent = '';
-            }
-
-            errorMessageSpan = image.nextElementSibling;
-            if (image.files.length === 0) {
-                errorMessageSpan.textContent = "This field is not filled";
-                isValidate = false;
-            } else {
-                errorMessageSpan.textContent = '';
-            }
-
-            if (isValidate) {
-                var formData = new FormData
-                formData.append('title', valueTitle);
-                formData.append('author', valueAuthor);
-                formData.append('link', valueLink);
-                formData.append('fullnameUser', userCurrent.fullname);
-
-                if (image.files.length > 0) {
-                    formData.append('image', image.files[0]);
-                }
-
-                callAjaxByDataFormWithDataForm('/api/v1/books', 'POST', formData, function (rs) {
-                    sessionStorage.setItem('result', 'addBookSuccess');
-                    location.reload();
-                })
-            };
-        });
-    });
-
-    // Handle when user click button 'Delete Book'
-    document.addEventListener('DOMContentLoaded', function () {
-        var delButtons = document.querySelectorAll(".del-book-button");
-        var confirmDelButton = document.querySelector(".confirm-del-button");
-        var bookId;
-
-        // Xử lý khi nút Delete được nhấn
-        delButtons.forEach(function (button) {
-            button.addEventListener("click", function () {
-                bookId = button.value;
-                confirmDelButton.addEventListener('click', function () {
-                    if (bookId) {
-                        callAjaxByJsonWithData('/api/v1/books/' + bookId, 'DELETE', null, function (rs) {
-                            sessionStorage.setItem('result', 'delBookSuccess');
-                            location.reload();
-                        })
+        table = $('#datatable-book').DataTable({
+            ajax: {
+                url: getUrlApiBooks(objPaging.search, 1, objPaging.pageSize),
+                method: 'GET',
+                dataSrc: function (json) {
+                    if(json.length != 0) {
+                        loadPaging();
+                        $('#pagination').addClass('mt-4');
                     }
-                })
-            });
+                    else {
+                        removePagingIfExsit();
+                        $('#pagination').removeClass('mt-4');
+                    }
+                    return json;
+                }
+            },
+            columns: [
+                {data: 'id'},
+                {
+                    data: 'image',
+                    render: function(data, type, row) {
+                        return `<img src="`+data+`" height="40"/>`;
+                    }
+                },
+                {
+                    data: 'title',
+                    render: function(data, type, row) {
+                        return `<a class="fw-medium link-primary text-decoration-underline" href="/books/`+row.id+`">`+data+`</a>`;
+                    }
+                },
+                {data: 'author'},
+                {data: 'createdBy'},
+                {data: 'createdDate'},
+                {
+                    render: function (data, type, row) {
+                        return `<div class="d-flex gap-2">
+                                    <div class="edit">
+                                        <button data-id="`+row.id+ `" class="btn btn-sm btn-success edit-book-btn">Edit</button>
+                                    </div>
+                                    <div class="remove">
+                                        <button data-bs-toggle="modal" href="#deleteBookModal" data-id="`+row.id+`" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
+                                    </div>
+                        </div>`;
+                    }
+                }
+            ],
+            ordering: false,
+            searching: false,
+            lengthChange: false,
+            paging: false,
+            info: false
         });
     });
 
-    // Handle when user click button 'Edit Book'
-    document.addEventListener('DOMContentLoaded', function () {
-        var editButton = document.querySelectorAll('.edit-book-button');
-        var bookId;
+    $(document).on('click', '#filter-btn', function() {
+        objPaging.search = $('#search-input').val();
+        objPaging.page = 1;
 
-        editButton.forEach(function (button) {
-            button.addEventListener('click', function () {
-                bookId = button.value;
-                $('#editBookModal').modal('show');
+        var btn = $(this);
+        btn.find('.spinner-border').removeClass('d-none');
 
-                callAjaxByJsonWithData('/api/v1/books/' + bookId, 'GET', null, function (rs) {
-                    var responseData = rs;
+        table.ajax.url(getUrlApiBooks(objPaging.search,
+            objPaging.page, objPaging.pageSize)).load(function () {
+            btn.find('.spinner-border').addClass('d-none');
+        });
+    });
 
-                    // Đổ dữ liệu từ API vào các trường của modal
-                    document.getElementById('editTitle').value = responseData.book.title;
-                    document.getElementById('editAuthor').value = responseData.book.author;
-                    document.getElementById('editLink').value = responseData.book.link;
-                    $('.img-edit-book').attr('src', responseData.book.image);
+    $(document).on('change', '#page-count-select', function() {
+        var selectedValue = $(this).val();
+        objPaging.page = 1;
+        objPaging.pageSize = selectedValue;
 
-                    var submitButton = document.getElementById('editBookButton');
-                    submitButton.addEventListener('click', function () {
-                        var title = document.getElementById('editTitle').value;
-                        var author = document.getElementById('editAuthor').value;
-                        var link = document.getElementById('editLink').value;
-                        var image = document.getElementById('editImage');
+        var selectContainerE = $(this).closest('.page-count-item-container');
+        selectContainerE.find('.spinner-border').removeClass('d-none');
+        table.ajax.url(getUrlApiBooks(objPaging.search,
+            objPaging.page, objPaging.pageSize)).load(function () {
+            selectContainerE.find('.spinner-border').addClass('d-none');
+        });
+    });
 
-                        var formData = new FormData
-                        formData.append('id', bookId);
-                        formData.append('title', title);
-                        formData.append('author', author);
-                        formData.append('link', link);
+    function removePagingIfExsit(){
+        if (window.pagObj) {
+            window.pagObj.twbsPagination('destroy');
+        }
+    }
 
-                        if (image.files.length != 0) {
-                            formData.append('image', image.files[0]);
+    function loadPaging(){
+        callAjaxByJsonWithData(getCountListApiUrl(objPaging.search), 'GET', null, function (totalItem) {
+
+            removePagingIfExsit();
+
+            //paging
+            var totalPages = 0;
+            if(totalItem <= objPaging.pageSize) totalPages = 1;
+            else totalPages = Math.ceil(totalItem / objPaging.pageSize);
+            var currentPage = objPaging.page;
+
+            $(function () {
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    startPage: currentPage,
+                    onPageClick: function (event, page) {
+                        if (currentPage != page) {
+                            objPaging.page = page;
+                            table.ajax.url(getUrlApiBooks(objPaging.search,
+                                objPaging.page, objPaging.pageSize)).load();
+                            currentPage = page;
                         }
-
-                        callAjaxByDataFormWithDataForm('/api/v1/books/update', 'POST', formData, function (rs) {
-                            sessionStorage.setItem('result', 'updateBookSuccess');
-                            location.reload();
-                        })
-                    });
+                    }
                 });
             });
         });
+    }
+
+    $(document).on('change', '.file-image', function() {
+        const selectedFile = this.files[0];
+        if (selectedFile) {
+            const reader = new FileReader();
+            const imagePreview = $(this).siblings('.image-preview');
+
+            reader.onload = function(e) {
+                imagePreview.attr('src', e.target.result);
+                imagePreview.removeClass('d-none');
+            };
+
+            reader.readAsDataURL(selectedFile);
+        }
     });
 
-    // Notification
-    document.addEventListener('DOMContentLoaded', function () {
-        const result = sessionStorage.getItem('result');
-        if (result) {
-            let message;
-            switch (result) {
-                case 'addBookSuccess':
-                    message = 'Add Book Success';
-                    break;
-                case 'updateBookSuccess':
-                    message = 'Update Book Success';
-                    break;
-                case 'delBookSuccess':
-                    message = 'Delete Book Success';
-                    break;
-                default:
-                    message = 'Unknown Result';
+    $(document).on('shown.bs.modal', '#addBookModal', function() {
+
+        $('#title-add').val('');
+        $('#author-add').val('');
+        $('#link-add').val('');
+        $('#image-add').val('');
+        var imagepreview = $('#image-preview-add');
+        imagepreview.attr('src', '');
+        imagepreview.addClass('d-none');
+
+        Validator({
+            form:'#addBookForm',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title-add'),
+                Validator.isRequired('#author-add'),
+                Validator.isRequired('#link-add'),
+                Validator.isRequired('#image-add'),
+            ],
+            onSubmit: function (formData) {
+
+                formData.append('fullnameUser', userCurrent.fullname);
+
+                $('#addBookForm .spinner-border').removeClass('d-none');
+                callAjaxByDataFormWithDataForm('/api/v1/books', 'POST', formData, function (rs) {
+
+                    table.ajax.url(getUrlApiBooks(objPaging.search,
+                        objPaging.page, objPaging.pageSize)).load(function () {
+                        $('#addBookForm .spinner-border').addClass('d-none');
+                        $("#addBookModal").modal("hide");
+                        showAlert(SUCCESS_ALERT, 'Add success');
+                    });
+                });
             }
-            $('#resultMessage').text(message);
-            $('#resultModal').modal('show');
-            sessionStorage.clear();
-        }
+        });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var addButton = document.querySelector('.add-book-button');
-        var actionColumn = document.querySelectorAll('th')[6];
-        var actionValue = document.querySelectorAll('.action');
+    $(document).on('click', '.edit-book-btn', function () {
+        var id = $(this).data('id');
+        var swal = showAlertLoading();
+        callAjaxByJsonWithData("/api/v1/books/" + id, "GET", null, function (rs) {
+            var book = rs.book;
+            $('#title-edit').val(book.title);
+            $('#author-edit').val(book.author);
+            $('#link-edit').val(book.link);
+            $('#image-edit').val('');
+            var imagepreview = $('#image-preview-edit');
+            imagepreview.attr('src', book.image);
+            imagepreview.removeClass('d-none');
 
-        if (userCurrent.role === 'DEVELOPER') {
-            addButton.remove();
-            actionColumn.remove();
-            actionValue.forEach(function (element) {
-                element.remove();
+            swal.close();
+            $('#editBookModal').modal('show');
+        });
+
+        Validator({
+            form:'#editBookForm',
+            errorSelector: '.form-message',
+            rules:[
+                Validator.isRequired('#title-edit'),
+                Validator.isRequired('#author-edit'),
+                Validator.isRequired('#link-edit')
+            ],
+            onSubmit: function (formData) {
+                formData.append('id', id);
+
+                $('#editBookForm .spinner-border').removeClass('d-none');
+                callAjaxByDataFormWithDataForm('/api/v1/books/updation', 'POST', formData, function (rs) {
+
+                    table.ajax.url(getUrlApiBooks(objPaging.search,
+                        objPaging.page, objPaging.pageSize)).load(function () {
+                        $('#editBookForm .spinner-border').addClass('d-none');
+                        $("#editBookModal").modal("hide");
+                        showAlert(SUCCESS_ALERT, 'Update success');
+                    });
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.remove-book-btn', function (e) {
+        var idBook = $(this).data('id');
+        $('#delete-book').attr('data-id', idBook);
+    });
+
+    $(document).on('click', '#delete-book', function (e) {
+        var idBook = $(this).attr('data-id');
+
+        $('#deleteBookModal .spinner-border').removeClass('d-none');
+        callAjaxByJsonWithData("/api/v1/books/" + idBook, "DELETE", null, function (rs) {
+
+            table.ajax.url(getUrlApiBooks(objPaging.search,
+                objPaging.page, objPaging.pageSize)).load(function () {
+                $('#deleteBookModal .spinner-border').addClass('d-none');
+                $("#deleteBookModal").modal("hide");
+                showAlert(SUCCESS_ALERT, 'Delete success');
             });
-        }
+        });
     });
-
-    // Get value Search save to Local Storage
-    document.getElementById("search").addEventListener("input", function () {
-        localStorage.setItem("searchBook", this.value);
-    });
-
-    // Restore "Search" value from Local Storage
-    window.addEventListener("load", function () {
-        var selectedSearch = localStorage.getItem("searchBook");
-        if (selectedSearch) {
-            document.getElementById("search").value = selectedSearch;
-        }
-    });
-
 </script>
-
 </body>
 </html>

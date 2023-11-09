@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +27,6 @@ public class BookCreateRequest {
     @NotBlank(message = "Field fullnameUser is not filled")
     private String fullnameUser;
 
+    @NotNull(message = "Field image is not filled")
     private MultipartFile image;
 }

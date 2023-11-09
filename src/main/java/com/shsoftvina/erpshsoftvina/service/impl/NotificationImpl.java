@@ -61,7 +61,7 @@ public class NotificationImpl implements NotificationService {
 
 
     @Override
-    public int createNoti(CreateNotificationRequest createNotificationRequest) {
+    public NotificationDetailResponse createNoti(CreateNotificationRequest createNotificationRequest) {
 
         MultipartFile[] files = createNotificationRequest.getFiles();
 
@@ -80,13 +80,13 @@ public class NotificationImpl implements NotificationService {
             Notification notification = notificationConverter.toEntity(createNotificationRequest, listFileNameSaveFileSuccess);
             try{
                 notificationMapper.createNoti(notification);
-                return 1;
+                return notificationConverter.toNotificationDetailResponse(notification);
             } catch (Exception e){
                 FileUtils.deleteMultipleFilesToServer(request,dir, notification.getFiles());
-                return 0;
+                return null;
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
