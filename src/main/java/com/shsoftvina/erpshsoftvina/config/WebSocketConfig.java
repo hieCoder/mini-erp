@@ -19,7 +19,6 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
-@EnableWebSocket
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 

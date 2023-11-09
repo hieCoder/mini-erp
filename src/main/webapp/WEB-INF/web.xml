@@ -6,6 +6,9 @@
 
     <display-name>Your Web Application Name</display-name>
 
+    <listener>
+        <listener-class>com.shsoftvina.erpshsoftvina.config.AppInitializer</listener-class>
+    </listener>
     <!-- Configure the Spring DispatcherServlet -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>

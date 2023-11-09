@@ -5,6 +5,8 @@ import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificatio
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
+import com.shsoftvina.erpshsoftvina.service.PushSubscriptionService;
+import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,6 +22,9 @@ public class NotificationApi {
 
     @Autowired
     NotificationService notificationService;
+
+    @Autowired
+    PushSubscriptionService pushSubscriptionService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -48,7 +53,9 @@ public class NotificationApi {
     public ResponseEntity<?> createNoti(@Valid CreateNotificationRequest createNotificationRequest) {
         NotificationDetailResponse rs = notificationService.createNoti(createNotificationRequest);
         rs.setCategoryPush("Notifications");
-        if(rs != null) simpMessagingTemplate.convertAndSend("/notification/createNotification", rs);
+        if(rs != null) {
+            pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(rs));
+        }
         return ResponseEntity.ok(rs);
     }
 

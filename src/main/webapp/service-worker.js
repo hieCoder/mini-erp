@@ -1,73 +1,11 @@
-const DB_VERSION = 1;
+const dbName = 'myDatabase';
+const dbVersion = 1;
+const storeName = 'users';
 
 self.addEventListener('install', function(event) {
     event.waitUntil(
-        self.skipWaiting()  // Đây là lệnh để bỏ qua việc chờ đợi
+        self.skipWaiting()
     );
-});
-
-function openDB(DB_NAME, DB_VERSION ,STORE_NAME) {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-        request.onupgradeneeded = event => {
-            let db = event.target.result;
-            db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        };
-
-        request.onerror = event => {
-            reject('IndexedDB error: ' + event.target.errorCode);
-        };
-
-        request.onsuccess = event => {
-            resolve(event.target.result);
-        };
-    });
-}
-
-function checkAndAddNotification(db, id, STORE_NAME) {
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.get(id);
-
-        request.onsuccess = event => {
-            const data = event.target.result;
-            if (!data) {
-                store.add({ id: id });
-                resolve({ shouldNotify: true });
-            } else {
-                resolve({ shouldNotify: false });
-            }
-        };
-
-        request.onerror = event => {
-            reject('Error in checkAndAddNotification.');
-        };
-    });
-}
-
-self.addEventListener('message', function(event) {
-    let data = event.data.data
-    openDB(data.categoryPush, DB_VERSION, data.categoryPush).then(db => {
-        checkAndAddNotification(db, data.id, data.categoryPush).then(result => {
-            if (result.shouldNotify) {
-                console.log(data)
-                self.registration.showNotification(data.categoryPush, {
-                        body: data.title,
-                        icon: `/assets/images/icon-${data.categoryPush=="Notifications" ?"push":"event" }.png`,
-                        tag: `${data.userId},${data.id}`,
-                        id: data.id,
-                        renotify: true,
-                        requireInteraction: true,
-                    }).then(r => {
-                        console.log("Show push success")
-                    });
-            }
-        });
-    }).catch(error => {
-        console.error('Could not manage IndexedDB', error);
-    });
 });
 
 self.addEventListener('notificationclick', function(event) {
@@ -83,4 +21,28 @@ self.addEventListener('notificationclick', function(event) {
     event.waitUntil(
         self.clients.openWindow(url, '_blank')
     );
+});
+
+
+self.addEventListener('push', function(event) {
+    let dataEvent = JSON.parse(event.data.text())
+            if(dataEvent.categoryPush === "Events"){
+                let options = {
+                    body: dataEvent.title,
+                    icon: `/assets/images/icon-event.png`,
+                    tag: `,${dataEvent.id}`,
+                    renotify: true,
+                    requireInteraction: true,
+                };
+                event.waitUntil(self.registration.showNotification(dataEvent.categoryPush, options));
+            } else if(dataEvent.categoryPush === "Notifications"){
+                let options = {
+                    body: dataEvent.title,
+                    icon: `/assets/images/icon-push.png`,
+                    tag: `,${dataEvent.id}`,
+                    renotify: true,
+                    requireInteraction: true,
+                };
+                event.waitUntil(self.registration.showNotification(dataEvent.categoryPush, options));
+            }
 });

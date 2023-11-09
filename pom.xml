@@ -250,6 +250,21 @@
             <artifactId>logback-classic</artifactId>
             <version>1.2.9</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/nl.martijndwars/web-push -->
+        <dependency>
+            <groupId>nl.martijndwars</groupId>
+            <artifactId>web-push</artifactId>
+            <version>5.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.76</version>
+        </dependency>
+
     </dependencies>
 
     <build>

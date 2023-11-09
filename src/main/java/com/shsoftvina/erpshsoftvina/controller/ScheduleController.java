@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.EventService;
 import com.shsoftvina.erpshsoftvina.service.ScheduleService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
@@ -37,8 +38,16 @@ public class ScheduleController {
         return modelAndView;
     }
 
+    @GetMapping("/detail/")
+    public String getScheduleDefault() {
+        String userId = Principal.getUserCurrent().getId();
+        applicationUtils.checkUserAllow(userId);
+        return "redirect:/schedules/detail/"+userId;
+    }
+
     @GetMapping("/detail/{userId}")
-    public ModelAndView getScheduleDetail(@PathVariable("userId") String userId) {
+    public ModelAndView getScheduleDetail(@PathVariable(value = "userId", required = false) String userId) {
+        if(userId.equals("")) userId = Principal.getUserCurrent().getId();
         applicationUtils.checkUserAllow(userId);
         return new ModelAndView("schedule/detail");
     }
