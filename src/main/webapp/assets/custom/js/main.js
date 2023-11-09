@@ -406,10 +406,10 @@ if ('serviceWorker' in navigator) {
                             })
                             stompClient.subscribe("/notification/createEvent", function (rs) {
                                 let data = JSON.parse(rs.body)
-                                console.log(navigator.serviceWorker.controller)
                                 if(data.user.id == userCurrent.id){
                                     return false
                                 } else {
+                                    data.userId = userCurrent.id
                                     if (navigator.serviceWorker.controller) {
                                         console.log('Service Worker controller is available.');
                                         navigator.serviceWorker.controller.postMessage({

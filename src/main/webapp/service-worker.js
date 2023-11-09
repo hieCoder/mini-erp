@@ -1,10 +1,13 @@
 const DB_VERSION = 1;
 
+self.addEventListener('install', function(event) {
+    event.waitUntil(
+        self.skipWaiting()  // Đây là lệnh để bỏ qua việc chờ đợi
+    );
+});
+
 function openDB(DB_NAME, DB_VERSION ,STORE_NAME) {
     return new Promise((resolve, reject) => {
-        console.log(DB_NAME)
-        console.log(DB_VERSION)
-        console.log(STORE_NAME)
         const request = indexedDB.open(DB_NAME, DB_VERSION);
 
         request.onupgradeneeded = event => {
@@ -49,10 +52,12 @@ self.addEventListener('message', function(event) {
     openDB(data.categoryPush, DB_VERSION, data.categoryPush).then(db => {
         checkAndAddNotification(db, data.id, data.categoryPush).then(result => {
             if (result.shouldNotify) {
+                console.log(data)
                 self.registration.showNotification(data.categoryPush, {
                         body: data.title,
                         icon: `/assets/images/icon-${data.categoryPush=="Notifications" ?"push":"event" }.png`,
-                        tag: data.categoryPush,
+                        tag: `${data.userId},${data.id}`,
+                        id: data.id,
                         renotify: true,
                         requireInteraction: true,
                     }).then(r => {
@@ -66,20 +71,16 @@ self.addEventListener('message', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-    console.log('[Service Worker] Notification click Received.');
+    let data = event.notification;
+    let arrTag = data.tag ? data.tag.split(",") : []
+    let url = "/"
+    if(data.title == "Events"){
+        url = "/schedules/detail/" + arrTag[0]
+    }else if(data.title == "Notifications"){
+        url = "/notifications/" + arrTag[1]
+    }
     event.notification.close();
     event.waitUntil(
-        self.client.openWindow('https://example.com', '_blank')
+        self.clients.openWindow(url, '_blank')
     );
 });
-
-// let notification = new Notification(data.categoryPush, {
-//     icon: "/assets/images/icon-push.png",
-//     body: data.title,
-//     requireInteraction: true,
-//     tag: data.categoryPush,
-//     renotify: true
-// });
-// notification.onclick = function () {
-//     window.open('/' + data.categoryPush.toLowerCase() + '/' + data.id, '_blank');
-// };

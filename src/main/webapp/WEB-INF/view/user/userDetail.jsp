@@ -459,7 +459,7 @@
                                             <tr>
                                                 <th>Basic Salary</th>
                                                 <th width="200">Allowance</th>
-                                                <%--                                                <th>Insurance</th>--%>
+                                                                                                <th>Insurance</th>
                                                 <th>File Contract</th>
                                                 <th>Action</th>
                                             </tr>
@@ -470,8 +470,7 @@
                                                     <td>${contract.basicSalary}</td>
                                                     <td class="format-allowance" data-simplebar
                                                         style="max-height: 200px;">${contract.allowance}</td>
-                                                        <%--                                                    <td>${contract.insurance}</td>--%>
-
+                                                    <td class="format-insurance">${contract.insurance}</td>
                                                     <td>
                                                         <c:set var="contractPath" value="${contract.getContract()}"/>
                                                         <c:set var="fileNameContract"
@@ -1330,6 +1329,16 @@
         }
     });
 
+    // Format Insurance
+    document.addEventListener("DOMContentLoaded", function () {
+        $('.format-insurance').each(function() {
+            var insuranceData = $(this).text();
+            var formattedInsurance = insuranceFormat(insuranceData);
+
+            $(this).html(formattedInsurance);
+        });
+    });
+
     // Handle when user click button "+ Allowance"
     let addedInputCount = 0;
     let editInputCount = 0;
@@ -1435,7 +1444,7 @@
         if (editInputCount < 4) document.getElementById('editAllowanceButton').style.display = 'inline-block';
     }
 
-    // Format Allowance
+    // Function Format Allowance
     function allowanceFormat(data) {
         var data = JSON.parse(data);
         var keyValueString = '';
@@ -1449,7 +1458,7 @@
         return keyValueString;
     }
 
-    // Format money is number
+    // Function Format money is number
     function formatNumber(input) {
         let value = input.value.replace(/,/g, '');
 
@@ -1462,7 +1471,7 @@
         input.value = value;
     }
 
-    // Format Insurance
+    // Function Format Insurance
     function insuranceFormat(data) {
         var jsonArray = JSON.parse(data);
         var resultArray = [];
