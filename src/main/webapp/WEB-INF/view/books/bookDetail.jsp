@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Book detail</title>
+    <!-- Sweet Alert css-->
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
@@ -62,13 +64,24 @@
                                         <input type="text" class="form-control" id="quotes3">
                                     </div>
                                     <div class="form-group mb-2">
-                                        <button type="submit" class="btn btn-primary btn-load submit-btn">
+                                        <button type="button" class="btn btn-primary btn-load submit-btn" id="submit">
                                         <span class="d-flex align-items-center">
-                                            <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                            <span class="spinner-border flex-shrink-0 d-none"
+                                                  style="margin-right: 5px;"></span>
                                             <span class="flex-grow-1">Submit</span>
                                         </span>
                                         </button>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteFeelingModal">Delete</button>
+                                        <button type="button" class="btn btn-primary btn-load submit-btn d-none"
+                                                id="update">
+                                        <span class="d-flex align-items-center">
+                                            <span class="spinner-border flex-shrink-0 d-none"
+                                                  style="margin-right: 5px;"></span>
+                                            <span class="flex-grow-1">Update</span>
+                                        </span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#deleteFeelingModal" id="delete-btn">Delete
+                                        </button>
                                         <a href="/books" type="button" class="btn btn-secondary">Back</a>
                                     </div>
                                 </form>
@@ -79,18 +92,20 @@
                             <div class="p-3">
                                 <div class="border">
                                     <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">
-                                            <div class="row pt-2">
-                                                <div class="col-md-2 border-right text-center justify-content-center">
-                                                    <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"
-                                                         alt="User Avatar" width="50px"> <br>
-                                                    <p class="text-muted">${feeling.fullnameUser}</p>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <c:forEach var="quote" items="${feeling.quotes}">
-                                                        <p class="mb-1">- ${quote}</p>
-                                                    </c:forEach>
-                                                </div>
+                                        <div class="row">
+                                            <div class="col-md-2 border-end text-center justify-content-center pt-2">
+                                                <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"
+                                                     alt="User Avatar" width="50px"> <br>
+                                                <p class="m-0">${feeling.fullnameUser}</p>
                                             </div>
+                                            <div class="col-md-10 pt-2">
+                                                <c:forEach var="quote" items="${feeling.quotes}">
+                                                    <c:if test='${!quote.equals("")}'>
+                                                        <p>- ${quote}</p>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -104,138 +119,134 @@
 </div>
 <!--end row-->
 
-
-
-
-<%-- modal delete feeling book--%>
-<div class="modal fade" id="deleteFeelingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Confirm delete feeling</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure?
-            </div>
-            <div class="modal-footer">
-                <button id="delete-btn" type="button" class="btn btn-danger">Confirm</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+<!-- Sweet Alerts js -->
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
-    $(document).ready(function (){
+    $(document).ready(function () {
         callAjaxByJsonWithData('/api/v1/feeling-of-book/' + '${bookDetail.book.id}' + '/' + userCurrent.id, 'GET', null, function (rs) {
-            console.log(rs);
-            rs.quotes.forEach(function(quote, index) {
-                $('#quotes'+(index+1)).val(quote);
+            rs.quotes.forEach(function (quote, index) {
+                $('#quotes' + (index + 1)).val(quote);
             });
+            $('#update').removeClass('d-none');
+            $('#submit').addClass('d-none');
 
-            $('.submit-btn').text('Update');
+            $('#update').click(function () {
+                var quotes1 = $('#quotes1').val();
+                var quotes2 = $('#quotes2').val();
+                var quotes3 = $('#quotes3').val();
+
+                if (quotes1 == '' && quotes2 == '' && quotes3 == '') {
+                    Swal.fire(
+                        {
+                            title: "Don't let all your feel go empty",
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                } else {
+                    var data = {
+                        id: rs.id,
+                        quote: quotes1 + '---' + quotes2 + '---' + quotes3
+
+                    };
+                    callAjaxByJsonWithData('/api/v1/feeling-of-book', 'PUT', data, function () {
+                        showAlertLoading();
+                        sessionStorage.setItem('result', 'updateSuccess');
+                        location.reload();
+                    });
+                }
+            });
         });
     });
+
+    $('#submit').click(function () {
+        var bookId = '${bookDetail.book.id}';
+        var quotes1 = $('#quotes1').val();
+        var quotes2 = $('#quotes2').val();
+        var quotes3 = $('#quotes3').val();
+
+        if (quotes1 == '' && quotes2 == '' && quotes3 == '') {
+            Swal.fire(
+                {
+                    title: 'You must write a Feel!',
+                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                    buttonsStyling: false,
+                    showCloseButton: true
+                }
+            )
+        } else {
+            var data = {
+                userId: userCurrent.id,
+                quote: quotes1 + '---' + quotes2 + '---' + quotes3,
+                bookId: bookId
+            };
+            callAjaxByJsonWithData('/api/v1/feeling-of-book', 'POST', data, function () {
+                sessionStorage.setItem('result', 'addSuccess');
+                showAlertLoading();
+                location.reload();
+            });
+        }
+    })
+
+    $('#delete-btn').click(function () {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+            cancelButtonClass: 'btn btn-danger w-xs mt-2',
+            confirmButtonText: "Yes, delete it!",
+            buttonsStyling: false,
+            showCloseButton: true
+        }).then(function (result) {
+            if (result.value) {
+                showAlertLoading();
+                var bookId = '${bookDetail.book.id}';
+                var userId = userCurrent.id;
+                callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userId + "&bookId=" + bookId, "DELETE", null, function (rs) {
+                    sessionStorage.setItem('result', 'delSuccess');
+                    location.reload();
+                });
+            }
+        });
+    });
+
+
 </script>
 
-
-<%--<script>--%>
-
-<%--    console.log(${bookDetail});--%>
-
-<%--    var isCreate = true;--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-
-<%--        callAjaxByJsonWithData('/api/v1/feeling-of-book/' + '${bookDetail.book.id}' + '/' + userCurrent.id--%>
-<%--            , 'GET', null, function (rs) {--%>
-<%--                if (rs != null && rs.quotes.length != 0) {--%>
-<%--                    isCreate = false;--%>
-<%--                    document.getElementById("quotes1").value = rs.quotes[0]?rs.quotes[0]:'';--%>
-<%--                    document.getElementById("quotes2").value = rs.quotes[1]?rs.quotes[1]:'';--%>
-<%--                    document.getElementById("quotes3").value = rs.quotes[2]?rs.quotes[2]:'';--%>
-
-<%--                    var submitButton = document.getElementById('submit');--%>
-<%--                    submitButton.textContent = "Update";--%>
-<%--                    submitButton.classList.remove("btn-primary");--%>
-<%--                    submitButton.classList.add("btn-success");--%>
-
-<%--                    document.getElementById('submit').addEventListener('click', function () {--%>
-<%--                        var quotes1 = document.getElementById('quotes1').value;--%>
-<%--                        var quotes2 = document.getElementById('quotes2').value;--%>
-<%--                        var quotes3 = document.getElementById('quotes3').value;--%>
-<%--                        var data = {--%>
-<%--                            id: rs.id,--%>
-<%--                            quote: quotes1 + '---' + quotes2 + '---' + quotes3--%>
-<%--                        };--%>
-<%--                        $('#back-button').after(createLoadingHtml());--%>
-<%--                        callAjaxByJsonWithData('/api/v1/feeling-of-book', 'PUT', data, function () {--%>
-<%--                            sessionStorage.setItem('result', 'updateSuccess');--%>
-<%--                            location.reload();--%>
-<%--                        }, 'formYourFeeling');--%>
-<%--                    });--%>
-<%--                };--%>
-<%--            });--%>
-
-<%--        $('#delete-btn').click(function() {--%>
-<%--            var bookId= '${bookDetail.book.id}';--%>
-<%--            var userId = userCurrent.id;--%>
-<%--            $('#deleteFeelingModal .modal-footer').after(createLoadingHtml());--%>
-<%--            callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userId + "&bookId=" + bookId, "DELETE", null, function (rs) {--%>
-<%--                location.reload();--%>
-<%--            }, 'formYourFeeling');--%>
-<%--        });--%>
-<%--    });--%>
-
-<%--    // Handle when user click submit--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        document.getElementById('submit').addEventListener('click', function () {--%>
-<%--            var bookId = '${bookDetail.book.id}';--%>
-<%--            if (isCreate) {--%>
-<%--                var quotes1 = document.getElementById('quotes1').value;--%>
-<%--                var quotes2 = document.getElementById('quotes2').value;--%>
-<%--                var quotes3 = document.getElementById('quotes3').value;--%>
-<%--                if (isCreate) {--%>
-<%--                    var data = {--%>
-<%--                        userId: userCurrent.id,--%>
-<%--                        quote: quotes1 + '---' + quotes2 + '---' + quotes3,--%>
-<%--                        bookId: bookId--%>
-<%--                    };--%>
-<%--                    $('#submit').after(createLoadingHtml());--%>
-<%--                    callAjaxByJsonWithData('/api/v1/feeling-of-book', 'POST', data, function () {--%>
-<%--                        sessionStorage.setItem('result', 'addSuccess');--%>
-<%--                        location.reload();--%>
-<%--                    }, 'formYourFeeling')--%>
-<%--                }--%>
-<%--            }--%>
-<%--        });--%>
-<%--    });--%>
-
-
-<%--    // Notification Success--%>
-<%--    document.addEventListener('DOMContentLoaded', function () {--%>
-<%--        const result = sessionStorage.getItem('result');--%>
-<%--        if (result) {--%>
-<%--            let message;--%>
-<%--            switch (result) {--%>
-<%--                case 'addSuccess':--%>
-<%--                    message = 'Add Feeling Success';--%>
-<%--                    break;--%>
-<%--                case 'updateSuccess':--%>
-<%--                    message = 'Update Feeling Success';--%>
-<%--                    break;--%>
-<%--                default:--%>
-<%--                    message = 'Unknown Result';--%>
-<%--            }--%>
-<%--            ;--%>
-<%--            $('#resultMessage').text(message);--%>
-<%--            $('#resultModal').modal('show');--%>
-<%--            sessionStorage.clear();--%>
-<%--        };--%>
-<%--    });--%>
-<%--</script>--%>
+<%--Notification--%>
+<script>
+    $(document).ready(function () {
+        var result = sessionStorage.getItem('result');
+        var title;
+        switch (result) {
+            case 'addSuccess':
+                title = 'Add Success!'
+                break;
+            case 'updateSuccess':
+                title = 'Update Success!'
+                break;
+            case 'delSuccess':
+                title = 'Delete Success!'
+                break;
+        }
+        if (result) {
+            Swal.fire(
+                {
+                    title: title,
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+                    cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                    buttonsStyling: false,
+                    showCloseButton: true
+                }
+            )
+            sessionStorage.clear();
+        }
+    });
+</script>
 </body>
 </html>
