@@ -251,17 +251,32 @@
             <version>1.2.9</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/nl.martijndwars/web-push -->
+        <dependency>
+            <groupId>nl.martijndwars</groupId>
+            <artifactId>web-push</artifactId>
+            <version>5.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.76</version>
+        </dependency>
+
         <!-- spring oauth2 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-core</artifactId>
-            <version>6.1.4</version>
+            <version>5.0.10.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-client</artifactId>
-            <version>6.1.4</version>
+            <version>5.0.10.RELEASE</version>
         </dependency>
+
     </dependencies>
 
     <build>

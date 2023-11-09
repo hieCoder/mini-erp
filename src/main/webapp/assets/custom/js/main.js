@@ -344,86 +344,117 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register("/service-worker.js")
         .then(function(registration) {
             console.log('Service Worker registered with scope:', registration.scope);
-                    if (Notification.permission !== "granted") {
-                        Notification.requestPermission().then(function (permission) {
-                            if (permission === "granted") {
-                                let stompClient = Stomp.over(new SockJS("/websocket"));
-                                stompClient.connect({}, function (frame) {
-                                    stompClient.subscribe("/notification/createNotification", function (rs) {
-                                        let data = JSON.parse(rs.body)
-                                        if(data.idUser === userCurrent.id){
-                                            return false
-                                        } else {
-                                            if (navigator.serviceWorker.controller) {
-                                                console.log('Service Worker controller is available.');
-                                                navigator.serviceWorker.controller.postMessage({
-                                                    type: 'NEW_MESSAGE',
-                                                    data: data
-                                                });
-                                            } else {
-                                                console.log('Service Worker controller is not available.');
-                                            }
-                                        }
-                                    })
-                                })
-                                stompClient.subscribe("/notification/createEvent", function (rs) {
-                                    let data = JSON.parse(rs.body)
-                                    if(data.idUser === userCurrent.id){
-                                        return false
-                                    } else {
-                                        if (navigator.serviceWorker.controller) {
-                                            console.log('Service Worker controller is available.');
-                                            navigator.serviceWorker.controller.postMessage({
-                                                type: 'NEW_MESSAGE',
-                                                data: data
-                                            });
-                                        } else {
-                                            console.log('Service Worker controller is not available.');
-                                        }
-                                    }
-                                })
-                            }
-                        });
-                    }
-                    else {
-                        let stompClient = Stomp.over(new SockJS("/websocket"));
-                        stompClient.connect({}, function (frame) {
-                            stompClient.subscribe("/notification/createNotification", function (rs) {
-                                let data = JSON.parse(rs.body)
-                                if(data.idUser == userCurrent.id){
-                                    return false
-                                } else {
-                                    if (navigator.serviceWorker.controller) {
-                                        console.log('Service Worker controller is available.');
-                                        navigator.serviceWorker.controller.postMessage({
-                                            type: 'NEW_MESSAGE',
-                                            data: data
-                                        });
-                                    } else {
-                                        console.log('Service Worker controller is not available.');
-                                    }
-                                }
-                            })
-                            stompClient.subscribe("/notification/createEvent", function (rs) {
-                                let data = JSON.parse(rs.body)
-                                if(data.user.id == userCurrent.id){
-                                    return false
-                                } else {
-                                    data.userId = userCurrent.id
-                                    if (navigator.serviceWorker.controller) {
-                                        console.log('Service Worker controller is available.');
-                                        navigator.serviceWorker.controller.postMessage({
-                                            type: 'NEW_MESSAGE',
-                                            data: data
-                                        });
-                                    } else {
-                                        console.log('Service Worker controller is not available.');
-                                    }
-                                }
-                            })
-                        })
-                    }
         }).catch(function(error) {
         console.log('Service Worker registration failed:', error);
     });
 }
+
+
+
+navigator.serviceWorker.ready.then(function(registration) {
+    try {
+        if (!registration.pushManager) {
+            alert('Push Unsupported');
+            return;
+        }
+        if(!userCurrent){
+            return;
+        }
+        registration.pushManager.getSubscription().then(function(subscription) {
+            if (subscription) {
+                console.log('User is already subscribed:', subscription);
+            } else {
+                registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array("BH9v1XdUflNRCS0s7vExsPf7KPj5h2wXG3hW92S2jpXcFtbCDP4jP_nW4kFOOMV2AFfb_CTTHW8soN74VsT9u9k")
+                }).then(function(subscription) {
+                    console.log('User is subscribed:', subscription);
+                    const subscriptionJson = subscription.toJSON();
+                    updateSubscriptionOnServer({
+                        endpoint: subscriptionJson.endpoint,
+                        p256dh: subscriptionJson.keys.p256dh,
+                        auth: subscriptionJson.keys.auth
+                    });
+                }).catch(function(error) {
+                    console.log('Failed to subscribe', error.message);
+                });
+            }
+        });
+    }catch (e){
+        console.log(e)
+        unsubscribeUser()
+    }
+});
+
+// Helper function
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+function updateSubscriptionOnServer(subscription) {
+    // Sử dụng fetch để gửi thông tin đăng ký đến endpoint '/subscribe' trên server
+    fetch('/api/v1/subscribe/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(subscription)
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Bad status code from server.');
+            }
+            return response.json();
+        })
+        .then(function(responseData) {
+            console.log(responseData)
+            if (responseData != 1) {
+                throw new Error('Bad response from server.');
+            }
+            console.log('User subscription updated on server.');
+        })
+        .catch(function(error) {
+            console.error('Error during subscription update on server:', error);
+        });
+}
+
+function unsubscribeUser() {
+    navigator.serviceWorker.ready.then(function(registration) {
+        registration.pushManager.getSubscription().then(function(subscription) {
+            if (subscription) {
+                subscription.unsubscribe().then(function(successful) {
+                    console.log('User is unsubscribed.');
+                    fetch('/api/v1/subscribe', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            endpoint: subscription.endpoint
+                        })
+                    }).then(function(response) {
+                        console.log('Server is notified about the unsubscription.');
+                    }).catch(function(error) {
+                        console.error('Failed to notify the server about the unsubscription.', error);
+                    });
+                }).catch(function(e) {
+                    console.log('Failed to unsubscribe the user: ', e);
+                });
+            } else {
+                console.log('User IS NOT subscribed.');
+            }
+        });
+    });
+}
+

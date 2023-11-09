@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.security.CustomAuthenticationFailureHandler;
 import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
+import com.shsoftvina.erpshsoftvina.security.oauth2.CustomOAuth2UserService;
 import com.shsoftvina.erpshsoftvina.security.oauth2.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,11 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
-//    @Autowired
-//    private CustomOAuth2UserService customOAuth2UserService;
-//
-//    @Autowired
-//    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -96,12 +97,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .successHandler(customSuccessHandler)
                     .failureHandler(customAuthenticationFailureHandler)
                 .and()
-//                .oauth2Login()
-//                    .loginPage("/login")
-//                    .userInfoEndpoint().userService(customOAuth2UserService)
-//                    .and()
-//                    .successHandler(oAuth2LoginSuccessHandler)
-//                .and()
+                .oauth2Login()
+                    .loginPage("/login")
+                    .userInfoEndpoint().userService(customOAuth2UserService)
+                    .and()
+                    //.successHandler(oAuth2LoginSuccessHandler)
+                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")

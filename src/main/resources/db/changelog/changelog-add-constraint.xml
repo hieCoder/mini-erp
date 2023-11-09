@@ -164,4 +164,12 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_EVENT_USER"/>
     </changeSet>
+
+    <changeSet id="20" author="team2">
+        <addForeignKeyConstraint baseTableName="SUBSCRIBE"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_SUBSCRIBE_USER"/>
+    </changeSet>
 </databaseChangeLog>

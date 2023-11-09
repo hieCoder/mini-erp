@@ -6,6 +6,8 @@ import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.service.EventService;
+import com.shsoftvina.erpshsoftvina.service.PushSubscriptionService;
+import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ import java.util.List;
 public class EventApi {
 
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    PushSubscriptionService pushSubscriptionService;
 
     @Autowired
     private EventService eventService;
@@ -41,8 +43,6 @@ public class EventApi {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
-    @MessageMapping("/createEvent")
-    @SendTo("/notification/createEvent")
     @PostMapping()
     public ResponseEntity<?> createEvent(@Valid @RequestBody EventCreateRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -50,7 +50,9 @@ public class EventApi {
         }
         EventResponse eventResponse = eventService.createEvent(request);
         eventResponse.setCategoryPush("Events");
-        if(eventResponse != null) simpMessagingTemplate.convertAndSend("/notification/createEvent", eventResponse);
+        if(eventResponse != null) {
+            pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(eventResponse));
+        }
         return ResponseEntity.ok(eventResponse);
     }
     @PutMapping()
