@@ -883,12 +883,6 @@
 
 <%-------------------------------------------- Custom JAVASCRIPT--------------------------------------------%>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-    });
-</script>
-
 <%--Handle User--%>
 <script>
     // Handle button 'X' Delete Resume
