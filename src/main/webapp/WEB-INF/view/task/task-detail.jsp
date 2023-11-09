@@ -592,6 +592,14 @@
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 
 <script src="/assets/custom/js/task/task.js"></script>
+
+
+
+<!-- https://cdnjs.com/libraries/sockjs-client -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<!-- https://cdnjs.com/libraries/stomp.js/ -->
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
 <script>
     $(document).ready(function() {
         var idTask = ${id};
@@ -647,14 +655,8 @@
                         $('.post-comment-form .spinner-border').removeClass('d-none');
                         callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
                             $('.post-comment-form .spinner-border').addClass('d-none');
-                            createCommentForm(rs)
-                                .then(function (commentHTML) {
-                                    $('#comment-list').append(commentHTML);
-                                    resetFormPostComment();
-                                    dropzone = activeFile('.post-comment-form', setting);
-                                }).catch(function (error) {
-                                console.error(error);
-                            });
+                            resetFormPostComment();
+                            dropzone = activeFile('.post-comment-form', setting);
                         });
                     }
                 });
@@ -671,7 +673,6 @@
         var id = $(this).attr('data-id');
         $('#deleteCommentModal .spinner-border').removeClass('d-none');
         callAjaxByJsonWithData("/api/v1/comment-task/" + id, "DELETE", null, function (rs) {
-            $(".comment-container[data-id='" + id + "']").remove();
             $('#deleteCommentModal .spinner-border').addClass('d-none');
             $('#deleteCommentModal').modal('hide');
         });
@@ -707,13 +708,7 @@
 
                 $('.reply-comment-form[data-id="'+ id+ '"] .spinner-border').removeClass('d-none');
                 callAjaxByDataFormWithDataForm("/api/v1/comment-task", "POST", formData, function (rs) {
-                    createCommentForm(rs)
-                        .then(function (commentHTML) {
-                            replyContainer.after(commentHTML);
-                            replyContainer.html('');
-                        }).catch(function (error) {
-                        console.error(error);
-                    });
+                    replyContainer.html('');
                 });
             }
         });
@@ -767,13 +762,7 @@
 
                             $('.edit-comment-form[data-id="'+ id+ '"] .spinner-border').removeClass('d-none');
                             callAjaxByDataFormWithDataForm('/api/v1/comment-task/updation', 'POST', formData, function (rs){
-                                createCommentForm(rs)
-                                    .then(function (commentHTML) {
-                                        $('.comment-container[data-id="' + id + '"]').replaceWith(commentHTML);
-                                        $('.edit-comment-form[data-id="' + id + '"]').remove();
-                                    }).catch(function (error) {
-                                    console.error(error);
-                                });
+                                $('.edit-comment-form[data-id="' + id + '"]').remove();
                             });
                         }
                     });
@@ -797,6 +786,68 @@
     $(document).on('click', '.close-edit-form', function (e){
         var parentElement = $(this).closest(".edit-comment-form");
         if (parentElement.length > 0) parentElement.remove();
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        function connect() {
+            var socket = new SockJS('/websocket');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, onConnected, onError);
+        }
+
+        connect();
+
+        function onConnected() {
+            stompClient.subscribe('/task-comment/create', function (payload) {
+                var newComment = JSON.parse(payload.body);
+                if(newComment!=null){
+                    createCommentForm(newComment)
+                        .then(function (commentHTML) {
+                            $('#comment-list').append(commentHTML);
+                        }).catch(function (error) {
+                        console.error(error);
+                    });
+                }
+            });
+            stompClient.subscribe('/task-comment/delete', function (payload) {
+                var id = JSON.parse(payload.body);
+                if(id){
+                    $(".comment-container[data-id='" + id + "']").remove();
+                }
+            });
+            stompClient.subscribe('/task-comment/edit', function (payload) {
+                var comment = JSON.parse(payload.body);
+                var id = comment.id;
+                if(comment!=null){
+                    createCommentForm(comment)
+                        .then(function (commentHTML) {
+                            $('.comment-container[data-id="' + id + '"]').replaceWith(commentHTML);
+                        }).catch(function (error) {
+                        console.error(error);
+                    });
+                }
+            });
+            stompClient.subscribe('/task-comment/reply', function (payload) {
+                var comment = JSON.parse(payload.body);
+                var id = comment.parentId;
+                var replyContainer = $(".form-reply[data-id='" + id + "']");
+                if(comment!=null){
+                    createCommentForm(comment)
+                        .then(function (commentHTML) {
+                            replyContainer.after(commentHTML);
+                        }).catch(function (error) {
+                        console.error(error);
+                    });
+                }
+            });
+        }
+
+        function onError(error) {
+            console.log('connect fail');
+        }
     });
 </script>
 </body>
