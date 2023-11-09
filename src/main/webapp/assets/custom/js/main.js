@@ -30,18 +30,6 @@ const BtnSuccessLoad = '<button type="button" class="btn btn-success btn-load" s
     '</span>' +
     '</span>' +
     '</button>';
-//
-// const BtnSecondaryLoad = '<button type="button" class="btn btn-outline-secondary btn-load" style="margin-left: 8px">' +
-// '<span class="d-flex align-items-center">' +
-// '<span class="spinner-grow flex-shrink-0" role="status">' +
-// '<span class="visually-hidden">Loading...</span>' +
-// '</span>' +
-// '<span class="flex-grow-1 ms-2">' +
-// 'Loading...' +
-// '</span>' +
-// '</span>' +
-// '</button>';
-
 const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" style="margin-left: 8px">' +
     '<span class="d-flex align-items-center">' +
     '<span class="spinner-grow flex-shrink-0" role="status">' +
@@ -149,6 +137,9 @@ function bytesToMB(bytes) {
 function convertMbToB(mb) {
     return mb * 1024 * 1024;
 }
+function bToKbShow(bytes) {
+    return (bytes / 1024).toFixed(2);
+}
 function bytesToMBShow(bytes) {
     return (bytes / (1024 * 1024)).toFixed(2)
 }
@@ -213,6 +204,27 @@ function convertExtensionsList(extensions) {
     const extensionArray = extensions.split(',');
     const formattedExtensions = extensionArray.map(extension => `.${extension.trim()}`);
     return formattedExtensions.join(',');
+}
+function cutShortLink() {
+    var fileElements = document.querySelectorAll('a.cut-file-name');
+
+    fileElements.forEach(function (element) {
+        var fileName = element.textContent;
+        if (fileName.length > 0) {
+            var indexOfHyphen = fileName.indexOf("-");
+            if (indexOfHyphen !== -1) {
+                var remainingPart = fileName.substring(indexOfHyphen + 1);
+                var truncatedFileName;
+                if (remainingPart.length > 14) {
+                    truncatedFileName = remainingPart.substring(0, 10) + '...';
+                } else {
+                    truncatedFileName = remainingPart;
+                }
+            } else if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
+            else truncatedFileName = fileName;
+            element.textContent = truncatedFileName;
+        }
+    });
 }
 
 // alert
@@ -327,69 +339,7 @@ function focusElement(element) {
     sel.addRange(range);
 }
 
-// function createLoadingIndicator() {
-// if ($('#loading-indicator').length === 0) {
-// var loadingIndicator = $('<div>', {
-// id: 'loading-indicator',
-// class: 'text-center',
-// css: {
-// position: 'absolute',
-// top: '50%',
-// left: '50%',
-// transform: 'translate(-50%, -50%)'
-// }
-// });
-//
-// var spinnerIcon = $('<i>', {
-// class: 'fa fa-spinner fa-spin fa-3x'
-// });
-//
-// var loadingText = $('<p>', {
-// text: 'Loading...'
-// });
-//
-// loadingIndicator.append(spinnerIcon, loadingText);
-//
-// $('body').append(loadingIndicator);
-// }
-// }
 
-// function showLoading(contentId) {
-// if ($('#loading-indicator').length === 0) {
-// createLoadingIndicator();
-// } else {
-// $('#loading-indicator').show();
-// }
-//
-// $('#' + contentId).hide();
-// }
-
-// function hideLoading(contentId) {
-// $('#loading-indicator').hide();
-// $('#' + contentId).show();
-// }
-
-function cutShortLink() {
-    var fileElements = document.querySelectorAll('a.cut-file-name');
-
-    fileElements.forEach(function (element) {
-        var fileName = element.textContent;
-        if (fileName.length > 0) {
-            var indexOfHyphen = fileName.indexOf("-");
-            if (indexOfHyphen !== -1) {
-                var remainingPart = fileName.substring(indexOfHyphen + 1);
-                var truncatedFileName;
-                if (remainingPart.length > 14) {
-                    truncatedFileName = remainingPart.substring(0, 10) + '...';
-                } else {
-                    truncatedFileName = remainingPart;
-                }
-            } else if (fileName.length > 14) truncatedFileName = fileName.substring(0, 14) + '...';
-            else truncatedFileName = fileName;
-            element.textContent = truncatedFileName;
-        }
-    });
-}
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register("/service-worker.js")
         .then(function(registration) {
