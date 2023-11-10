@@ -346,9 +346,6 @@ function subscribeUser(){
                 alert('Push Unsupported');
                 return;
             }
-            if(!userCurrent){
-                return;
-            }
             registration.pushManager.getSubscription().then(function(subscription) {
                 if (subscription) {
                     console.log('User is already subscribed:', subscription);
@@ -448,35 +445,46 @@ function unsubscribeUser() {
     });
 }
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("/service-worker.js")
-        .then(function(registration) {
-            console.log('Service Worker registered with scope:', registration.scope);
-        }).catch(function(error) {
-        console.log('Service Worker registration failed:', error);
-    });
+function registerServiceWorker(){
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("/service-worker.js")
+            .then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function(error) {
+            console.log('Service Worker registration failed:', error);
+        });
+    }
 }
 
+registerServiceWorker()
 
 // Check if notification permission has been granted
-if (Notification.permission === 'granted') {
-    // Permission has been granted, you can perform notification operations here
-    subscribeUser()
-} else if (Notification.permission === 'default') {
-    // Permission hasn't been granted, request notification permission from the user
-    Notification.requestPermission().then(function(permission) {
-        if (permission === 'granted') {
-            // Permission has been granted, you can perform notification operations here
-            subscribeUser()
-        } else {
-            // Permission denied, handle accordingly
-            console.log('Permission for notifications denied.');
-        }
-    });
-} else {
-    // Permission denied, handle accordingly
-    console.log('Permission for notifications denied.');
+if( typeof userCurrent !== "undefined"){
+    if (Notification.permission === 'granted') {
+        // Permission has been granted, you can perform notification operations here
+        subscribeUser()
+    } else if (Notification.permission === 'default') {
+        // Permission hasn't been granted, request notification permission from the user
+        Notification.requestPermission().then(function(permission) {
+            if (permission === 'granted') {
+                // Permission has been granted, you can perform notification operations here
+                subscribeUser()
+            } else {
+                // Permission denied, handle accordingly
+                unsubscribeUser()
+                console.log('Permission for notifications denied.');
+            }
+        });
+    } else {
+        // Permission denied, handle accordingly
+        unsubscribeUser()
+        console.log('Permission for notifications denied.');
+    }
+} else{
+    unsubscribeUser()
+    console.log('Must log in');
 }
+
 
 
 
