@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
 import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.EventService;
 import com.shsoftvina.erpshsoftvina.service.PushSubscriptionService;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -51,7 +52,8 @@ public class EventApi {
         EventResponse eventResponse = eventService.createEvent(request);
         eventResponse.setCategoryPush("Events");
         if(eventResponse != null) {
-            pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(eventResponse));
+            String userId = Principal.getUserCurrent().getId();
+            pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(eventResponse), userId);
         }
         return ResponseEntity.ok(eventResponse);
     }
