@@ -355,6 +355,7 @@ function subscribeUser(){
                         applicationServerKey: urlBase64ToUint8Array("BH9v1XdUflNRCS0s7vExsPf7KPj5h2wXG3hW92S2jpXcFtbCDP4jP_nW4kFOOMV2AFfb_CTTHW8soN74VsT9u9k")
                     }).then(function(subscription) {
                         console.log('User is subscribed:', subscription);
+                        localStorage.setItem("webPushEndpoint", subscription.endpoint);
                         const subscriptionJson = subscription.toJSON();
                         updateSubscriptionOnServer({
                             endpoint: subscriptionJson.endpoint,
@@ -416,25 +417,32 @@ function updateSubscriptionOnServer(subscription) {
         });
 }
 
+function deleteEndPoint(endpoint){
+    if(endpoint){
+        fetch('/api/v1/subscribe', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                endpoint: endpoint
+            })
+        }).then(function(response) {
+            localStorage.removeItem("webPushEndpoint");
+            console.log('Server is notified about the unsubscription.');
+        }).catch(function(error) {
+            console.error('Failed to notify the server about the unsubscription.', error);
+        });
+    }
+}
+
 function unsubscribeUser() {
     navigator.serviceWorker.ready.then(function(registration) {
         registration.pushManager.getSubscription().then(function(subscription) {
             if (subscription) {
                 subscription.unsubscribe().then(function(successful) {
+                    deleteEndPoint(subscription.endpoint)
                     console.log('User is unsubscribed.');
-                    fetch('/api/v1/subscribe', {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            endpoint: subscription.endpoint
-                        })
-                    }).then(function(response) {
-                        console.log('Server is notified about the unsubscription.');
-                    }).catch(function(error) {
-                        console.error('Failed to notify the server about the unsubscription.', error);
-                    });
                 }).catch(function(e) {
                     console.log('Failed to unsubscribe the user: ', e);
                 });
@@ -459,7 +467,7 @@ function registerServiceWorker(){
 registerServiceWorker()
 
 // Check if notification permission has been granted
-if( typeof userCurrent !== "undefined"){
+if( typeof userCurrent !== "undefined") {
     if (Notification.permission === 'granted') {
         // Permission has been granted, you can perform notification operations here
         subscribeUser()
@@ -472,18 +480,23 @@ if( typeof userCurrent !== "undefined"){
             } else {
                 // Permission denied, handle accordingly
                 unsubscribeUser()
+                let endPoint = localStorage.getItem("webPushEndpoint")
+                deleteEndPoint(endPoint)
                 console.log('Permission for notifications denied.');
             }
         });
     } else {
         // Permission denied, handle accordingly
         unsubscribeUser()
+        let endPoint = localStorage.getItem("webPushEndpoint")
+        deleteEndPoint(endPoint)
         console.log('Permission for notifications denied.');
     }
 } else{
     unsubscribeUser()
     console.log('Must log in');
 }
+
 
 
 
