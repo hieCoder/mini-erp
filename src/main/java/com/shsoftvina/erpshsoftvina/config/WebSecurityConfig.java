@@ -4,8 +4,8 @@ import com.shsoftvina.erpshsoftvina.security.CustomAuthenticationFailureHandler;
 import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
 import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
+import com.shsoftvina.erpshsoftvina.security.oauth2.CustomFailureOauth2Handler;
 import com.shsoftvina.erpshsoftvina.security.oauth2.CustomOAuth2UserService;
-import com.shsoftvina.erpshsoftvina.security.oauth2.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomOAuth2UserService customOAuth2UserService;
 
     @Autowired
-    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private CustomFailureOauth2Handler customFailureOauth2Handler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -102,7 +102,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .userInfoEndpoint().userService(customOAuth2UserService)
                     .and()
-                    //.successHandler(oAuth2LoginSuccessHandler)
+                    .successHandler(customSuccessHandler)
+                    .failureHandler(customFailureOauth2Handler)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
