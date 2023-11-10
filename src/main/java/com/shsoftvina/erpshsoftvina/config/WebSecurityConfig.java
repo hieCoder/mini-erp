@@ -101,7 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .userInfoEndpoint().userService(customOAuth2UserService)
                     .and()
-                    //.successHandler(customSuccessHandler)
+                    .successHandler(customSuccessHandler)
                     .failureHandler(customFailureOauth2Handler)
                 .and()
                 .logout()

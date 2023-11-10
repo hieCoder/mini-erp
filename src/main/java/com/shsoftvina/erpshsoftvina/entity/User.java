@@ -82,9 +82,6 @@ public class User implements UserDetails, OAuth2User {
         return true;
     }
 
-
-
-
     private OAuth2User user;
 
     @Override
