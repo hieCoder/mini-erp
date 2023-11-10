@@ -134,7 +134,7 @@ public class UserConverter {
 
     public User toEntity(OAuth2User oAuth2User) {
 
-        String fullname = (String) oAuth2User.getAttributes().get("login");
+        String fullname = (String) oAuth2User.getAttributes().get("username");
         String email = (String) oAuth2User.getAttributes().get("email");
 
         return User.builder()
