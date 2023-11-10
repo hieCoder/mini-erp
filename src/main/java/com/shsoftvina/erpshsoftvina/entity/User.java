@@ -9,18 +9,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class User implements UserDetails, OAuth2User {
 
     private String id;
     private String fullname;
@@ -52,11 +50,9 @@ public class User implements UserDetails {
                 && gender != null;
     }
 
-    // Override the getAuthorities method to provide user roles as granted authorities.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        // Create a granted authority based on the user's role.
         authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         return authorities;
     }
@@ -66,28 +62,44 @@ public class User implements UserDetails {
         return email;
     }
 
-    // Override isAccountNonExpired method to indicate that the user account never expires.
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    // Override isAccountNonLocked method to indicate that the user account is never locked.
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    // Override isCredentialsNonExpired method to indicate that user credentials never expire.
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    // Override isEnabled method to indicate that the user is always enabled.
     @Override
     public boolean isEnabled() {
         return true;
     }
 
+
+
+
+    private OAuth2User user;
+
+    @Override
+    public String getName() {
+        if(user!=null){
+            return user.getName();
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        if(user!=null){
+            return user.getAttributes();
+        }
+        return null;
+    }
 }

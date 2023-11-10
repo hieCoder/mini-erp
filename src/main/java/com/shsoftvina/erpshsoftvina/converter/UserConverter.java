@@ -17,6 +17,7 @@ import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -127,6 +128,20 @@ public class UserConverter {
                 .id(ApplicationUtils.generateId())
                 .email(userRegisterRequest.getEmail())
                 .password(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()))
+                .createdDate(new Date())
+                .build();
+    }
+
+    public User toEntity(OAuth2User oAuth2User) {
+
+        String fullname = (String) oAuth2User.getAttributes().get("login");
+        String email = (String) oAuth2User.getAttributes().get("email");
+
+        return User.builder()
+                .fullname(fullname)
+                .status(StatusUserEnum.PENDING)
+                .id(ApplicationUtils.generateId())
+                .email(email)
                 .createdDate(new Date())
                 .build();
     }

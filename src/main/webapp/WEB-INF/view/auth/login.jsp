@@ -96,6 +96,11 @@
                             Password incorrect
                         </div>
                     </c:if>
+                    <c:if test="${param.registerOauth2 != null}">
+                        <div class="alert alert-success">
+                            Waiting Owner approval
+                        </div>
+                    </c:if>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">User ID <span class="text-danger">*</span></label>
@@ -112,6 +117,15 @@
                     </div>
                     <div class="mt-4">
                         <button class="btn btn-success w-100" type="submit" id="login-btn">Login</button>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <div class="signin-other-title">
+                            <h5 class="fs-13 mb-4 title">Sign In with</h5>
+                        </div>
+                        <div>
+                            <a href="/oauth2/authorization/github" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></a>
+                        </div>
                     </div>
                 </form>
             </div>
