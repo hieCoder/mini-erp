@@ -225,6 +225,7 @@
             <artifactId>spring-websocket</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+
         <!-- Apache POI dependencies for Excel processing -->
         <dependency>
             <groupId>org.apache.poi</groupId>
