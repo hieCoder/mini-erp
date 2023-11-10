@@ -20,7 +20,7 @@
     <!-- snow css for snow editor-->
     <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
     <style>
-        .ql-container {
+        #formEditNotification .ql-container, #formCreateNotication .ql-container{
             min-height: 10rem;
             height: 100%;
             flex: 1;
