@@ -24,25 +24,47 @@ self.addEventListener('notificationclick', function(event) {
 });
 
 
-self.addEventListener('push', function(event) {
+function showPushNotification(event){
     let dataEvent = JSON.parse(event.data.text())
-            if(dataEvent.categoryPush === "Events"){
-                let options = {
-                    body: dataEvent.title,
-                    icon: `/assets/images/icon-event.png`,
-                    tag: `,${dataEvent.id}`,
-                    renotify: true,
-                    requireInteraction: true,
-                };
-                event.waitUntil(self.registration.showNotification(dataEvent.categoryPush, options));
-            } else if(dataEvent.categoryPush === "Notifications"){
-                let options = {
-                    body: dataEvent.title,
-                    icon: `/assets/images/icon-push.png`,
-                    tag: `,${dataEvent.id}`,
-                    renotify: true,
-                    requireInteraction: true,
-                };
-                event.waitUntil(self.registration.showNotification(dataEvent.categoryPush, options));
+    if(dataEvent.categoryPush === "Events"){
+        let options = {
+            body: dataEvent.title,
+            icon: `/assets/images/icon-event.png`,
+            tag: `,${dataEvent.id}`,
+            renotify: true,
+            requireInteraction: true,
+        };
+        event.waitUntil(self.registration.showNotification(dataEvent.categoryPush, options));
+    } else if(dataEvent.categoryPush === "Notifications"){
+        let options = {
+            body: dataEvent.title,
+            icon: `/assets/images/icon-push.png`,
+            tag: `,${dataEvent.id}`,
+            renotify: true,
+            requireInteraction: true,
+        };
+        event.waitUntil(self.registration.showNotification(dataEvent.categoryPush, options));
+    }
+}
+
+self.addEventListener('push', function(event) {
+    // Check if notification permission is granted
+    if (Notification.permission === 'granted') {
+        // Permission is granted, display the notification
+        showPushNotification(event)
+    } else if (Notification.permission === 'default') {
+        // Permission is not yet granted, request permission from the user
+        Notification.requestPermission().then(function(permission) {
+            if (permission === 'granted') {
+                showPushNotification(event)
+            } else {
+                // Permission denied, handle accordingly
+                console.log('Notification permission denied.');
             }
+        });
+    } else {
+        // Permission denied, handle accordingly
+        console.log('Notification permission denied.');
+    }
+
 });

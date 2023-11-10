@@ -13,7 +13,7 @@ public class PushNotificationApi {
     @Autowired
     PushSubscriptionService pushSubscriptionService;
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<?> subscribe(@RequestBody CreatePushSubscriptionRequest createPushSubscriptionRequest) {
         return ResponseEntity.ok(pushSubscriptionService.createPushSubscription(createPushSubscriptionRequest));
     }
