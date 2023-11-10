@@ -11,11 +11,13 @@ import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PushSubscriptionServiceImpl implements PushSubscriptionService {
@@ -53,9 +55,9 @@ public class PushSubscriptionServiceImpl implements PushSubscriptionService {
     }
 
     @Override
-    public void sendNotificationAll(String payload){
-        User user = Principal.getUserCurrent();
-        List<PushSubscription> allSubscriptions = pushSubscriptionMapper.findAll(user.getId());
+    @Async
+    public void sendNotificationAll(String payload, String userId){
+        List<PushSubscription> allSubscriptions = pushSubscriptionMapper.findAll(userId);
         for (PushSubscription subscription : allSubscriptions) {
             try {
                 sendNotification(subscription, payload);

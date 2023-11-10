@@ -24,7 +24,7 @@
     <!-- snow css for snow editor-->
     <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
     <style>
-        .ql-container {
+        #formEditNotification .ql-container {
             min-height: 10rem;
             height: 100%;
             flex: 1;
@@ -104,6 +104,11 @@
                     <c:if test="${notification.status.equals(StatusNotificationEnum.INACTIVE)}">
                         <div class="notificationDeleted">
                             <button class="btn btn-sm btn-danger remove-item-btn notificationDeleted" disabled>Deleted</button>
+                        </div>
+                    </c:if>
+                    <c:if test="${notification.status.equals(StatusNotificationEnum.ACTIVE)}">
+                        <div class="notificationShare">
+                            <button class="btn btn-sm btn-secondary remove-item-btn notificationShare" >Share</button>
                         </div>
                     </c:if>
                     <div class="backToList">
@@ -511,6 +516,33 @@
     </div>
 </div>
 
+<!-- QR Code Modal -->
+<div id="qrCodeModal" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-2">
+                <!-- Container for QR Code -->
+                <div id="qrCodeContainer"></div>
+            </div>
+            <div class="modal-footer">
+                <!-- Button to Download QR Code -->
+                <button type="button" class="btn btn-success" id="downloadBtn">Download</button>
+
+                <!-- Button to Copy QR Code Content -->
+                <button type="button" class="btn btn-info copy-btn" id="copyBtn">Copy</button>
+
+                <!-- Button to Close Modal -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script src="/assets/libs/simplebar/simplebar.min.js"></script>
@@ -1075,7 +1107,7 @@
             }
         })
 
-        $(document).on("click","#editCommentBtn", function (){
+        $(document).on("click","#editCommentBtn", function () {
             removeAlert()
             var contentEdit = $("#editContentComment").val()
             if(checkEmptyString(contentEdit)){
@@ -1098,7 +1130,68 @@
 
         $("#containerDetail").removeClass("d-none")
         $(".containerLoading").remove()
+        $(document).on("click","button.notificationShare", function () {
+            if($("#qrCodeImage").length >0){
+                $("#qrCodeModal").modal("show")
+                return
+            }
+            let currentUrl = window.location.href;
+            fetch('/api/v1/qrcode',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({content: currentUrl})
+                })
+                .then(response => response.arrayBuffer())
+                .then(buffer => {
+                    const byteArray = new Uint8Array(buffer);
+                    const blob = new Blob([byteArray], { type: 'image/png' });
+                    const url = URL.createObjectURL(blob);
+                    const imgElement = document.createElement('img');
+                    imgElement.id = 'qrCodeImage'; // Thêm id cho phần tử img
+                    imgElement.src = url;
+                    document.getElementById('qrCodeContainer').appendChild(imgElement);
+                    $("#qrCodeModal").modal("show")
+                })
+                .catch(error => console.error('Error fetching QR Code:', error));
+        })
+        const copyImageBtn = document.getElementById('copyBtn');
+        const downImageBtn = document.getElementById('downloadBtn');
+        copyImageBtn.addEventListener('click', function () {
+            let imgElement = document.getElementById('qrCodeImage');
+            let imageUrl = imgElement.src;
 
+            fetch(imageUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    navigator.clipboard.write([
+                        new ClipboardItem({
+                            'image/png': blob
+                        })
+                    ]).then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Image Copied!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }).catch((error) => {
+                        console.error('Unable to copy image to clipboard:', error);
+                    });
+                });
+        });
+        downImageBtn.addEventListener('click', function () {
+            let imgElement = document.getElementById('qrCodeImage');
+            let imageUrl = imgElement.src;
+
+            let link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = imageUrl;
+            link.dispatchEvent(new MouseEvent('click'));
+            console.log('Image downloaded:', imageUrl);
+        });
     });
 </script>
 </body>

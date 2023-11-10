@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.model.request.notification.CreateNotificatio
 import com.shsoftvina.erpshsoftvina.model.request.notification.UpdateNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.notification.NotificationShowResponse;
+import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.NotificationService;
 import com.shsoftvina.erpshsoftvina.service.PushSubscriptionService;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -54,7 +55,8 @@ public class NotificationApi {
         NotificationDetailResponse rs = notificationService.createNoti(createNotificationRequest);
         rs.setCategoryPush("Notifications");
         if(rs != null) {
-            pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(rs));
+            String userId = Principal.getUserCurrent().getId();
+            pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(rs), userId);
         }
         return ResponseEntity.ok(rs);
     }
