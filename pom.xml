@@ -225,6 +225,7 @@
             <artifactId>spring-websocket</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+
         <!-- Apache POI dependencies for Excel processing -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -278,13 +279,11 @@
         </dependency>
 
         <!-- qr code -->
-        <!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>3.5.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.zxing/javase -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>

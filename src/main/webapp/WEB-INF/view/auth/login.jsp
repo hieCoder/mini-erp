@@ -124,7 +124,7 @@
                             <h5 class="fs-13 mb-4 title">Sign In with</h5>
                         </div>
                         <div>
-                            <a href="/oauth2/authorization/github" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></a>
+                            <a href="/oauth2/authorization/gitlab" class="btn btn-light btn-icon waves-effect waves-light"><i class="ri-gitlab-fill fs-16"></i></a>
                         </div>
                     </div>
                 </form>
