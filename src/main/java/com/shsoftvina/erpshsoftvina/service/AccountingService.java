@@ -5,8 +5,10 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRe
 import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.RemainBalanceEachMonth;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface AccountingService {
     MonthHistoryList findAllMonthlyHistory();
@@ -20,5 +22,7 @@ public interface AccountingService {
     int deleteAccounting(String id);
 
     AccountResponse findAccountingById(String id);
+
+    List<RemainBalanceEachMonth> getRemainBalanceEachMonth();
 }
 

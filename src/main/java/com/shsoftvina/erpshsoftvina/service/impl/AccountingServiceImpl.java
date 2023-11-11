@@ -17,6 +17,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accounting.AccountResponse;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthHistoryList;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.RemainBalanceEachMonth;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
@@ -101,7 +102,7 @@ public class AccountingServiceImpl implements AccountingService {
             Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, listFileNameSaveFileSuccess);
             try {
                 accountingMapper.createAccounting(newAccounting);
-                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(beforeCreateAccounting);
+                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(newAccounting,true);
                 for (Accounting accounting : remainRecordInMonthList) {
                     latestRemain += accounting.getExpense();
                     accounting.setRemain(latestRemain);
@@ -159,7 +160,7 @@ public class AccountingServiceImpl implements AccountingService {
                 accountingMapper.updateAccounting(updateAccounting);
                 if (!Objects.equals(currentAccounting.getExpense(), accountingUpdateRequest.getExpense())) {
                     Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(currentAccounting.getPayDate());
-                    List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(beforeCurrentAccounting);
+                    List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(currentAccounting,true);
                     Long beforeRemain = 0L;
                     if (beforeCurrentAccounting != null) {
                         beforeRemain = beforeCurrentAccounting.getRemain();
@@ -178,13 +179,11 @@ public class AccountingServiceImpl implements AccountingService {
         } else {
             try {
                 accountingMapper.updateAccounting(updateAccounting);
-                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(null);
-                Long beforeRemain = 0L;
-                for (Accounting accounting : remainRecordInMonthList) {
-                    beforeRemain += accounting.getExpense();
-                    accounting.setRemain(beforeRemain);
+                updateRemainsInTwoMonth(updateAccounting);
+
+                if (!DateUtils.formatYearMonth(currentAccounting.getPayDate()).equals(accountingUpdateRequest.getPayDate())) {
+                    updateRemainsInTwoMonth(currentAccounting);
                 }
-                accountingMapper.updateRecordsBatch(remainRecordInMonthList);
 
                 FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
             } catch (Exception e) {
@@ -195,6 +194,16 @@ public class AccountingServiceImpl implements AccountingService {
         return findAccountingById(accountingUpdateRequest.getId());
     }
 
+    private void updateRemainsInTwoMonth(Accounting currentAccounting) {
+        List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(currentAccounting,false);
+        Long beforeRemain = 0L;
+        for (Accounting accounting : remainRecordInMonthList) {
+            beforeRemain += accounting.getExpense();
+            accounting.setRemain(beforeRemain);
+        }
+        accountingMapper.updateRecordsBatch(remainRecordInMonthList);
+    }
+
     @Override
     public int deleteAccounting(String id) {
         try {
@@ -202,7 +211,7 @@ public class AccountingServiceImpl implements AccountingService {
             if (deleteAccounting == null) throw new NotFoundException(MessageErrorUtils.notFound("Account id"));
             accountingMapper.deleteAccounting(id);
             Accounting beforeCurrentAccounting = accountingMapper.findBeforeCurrentAccounting(deleteAccounting.getPayDate());
-            List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(deleteAccounting);
+            List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(deleteAccounting,true);
             Long beforeRemain = 0L;
             if (beforeCurrentAccounting != null) {
                 beforeRemain = beforeCurrentAccounting.getRemain();
@@ -227,6 +236,11 @@ public class AccountingServiceImpl implements AccountingService {
     public AccountResponse findAccountingById(String id) {
         Accounting accounting = accountingMapper.findAccountingById(id);
         return accountingConverter.convertToResponseDTO(accounting);
+    }
+
+    @Override
+    public List<RemainBalanceEachMonth> getRemainBalanceEachMonth() {
+        return accountingMapper.getRemainBalanceEachMonth();
     }
 
 }

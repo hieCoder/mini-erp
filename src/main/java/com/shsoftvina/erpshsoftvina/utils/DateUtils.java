@@ -100,6 +100,15 @@ public class DateUtils {
         return time.format(formatter);
     }
 
+    public static String formatYearMonth(LocalDateTime time) {
+
+        // Define a DateTimeFormatter for the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        // Format the LocalDateTime to a string
+        return time.format(formatter);
+    }
+
 
     public static LocalDateTime toLocalDateTime(String dateString) {
         LocalDate localDate = LocalDate.parse(dateString);

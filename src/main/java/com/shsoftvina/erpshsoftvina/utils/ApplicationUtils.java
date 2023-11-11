@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 @Component
 public class ApplicationUtils {
@@ -84,6 +85,19 @@ public class ApplicationUtils {
 
     public static String generateId(){
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+    }
+
+    public static String generateVerifyMailCode(){
+        int codeLength = 6;
+        StringBuilder code = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < codeLength; i++) {
+            int digit = random.nextInt(10);
+            code.append(digit);
+        }
+
+        return code.toString();
     }
 
     private Setting getSetting(Class<?> c){
