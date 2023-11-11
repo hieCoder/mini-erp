@@ -143,7 +143,7 @@
             </div>
             <div class="pt-3 border-top border-top-dashed mt-4">
                 <h6 class="mb-3 fw-semibold text-uppercase">Bills</h6>
-                <div class="d-flex justify-content-center align-items-center fileLoading ms-2">
+                <div class="d-flex justify-content-center align-items-center fileLoading ms-2 d-none">
                                 <span class="spinner-grow flex-shrink-0" role="status">
                                     <span class="visually-hidden"> Loading...</span>
                                 </span>
@@ -278,7 +278,7 @@
                                     <div class="row mb-3">
                                         <div class="pt-3 border-top border-top-dashed mt-4">
                                             <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
-                                            <div class="d-flex justify-content-center align-items-center fileLoading ms-2">
+                                            <div class="d-flex justify-content-center align-items-center fileLoading ms-2 d-none">
                                                 <span class="spinner-grow flex-shrink-0" role="status">
                                                     <span class="visually-hidden"> Loading...</span>
                                                 </span>
@@ -576,13 +576,13 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-        let fileNameArr = []
+        let fileNameArr = [];
+        <c:if test="${account.bill != null}">
         <c:forEach items="${account.bill}" var="value" varStatus="loop">
         fileNameArr.push('${value}');
-        <c:if test="${loop.index + 1 == fn:length(account.bill)}">
+        </c:forEach>
         loadFilesName(fileNameArr);
         </c:if>
-        </c:forEach>
     });
 
     $(document).on("click", "button.downFileBtn", function () {
@@ -676,11 +676,11 @@
                                     var fileName = url.substring(url.lastIndexOf("/") + 1);
                                     html += showFileUploaded(fileName, contentLength, url, "edit")
                                     $("#editModal div.showFilesUploaded").html(html);
-                                    $("div.fileLoading").addClass("d-none");
                                 }
                             });
                         });
                     }
+                    $("div.fileLoading").addClass("d-none");
                     BtnLoadRemove();
                     $("button.editAccount").removeClass("d-none");
                 },
@@ -730,7 +730,7 @@
         formData.append("title", title);
         formData.append("note", note);
         formData.append("id", accountId);
-        formData.append("payDate",payDate);
+        formData.append("payDate", payDate);
         formData.append("oldFile", oldFile);
         formData.append("userId", userCurrent.id);
         formData.append("expense", amount);

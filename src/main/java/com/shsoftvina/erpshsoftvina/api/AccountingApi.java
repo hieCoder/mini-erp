@@ -74,5 +74,11 @@ public class AccountingApi {
     public ResponseEntity<?> detailAccounting(@PathVariable("id") String id) {
         return ResponseEntity.ok(accountingService.findAccountingById(id));
     }
+
+    @GetMapping("/balance")
+    public ResponseEntity<?> getRemainBalanceEachMonth() {
+        return ResponseEntity.ok(accountingService.getRemainBalanceEachMonth());
+    }
+
 }
 

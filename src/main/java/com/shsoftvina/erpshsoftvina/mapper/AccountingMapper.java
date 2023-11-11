@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.Accounting;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat;
+import com.shsoftvina.erpshsoftvina.model.response.accounting.RemainBalanceEachMonth;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,10 +33,12 @@ public interface AccountingMapper {
 
     Accounting findBeforeCurrentAccounting(@Param("payDate") LocalDateTime payDate);
 
-    List<Accounting> getRemainRecordInMonth(Accounting currentAccounting);
+    List<Accounting> getRemainRecordInMonth(@Param("currentAccounting") Accounting currentAccounting, @Param("inMonth") Boolean inMonth);
 
     void updateRecordsBatch(List<Accounting> remainRecordInMonthList);
 
     void deleteAccounting(String id);
+
+    List<RemainBalanceEachMonth> getRemainBalanceEachMonth();
 }
 

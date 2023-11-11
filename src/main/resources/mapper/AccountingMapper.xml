@@ -8,6 +8,19 @@
         WHERE status = 'ACTIVE'
         ORDER BY year DESC, month_list DESC
     </select>
+
+    <select id="getRemainBalanceEachMonth" resultType="com.shsoftvina.erpshsoftvina.model.response.accounting.RemainBalanceEachMonth">
+        SELECT DATE_FORMAT(ranked.pay_date, '%Y-%m') AS yearMonth, remain
+        FROM (
+                 SELECT *,
+                        ROW_NUMBER() OVER (PARTITION BY DATE_FORMAT(pay_date, '%Y-%m') ORDER BY pay_date DESC) AS row_num
+                 FROM ACCOUNTING
+                 WHERE status = 'ACTIVE'
+             ) AS ranked
+        WHERE row_num = 1
+        ORDER BY yearMonth ASC
+    </select>
+
     <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
         <id property="year" column="year" />
         <collection property="month" ofType="java.lang.String">
@@ -66,13 +79,13 @@
         SELECT spending, remain, id
         FROM ACCOUNTING
         WHERE
-        <if test="payDate != null">
-            pay_date &gt; #{payDate}
-            AND pay_date &lt;= CONCAT(LAST_DAY(#{payDate}), ' 23:59:59')
+        <if test="inMonth == true">
+            pay_date &gt;= #{currentAccounting.payDate}
+            AND pay_date &lt;= CONCAT(LAST_DAY(#{currentAccounting.payDate}), ' 23:59:59')
         </if>
-        <if test="payDate == null">
-            pay_date &gt;= LAST_DAY(CURRENT_DATE - INTERVAL 1 MONTH) + INTERVAL 1 DAY
-            AND pay_date &lt;= LAST_DAY(CURRENT_DATE)
+        <if test="inMonth == false">
+            pay_date &gt;= LAST_DAY(#{currentAccounting.payDate} - INTERVAL 1 MONTH) + INTERVAL 1 DAY
+            AND pay_date &lt;= LAST_DAY(#{currentAccounting.payDate})
         </if>
           AND status ='ACTIVE'
         ORDER BY pay_date ASC
