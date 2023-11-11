@@ -2,8 +2,7 @@ package com.shsoftvina.erpshsoftvina.api;
 
 import com.google.zxing.WriterException;
 import com.shsoftvina.erpshsoftvina.model.request.qrcode.GenerateQRCodeRequest;
-import com.shsoftvina.erpshsoftvina.service.QRCodeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shsoftvina.erpshsoftvina.utils.QRUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +14,10 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/v1/qrcode")
 public class QRCodeApi {
-    @Autowired
-    QRCodeService qrCodeService;
 
     @PostMapping()
-    public ResponseEntity<?> generateQRCode(@RequestBody GenerateQRCodeRequest generateQRCodeRequest) throws IOException, WriterException {
-        return ResponseEntity.ok(qrCodeService.generateQRCode(generateQRCodeRequest));
+    public ResponseEntity<?> generateQRCode(String content) throws IOException, WriterException {
+        return ResponseEntity.ok(QRUtils.generateQRCode(content));
     }
 
 }
