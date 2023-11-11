@@ -4,9 +4,11 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.security.Security;
 
 
+@WebListener
 public class AppInitializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
