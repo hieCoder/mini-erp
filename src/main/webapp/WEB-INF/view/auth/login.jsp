@@ -78,7 +78,7 @@
                     </c:if>
                     <c:if test="${param.userNotFound != null}">
                         <div class="alert alert-danger">
-                            Email is not registered in the system
+                            User ID is not registered in the system
                         </div>
                     </c:if>
                     <c:if test="${param.userLock != null}">

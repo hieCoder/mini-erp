@@ -15,6 +15,6 @@
 
     <decorator name="auth" page="auth.jsp">
         <pattern>/login</pattern>
-        <pattern>/register</pattern>
+        <pattern>/register*</pattern>
     </decorator>
 </decorators>
