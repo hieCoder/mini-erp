@@ -51,6 +51,21 @@
     </style>
 </head>
 <body>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Notification Detail</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/notifications">Notification</a></li>
+                    <li class="breadcrumb-item active">Notification Detail</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
 <div class="row position-relative notificationDetail" style="min-height: 80vh">
     <div class="col-lg-12">
         <div style="width: 3rem; height: 3rem; position: absolute; z-index: 999;top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center full-height">
@@ -61,9 +76,6 @@
             </div>
         </div>
         <div id="containerDetail" class="card d-none">
-            <div class="card-header">
-                <h4 class="card-title mb-0">Notification Detail</h4>
-            </div><!-- end card header -->
             <div id="viewNotification" class="card-body" data-id="${notification.id}">
                 <div class="text-muted">
                     <h5 class="mb-3 fw-semibold text-uppercase titleView">
@@ -1127,7 +1139,6 @@
             var jsonData = JSON.stringify(data);
             editComment(jsonData);
         })
-
         $("#containerDetail").removeClass("d-none")
         $(".containerLoading").remove()
         $(document).on("click","button.notificationShare", function () {
@@ -1136,13 +1147,12 @@
                 return
             }
             let currentUrl = window.location.href;
+            let data = new FormData()
+            data.append("content", currentUrl)
             fetch('/api/v1/qrcode',
                 {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({content: currentUrl})
+                    body: data
                 })
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
@@ -1150,7 +1160,7 @@
                     const blob = new Blob([byteArray], { type: 'image/png' });
                     const url = URL.createObjectURL(blob);
                     const imgElement = document.createElement('img');
-                    imgElement.id = 'qrCodeImage'; // Thêm id cho phần tử img
+                    imgElement.id = 'qrCodeImage';
                     imgElement.src = url;
                     document.getElementById('qrCodeContainer').appendChild(imgElement);
                     $("#qrCodeModal").modal("show")
@@ -1162,7 +1172,6 @@
         copyImageBtn.addEventListener('click', function () {
             let imgElement = document.getElementById('qrCodeImage');
             let imageUrl = imgElement.src;
-
             fetch(imageUrl)
                 .then(response => response.blob())
                 .then(blob => {
