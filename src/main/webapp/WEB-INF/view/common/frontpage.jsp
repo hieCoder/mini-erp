@@ -234,10 +234,10 @@
                 data.list.forEach(function (event, index) {
                     xhtml += '<li class="list-group-item ps-0">' +
                         '<div class="row align-items-center g-3">' +
-                        '<div class="col-auto">' +
+                        '<div class="col-auto" data-toggle="tooltip" data-bs-placement="bottom" title="' + getDayFromDate(event.startDate) + '">' +
                         '<div class="avatar-sm p-1 py-2 h-auto bg-light rounded-3">' +
                         '<div class="text-center">' +
-                        '<h5 class="mb-0">' + getDayFromDate(event.startDate) + '</h5>' +
+                        '<h5 class="mb-0">' + getDayFromDate(event.startDate).getDate() + '</h5>' +
                         '<div class="text-muted">' + getDayOfWeek(event.startDate) + '</div>' +
                         '</div>' +
                         '</div>' +
@@ -267,6 +267,9 @@
                 }
                 eventBodyElement.innerHTML = xhtml;
                 updatePagination(data, "pagination");
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                })
                 $("div.pageLoading").addClass("d-none");
             } else {
                 console.log("Data API Error")
@@ -316,7 +319,7 @@
 
     function getDayFromDate(dateString) {
         const date = new Date(dateString);
-        return date.getDate();
+        return date;
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -351,10 +354,10 @@
                 data.list.forEach(function (event, index) {
                     xhtml += '<li class="list-group-item ps-0">' +
                         '<div class="row align-items-center g-3">' +
-                        '<div class="col-auto">' +
+                        '<div class="col-auto" data-toggle="tooltip" data-bs-placement="bottom" title="' + getDayFromDate(event.startDate) + '">' +
                         '<div class="avatar-sm p-1 py-2 h-auto bg-light rounded-3">' +
                         '<div class="text-center">' +
-                        '<h5 class="mb-0">' + getDayFromDate(event.startDate) + '</h5>' +
+                        '<h5 class="mb-0">' + getDayFromDate(event.startDate).getDate() + '</h5>' +
                         '<div class="text-muted">' + getDayOfWeek(event.startDate) + '</div>' +
                         '</div>' +
                         '</div>' +
@@ -380,6 +383,9 @@
                 showTotal.innerHTML = '<div class="text-muted">Showing <span class="fw-semibold">' + data.list.length + '</span> of <span class="fw-semibold">' + data.totalRecords + '</span> Results</div>'
                 eventBodyElement.innerHTML = xhtml;
                 updatePagination(data, "pagination");
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                })
             } else {
                 console.log("Data API Error")
             }
