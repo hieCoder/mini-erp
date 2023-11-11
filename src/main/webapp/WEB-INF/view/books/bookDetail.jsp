@@ -87,7 +87,7 @@
                         </div>
                         <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
                         <div class="col-md-12">
-                            <div class="p-3">
+                            <div class="p-3" data-simplebar style="max-height: 350px">
                                 <div class="text-center loading-feeling">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
