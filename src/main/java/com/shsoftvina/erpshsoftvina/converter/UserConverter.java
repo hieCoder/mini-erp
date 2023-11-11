@@ -106,6 +106,8 @@ public class UserConverter {
     }
 
     public User toUpdateBasic(UserUpdateRequest userUpdateRequest, String newAvatarFileName, String newResumeFileName) {
+        String timesheetsCode = userUpdateRequest.getTimesheetsCode();
+        if (timesheetsCode.isEmpty()) timesheetsCode = null;
         return User.builder()
                 .id(userUpdateRequest.getId())
                 .fullname(userUpdateRequest.getFullname())
@@ -115,7 +117,7 @@ public class UserConverter {
                 .emergencyPhone(userUpdateRequest.getEmergencyPhone())
                 .avatar(newAvatarFileName)
                 .resume(newResumeFileName)
-                .timesheetsCode(userUpdateRequest.getTimesheetsCode())
+                .timesheetsCode(timesheetsCode)
                 .atm(userUpdateRequest.getAtm())
                 .gender(EnumUtils.getEnumFromValue(GenderEnum.class, userUpdateRequest.getGender()))
                 .build();

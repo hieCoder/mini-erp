@@ -16,7 +16,7 @@ $(document).ready(function () {
         onSubmit: function (formData) {
             $('#registerForm .spinner-border').removeClass('d-none');
             callAjaxByJsonWithDataForm("/api/v1/auth/register", "POST", formData, function (rs) {
-                window.location.href = "/login?registerSuccess";
+                window.location.href = "/register/confirm-mail";
             }, function (err) {
                 window.location.href = "/register?fail=userIdExisted";
             });

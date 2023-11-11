@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
                 // controller
                     // auth
-                    .antMatchers("/login", "/register").permitAll()
+                    .antMatchers("/login", "/register/**").permitAll()
                     // user
                     .antMatchers(HttpMethod.GET, "/users").access("hasAnyRole('OWNER', 'MANAGER')")
                     // schedule

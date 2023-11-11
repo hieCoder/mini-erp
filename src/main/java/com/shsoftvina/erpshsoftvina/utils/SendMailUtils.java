@@ -41,4 +41,8 @@ public class SendMailUtils {
         }
         return false;
     }
+
+    public static String getContentVerifyMail(String token){
+        return "<p>The code will expire after 3 minutes. Your code is: " + token + "</p>";
+    }
 }
