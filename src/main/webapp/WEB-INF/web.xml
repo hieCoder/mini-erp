@@ -54,6 +54,15 @@
         <param-value>resources.application</param-value>
     </context-param>
 
+    <session-config>
+        <cookie-config>
+            <name>SESSION</name>
+            <max-age>3600</max-age>
+            <secure>true</secure>
+            <http-only>true</http-only>
+        </cookie-config>
+    </session-config>
+
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/view/common/404-page.jsp</location>
