@@ -14,6 +14,12 @@ public class AuthController {
         return mav;
     }
 
+    @GetMapping("/register/confirm-mail")
+    public ModelAndView confirmMail() {
+        ModelAndView mav = new ModelAndView("auth/confirm-mail");
+        return mav;
+    }
+
     @GetMapping("/register")
     public ModelAndView register() {
         ModelAndView mav = new ModelAndView("auth/register");
