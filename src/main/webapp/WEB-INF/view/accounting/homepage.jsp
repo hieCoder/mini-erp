@@ -64,6 +64,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class="mt-3">
+                        <label class="form-label mb-0 text-muted viewRemain">Check remain balance each month: </label>
+                        <br>
+                        <button type="button" class="btn btn-primary btn-label rounded-pill mt-2 viewRemain"><i
+                                class="ri-equalizer-fill label-icon align-middle rounded-pill fs-16 me-2"></i> View
+                        </button>
+                    </div>
                 </div>
                 <div class="col-md-4 col-xl-6">
                     <div class="form-group">
@@ -91,7 +98,8 @@
                             <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="example_length"><label for="pageCount" class="form-label">Show
+                                        <div class="dataTables_length" id="example_length"><label for="pageCount"
+                                                                                                  class="form-label">Show
                                             <select
                                                     name="example_length"
                                                     aria-controls="example"
@@ -103,7 +111,8 @@
                                     </div>
                                     <div class="col-sm-12 col-md-6">
                                         <div id="example_filter" class="dataTables_filter mb-2">
-                                            <button class="btn btn-danger btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#createModal">
+                                            <button class="btn btn-danger btn-label waves-effect waves-light"
+                                                    data-bs-toggle="modal" data-bs-target="#createModal">
                                                 <i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i>
                                                 Create Account
                                             </button>
@@ -623,6 +632,32 @@
     </div>
 </div>
 
+<div class="modal zoomIn" id="remainModal" tabindex="-1" role="dialog" aria-labelledby="remainModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-center" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="remainModalLabel">Remain Balance Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body" id="generate-remain">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal zoomIn" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -816,7 +851,7 @@
     </div>
 </div>
 
-
+<script src="/assets/custom/js/notification/notification.js"></script>
 <script>
     var htmlElement = document.documentElement;
     cutShortLink();
@@ -935,6 +970,43 @@
             });
         }
     });
+
+    $(document).on("click", "button.viewRemain", function () {
+        $(this).addClass("d-none")
+        $(this).before(loadingBtnSm("primary"));
+        callAjaxByJsonWithData(baseUrlAccount + "balance", 'GET', null,
+            function (rs) {
+                let xhtml = "";
+                let result = 0;
+                rs.forEach(data => {
+                    let remainAsNumber = parseFloat(data.remain);
+                    if (!isNaN(remainAsNumber)) {
+                        result += remainAsNumber;
+                        xhtml += '<div class="row mb-3">' +
+                            '<div class="col-lg-6">' +
+                            '<label>' + data.yearMonth + '</label>' +
+                            '</div>' +
+                            '<div class="col-lg-6">' +
+                            '<p class="float-end">' + formatCurrency(remainAsNumber) + '</p></div></div>';
+
+                    }
+                })
+                xhtml += '<hr>' + '<div class="row mb-3">' +
+                    '<div class="col-lg-6">' +
+                    '<label>Total remains</label>' +
+                    '</div>' +
+                    '<div class="col-lg-6">' +
+                    '<p class="float-end">' + formatCurrency(result) + '</p></div></div>'
+                let remainList = document.getElementById("generate-remain");
+                remainList.innerHTML = xhtml;
+                BtnLoadRemove()
+                $("button.viewRemain").removeClass("d-none")
+                $("#remainModal").modal("show")
+            },
+            function (error) {
+                console.log(error)
+            })
+    })
 
     function loadPage(page) {
         $("div.containerLoading").removeClass("d-none");
