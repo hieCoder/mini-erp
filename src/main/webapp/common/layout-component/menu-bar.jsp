@@ -100,7 +100,7 @@
                     <div class="collapse menu-dropdown" id="sidebarTime">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="/management-time" class="nav-link">Management time</a>
+                                <a class="nav-link management-time-day-login">Management time</a>
                             </li>
                             <li class="nav-item">
                                 <a href="/books" class="nav-link">Book</a>
