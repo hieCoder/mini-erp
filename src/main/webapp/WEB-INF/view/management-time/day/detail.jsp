@@ -325,6 +325,9 @@
             return arr[code]
         }
         $("#showDetailSubmit").click(function (){
+            let target = $(this)
+            target.addClass("d-none")
+            target.before(BtnPrimaryLoad)
             $(".container-fluid button").each(function (){
                 $(this).prop("disabled",true)
             })
@@ -347,6 +350,8 @@
                     $("button").each(function (){
                         $(this).prop("disabled",false)
                     })
+                    target.removeClass("d-none")
+                    BtnLoadRemove()
                     rsUnSuccess()
                     return
                 }
@@ -356,6 +361,8 @@
                             $(this).prop("disabled",false)
                         })
                         $("#detailModal").modal("hide")
+                        target.removeClass("d-none")
+                        BtnLoadRemove()
                         rsSuccess("Update")
                      });
                 } else{ // create
@@ -364,6 +371,8 @@
                             $(this).prop("disabled",false)
                         })
                         $("#detailModal").modal("hide")
+                        target.removeClass("d-none")
+                        BtnLoadRemove()
                         rsSuccess("Update")
                     });
                 }
