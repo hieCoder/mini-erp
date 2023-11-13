@@ -268,11 +268,11 @@
                     table.querySelector('tbody').innerHTML = '';
 
                     // Set the date to the 1st day of the specified month
-                    currentDate = new Date(year, month, 1);
+                    let startDateOfcurrentDate = new Date(year, month, 1);
 
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
-                    currentMonthYear.textContent = "Calendar of " + currentDate.toLocaleDateString('en-US', options);
+                    currentMonthYear.textContent = "Calendar of " + startDateOfcurrentDate.toLocaleDateString('en-US', options);
                     currentMonthYear.classList.add('font-italic', 'underline-text');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
@@ -283,7 +283,7 @@
                     currentMonthYear.appendChild(span);
 
                     // Calculate the starting day (Sunday to Saturday: 0 to 6)
-                    const startDay = currentDate.getDay();
+                    const startDay = startDateOfcurrentDate.getDay();
 
                     // Get the number of days in the specified month
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -351,10 +351,16 @@
                                                         dayNumber === dateInResponse.getDate()
                                                     ) {
                                                         const link = document.createElement('a');
+                                                        link.classList.add("p-2");
+                                                        link.classList.add("fs-6");
                                                         link.textContent = dayNumber;
                                                         link.href = "${user.id}" + '/day/?id=' + week.id;
+                                                        if (dayNumber === currentDate.getDate()) {
+                                                            link.classList.add("badge", "badge-soft-danger","rounded-pill");
+                                                        }
                                                         cell.appendChild(link);
                                                         found = true;
+
                                                     }
                                                 })
                                             });
@@ -363,14 +369,19 @@
                                         if (!found) {
                                             const link = document.createElement('a');
                                             link.textContent = dayNumber;
+                                            link.classList.add("p-2");
+                                            link.classList.add("fs-6");
+                                            if (dayNumber === currentDate.getDate()) {
+                                                link.classList.add("badge", "badge-soft-danger","rounded-pill");
+                                            }
                                             const year = currentDate.getFullYear();
                                             const month = currentDate.getMonth() + 1;
                                             link.href = "${user.id}" + "/day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                             cell.appendChild(link);
                                         }
                                     }
-                                    cell.classList.add("font-weight-bold")
-                                    cell.classList.add("font-italic")
+                                    cell.classList.add("fw-bold")
+                                    cell.classList.add("fst-italic")
                                 } else {
                                     if (responseData != null && responseData.length > 0) {
                                         responseData.forEach((e) => {
@@ -393,6 +404,8 @@
                                                 cell.appendChild(link);
                                             }
                                         })
+                                        cell.classList.add("fw-bold")
+                                        cell.classList.add("fst-italic")
                                     }
                                 }
                             } else {
