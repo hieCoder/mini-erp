@@ -48,7 +48,6 @@ public class NotificationApi {
     }
 
     //    Create New Notification
-    @MessageMapping("/createNotification")
     @SendTo("/notification/createNotification")
     @PostMapping
     public ResponseEntity<?> createNoti(@Valid CreateNotificationRequest createNotificationRequest) {
@@ -57,6 +56,7 @@ public class NotificationApi {
         if(rs != null) {
             String userId = Principal.getUserCurrent().getId();
             pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(rs), userId);
+            simpMessagingTemplate.convertAndSend("/notification/createNotification", rs);
         }
         return ResponseEntity.ok(rs);
     }
@@ -81,5 +81,10 @@ public class NotificationApi {
     @GetMapping("/{id}")
     public ResponseEntity<?> notificationDetail(@PathVariable String id) {
         return ResponseEntity.ok(notificationService.findById(id));
+    }
+
+    @GetMapping("/latest/{limit}")
+    public ResponseEntity<?> getNotificationLatest(@PathVariable int limit) {
+        return ResponseEntity.ok(notificationService.getNotificationLatest(limit));
     }
 }

@@ -80,11 +80,14 @@
             align-items: center;
             justify-content: center;
         }
+        .full-height {
+            min-height: 80vh;
+        }
     </style>
     <title>Calendars</title>
 </head>
 <body>
-<div class="row">
+<div class="row position-relative full-height">
     <div class="col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">MANAGEMENT TIME CALENDAR</h4>
@@ -101,34 +104,36 @@
 
         </div>
     </div>
-</div>
-<div class="loading">
-    <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center">
+        <div>
+            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
     </div>
-</div>
-<div class="bg-white calendar-container d-none">
-    <h1 class="text-center" id="currentMonthYear"></h1>
-    <table class="table table-nowrap table-bordered" id="todoTable">
-        <thead>
-        <tr class="text-center week">
-            <th scope="col"></th>
-            <th scope="col" class="text-danger">Sun</th>
-            <th scope="col">Mon</th>
-            <th scope="col">Tue</th>
-            <th scope="col">Wed</th>
-            <th scope="col">Thu</th>
-            <th scope="col">Fri</th>
-            <th scope="col" class="text-primary">Sat</th>
-            <th scope="col" class="text-success">Weekly To-do List</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-center">
-        <button id="prevMonth" class="btn btn-info">Previous Month</button>
-        <button id="nextMonth" class="btn btn-info ms-4">Next Month</button>
+    <div class="bg-white calendar-container d-none">
+        <h1 class="text-center" id="currentMonthYear"></h1>
+        <table class="table table-nowrap table-bordered" id="todoTable">
+            <thead>
+            <tr class="text-center week">
+                <th scope="col"></th>
+                <th scope="col" class="text-danger">Sun</th>
+                <th scope="col">Mon</th>
+                <th scope="col">Tue</th>
+                <th scope="col">Wed</th>
+                <th scope="col">Thu</th>
+                <th scope="col">Fri</th>
+                <th scope="col" class="text-primary">Sat</th>
+                <th scope="col" class="text-success">Weekly To-do List</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            <button id="prevMonth" class="btn btn-info">Previous Month</button>
+            <button id="nextMonth" class="btn btn-info ms-4">Next Month</button>
+        </div>
     </div>
 </div>
 <div class="modal fade" id="weeklyToDo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -199,10 +204,37 @@
     const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
     const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
 
+    var rsSuccess = (text) =>{
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
+            showCancelButton: !0,
+            showConfirmButton: !1,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Back",
+            buttonsStyling: !1,
+            showCloseButton: !0
+        })
+    }
+    var rsUnSuccess = () =>{
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
+            showCancelButton: !0,
+            showConfirmButton: !1,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Dismiss",
+            buttonsStyling: !1,
+            showCloseButton: !0
+        })
+    }
+
     $(document).on("click", ".saveWeeklyToDo", function () {
         let target = $(this)
-        // target.after(dot)
-        // target.prop("disabled", true)
+        target.addClass("d-none")
+        target.before(BtnPrimaryLoad)
         let id = $("#weeklyToDo").attr("data-id")
         let content = ""
         let arrContent = []
@@ -227,20 +259,19 @@
                     $(selector).eq(indexMain).children().last().text(item)
                 })
                 $("#weeklyToDo").modal("hide")
-                var modal = '<strong class="btn-success rounded-circle p-2">Success!</strong> Update successfully.'
-                $("#successModal div.modal-body").html(modal)
-                $("#successModal").modal("show");
-
+                rsSuccess("Save")
+            } else{
+                rsUnSuccess()
             }
-            // target.after(dot)
-            // target.prop("disabled", false)
+            BtnLoadRemove()
+            target.removeClass("d-none")
         })
     })
 
     $(document).on("click", "button.showWeeklyUpdate", function () {
         let target = $(this)
-        // target.after(dot)
-        // target.prop("disabled", true)
+        target.addClass("d-none")
+        target.before(BtnPrimaryLoad)
         let id = target.attr("data-id")
         let modal = $("#weeklyToDo")
         modal.attr("data-id", id)
@@ -250,8 +281,9 @@
                     $(this).val(rs.weeklyContents[index])
                 })
             }
+            target.removeClass("d-none")
+            BtnLoadRemove()
             modal.modal("show")
-            target.prop("disabled", false)
         })
     })
 
@@ -484,10 +516,9 @@
                         $('div.custom-spinner').parent().remove()
                         if (button) {
                             button.prop("disabled", false)
-                        } else {
-                            $("div.loading").hide()
-                            $("div.calendar-container").removeClass("d-none")
                         }
+                        $(".containerLoading ").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
                     }
                 } else {
                     window.location.href = "/management-time/";
@@ -501,17 +532,17 @@
     populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
 
     prevMonthBtn.addEventListener('click', () => {
+        $(".containerLoading ").removeClass("d-none")
+        $("div.calendar-container").addClass("d-none")
         var button = $("#prevMonth")
-        // button.before(dot)
-        // button.prop("disabled", true)
         currentDate.setMonth(currentDate.getMonth() - 1);
         populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);
     });
 
     nextMonthBtn.addEventListener('click', () => {
+        $(".containerLoading ").removeClass("d-none")
+        $("div.calendar-container").addClass("d-none")
         var button = $("#nextMonth")
-        // button.after(dot)
-        // button.prop("disabled", true)
         currentDate.setMonth(currentDate.getMonth() + 1);
         populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);
     });
@@ -549,10 +580,8 @@
     }
 
     function getFirstAndLastDateOfMonth(year, month) {
-        // Xác định ngày đầu tiên của tháng
         const firstDay = new Date(year, month, 1);
 
-        // Xác định ngày cuối cùng của tháng
         const lastDay = new Date(year, month + 1, 0);
         return {
             firstDay,
@@ -562,8 +591,8 @@
 
     function formatDate(date) {
         const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Thêm 1 và định dạng số với 2 chữ số (01-12)
-        const day = date.getDate().toString().padStart(2, '0'); // Định dạng số với 2 chữ số (01-31)
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
         return year + '-' + month + '-' + day;
     }
 </script>
