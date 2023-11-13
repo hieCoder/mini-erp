@@ -39,7 +39,7 @@ public class EventConverter {
         return EventNotificationResponse.builder()
                 .id(event.getId())
                 .title(event.getTitle())
-                .createdDate(DateUtils.formatDate(event.getCreatedDate()))
+                .createdDate(DateUtils.formatDateTime(event.getCreatedDate()))
                 .build();
     }
 
