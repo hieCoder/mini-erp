@@ -835,16 +835,17 @@
         $('.manager-menu').remove();
 
         scheduleLink = '/schedules/detail/' + userCurrent.id;
-        //managementTime = '/management-time';
+        managementTime = '/management-time/' + userCurrent.id;
+
     } else {
         $('.manager-menu').removeClass('d-none');
 
         scheduleLink = '/schedules';
-        //managementTime = '/management-time/' + userCurrent.id;
+        managementTime = '/management-time';
     }
 
     $('.schedule-item-menu').attr('href', scheduleLink);
-    // $('.management-time-day-login').attr('href', managementTime);
+    $('.management-time-day-login').attr('href', managementTime);
 </script>
 </body>
 </html>

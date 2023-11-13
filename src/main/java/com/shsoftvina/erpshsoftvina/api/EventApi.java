@@ -26,6 +26,10 @@ import java.util.List;
 public class EventApi {
 
     @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+
+    @Autowired
     PushSubscriptionService pushSubscriptionService;
 
     @Autowired
@@ -44,6 +48,7 @@ public class EventApi {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
+    @SendTo("/notification/createEvent")
     @PostMapping()
     public ResponseEntity<?> createEvent(@Valid @RequestBody EventCreateRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -54,6 +59,7 @@ public class EventApi {
         if(eventResponse != null) {
             String userId = Principal.getUserCurrent().getId();
             pushSubscriptionService.sendNotificationAll(JsonUtils.objectToJson(eventResponse), userId);
+            simpMessagingTemplate.convertAndSend("/notification/createEvent", eventResponse);
         }
         return ResponseEntity.ok(eventResponse);
     }
@@ -67,5 +73,9 @@ public class EventApi {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(@PathVariable("id") String id) {
         return ResponseEntity.ok(eventService.deleteEvent(id));
+    }
+    @GetMapping("/latest/{limit}")
+    public ResponseEntity<?> getEventNotifications(@PathVariable("limit") Integer limit) {
+        return ResponseEntity.ok(eventService.getEventNotification(limit));
     }
 }

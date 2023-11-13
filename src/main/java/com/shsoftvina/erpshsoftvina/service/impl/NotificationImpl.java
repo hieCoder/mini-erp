@@ -160,5 +160,11 @@ public class NotificationImpl implements NotificationService {
     @Override
     public int countAll(String search){
         return notificationMapper.countAll(search, StatusNotificationEnum.ACTIVE);
-    };
+    }
+
+    @Override
+    public List<NotificationShowResponse> getNotificationLatest(int limit) {
+        List<Notification> notificationList = notificationMapper.getNotificationLatest(limit);
+        return notificationConverter.toListShowResponse(notificationList);
+    }
 }

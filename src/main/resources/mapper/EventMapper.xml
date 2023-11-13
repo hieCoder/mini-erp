@@ -10,6 +10,13 @@
             AND e.START_DATE &lt;= #{nextMonth};
     </select>
 
+    <select id="getEventNotification" resultMap="eventResultMap">
+        SELECT id,title,created_date
+        from EVENT
+        ORDER BY created_date desc
+        LIMIT #{limit}
+    </select>
+
     <select id="getUpcomingEvents" parameterType="org.apache.ibatis.session.RowBounds" resultMap="eventResultMap">
         select e.*, u.fullname, u.avatar
         from EVENT e
@@ -37,8 +44,8 @@
     </delete>
 
     <insert id="createEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
-        INSERT INTO EVENT(id, start_date, end_date, title, content, type, user_id)
-        VALUES (#{id}, #{startDate}, #{endDate}, #{title}, #{content}, #{type}, #{user.id});
+        INSERT INTO EVENT(id,created_date, start_date, end_date, title, content, type, user_id)
+        VALUES (#{id},#{createdDate}, #{startDate}, #{endDate}, #{title}, #{content}, #{type}, #{user.id});
     </insert>
 
     <update id="editEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
@@ -55,6 +62,7 @@
     <resultMap id="eventResultMap" type="com.shsoftvina.erpshsoftvina.entity.Event">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
+        <result property="createdDate" column="created_date"/>
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
         <result property="content" column="content"/>
