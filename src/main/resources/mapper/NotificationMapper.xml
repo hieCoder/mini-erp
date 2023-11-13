@@ -26,6 +26,16 @@
         ]]>
     </select>
 
+    <select id="getNotificationLatest" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
+        <![CDATA[
+        SELECT n.*,u.id,u.fullname
+        FROM NOTIFICATION n
+                 LEFT JOIN USER u ON n.user_id = u.id
+        ORDER BY created_date DESC
+            LIMIT #{limit}
+        ]]>
+    </select>
+
     <select id="getNotificationById" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
         FROM NOTIFICATION n

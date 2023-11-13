@@ -562,7 +562,73 @@ if( typeof userCurrent !== "undefined") {
     console.log('Must log in');
 }
 
+async function fetchNotificationsData(limit) {
+    return new Promise((resolve, reject) => {
+        callAjaxByJsonWithData(
+            "/api/v1/notifications/latest/" + limit ,
+            "GET",
+            null,
+            (rs) => {
+                if (rs) {
+                    resolve(rs);
+                }
+            },
+            (error) => {
+                console.log("Error");
+                console.log(error);
+                reject(error);
+            }
+        );
+    });
+}
+
+async function fetchEventsData(limit) {
+    return new Promise((resolve, reject) => {
+        callAjaxByJsonWithData(
+            "/api/v1/events/latest/" + limit ,
+            "GET",
+            null,
+            (rs) => {
+                let EVENT_API = [];
+                if (rs && rs.length > 0) {
+
+                }
+                resolve(EVENT_API);
+            },
+            (error) => {
+                console.log("Error");
+                console.log(error);
+                reject(error);
+            }
+        );
+    });
+}
+
+async function fetchNotifications(limit) {
+    try {
+        // const [calendarData, eventApiData] = await Promise.all([
+        //     fetchNotificationsData(limit),
+        //     fetchEventsData(limit),
+        // ]);
+        // let data = calendarData.concat(eventApiData)
+        // console.log(calendarData)
+        // console.log(eventApiData)
+        const [calendarData] = await Promise.all([
+            fetchNotificationsData(limit)
+        ]);
+        return calendarData
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+}
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    if(typeof userCurrent !== "undefined"){
+        fetchNotifications(5).then(rs => {
+            console.log(rs)
+        })
+    }
+})
 
 

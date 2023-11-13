@@ -21,7 +21,7 @@ public interface NotificationMapper {
                                   @Param("pageSize") int pageSize,
                                   @Param("status") StatusNotificationEnum status
     );
-
+    List<Notification> getNotificationLatest(@Param("limit") int limit);
     Notification createNoti(Notification notification);
     boolean delNoti(@Param("id") String id, @Param("status") StatusNotificationEnum status);
     Notification findById(String id);

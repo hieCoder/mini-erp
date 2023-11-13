@@ -82,4 +82,9 @@ public class NotificationApi {
     public ResponseEntity<?> notificationDetail(@PathVariable String id) {
         return ResponseEntity.ok(notificationService.findById(id));
     }
+
+    @GetMapping("/latest/{limit}")
+    public ResponseEntity<?> getNotificationLatest(@PathVariable int limit) {
+        return ResponseEntity.ok(notificationService.getNotificationLatest(limit));
+    }
 }
