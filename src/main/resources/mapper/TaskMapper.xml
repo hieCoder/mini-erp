@@ -233,7 +233,7 @@
         SELECT t.ID, t.TITLE
         FROM TASK t
                  INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE u.ID = #{userId} AND t.CONTENT LIKE CONCAT('%#', #{hashtag}, '%')
+        WHERE t.STATUS = 'ACTIVE' AND u.ID = #{userId} AND t.CONTENT LIKE CONCAT('%#', #{hashtag}, '%')
     </select>
 
     <resultMap id="TaskByHashTagResultMap" type="java.util.Map">
