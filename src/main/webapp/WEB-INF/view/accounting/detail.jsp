@@ -69,7 +69,7 @@
                                             </span>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <p class="text-uppercase fw-medium text-muted mb-3">Total Revenue</p>
+                                    <p class="text-uppercase fw-medium text-muted mb-3">Revenue</p>
                                     <h4 class="fs-4 mb-3"><span id="revenueAccount"><fmt:formatNumber type="number"
                                                                                                       value="${account.revenue}"
                                                                                                       pattern="#,##0 ₫"/></span>
@@ -94,7 +94,7 @@
                                             </span>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <p class="text-uppercase fw-medium text-muted mb-3">Total Expense</p>
+                                    <p class="text-uppercase fw-medium text-muted mb-3">Expense</p>
                                     <h4 class="fs-4 mb-3"><span id="expenseAccount"><fmt:formatNumber type="number"
                                                                                                       value="${account.expense}"
                                                                                                       pattern="#,##0 ₫"/></span>
