@@ -385,6 +385,28 @@ function subscribeUser(){
 }
 
 // Helper function
+function saveIdToLocal(id, nameLocal) {
+    // Get the value from Local Storage
+    let storedIds = getIdFromLocal(nameLocal)
+    // Check if the id already exists in the array
+    if (!storedIds.includes(id)) {
+        // If it doesn't exist, add the id to the array
+        storedIds.push(id);
+
+        // Save the updated array to Local Storage
+        localStorage.setItem(nameLocal, JSON.stringify(storedIds));
+        console.log(`Id ${id} has been added to Local Storage.`);
+    } else {
+        console.log(`Id ${id} already exists in Local Storage.`);
+    }
+}
+
+function getIdFromLocal(nameLocal) {
+    // Get the value from Local Storage
+    let storedIds = JSON.parse(localStorage.getItem(nameLocal)) || [];
+    return storedIds
+}
+
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -589,11 +611,9 @@ async function fetchEventsData(limit) {
             "GET",
             null,
             (rs) => {
-                let EVENT_API = [];
-                if (rs && rs.length > 0) {
-
+                if (rs) {
+                    resolve(rs);
                 }
-                resolve(EVENT_API);
             },
             (error) => {
                 console.log("Error");
@@ -604,19 +624,99 @@ async function fetchEventsData(limit) {
     });
 }
 
+function stringToDateValid(string){
+    const [datePart, timePart] = string.split(' ');
+    const [day, month, year] = datePart.split('/');
+    const [hour, minute, second] = timePart.split(':');
+    const dateObject = new Date(year, month - 1, day, hour, minute, second);
+    return dateObject
+}
+
+function countUnRead(){
+    var count = $(".latestItem").filter(".active").length;
+    $(".dangerCountLatest").text(count)
+}
+
+function handleLinkClick(id, process) {
+    $(`.latestItem[data-id="${id}"]`).removeClass("active")
+    saveIdToLocal(id, process)
+    countUnRead()
+    let url = ""
+    if(process === "notifications"){
+        url = "/notifications/" + id;
+    }
+    if(process === "events"){
+        url = "/schedules/detail/" + userCurrent.id;
+    }
+    window.open(url, "_blank")
+    return false;
+}
+
+function returnItemLatest(data,icon, process, active){
+    if(!data) return
+    return `
+   <div class="text-reset notification-item d-block dropdown-item position-relative ${active===0 ? "" : "active"} latestItem" data-id="${data.id}">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-soft-info text-info rounded-circle fs-16">
+                                                    <i class="${icon}"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <a href="javascript:void(0)" class="stretched-link" onclick="handleLinkClick('${data.id}', '${process}')">
+                                                    <h6 class="mt-0 mb-2 lh-base">${data.title}</h6>
+                                                </a>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> ${data.createdDate}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+    `
+}
+
+function viewAllLatest(check){
+    if(check === "Events"){
+        return `
+                                    <div class="my-3 text-center">
+                                        <a href="/schedules/detail/${userCurrent.id}" type="button" class="btn btn-soft-success waves-effect waves-light">View
+                                            All ${check} <i class="ri-arrow-right-line align-middle"></i></a>
+                                    </div>
+        `
+    }
+        return `
+                                    <div class="my-3 text-center">
+                                        <a href="/${check.toLowerCase()}" type="button" class="btn btn-soft-success waves-effect waves-light">View
+                                            All ${check} <i class="ri-arrow-right-line align-middle"></i></a>
+                                    </div>
+        `
+}
+
 async function fetchNotifications(limit) {
     try {
-        // const [calendarData, eventApiData] = await Promise.all([
-        //     fetchNotificationsData(limit),
-        //     fetchEventsData(limit),
-        // ]);
-        // let data = calendarData.concat(eventApiData)
-        // console.log(calendarData)
-        // console.log(eventApiData)
-        const [calendarData] = await Promise.all([
-            fetchNotificationsData(limit)
+        const [notificationsData, eventsData] = await Promise.all([
+            fetchNotificationsData(limit),
+            fetchEventsData(limit),
         ]);
-        return calendarData
+        let readIdNotifications = getIdFromLocal("notifications")
+        let readIdEvents = getIdFromLocal("events")
+        let htmlNotification = ''
+        let htmlEvent = ''
+        notificationsData.forEach(e=>{
+            let active = readIdNotifications.includes(e.id) ? 0 : 1
+            htmlNotification+= returnItemLatest(e, "bx bx-news", "notifications", active)
+        })
+        eventsData.forEach(e=>{
+            let active = readIdEvents.includes(e.id) ? 0 : 1
+            htmlEvent+= returnItemLatest(e, "bx bx-calendar-star", "events", active)
+        })
+        htmlNotification+= viewAllLatest("Notifications")
+        htmlEvent += viewAllLatest("Events")
+        $(".notificationsLatestList .simplebar-content").html(htmlNotification)
+        $(".eventsLatestList .simplebar-content").html(htmlEvent)
+        let data = notificationsData.concat(eventsData)
+        data.sort((a, b) => stringToDateValid(b.createdDate) - stringToDateValid(a.createdDate));
+        return data
     } catch (error) {
         console.error("An error occurred:", error);
     }
@@ -626,7 +726,7 @@ async function fetchNotifications(limit) {
 document.addEventListener("DOMContentLoaded", function () {
     if(typeof userCurrent !== "undefined"){
         fetchNotifications(5).then(rs => {
-            console.log(rs)
+            countUnRead()
         })
     }
 })
