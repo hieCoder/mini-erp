@@ -188,6 +188,7 @@
     </div>
 </div>
 <script>
+    const numberOfRowsPerWeek = 6;
     const table = document.getElementById('todoTable');
     const currentMonthYear = document.getElementById('currentMonthYear');
     const prevMonthBtn = document.getElementById('prevMonth');
@@ -254,6 +255,18 @@
         })
     })
 
+    function getWeeksInMonth(year, month) {
+        const firstDayOfMonth = new Date(year, month, 1);
+
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+
+        const daysInMonth = lastDayOfMonth.getDate();
+
+        const firstWeekStart = firstDayOfMonth.getDay();
+
+        return Math.ceil((daysInMonth + firstWeekStart) / 7);
+    }
+
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
         const formattedFirstSunday = formatDate(result.firstSunday);
@@ -268,22 +281,21 @@
                     table.querySelector('tbody').innerHTML = '';
 
                     // Set the date to the 1st day of the specified month
-                    let startDateOfcurrentDate = new Date(year, month, 1);
+                    let startDateOfCurrentDate = new Date(year, month, 1);
 
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
-                    currentMonthYear.textContent = "Calendar of " + startDateOfcurrentDate.toLocaleDateString('en-US', options);
-                    currentMonthYear.classList.add('font-italic', 'underline-text');
+                    currentMonthYear.textContent = "Calendar of " + startDateOfCurrentDate.toLocaleDateString('en-US', options);
+                    currentMonthYear.classList.add('fst-italic','p-3');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
                     span.textContent = "Username: " + fullName;
                     span.style.fontSize = "20px";
-                    span.classList.add("normal-text");
                     currentMonthYear.appendChild(document.createElement("br"));
                     currentMonthYear.appendChild(span);
 
                     // Calculate the starting day (Sunday to Saturday: 0 to 6)
-                    const startDay = startDateOfcurrentDate.getDay();
+                    const startDay = startDateOfCurrentDate.getDay();
 
                     // Get the number of days in the specified month
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -294,7 +306,8 @@
                     var countLine = -1;
                     // Populate the calendar
                     const tbody = table.querySelector('tbody');
-                    for (let i = 0; i < 30; i++) {
+                    const weeksInSpecificMonth = getWeeksInMonth(year, month) * numberOfRowsPerWeek;
+                    for (let i = 0; i < weeksInSpecificMonth; i++) {
                         const row = document.createElement('tr');
                         for (let j = 0; j < 9; j++) {
                             const cell = document.createElement('td');
