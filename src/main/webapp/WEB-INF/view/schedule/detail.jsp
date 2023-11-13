@@ -317,10 +317,6 @@
         </div>
     </div> <!-- end row-->
 </div>
-
-
-
-</div>
 <div class="modal fade zoomIn" id="deleteSuccessEvent" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
