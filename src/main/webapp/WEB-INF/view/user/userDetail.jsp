@@ -459,7 +459,7 @@
                                             <tr>
                                                 <th>Basic Salary</th>
                                                 <th width="200">Allowance</th>
-                                                                                                <th>Insurance</th>
+                                                <th>Insurance</th>
                                                 <th>File Contract</th>
                                                 <th>Action</th>
                                             </tr>
@@ -467,7 +467,7 @@
                                             <tbody class="list form-check-all">
                                             <c:forEach var="contract" items="${contracts}">
                                                 <tr>
-                                                    <td>${contract.basicSalary}</td>
+                                                    <td>${contract.basicSalary}đ</td>
                                                     <td class="format-allowance" data-simplebar
                                                         style="max-height: 200px;">${contract.allowance}</td>
                                                     <td class="format-insurance">${contract.insurance}</td>
@@ -1807,11 +1807,15 @@
                                 }
                             }
 
-                            var codeInsurance = document.getElementById('editHealthInsuranceCheckbox').value;
-                            var moneyInsurance = document.getElementById('editHealthInsuranceInput').value;
-                            var codeSocialInsurance = document.getElementById('editSocialInsuranceCheckbox').value;
-                            var moneySocialInsurance = document.getElementById('editSocialInsuranceInput').value;
-                            var strings = [codeInsurance, moneyInsurance, codeSocialInsurance, moneySocialInsurance];
+                            var codeInsurance = document.getElementById('editHealthInsuranceCheckbox');
+                            var moneyInsurance = document.getElementById('editHealthInsuranceInput');
+                            var codeSocialInsurance = document.getElementById('editSocialInsuranceCheckbox');
+                            var moneySocialInsurance = document.getElementById('editSocialInsuranceInput');
+
+                            if (!codeInsurance.checked) moneyInsurance.value = '';
+                            if (!codeSocialInsurance.checked) moneySocialInsurance.value = '';
+
+                            var strings = [codeInsurance.value, moneyInsurance.value, codeSocialInsurance.value, moneySocialInsurance.value];
 
                             var objects = [];
                             for (var i = 0; i < strings.length; i += 2) {
