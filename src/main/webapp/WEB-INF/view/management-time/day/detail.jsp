@@ -12,179 +12,185 @@
 
 <html>
 <head>
-    <title>Detail of day</title>
+    <title>Detail of Day</title>
+    <style>
+        .full-height {
+            min-height: 80vh;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-4 calendar-container" data-date="${day}" data-id="${dayResponse.id}">
-    <h1>Management Time Day</h1>
-    <h5 class="font-italic font-bold text-center">${dayResponse != null ? dayResponse.day : day}</h5>
-    <div class="row">
-        <div class="col-md-6">
-            <h3>One Thing Calendar</h3>
-            <h5>Daily Important</h5>
-            <table class="table table-bordered oneThingCalendar">
-                <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Target</th>
-                    <th>Performance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:set var="theSingleMostImportantThing" value="${oneThingCalendar.theSingleMostImportantThing}" />
-                <tr name="theSingleMostImportantThing">
-                    <td>Single Most Important Thing</td>
-                    <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}"></td>
-                    <td><input class="form-control small-checkbox" type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}></td>
-                </tr>
-                <c:set var="lecture" value="${oneThingCalendar.lecture}" />
-                <tr name="lecture">
-                    <td>Lecture</td>
-                    <td><input class="form-control" type="text" value="${lecture.target}"></td>
-                    <td><input class="form-control small-checkbox" type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
-                </tr>
-                <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}" />
-                <tr name="dailyEvaluation">
-                    <td>Daily Evaluation</td>
-                    <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
-                    <td><input class="form-control small-checkbox" type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
-                </tr>
-                <c:set var="work" value="${oneThingCalendar.work}" />
-                <tr name="work">
-                    <td>Work</td>
-                    <td><input class="form-control" type="text" value="${work.target}"></td>
-                    <td><input class="form-control small-checkbox" type="checkbox" ${work.performance ? 'checked' : ''}></td>
-                </tr>
-                <c:set var="reading" value="${oneThingCalendar.reading}" />
-                <tr name="reading">
-                    <td>Reading</td>
-                    <td><input class="form-control" type="text" value="${reading.target}"></td>
-                    <td><input class="form-control small-checkbox" type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                </tr>
-                </tbody>
-            </table>
-            <h3>Gratitude Diary</h3>
-            <ul class="list-group mb-2" name="gratitudeDiary">
-                <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
-                    <li class="list-group-item"><textarea class="form-control">${entry}</textarea></li>
-                </c:forEach>
-                <c:if test="${3-data.gratitudeDiary.size()>0}">
-                    <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
-                        <li class="list-group-item"><textarea class="form-control"></textarea></li>
-                    </c:forEach>
-                </c:if>
-            </ul>
-            <h3>Affirmation:</h3>
-            <textarea class="form-control affirmation">${data.affirmation}</textarea>
-        </div>
-        <div class="col-md-6">
-            <h3>To-Do List</h3>
-            <h5>Six to Twelve PM
-                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelvePm" ${showButtonResult}>Show Detail</button>
-            </h5>
-            <table class="table table-bordered sixToTwelvePm">
-                <thead>
-                <tr>
-                    <th>Target</th>
-                    <th>Performance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${toDoList.sixToTwelvePm}" var="entry" varStatus="loop">
-                    <tr>
-                        <td><input class="form-control" type="text" value="${entry.target}"></td>
-                        <td><input class="form-control small-checkbox" type="checkbox" ${entry.performance ? 'checked' : ''}></td>
-                    </tr>
-                </c:forEach>
-                <c:if test="${4-toDoList.sixToTwelvePm.size()>0}">
-                    <c:forEach begin="1" end="${4-toDoList.sixToTwelvePm.size()}" varStatus="loop">
-                        <tr>
-                            <td><input class="form-control" type="text" value=""></td>
-                            <td><input class="form-control small-checkbox" type="checkbox"></td>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-                </tbody>
-            </table>
-            <h5>Twelve to Six PM
-                <button class="btn btn-sm btn-primary showDetail" data-name="twelveToSixPm" ${showButtonResult}>Show Detail</button>
-            </h5>
-            <table class="table table-bordered twelveToSixPm">
-                <thead>
-                <tr>
-                    <th>Target</th>
-                    <th>Performance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${toDoList.twelveToSixPm}" var="entry" varStatus="loop">
-                    <tr>
-                        <td><input class="form-control" type="text" value="${entry.target}"></td>
-                        <td><input class="form-control small-checkbox" type="checkbox" ${entry.performance ? 'checked' : ''}></td>
-                    </tr>
-                </c:forEach>
-                <c:if test="${4-toDoList.twelveToSixPm.size()>0}">
-                    <c:forEach begin="1" end="${4-toDoList.twelveToSixPm.size()}" varStatus="loop">
-                        <tr>
-                            <td><input class="form-control" type="text" value=""></td>
-                            <td><input class="form-control small-checkbox" type="checkbox"></td>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-                </tbody>
-            </table>
-            <h5>Six to Twelve AM
-                <button class="btn btn-sm btn-primary showDetail" data-name="sixToTwelveAm" ${showButtonResult}>Show Detail</button>
-            </h5>
-            <table class="table table-bordered sixToTwelveAm">
-                <thead>
-                <tr>
-                    <th>Target</th>
-                    <th>Performance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${toDoList.sixToTwelveAm}" var="entry" varStatus="loop">
-                    <tr>
-                        <td><input class="form-control" type="text" value="${entry.target}"></td>
-                        <td><input class="form-control small-checkbox" type="checkbox" ${entry.performance ? 'checked' : ''}></td>
-                    </tr>
-                </c:forEach>
-                <c:if test="${4-toDoList.sixToTwelveAm.size()>0}">
-                    <c:forEach begin="1" end="${4-toDoList.sixToTwelveAm.size()}" varStatus="loop">
-                        <tr>
-                            <td><input class="form-control" type="text" value=""></td>
-                            <td><input class="form-control small-checkbox" type="checkbox"></td>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 mt-4 text-center">
-            <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">Back</button>
-            <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="margin-top: 50%;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<div class="row position-relative full-height">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Management Time: <span class="fw-semibold text-success fst-italic">${dayResponse != null ? dayResponse.day : day}</span> </h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Management Time</a></li>
+                    <li class="breadcrumb-item active">Management Time Day</li>
+                </ol>
             </div>
         </div>
     </div>
+    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center">
+        <div>
+            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div class="row calendar-container d-none" data-date="${day}" data-id="${dayResponse.id}">
+        <div class="card">
+            <div class="row card-body">
+                <div class="col-md-6">
+                    <h4 class="fw-bolder">One Thing Calendar</h4>
+                    <h5 class="fst-italic">Daily Important</h5>
+                    <table class="table table-bordered oneThingCalendar text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Target</th>
+                            <th>Performance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:set var="theSingleMostImportantThing" value="${oneThingCalendar.theSingleMostImportantThing}" />
+                        <tr name="theSingleMostImportantThing">
+                            <td class="text-start">Single Most Important Thing</td>
+                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}"></td>
+                            <td><input class="form-check-input" type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}></td>
+                        </tr>
+                        <c:set var="lecture" value="${oneThingCalendar.lecture}" />
+                        <tr name="lecture">
+                            <td class="text-start">Lecture</td>
+                            <td><input class="form-control" type="text" value="${lecture.target}"></td>
+                            <td><input class="form-check-input" type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
+                        </tr>
+                        <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}" />
+                        <tr name="dailyEvaluation">
+                            <td class="text-start">Daily Evaluation</td>
+                            <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
+                            <td><input class="form-check-input" type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
+                        </tr>
+                        <c:set var="work" value="${oneThingCalendar.work}" />
+                        <tr name="work">
+                            <td class="text-start">Work</td>
+                            <td><input class="form-control" type="text" value="${work.target}"></td>
+                            <td><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}></td>
+                        </tr>
+                        <c:set var="reading" value="${oneThingCalendar.reading}" />
+                        <tr name="reading">
+                            <td class="text-start">Reading</td>
+                            <td><input class="form-control" type="text" value="${reading.target}"></td>
+                            <td><input class="form-check-input" type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="fw-bolder">Gratitude Diary</h4>
+                    <ul class="list-group mb-2" name="gratitudeDiary">
+                        <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
+                            <li class="list-group-item"><textarea class="form-control">${entry}</textarea></li>
+                        </c:forEach>
+                        <c:if test="${3-data.gratitudeDiary.size()>0}">
+                            <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
+                                <li class="list-group-item"><textarea class="form-control"></textarea></li>
+                            </c:forEach>
+                        </c:if>
+                    </ul>
+                    <h4 class="fw-bolder">Affirmation:</h4>
+                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                </div>
+                <div class="col-md-6 toDoList">
+                    <h4 class="fw-bolder">To-Do List</h4>
+                    <h5 class="fst-italic">Six to Twelve PM
+                        <button class="btn btn-sm btn-primary ms-2 showDetail" data-name="sixToTwelvePm" ${showButtonResult}>Show Detail</button>
+                    </h5>
+                    <table class="table table-bordered sixToTwelvePm text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th>Target</th>
+                            <th>Performance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${toDoList.sixToTwelvePm}" var="entry" varStatus="loop">
+                            <tr>
+                                <td><input class="form-control" type="text" value="${entry.target}"></td>
+                                <td><input class="form-check-input" type="checkbox" ${entry.performance ? 'checked' : ''}></td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${4-toDoList.sixToTwelvePm.size()>0}">
+                            <c:forEach begin="1" end="${4-toDoList.sixToTwelvePm.size()}" varStatus="loop">
+                                <tr>
+                                    <td><input class="form-control" type="text" value=""></td>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                        </tbody>
+                    </table>
+                    <h5 class="fst-italic">Twelve to Six PM
+                        <button class="btn btn-sm btn-primary ms-2 showDetail" data-name="twelveToSixPm" ${showButtonResult}>Show Detail</button>
+                    </h5>
+                    <table class="table table-bordered twelveToSixPm text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th>Target</th>
+                            <th>Performance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${toDoList.twelveToSixPm}" var="entry" varStatus="loop">
+                            <tr>
+                                <td><input class="form-control" type="text" value="${entry.target}"></td>
+                                <td><input class="form-check-input" type="checkbox" ${entry.performance ? 'checked' : ''}></td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${4-toDoList.twelveToSixPm.size()>0}">
+                            <c:forEach begin="1" end="${4-toDoList.twelveToSixPm.size()}" varStatus="loop">
+                                <tr>
+                                    <td><input class="form-control" type="text" value=""></td>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                        </tbody>
+                    </table>
+                    <h5 class="fst-italic">Six to Twelve AM
+                        <button class="btn btn-sm btn-primary ms-2 showDetail" data-name="sixToTwelveAm" ${showButtonResult}>Show Detail</button>
+                    </h5>
+                    <table class="table table-bordered sixToTwelveAm text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th>Target</th>
+                            <th>Performance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${toDoList.sixToTwelveAm}" var="entry" varStatus="loop">
+                            <tr>
+                                <td><input class="form-control" type="text" value="${entry.target}"></td>
+                                <td><input class="form-check-input" type="checkbox" ${entry.performance ? 'checked' : ''}></td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${4-toDoList.sixToTwelveAm.size()>0}">
+                            <c:forEach begin="1" end="${4-toDoList.sixToTwelveAm.size()}" varStatus="loop">
+                                <tr>
+                                    <td><input class="form-control" type="text" value=""></td>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 text-center align-middle">
+                    <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">Back</button>
+                    <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end row-->
 </div>
 
 <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
@@ -192,9 +198,7 @@
         <div class="modal-content" style="margin-top: 30%;">
             <div class="modal-header">
                 <h5 class="modal-title" id="detailModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered text-center">
@@ -213,28 +217,62 @@
             <div class="modal-footer">
                 <p class="mr-4 message-noti-day-detail" style="color:green;"></p>
                 <button type="button" class="btn btn-primary" id="showDetailSubmit">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 <style>
-    .small-checkbox {
-        font-size: 0.4rem
+    .container-fluid .form-check-input {
+        font-size: 1.2rem;
     }
+
     textarea.form-control{
         min-height: 95px
     }
     textarea.affirmation{
         min-height: 155px
     }
+
+    .form-check-input{
+        margin: 0;
+    }
+
 </style>
 <script>
-
+    document.addEventListener("DOMContentLoaded", function () {
+        $(".containerLoading").addClass("d-none")
+        $(".calendar-container").removeClass("d-none")
+    })
     const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
     const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
     const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
-
+    var rsSuccess = (text) =>{
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
+            showCancelButton: !0,
+            showConfirmButton: !1,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Back",
+            buttonsStyling: !1,
+            showCloseButton: !0
+        })
+    }
+    var rsUnSuccess = () =>{
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
+            showCancelButton: !0,
+            showConfirmButton: !1,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Dismiss",
+            buttonsStyling: !1,
+            showCloseButton: !0
+        })
+    }
         let qresult = (name)=>{
             let array = {
                 sixToTwelvePm: "6~12pm",
@@ -280,9 +318,7 @@
             }
             return arr[code]
         }
-        var dot = createLoadingHtml();
         $("#showDetailSubmit").click(function (){
-            $(this).before(dot)
             $("button").each(function (){
                 $(this).prop("disabled",true)
             })
@@ -301,33 +337,32 @@
             }
 
             callAjaxByJsonWithData('/api/v1/management-time-detail/exist/' + dayId, 'GET', null, function (rs) {
+                if(!(typeof rs === 'boolean')){
+                    $("button").each(function (){
+                        $(this).prop("disabled",false)
+                    })
+                    rsUnSuccess()
+                    return
+                }
                 if(rs){ // update
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
                         $("button").each(function (){
                             $(this).prop("disabled",false)
                         })
-                        $('div.custom-spinner').parent().remove();
-                        $("#detailModal").modal("hide");
-                        var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
-                        `
-                        $("#successModal div.modal-body").html(modal)
-                        $("#successModal").modal("show");
+                        $("#detailModal").modal("hide")
+                        rsSuccess("Update")
                      });
                 } else{ // create
                     callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
                         $("button").each(function (){
                             $(this).prop("disabled",false)
                         })
-                        $('div.custom-spinner').parent().remove();
-                        $("#detailModal").modal("hide");
-                        var modal = `
-                        <strong class="btn-success rounded-circle p-2">Success!</strong>  Updated successfully.
-                        `
-                        $("#successModal div.modal-body").html(modal)
-                        $("#successModal").modal("show");
+                        $("#detailModal").modal("hide")
+                        rsSuccess("Update")
                     });
                 }
+            }, function (error){
+                rsUnSuccess()
             });
         })
     $("button.showDetail").click(function (){
@@ -338,7 +373,6 @@
         $("button").each(function (){
             $(this).prop("disabled",true)
         })
-        $(this).after(dot)
         modal.attr("data-code",name )
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
@@ -384,10 +418,6 @@
     })
 
     $("#updateButton").click(function() {
-        $("button").each(function (){
-            $(this).prop("disabled",true)
-        })
-        $("#updateButton").after(dot)
         var id = "${dayResponse.id}"
         var oneThingCalendar = {};
         $(".oneThingCalendar tr").each(function() {
@@ -460,26 +490,6 @@
             toDoList: toDoList,
             gratitudeDiary: gratitudeDiary,
             affirmation: affirmation
-        }
-        let rsSuccess = (text) =>{
-            $("button").each(function () {
-                $(this).prop("disabled", false)
-            })
-            $('div.custom-spinner').parent().remove();
-            var modal = '<strong class="btn-success rounded-circle p-2">Success!</strong>  '+text+' successfully.'
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
-        }
-
-        let rsUnSuccess = () =>{
-            $("button").each(function () {
-                $(this).prop("disabled", false)
-            })
-            $('div.custom-spinner').parent().remove();
-            var modal = `<strong class="btn-danger rounded-circle p-2">Unsuccessful!</strong>  Updated unsuccessfully.
-                            `
-            $("#successModal div.modal-body").html(modal)
-            $("#successModal").modal("show");
         }
         var apiUrlManagementTimeDayApi = "/api/v1/management-time/day"
 
