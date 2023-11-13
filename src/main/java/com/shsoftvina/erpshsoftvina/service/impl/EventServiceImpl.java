@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
 import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventNotificationResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import com.shsoftvina.erpshsoftvina.service.EventService;
@@ -99,5 +100,11 @@ public class EventServiceImpl implements EventService {
         boolean hasNext = page < totalPage;
         boolean hasPrevious = page > 1;
         return new DashBoardResponse(list,page,totalPage,totalRecordCount,size,hasNext,hasPrevious);
+    }
+
+    @Override
+    public List<EventNotificationResponse> getEventNotification(Integer limit) {
+        List<Event> events = eventMapper.getEventNotification(limit);
+        return eventConverter.convertToNotiResponse(events);
     }
 }
