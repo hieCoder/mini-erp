@@ -31,51 +31,6 @@
             );
     </select>
 
-    <select id="getScheduleDetail" resultMap="scheduleDetailResultMap">
-        SELECT t.ID, t.TITLE, t.STATUS_TASK, t.CREATED_DATE, t.START_DATE, t.DUE_DATE, t.CLOSE_DATE
-        FROM TASK t INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.USER_ID = #{userId} AND t.STATUS = 'ACTIVE'
-        <choose>
-            <when test="startDate != null and endDate != null">
-                AND ((t.START_DATE IS NOT NULL AND
-                        (
-                            (t.START_DATE BETWEEN #{startDate} AND #{endDate})
-                            OR (#{startDate} > t.START_DATE AND #{startDate} &lt;=
-                                (CASE
-                                    WHEN t.STATUS != 'CLOSE' THEN t.DUE_DATE
-                                    WHEN t.STATUS = 'CLOSE' THEN t.CLOSE_DATE
-                                END))
-                        )
-                    )
-                    OR (t.START_DATE IS NULL AND
-                        ((t.CREATED_DATE BETWEEN #{startDate} AND #{endDate})
-                             OR (#{startDate} > t.CREATED_DATE AND #{startDate} &lt;= t.DUE_DATE)
-                    )))
-            </when>
-            <when test="startDate != null">
-                AND ((t.START_DATE IS NOT NULL AND
-                        (
-                            t.START_DATE >= #{startDate}
-                            OR (#{startDate} > t.START_DATE AND #{startDate} &lt;=
-                                    (CASE
-                                        WHEN t.STATUS != 'CLOSE' THEN t.DUE_DATE
-                                        WHEN t.STATUS = 'CLOSE' THEN t.CLOSE_DATE
-                                    END)
-                            )
-                        ))
-                        OR (t.START_DATE IS NULL AND
-                            (t.CREATED_DATE >= #{startDate}
-                            OR (#{startDate} > t.CREATED_DATE AND #{startDate} &lt;= t.DUE_DATE)
-                        )))
-            </when>
-            <when test="endDate != null">
-                AND ((t.START_DATE IS NOT NULL AND t.START_DATE &lt;= #{endDate})
-                        OR (t.START_DATE IS NULL AND t.CREATED_DATE &lt;= #{endDate})
-                )
-            </when>
-        </choose>
-    </select>
-
     <resultMap id="scheduleDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">
         <id property="id" column="ID"/>
         <result property="title" column="TITLE"/>

@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
 import com.shsoftvina.erpshsoftvina.model.response.event.DashBoardResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventNotificationResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface EventService {
     int deleteEvent(String id);
 
     DashBoardResponse getUpcomingEvent(String day, Integer page, Integer size);
+
+    List<EventNotificationResponse> getEventNotification(Integer limit);
 }

@@ -7,6 +7,5 @@ import java.util.Date;
 import java.util.List;
 
 public interface ScheduleService {
-    ScheduleListResponse getScheduleDetail(String userId, Date startDate, Date endDate);
     ScheduleListResponse getScheduleDetail(String userId, String monthly);
 }

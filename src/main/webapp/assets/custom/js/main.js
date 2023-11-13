@@ -41,6 +41,16 @@ const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" sty
     '</span>' +
     '</button>';
 
+const BtnSmPrimaryLoad = '<button class="btn btn-sm btn-outline-primary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
 // FUNCTION
 
 // call api
@@ -375,6 +385,28 @@ function subscribeUser(){
 }
 
 // Helper function
+function saveIdToLocal(id, nameLocal) {
+    // Get the value from Local Storage
+    let storedIds = getIdFromLocal(nameLocal)
+    // Check if the id already exists in the array
+    if (!storedIds.includes(id)) {
+        // If it doesn't exist, add the id to the array
+        storedIds.push(id);
+
+        // Save the updated array to Local Storage
+        localStorage.setItem(nameLocal, JSON.stringify(storedIds));
+        console.log(`Id ${id} has been added to Local Storage.`);
+    } else {
+        console.log(`Id ${id} already exists in Local Storage.`);
+    }
+}
+
+function getIdFromLocal(nameLocal) {
+    // Get the value from Local Storage
+    let storedIds = JSON.parse(localStorage.getItem(nameLocal)) || [];
+    return storedIds
+}
+
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -391,7 +423,6 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function updateSubscriptionOnServer(subscription) {
-    // Sử dụng fetch để gửi thông tin đăng ký đến endpoint '/subscribe' trên server
     fetch('/api/v1/subscribe/', {
         method: 'POST',
         headers: {
@@ -464,6 +495,59 @@ function registerServiceWorker(){
     }
 }
 
+function connectSocketNotification(){
+    let stompClient = Stomp.over(new SockJS("/websocket"));
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/notification/createNotification", function (rs) {
+            let data = JSON.parse(rs.body)
+            if(data.idUser === userCurrent.id){
+                return
+            } else {
+                Swal.fire({
+                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-push.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Notifications</span></h4><p class="text-muted mb-0 fs-13">'+ data.title +'</p></div></div>',
+                    showCancelButton: !1,
+                    customClass: {
+                        confirmButton: 'btn btn-primary mb-1'
+                    },
+                    confirmButtonText: 'Show Me <i class="ri-arrow-right-line ms-1 align-bottom"></i>',
+                    buttonsStyling: !1,
+                    showCloseButton: !0
+                })
+                    .then((result) => {
+                        // Check if the "Show Me" button was clicked
+                        if (result.isConfirmed) {
+                            window.open('/notifications/'+data.id, '_blank');
+                        }
+                    });
+            }
+        })
+        stompClient.subscribe("/notification/createEvent", function (rs) {
+            let data = JSON.parse(rs.body)
+            if(data.user.id == userCurrent.id){
+                return
+            } else {
+                Swal.fire({
+                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-event.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Events</span></h4><p class="text-muted mb-0 fs-13">'+ data.title +'</p></div></div>',
+                    showCancelButton: !1,
+                    customClass: {
+                        confirmButton: 'btn btn-primary mb-1'
+                    },
+                    confirmButtonText: 'Show Me <i class="ri-arrow-right-line ms-1 align-bottom"></i>',
+                    buttonsStyling: !1,
+                    showCloseButton: !0
+                })
+                    .then((result) => {
+                        // Check if the "Show Me" button was clicked
+                        if (result.isConfirmed) {
+                            window.open('/schedules/detail/'+ userCurrent.id, '_blank');
+                        }
+                    });
+            }
+        })
+
+    })
+}
+
 registerServiceWorker()
 
 // Check if notification permission has been granted
@@ -483,6 +567,7 @@ if( typeof userCurrent !== "undefined") {
                 let endPoint = localStorage.getItem("webPushEndpoint")
                 deleteEndPoint(endPoint)
                 console.log('Permission for notifications denied.');
+                connectSocketNotification()
             }
         });
     } else {
@@ -491,13 +576,158 @@ if( typeof userCurrent !== "undefined") {
         let endPoint = localStorage.getItem("webPushEndpoint")
         deleteEndPoint(endPoint)
         console.log('Permission for notifications denied.');
+        connectSocketNotification()
     }
 } else{
     unsubscribeUser()
     console.log('Must log in');
 }
 
+async function fetchNotificationsData(limit) {
+    return new Promise((resolve, reject) => {
+        callAjaxByJsonWithData(
+            "/api/v1/notifications/latest/" + limit ,
+            "GET",
+            null,
+            (rs) => {
+                if (rs) {
+                    resolve(rs);
+                }
+            },
+            (error) => {
+                console.log("Error");
+                console.log(error);
+                reject(error);
+            }
+        );
+    });
+}
+
+async function fetchEventsData(limit) {
+    return new Promise((resolve, reject) => {
+        callAjaxByJsonWithData(
+            "/api/v1/events/latest/" + limit ,
+            "GET",
+            null,
+            (rs) => {
+                if (rs) {
+                    resolve(rs);
+                }
+            },
+            (error) => {
+                console.log("Error");
+                console.log(error);
+                reject(error);
+            }
+        );
+    });
+}
+
+function stringToDateValid(string){
+    const [datePart, timePart] = string.split(' ');
+    const [day, month, year] = datePart.split('/');
+    const [hour, minute, second] = timePart.split(':');
+    const dateObject = new Date(year, month - 1, day, hour, minute, second);
+    return dateObject
+}
+
+function countUnRead(){
+    var count = $(".latestItem").filter(".active").length;
+    $(".dangerCountLatest").text(count)
+}
+
+function handleLinkClick(id, process) {
+    $(`.latestItem[data-id="${id}"]`).removeClass("active")
+    saveIdToLocal(id, process)
+    countUnRead()
+    let url = ""
+    if(process === "notifications"){
+        url = "/notifications/" + id;
+    }
+    if(process === "events"){
+        url = "/schedules/detail/" + userCurrent.id;
+    }
+    window.open(url, "_blank")
+    return false;
+}
+
+function returnItemLatest(data,icon, process, active){
+    if(!data) return
+    return `
+   <div class="text-reset notification-item d-block dropdown-item position-relative ${active===0 ? "" : "active"} latestItem" data-id="${data.id}">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-soft-info text-info rounded-circle fs-16">
+                                                    <i class="${icon}"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <a href="javascript:void(0)" class="stretched-link" onclick="handleLinkClick('${data.id}', '${process}')">
+                                                    <h6 class="mt-0 mb-2 lh-base">${data.title}</h6>
+                                                </a>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> ${data.createdDate}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+    `
+}
+
+function viewAllLatest(check){
+    if(check === "Events"){
+        return `
+                                    <div class="my-3 text-center">
+                                        <a href="/schedules/detail/${userCurrent.id}" type="button" class="btn btn-soft-success waves-effect waves-light">View
+                                            All ${check} <i class="ri-arrow-right-line align-middle"></i></a>
+                                    </div>
+        `
+    }
+        return `
+                                    <div class="my-3 text-center">
+                                        <a href="/${check.toLowerCase()}" type="button" class="btn btn-soft-success waves-effect waves-light">View
+                                            All ${check} <i class="ri-arrow-right-line align-middle"></i></a>
+                                    </div>
+        `
+}
+
+async function fetchNotifications(limit) {
+    try {
+        const [notificationsData, eventsData] = await Promise.all([
+            fetchNotificationsData(limit),
+            fetchEventsData(limit),
+        ]);
+        let readIdNotifications = getIdFromLocal("notifications")
+        let readIdEvents = getIdFromLocal("events")
+        let htmlNotification = ''
+        let htmlEvent = ''
+        notificationsData.forEach(e=>{
+            let active = readIdNotifications.includes(e.id) ? 0 : 1
+            htmlNotification+= returnItemLatest(e, "bx bx-news", "notifications", active)
+        })
+        eventsData.forEach(e=>{
+            let active = readIdEvents.includes(e.id) ? 0 : 1
+            htmlEvent+= returnItemLatest(e, "bx bx-calendar-star", "events", active)
+        })
+        htmlNotification+= viewAllLatest("Notifications")
+        htmlEvent += viewAllLatest("Events")
+        $(".notificationsLatestList .simplebar-content").html(htmlNotification)
+        $(".eventsLatestList .simplebar-content").html(htmlEvent)
+        let data = notificationsData.concat(eventsData)
+        data.sort((a, b) => stringToDateValid(b.createdDate) - stringToDateValid(a.createdDate));
+        return data
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+}
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    if(typeof userCurrent !== "undefined"){
+        fetchNotifications(5).then(rs => {
+            countUnRead()
+        })
+    }
+})
 
 

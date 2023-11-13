@@ -15,4 +15,5 @@ public interface NotificationService {
     boolean delNoti(String id);
     NotificationDetailResponse findById(String id);
     int countAll(String search);
+    List<NotificationShowResponse> getNotificationLatest(int limit);
 }

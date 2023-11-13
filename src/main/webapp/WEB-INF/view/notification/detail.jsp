@@ -564,6 +564,7 @@
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 <script src="/assets/custom/js/notification/notification.js"></script>
 <script>
+    saveIdToLocal("${notification.id}","notifications")
     function refreshPage() {
         location.reload();
     }

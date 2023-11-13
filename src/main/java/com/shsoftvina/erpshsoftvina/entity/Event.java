@@ -14,6 +14,7 @@ import java.util.Date;
 @Builder
 public class Event {
     private String id;
+    private Date createdDate;
     private String startDate;
     private String endDate;
     private String title;
