@@ -280,12 +280,12 @@
             }
             return arr[code]
         }
-        var dot = createLoadingHtml();
+        // var dot = createLoadingHtml();
         $("#showDetailSubmit").click(function (){
-            $(this).before(dot)
-            $("button").each(function (){
-                $(this).prop("disabled",true)
-            })
+            // $(this).before(dot)
+            // $("button").each(function (){
+            //     $(this).prop("disabled",true)
+            // })
             var dayId = $("div.calendar-container").attr("data-id")
             var codeData = $("#detailModal").attr("data-code")
             var code = getCodeTime(codeData)
@@ -335,10 +335,10 @@
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
         var nameDisplay = $(this).parent().text()
-        $("button").each(function (){
-            $(this).prop("disabled",true)
-        })
-        $(this).after(dot)
+        // $("button").each(function (){
+        //     $(this).prop("disabled",true)
+        // })
+        // $(this).after(dot)
         modal.attr("data-code",name )
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
@@ -384,10 +384,10 @@
     })
 
     $("#updateButton").click(function() {
-        $("button").each(function (){
-            $(this).prop("disabled",true)
-        })
-        $("#updateButton").after(dot)
+        // $("button").each(function (){
+        //     $(this).prop("disabled",true)
+        // })
+        // $("#updateButton").after(dot)
         var id = "${dayResponse.id}"
         var oneThingCalendar = {};
         $(".oneThingCalendar tr").each(function() {

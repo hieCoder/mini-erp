@@ -34,10 +34,8 @@ public class ManagementTimeDayController {
     public ModelAndView getUser() {
         applicationUtils.checkUserAllow();
         ModelAndView view = new ModelAndView("management-time/users-calendar");
-
-        List<Map<String, Object>> users = userService.getAllFullname();
-
-        view.addObject("users", users);
+        List<Map<String, Object>> list = userService.getAllFullname();
+        view.addObject("list", list);
         return view;
     }
 

@@ -1,4 +1,8 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,32 +80,47 @@
             align-items: center;
             justify-content: center;
         }
-        .modal {
-            margin-top: 5%;
-        }
     </style>
     <title>Calendars</title>
 </head>
 <body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">MANAGEMENT TIME CALENDAR</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                    <c:if test="${userRole != 'DEVELOPER'}">
+                        <li class="breadcrumb-item"><a href="/management-time">Management Time</a></li>
+                    </c:if>
+                    <li class="breadcrumb-item active">Management Time Calendar</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div class="loading">
     <div class="spinner-border text-primary" role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div>
-<div class="container mt-4 calendar-container d-none">
+<div class="bg-white calendar-container d-none">
     <h1 class="text-center" id="currentMonthYear"></h1>
-    <table class="table table-bordered" id="todoTable">
+    <table class="table table-nowrap table-bordered" id="todoTable">
         <thead>
         <tr class="text-center week">
-            <th></th>
-            <th class="text-danger">Sun</th>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th class="text-primary">Sat</th>
-            <th class="text-success">Weekly To-do List</th>
+            <th scope="col"></th>
+            <th scope="col" class="text-danger">Sun</th>
+            <th scope="col">Mon</th>
+            <th scope="col">Tue</th>
+            <th scope="col">Wed</th>
+            <th scope="col">Thu</th>
+            <th scope="col">Fri</th>
+            <th scope="col" class="text-primary">Sat</th>
+            <th scope="col" class="text-success">Weekly To-do List</th>
         </tr>
         </thead>
         <tbody>
@@ -109,16 +128,15 @@
     </table>
     <div class="d-flex justify-content-center">
         <button id="prevMonth" class="btn btn-info">Previous Month</button>
-        <button id="nextMonth" class="btn btn-info ml-4">Next Month</button>
+        <button id="nextMonth" class="btn btn-info ms-4">Next Month</button>
     </div>
 </div>
 <div class="modal fade" id="weeklyToDo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Weekly To-do List</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -146,48 +164,48 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary saveWeeklyToDo">Save</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="margin-top: 50%;">
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="successModalLabel">Message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 <script>
-    const dot = createLoadingHtml();
     const table = document.getElementById('todoTable');
     const currentMonthYear = document.getElementById('currentMonthYear');
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
     const dayCodeTrTag = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
 
-    // Get the current date
     let currentDate = new Date();
+    const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+    const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
 
-    $(document).on("click", ".saveWeeklyToDo", function() {
+    $(document).on("click", ".saveWeeklyToDo", function () {
         let target = $(this)
-        target.after(dot)
-        target.prop("disabled", true)
+        // target.after(dot)
+        // target.prop("disabled", true)
         let id = $("#weeklyToDo").attr("data-id")
         let content = ""
         let arrContent = []
-        $("#weeklyToDo .contentData").each(function (index){
+        $("#weeklyToDo .contentData").each(function (index) {
             content += $(this).val();
             arrContent.push($(this).val())
             if (index < $("#weeklyToDo .contentData").length - 1) {
@@ -199,11 +217,11 @@
             content: content,
         }
         callAjaxByJsonWithData('/api/v1/weekly-management-time-day', 'PUT', data, function (rs) {
-            if(rs === 1){
-                let selector = '.showWeeklyUpdate[data-id="' + id +'"]'
+            if (rs === 1) {
+                let selector = '.showWeeklyUpdate[data-id="' + id + '"]'
                 let button = $(selector)
                 let indexMain = parseInt(button.parent().parent().index()) / 6
-                arrContent.forEach((item, index)=>{
+                arrContent.forEach((item, index) => {
                     let selector = 'tr.' + dayCodeTrTag[index]
                     $(selector).eq(indexMain).children().last().text(item)
                 })
@@ -213,20 +231,20 @@
                 $("#successModal").modal("show");
 
             }
-            target.after(dot)
-            target.prop("disabled", false)
+            // target.after(dot)
+            // target.prop("disabled", false)
         })
     })
 
-    $(document).on("click", "button.showWeeklyUpdate", function() {
+    $(document).on("click", "button.showWeeklyUpdate", function () {
         let target = $(this)
-        target.after(dot)
-        target.prop("disabled", true)
+        // target.after(dot)
+        // target.prop("disabled", true)
         let id = target.attr("data-id")
         let modal = $("#weeklyToDo")
         modal.attr("data-id", id)
         callAjaxByJsonWithData('/api/v1/weekly-management-time-day/' + id, 'GET', null, function (rs) {
-            if(rs.weeklyContents != null){
+            if (rs.weeklyContents != null) {
                 $("#weeklyToDo div.content > input").each(function (index) {
                     $(this).val(rs.weeklyContents[index])
                 })
@@ -288,39 +306,40 @@
                                     cell.textContent = '';
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
-                                    if (dayNumber < 1) {
-                                        let found = false;
-                                        if (responseData != null && responseData.length > 0) {
-                                            responseData.forEach((e) => {
-                                                e.listDayOfWeek.forEach((week) => {
-                                                    const dateInResponse = new Date(week.day);
-                                                    if (
-                                                        currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                        (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()
-                                                    ) {
-                                                        const link = document.createElement('a');
-                                                        link.textContent = lastDayOfPreviousMonth - startDay + j;
-                                                        link.href = "${user.id}" + '/day/?id=' + week.id;
-                                                        cell.appendChild(link);
-                                                        found = true;
-                                                    }
-                                                })
-                                            });
-                                        }
+                                    <%--if (dayNumber < 1) {--%>
+                                    <%--    let found = false;--%>
+                                    <%--    if (responseData != null && responseData.length > 0) {--%>
+                                    <%--        responseData.forEach((e) => {--%>
+                                    <%--            e.listDayOfWeek.forEach((week) => {--%>
+                                    <%--                const dateInResponse = new Date(week.day);--%>
+                                    <%--                if (--%>
+                                    <%--                    currentDate.getFullYear() === dateInResponse.getFullYear() &&--%>
+                                    <%--                    (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()--%>
+                                    <%--                ) {--%>
+                                    <%--                    const link = document.createElement('a');--%>
+                                    <%--                    link.textContent = lastDayOfPreviousMonth - startDay + j;--%>
+                                    <%--                    link.href = "${user.id}" + '/day/?id=' + week.id;--%>
+                                    <%--                    cell.appendChild(link);--%>
+                                    <%--                    found = true;--%>
+                                    <%--                }--%>
+                                    <%--            })--%>
+                                    <%--        });--%>
+                                    <%--    }--%>
 
-                                        if (!found) {
-                                            const link = document.createElement('a');
-                                            link.textContent = lastDayOfPreviousMonth - startDay + j;
-                                            const year = currentDate.getFullYear();
-                                            const month = currentDate.getMonth() + 1;
+                                    <%--    if (!found) {--%>
+                                    <%--        const link = document.createElement('a');--%>
+                                    <%--        link.textContent = lastDayOfPreviousMonth - startDay + j;--%>
+                                    <%--        const year = currentDate.getFullYear();--%>
+                                    <%--        const month = currentDate.getMonth() + 1;--%>
 
-                                            var day = lastDayOfPreviousMonth - startDay + j;
-                                            var dayData = day < 10 ? "0" + day : day;
-                                            var monthData = (month -1) < 10 ? '0' + (month -1) : (month -1);
-                                            link.href = "day/?day=" + year + "-" + monthData + "-" + dayData;
-                                            cell.appendChild(link);
-                                        }
-                                    } else if (dayNumber > 0 && dayNumber <= daysInMonth) {
+                                    <%--        var day = lastDayOfPreviousMonth - startDay + j;--%>
+                                    <%--        var dayData = day < 10 ? "0" + day : day;--%>
+                                    <%--        var monthData = (month - 1) < 10 ? '0' + (month - 1) : (month - 1);--%>
+                                    <%--        link.href = "${user.id}" + "/day/?day=" + year + "-" + monthData + "-" + dayData;--%>
+                                    <%--        cell.appendChild(link);--%>
+                                    <%--    }--%>
+                                    <%--} else --%>
+                                        if (dayNumber > 0 && dayNumber <= daysInMonth) {
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
                                             responseData.forEach((e) => {
@@ -358,9 +377,14 @@
                                             const startDate = new Date(e.startDate);
                                             const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
                                             const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
-                                            const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
-                                            if (weekNumber === ((i/6) + 1)) {
-                                                const link = document.createElement('button');
+                                            var weekNumber;
+                                            if (e.startDate === formattedFirstSunday) {
+                                                weekNumber = 1;
+                                            } else {
+                                                weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            }
+                                            if (weekNumber === ((i / 6) + 1)) {
+                                                const link = document.createElement("button");
                                                 link.textContent = "Edit";
                                                 link.classList.add("btn");
                                                 link.classList.add("btn-primary");
@@ -379,18 +403,17 @@
                                     row.classList.add(dayNamesCode[(i % 6) - 1])
                                     cell.textContent = dayNames[(i % 6) - 1];
                                     cell.classList.add("text-wrap")
-                                    cell.classList.add("font-weight-bold")
-                                    cell.classList.add("font-italic")
+                                    cell.classList.add("fw-bold")
+                                    cell.classList.add("fst-italic")
                                 } else if (j < 8) {
                                     if (responseData != null && responseData.length > 0) {
-                                        cell.classList.add("font-italic")
+                                        cell.classList.add("fst-italic")
                                         responseData.forEach((e) => {
                                             e.listDayOfWeek.forEach((week) => {
                                                 const dateInResponse = new Date(week.day);
                                                 const currentDay = countLine * 7 + j - startDay;
                                                 const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
                                                 if (
-                                                    currentDate.getFullYear() === dateInResponse.getFullYear() &&
                                                     currentDate.getMonth() === dateInResponse.getMonth() &&
                                                     currentDay === dateInResponse.getDate()
                                                 ) {
@@ -407,8 +430,8 @@
                                     }
                                 } else {
                                     if (responseData != null && responseData.length > 0) {
-                                        cell.classList.add("font-weight-bold")
-                                        cell.classList.add("font-italic")
+                                        cell.classList.add("fw-bold")
+                                        cell.classList.add("fst-italic")
                                         responseData.forEach((e) => {
                                             if (e.weeklyContents === null) {
                                                 return;
@@ -416,8 +439,13 @@
                                             const startDate = new Date(e.startDate);
                                             const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
                                             const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
-                                            const weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
-                                            if (weekNumber === (Math.floor((i/6) + 1))) {
+                                            var weekNumber;
+                                            if (e.startDate === formattedFirstSunday) {
+                                                weekNumber = 1;
+                                            } else {
+                                                weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            }
+                                            if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklyContents[(i % 6) - 1];
                                             }
                                         });
@@ -448,16 +476,16 @@
 
     prevMonthBtn.addEventListener('click', () => {
         var button = $("#prevMonth")
-        button.before(dot)
-        button.prop("disabled", true)
+        // button.before(dot)
+        // button.prop("disabled", true)
         currentDate.setMonth(currentDate.getMonth() - 1);
         populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);
     });
 
     nextMonthBtn.addEventListener('click', () => {
         var button = $("#nextMonth")
-        button.after(dot)
-        button.prop("disabled", true)
+        // button.after(dot)
+        // button.prop("disabled", true)
         currentDate.setMonth(currentDate.getMonth() + 1);
         populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);
     });
@@ -474,7 +502,7 @@
     }
 
     function getFirstSundayLastSaturday(year, month) {
-        const firstSunday = getLastSundayOfPreviousMonth(year,month);
+        const firstSunday = getLastSundayOfPreviousMonth(year, month);
         const lastDay = new Date(year, month + 1, 0);
 
         return {
