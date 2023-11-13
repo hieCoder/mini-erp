@@ -74,4 +74,8 @@ public class EventApi {
     public ResponseEntity<?> deleteEvent(@PathVariable("id") String id) {
         return ResponseEntity.ok(eventService.deleteEvent(id));
     }
+    @GetMapping("/latest/{limit}")
+    public ResponseEntity<?> getEventNotifications(@PathVariable("limit") Integer limit) {
+        return ResponseEntity.ok(eventService.getEventNotification(limit));
+    }
 }

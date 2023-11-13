@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.event.EventEditRequest;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventDashBoardResponse;
+import com.shsoftvina.erpshsoftvina.model.response.event.EventNotificationResponse;
 import com.shsoftvina.erpshsoftvina.model.response.event.EventResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -14,6 +15,7 @@ import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +27,20 @@ public class EventConverter {
         return events.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
 
+    public List<EventNotificationResponse> convertToNotiResponse(List<Event> events) {
+        return events.stream().map(this::convertToNotiResponse).collect(Collectors.toList());
+    }
+
     public List<EventDashBoardResponse> convertToHomeResponse(List<Event> events) {
         return events.stream().map(this::convertToHomeResponse).collect(Collectors.toList());
+    }
+
+    public EventNotificationResponse convertToNotiResponse(Event event) {
+        return EventNotificationResponse.builder()
+                .id(event.getId())
+                .title(event.getTitle())
+                .createdDate(DateUtils.formatDate(event.getCreatedDate()))
+                .build();
     }
 
     public EventResponse convertToResponse(Event event) {
@@ -61,6 +75,7 @@ public class EventConverter {
                 .endDate(request.getEndDate())
                 .startDate(request.getStartDate())
                 .title(request.getTitle())
+                .createdDate(new Date())
                 .build();
     }
 

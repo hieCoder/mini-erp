@@ -23,4 +23,6 @@ public interface EventMapper {
     List<Event> getUpcomingEvents(@Param("day") String day, RowBounds rowBounds);
 
     long getTotalRecordCountUpcoming(@Param("day") String day);
+
+    List<Event> getEventNotification(@Param("limit") Integer limit);
 }
