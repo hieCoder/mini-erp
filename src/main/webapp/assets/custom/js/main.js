@@ -41,6 +41,16 @@ const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" sty
     '</span>' +
     '</button>';
 
+const BtnSmPrimaryLoad = '<button class="btn btn-sm btn-outline-primary btn-load" style="margin-left: 8px">' +
+    '<span class="d-flex align-items-center">' +
+    '<span class="spinner-border flex-shrink-0" role="status">' +
+    '<span class="visually-hidden">Loading...</span>' +
+    '</span>' +
+    '<span class="flex-grow-1 ms-2">' +
+    'Loading...' +
+    '</span>' +
+    '</span>' +
+    '</button>';
 // FUNCTION
 
 // call api

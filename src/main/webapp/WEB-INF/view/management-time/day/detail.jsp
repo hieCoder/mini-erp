@@ -1,4 +1,4 @@
-
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
@@ -9,7 +9,7 @@
 <c:set var="toDoList" value="${data.toDoList}" />
 <c:set var="showButtonResult" value='${dayResponse!=null ? "" : "disabled"}'/>
 <c:set var="infoButtonResult" value='${dayResponse!=null ? "Update" : "Create"}'/>
-
+<c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
 <html>
 <head>
     <title>Detail of Day</title>
@@ -26,7 +26,7 @@
             <h4 class="mb-sm-0">Management Time: <span class="fw-semibold text-success fst-italic">${dayResponse != null ? dayResponse.day : day}</span> </h4>
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Management Time</a></li>
+                    <li class="breadcrumb-item"><a href="/management-time/${userId}">Management Time</a></li>
                     <li class="breadcrumb-item active">Management Time Day</li>
                 </ol>
             </div>
@@ -247,6 +247,12 @@
     const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
     const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
     const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
+
+    const CodeToDetail = {
+        "sixToTwelvePm" : "Six to Twelve PM",
+        "twelveToSixPm" : "Twelve to Six PM",
+        "sixToTwelveAm"  : "Six to Twelve AM"
+    }
     var rsSuccess = (text) =>{
         Swal.fire({
             html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
@@ -319,7 +325,7 @@
             return arr[code]
         }
         $("#showDetailSubmit").click(function (){
-            $("button").each(function (){
+            $(".container-fluid button").each(function (){
                 $(this).prop("disabled",true)
             })
             var dayId = $("div.calendar-container").attr("data-id")
@@ -366,11 +372,13 @@
             });
         })
     $("button.showDetail").click(function (){
+        $(this).addClass("d-none")
+        $(this).after(BtnSmPrimaryLoad)
         $('.message-noti-day-detail').text('');
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
-        var nameDisplay = $(this).parent().text()
-        $("button").each(function (){
+        var nameDisplay = CodeToDetail[name]
+        $(".container-fluid button").each(function (){
             $(this).prop("disabled",true)
         })
         modal.attr("data-code",name )
@@ -408,16 +416,19 @@
                     })
                 }
             }
+            BtnLoadRemove()
+            $('button.showDetail').removeClass("d-none")
             $("#detailModal tbody").html(html)
             modal.modal("show")
             $("button").each(function (){
                 $(this).prop("disabled",false)
             })
-            $('div.custom-spinner').parent().remove();
         })
     })
 
     $("#updateButton").click(function() {
+        $(this).addClass("d-none")
+        $(this).before(BtnSuccessLoad)
         var id = "${dayResponse.id}"
         var oneThingCalendar = {};
         $(".oneThingCalendar tr").each(function() {
@@ -505,6 +516,8 @@
                     $("#updateButton").text("Update")
                     $("button.showDetail").prop("disabled",false)
                     $("div.calendar-container").attr("data-id", rs.id)
+                    $("#updateButton").removeClass("d-none")
+                    BtnLoadRemove()
                     return
                 }
                 rsUnSuccess()
@@ -518,6 +531,8 @@
             callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'PUT', dataUpdate, function (rs) {
                 if (rs != null) {
                     rsSuccess("Update")
+                    $("#updateButton").removeClass("d-none")
+                    BtnLoadRemove()
                     return
                 }
                 rsUnSuccess()

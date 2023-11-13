@@ -31,7 +31,7 @@ public class ScheduleController {
 
     @GetMapping
     public ModelAndView getScheduleList() {
-
+        applicationUtils.checkUserAllow();
         ModelAndView modelAndView = new ModelAndView("schedule/list");
         List<Map<String, Object>> list = userService.getAllFullname();
         modelAndView.addObject("list",list);
