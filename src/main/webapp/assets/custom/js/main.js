@@ -464,6 +464,59 @@ function registerServiceWorker(){
     }
 }
 
+function connectSocketNotification(){
+    let stompClient = Stomp.over(new SockJS("/websocket"));
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/notification/createNotification", function (rs) {
+            let data = JSON.parse(rs.body)
+            if(data.idUser === userCurrent.id){
+                return
+            } else {
+                Swal.fire({
+                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-push.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Notifications</span></h4><p class="text-muted mb-0 fs-13">'+ data.title +'</p></div></div>',
+                    showCancelButton: !1,
+                    customClass: {
+                        confirmButton: 'btn btn-primary mb-1'
+                    },
+                    confirmButtonText: 'Show Me <i class="ri-arrow-right-line ms-1 align-bottom"></i>',
+                    buttonsStyling: !1,
+                    showCloseButton: !0
+                })
+                    .then((result) => {
+                        // Check if the "Show Me" button was clicked
+                        if (result.isConfirmed) {
+                            window.open('/notifications/'+data.id, '_blank');
+                        }
+                    });
+            }
+        })
+        stompClient.subscribe("/notification/createEvent", function (rs) {
+            let data = JSON.parse(rs.body)
+            if(data.user.id == userCurrent.id){
+                return
+            } else {
+                Swal.fire({
+                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-event.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Events</span></h4><p class="text-muted mb-0 fs-13">'+ data.title +'</p></div></div>',
+                    showCancelButton: !1,
+                    customClass: {
+                        confirmButton: 'btn btn-primary mb-1'
+                    },
+                    confirmButtonText: 'Show Me <i class="ri-arrow-right-line ms-1 align-bottom"></i>',
+                    buttonsStyling: !1,
+                    showCloseButton: !0
+                })
+                    .then((result) => {
+                        // Check if the "Show Me" button was clicked
+                        if (result.isConfirmed) {
+                            window.open('/schedules/detail/'+ userCurrent.id, '_blank');
+                        }
+                    });
+            }
+        })
+
+    })
+}
+
 registerServiceWorker()
 
 // Check if notification permission has been granted
@@ -483,6 +536,7 @@ if( typeof userCurrent !== "undefined") {
                 let endPoint = localStorage.getItem("webPushEndpoint")
                 deleteEndPoint(endPoint)
                 console.log('Permission for notifications denied.');
+                connectSocketNotification()
             }
         });
     } else {
@@ -491,6 +545,7 @@ if( typeof userCurrent !== "undefined") {
         let endPoint = localStorage.getItem("webPushEndpoint")
         deleteEndPoint(endPoint)
         console.log('Permission for notifications denied.');
+        connectSocketNotification()
     }
 } else{
     unsubscribeUser()
