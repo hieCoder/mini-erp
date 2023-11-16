@@ -593,13 +593,6 @@
 
 <script src="/assets/custom/js/task/task.js"></script>
 
-
-
-<!-- https://cdnjs.com/libraries/sockjs-client -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-<!-- https://cdnjs.com/libraries/stomp.js/ -->
-<script  src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
 <script>
     $(document).ready(function() {
         var idTask = ${id};
