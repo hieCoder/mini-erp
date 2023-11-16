@@ -4,11 +4,6 @@
 <html>
 <head>
     <title>Tasks</title>
-
-    <!-- quill css -->
-    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -454,13 +449,6 @@
 </div>
 <!--end modal-->
 
-<!-- ckeditor -->
-<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-<!-- quill js -->
-<script src="/assets/libs/quill/quill.min.js"></script>
-<!-- init js -->
-<script src="/assets/js/pages/form-editor.init.js"></script>
-
 <script src="/assets/custom/js/task/task.js"></script>
 <script>
 
@@ -681,7 +669,11 @@
     $(document).on('click', '#register-task-btn', function() {
 
         $('#title').val('');
+
         $('#content .ql-editor').html('<p><br></p>');
+        $('#registerTaskForm .ql-toolbar.ql-snow').remove();
+        activeEditor("#registerTaskForm");
+
         $('#dueDate').val('');
         $('#registerTaskForm .spinner-border').addClass('d-none');
 
@@ -724,8 +716,6 @@
                 $('#registerTaskModal').modal('show');
             }
         }
-
-
 
         Validator({
             form:'#registerTaskForm',

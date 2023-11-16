@@ -23,8 +23,8 @@ public interface TaskMapper {
                          @Param("status") String status);
     List<Map<String, Object>> getStatusTaskCounts();
     Task findById(String id);
-    List<Map<String, Object>> getTaskByHashtag(@Param("userId") String userId,
-                                               @Param("hashtag") String hashtag);
+    List<Map<String, Object>> getTaskByTitle(@Param("userId") String userId,
+                                               @Param("title") String title);
     int changeStatusTasks(@Param("ids") String[] ids,
                           @Param("status") String status);
 

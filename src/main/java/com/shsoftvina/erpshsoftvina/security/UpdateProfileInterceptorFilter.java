@@ -26,30 +26,26 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!urlsAllow(request.getRequestURI())){
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null) {
-            User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
-            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(userSet, auth.getCredentials(), userSet.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(newAuth);
-        }
+            if (auth != null && auth.isAuthenticated()) {
 
-        if (auth != null && auth.isAuthenticated()) {
-            try {
-                User currentUser = Principal.getUserCurrent();
-                User user = userMapper.findById(currentUser.getId());
-                if(!user.checkAcceptUpdateBasicInfo()) {
-                    if (!urlsAllow(request.getRequestURI())) {
-                        System.out.println(request.getRequestURI());
-                        response.sendRedirect("/users/" + currentUser.getId());
+                User user = userMapper.findById(((User) auth.getPrincipal()).getId());
+                UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(user, auth.getCredentials(), user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+                try {
+                    if(!user.checkAcceptUpdateBasicInfo()) {
+                        response.sendRedirect("/users/" + user.getId());
+                    } else{
+                        if(request.getRequestURI().equals("/login")){
+                            response.sendRedirect("/dashboard");
+                        }
                     }
-                } else{
-                    if(request.getRequestURI().equals("/login")){
-                        response.sendRedirect("/dashboard");
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         filterChain.doFilter(request, response);
