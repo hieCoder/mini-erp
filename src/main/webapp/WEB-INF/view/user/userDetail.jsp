@@ -385,8 +385,7 @@
                         <%--========================== Resume =================================--%>
                         <div class="tab-pane" id="resumeSession" role="tabpanel">
                             <div class="row">
-
-                                    <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
                                 <c:forEach var="resume" items="${resumes}">
                                     <div class="col-xxl-4 col-lg-6 mt-2 delete-fileResume">
                                         <div class="border rounded border-dashed p-2">
@@ -400,7 +399,7 @@
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <h5 class="fs-13 mb-1"><a href="/upload/user/${resume}" class="text-body text-truncate d-block fileName-Resume" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${resume}">${resume}</a></h5>
-                                                    <div class="fileSize"></div>
+                                                    <div class="fileSize" data-value="${resume}"></div>
                                                 </div>
                                                 <div class="flex-shrink-0 ms-2">
                                                     <div class="d-flex gap-1">
@@ -916,22 +915,26 @@
         downloadFiles(dataUrl)
     })
 
-    // Handle Delete Resume
+    // Show file resume
     document.addEventListener("DOMContentLoaded", function () {
         const resumes = document.querySelectorAll('.fileName-Resume');
+        const fileSizeElements = document.querySelectorAll('.fileSize');
         var fileArr = [];
+        var sizeFiles = {};
         resumes.forEach(function (element) {
             var href = element.getAttribute('href');
             fileArr.push(href);
         });
-        function handleEachFunc(fileName, fileSize, url) {
-            console.log('Tên tệp tin:', fileName);
-            console.log('Kích thước tệp tin:', bytesToMBShow(fileSize), 'mb');
-            console.log('Đường dẫn tệp tin:', url);
-        }
 
-        handleFiles(fileArr, handleEachFunc);
+        fileSizeElements.forEach(function (element) {
+            var dataValue = element.getAttribute('data-value');
+            handleFiles(fileArr,  function handleEachFunc(fileName, fileSize, url, index) {
+                sizeFiles[fileName] = fileSize;
+                element.textContent = bytesToMBShow(sizeFiles[dataValue]) + ' MB';
+            });
+        });
     });
+
     // Handle Delete Resume
     document.addEventListener("DOMContentLoaded", function () {
         cutShortLink();
