@@ -30,21 +30,23 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
 
         if (auth != null) {
             User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
-
             UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(userSet, auth.getCredentials(), userSet.getAuthorities());
-
             SecurityContextHolder.getContext().setAuthentication(newAuth);
         }
 
         if (auth != null && auth.isAuthenticated()) {
             try {
                 User currentUser = Principal.getUserCurrent();
-                if(currentUser == null) {
-                    response.sendRedirect("/login");
-                }
                 User user = userMapper.findById(currentUser.getId());
-                if(!user.checkAcceptUpdateBasicInfo() && !urlsAllow(request.getRequestURI())) {
-                    response.sendRedirect("/users/" + currentUser.getId());
+                if(!user.checkAcceptUpdateBasicInfo()) {
+                    if (!urlsAllow(request.getRequestURI())) {
+                        System.out.println(request.getRequestURI());
+                        response.sendRedirect("/users/" + currentUser.getId());
+                    }
+                } else{
+                    if(request.getRequestURI().equals("/login")){
+                        response.sendRedirect("/dashboard");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -57,8 +59,9 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
         String[] urls = new String[]{
                 "/assets/",
                 "/upload/",
-                "/login", "/users/",
-                "/api/"
+                "/users/",
+                "/api/",
+                "/service-worker.js"
         };
 
         for(String url: urls){

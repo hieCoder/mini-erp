@@ -43,7 +43,7 @@ public interface UserMapper {
                       @Param("searchTerm") String searchTerm,
                       @Param("sortDirection") String sortDirection);
 
-    List<User> getUserBirthday(@Param("prevMonth") LocalDate prevMonth,@Param("nextMonth") LocalDate nextMonth );
+    List<User> getUserBirthday(@Param("prevMonth") LocalDate prevMonth,@Param("nextMonth") LocalDate nextMonth,@Param("monthly") LocalDate monthly);
 
     List<User> getTodayBirthday(@Param("date") LocalDate date);
 }
