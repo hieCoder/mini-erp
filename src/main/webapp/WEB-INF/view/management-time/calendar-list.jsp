@@ -200,9 +200,9 @@
     const nextMonthBtn = document.getElementById('nextMonth');
     const dayCodeTrTag = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
 
-    let currentDate = new Date();
-    const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
-    const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+    const currentDate = new Date();
+    // const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+    // const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
 
     var rsSuccess = (text) =>{
         Swal.fire({
@@ -400,7 +400,7 @@
                                                         link.classList.add("fs-6");
                                                         link.textContent = dayNumber;
                                                         link.href = "${user.id}" + '/day/?id=' + week.id;
-                                                        if (dayNumber === currentDate.getDate()) {
+                                                        if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
                                                             link.classList.add("badge", "badge-soft-danger","rounded-pill");
                                                         }
                                                         cell.appendChild(link);
@@ -416,12 +416,12 @@
                                             link.textContent = dayNumber;
                                             link.classList.add("p-2");
                                             link.classList.add("fs-6");
-                                            if (dayNumber === currentDate.getDate()) {
+                                            if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
                                                 link.classList.add("badge", "badge-soft-danger","rounded-pill");
                                             }
                                             const year = currentDate.getFullYear();
-                                            const month = currentDate.getMonth() + 1;
-                                            link.href = "${user.id}" + "/day/?day=" + year + "-" + (month < 10 ? '0' + month : month) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
+                                            const currentMonth = currentDate.getMonth() + 1;
+                                            link.href = "${user.id}" + "/day/?day=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                             cell.appendChild(link);
                                         }
                                     }
