@@ -3,12 +3,6 @@
 <html>
 <head>
     <title>Task detail</title>
-
-    <!-- quill css -->
-    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
-
     <!-- dropzone css -->
     <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css" />
 </head>
@@ -583,16 +577,10 @@
 </div>
 <!--end delete modal -->
 
-<!-- ckeditor -->
-<script src="/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-<!-- quill js -->
-<script src="/assets/libs/quill/quill.min.js"></script>
-
 <!-- dropzone min -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 
-<script src="/assets/custom/js/task/task.js"></script>
-
+<script src="/assets/custom/js/task/task-detail.js"></script>
 <script>
     $(document).ready(function() {
         var idTask = ${id};
@@ -781,7 +769,6 @@
         if (parentElement.length > 0) parentElement.remove();
     });
 </script>
-
 <script>
     $(document).ready(function() {
 
