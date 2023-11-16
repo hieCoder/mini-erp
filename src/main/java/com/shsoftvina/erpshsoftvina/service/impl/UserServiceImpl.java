@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService {
             if (!avatarNameOld.equals(avatarNameNew) && !avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)) {
                 FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
             }
-            if (!resumeNameOld.equals(resumeNameNew)) {
+            if (resumeNameOld!=null && !resumeNameOld.equals(resumeNameNew)) {
                 String deleteFiles = StringUtils.getDifference(resumeNameOld, remainResumeFiles);
                 FileUtils.deleteMultipleFilesToServer(request, uploadDir, deleteFiles);
             }
