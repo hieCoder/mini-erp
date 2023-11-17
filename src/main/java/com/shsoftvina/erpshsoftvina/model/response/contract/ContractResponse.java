@@ -17,7 +17,7 @@ public class ContractResponse {
     private String id;
     private String basicSalary;
     private String allowance;
-    private String contract;
+    private String files;
     private String createdDate;
     private String insurance;
     private List<ContractResponse> historyContract;

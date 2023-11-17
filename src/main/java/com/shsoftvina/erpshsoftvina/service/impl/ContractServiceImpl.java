@@ -109,14 +109,14 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
-                FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getContract());
+                FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getFiles());
                 return 1;
             } catch (Exception e){
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                 return 0;
             }
         } else {
-            fileNameContract = contract.getContract();
+            fileNameContract = contract.getFiles();
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try{
                 contractMapper.updateContract(c);

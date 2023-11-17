@@ -13,6 +13,7 @@ public class Timesheets{
 
     private String id;
     private Date workDate;
-    private String content;
+    private String checkin;
+    private String checkout;
     private String timesheetsCode;
 }

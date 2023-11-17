@@ -472,7 +472,7 @@
                                                         style="max-height: 200px;">${contract.allowance}</td>
                                                     <td class="format-insurance">${contract.insurance}</td>
                                                     <td>
-                                                        <c:set var="contractPath" value="${contract.getContract()}"/>
+                                                        <c:set var="contractPath" value="${contract.getFiles()}"/>
                                                         <c:set var="fileNameContract"
                                                                value="${contractPath.substring(contractPath.lastIndexOf('/') + 1)}"/>
                                                         <a href="${contractPath}" download target="_blank"
@@ -1950,7 +1950,7 @@
                                 }
                             },
                             {
-                                data: 'contract',
+                                data: 'files',
                                 render: function (data, type, row) {
                                     if (data != null) {
                                         var fileName = data.substring(data.lastIndexOf('/') + 1);

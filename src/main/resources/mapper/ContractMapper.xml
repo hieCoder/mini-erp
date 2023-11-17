@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
 
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        insert into CONTRACT (id, basic_salary, allowance, contract, created_date, user_id, insurance, status, HISTORY_ID)
-            value (#{id}, #{basicSalary}, #{allowance}, #{contract}, #{createdDate}, #{user.id}, #{insurance}, #{status}, #{parentContract.id})
+        insert into CONTRACT (id, basic_salary, allowance, files, created_date, user_id, insurance, status, HISTORY_ID)
+            value (#{id}, #{basicSalary}, #{allowance}, #{files}, #{createdDate}, #{user.id}, #{insurance}, #{status}, #{parentContract.id})
     </insert>
 
     <select id="findById" resultMap="contractResultMap">
@@ -13,7 +13,7 @@
             c.ID           AS contract_id,
             c.ALLOWANCE AS contract_allowance,
             c.BASIC_SALARY AS contract_basic_salary,
-            c.CONTRACT AS contract_contractFile,
+            c.FILES AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
             c.INSURANCE AS contract_insurance,
@@ -30,7 +30,7 @@
         SELECT  c.ID           AS contract_id,
                 c.ALLOWANCE AS contract_allowance,
                 c.BASIC_SALARY AS contract_basic_salary,
-                c.CONTRACT AS contract_contractFile,
+                c.FILES AS contract_contractFile,
                 c.CREATED_DATE AS contract_created_date,
                 c.STATUS AS contract_status,
                 c.INSURANCE AS contract_insurance,
@@ -48,7 +48,7 @@
         UPDATE CONTRACT
         SET basic_salary    = #{basicSalary},
             allowance       = #{allowance},
-            contract        = #{contract},
+            files        = #{files},
             insurance  = #{insurance}
         WHERE id = #{id};
     </update>
@@ -65,7 +65,7 @@
         <id property="id" column="contract_id"/>
         <result property="basicSalary" column="contract_basic_salary"/>
         <result property="allowance" column="contract_allowance"/>
-        <result property="contract" column="contract_contractFile"/>
+        <result property="files" column="contract_contractFile"/>
         <result property="createdDate" column="contract_created_date"/>
         <result property="status" column="contract_status"/>
         <result property="insurance" column="contract_insurance"/>
@@ -84,7 +84,7 @@
             c.ID           AS contract_id,
             c.ALLOWANCE AS contract_allowance,
             c.BASIC_SALARY AS contract_basic_salary,
-            c.CONTRACT AS contract_contractFile,
+            c.FILES AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
             c.INSURANCE AS contract_insurance,

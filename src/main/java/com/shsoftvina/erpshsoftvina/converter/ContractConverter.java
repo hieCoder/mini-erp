@@ -36,7 +36,7 @@ public class ContractConverter {
                 .id(ApplicationUtils.generateId())
                 .basicSalary(createContractRequest.getBasicSalary())
                 .allowance(createContractRequest.getAllowance())
-                .contract(contractFileName)
+                .files(contractFileName)
                 .createdDate(new Date())
                 .user(userMapper.findById(createContractRequest.getUserId()))
                 .insurance(createContractRequest.getInsurance())
@@ -53,7 +53,7 @@ public class ContractConverter {
                 .basicSalary(contract.getBasicSalary())
                 .allowance(contract.getAllowance())
                 .insurance((contract.getInsurance()))
-                .contract(FileUtils.getPathUpload(Contract.class, contract.getContract()))
+                .files(FileUtils.getPathUpload(Contract.class, contract.getFiles()))
                 .createdDate(DateUtils.formatDateTime(contract.getCreatedDate()))
                 .historyContract(toListResponseHistory(contract.getHistoryContract()))
                 .build();
@@ -72,7 +72,7 @@ public class ContractConverter {
                 .id(updateContractRequest.getId())
                 .basicSalary(updateContractRequest.getBasicSalary())
                 .allowance(updateContractRequest.getAllowance())
-                .contract(contractFileName)
+                .files(contractFileName)
                 .insurance(updateContractRequest.getInsurance())
                 .build();
     }

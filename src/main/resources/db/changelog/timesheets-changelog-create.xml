@@ -18,5 +18,17 @@
     <changeSet id="2" author="team2">
         <addUniqueConstraint columnNames="WORK_DATE, TIMESHEETS_CODE" constraintName="UNIQUE_WORK_DATE_TIMESHEETS_CODE" tableName="TIMESHEETS"/>
     </changeSet>
+
+    <changeSet id="3" author="team2">
+        <dropColumn tableName="TIMESHEETS" columnName="CONTENT"/>
+
+        <addColumn tableName="TIMESHEETS">
+            <column name="CHECKIN" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="TIMESHEETS">
+            <column name="CHECKOUT" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
 

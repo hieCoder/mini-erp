@@ -30,17 +30,17 @@
 
     <resultMap id="timesheetsResultMap" type="com.shsoftvina.erpshsoftvina.entity.Timesheets">
         <id property="id" column="ID"/>
-        <result property="content" column="CONTENT"/>
+        <result property="checkin" column="CHECKIN"/>
+        <result property="checkout" column="CHECKOUT"/>
         <result property="workDate" column="WORK_DATE"/>
         <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
     </resultMap>
 
     <insert id="insertTimesheetsBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO TIMESHEETS (ID, WORK_DATE, CONTENT, TIMESHEETS_CODE)
+        INSERT INTO TIMESHEETS (ID, WORK_DATE, CHECKIN, CHECKOUT, TIMESHEETS_CODE)
         VALUES
         <foreach collection="list" item="timesheet" separator=",">
-            (UUID(), #{timesheet.workDate}, #{timesheet.content}, #{timesheet.timesheetsCode})
+            (UUID(), #{timesheet.workDate}, #{timesheet.checkin}, #{timesheet.checkout}, #{timesheet.timesheetsCode})
         </foreach>
     </insert>
-
 </mapper>
