@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
-                // api
+                // API
                 .antMatchers("/api/v1/subscribe").permitAll()
                 // auth
                 .antMatchers("/api/v1/auth/**").permitAll()
@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
-                // controller
+                // CONTROLLER
                 // auth
                 .antMatchers("/login", "/register/**").permitAll()
                 // user

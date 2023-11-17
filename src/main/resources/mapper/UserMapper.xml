@@ -75,10 +75,13 @@
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT u.*, c.id AS contract_id, c.*
-        FROM USER u
-        LEFT JOIN CONTRACT c ON u.id = c.user_id AND c.STATUS = 'ACTIVE'
-        WHERE u.id = #{id}
+        SELECT u.*, u.ID AS user_id, u.CREATED_DATE AS user_created_date
+               c.*, c.ID AS contract_id, c.CREATED_DATE AS contract_created_date
+               a.*, a.ID AS allowance_id
+        FROM CONTRACT c
+                 LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+                 INNER JOIN USER u ON c.USER_ID = u.id
+        WHERE u.ID = #{id} AND u.status = 'ACTIVE' AND c.STATUS = 'ACTIVE' AND c.HISTORY_ID IS NULL
     </select>
 
     <update id="changeStatusUser" parameterType="String" >
@@ -113,7 +116,7 @@
     </update>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="id"/>
+        <id property="id" column="user_id"/>
         <result property="fullname" column="FULLNAME"/>
         <result property="address" column="ADDRESS"/>
         <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
@@ -131,7 +134,7 @@
         <result property="resume" column="RESUME"/>
         <result property="isFirstUpdateProfile" column="IS_FIRST_UPDATE_PROFILE"/>
         <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
-        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="createdDate" column="user_created_date"/>
         <result property="gender" column="GENDER"/>
         <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
     </resultMap>
@@ -139,11 +142,18 @@
     <resultMap id="listContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract" >
         <id property="id" column="contract_id"/>
         <result property="basicSalary" column="BASIC_SALARY"/>
-        <result property="allowance" column="ALLOWANCE"/>
-        <result property="contract" column="CONTRACT"/>
-        <result property="createdDate" column="CREATED_DATE"/>
-        <result property="insuranceType" column="INSURANCE_TYPE"/>
-        <result property="insuranceMoney" column="INSURANCE_MONEY"/>
+        <result property="files" column="FILES"/>
+        <result property="createdDate" column="contract_created_date"/>
+<!--        <result property="insuranceType" column="INSURANCE_TYPE"/>-->
+<!--        <result property="insuranceMoney" column="INSURANCE_MONEY"/>-->
+        <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
+                    resultMap="allowanceResultMap"/>
+    </resultMap>
+
+    <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
+        <id property="id" column="allowance_id" />
+        <result property="item" column="allowance_item" />
+        <result property="itemValue" column="allowance_item_value" />
     </resultMap>
 
     <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">

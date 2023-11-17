@@ -39,4 +39,8 @@
     <changeSet id="5" author="team2">
         <renameColumn tableName="CONTRACT" oldColumnName="CONTRACT" newColumnName="FILES" columnDataType="NVARCHAR(1000)"/>
     </changeSet>
+
+    <changeSet id="6" author="team2">
+        <dropColumn tableName="CONTRACT" columnName="ALLOWANCE"/>
+    </changeSet>
 </databaseChangeLog>

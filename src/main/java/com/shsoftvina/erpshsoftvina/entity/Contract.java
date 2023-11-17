@@ -14,10 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Contract {
-
     private String id;
     private String basicSalary;
-    private String allowance;
     private String files;
     private Date createdDate;
     private User user;
@@ -25,4 +23,5 @@ public class Contract {
     private StatusContractEnum status;
     private Contract parentContract;
     private List<Contract> historyContract;
+    private List<Allowance> allowances;
 }

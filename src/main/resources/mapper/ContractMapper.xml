@@ -25,24 +25,27 @@
         WHERE c.id = #{id}
     </select>
 
-    <select id="getContractByUser" parameterType="String" resultMap="contractResultMap">
+<!--    <select id="getContractByUser" parameterType="String" resultMap="contractResultMap">-->
 
-        SELECT  c.ID           AS contract_id,
-                c.ALLOWANCE AS contract_allowance,
-                c.BASIC_SALARY AS contract_basic_salary,
-                c.FILES AS contract_contractFile,
-                c.CREATED_DATE AS contract_created_date,
-                c.STATUS AS contract_status,
-                c.INSURANCE AS contract_insurance,
-                c.HISTORY_ID AS contract_history_id,
-                c.USER_ID AS contract_user_id,
-                u.fullname AS user_fullname
-        FROM CONTRACT c
-                 INNER JOIN USER u ON c.user_id = u.id
-        WHERE u.id = #{userId}
-          AND c.status = 'ACTIVE'
-          AND c.HISTORY_ID IS NULL
-    </select>
+<!--        SELECT  c.ID AS contract_id,-->
+<!--                c.BASIC_SALARY AS contract_basic_salary,-->
+<!--                c.FILES AS contract_contractFile,-->
+<!--                c.CREATED_DATE AS contract_created_date,-->
+<!--                c.STATUS AS contract_status,-->
+<!--                c.INSURANCE AS contract_insurance,-->
+<!--                c.HISTORY_ID AS contract_history_id,-->
+<!--                c.USER_ID AS contract_user_id,-->
+<!--                u.FULLNAME AS user_fullname,-->
+<!--                a.ID AS allowance_id,-->
+<!--                a.ITEM AS allowance_item,-->
+<!--                a.ITEM_VALUE AS allowance_item_value-->
+<!--        FROM CONTRACT c-->
+<!--        LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID-->
+<!--        INNER JOIN USER u ON c.user_id = u.id-->
+<!--        WHERE u.id = #{userId}-->
+<!--          AND c.status = 'ACTIVE'-->
+<!--          AND c.HISTORY_ID IS NULL-->
+<!--    </select>-->
 
     <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
         UPDATE CONTRACT
@@ -72,6 +75,8 @@
         <association property="user" column="contract_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
         <collection property="historyContract" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Contract"
                     select="getHistoryContract"/>
+        <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
+                    resultMap="allowanceResultMap"/>
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
@@ -81,8 +86,7 @@
 
     <select id="getHistoryContract" resultMap="contractResultMap">
         SELECT
-            c.ID           AS contract_id,
-            c.ALLOWANCE AS contract_allowance,
+            c.ID AS contract_id,
             c.BASIC_SALARY AS contract_basic_salary,
             c.FILES AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
@@ -90,10 +94,19 @@
             c.INSURANCE AS contract_insurance,
             c.HISTORY_ID AS contract_history_id,
             c.USER_ID AS contract_user_id,
-            u.fullname AS user_fullname
+            u.fullname AS user_fullname,
+            a.ID AS allowance_id,
+            a.ITEM AS allowance_item,
+            a.ITEM_VALUE AS allowance_item_value
         FROM CONTRACT c
-                 INNER JOIN USER u ON c.user_id = u.id
+        LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+        INNER JOIN USER u ON c.user_id = u.id
         WHERE c.HISTORY_ID = #{id}
     </select>
 
+    <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
+        <id property="id" column="allowance_id" />
+        <result property="item" column="allowance_item" />
+        <result property="itemValue" column="allowance_item_value" />
+    </resultMap>
 </mapper>
