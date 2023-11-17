@@ -26,30 +26,32 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+       if(!urlsAllow(request.getRequestURI())){
+           Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null) {
-            User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
+           if (auth != null) {
+               User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
 
-            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(userSet, auth.getCredentials(), userSet.getAuthorities());
+               UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(userSet, auth.getCredentials(), userSet.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(newAuth);
-        }
+               SecurityContextHolder.getContext().setAuthentication(newAuth);
+           }
 
-        if (auth != null && auth.isAuthenticated()) {
-            try {
-                User currentUser = Principal.getUserCurrent();
-                if(currentUser == null) {
-                    response.sendRedirect("/login");
-                }
-                User user = userMapper.findById(currentUser.getId());
-                if(!user.checkAcceptUpdateBasicInfo() && !urlsAllow(request.getRequestURI())) {
-                    response.sendRedirect("/users/" + currentUser.getId());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+           if (auth != null && auth.isAuthenticated()) {
+               try {
+                   User currentUser = Principal.getUserCurrent();
+                   if(currentUser == null) {
+                       response.sendRedirect("/login");
+                   }
+                   User user = userMapper.findById(currentUser.getId());
+                   if(!user.checkAcceptUpdateBasicInfo()) {
+                       response.sendRedirect("/users/" + currentUser.getId());
+                   }
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       }
         filterChain.doFilter(request, response);
     }
 

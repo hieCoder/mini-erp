@@ -10,8 +10,8 @@ import java.util.List;
 
 @Mapper
 public interface BookMapper {
-    List<Book> findAll(@Param("searchTerm") String searchTerm, RowBounds rowBounds);
-    long totalBook(@Param("searchTerm") String searchTerm);
+    List<Book> findAll(String searchTerm, RowBounds rowBounds);
+    long totalBook(String searchTerm);
 
     int createBook(Book book);
 

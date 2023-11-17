@@ -10,22 +10,22 @@
           AND t.STATUS = 'ACTIVE'
           AND (
                 (t.START_DATE IS NULL AND
-                 ((t.CREATED_DATE &gt;= #{prevMonth} AND
+                 ((t.CREATED_DATE &gt;= #{previousMonth} AND
                   t.CREATED_DATE &lt;= #{nextMonth}) OR
-                  (t.DUE_DATE &gt;= #{prevMonth} AND t.DUE_DATE &lt;= #{nextMonth}))
+                  (t.DUE_DATE &gt;= #{previousMonth} AND t.DUE_DATE &lt;= #{nextMonth}))
                     )
                 OR
                 (t.START_DATE IS NOT NULL AND ((
                                     CASE
                                         WHEN t.STATUS_TASK != 'CLOSED' THEN t.DUE_DATE
                                         WHEN t.STATUS_TASK = 'CLOSED' THEN t.CLOSE_DATE
-                                        END &gt;= #{prevMonth} AND
+                                        END &gt;= #{previousMonth} AND
                                                                                 CASE
                                                                                     WHEN t.STATUS_TASK != 'CLOSED' THEN t.DUE_DATE
                                                                                     WHEN t.STATUS_TASK = 'CLOSED'
                                                                                         THEN t.CLOSE_DATE
                                                                                     END &lt;= #{nextMonth})
-                        OR (t.START_DATE &gt;= #{prevMonth} AND
+                        OR (t.START_DATE &gt;= #{previousMonth} AND
                             t.START_DATE &lt;= #{nextMonth})
                     ))
             );

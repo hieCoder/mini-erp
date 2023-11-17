@@ -12,11 +12,11 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 
-    User findByEmailAndStatus(@Param("email") String email, @Param("status") String status);
+    User findByEmailAndStatus( String email,  String status);
 
-    User findByEmail(@Param("email") String email);
+    User findByEmail( String email);
 
-    User findByTimesheetsCode(@Param("timesheetsCode") String timesheetsCode);
+    User findByTimesheetsCode( String timesheetsCode);
 
     int registerUser(User user);
 
@@ -24,14 +24,14 @@ public interface UserMapper {
 
     int updateUserDetail(User user);
 
-    List<User> getAllUser(@Param("searchTerm") String searchTerm,
-                          @Param("sortDirection") String sortDirection,
-                          @Param("status") String status,
+    List<User> getAllUser( String searchTerm,
+                           String sortDirection,
+                           String status,
                           RowBounds rowBounds);
 
-    User findById(@Param("id") String id);
+    User findById(String id);
 
-    int changeStatusUser(@Param("id") String id, @Param("status") String status);
+    int changeStatusUser( String id,  String status);
 
     void activeUserRegister(User user);
 
@@ -39,11 +39,11 @@ public interface UserMapper {
 
     List<Map<String, Object>> getAllFullname();
 
-    long getTotalUser(@Param("status") String status,
-                      @Param("searchTerm") String searchTerm,
-                      @Param("sortDirection") String sortDirection);
+    long getTotalUser(String status,
+                       String searchTerm,
+                       String sortDirection);
 
-    List<User> getUserBirthday(@Param("prevMonth") LocalDate prevMonth,@Param("nextMonth") LocalDate nextMonth );
+    List<User> getUserBirthday( LocalDate prevMonth, LocalDate nextMonth );
 
-    List<User> getTodayBirthday(@Param("date") LocalDate date);
+    List<User> getTodayBirthday( LocalDate date);
 }

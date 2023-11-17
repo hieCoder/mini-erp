@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CommentTaskMapper {
 
-    CommentTask findById(@Param("id") String id);
+    CommentTask findById(String id);
     int createCommentTask(CommentTask commentTask);
     int updateCommentTask(CommentTask commentTask);
     int deleteById(String id);

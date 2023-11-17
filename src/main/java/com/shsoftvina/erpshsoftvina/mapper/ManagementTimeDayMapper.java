@@ -15,8 +15,8 @@ public interface ManagementTimeDayMapper {
     int createDayInfo(ManagementTimeDay day);
     int updateDayInfo(ManagementTimeDay day);
     ManagementTimeDay findById(String id);
-    ManagementTimeDay findByDay(@Param("userId") String userId, @Param("day") String day);
-    List<ManagementTimeDay> findAllByMonthYear(@Param("userId") String userId,
-                                               @Param("startDate") String startDate,
-                                               @Param("endDate") String endDate);
+    ManagementTimeDay findByDay(String userId, String day);
+    List<ManagementTimeDay> findAllByMonthYear(String userId,
+                                               String startDate,
+                                               String endDate);
 }

@@ -6,32 +6,32 @@
     <!--    Get All Notification-->
     <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
-        SELECT n.*,u.id,u.fullname
+        SELECT n.*,u.ID,u.FULLNAME
         FROM NOTIFICATION n
-                 LEFT JOIN USER u ON n.user_id = u.id
-        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%') AND n.status = #{status}
-        ORDER BY created_date DESC
+                 LEFT JOIN USER u ON n.USER_ID = u.ID
+        WHERE (n.TITLE LIKE '%' #{search} '%' OR u.FULLNAME LIKE '%' #{search} '%') AND n.STATUS = #{status}
+        ORDER BY CREATED_DATE DESC
             LIMIT #{start}, #{pageSize}
         ]]>
     </select>
 
     <select id="getInactiveNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
-        SELECT n.*,u.id,u.fullname
+        SELECT n.*,u.ID,u.FULLNAME
         FROM NOTIFICATION n
-                 LEFT JOIN USER u ON n.user_id = u.id
-        WHERE n.status = #{status}
-        ORDER BY created_date DESC
+                 LEFT JOIN USER u ON n.USER_ID = u.ID
+        WHERE n.STATUS = #{status}
+        ORDER BY CREATED_DATE DESC
             LIMIT #{start}, #{pageSize}
         ]]>
     </select>
 
     <select id="getNotificationLatest" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
-        SELECT n.*,u.id,u.fullname
+        SELECT n.*,u.ID,u.FULLNAME
         FROM NOTIFICATION n
-                 LEFT JOIN USER u ON n.user_id = u.id
-        ORDER BY created_date DESC
+                 LEFT JOIN USER u ON n.USER_ID = u.ID
+        ORDER BY CREATED_DATE DESC
             LIMIT #{limit}
         ]]>
     </select>
@@ -39,14 +39,14 @@
     <select id="getNotificationById" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
         FROM NOTIFICATION n
-        WHERE n.id = #{id}
+        WHERE n.ID = #{id}
     </select>
 
     <select id="countAll" resultType="int" parameterType="map">
         SELECT COUNT(*)
         FROM NOTIFICATION n
-                 INNER JOIN USER u ON n.user_id = u.id
-        WHERE (n.title LIKE '%' #{search} '%' OR u.fullname LIKE '%' #{search} '%') AND n.status = #{status}
+                 INNER JOIN USER u ON n.USER_ID = u.ID
+        WHERE (n.TITLE LIKE '%' #{search} '%' OR u.FULLNAME LIKE '%' #{search} '%') AND n.STATUS = #{status}
     </select>
 
     <!--    Create new Notification-->
@@ -56,28 +56,19 @@
     </select>
 
     <!--    Update Notification-->
-    <update id="updateNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
-        UPDATE NOTIFICATION
-        SET title   = #{title},
-            content = #{content},
-            files    = #{files}
-        WHERE id = #{id}
-    </update>
-
-    <!--    Update Notification-->
     <update id="updateNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
         UPDATE NOTIFICATION
-        SET title   = #{title},
-            content = #{content},
-            files    = #{files}
-        WHERE id = #{id}
+        SET TITLE   = #{title},
+            CONTENT = #{content},
+            FILES    = #{files}
+        WHERE ID = #{id}
     </update>
 
     <!--    Delete Notification-->
     <update id="delNoti" parameterType="map">
         UPDATE NOTIFICATION
-        SET status = #{status}
-        WHERE id = #{id}
+        SET STATUS = #{status}
+        WHERE ID = #{id}
     </update>
 
     <resultMap id="notiShowResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
@@ -105,28 +96,28 @@
 
     <select id="findById" resultMap="notificationResultMap">
         SELECT
-            n.id AS notification_id,
-            n.status AS notification_status,
-            n.title AS notification_title,
-            n.content AS notification_content,
-            n.files AS notification_file,
-            n.created_date AS notification_created_date,
-            n.user_id AS notification_user_id,
-            c.id AS comment_id,
-            c.user_id AS comment_user_id,
-            c.content AS comment_content,
-            c.parent_id AS comment_parent_id,
-            c.created_date AS comment_created_date,
-            c.modified_date AS comment_modified_date,
-            c.modified_by AS comment_modified_by,
-            u.fullname AS user_fullname,
-            u.avatar AS user_avatar
+            n.ID AS notification_id,
+            n.STATUS AS notification_status,
+            n.TITLE AS notification_title,
+            n.CONTENT AS notification_content,
+            n.FILES AS notification_file,
+            n.CREATED_DATE AS notification_created_date,
+            n.USER_ID AS notification_user_id,
+            c.ID AS comment_id,
+            c.USER_ID AS comment_user_id,
+            c.CONTENT AS comment_content,
+            c.PARENT_ID AS comment_parent_id,
+            c.CREATED_DATE AS comment_created_date,
+            c.MODIFIED_DATE AS comment_modified_date,
+            c.MODIFIED_BY AS comment_modified_by,
+            u.FULLNAME AS user_fullname,
+            u.AVATAR AS user_avatar
         FROM
             NOTIFICATION n
-                LEFT JOIN COMMENT_NOTIFICATION c ON n.id = c.notification_id AND c.parent_id IS NULL
-                LEFT JOIN USER u ON c.user_id = u.id
-        WHERE n.id = #{id}
-        ORDER BY c.created_date DESC;
+                LEFT JOIN COMMENT_NOTIFICATION c ON n.ID = c.NOTIFICATION_ID AND c.PARENT_ID IS NULL
+                LEFT JOIN USER u ON c.USER_ID = u.ID
+        WHERE n.ID = #{id}
+        ORDER BY c.CREATED_DATE DESC;
     </select>
 
     <resultMap id="notificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
@@ -153,7 +144,7 @@
     <select id="getUser" resultMap="userNotiResultMap">
         SELECT *
         FROM USER
-        WHERE id = #{id}
+        WHERE ID = #{id}
     </select>
 
     <resultMap id="userNotiResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
@@ -168,20 +159,20 @@
     </resultMap>
 
     <select id="getChildComments" resultMap="commentResultMap">
-        SELECT c.id AS comment_id,
-               c.user_id AS comment_user_id,
-               c.content AS comment_content,
-               c.created_date AS comment_created_date,
-               c.parent_id AS comment_parent_id,
-               c.created_date AS comment_created_date,
-               c.modified_date AS comment_modified_date,
-               c.modified_by AS comment_modified_by,
-               u.fullname AS user_fullname,
-               u.avatar AS user_avatar
+        SELECT c.ID AS comment_id,
+               c.USER_ID AS comment_user_id,
+               c.CONTENT AS comment_content,
+               c.CREATED_DATE AS comment_created_date,
+               c.PARENT_ID AS comment_parent_id,
+               c.CREATED_DATE AS comment_created_date,
+               c.MODIFIED_DATE AS comment_modified_date,
+               c.MODIFIED_BY AS comment_modified_by,
+               u.FULLNAME AS user_fullname,
+               u.AVATAR AS user_avatar
         FROM COMMENT_NOTIFICATION c
-                 INNER JOIN USER u ON c.user_id = u.id
-        WHERE c.parent_id = #{id}
-        ORDER BY c.created_date DESC;
+                 INNER JOIN USER u ON c.USER_ID = u.id
+        WHERE c.PARENT_ID = #{id}
+        ORDER BY c.CREATED_DATE DESC;
     </select>
 
 </mapper>

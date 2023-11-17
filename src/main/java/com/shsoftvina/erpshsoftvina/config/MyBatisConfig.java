@@ -62,6 +62,10 @@ public class MyBatisConfig {
 //        This line sets the DataSource for the SqlSessionFactoryBean. It configures the data source that MyBatis will use to interact with the database.
         sessionFactory.setDataSource(dataSource);
 
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setUseActualParamName(true);
+        sessionFactory.setConfiguration(configuration);
+
 // Set the mapper locations using the classpath pattern
         sessionFactory.setMapperLocations(
                 new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
