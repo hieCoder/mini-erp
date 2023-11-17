@@ -14,15 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Contract {
-
     private String id;
     private String basicSalary;
-    private String allowance;
-    private String contract;
+    private String files;
     private Date createdDate;
     private User user;
     private String insurance;
     private StatusContractEnum status;
     private Contract parentContract;
     private List<Contract> historyContract;
+    private List<Allowance> allowances;
 }

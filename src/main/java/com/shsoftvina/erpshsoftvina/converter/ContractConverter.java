@@ -27,6 +27,9 @@ public class ContractConverter {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AllowanceConverter allowanceConverter;
+
     public Contract toEntity(CreateContractRequest createContractRequest, String contractFileName){
         String parentContractId = createContractRequest.getParentId();
 
@@ -37,8 +40,8 @@ public class ContractConverter {
         return Contract.builder()
                 .id(ApplicationUtils.generateId())
                 .basicSalary(createContractRequest.getBasicSalary())
-                .allowance(createContractRequest.getAllowance())
-                .contract(contractFileName)
+                //.allowance(createContractRequest.getAllowance())
+                .files(contractFileName)
                 .createdDate(new Date())
                 .user(userMapper.findById(createContractRequest.getUserId()))
                 .insurance(createContractRequest.getInsurance())
@@ -53,28 +56,25 @@ public class ContractConverter {
         return ContractResponse.builder()
                 .id(contract.getId())
                 .basicSalary(contract.getBasicSalary())
-                .allowance(contract.getAllowance())
                 .insurance((contract.getInsurance()))
-                .contract(FileUtils.getPathUpload(Contract.class, contract.getContract()))
+                .files(FileUtils.getPathUpload(Contract.class, contract.getFiles()))
                 .createdDate(DateUtils.formatDateTime(contract.getCreatedDate()))
-                .historyContract(toListResponseHistory(contract.getHistoryContract()))
+                .historyContract(toListResponse(contract.getHistoryContract()))
+                .allowances(allowanceConverter.toListAllowanceResponse(contract.getAllowances()))
                 .build();
     }
 
     public List<ContractResponse> toListResponse(List<Contract> contracts) {
-        return contracts.stream().map(this::toResponse).collect(Collectors.toList());
-    }
-    public List<ContractResponse> toListResponseHistory(List<Contract> contracts) {
         if(contracts == null) return null;
-        return contracts.stream().map(c -> toResponse(c)).collect(Collectors.toList());
+        return contracts.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     public Contract toEntity(UpdateContractRequest updateContractRequest, String contractFileName){
         return Contract.builder()
                 .id(updateContractRequest.getId())
                 .basicSalary(updateContractRequest.getBasicSalary())
-                .allowance(updateContractRequest.getAllowance())
-                .contract(contractFileName)
+               // .allowance(updateContractRequest.getAllowance())
+                .files(contractFileName)
                 .insurance(updateContractRequest.getInsurance())
                 .build();
     }

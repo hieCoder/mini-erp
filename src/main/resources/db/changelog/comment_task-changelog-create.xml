@@ -20,4 +20,8 @@
             <column name="TITLE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="team2">
+        <modifyDataType tableName="COMMENT_TASK" columnName="FILES" newDataType="NVARCHAR(1000)"/>
+    </changeSet>
 </databaseChangeLog>
