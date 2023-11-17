@@ -40,7 +40,7 @@
     <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userLoginResultMap">
         SELECT *
         FROM USER
-        where EMAIL = #{email}
+        WHERE EMAIL = #{email}
     </select>
 
     <select id="findByTimesheetsCode" parameterType="String" resultMap="userResultMap">
@@ -147,7 +147,6 @@
         <result property="status" column="STATUS"/>
         <result property="position" column="POSITION"/>
         <result property="resume" column="RESUME"/>
-        <result property="isFirstUpdateProfile" column="IS_FIRST_UPDATE_PROFILE"/>
         <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
         <result property="createdDate" column="user_created_date"/>
         <result property="gender" column="GENDER"/>
@@ -159,6 +158,7 @@
         <result property="basicSalary" column="BASIC_SALARY"/>
         <result property="files" column="FILES"/>
         <result property="createdDate" column="contract_created_date"/>
+        <result property="insurance" column="INSURANCE"/>
         <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
                     resultMap="allowanceResultMap"/>
     </resultMap>

@@ -398,13 +398,22 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <h5 class="fs-13 mb-1"><a href="/upload/user/${resume}" class="text-body text-truncate d-block fileName-Resume" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${resume}">${resume}</a></h5>
+                                                    <h5 class="fs-13 mb-1"><a href="/upload/user/${resume}"
+                                                                              class="text-body text-truncate d-block fileName-Resume"
+                                                                              data-bs-toggle="tooltip"
+                                                                              data-bs-placement="bottom"
+                                                                              title="${resume}">${resume}</a></h5>
                                                     <div class="fileSize" data-value="${resume}"></div>
                                                 </div>
                                                 <div class="flex-shrink-0 ms-2">
                                                     <div class="d-flex gap-1">
-                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 downFileBtn"><i class="ri-download-2-line" data-url="/upload/user/${resume}"></i></button>
-                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 delete-fileResume-button"><i class="ri-delete-bin-fill"></i></button>
+                                                        <button type="button"
+                                                                class="btn btn-icon text-muted btn-sm fs-18 downFileBtn">
+                                                            <i class="ri-download-2-line"
+                                                               data-url="/upload/user/${resume}"></i></button>
+                                                        <button type="button"
+                                                                class="btn btn-icon text-muted btn-sm fs-18 delete-fileResume-button">
+                                                            <i class="ri-delete-bin-fill"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -473,11 +482,16 @@
                                             </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                            <c:forEach var="contract" items="${contracts}">
+                                            <c:forEach var="contract" items="${user.contracts}">
                                                 <tr>
                                                     <td>${contract.basicSalary}đ</td>
-                                                    <td class="format-allowance" data-simplebar
-                                                        style="max-height: 200px;">${contract.allowance}</td>
+                                                    <td data-simplebar style="max-height: 200px; font-size: 14px">
+                                                        <c:forEach var="allowance" items="${contract.allowances}">
+                                                            <strong st>${allowance.item}</strong>: ${allowance.itemValue}
+                                                            <br>
+                                                        </c:forEach>
+                                                    </td>
+
                                                     <td class="format-insurance">${contract.insurance}</td>
                                                     <td>
                                                         <c:set var="contractPath" value="${contract.getFiles()}"/>
@@ -910,7 +924,7 @@
 <%--Handle User--%>
 <script>
     // Download Resume
-    $(document).on("click","button.downFileBtn",function (){
+    $(document).on("click", "button.downFileBtn", function () {
         let dataUrl = $(this).children().attr("data-url")
         downloadFiles(dataUrl)
     })
@@ -928,7 +942,7 @@
 
         fileSizeElements.forEach(function (element) {
             var dataValue = element.getAttribute('data-value');
-            handleFiles(fileArr,  function handleEachFunc(fileName, fileSize, url, index) {
+            handleFiles(fileArr, function handleEachFunc(fileName, fileSize, url, index) {
                 sizeFiles[fileName] = fileSize;
                 element.textContent = bytesToMBShow(sizeFiles[dataValue]) + ' MB';
             });
