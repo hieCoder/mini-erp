@@ -2,18 +2,21 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.constant.UserConstant;
 import com.shsoftvina.erpshsoftvina.entity.User;
-
 import com.shsoftvina.erpshsoftvina.enums.user.*;
-import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
-import com.shsoftvina.erpshsoftvina.model.request.user.*;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
+import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.FullnameAndAvatarResponse;
-import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
-import com.shsoftvina.erpshsoftvina.utils.*;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
+import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

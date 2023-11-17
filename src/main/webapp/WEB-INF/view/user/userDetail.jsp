@@ -385,26 +385,34 @@
                         <%--========================== Resume =================================--%>
                         <div class="tab-pane" id="resumeSession" role="tabpanel">
                             <div class="row">
+                                <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
                                 <c:forEach var="resume" items="${resumes}">
-                                    <div class="col-md-2 mt-2 text-center delete-fileResume" style="position: relative">
-                                                    <span class="custom-icon">
-                                                        <i class="ri-file-3-line"
-                                                           style="font-size: 75px; color: #4A86E8"></i>
-                                                    </span>
-                                        <br>
-                                        <div class="resume-link">
-                                            <a href="/upload/user/${resume}"
-                                               class="cut-file-name fileName-Resume" data-bs-toggle="tooltip"
-                                               data-bs-placement="bottom" title="${resume}">${resume}</a>
-                                        </div>
-                                        <div class="delete-fileResume-button"
-                                             style="position: absolute;top: -8px;right: 40px;color: black;padding: 5px;cursor: pointer;display: block;">
-                                            <i class="ri-close-circle-line" style="font-size: 20px; color: red"></i>
+                                    <div class="col-xxl-4 col-lg-6 mt-2 delete-fileResume">
+                                        <div class="border rounded border-dashed p-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar-sm">
+                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                            <i class="ri-file-download-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h5 class="fs-13 mb-1"><a href="/upload/user/${resume}" class="text-body text-truncate d-block fileName-Resume" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${resume}">${resume}</a></h5>
+                                                    <div class="fileSize" data-value="${resume}"></div>
+                                                </div>
+                                                <div class="flex-shrink-0 ms-2">
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 downFileBtn"><i class="ri-download-2-line" data-url="/upload/user/${resume}"></i></button>
+                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 delete-fileResume-button"><i class="ri-delete-bin-fill"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div class="row mt-2 border-top" id="uploadFileResume">
+                            <div class="row mt-2 border-top mt-4" id="uploadFileResume">
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -512,10 +520,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-        <!--end col-->
     </div>
 
     <%--Modal Delete File Resume--%>
@@ -903,7 +909,33 @@
 
 <%--Handle User--%>
 <script>
-    // Handle button 'X' Delete Resume
+    // Download Resume
+    $(document).on("click","button.downFileBtn",function (){
+        let dataUrl = $(this).children().attr("data-url")
+        downloadFiles(dataUrl)
+    })
+
+    // Show file resume
+    document.addEventListener("DOMContentLoaded", function () {
+        const resumes = document.querySelectorAll('.fileName-Resume');
+        const fileSizeElements = document.querySelectorAll('.fileSize');
+        var fileArr = [];
+        var sizeFiles = {};
+        resumes.forEach(function (element) {
+            var href = element.getAttribute('href');
+            fileArr.push(href);
+        });
+
+        fileSizeElements.forEach(function (element) {
+            var dataValue = element.getAttribute('data-value');
+            handleFiles(fileArr,  function handleEachFunc(fileName, fileSize, url, index) {
+                sizeFiles[fileName] = fileSize;
+                element.textContent = bytesToMBShow(sizeFiles[dataValue]) + ' MB';
+            });
+        });
+    });
+
+    // Handle Delete Resume
     document.addEventListener("DOMContentLoaded", function () {
         cutShortLink();
         var selectedDeleteFileResume = null;

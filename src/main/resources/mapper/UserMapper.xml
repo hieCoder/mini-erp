@@ -75,8 +75,8 @@
     </select>
 
     <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT u.*, u.ID AS user_id, u.CREATED_DATE AS user_created_date
-               c.*, c.ID AS contract_id, c.CREATED_DATE AS contract_created_date
+        SELECT u.*, u.ID AS user_id, u.CREATED_DATE AS user_created_date,
+               c.*, c.ID AS contract_id, c.CREATED_DATE AS contract_created_date,
                a.*, a.ID AS allowance_id
         FROM CONTRACT c
                  LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
@@ -152,8 +152,8 @@
 
     <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
         <id property="id" column="allowance_id" />
-        <result property="item" column="allowance_item" />
-        <result property="itemValue" column="allowance_item_value" />
+        <result property="item" column="ITEM" />
+        <result property="itemValue" column="ITEM_VALUE" />
     </resultMap>
 
     <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">

@@ -1,14 +1,16 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Contract;
-import com.shsoftvina.erpshsoftvina.enums.contract.InsuranceTypeEnum;
 import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
 import com.shsoftvina.erpshsoftvina.mapper.ContractMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
-import com.shsoftvina.erpshsoftvina.utils.*;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
+import com.shsoftvina.erpshsoftvina.utils.DateUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
