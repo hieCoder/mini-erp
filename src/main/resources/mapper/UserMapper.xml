@@ -16,13 +16,28 @@
         WHERE MONTH(DATE_OF_BIRTH) = MONTH(#{date}) AND DAY(DATE_OF_BIRTH) = DAY(#{date}) AND status = 'ACTIVE'
     </select>
 
-    <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
-        SELECT *
-        FROM USER
-        where email = #{email} AND status = #{status}
-    </select>
+    <resultMap id="userLoginResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
+        <result property="phone" column="PHONE"/>
+        <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
+        <result property="avatar" column="AVATAR"/>
+        <result property="type" column="TYPE"/>
+        <result property="department" column="DEPARTMENT"/>
+        <result property="atm" column="ATM"/>
+        <result property="email" column="EMAIL"/>
+        <result property="role" column="ROLE"/>
+        <result property="status" column="STATUS"/>
+        <result property="position" column="POSITION"/>
+        <result property="resume" column="RESUME"/>
+        <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="gender" column="GENDER"/>
+    </resultMap>
 
-    <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+    <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userLoginResultMap">
         SELECT *
         FROM USER
         where EMAIL = #{email}
@@ -144,8 +159,6 @@
         <result property="basicSalary" column="BASIC_SALARY"/>
         <result property="files" column="FILES"/>
         <result property="createdDate" column="contract_created_date"/>
-<!--        <result property="insuranceType" column="INSURANCE_TYPE"/>-->
-<!--        <result property="insuranceMoney" column="INSURANCE_MONEY"/>-->
         <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
                     resultMap="allowanceResultMap"/>
     </resultMap>
