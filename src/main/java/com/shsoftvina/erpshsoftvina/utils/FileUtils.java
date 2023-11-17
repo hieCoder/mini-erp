@@ -2,6 +2,8 @@ package com.shsoftvina.erpshsoftvina.utils;
 
 import com.shsoftvina.erpshsoftvina.constant.*;
 import com.shsoftvina.erpshsoftvina.entity.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +20,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Component
 public class FileUtils {
+
+    private static String uploadDirectory;
+
+    @Value("${file.uploadDir}")
+    public void setUploadDirectory(String uploadDirectory) {
+        FileUtils.uploadDirectory = uploadDirectory;
+    }
 
     private static String getFileExtension(String filename) {
         int lastDotIndex = filename.lastIndexOf('.');
@@ -49,24 +59,13 @@ public class FileUtils {
 
     public static boolean saveImageToServer(HttpServletRequest request, String dir, MultipartFile file, String fileName) {
         if(file != null && fileName != null){
-            String basePath = request.getSession().getServletContext().getRealPath("/");
-            String grandparentPath = Paths.get(basePath).getParent().getParent().toString();
-            Path savePath = Paths.get(grandparentPath + dir);
-            String[] parts = dir.split("upload");
-            String destinationFolder = parts[parts.length-1];
-            Path SavePathTarget = Paths.get(basePath + "/upload/" + destinationFolder);
+            Path savePath = Paths.get(uploadDirectory + dir);
             Path filePath = savePath.resolve(fileName);
-            Path filePathTarget = SavePathTarget.resolve(fileName);
             try {
                 if (!Files.exists(savePath)) {
                     Files.createDirectories(savePath);
                 }
-                if (!Files.exists(SavePathTarget)) {
-                    Files.createDirectories(SavePathTarget);
-                }
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                Files.copy(file.getInputStream(), filePathTarget, StandardCopyOption.REPLACE_EXISTING);
-
                 return true;
             } catch (IOException e) {
                 return false;

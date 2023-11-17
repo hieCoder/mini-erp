@@ -13,9 +13,9 @@ public interface FeelingOfBookMapper {
     int createFeelingOfBook(FeelingOfBook feelingOfBook);
     FeelingOfBook findById(String id);
     int updateFeelingOfBook(FeelingOfBook feelingOfBook);
-    int deleteFeelingOfBook(@Param("bookId") String bookId,
-                            @Param("userId") String userId);
+    int deleteFeelingOfBook(String bookId,
+                            String userId);
     List<FeelingOfBook> findAllByBook(String id);
-    FeelingOfBook findFeelingByUser(@Param("bookId") String bookId,
-                                    @Param("userId") String userId);
+    FeelingOfBook findFeelingByUser(String bookId,
+                                    String userId);
 }

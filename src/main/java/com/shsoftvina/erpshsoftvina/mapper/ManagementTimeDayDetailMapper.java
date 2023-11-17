@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
 public interface ManagementTimeDayDetailMapper {
     int createTimeDayDetail(ManagementTimeDayDetail managementTimeDayDetail);
     int updateTimeDayDetail(ManagementTimeDayDetail managementTimeDayDetail);
-    ManagementTimeDayDetail findByManagementTimeDayId(@Param("dayId") String dayId);
+    ManagementTimeDayDetail findByManagementTimeDayId(String dayId);
 }

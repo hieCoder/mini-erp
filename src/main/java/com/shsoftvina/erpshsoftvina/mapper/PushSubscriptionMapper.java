@@ -12,6 +12,6 @@ import java.util.List;
 @Mapper
 public interface PushSubscriptionMapper {
     int createPushSubscription(PushSubscription pushSubscription);
-    int deletePushSubscription(@Param("endpoint") String endpoint);
-    List<PushSubscription> findAll(@Param("id") String id);
+    int deletePushSubscription(String endpoint);
+    List<PushSubscription> findAll(String id);
 }
