@@ -4,9 +4,10 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.UserMapper">
 
     <select id="getUserBirthday" resultMap="birthdayResultMap">
-        SELECT ID,FULLNAME, DATE_OF_BIRTH
+        SELECT ID, FULLNAME, DATE_OF_BIRTH
         FROM USER
-        WHERE (MONTH(DATE_OF_BIRTH) &gt;= MONTH(#{prevMonth}) AND MONTH(DATE_OF_BIRTH) &lt;= MONTH(#{nextMonth})) AND status = 'ACTIVE'
+        WHERE MONTH(DATE_OF_BIRTH) IN (MONTH(#{prevMonth}), MONTH(#{monthly}), MONTH(#{nextMonth}))
+          AND status = 'ACTIVE'
     </select>
 
     <select id="getTodayBirthday" resultMap="birthdayResultMap">

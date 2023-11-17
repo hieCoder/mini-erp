@@ -47,8 +47,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDate previousDate = currentDate.minusMonths(1);
         LocalDate lastDayOfNextMonth = currentDate.plusMonths(1).with(TemporalAdjusters.lastDayOfMonth());
         List<Task> tasks = scheduleMapper.getScheduleDetailByMonth(userId, previousDate, lastDayOfNextMonth);
-        List<User> users = userMapper.getUserBirthday(previousDate,lastDayOfNextMonth);
-        List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users);
+        List<User> users = userMapper.getUserBirthday(previousDate,lastDayOfNextMonth,currentDate);
+        List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users,firstDayOfMonth);
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
         return new ScheduleListResponse(list, user);
     }

@@ -21,7 +21,9 @@ import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,7 +66,7 @@ public class TaskConverter {
                 .build();
     }
 
-    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks, List<User> users) {
+    public List<ScheduleListResponse.TaskResponse> toListTaskResponseOfSchedule(List<Task> tasks, List<User> users, String monthly) {
         List<ScheduleListResponse.TaskResponse> rs = new ArrayList<>();
 
         String createdOrStartDate = null;
@@ -93,27 +95,53 @@ public class TaskConverter {
                 rs.add(taskResponse);
             }
         }
-        for (User user : users) {
-            if (user != null) {
-                String startDate = DateUtils.formatDate(user.getDateOfBirth());
-                // Lấy năm hiện tại
-                SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-                String currentYear = yearFormat.format(new Date());
+        SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date monthlyDate = monthFormat.parse(monthly);
 
-                String[] stringArray = startDate.split("-");
-                String yearFromStartDate = stringArray[0];
-                String newStartDate = startDate.replace(yearFromStartDate, currentYear);
+            for (User user : users) {
+                if (user != null) {
+                    try {
+                        String startDate = DateUtils.formatDate(user.getDateOfBirth());
+                        String currentYear = getYearFromDate(monthFormat, monthlyDate);
+                        String newStartDate = getUpdatedStartDate(startDate, monthly, currentYear);
 
-                ScheduleListResponse.TaskResponse taskResponse = ScheduleListResponse.TaskResponse.builder()
-                        .id(user.getId())
-                        .title("Happy Birthday to " + user.getFullname())
-                        .startDate(newStartDate)
-                        .dueOrCloseDate(newStartDate)
-                        .statusTask(new EnumDto("BIRTHDAY", "Birthday")).build();
-                rs.add(taskResponse);
+                        ScheduleListResponse.TaskResponse taskResponse = ScheduleListResponse.TaskResponse.builder()
+                                .id(user.getId())
+                                .title("Happy Birthday to " + user.getFullname())
+                                .startDate(newStartDate)
+                                .dueOrCloseDate(newStartDate)
+                                .statusTask(new EnumDto("BIRTHDAY", "Birthday"))
+                                .build();
+
+                        rs.add(taskResponse);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return rs;
+    }
+    private static String getYearFromDate(SimpleDateFormat format, Date date) {
+        return format.format(date).substring(0, 4);
+    }
+
+    private static String getUpdatedStartDate(String startDate, String monthly, String currentYear) {
+        int birthMonth = LocalDate.parse(monthly).getMonthValue();
+        int userBirthMonth = LocalDate.parse(startDate).getMonthValue();
+
+        if (birthMonth == 12 && userBirthMonth == 1) {
+            int nextYear = Integer.parseInt(currentYear) + 1;
+            return startDate.replace(startDate.split("-")[0], String.valueOf(nextYear));
+        } else if (birthMonth == 1 && userBirthMonth == 12) {
+            int previousYear = Integer.parseInt(currentYear) - 1;
+            return startDate.replace(startDate.split("-")[0], String.valueOf(previousYear));
+        } else {
+            return startDate.replace(startDate.split("-")[0], currentYear);
+        }
     }
 
     public Task toEntity(TaskRegisterRequest taskRegisterRequest) {
