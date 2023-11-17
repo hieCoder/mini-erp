@@ -1176,14 +1176,42 @@
                     callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                         localStorage.setItem('result', 'updateUserSuccess');
                         location.href = "/users/" + '${user.id}';
-                    }, 'formUpdateUser');
+                    }, function () {
+                        enableBtn();
+                        $('.d-flex.align-items-center').remove();
+                        $('#updateDetail').removeClass('btn-load').text('Update');
+                        $('#updateBasic').removeClass('btn-load').text('Update');
+
+                        Swal.fire(
+                            {
+                                title: 'Email or TimeSheets Code exists',
+                                confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                buttonsStyling: false,
+                                showCloseButton: true
+                            }
+                        )
+                    });
                 }
             } else {
                 formData.delete('password');
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     localStorage.setItem('result', 'updateUserSuccess');
                     location.href = "/users/" + '${user.id}';
-                }, 'formUpdateUser');
+                }, function () {
+                    enableBtn();
+                    $('.d-flex.align-items-center').remove();
+                    $('#updateDetail').removeClass('btn-load').text('Update');
+                    $('#updateBasic').removeClass('btn-load').text('Update');
+
+                    Swal.fire(
+                        {
+                            title: 'Email or TimeSheets Code exists',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                });
             }
         }
     });
@@ -1331,7 +1359,7 @@
 
     // Format Insurance
     document.addEventListener("DOMContentLoaded", function () {
-        $('.format-insurance').each(function() {
+        $('.format-insurance').each(function () {
             var insuranceData = $(this).text();
             var formattedInsurance = insuranceFormat(insuranceData);
 
@@ -2114,6 +2142,24 @@
 
         document.querySelectorAll('.btn-danger').forEach(function (e) {
             e.disabled = true;
+        });
+    }
+
+    function enableBtn() {
+        document.querySelectorAll('.btn-primary').forEach(function (e) {
+            e.disabled = false;
+        });
+
+        document.querySelectorAll('.btn-success').forEach(function (e) {
+            e.disabled = false;
+        });
+
+        document.querySelectorAll('.btn-warning').forEach(function (e) {
+            e.disabled = false;
+        });
+
+        document.querySelectorAll('.btn-danger').forEach(function (e) {
+            e.disabled = false;
         });
     }
 </script>

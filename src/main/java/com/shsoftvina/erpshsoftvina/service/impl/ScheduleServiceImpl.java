@@ -40,21 +40,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public ScheduleListResponse getScheduleDetail(String userId, Date startDate, Date endDate) {
-        applicationUtils.checkUserAllow(userId);
-        if (startDate != null && endDate != null){
-            if (startDate.compareTo(endDate) > 0){
-                throw new InvalidException(MessageErrorUtils.invalid());
-            }
-        }
-        List<User> users = new ArrayList<>();
-        List<Task> tasks = scheduleMapper.getScheduleDetail(userId, startDate, endDate);
-        List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users);
-        IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
-        return new ScheduleListResponse(list, user);
-    }
-
-    @Override
     public ScheduleListResponse getScheduleDetail(String userId, String monthly) {
         applicationUtils.checkUserAllow(userId);
         String firstDayOfMonth = monthly + "-01";
@@ -62,8 +47,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDate previousDate = currentDate.minusMonths(1);
         LocalDate lastDayOfNextMonth = currentDate.plusMonths(1).with(TemporalAdjusters.lastDayOfMonth());
         List<Task> tasks = scheduleMapper.getScheduleDetailByMonth(userId, previousDate, lastDayOfNextMonth);
-        List<User> users = userMapper.getUserBirthday(previousDate,lastDayOfNextMonth);
-        List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users);
+        List<User> users = userMapper.getUserBirthday(previousDate,lastDayOfNextMonth,currentDate);
+        List<ScheduleListResponse.TaskResponse> list = taskConverter.toListTaskResponseOfSchedule(tasks,users,firstDayOfMonth);
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
         return new ScheduleListResponse(list, user);
     }

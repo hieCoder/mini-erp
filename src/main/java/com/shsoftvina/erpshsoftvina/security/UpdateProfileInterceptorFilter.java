@@ -28,7 +28,6 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
        if(!urlsAllow(request.getRequestURI())){
            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
            if (auth != null) {
                User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
 
@@ -59,8 +58,9 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
         String[] urls = new String[]{
                 "/assets/",
                 "/upload/",
-                "/login", "/users/",
-                "/api/"
+                "/users/",
+                "/api/",
+                "/service-worker.js"
         };
 
         for(String url: urls){

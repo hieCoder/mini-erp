@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserRegisterRequest;
 import com.shsoftvina.erpshsoftvina.service.AuthService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
+import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.CacheUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import com.shsoftvina.erpshsoftvina.utils.SendMailUtils;
@@ -35,8 +36,8 @@ public class AuthApi {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest user) {
-
-        String token = cacheUtils.createVerificationToken(JsonUtils.objectToJson(user));
+        String token = ApplicationUtils.generateVerifyMailCode();
+        cacheUtils.createVerificationToken(token, JsonUtils.objectToJson(user));
         try {
             sendMailUtils.sendEmail(new DataMailDto(user.getEmail(),
                     MailConstant.VERIFY_MAIL_SUBJECT,
@@ -53,7 +54,9 @@ public class AuthApi {
         String data = cacheUtils.getVerificationToken(code);
         if(data != null){
             UserRegisterRequest user = JsonUtils.jsonToObject(data, UserRegisterRequest.class);
-            return ResponseEntity.ok(authService.registerUser(user));
+            int success = authService.registerUser(user);
+            if(success > 0) cacheUtils.deleteVerificationToken(code);
+            return ResponseEntity.ok(success);
         }
         return ResponseEntity.badRequest().build();
     }

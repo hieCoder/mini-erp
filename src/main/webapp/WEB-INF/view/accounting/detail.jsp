@@ -394,43 +394,6 @@
     </div>
 </div>
 
-<div class="modal zoomIn" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Inform!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal zoomIn" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Bad Request</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body">
-                An error occurred while sending the request. Please try again.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="modal zoomIn" id="deleteFileModal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -458,6 +421,32 @@
 </div>
 <script src="/assets/custom/js/notification/notification.js"></script>
 <script>
+    var rsSuccess = (text) =>{
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
+            showCancelButton: !0,
+            showConfirmButton: !1,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Back",
+            buttonsStyling: !1,
+            showCloseButton: !0
+        })
+    }
+    var rsUnSuccess = () =>{
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
+            showCancelButton: !0,
+            showConfirmButton: !1,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Dismiss",
+            buttonsStyling: !1,
+            showCloseButton: !0
+        })
+    }
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
     const INVALID_FILLED_TEXT = ' <div class="alert alert-danger" role="alert">' +
@@ -529,8 +518,8 @@
                                 }
                             });
                         } else {
+                            rsUnSuccess();
                             $('#deleteModal').modal('hide');
-                            $('#errorModal').modal('show');
                         }
                     }
                 }
@@ -762,14 +751,13 @@
                 $('#editModal').modal('hide');
                 BtnLoadRemove()
                 $("button.editBtn").removeClass("d-none")
-                $('#successModal div.modal-body').text("The request has been completed successfully.")
-                $('#successModal').modal('show');
+                rsSuccess("Updated")
                 $('#editBill').val("");
             }
         }, function (error) {
             if (error) {
+                rsUnSuccess();
                 $('#editModal').modal('hide');
-                $('#errorModal').modal('show');
             }
         })
     })

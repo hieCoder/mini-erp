@@ -423,7 +423,6 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function updateSubscriptionOnServer(subscription) {
-    // Sử dụng fetch để gửi thông tin đăng ký đến endpoint '/subscribe' trên server
     fetch('/api/v1/subscribe/', {
         method: 'POST',
         headers: {

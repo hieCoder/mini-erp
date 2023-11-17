@@ -29,7 +29,6 @@ public class SendMailUtils {
             helper.setText(dataMailDto.getContent(),true);
 
             ClassPathResource resource = new ClassPathResource("logo.png");
-            System.out.println(resource);
             helper.addInline("logoImage",resource);
 
             javaMailSender.send(mimeMessage);
