@@ -12,8 +12,6 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 
-    User findByEmailAndStatus(@Param("email") String email, @Param("status") String status);
-
     User findByEmail(@Param("email") String email);
 
     User findByTimesheetsCode(@Param("timesheetsCode") String timesheetsCode);
