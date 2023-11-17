@@ -2,12 +2,10 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Book;
 import com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper;
-import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
-import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
