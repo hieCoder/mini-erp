@@ -26,20 +26,18 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (!urlsAllow(request.getRequestURI())){
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-            if (auth != null && auth.isAuthenticated()) {
-
-                User user = userMapper.findById(((User) auth.getPrincipal()).getId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            if (!urlsAllow(request.getRequestURI())) {
+                User user = userMapper.findByEmail(((User) auth.getPrincipal()).getEmail());
                 UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(user, auth.getCredentials(), user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(newAuth);
 
                 try {
-                    if(!user.checkAcceptUpdateBasicInfo()) {
+                    if (!user.checkAcceptUpdateBasicInfo()) {
                         response.sendRedirect("/users/" + user.getId());
-                    } else{
-                        if(request.getRequestURI().equals("/login")){
+                    } else {
+                        if (request.getRequestURI().equals("/login")) {
                             response.sendRedirect("/dashboard");
                         }
                     }
@@ -57,7 +55,8 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
                 "/upload/",
                 "/users/",
                 "/api/",
-                "/service-worker.js"
+                "/service-worker.js",
+                "/websocket"
         };
 
         for(String url: urls){

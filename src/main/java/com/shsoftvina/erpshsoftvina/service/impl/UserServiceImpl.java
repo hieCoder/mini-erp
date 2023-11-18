@@ -76,14 +76,12 @@ public class UserServiceImpl implements UserService {
 
         applicationUtils.checkUserAllow(id);
 
-        User user = null;
         try {
-            user = userMapper.findById(id);
-            if (Principal.getUserCurrent().getRole() == null)
-                throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
+            User user = userMapper.findById(id);
+            return userConverter.toUserDetailResponse(user);
         } catch (Exception e) {
+            return null;
         }
-        return userConverter.toUserDetailResponse(user);
     }
 
     @Override
