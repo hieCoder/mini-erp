@@ -27,14 +27,14 @@ public class ContractApi {
         return ResponseEntity.ok(contractService.findById(id));
     }
 
-    @GetMapping("/userContract/{userId}")
-    public ResponseEntity<?> getContractByUser(@PathVariable("userId") String userId) {
-        return ResponseEntity.ok(contractService.getContractByUser(userId));
-    }
+//    @PostMapping("/updation")
+//    public ResponseEntity<?> updateContract(@Valid UpdateContractRequest updateContractRequest) {
+//        return ResponseEntity.ok(contractService.updateContract(updateContractRequest));
+//    }
 
-    @PostMapping("/updation")
-    public ResponseEntity<?> updateContract(@Valid UpdateContractRequest updateContractRequest) {
-        return ResponseEntity.ok(contractService.updateContract(updateContractRequest));
+    @GetMapping("/history/{id}")
+    public ResponseEntity<?> getHistory(@PathVariable String id) {
+        return ResponseEntity.ok(contractService.getHistoryContract(id));
     }
 
     @DeleteMapping("/{id}")

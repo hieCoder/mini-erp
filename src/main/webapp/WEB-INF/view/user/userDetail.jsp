@@ -1520,16 +1520,11 @@
 
     // Function Format Allowance
     function allowanceFormat(data) {
-        var data = JSON.parse(data);
         var keyValueString = '';
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + 'đ' + '<br><br>';
-            }
-        }
-        keyValueString = keyValueString.slice(0, -2);
-
-        return keyValueString;
+        data.forEach(function (e) {
+            keyValueString += '<strong>' + e.item + '</strong>' + ' : ' + e.itemValue + 'đ' + '<br><br>';
+        });
+        return keyValueString.slice(0, -2);
     }
 
     // Function Format money is number
@@ -1685,9 +1680,9 @@
                     callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
                         localStorage.setItem('result', 'addContractSuccess');
                         location.reload();
-                    }, 'formAddContract');
+                    });
                 }, 1000);
-            }, 'formAddContract');
+            });
         }
     });
 
@@ -1976,15 +1971,15 @@
                 if (contractIdHistory) {
                     var table = $('#table-history-contract').DataTable({
                         ajax: {
-                            url: '/api/v1/contracts/' + contractIdHistory,
+                            url: '/api/v1/contracts/history/' + contractIdHistory,
                             contentType: 'application/json',
                             method: 'GET',
-                            dataSrc: 'historyContract'
+                            dataSrc: ''
                         },
                         columns: [
                             {data: 'basicSalary'},
                             {
-                                data: 'allowance',
+                                data: 'allowances',
                                 render: function (data, type, row) {
                                     return allowanceFormat(data);
                                 }

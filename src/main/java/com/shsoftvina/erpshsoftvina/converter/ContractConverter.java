@@ -32,10 +32,8 @@ public class ContractConverter {
 
     public Contract toEntity(CreateContractRequest createContractRequest, String contractFileName){
         String parentContractId = createContractRequest.getParentId();
-
         Contract contract = null;
-
-        if (!StringUtils.isBlank(parentContractId)) contract = contractMapper.findById(createContractRequest.getParentId());
+        if (!StringUtils.isBlank(parentContractId)) contract = contractMapper.findById(parentContractId);
 
         return Contract.builder()
                 .id(ApplicationUtils.generateId())
@@ -58,7 +56,6 @@ public class ContractConverter {
                 .insurance((contract.getInsurance()))
                 .files(FileUtils.getPathUpload(Contract.class, contract.getFiles()))
                 .createdDate(DateUtils.formatDateTime(contract.getCreatedDate()))
-                .historyContract(toListResponse(contract.getHistoryContract()))
                 .allowances(allowanceConverter.toListAllowanceResponse(contract.getAllowances()))
                 .build();
     }
