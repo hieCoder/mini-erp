@@ -1675,13 +1675,11 @@
             addContractBtn.disabled = true;
             addLoadingSuccess(addContractBtn);
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-                setTimeout(function () {
-                    formData.append('parentId', rs.id);
-                    callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
-                        localStorage.setItem('result', 'addContractSuccess');
-                        location.reload();
-                    });
-                }, 1000);
+                formData.append('parentId', rs.id);
+                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
+                    localStorage.setItem('result', 'addContractSuccess');
+                    location.reload();
+                });
             });
         }
     });
