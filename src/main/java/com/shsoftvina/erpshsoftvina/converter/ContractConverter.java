@@ -40,7 +40,6 @@ public class ContractConverter {
         return Contract.builder()
                 .id(ApplicationUtils.generateId())
                 .basicSalary(createContractRequest.getBasicSalary())
-                //.allowance(createContractRequest.getAllowance())
                 .files(contractFileName)
                 .createdDate(new Date())
                 .user(userMapper.findById(createContractRequest.getUserId()))

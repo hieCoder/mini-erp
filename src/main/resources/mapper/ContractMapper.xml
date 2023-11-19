@@ -8,20 +8,24 @@
             value (#{id}, #{basicSalary}, #{files}, #{createdDate}, #{user.id}, #{insurance}, #{status}, #{parentContract.id})
     </insert>
 
+    <delete id="deleteById" parameterType="java.lang.String">
+        DELETE FROM CONTRACT WHERE ID = #{id}
+    </delete>
+
     <select id="findById" resultMap="contractResultMap">
         SELECT
-            c.ID           AS contract_id,
-            c.ALLOWANCE AS contract_allowance,
+            c.ID AS contract_id,
             c.BASIC_SALARY AS contract_basic_salary,
             c.FILES AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
             c.INSURANCE AS contract_insurance,
             c.HISTORY_ID AS contract_history_id,
-            c.USER_ID AS contract_user_id,
-            u.fullname AS user_fullname
+            a.ID AS allowance_id,
+            a.ITEM AS allowance_item,
+            a.ITEM_VALUE AS allowance_item_value
         FROM CONTRACT c
-                 LEFT JOIN USER u ON c.user_id = u.id AND c.HISTORY_ID IS NOT NULL
+        LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
         WHERE c.id = #{id}
     </select>
 
@@ -47,22 +51,22 @@
 <!--          AND c.HISTORY_ID IS NULL-->
 <!--    </select>-->
 
-    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        UPDATE CONTRACT
-        SET basic_salary    = #{basicSalary},
-            allowance       = #{allowance},
-            files        = #{files},
-            insurance  = #{insurance}
-        WHERE id = #{id};
-    </update>
+<!--    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">-->
+<!--        UPDATE CONTRACT-->
+<!--        SET basic_salary    = #{basicSalary},-->
+<!--            allowance       = #{allowance},-->
+<!--            files        = #{files},-->
+<!--            insurance  = #{insurance}-->
+<!--        WHERE id = #{id};-->
+<!--    </update>-->
 
-    <update id="changeStatusContract" parameterType="String">
-        SET SQL_SAFE_UPDATES = 0;
-        UPDATE CONTRACT c
-        SET status = #{status}
-        WHERE id = #{id} or c.history_id = #{id};
-        SET SQL_SAFE_UPDATES = 1;
-    </update>
+<!--    <update id="changeStatusContract" parameterType="String">-->
+<!--        SET SQL_SAFE_UPDATES = 0;-->
+<!--        UPDATE CONTRACT c-->
+<!--        SET status = #{status}-->
+<!--        WHERE id = #{id} or c.history_id = #{id};-->
+<!--        SET SQL_SAFE_UPDATES = 1;-->
+<!--    </update>-->
 
     <resultMap id="contractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract">
         <id property="id" column="contract_id"/>
@@ -72,37 +76,33 @@
         <result property="createdDate" column="contract_created_date"/>
         <result property="status" column="contract_status"/>
         <result property="insurance" column="contract_insurance"/>
-        <association property="user" column="contract_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-        <collection property="historyContract" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Contract"
-                    select="getHistoryContract"/>
+<!--        <collection property="historyContract" column="contract_history_id" ofType="com.shsoftvina.erpshsoftvina.entity.Contract"-->
+<!--                    select="getHistoryContract"/>-->
         <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
                     resultMap="allowanceResultMap"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="contract_user_id" />
-        <result property="fullname" column="user_fullname" />
-    </resultMap>
+<!--    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">-->
+<!--        <id property="id" column="contract_user_id" />-->
+<!--        <result property="fullname" column="user_fullname" />-->
+<!--    </resultMap>-->
 
-    <select id="getHistoryContract" resultMap="contractResultMap">
-        SELECT
-            c.ID AS contract_id,
-            c.BASIC_SALARY AS contract_basic_salary,
-            c.FILES AS contract_contractFile,
-            c.CREATED_DATE AS contract_created_date,
-            c.STATUS AS contract_status,
-            c.INSURANCE AS contract_insurance,
-            c.HISTORY_ID AS contract_history_id,
-            c.USER_ID AS contract_user_id,
-            u.fullname AS user_fullname,
-            a.ID AS allowance_id,
-            a.ITEM AS allowance_item,
-            a.ITEM_VALUE AS allowance_item_value
-        FROM CONTRACT c
-        LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
-        INNER JOIN USER u ON c.user_id = u.id
-        WHERE c.HISTORY_ID = #{id}
-    </select>
+<!--    <select id="getHistoryContract" resultMap="contractResultMap">-->
+<!--        SELECT-->
+<!--            c.ID AS contract_id,-->
+<!--            c.BASIC_SALARY AS contract_basic_salary,-->
+<!--            c.FILES AS contract_contractFile,-->
+<!--            c.CREATED_DATE AS contract_created_date,-->
+<!--            c.STATUS AS contract_status,-->
+<!--            c.INSURANCE AS contract_insurance,-->
+<!--            c.HISTORY_ID AS contract_history_id,-->
+<!--            a.ID AS allowance_id,-->
+<!--            a.ITEM AS allowance_item,-->
+<!--            a.ITEM_VALUE AS allowance_item_value-->
+<!--        FROM CONTRACT c-->
+<!--        INNER JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID-->
+<!--        WHERE c.HISTORY_ID = #{id}-->
+<!--    </select>-->
 
     <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
         <id property="id" column="allowance_id" />

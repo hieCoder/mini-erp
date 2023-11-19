@@ -684,7 +684,7 @@
 
                         <div class="mb-3">
                             <label for="newContract">Contract</label>
-                            <input type="file" class="form-control mt-2" id="newContract" name="contract">
+                            <input type="file" class="form-control mt-2" id="newContract" name="file">
                             <small class="text-muted ml-2">Choose Contract File</small>
                         </div>
                     </div>
