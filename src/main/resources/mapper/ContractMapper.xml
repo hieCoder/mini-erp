@@ -48,10 +48,9 @@
 
 <!--    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">-->
 <!--        UPDATE CONTRACT-->
-<!--        SET basic_salary    = #{basicSalary},-->
-<!--            allowance       = #{allowance},-->
-<!--            files        = #{files},-->
-<!--            insurance  = #{insurance}-->
+<!--        SET BASIC_SALARY    = #{basicSalary},-->
+<!--            FILES        = #{files},-->
+<!--            INSURANCE  = #{insurance}-->
 <!--        WHERE id = #{id};-->
 <!--    </update>-->
 

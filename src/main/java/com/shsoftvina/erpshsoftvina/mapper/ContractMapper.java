@@ -14,8 +14,5 @@ public interface ContractMapper {
     int changeStatusContract(@Param("id") String id,@Param("status") String status);
     Contract findById(String id);
     List<Contract> getHistoryContract(String id);
-
 //    int updateContract(Contract contract);
-
-
 }

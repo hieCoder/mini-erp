@@ -65,13 +65,13 @@ public class ContractConverter {
         return contracts.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
-    public Contract toEntity(UpdateContractRequest updateContractRequest, String contractFileName){
-        return Contract.builder()
-                .id(updateContractRequest.getId())
-                .basicSalary(updateContractRequest.getBasicSalary())
-               // .allowance(updateContractRequest.getAllowance())
-                .files(contractFileName)
-                .insurance(updateContractRequest.getInsurance())
-                .build();
-    }
+//    public Contract toEntity(UpdateContractRequest updateContractRequest, String contractFileName){
+//        return Contract.builder()
+//                .id(updateContractRequest.getId())
+//                .basicSalary(updateContractRequest.getBasicSalary())
+//               // .allowance(updateContractRequest.getAllowance())
+//                .files(contractFileName)
+//                .insurance(updateContractRequest.getInsurance())
+//                .build();
+//    }
 }
