@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.constant;
 
 public class AccountingConstant {
-    public static String UPLOAD_FILE_DIR = "/src/main/webapp/upload/accounting/";
-    public static String PATH_FILE = "/upload/accounting/";
+    public static String UPLOAD_FILE_DIR = "/accounting/";
+    public static String PATH_FILE = "/uploaded/accounting/";
 }
