@@ -10,19 +10,19 @@ import java.util.List;
 
 @Mapper
 public interface EventMapper {
-    List<Event> getAllEventsByMonth(@Param("prevMonth") LocalDate prevMonth, @Param("nextMonth") LocalDate nextMonth);
+    List<Event> getAllEventsByMonth(LocalDate prevMonth,LocalDate nextMonth);
 
-    Event findById(@Param("id") String id);
+    Event findById(String id);
 
-    void deleteEvent(@Param("id") String id);
+    void deleteEvent(String id);
 
     void createEvent(Event event);
 
     int editEvent(Event event);
 
-    List<Event> getUpcomingEvents(@Param("day") String day, RowBounds rowBounds);
+    List<Event> getUpcomingEvents(String day, RowBounds rowBounds);
 
-    long getTotalRecordCountUpcoming(@Param("day") String day);
+    long getTotalRecordCountUpcoming(String day);
 
-    List<Event> getEventNotification(@Param("limit") Integer limit);
+    List<Event> getEventNotification(Integer limit);
 }

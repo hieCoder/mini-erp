@@ -5,36 +5,36 @@
 
     <insert id="createCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" >
         INSERT
-        INTO COMMENT_NOTIFICATION (created_date, content, id, notification_id, user_id, parent_id)
+        INTO COMMENT_NOTIFICATION (CREATED_DATE, CONTENT, ID, NOTIFICATION_ID, USER_ID, PARENT_ID)
         VALUES (#{createdDate}, #{content}, #{id},#{notification.id}, #{user.id}, #{parentComment.id});
     </insert>
 
     <update id="updateCommentNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
         UPDATE COMMENT_NOTIFICATION
         SET
-            content = #{content},
-            modified_by = #{modifiedBy},
-            modified_date = NOW()
-        WHERE id = #{id}
+            CONTENT = #{content},
+            MODIFIED_BY = #{modifiedBy},
+            MODIFIED_DATE = NOW()
+        WHERE ID = #{id}
     </update>
 
     <delete id="deleteById" parameterType="java.lang.String">
-          DELETE FROM COMMENT_NOTIFICATION WHERE id = #{id}
+          DELETE FROM COMMENT_NOTIFICATION WHERE ID = #{id}
     </delete>
 
     <select id="findById" resultMap="commentNotificationResultMap">
         SELECT
-            c.id AS comment_id,
-            c.user_id AS comment_user_id,
-            c.content AS comment_content,
-            c.parent_id AS comment_parent_id,
-            c.created_date AS comment_created_date,
-            c.modified_date AS comment_modified_date,
-            c.modified_by AS comment_modified_by,
-            u.fullname AS user_fullname,
-            u.avatar AS user_avatar
-        FROM COMMENT_NOTIFICATION c LEFT JOIN USER u ON c.user_id = u.id AND c.parent_id IS NOT NULL
-        WHERE c.id = #{id}
+            c.ID AS comment_id,
+            c.USER_ID AS comment_user_id,
+            c.CONTENT AS comment_content,
+            c.PARENT_ID AS comment_parent_id,
+            c.CREATED_DATE AS comment_created_date,
+            c.MODIFIED_DATE AS comment_modified_date,
+            c.MODIFIED_BY AS comment_modified_by,
+            u.FULLNAME AS user_fullname,
+            u.AVATAR AS user_avatar
+        FROM COMMENT_NOTIFICATION c LEFT JOIN USER u ON c.USER_ID = u.ID AND c.PARENT_ID IS NOT NULL
+        WHERE c.ID = #{id}
     </select>
 
     <resultMap id="commentNotificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
@@ -54,17 +54,17 @@
     </resultMap>
 
     <select id="getChildComments" resultMap="commentNotificationResultMap">
-        SELECT c.id AS comment_id,
-               c.user_id AS comment_user_id,
-               c.content AS comment_content,
-               c.created_date AS comment_created_date,
-               c.parent_id AS comment_parent_id,
-               c.modified_date AS comment_modified_date,
-               c.modified_by AS comment_modified_by,
-               u.fullname AS user_fullname,
-               u.avatar AS user_avatar
+        SELECT c.ID AS comment_id,
+               c.USER_ID AS comment_user_id,
+               c.CONTENT AS comment_content,
+               c.CREATED_DATE AS comment_created_date,
+               c.PARENT_ID AS comment_parent_id,
+               c.MODIFIED_DATE AS comment_modified_date,
+               c.MODIFIED_BY AS comment_modified_by,
+               u.FULLNAME AS user_fullname,
+               u.AVATAR AS user_avatar
         FROM COMMENT_NOTIFICATION c
-                 INNER JOIN USER u ON c.user_id = u.id
-        WHERE c.parent_id = #{id}
+                 INNER JOIN USER u ON c.USER_ID = u.ID
+        WHERE c.PARENT_ID = #{id}
     </select>
 </mapper>

@@ -10,6 +10,6 @@ import java.util.List;
 
 @Mapper
 public interface ScheduleMapper {
-    List<Task> getScheduleDetail(@Param("userId") String userId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
-    List<Task> getScheduleDetailByMonth(@Param("userId") String userId, @Param("prevMonth") LocalDate previousMonth, @Param("nextMonth") LocalDate nextMonth);
+    List<Task> getScheduleDetail(String userId, Date startDate, Date endDate);
+    List<Task> getScheduleDetailByMonth(String userId, LocalDate previousMonth,LocalDate nextMonth);
 }
