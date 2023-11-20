@@ -27,10 +27,10 @@ public class ContractApi {
         return ResponseEntity.ok(contractService.findById(id));
     }
 
-//    @PostMapping("/updation")
-//    public ResponseEntity<?> updateContract(@Valid UpdateContractRequest updateContractRequest) {
-//        return ResponseEntity.ok(contractService.updateContract(updateContractRequest));
-//    }
+    @PostMapping("/updation")
+    public ResponseEntity<?> updateContract(@Valid UpdateContractRequest updateContractRequest) {
+        return ResponseEntity.ok(contractService.updateContract(updateContractRequest));
+    }
 
     @GetMapping("/history/{id}")
     public ResponseEntity<?> getHistory(@PathVariable String id) {

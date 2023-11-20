@@ -10,4 +10,7 @@
             (UUID(), #{allowance.item}, #{allowance.itemValue}, #{allowance.contract.id})
         </foreach>
     </insert>
+    <delete id="deleteAllowances" parameterType="String">
+        DELETE FROM allowance WHERE CONTRACT_ID = #{id}
+    </delete>
 </mapper>

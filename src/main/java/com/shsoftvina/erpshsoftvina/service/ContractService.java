@@ -9,7 +9,7 @@ import java.util.List;
 public interface ContractService {
     ContractResponse addContract(CreateContractRequest createContractRequest);
     ContractResponse findById(String id);
-//    int updateContract(UpdateContractRequest updateContractRequest);
+    int updateContract(UpdateContractRequest updateContractRequest);
     int deleteContract(String id);
     List<ContractResponse> getHistoryContract(String id);
 }

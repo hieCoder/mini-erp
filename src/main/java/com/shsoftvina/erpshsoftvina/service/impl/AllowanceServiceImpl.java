@@ -40,4 +40,9 @@ public class AllowanceServiceImpl implements AllowanceService {
         }
         return null;
     }
+
+    @Override
+    public int deleteAllowances(String id) {
+        return allowanceMapper.deleteAllowances(id);
+    }
 }

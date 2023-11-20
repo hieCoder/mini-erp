@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface AllowanceService {
     List<Allowance> insertAllowances(String contractId, String json);
+    int deleteAllowances(String id);
 }
