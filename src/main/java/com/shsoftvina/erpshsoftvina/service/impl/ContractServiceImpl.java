@@ -98,12 +98,11 @@ public class ContractServiceImpl implements ContractService {
         Contract contract = contractMapper.findById(updateContractRequest.getId());
         if(contract == null) throw new NotFoundException("id");
 
-        MultipartFile contractFile = updateContractRequest.getContract();
-        if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
-
         String fileNameContract = null;
         boolean isSaveContractSuccess;
 
+        MultipartFile contractFile = updateContractRequest.getContract();
+        if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
         if(contractFile != null){
             fileNameContract = FileUtils.formatNameImage(contractFile);
             isSaveContractSuccess = FileUtils.saveImageToServer(

@@ -181,24 +181,23 @@ public class FileUtils {
             else if (c == Book.class) {
                 return BookConstant.PATH_FILE + fileName;
             }
+            else if(c == CommentTask.class){
+                return CommentTaskConstant.PATH_FILE + fileName;
+            }
         }
         return null;
     }
 
     public static String[] getPathUploadList(Class<?> c, String fileNames) {
-        if(fileNames != null && !fileNames.isEmpty()){
+        if (fileNames != null && !fileNames.isEmpty()) {
             String[] rs = fileNames.split(",");
-            return Stream.of(rs).map(fileName -> {
-                if (c == User.class) {
-                    return UserConstant.PATH_FILE + fileName;
-                }
-                else if (c == Accounting.class) {
-                    return AccountingConstant.PATH_FILE + fileName;
-                }
-                else if (c == Notification.class) {
-                    return NotificationConstant.PATH_FILE + fileName;
-                } else return null;
-            }).toArray(String[]::new);
+            String[] paths = new String[rs.length];
+
+            for (int i = 0; i < rs.length; i++) {
+                paths[i] = getPathUpload(c, rs[i].trim());
+            }
+
+            return paths;
         }
         return null;
     }
