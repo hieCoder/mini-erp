@@ -48,9 +48,9 @@
 
     <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
         UPDATE CONTRACT
-        SET BASIC_SALARY    = #{basicSalary},
-            FILES        = #{files},
-            INSURANCE  = #{insurance}
+        SET BASIC_SALARY = #{basicSalary},
+            FILES = #{files},
+            INSURANCE = #{insurance}
         WHERE id = #{id};
     </update>
 

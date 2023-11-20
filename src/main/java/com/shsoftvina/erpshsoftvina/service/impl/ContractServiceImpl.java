@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.converter.ContractConverter;
 import com.shsoftvina.erpshsoftvina.entity.Allowance;
 import com.shsoftvina.erpshsoftvina.entity.Contract;
 import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
+import com.shsoftvina.erpshsoftvina.exception.ErrorServerException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ContractMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
@@ -95,14 +96,9 @@ public class ContractServiceImpl implements ContractService {
     public int updateContract(UpdateContractRequest updateContractRequest) {
 
         Contract contract = contractMapper.findById(updateContractRequest.getId());
-
         if(contract == null) throw new NotFoundException("id");
 
-        int deleteAllowances = allowanceService.deleteAllowances(contract.getId());
-        if (deleteAllowances == 0) throw new NotFoundException("DELETE ALLOWANCE FAIL");
-
         MultipartFile contractFile = updateContractRequest.getContract();
-
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
 
         String fileNameContract = null;
@@ -119,13 +115,15 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
-                List<Allowance> allowances = allowanceService.insertAllowances(c.getId(), updateContractRequest.getAllowance());
+                List<Allowance> allowances = allowanceService.updateAllowances(c.getId(), updateContractRequest.getAllowance());
                 if(allowances == null) {
                     contractMapper.deleteById(c.getId());
                     FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                    return 0;
+                } else{
+                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getFiles());
+                    return 1;
                 }
-                FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getFiles());
-                return 1;
             } catch (Exception e){
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                 return 0;
@@ -135,13 +133,13 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try{
                 contractMapper.updateContract(c);
-                List<Allowance> allowances = allowanceService.insertAllowances(c.getId(), updateContractRequest.getAllowance());
+                List<Allowance> allowances = allowanceService.updateAllowances(c.getId(), updateContractRequest.getAllowance());
                 if(allowances == null) {
                     contractMapper.deleteById(c.getId());
-                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                    return 0;
                 }
             }catch (Exception e) {
-                System.out.println(e);
+                return 0;
             }
             return 1;
         }

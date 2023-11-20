@@ -45,4 +45,28 @@ public class AllowanceServiceImpl implements AllowanceService {
     public int deleteAllowances(String id) {
         return allowanceMapper.deleteAllowances(id);
     }
+
+    @Override
+    public List<Allowance> updateAllowances(String contractId, String json) {
+
+        List<Allowance> list = new ArrayList<>();
+
+        Contract contract = contractMapper.findById(contractId);
+        if(contract != null){
+            Map<String, String> map = JsonUtils.jsonToObject(json, Map.class);
+            if(map!= null){
+                int deleteSuccess = allowanceMapper.deleteAllowances(contractId);
+                if(deleteSuccess> 0){
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        list.add(new Allowance(null, entry.getKey(), Integer.parseInt(entry.getValue()), contract));
+                    }
+                    try{
+                        allowanceMapper.insertAllowances(list);
+                        return list;
+                    } catch (Exception e){}
+                }
+            }
+        }
+        return null;
+    }
 }
