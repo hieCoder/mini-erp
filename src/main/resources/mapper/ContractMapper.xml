@@ -72,7 +72,8 @@
             a.ITEM AS allowance_item,
             a.ITEM_VALUE AS allowance_item_value
         FROM CONTRACT c
-        INNER JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+                 INNER JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
         WHERE c.HISTORY_ID = #{id}
+        ORDER BY c.CREATED_DATE ASC;
     </select>
 </mapper>
