@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.ContractConstant;
 import com.shsoftvina.erpshsoftvina.converter.ContractConverter;
+import com.shsoftvina.erpshsoftvina.entity.Allowance;
 import com.shsoftvina.erpshsoftvina.entity.Contract;
 import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
@@ -10,10 +11,12 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
+import com.shsoftvina.erpshsoftvina.service.AllowanceService;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import liquibase.pro.packaged.E;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,21 +42,19 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private ApplicationUtils applicationUtils;
 
+    @Autowired
+    private AllowanceService allowanceService;
+
     @Override
     public ContractResponse addContract(CreateContractRequest createContractRequest) {
         String userId = createContractRequest.getUserId();
+        String parentId = createContractRequest.getParentId();
         if(userMapper.findById(userId) == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+        if(parentId != null && contractMapper.findById(parentId) == null)
+            throw new NotFoundException(MessageErrorUtils.notFound("parentId"));
 
-
-        String parentId = createContractRequest.getParentId();
-        Contract contract = null;
-        if (parentId != null) {
-            contract = contractMapper.findById(parentId);
-        }
-
-        MultipartFile contractFile = createContractRequest.getContract();
-
+        MultipartFile contractFile = createContractRequest.getFile();
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
 
         String fileNameContract = null;
@@ -62,17 +63,24 @@ public class ContractServiceImpl implements ContractService {
         if(contractFile != null){
             fileNameContract = FileUtils.formatNameImage(contractFile);
             isSaveContractSuccess = FileUtils.saveImageToServer(
-                    request, ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getContract(), fileNameContract);
+                    request, ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getFile(), fileNameContract);
         }
 
         if(isSaveContractSuccess){
             Contract c = contractConverter.toEntity(createContractRequest, fileNameContract);
             try {
                 contractMapper.addContract(c);
-                return contractConverter.toResponse(contractMapper.findById(c.getId()));
+
+                List<Allowance> allowances = allowanceService.insertAllowances(c.getId(), createContractRequest.getAllowance());
+                if(allowances != null){
+                    c.setAllowances(allowances);
+                    return contractConverter.toResponse(c);
+                } else{
+                    contractMapper.deleteById(c.getId());
+                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                }
             } catch (Exception e){
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
-                return null;
             }
         }
         return null;
@@ -81,8 +89,7 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public ContractResponse findById(String id) {
         return contractConverter.toResponse(contractMapper.findById(id));
-    };
-
+    }
 
     @Override
     public int updateContract(UpdateContractRequest updateContractRequest) {
@@ -90,6 +97,9 @@ public class ContractServiceImpl implements ContractService {
         Contract contract = contractMapper.findById(updateContractRequest.getId());
 
         if(contract == null) throw new NotFoundException("id");
+
+        int deleteAllowances = allowanceService.deleteAllowances(contract.getId());
+        if (deleteAllowances == 0) throw new NotFoundException("DELETE ALLOWANCE FAIL");
 
         MultipartFile contractFile = updateContractRequest.getContract();
 
@@ -109,6 +119,11 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
+                List<Allowance> allowances = allowanceService.insertAllowances(c.getId(), updateContractRequest.getAllowance());
+                if(allowances == null) {
+                    contractMapper.deleteById(c.getId());
+                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                }
                 FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getFiles());
                 return 1;
             } catch (Exception e){
@@ -120,6 +135,11 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try{
                 contractMapper.updateContract(c);
+                List<Allowance> allowances = allowanceService.insertAllowances(c.getId(), updateContractRequest.getAllowance());
+                if(allowances == null) {
+                    contractMapper.deleteById(c.getId());
+                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                }
             }catch (Exception e) {
                 System.out.println(e);
             }
@@ -141,7 +161,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public List<ContractResponse> getContractByUser(String userId) {
-        return contractConverter.toListResponse(contractMapper.getContractByUser(userId));
+    public List<ContractResponse> getHistoryContract(String id) {
+        return contractConverter.toListResponse(contractMapper.getHistoryContract(id));
     }
 }

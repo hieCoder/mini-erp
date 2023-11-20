@@ -27,5 +27,5 @@ public class CreateContractRequest {
     private String insurance;
 
     private String parentId;
-    private MultipartFile contract;
+    private MultipartFile file;
 }

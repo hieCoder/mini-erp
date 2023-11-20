@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,15 +33,12 @@ public class ContractConverter {
 
     public Contract toEntity(CreateContractRequest createContractRequest, String contractFileName){
         String parentContractId = createContractRequest.getParentId();
-
         Contract contract = null;
-
-        if (!StringUtils.isBlank(parentContractId)) contract = contractMapper.findById(createContractRequest.getParentId());
+        if (!StringUtils.isBlank(parentContractId)) contract = contractMapper.findById(parentContractId);
 
         return Contract.builder()
-                .id(ApplicationUtils.generateId())
+                .id(UUID.randomUUID().toString())
                 .basicSalary(createContractRequest.getBasicSalary())
-                //.allowance(createContractRequest.getAllowance())
                 .files(contractFileName)
                 .createdDate(new Date())
                 .user(userMapper.findById(createContractRequest.getUserId()))
@@ -59,7 +57,6 @@ public class ContractConverter {
                 .insurance((contract.getInsurance()))
                 .files(FileUtils.getPathUpload(Contract.class, contract.getFiles()))
                 .createdDate(DateUtils.formatDateTime(contract.getCreatedDate()))
-                .historyContract(toListResponse(contract.getHistoryContract()))
                 .allowances(allowanceConverter.toListAllowanceResponse(contract.getAllowances()))
                 .build();
     }
@@ -73,7 +70,6 @@ public class ContractConverter {
         return Contract.builder()
                 .id(updateContractRequest.getId())
                 .basicSalary(updateContractRequest.getBasicSalary())
-               // .allowance(updateContractRequest.getAllowance())
                 .files(contractFileName)
                 .insurance(updateContractRequest.getInsurance())
                 .build();

@@ -10,8 +10,9 @@ import java.util.List;
 @Mapper
 public interface ContractMapper {
     int addContract(Contract contract);
-    Contract findById(@Param("id") String id);
-    int updateContract(Contract contract);
+    int deleteById(String id);
     int changeStatusContract(@Param("id") String id,@Param("status") String status);
-    List<Contract> getContractByUser(@Param("userId") String userId);
+    Contract findById(String id);
+    List<Contract> getHistoryContract(String id);
+    int updateContract(Contract contract);
 }

@@ -22,6 +22,5 @@ public class Contract {
     private String insurance;
     private StatusContractEnum status;
     private Contract parentContract;
-    private List<Contract> historyContract;
     private List<Allowance> allowances;
 }

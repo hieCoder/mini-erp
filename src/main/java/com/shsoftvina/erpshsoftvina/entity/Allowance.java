@@ -13,4 +13,5 @@ public class Allowance {
     private String id;
     private String item;
     private Integer itemValue;
+    private Contract contract;
 }

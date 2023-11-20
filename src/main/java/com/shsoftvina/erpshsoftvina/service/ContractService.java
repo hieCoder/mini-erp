@@ -11,5 +11,5 @@ public interface ContractService {
     ContractResponse findById(String id);
     int updateContract(UpdateContractRequest updateContractRequest);
     int deleteContract(String id);
-    List<ContractResponse> getContractByUser(String userId);
+    List<ContractResponse> getHistoryContract(String id);
 }
