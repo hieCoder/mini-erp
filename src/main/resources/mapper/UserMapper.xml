@@ -28,7 +28,6 @@
         <result property="department" column="DEPARTMENT"/>
         <result property="atm" column="ATM"/>
         <result property="email" column="EMAIL"/>
-        <result property="password" column="PASSWORD"/>
         <result property="role" column="ROLE"/>
         <result property="status" column="STATUS"/>
         <result property="position" column="POSITION"/>
