@@ -9,5 +9,5 @@ public interface CommentNotificationMapper {
     int createCommentNotification(CommentNotification commentNotification);
     int updateCommentNotification(CommentNotification commentNotification);
     int deleteById(String id);
-    CommentNotification findById(@Param("id") String id);
+    CommentNotification findById(String id);
 }

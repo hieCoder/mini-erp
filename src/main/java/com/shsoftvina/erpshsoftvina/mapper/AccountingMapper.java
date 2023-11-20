@@ -17,13 +17,13 @@ public interface AccountingMapper {
 
     List<MonthYearFormat> findAllMonthlyHistory();
 
-    List<Accounting> findAccountingByMonth(RowBounds rowBounds,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
+    List<Accounting> findAccountingByMonth(RowBounds rowBounds,LocalDate startDate,LocalDateTime endDate);
 
-    long getTotalRecordCountPerMonth(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
+    long getTotalRecordCountPerMonth(LocalDate startDate,LocalDateTime endDate);
 
-    TotalSpendAndRemain getTotalSpending(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDateTime endDate);
+    TotalSpendAndRemain getTotalSpending(LocalDate startDate,LocalDateTime endDate);
 
-    Long getLatestRemain(@Param("endDate") LocalDateTime endDate);
+    Long getLatestRemain(LocalDateTime endDate);
 
     int createAccounting(Accounting accounting);
 
@@ -31,9 +31,9 @@ public interface AccountingMapper {
 
     int updateAccounting(Accounting accounting);
 
-    Accounting findBeforeCurrentAccounting(@Param("payDate") LocalDateTime payDate);
+    Accounting findBeforeCurrentAccounting(LocalDateTime payDate);
 
-    List<Accounting> getRemainRecordInMonth(@Param("currentAccounting") Accounting currentAccounting, @Param("inMonth") Boolean inMonth);
+    List<Accounting> getRemainRecordInMonth(Accounting currentAccounting,Boolean inMonth);
 
     void updateRecordsBatch(List<Accounting> remainRecordInMonthList);
 
