@@ -580,8 +580,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="addBasicSalary" class="form-label">Basic Salary:</label>
-                            <input type="text" class="form-control" id="addBasicSalary" name="basicSalary"
-                                   oninput="formatNumber(this)" required/>
+                            <input type="number" class="form-control" id="addBasicSalary" name="basicSalary"
+                                   max="2000000000" required/>
                         </div>
                         <div class="mb-3">
                             <label id="valAllowance">Allowance:</label>
@@ -590,16 +590,16 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="telephone" class="form-label">Telephone:</label>
-                                            <input type="text" class="form-control" id="telephone"
-                                                   oninput="formatNumber(this)" required>
+                                            <input type="number" class="form-control" id="telephone"
+                                                   required max="2000000000" >
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="meal" class="form-label">Meal:</label>
-                                            <input type="text" class="form-control" id="meal"
-                                                   oninput="formatNumber(this)" required>
+                                            <input type="number" class="form-control" id="meal"
+                                                   required max="2000000000">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -608,16 +608,16 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="gasoline" class="form-label">Gasoline:</label>
-                                            <input type="text" class="form-control" id="gasoline"
-                                                   oninput="formatNumber(this)" required>
+                                            <input type="number" class="form-control" id="gasoline"
+                                                   required max="2000000000">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="uniform" class="form-label">Uniform:</label>
-                                            <input type="text" class="form-control" id="uniform"
-                                                   oninput="formatNumber(this)" required>
+                                            <input type="number" class="form-control" id="uniform"
+                                                   required max="2000000000">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -626,16 +626,16 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="attendance" class="form-label">Attendance:</label>
-                                            <input type="text" class="form-control" id="attendance"
-                                                   oninput="formatNumber(this)" required>
+                                            <input type="number" class="form-control" id="attendance"
+                                                   required max="2000000000">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="other" class="form-label">Other:</label>
-                                            <input type="text" class="form-control" id="other"
-                                                   oninput="formatNumber(this)" required>
+                                            <input type="number" class="form-control" id="other"
+                                                   required max="2000000000" >
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -666,8 +666,8 @@
                                            value="HEALTH_INSURANCE">
                                     <label class="form-check-label" for="addHealthInsuranceCheckbox">Health
                                         insurance</label>
-                                    <input type="text" class="form-control d-none" id="addHealthInsuranceInput"
-                                           placeholder="Enter Value Health Insurance" oninput="formatNumber(this)"
+                                    <input type="number" class="form-control d-none" id="addHealthInsuranceInput"
+                                           placeholder="Enter Value Health Insurance" max="2000000000"
                                     >
                                 </div>
                                 <div class="form-check">
@@ -675,8 +675,8 @@
                                            value="SOCIAL_INSURANCE">
                                     <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
                                         insurance</label>
-                                    <input type="text" class="form-control d-none" id="addSocialInsuranceInput"
-                                           placeholder="Enter Value Social Insurance" oninput="formatNumber(this)"
+                                    <input type="number" class="form-control d-none" id="addSocialInsuranceInput"
+                                           placeholder="Enter Value Social Insurance" max="2000000000"
                                     >
                                 </div>
                             </div>
@@ -716,8 +716,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="editBasicSalary" class="form-label">Basic Salary:</label>
-                            <input type="text" class="form-control" id="editBasicSalary" name="basicSalary"
-                                   oninput="formatNumber(this)" required/>
+                            <input type="number" class="form-control" id="editBasicSalary" name="basicSalary"
+                                   max="2000000000" required/>
                         </div>
                         <div class="mb-3">
                             <label>Allowance:</label>
@@ -754,8 +754,8 @@
                                 >
                                 <label class="form-check-label" for="editHealthInsuranceCheckbox">Health
                                     insurance</label>
-                                <input type="text" class="form-control d-none" id="editHealthInsuranceInput"
-                                       placeholder="Enter Value Health Insurance" oninput="formatNumber(this)">
+                                <input type="number" class="form-control d-none" id="editHealthInsuranceInput"
+                                       placeholder="Enter Value Health Insurance" max="2000000000">
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="SOCIAL_INSURANCE"
@@ -763,8 +763,8 @@
                                 >
                                 <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
                                     insurance</label>
-                                <input type="text" class="form-control d-none" id="editSocialInsuranceInput"
-                                       placeholder="Enter Value Social Insurance" oninput="formatNumber(this)">
+                                <input type="number" class="form-control d-none" id="editSocialInsuranceInput"
+                                       placeholder="Enter Value Social Insurance" max="2000000000">
                             </div>
                         </div>
 
@@ -1435,7 +1435,7 @@
                             <div class="form-group">
                                 <label for="value">Value</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control value" oninput="formatNumber(this)" required>
+                                    <input type="number" class="form-control value" required max="2000000000">
                                     <div class="input-group-append ml-2">
                                         <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput(this)"></i>
                                     </div>
@@ -1478,7 +1478,7 @@
                             <div class="form-group">
                                 <label for="value">Value</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control newValue" oninput="formatNumber(this)" required>
+                                    <input type="number" class="form-control newValue" required max="2000000000">
                                     <div class="input-group-append ml-2">
                                         <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput2(this)"></i>
                                     </div>
@@ -1525,19 +1525,6 @@
             keyValueString += '<strong>' + e.item + '</strong>' + ' : ' + e.itemValue + 'đ' + '<br><br>';
         });
         return keyValueString.slice(0, -2);
-    }
-
-    // Function Format money is number
-    function formatNumber(input) {
-        let value = input.value.replace(/,/g, '');
-
-        // Only Number
-        value = value.replace(/\D/g, '');
-
-        // insert ',' after every 3 digits
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-        input.value = value;
     }
 
     // Function Format Insurance
@@ -1742,56 +1729,55 @@
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
 
-                    var allowance = JSON.parse(rs.allowance);
+                    var allowances = rs.allowances
                     var divRow;
                     var count = 0;
                     var exitElement = document.getElementById('exitElement');
 
                     if (exitElement.querySelectorAll('.row').length > 0) $('#exitElement').empty();
 
-                    for (var key in allowance) {
-                        if (allowance.hasOwnProperty(key)) {
-                            var value = allowance[key];
+                    for (var allowanceItem of allowances) {
+                        var key = allowanceItem.item;
+                        var value = allowanceItem.itemValue;
 
-                            if (count % 2 === 0) {
-                                divRow = document.createElement("div");
-                                divRow.className = "row";
-                            }
-
-                            var divCol = document.createElement("div");
-                            divCol.className = "col";
-
-                            var formGroupLabel = document.createElement("div");
-                            formGroupLabel.className = "form-group";
-
-                            var label = document.createElement("label");
-                            label.setAttribute("for", "edit" + key);
-                            label.classList.add("form-label", "mt-2", "title");
-                            label.textContent = key;
-
-                            var input = document.createElement("input");
-                            input.setAttribute("type", "text");
-                            input.classList.add("form-control", "value");
-                            input.id = "edit" + key;
-                            input.value = value;
-                            input.setAttribute("oninput", "formatNumber(this)");
-                            input.required = true;
-
-                            var small = document.createElement("small");
-                            small.className = "form-message";
-
-                            small.appendChild(document.createTextNode(""));
-                            formGroupLabel.appendChild(label);
-                            formGroupLabel.appendChild(input);
-                            formGroupLabel.appendChild(small);
-                            divCol.appendChild(formGroupLabel);
-                            divRow.appendChild(divCol);
-
-                            if (count % 2 === 1 || count === Object.keys(allowance).length - 1) {
-                                document.getElementById("exitElement").appendChild(divRow);
-                            }
-                            count++;
+                        if (count % 2 === 0) {
+                            divRow = document.createElement("div");
+                            divRow.className = "row";
                         }
+
+                        var divCol = document.createElement("div");
+                        divCol.className = "col";
+
+                        var formGroupLabel = document.createElement("div");
+                        formGroupLabel.className = "form-group";
+
+                        var label = document.createElement("label");
+                        label.setAttribute("for", "edit" + key);
+                        label.classList.add("form-label", "mt-2", "title");
+                        label.textContent = key;
+
+                        var input = document.createElement("input");
+                        input.setAttribute("type", "text");
+                        input.classList.add("form-control", "value");
+                        input.id = "edit" + key;
+                        input.value = value;
+                        input.setAttribute("max", "2000000000");
+                        input.required = true;
+
+                        var small = document.createElement("small");
+                        small.className = "form-message";
+
+                        small.appendChild(document.createTextNode(""));
+                        formGroupLabel.appendChild(label);
+                        formGroupLabel.appendChild(input);
+                        formGroupLabel.appendChild(small);
+                        divCol.appendChild(formGroupLabel);
+                        divRow.appendChild(divCol);
+
+                        if (count % 2 === 1 || count === allowances.length - 1) {
+                            document.getElementById("exitElement").appendChild(divRow);
+                        }
+                        count++;
                     }
 
                     var insurance = JSON.parse(rs.insurance);
@@ -1892,9 +1878,7 @@
                                 }
                             }
 
-                            var insurance = JSON.stringify(objects);
-
-                            formData.append('insurance', insurance);
+                            formData.append('insurance', JSON.stringify(objects));
                             formData.append('allowance', JSON.stringify(formDataObject));
                             formData.append('userId', '${user.id}');
                             formData.append('parentId', editContractId);

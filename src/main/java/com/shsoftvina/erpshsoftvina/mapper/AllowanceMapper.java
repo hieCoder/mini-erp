@@ -8,4 +8,5 @@ import java.util.List;
 @Mapper
 public interface AllowanceMapper {
     int insertAllowances(List<Allowance> list);
+    int deleteAllowances(String id);
 }
