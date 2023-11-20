@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,8 +27,11 @@ public class FileUtils {
     private static String uploadDirectory;
 
     @Value("${file.uploadDir}")
-    public void setUploadDirectory(String uploadDirectory) {
-        FileUtils.uploadDirectory = uploadDirectory;
+    private String uploadDirValue;
+
+    @PostConstruct
+    private void init() {
+        uploadDirectory = uploadDirValue;
     }
 
     private static String getFileExtension(String filename) {
