@@ -57,7 +57,7 @@ public class ManagementTimeDayController {
                 }
                 mav.addObject("day", day);
             }
-            mav.setViewName("management-time/day/detail");
+            mav.setViewName("management-time/day/week-detail");
             mav.addObject("userId",userId);
             return mav;
     }
