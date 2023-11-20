@@ -23,7 +23,6 @@
 </div>
 <!-- end page title -->
 
-
 <div class="row">
     <div class="col-12">
         <div class="row">
@@ -100,7 +99,7 @@
 </div> <!-- end row-->
 
 <!-- create modal -->
-<div class="modal fade" id="createReport" tabindex="-1" aria-labelledby="createReportLabel" aria-hidden="true">
+<div class="modal modal-xl fade" id="createReport" tabindex="-1" aria-labelledby="createReportLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -116,13 +115,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="this-week-content" class="col-form-label">This week's content:</label>
-                        <div class="form-control content-report" id="this-week-content" contenteditable="true"></div>
+                        <div class="snow-editor content-report" id="this-week-content"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
-                        <div class="form-control content-report" id="next-week-content" contenteditable="true"></div>
+                        <div class="snow-editor content-report" id="next-week-content"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
@@ -140,7 +139,6 @@
         </div>
     </div>
 </div>
-
 <script src="/assets/custom/js/weekly-report/weekly-report.js"></script>
 <script>
     var tableWR = '';
@@ -217,8 +215,10 @@
     $(document).on('shown.bs.modal', '#createReport', function() {
 
         $('#title').val('');
-        $('#this-week-content').html('');
-        $('#next-week-content').html('');
+
+        $('.content-report .ql-editor').html('<p><br></p>');
+        $('#create-wr-form .ql-toolbar.ql-snow').remove();
+        activeEditor("#create-wr-form");
 
         Validator({
             form:'#create-wr-form',
@@ -273,25 +273,17 @@
     });
 
     $(document).on('input', '.content-report', function (e){
+        var ulElement = $(this).siblings('.list-title-by-hashtag');
 
-        const contentReportE = $(this);
-        var ulElement = $(contentReportE).siblings('.list-title-by-hashtag');
-
-        const enteredText = contentReportE.html();
+        const enteredText = e.target.innerText;
         const lastIndexOfHash = enteredText.lastIndexOf('#');
 
         if (lastIndexOfHash !== -1) {
             const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
-            if (textAfterLastHash.indexOf("&nbsp;") === -1 && textAfterLastHash.indexOf(" ") === -1) {
-                var hashtag = '';
-                if (textAfterLastHash.indexOf('<') !== -1) {
-                    const indexOfLessThan = textAfterLastHash.indexOf('<');
-                    hashtag = textAfterLastHash.slice(0, indexOfLessThan);
-                } else {
-                    hashtag = textAfterLastHash;
-                }
+            const firstSpaceIndex = textAfterLastHash.indexOf(' ');
 
-                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+hashtag,
+            if (firstSpaceIndex === -1) {
+                callAjaxByJsonWithData('/api/v1/tasks/search/'+userCurrent.id+'?title='+textAfterLastHash,
                     'GET', null, function (rs) {
                         ulElement.empty();
                         rs.forEach(function (e) {
@@ -315,11 +307,16 @@
 
         const lastIndex = contentE.html().lastIndexOf('#');
         if (lastIndex !== -1) {
-            const newContent = contentE.html().substring(0, lastIndex) + aE;
-            contentE.empty().append(newContent);
+            const substringAfterLastHash = contentE.html().substring(lastIndex);
+
+            const firstAngleBracketIndex = substringAfterLastHash.indexOf('<');
+            if (firstAngleBracketIndex !== -1) {
+                const replacedText = contentE.html().replace(substringAfterLastHash, aE);
+                contentE.html(replacedText);
+            }
         }
 
-        focusElement(contentE);
+        focusElement(contentE.find('.ql-editor').first());
 
         containerListHashtag.empty();
     });

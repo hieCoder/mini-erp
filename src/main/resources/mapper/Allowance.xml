@@ -1,0 +1,13 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AllowanceMapper">
+
+    <insert id="insertAllowances" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ALLOWANCE (ID, ITEM, ITEM_VALUE, CONTRACT_ID)
+        VALUES
+        <foreach collection="list" item="allowance" separator=",">
+            (UUID(), #{allowance.item}, #{allowance.itemValue}, #{allowance.contract.id})
+        </foreach>
+    </insert>
+</mapper>

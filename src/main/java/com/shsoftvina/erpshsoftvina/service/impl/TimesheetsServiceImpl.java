@@ -103,7 +103,8 @@ public class TimesheetsServiceImpl implements TimesheetsService {
                             if(!StringUtils.isBlank(content)){
                                 Timesheets timesheets = Timesheets.builder()
                                         .workDate(DateUtils.toDate(monthYearFormat + "-" + day.substring(0, day.indexOf(' '))))
-                                        .content(content)
+                                        .checkin(getCheckin(content))
+                                        .checkout(getCheckout(content))
                                         .timesheetsCode(timesheetsCode).build();
                                 timesheetsList.add(timesheets);
                             }
@@ -134,5 +135,19 @@ public class TimesheetsServiceImpl implements TimesheetsService {
             if (!isFoundUserByTimesheetsCode) throw new NotFoundException("Some user not exist in system");
             return false;
         }
+    }
+
+    private String getCheckin(String content){
+        if(!StringUtils.isBlank(content) && content.contains("-")){
+            return content.split("-")[0];
+        }
+        return null;
+    }
+
+    private String getCheckout(String content){
+        if(!StringUtils.isBlank(content) && content.contains("-")){
+            return content.split("-")[1];
+        }
+        return null;
     }
 }

@@ -385,26 +385,43 @@
                         <%--========================== Resume =================================--%>
                         <div class="tab-pane" id="resumeSession" role="tabpanel">
                             <div class="row">
+                                <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
                                 <c:forEach var="resume" items="${resumes}">
-                                    <div class="col-md-2 mt-2 text-center delete-fileResume" style="position: relative">
-                                                    <span class="custom-icon">
-                                                        <i class="ri-file-3-line"
-                                                           style="font-size: 75px; color: #4A86E8"></i>
-                                                    </span>
-                                        <br>
-                                        <div class="resume-link">
-                                            <a href="/upload/user/${resume}"
-                                               class="cut-file-name fileName-Resume" data-bs-toggle="tooltip"
-                                               data-bs-placement="bottom" title="${resume}">${resume}</a>
-                                        </div>
-                                        <div class="delete-fileResume-button"
-                                             style="position: absolute;top: -8px;right: 40px;color: black;padding: 5px;cursor: pointer;display: block;">
-                                            <i class="ri-close-circle-line" style="font-size: 20px; color: red"></i>
+                                    <div class="col-xxl-4 col-lg-6 mt-2 delete-fileResume">
+                                        <div class="border rounded border-dashed p-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar-sm">
+                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                            <i class="ri-file-download-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h5 class="fs-13 mb-1"><a href="/upload/user/${resume}"
+                                                                              class="text-body text-truncate d-block fileName-Resume"
+                                                                              data-bs-toggle="tooltip"
+                                                                              data-bs-placement="bottom"
+                                                                              title="${resume}">${resume}</a></h5>
+                                                    <div class="fileSize" data-value="${resume}"></div>
+                                                </div>
+                                                <div class="flex-shrink-0 ms-2">
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button"
+                                                                class="btn btn-icon text-muted btn-sm fs-18 downFileBtn">
+                                                            <i class="ri-download-2-line"
+                                                               data-url="/upload/user/${resume}"></i></button>
+                                                        <button type="button"
+                                                                class="btn btn-icon text-muted btn-sm fs-18 delete-fileResume-button">
+                                                            <i class="ri-delete-bin-fill"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div class="row mt-2 border-top" id="uploadFileResume">
+                            <div class="row mt-2 border-top mt-4" id="uploadFileResume">
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -465,14 +482,19 @@
                                             </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                            <c:forEach var="contract" items="${contracts}">
+                                            <c:forEach var="contract" items="${user.contracts}">
                                                 <tr>
                                                     <td>${contract.basicSalary}đ</td>
-                                                    <td class="format-allowance" data-simplebar
-                                                        style="max-height: 200px;">${contract.allowance}</td>
+                                                    <td data-simplebar style="max-height: 200px; font-size: 14px">
+                                                        <c:forEach var="allowance" items="${contract.allowances}">
+                                                            <strong st>${allowance.item}</strong>: ${allowance.itemValue}
+                                                            <br>
+                                                        </c:forEach>
+                                                    </td>
+
                                                     <td class="format-insurance">${contract.insurance}</td>
                                                     <td>
-                                                        <c:set var="contractPath" value="${contract.getContract()}"/>
+                                                        <c:set var="contractPath" value="${contract.getFiles()}"/>
                                                         <c:set var="fileNameContract"
                                                                value="${contractPath.substring(contractPath.lastIndexOf('/') + 1)}"/>
                                                         <a href="${contractPath}" download target="_blank"
@@ -512,10 +534,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-        <!--end col-->
     </div>
 
     <%--Modal Delete File Resume--%>
@@ -664,7 +684,7 @@
 
                         <div class="mb-3">
                             <label for="newContract">Contract</label>
-                            <input type="file" class="form-control mt-2" id="newContract" name="contract">
+                            <input type="file" class="form-control mt-2" id="newContract" name="file">
                             <small class="text-muted ml-2">Choose Contract File</small>
                         </div>
                     </div>
@@ -903,7 +923,33 @@
 
 <%--Handle User--%>
 <script>
-    // Handle button 'X' Delete Resume
+    // Download Resume
+    $(document).on("click", "button.downFileBtn", function () {
+        let dataUrl = $(this).children().attr("data-url")
+        downloadFiles(dataUrl)
+    })
+
+    // Show file resume
+    document.addEventListener("DOMContentLoaded", function () {
+        const resumes = document.querySelectorAll('.fileName-Resume');
+        const fileSizeElements = document.querySelectorAll('.fileSize');
+        var fileArr = [];
+        var sizeFiles = {};
+        resumes.forEach(function (element) {
+            var href = element.getAttribute('href');
+            fileArr.push(href);
+        });
+
+        fileSizeElements.forEach(function (element) {
+            var dataValue = element.getAttribute('data-value');
+            handleFiles(fileArr, function handleEachFunc(fileName, fileSize, url, index) {
+                sizeFiles[fileName] = fileSize;
+                element.textContent = bytesToMBShow(sizeFiles[dataValue]) + ' MB';
+            });
+        });
+    });
+
+    // Handle Delete Resume
     document.addEventListener("DOMContentLoaded", function () {
         cutShortLink();
         var selectedDeleteFileResume = null;
@@ -1474,16 +1520,11 @@
 
     // Function Format Allowance
     function allowanceFormat(data) {
-        var data = JSON.parse(data);
         var keyValueString = '';
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                keyValueString += '<strong>' + key + '</strong>' + ' : ' + data[key] + 'đ' + '<br><br>';
-            }
-        }
-        keyValueString = keyValueString.slice(0, -2);
-
-        return keyValueString;
+        data.forEach(function (e) {
+            keyValueString += '<strong>' + e.item + '</strong>' + ' : ' + e.itemValue + 'đ' + '<br><br>';
+        });
+        return keyValueString.slice(0, -2);
     }
 
     // Function Format money is number
@@ -1634,14 +1675,12 @@
             addContractBtn.disabled = true;
             addLoadingSuccess(addContractBtn);
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-                setTimeout(function () {
-                    formData.append('parentId', rs.id);
-                    callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
-                        localStorage.setItem('result', 'addContractSuccess');
-                        location.reload();
-                    }, 'formAddContract');
-                }, 1000);
-            }, 'formAddContract');
+                formData.append('parentId', rs.id);
+                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
+                    localStorage.setItem('result', 'addContractSuccess');
+                    location.reload();
+                });
+            });
         }
     });
 
@@ -1930,15 +1969,15 @@
                 if (contractIdHistory) {
                     var table = $('#table-history-contract').DataTable({
                         ajax: {
-                            url: '/api/v1/contracts/' + contractIdHistory,
+                            url: '/api/v1/contracts/history/' + contractIdHistory,
                             contentType: 'application/json',
                             method: 'GET',
-                            dataSrc: 'historyContract'
+                            dataSrc: ''
                         },
                         columns: [
                             {data: 'basicSalary'},
                             {
-                                data: 'allowance',
+                                data: 'allowances',
                                 render: function (data, type, row) {
                                     return allowanceFormat(data);
                                 }
@@ -1950,7 +1989,7 @@
                                 }
                             },
                             {
-                                data: 'contract',
+                                data: 'files',
                                 render: function (data, type, row) {
                                     if (data != null) {
                                         var fileName = data.substring(data.lastIndexOf('/') + 1);

@@ -17,4 +17,8 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <modifyDataType tableName="WEEKLY_REPORT" columnName="CURRENT_WEEKLY_CONTENT" newDataType="LONGTEXT"/>
+        <modifyDataType tableName="WEEKLY_REPORT" columnName="NEXT_WEEKLY_CONTENT" newDataType="LONGTEXT"/>
+    </changeSet>
 </databaseChangeLog>

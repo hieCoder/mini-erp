@@ -30,4 +30,7 @@
         <modifyDataType tableName="ACCOUNTING" columnName="BILL" newDataType="TEXT"/>
     </changeSet>
 
+    <changeSet id="4" author="team2">
+        <modifyDataType tableName="ACCOUNTING" columnName="BILL" newDataType="NVARCHAR(1000)"/>
+    </changeSet>
 </databaseChangeLog>

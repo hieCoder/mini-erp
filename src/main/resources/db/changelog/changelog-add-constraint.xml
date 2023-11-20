@@ -172,4 +172,12 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_SUBSCRIBE_USER"/>
     </changeSet>
+
+    <changeSet id="21" author="team2">
+        <addForeignKeyConstraint baseTableName="ALLOWANCE"
+                                 baseColumnNames="CONTRACT_ID"
+                                 referencedTableName="CONTRACT"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_ALLOWANCE_CONTRACT"/>
+    </changeSet>
 </databaseChangeLog>

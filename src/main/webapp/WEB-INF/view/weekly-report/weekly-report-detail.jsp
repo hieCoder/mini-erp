@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-xxl-12">
         <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body wr-info-container">
                 <div>
                     <label class="col-form-label">Id:&nbsp</label>${wr.id}
                 </div>
@@ -36,11 +36,11 @@
                 </div>
                 <div>
                     <label class="col-form-label">This week's content:</label>
-                    <div class="form-control" id="this-week-content-show">${wr.currentWeeklyContent}</div>
+                    <div id="this-week-content-show"></div>
                 </div>
                 <div>
                     <label class="col-form-label">Next week's content:</label>
-                    <div class="form-control" id="next-week-content-show">${wr.nextWeeklyContent}</div>
+                    <div id="next-week-content-show"></div>
                 </div>
                 <div>
                     <label class="col-form-label">Created date:&nbsp</label>${wr.createdDate}
@@ -55,7 +55,7 @@
 </div>
 
 <!-- edit modal -->
-<div class="modal fade" id="editReport" tabindex="-1" aria-labelledby="editReportLabel" aria-hidden="true">
+<div class="modal modal-xl fade" id="editReport" tabindex="-1" aria-labelledby="editReportLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -71,13 +71,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="this-week-content" class="col-form-label">This week's content:</label>
-                        <div class="form-control content-report" id="this-week-content" contenteditable="true"></div>
+                        <div class="snow-editor content-report" id="this-week-content"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
-                        <div class="form-control content-report" id="next-week-content" contenteditable="true"></div>
+                        <div class="snow-editor content-report" id="next-week-content"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
@@ -95,28 +95,32 @@
         </div>
     </div>
 </div>
+
 <script>
 
+    function setWeeklyReport(title, currentWeeklyContent, nextWeeklyContent) {
+        $('#title-show').text(title);
+        $('#this-week-content-show').html(getContentViewOfEditorSnow(currentWeeklyContent));
+        $('#next-week-content-show').html(getContentViewOfEditorSnow(nextWeeklyContent));
+    }
+
+    $(document).ready(function (){
+        activeEditor(".wr-info-container");
+        setWeeklyReport(${wr.title} ,'${wr.currentWeeklyContent}', '${wr.nextWeeklyContent}');
+    });
+
     $(document).on('input', '.content-report', function (e){
+        var ulElement = $(this).siblings('.list-title-by-hashtag');
 
-        const contentReportE = $(this);
-        var ulElement = $(contentReportE).siblings('.list-title-by-hashtag');
-
-        const enteredText = contentReportE.html();
+        const enteredText = e.target.innerText;
         const lastIndexOfHash = enteredText.lastIndexOf('#');
 
         if (lastIndexOfHash !== -1) {
             const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
-            if (textAfterLastHash.indexOf("&nbsp;") === -1 && textAfterLastHash.indexOf(" ") === -1) {
-                var hashtag = '';
-                if (textAfterLastHash.indexOf('<') !== -1) {
-                    const indexOfLessThan = textAfterLastHash.indexOf('<');
-                    hashtag = textAfterLastHash.slice(0, indexOfLessThan);
-                } else {
-                    hashtag = textAfterLastHash;
-                }
+            const firstSpaceIndex = textAfterLastHash.indexOf(' ');
 
-                callAjaxByJsonWithData('/api/v1/tasks/hashtag/'+userCurrent.id+'?hashtag='+hashtag,
+            if (firstSpaceIndex === -1) {
+                callAjaxByJsonWithData('/api/v1/tasks/search/'+userCurrent.id+'?title='+textAfterLastHash,
                     'GET', null, function (rs) {
                         ulElement.empty();
                         rs.forEach(function (e) {
@@ -140,11 +144,16 @@
 
         const lastIndex = contentE.html().lastIndexOf('#');
         if (lastIndex !== -1) {
-            const newContent = contentE.html().substring(0, lastIndex) + aE;
-            contentE.empty().append(newContent);
+            const substringAfterLastHash = contentE.html().substring(lastIndex);
+
+            const firstAngleBracketIndex = substringAfterLastHash.indexOf('<');
+            if (firstAngleBracketIndex !== -1) {
+                const replacedText = contentE.html().replace(substringAfterLastHash, aE);
+                contentE.html(replacedText);
+            }
         }
 
-        focusElement(contentE);
+        focusElement(contentE.find('.ql-editor').first());
 
         containerListHashtag.empty();
     });
@@ -153,8 +162,12 @@
         var swal = showAlertLoading();
         callAjaxByJsonWithData("/api/v1/weekly-reports/" + ${wr.id}, "GET", null, function (rs) {
             $('#title').val(rs.title);
+
             $('#this-week-content').html(rs.currentWeeklyContent);
             $('#next-week-content').html(rs.nextWeeklyContent);
+            $('#edit-wr-form .ql-toolbar.ql-snow').remove();
+            activeEditor("#edit-wr-form");
+
             swal.close();
             $('#editReport').modal('show');
         });
@@ -178,9 +191,7 @@
                     $('#edit-wr-form .spinner-border').addClass('d-none');
                     $('#editReport').modal('hide');
 
-                    $('#title-show').text(rs.title);
-                    $('#this-week-content-show').html(rs.currentWeeklyContent);
-                    $('#next-week-content-show').html(rs.nextWeeklyContent);
+                    setWeeklyReport(rs.title, rs.currentWeeklyContent, rs.nextWeeklyContent);
                 });
             }
         });

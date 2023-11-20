@@ -13,14 +13,12 @@
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">Human</h4>
-
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">Human management</a></li>
                     <li class="breadcrumb-item active">Human</li>
                 </ol>
             </div>
-
         </div>
     </div>
 </div>
@@ -99,7 +97,8 @@
                         </div>
                         <div class="row" id="loadingTable" style="display:none;">
                             <div class="col-md-12">
-                                <div class="spinner-border text-primary" style="height: 15px; width: 15px" role="status">
+                                <div class="spinner-border text-primary" style="height: 15px; width: 15px"
+                                     role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </div>
@@ -190,7 +189,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         id="close-modal"></button>
             </div>
-
             <div class="modal-body">
                 <table class="table align-middle table-nowrap table-striped-columns"
                        id="pendingTable">
@@ -213,7 +211,6 @@
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

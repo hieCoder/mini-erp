@@ -229,11 +229,11 @@
         WHERE u.ID = #{id}
     </select>
 
-    <select id="getTaskByHashtag" resultType="map" resultMap="TaskByHashTagResultMap">
+    <select id="getTaskByTitle" resultType="map" resultMap="TaskByHashTagResultMap">
         SELECT t.ID, t.TITLE
         FROM TASK t
                  INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.STATUS = 'ACTIVE' AND u.ID = #{userId} AND t.CONTENT LIKE CONCAT('%#', #{hashtag}, '%')
+        WHERE t.STATUS = 'ACTIVE' AND u.ID = #{userId} AND t.TITLE LIKE CONCAT('%', #{title}, '%')
     </select>
 
     <resultMap id="TaskByHashTagResultMap" type="java.util.Map">

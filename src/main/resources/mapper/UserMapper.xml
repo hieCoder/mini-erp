@@ -3,29 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.UserMapper">
 
-    <select id="getUserBirthday" resultMap="birthdayResultMap">
-        SELECT ID, FULLNAME, DATE_OF_BIRTH
-        FROM USER
-        WHERE MONTH(DATE_OF_BIRTH) IN (MONTH(#{prevMonth}), MONTH(#{monthly}), MONTH(#{nextMonth}))
-          AND status = 'ACTIVE'
-    </select>
-
-    <select id="getTodayBirthday" resultMap="birthdayResultMap">
-        SELECT ID,FULLNAME, DATE_OF_BIRTH
-        FROM USER
-        WHERE MONTH(DATE_OF_BIRTH) = MONTH(#{date}) AND DAY(DATE_OF_BIRTH) = DAY(#{date}) AND status = 'ACTIVE'
-    </select>
-
-    <select id="findByEmailAndStatus" parameterType="String" resultMap="userResultMap">
+    <select id="findByEmail" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM USER
-        where email = #{email} AND status = #{status}
-    </select>
-
-    <select id="findByEmail" parameterType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
-        SELECT *
-        FROM USER
-        where EMAIL = #{email}
+        WHERE EMAIL = #{email}
     </select>
 
     <select id="findByTimesheetsCode" parameterType="String" resultMap="userResultMap">
@@ -66,6 +47,27 @@
         ]]>
     </select>
 
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="ID"/>
+        <result property="fullname" column="FULLNAME"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
+        <result property="phone" column="PHONE"/>
+        <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
+        <result property="avatar" column="AVATAR"/>
+        <result property="type" column="TYPE"/>
+        <result property="department" column="DEPARTMENT"/>
+        <result property="atm" column="ATM"/>
+        <result property="email" column="EMAIL"/>
+        <result property="role" column="ROLE"/>
+        <result property="status" column="STATUS"/>
+        <result property="position" column="POSITION"/>
+        <result property="resume" column="RESUME"/>
+        <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="gender" column="GENDER"/>
+    </resultMap>
+
     <select id="getTotalUser" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM USER AS u
@@ -74,12 +76,66 @@
         ORDER BY SUBSTRING_INDEX(u.fullname, ' ', -1) ${sortDirection}
     </select>
 
-    <select id="findById" parameterType="String" resultMap="userResultMap">
-        SELECT u.*, c.id AS contract_id, c.*
-        FROM USER u
-        LEFT JOIN CONTRACT c ON u.id = c.user_id AND c.STATUS = 'ACTIVE'
-        WHERE u.id = #{id}
+    <select id="findById" parameterType="String" resultMap="userContractResultMap">
+        SELECT u.*, u.ID AS u_id,
+               u.CREATED_DATE AS u_created_date,
+               ca.*
+        FROM USER u LEFT JOIN
+             (SELECT c.ID AS c_id,
+                     c.BASIC_SALARY,
+                     c.FILES,
+                     c.CREATED_DATE AS c_created_date,
+                     c.USER_ID,
+                     c.STATUS AS c_status,
+                     c.INSURANCE,
+                     a.ID AS a_id,
+                     a.ITEM,
+                     a.ITEM_VALUE
+              FROM CONTRACT c INNER JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+              WHERE c.STATUS = 'ACTIVE' AND c.HISTORY_ID IS NULL) AS ca
+             ON u.ID = ca.USER_ID
+        WHERE u.ID = #{id} AND u.status = 'ACTIVE'
     </select>
+
+    <resultMap id="userContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="u_id"/>
+        <result property="fullname" column="FULLNAME"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
+        <result property="phone" column="PHONE"/>
+        <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
+        <result property="avatar" column="AVATAR"/>
+        <result property="type" column="TYPE"/>
+        <result property="department" column="DEPARTMENT"/>
+        <result property="atm" column="ATM"/>
+        <result property="email" column="EMAIL"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="role" column="ROLE"/>
+        <result property="status" column="STATUS"/>
+        <result property="position" column="POSITION"/>
+        <result property="resume" column="RESUME"/>
+        <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
+        <result property="createdDate" column="u_created_date"/>
+        <result property="gender" column="GENDER"/>
+        <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
+    </resultMap>
+
+    <resultMap id="listContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract" >
+        <id property="id" column="c_id"/>
+        <result property="basicSalary" column="BASIC_SALARY"/>
+        <result property="files" column="FILES"/>
+        <result property="createdDate" column="c_created_date"/>
+        <result property="status" column="c_status"/>
+        <result property="insurance" column="INSURANCE"/>
+        <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
+                    resultMap="allowanceResultMap"/>
+    </resultMap>
+
+    <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
+        <id property="id" column="a_id" />
+        <result property="item" column="ITEM" />
+        <result property="itemValue" column="ITEM_VALUE" />
+    </resultMap>
 
     <update id="changeStatusUser" parameterType="String" >
         UPDATE USER SET status = #{status} WHERE id = #{id}
@@ -112,40 +168,6 @@
         WHERE id = #{id};
     </update>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="id"/>
-        <result property="fullname" column="FULLNAME"/>
-        <result property="address" column="ADDRESS"/>
-        <result property="dateOfBirth" column="DATE_OF_BIRTH"/>
-        <result property="phone" column="PHONE"/>
-        <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
-        <result property="avatar" column="AVATAR"/>
-        <result property="type" column="TYPE"/>
-        <result property="department" column="DEPARTMENT"/>
-        <result property="atm" column="ATM"/>
-        <result property="email" column="EMAIL"/>
-        <result property="password" column="PASSWORD"/>
-        <result property="role" column="ROLE"/>
-        <result property="status" column="STATUS"/>
-        <result property="position" column="POSITION"/>
-        <result property="resume" column="RESUME"/>
-        <result property="isFirstUpdateProfile" column="IS_FIRST_UPDATE_PROFILE"/>
-        <result property="timesheetsCode" column="TIMESHEETS_CODE"/>
-        <result property="createdDate" column="CREATED_DATE"/>
-        <result property="gender" column="GENDER"/>
-        <collection property="contracts" ofType="com.shsoftvina.erpshsoftvina.entity.Contract" resultMap="listContractResultMap"/>
-    </resultMap>
-
-    <resultMap id="listContractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract" >
-        <id property="id" column="contract_id"/>
-        <result property="basicSalary" column="BASIC_SALARY"/>
-        <result property="allowance" column="ALLOWANCE"/>
-        <result property="contract" column="CONTRACT"/>
-        <result property="createdDate" column="CREATED_DATE"/>
-        <result property="insuranceType" column="INSURANCE_TYPE"/>
-        <result property="insuranceMoney" column="INSURANCE_MONEY"/>
-    </resultMap>
-
     <select id="getAllFullname" resultType="map" resultMap="fullnameResultMap">
         SELECT ID, FULLNAME, AVATAR, POSITION
         FROM USER WHERE STATUS = 'ACTIVE';
@@ -157,6 +179,19 @@
         <result property="avatar" column="AVATAR"/>
         <result property="position" column="POSITION"/>
     </resultMap>
+
+    <select id="getUserBirthday" resultMap="birthdayResultMap">
+        SELECT ID, FULLNAME, DATE_OF_BIRTH
+        FROM USER
+        WHERE MONTH(DATE_OF_BIRTH) IN (MONTH(#{prevMonth}), MONTH(#{monthly}), MONTH(#{nextMonth}))
+          AND status = 'ACTIVE'
+    </select>
+
+    <select id="getTodayBirthday" resultMap="birthdayResultMap">
+        SELECT ID,FULLNAME, DATE_OF_BIRTH
+        FROM USER
+        WHERE MONTH(DATE_OF_BIRTH) = MONTH(#{date}) AND DAY(DATE_OF_BIRTH) = DAY(#{date}) AND status = 'ACTIVE'
+    </select>
 
     <resultMap id="birthdayResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
         <result property="id" column="ID"/>

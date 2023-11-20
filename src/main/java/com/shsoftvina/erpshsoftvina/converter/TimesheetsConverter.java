@@ -14,7 +14,7 @@ public class TimesheetsConverter {
         return TimesheetsResponse.builder()
                 .id(timesheets.getId())
                 .workDate(DateUtils.formatDate(timesheets.getWorkDate()))
-                .content(timesheets.getContent())
+                .content(timesheets.getCheckin() + "-" + timesheets.getCheckout())
                 .timesheetsCode(timesheets.getTimesheetsCode())
                 .build();
     }

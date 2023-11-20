@@ -26,31 +26,26 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-       if(!urlsAllow(request.getRequestURI())){
-           Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-           if (auth != null) {
-               User userSet = userMapper.findById(((User) auth.getPrincipal()).getId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            if (!urlsAllow(request.getRequestURI())) {
+                User user = userMapper.findByEmail(((User) auth.getPrincipal()).getEmail());
+                UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(user, auth.getCredentials(), user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-               UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(userSet, auth.getCredentials(), userSet.getAuthorities());
-
-               SecurityContextHolder.getContext().setAuthentication(newAuth);
-           }
-
-           if (auth != null && auth.isAuthenticated()) {
-               try {
-                   User currentUser = Principal.getUserCurrent();
-                   if(currentUser == null) {
-                       response.sendRedirect("/login");
-                   }
-                   User user = userMapper.findById(currentUser.getId());
-                   if(!user.checkAcceptUpdateBasicInfo()) {
-                       response.sendRedirect("/users/" + currentUser.getId());
-                   }
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }
-       }
+                try {
+                    if (!user.checkAcceptUpdateBasicInfo()) {
+                        response.sendRedirect("/users/" + user.getId());
+                    } else {
+                        if (request.getRequestURI().equals("/login")) {
+                            response.sendRedirect("/dashboard");
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         filterChain.doFilter(request, response);
     }
 
@@ -60,7 +55,8 @@ public class UpdateProfileInterceptorFilter extends OncePerRequestFilter {
                 "/upload/",
                 "/users/",
                 "/api/",
-                "/service-worker.js"
+                "/service-worker.js",
+                "/websocket"
         };
 
         for(String url: urls){

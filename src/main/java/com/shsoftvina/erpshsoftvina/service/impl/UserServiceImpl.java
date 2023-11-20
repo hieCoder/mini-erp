@@ -8,14 +8,17 @@ import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.*;
+import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
+import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
+import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.UserShowResponse;
 import com.shsoftvina.erpshsoftvina.security.Principal;
@@ -31,7 +34,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -74,14 +76,12 @@ public class UserServiceImpl implements UserService {
 
         applicationUtils.checkUserAllow(id);
 
-        User user = null;
         try {
-            user = userMapper.findById(id);
-            if (Principal.getUserCurrent().getRole() == null)
-                throw new UnauthorizedException(MessageErrorUtils.unknown("Role"));
+            User user = userMapper.findById(id);
+            return userConverter.toUserDetailResponse(user);
         } catch (Exception e) {
+            return null;
         }
-        return userConverter.toUserDetailResponse(user);
     }
 
     @Override

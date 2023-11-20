@@ -23,11 +23,10 @@ public interface TaskMapper {
                           String status);
     List<Map<String, Object>> getStatusTaskCounts();
     Task findById(String id);
-    List<Map<String, Object>> getTaskByHashtag( String userId,
-                                                String hashtag);
-    int changeStatusTasks( String[] ids,
-                           String status);
-
+    List<Map<String, Object>> getTaskByTitle(@Param("userId") String userId,
+                                               @Param("title") String title);
+    int changeStatusTasks(@Param("ids") String[] ids,
+                          @Param("status") String status);
     List<Task> getOpenedTask( String userId);
     List<Map<String, Object>> getOpenedStatusTaskCounts( String userId);
 

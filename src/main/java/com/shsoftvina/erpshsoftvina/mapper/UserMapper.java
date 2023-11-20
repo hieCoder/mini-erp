@@ -12,9 +12,7 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 
-    User findByEmailAndStatus( String email,  String status);
-
-    User findByEmail( String email);
+    User findByEmail(@Param("email") String email);
 
     User findByTimesheetsCode( String timesheetsCode);
 

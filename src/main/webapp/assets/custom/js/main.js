@@ -1,10 +1,23 @@
 // CONSTANT
+
 const U_DEVELOPER = 'DEVELOPER';
 const U_OWNER = 'OWNER';
 const U_MANAGER = 'MANAGER';
 
 const SUCCESS_ALERT = 'SUCCESS_ALERT';
 const DANGER_ALERT = 'DANGER_ALERT';
+
+const INVALID_FILES_LIMIT = 'INVALID_FILES_LIMIT';
+const INVALID_FILES_FILESIZE = 'INVALID_FILES_FILESIZE';
+const INVALID_FILES_FILETYPE = 'INVALID_FILES_FILETYPE';
+
+// editor
+const DEFAULT_VALUE_SNOW_EDITOR = [
+    `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
+    `<div class="ql-editor" data-gramm="false" contenteditable="true"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
+    `<div class="ql-editor" data-gramm="false" contenteditable="true"><div><br></div></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,
+    `<div class="ql-editor" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`
+];
 
 // loading
 const BtnLoadRemove = () => {
@@ -40,7 +53,6 @@ const BtnDangerLoad = '<button type="button" class="btn btn-danger btn-load" sty
     '</span>' +
     '</span>' +
     '</button>';
-
 const BtnSmPrimaryLoad = '<button class="btn btn-sm btn-outline-primary btn-load" style="margin-left: 8px">' +
     '<span class="d-flex align-items-center">' +
     '<span class="spinner-border flex-shrink-0" role="status">' +
@@ -236,6 +248,72 @@ function cutShortLink() {
         }
     });
 }
+function activeFile(classNameOfForm, setting) {
+    var dropzonePreviewNode = document.querySelector(classNameOfForm + " #dropzone-preview-list");
+    dropzonePreviewNode.id = "";
+    var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
+    dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
+    var dropzone = new Dropzone(classNameOfForm + " .dropzone", {
+        url: 'https://httpbin.org/post',
+        method: "post",
+        previewTemplate: previewTemplate,
+        previewsContainer: classNameOfForm + " #dropzone-preview",
+        acceptedFiles: convertExtensionsList(setting.fileType),
+        maxFilesize: convertMbToB(setting.fileSize),
+        maxFiles: parseInt(setting.fileLimit),
+        uploadMultiple:true,
+        autoProcessQueue: false
+    });
+
+    dropzone.on("addedfile", function (file) {
+
+        var errorE = document.querySelector(classNameOfForm + " .message-error-file");
+
+        var fileSize = file.size;
+        var files = dropzone.files;
+        var fileExtension = file.name.split('.').pop();
+
+        var fileCountCurrent = $(classNameOfForm).find('.file-container-item').length;
+        if(files.length + fileCountCurrent > parseInt(dropzone.options.maxFiles)){
+            dropzone.removeFile(file);
+            errorE.innerHTML = createMessError(INVALID_FILES_LIMIT, setting);
+        } else if(!setting.fileType.includes(fileExtension)){
+            dropzone.removeFile(file);
+            errorE.innerHTML = createMessError(INVALID_FILES_FILETYPE, setting);
+        } else if(fileSize > convertMbToB(setting.fileSize)){
+            dropzone.removeFile(file);
+            errorE.innerHTML = createMessError(INVALID_FILES_FILESIZE, setting);
+        }
+    });
+
+    return dropzone;
+}
+function getMessageLimitFile(limit) {
+    return 'The number of files must be less than ' + limit;
+}
+function getMessageSizeFile(fileSize) {
+    return 'The size of the file must be less than ' + fileSize + ' Mb';
+}
+function getMessageTypeFile(fileType) {
+    return 'Files must be of the following types: ' + fileType;
+}
+function createMessError(INVALID, setting){
+    var mess = '';
+    switch (INVALID){
+        case INVALID_FILES_LIMIT:
+            mess = getMessageLimitFile(setting.fileLimit);
+            break;
+        case INVALID_FILES_FILESIZE:
+            mess = getMessageSizeFile(setting.fileSize);
+            break;
+        case INVALID_FILES_FILETYPE:
+            mess = getMessageTypeFile(setting.fileType);
+            break;
+        default:
+            mess = '';
+    }
+    return `<div class="alert alert-danger message-error-file mt-1 mb-0">` +mess+`</div>`;
+}
 
 // alert
 function removeAlert() {
@@ -299,7 +377,6 @@ function showAlert(type, mess){
     $(className).removeClass('d-none');
 }
 
-
 // money format
 function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
@@ -328,17 +405,6 @@ function isOwner() {
     return userCurrent.role == U_OWNER;
 }
 
-// error messsage
-function getMessageLimitFile(limit) {
-    return 'The number of files must be less than ' + limit;
-}
-function getMessageSizeFile(fileSize) {
-    return 'The size of the file must be less than ' + fileSize + ' Mb';
-}
-function getMessageTypeFile(fileType) {
-    return 'Files must be of the following types: ' + fileType;
-}
-
 // focus pointer to end element
 function focusElement(element) {
     const range = document.createRange();
@@ -348,6 +414,41 @@ function focusElement(element) {
     sel.removeAllRanges();
     sel.addRange(range);
 }
+
+// editor
+function getContentViewOfEditorSnow(comtentDataInDB){
+    var qlEditor = $(comtentDataInDB).filter('.ql-editor');
+    qlEditor.attr('contenteditable', false);
+    qlEditor.addClass('p-0');
+    return qlEditor.prop('outerHTML');
+}
+function activeEditor(classNameOfForm){
+    var ckClassicEditor = document.querySelectorAll(classNameOfForm + " .ckeditor-classic"),
+        snowEditor = (ckClassicEditor && Array.from(ckClassicEditor).forEach(function () {
+            ClassicEditor.create(document.querySelector(classNameOfForm + " .ckeditor-classic")).then(function (e) {
+                e.ui.view.editable.element.style.height = "200px"
+            }).catch(function (e) {
+                console.error(e)
+            })
+        }), document.querySelectorAll(classNameOfForm + " .snow-editor")),
+        bubbleEditor = (snowEditor && Array.from(snowEditor).forEach(function (e) {
+            var o = {};
+            1 == e.classList.contains("snow-editor") && (o.theme = "snow", o.modules = {toolbar: [[{font: []}, {size: []}], ["bold", "italic", "underline", "strike"], [{color: []}, {background: []}], [{script: "super"}, {script: "sub"}], [{header: [!1, 1, 2, 3, 4, 5, 6]}, "blockquote", "code-block"], [{list: "ordered"}, {list: "bullet"}, {indent: "-1"}, {indent: "+1"}], ["direction", {align: []}], ["link", "image", "video"], ["clean"]]}), new Quill(e, o)
+        }), document.querySelectorAll(classNameOfForm + " .bubble-editor"));
+    bubbleEditor && Array.from(bubbleEditor).forEach(function (e) {
+        var o = {};
+        1 == e.classList.contains("bubble-editor") && (o.theme = "bubble"), new Quill(e, o)
+    });
+}
+
+
+
+
+
+
+
+
+
 
 function subscribeUser(){
     navigator.serviceWorker.ready.then(function(registration) {

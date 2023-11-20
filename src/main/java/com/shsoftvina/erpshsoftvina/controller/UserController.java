@@ -51,10 +51,8 @@ public class UserController {
 
         UserDetailResponse user = userService.findUserDetail(id);
 
-        List<ContractResponse> contracts = contractService.getContractByUser(id);
-
         view.addObject("user", user);
-        view.addObject("contracts", contracts);
+
         view.addObject("resumes", StringUtils.isBlank(user.getResume()) ?null: user.getResume().split(","));
         return view;
     }

@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -14,10 +15,13 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig {
 
+    @Value("${cache.expire-time-minutes}")
+    private int expireTimeMinutes;
+
     @Bean
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCaffeine(Caffeine.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES));
+        cacheManager.setCaffeine(Caffeine.newBuilder().expireAfterWrite(expireTimeMinutes, TimeUnit.MINUTES));
         return cacheManager;
     }
 }
