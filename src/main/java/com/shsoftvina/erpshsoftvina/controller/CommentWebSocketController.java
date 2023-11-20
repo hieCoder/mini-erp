@@ -36,11 +36,10 @@ public class CommentWebSocketController {
     @SendTo("/notification/comments")
     public CommentNotificationResponse handleComment(
             @RequestBody CreateCommentNotificationRequest createCommentNotificationRequest,
-            StompHeaderAccessor accessor, Authentication authentication) {
+            StompHeaderAccessor accessor) {
         String clientID = accessor.getFirstNativeHeader("clientID");
-        User user = ((User) authentication.getPrincipal());
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
-        if(applicationUtils.checkUserWebSocketAllow(user, createCommentNotificationRequest.getUserId())){
+        if(applicationUtils.checkUserCurrentAllow(createCommentNotificationRequest.getUserId())){
              commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);
@@ -52,13 +51,10 @@ public class CommentWebSocketController {
     @SendTo("/notification/editcomments")
     public CommentNotificationResponse handleEditComment(
             @RequestBody UpdateCommentNotificationRequest updateCommentNotificationRequest,
-            StompHeaderAccessor accessor,
-            Authentication authentication
-            ) {
-        User user = ((User) authentication.getPrincipal());
+            StompHeaderAccessor accessor) {
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
         String clientID = accessor.getFirstNativeHeader("clientID");
-        if(applicationUtils.checkUserWebSocketAllow(user, updateCommentNotificationRequest.getUserId())) {
+        if(applicationUtils.checkUserCurrentAllow(updateCommentNotificationRequest.getUserId())) {
             commentNotificationResponse = commentNotificationService.updateCommentNotification(updateCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);
@@ -69,13 +65,10 @@ public class CommentWebSocketController {
     @SendTo("/notification/deletecomments")
     public CommentNotificationResponse handleDeleteComment(
             @RequestBody Map<String, String> requestBody,
-            StompHeaderAccessor accessor,
-            Authentication authentication
-    ) {
-        User user = ((User) authentication.getPrincipal());
+            StompHeaderAccessor accessor) {
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
         String clientID = accessor.getFirstNativeHeader("clientID");
-        if(applicationUtils.checkUserWebSocketAllow(user, requestBody.get("userId"))) {
+        if(applicationUtils.checkUserCurrentAllow(requestBody.get("userId"))) {
             String id = requestBody.get("id");
             int rs = commentNotificationService.deleteCommentNotification(id);
             if (rs > 0) {
@@ -90,13 +83,10 @@ public class CommentWebSocketController {
     @SendTo("/notification/replycomments")
     public CommentNotificationResponse handleReplyComment(
             @RequestBody CreateCommentNotificationRequest createCommentNotificationRequest,
-            StompHeaderAccessor accessor,
-             Authentication authentication
-    ) {
-        User user = ((User) authentication.getPrincipal());
+            StompHeaderAccessor accessor) {
         String clientID = accessor.getFirstNativeHeader("clientID");
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
-        if(applicationUtils.checkUserWebSocketAllow(user)){
+        if(applicationUtils.checkUserCurrentAllow()){
             commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);
