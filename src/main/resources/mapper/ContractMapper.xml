@@ -21,7 +21,7 @@
             c.STATUS AS contract_status,
             a.ID AS allowance_insurance_id,
             a.ITEM AS allowance_insurance_item,
-            a.ITEM_VALUE AS allowance_insurance_item_value
+            a.ITEM_VALUE AS allowance_insurance_item_value,
             a.TYPE AS allowance_insurance_type
         FROM CONTRACT c
         LEFT JOIN ALLOWANCE_INSURANCE a ON c.ID = a.CONTRACT_ID
@@ -67,11 +67,11 @@
             c.STATUS AS contract_status,
             a.ID AS allowance_insurance_id,
             a.ITEM AS allowance_insurance_item,
-            a.ITEM_VALUE AS allowance_insurance_item_value
+            a.ITEM_VALUE AS allowance_insurance_item_value,
             a.TYPE AS allowance_insurance_type
         FROM CONTRACT c
         INNER JOIN ALLOWANCE_INSURANCE a ON c.ID = a.CONTRACT_ID
         WHERE c.HISTORY_ID = #{id}
-        ORDER BY c.CREATED_DATE DESC;
+        ORDER BY c.CREATED_DATE ASC;
     </select>
 </mapper>

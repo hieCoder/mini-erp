@@ -20,11 +20,8 @@ public class CreateContractRequest {
     @NotBlank(message = "Field basicSalary is not filled")
     private String basicSalary;
 
-    @NotBlank(message = "Field allowance is not filled")
-    private String allowance;
-
-    @NotBlank(message = "Field insurance is not filled")
-    private String insurance;
+    @NotBlank(message = "Field allowanceInsurances is not filled")
+    private String allowanceInsurances;
 
     private String parentId;
     private MultipartFile file;

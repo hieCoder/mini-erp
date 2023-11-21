@@ -70,7 +70,7 @@ public class ContractServiceImpl implements ContractService {
             try {
                 contractMapper.addContract(c);
 
-                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.insertAllowanceInsurances(c.getId(), createContractRequest.getAllowance());
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.insertAllowanceInsurances(c.getId(), createContractRequest.getAllowanceInsurances());
                 if(allowanceInsurances != null){
                     c.setAllowanceInsurances(allowanceInsurances);
                     return contractConverter.toResponse(c);
@@ -99,12 +99,12 @@ public class ContractServiceImpl implements ContractService {
         String fileNameContract = null;
         boolean isSaveContractSuccess;
 
-        MultipartFile contractFile = updateContractRequest.getContract();
+        MultipartFile contractFile = updateContractRequest.getFile();
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
         if(contractFile != null){
             fileNameContract = FileUtils.formatNameImage(contractFile);
             isSaveContractSuccess = FileUtils.saveImageToServer(
-                    request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getContract(), fileNameContract);
+                    request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getFile(), fileNameContract);
         } else isSaveContractSuccess = false;
 
         Contract c;
@@ -112,7 +112,7 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
-                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowance());
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowanceInsurances());
                 if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
                     FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
@@ -130,7 +130,7 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try{
                 contractMapper.updateContract(c);
-                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowance());
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowanceInsurances());
                 if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
                     return 0;

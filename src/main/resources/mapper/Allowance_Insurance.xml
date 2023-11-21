@@ -7,7 +7,7 @@
         INSERT INTO ALLOWANCE_INSURANCE (ID, ITEM, ITEM_VALUE, CONTRACT_ID, TYPE)
         VALUES
         <foreach collection="list" item="allowanceInsurance" separator=",">
-            (UUID(), #{allowanceInsurance.item}, #{allowanceInsurance.itemValue}, #{allowanceInsurance.contract.id}, #{type})
+            (UUID(), #{allowanceInsurance.item}, #{allowanceInsurance.itemValue}, #{allowanceInsurance.contract.id}, #{allowanceInsurance.type})
         </foreach>
     </insert>
 

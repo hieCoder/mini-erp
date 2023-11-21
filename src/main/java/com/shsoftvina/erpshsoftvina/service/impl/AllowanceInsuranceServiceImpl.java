@@ -1,5 +1,8 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance;
 import com.shsoftvina.erpshsoftvina.entity.Contract;
 import com.shsoftvina.erpshsoftvina.enums.allowance_insurance.AllowanceInsuranceType;
@@ -31,20 +34,29 @@ public class AllowanceInsuranceServiceImpl implements AllowanceInsuranceService 
         List<AllowanceInsurance> list = new ArrayList<>();
 
         Contract contract = contractMapper.findById(contractId);
-        if(contract != null){
-            List<AllowanceInsuranceRequest>  listReq = JsonUtils.jsonToObject(json, List.class);
+        if (contract != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<AllowanceInsuranceRequest> listReq = null;
+            try {
+                listReq = objectMapper.readValue(json, new TypeReference<List<AllowanceInsuranceRequest>>() {
+                });
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
             for (AllowanceInsuranceRequest ai : listReq) {
 
                 AllowanceInsuranceType allowanceInsuranceType = EnumUtils.getEnumFromValue(AllowanceInsuranceType.class, ai.getType());
-                if(allowanceInsuranceType == null) throw new NotFoundException(MessageErrorUtils.notFound("Type"));
+                if (allowanceInsuranceType == null) throw new NotFoundException(MessageErrorUtils.notFound("Type"));
 
                 list.add(new AllowanceInsurance(null, ai.getItem(), ai.getItemValue(), contract, allowanceInsuranceType));
             }
 
-            try{
+            try {
                 allowanceInsuranceMapper.insertAllowanceInsurances(list);
                 return list;
-            } catch (Exception e){}
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
         return null;
     }
@@ -56,12 +68,18 @@ public class AllowanceInsuranceServiceImpl implements AllowanceInsuranceService 
 
     @Override
     public List<AllowanceInsurance> updateAllowanceInsurances(String contractId, String json) {
-
         List<AllowanceInsurance> list = new ArrayList<>();
 
         Contract contract = contractMapper.findById(contractId);
         if(contract != null){
-            List<AllowanceInsuranceRequest>  listReq = JsonUtils.jsonToObject(json, List.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<AllowanceInsuranceRequest> listReq = null;
+            try {
+                listReq = objectMapper.readValue(json, new TypeReference<List<AllowanceInsuranceRequest>>() {
+                });
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
             int deleteSuccess = allowanceInsuranceMapper.deleteAllowanceInsurances(contractId);
             if(deleteSuccess> 0){
                 for (AllowanceInsuranceRequest ai : listReq) {
@@ -73,7 +91,9 @@ public class AllowanceInsuranceServiceImpl implements AllowanceInsuranceService 
                 try{
                     allowanceInsuranceMapper.insertAllowanceInsurances(list);
                     return list;
-                } catch (Exception e){}
+                } catch (Exception e){
+                    System.out.println(e);
+                }
             }
         }
         return null;
