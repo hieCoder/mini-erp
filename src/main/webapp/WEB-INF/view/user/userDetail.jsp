@@ -486,8 +486,8 @@
                                                 <tr>
                                                     <td>${contract.basicSalary}đ</td>
                                                     <td data-simplebar style="max-height: 200px; font-size: 14px">
-                                                        <c:forEach var="allowance" items="${contract.allowances}">
-                                                            <strong st>${allowance.item}</strong>: ${allowance.itemValue}
+                                                        <c:forEach var="allowanceInsurance" items="${contract.allowanceInsurances}">
+                                                            <strong st>${allowanceInsurance.item}</strong>: ${allowanceInsurance.itemValue}
                                                             <br>
                                                         </c:forEach>
                                                     </td>
@@ -722,7 +722,7 @@
                         <div class="mb-3">
                             <label>Allowance:</label>
                             <button type="button" class="btn btn-primary waves-effect waves-light"
-                                    id="edit-allowance-btn">Edit Allowance
+                                    id="edit-allowanceInsurance-btn">Edit Allowance
                             </button>
                             <div class="p-3 mt-2 border bg-light" id="editAllowanceSession"
                                  style="display: none; max-height: 255px" data-simplebar>
@@ -1394,7 +1394,7 @@
 
     // Format Allowance
     document.addEventListener("DOMContentLoaded", function () {
-        var tdElements = document.getElementsByClassName('format-allowance');
+        var tdElements = document.getElementsByClassName('format-allowanceInsurance');
         for (var i = 0; i < tdElements.length; i++) {
             var tdElement = tdElements[i];
             var jsonText = tdElement.textContent;
@@ -1417,7 +1417,7 @@
     let addedInputCount = 0;
     let editInputCount = 0;
 
-    // Add input allowance
+    // Add input allowanceInsurance
     function addInput() {
         if (addedInputCount < 4) {
             const additionalInputs = document.getElementById("additionalInputs");
@@ -1656,7 +1656,7 @@
 
             formData.append('insurance', insurance);
             formData.append('userId', '${user.id}');
-            formData.set('allowance', JSON.stringify(formDataObject));
+            formData.set('allowanceInsurance', JSON.stringify(formDataObject));
 
             var addContractBtn = document.getElementById('add-btn');
             addContractBtn.disabled = true;
@@ -1674,7 +1674,7 @@
     // Handle when user click 'Edit Contract' button
     document.addEventListener("DOMContentLoaded", function () {
         // Hand button Edit Allowance
-        document.getElementById('edit-allowance-btn').addEventListener('click', function () {
+        document.getElementById('edit-allowanceInsurance-btn').addEventListener('click', function () {
             var elementAllowance = document.getElementById('editAllowanceSession');
             if (elementAllowance.style.display == 'none') elementAllowance.style.display = 'block';
             else elementAllowance.style.display = 'none';
@@ -1729,14 +1729,14 @@
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
 
-                    var allowances = rs.allowances
+                    var allowanceInsurances = rs.allowanceInsurances
                     var divRow;
                     var count = 0;
                     var exitElement = document.getElementById('exitElement');
 
                     if (exitElement.querySelectorAll('.row').length > 0) $('#exitElement').empty();
 
-                    for (var allowanceItem of allowances) {
+                    for (var allowanceItem of allowanceInsurances) {
                         var key = allowanceItem.item;
                         var value = allowanceItem.itemValue;
 
@@ -1774,7 +1774,7 @@
                         divCol.appendChild(formGroupLabel);
                         divRow.appendChild(divCol);
 
-                        if (count % 2 === 1 || count === allowances.length - 1) {
+                        if (count % 2 === 1 || count === allowanceInsurances.length - 1) {
                             document.getElementById("exitElement").appendChild(divRow);
                         }
                         count++;
@@ -1879,7 +1879,7 @@
                             }
 
                             formData.append('insurance', JSON.stringify(objects));
-                            formData.append('allowance', JSON.stringify(formDataObject));
+                            formData.append('allowanceInsurance', JSON.stringify(formDataObject));
                             formData.append('userId', '${user.id}');
                             formData.append('parentId', editContractId);
                             document.getElementById('edit-confirm-btn').disabled = true;
@@ -1961,7 +1961,7 @@
                         columns: [
                             {data: 'basicSalary'},
                             {
-                                data: 'allowances',
+                                data: 'allowanceInsurances',
                                 render: function (data, type, row) {
                                     return allowanceFormat(data);
                                 }

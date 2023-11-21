@@ -244,7 +244,7 @@ public class ApplicationUtils {
         }
     }
 
-    public boolean checkUserCurrentAllow(){
+    public boolean isUserAllow(){
         User userCurrent = Principal.getUserCurrent();
         RoleEnum roleCurrent = userCurrent.getRole();
         if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER))){
@@ -253,7 +253,7 @@ public class ApplicationUtils {
         return true;
     }
 
-    public boolean checkUserCurrentAllow(String idUser){
+    public boolean isUserAllow(String idUser){
         User userCurrent = Principal.getUserCurrent();
         RoleEnum roleCurrent = userCurrent.getRole();
         String idUserCurrent = userCurrent.getId();

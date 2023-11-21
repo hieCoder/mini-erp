@@ -2,22 +2,20 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.constant.ContractConstant;
 import com.shsoftvina.erpshsoftvina.converter.ContractConverter;
-import com.shsoftvina.erpshsoftvina.entity.Allowance;
+import com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance;
 import com.shsoftvina.erpshsoftvina.entity.Contract;
 import com.shsoftvina.erpshsoftvina.enums.contract.StatusContractEnum;
-import com.shsoftvina.erpshsoftvina.exception.ErrorServerException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ContractMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
-import com.shsoftvina.erpshsoftvina.service.AllowanceService;
+import com.shsoftvina.erpshsoftvina.service.AllowanceInsuranceService;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
-import liquibase.pro.packaged.E;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +42,7 @@ public class ContractServiceImpl implements ContractService {
     private ApplicationUtils applicationUtils;
 
     @Autowired
-    private AllowanceService allowanceService;
+    private AllowanceInsuranceService allowanceInsuranceService;
 
     @Override
     public ContractResponse addContract(CreateContractRequest createContractRequest) {
@@ -72,9 +70,9 @@ public class ContractServiceImpl implements ContractService {
             try {
                 contractMapper.addContract(c);
 
-                List<Allowance> allowances = allowanceService.insertAllowances(c.getId(), createContractRequest.getAllowance());
-                if(allowances != null){
-                    c.setAllowances(allowances);
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.insertAllowanceInsurances(c.getId(), createContractRequest.getAllowance());
+                if(allowanceInsurances != null){
+                    c.setAllowanceInsurances(allowanceInsurances);
                     return contractConverter.toResponse(c);
                 } else{
                     contractMapper.deleteById(c.getId());
@@ -114,8 +112,8 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
-                List<Allowance> allowances = allowanceService.updateAllowances(c.getId(), updateContractRequest.getAllowance());
-                if(allowances == null) {
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowance());
+                if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
                     FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                     return 0;
@@ -132,8 +130,8 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try{
                 contractMapper.updateContract(c);
-                List<Allowance> allowances = allowanceService.updateAllowances(c.getId(), updateContractRequest.getAllowance());
-                if(allowances == null) {
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowance());
+                if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
                     return 0;
                 }

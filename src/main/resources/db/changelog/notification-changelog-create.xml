@@ -11,14 +11,10 @@
             </column>
             <column name="TITLE" type="VARCHAR(255)"/>
             <column name="CONTENT" type="LONGTEXT"/>
-            <column name="FILES" type="TEXT"/>
+            <column name="FILES" type="NVARCHAR(1000)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <modifyDataType tableName="NOTIFICATION" columnName="FILES" newDataType="NVARCHAR(1000)"/>
     </changeSet>
 </databaseChangeLog>

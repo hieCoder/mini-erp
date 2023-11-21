@@ -1,7 +1,5 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.entity.User;
-import com.shsoftvina.erpshsoftvina.exception.ErrorResponse;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.CreateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.request.commentnotification.UpdateCommentNotificationRequest;
 import com.shsoftvina.erpshsoftvina.model.response.commentnotification.CommentNotificationResponse;
@@ -11,18 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.security.core.Authentication;
 
-
-import javax.validation.Valid;
-import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -39,7 +28,7 @@ public class CommentWebSocketController {
             StompHeaderAccessor accessor) {
         String clientID = accessor.getFirstNativeHeader("clientID");
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
-        if(applicationUtils.checkUserCurrentAllow(createCommentNotificationRequest.getUserId())){
+        if(applicationUtils.isUserAllow(createCommentNotificationRequest.getUserId())){
              commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);
@@ -54,7 +43,7 @@ public class CommentWebSocketController {
             StompHeaderAccessor accessor) {
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
         String clientID = accessor.getFirstNativeHeader("clientID");
-        if(applicationUtils.checkUserCurrentAllow(updateCommentNotificationRequest.getUserId())) {
+        if(applicationUtils.isUserAllow(updateCommentNotificationRequest.getUserId())) {
             commentNotificationResponse = commentNotificationService.updateCommentNotification(updateCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);
@@ -68,7 +57,7 @@ public class CommentWebSocketController {
             StompHeaderAccessor accessor) {
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
         String clientID = accessor.getFirstNativeHeader("clientID");
-        if(applicationUtils.checkUserCurrentAllow(requestBody.get("userId"))) {
+        if(applicationUtils.isUserAllow(requestBody.get("userId"))) {
             String id = requestBody.get("id");
             int rs = commentNotificationService.deleteCommentNotification(id);
             if (rs > 0) {
@@ -86,7 +75,7 @@ public class CommentWebSocketController {
             StompHeaderAccessor accessor) {
         String clientID = accessor.getFirstNativeHeader("clientID");
         CommentNotificationResponse commentNotificationResponse = new CommentNotificationResponse();
-        if(applicationUtils.checkUserCurrentAllow()){
+        if(applicationUtils.isUserAllow()){
             commentNotificationResponse = commentNotificationService.createCommentNotification(createCommentNotificationRequest);
         }
         commentNotificationResponse.setClientId(clientID);

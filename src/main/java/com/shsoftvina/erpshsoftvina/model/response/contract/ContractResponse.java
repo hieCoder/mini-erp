@@ -1,7 +1,7 @@
 
 package com.shsoftvina.erpshsoftvina.model.response.contract;
 
-import com.shsoftvina.erpshsoftvina.model.response.allowance.AllowanceResponse;
+import com.shsoftvina.erpshsoftvina.model.response.allowance_insurance.AllowanceInsuranceResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +19,5 @@ public class ContractResponse {
     private String basicSalary;
     private String files;
     private String createdDate;
-    private String insurance;
-    private List<AllowanceResponse> allowances;
+    private List<AllowanceInsuranceResponse> allowanceInsurances;
 }

@@ -174,10 +174,10 @@
     </changeSet>
 
     <changeSet id="21" author="team2">
-        <addForeignKeyConstraint baseTableName="ALLOWANCE"
+        <addForeignKeyConstraint baseTableName="ALLOWANCE_INSURANCE"
                                  baseColumnNames="CONTRACT_ID"
                                  referencedTableName="CONTRACT"
                                  referencedColumnNames="ID"
-                                 constraintName="FK_ALLOWANCE_CONTRACT"/>
+                                 constraintName="FK_ALLOWANCE_INSURANCE_CONTRACT"/>
     </changeSet>
 </databaseChangeLog>

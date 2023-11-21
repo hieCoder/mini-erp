@@ -50,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // API
                 // auth
                 .antMatchers("/api/v1/auth/**").permitAll()
+                // subscribe
+                .antMatchers("/api/v1/subscribe").permitAll()
                 // accounting
                 .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
                 // timesheets
@@ -75,8 +77,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
-                // subscribe
-                .antMatchers("/api/v1/subscribe").authenticated()
                 // CONTROLLER
                 // auth
                 .antMatchers("/login", "/register/**").permitAll()
