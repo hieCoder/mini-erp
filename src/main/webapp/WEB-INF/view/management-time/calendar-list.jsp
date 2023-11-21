@@ -66,6 +66,12 @@
             font-size: 20px;
         }
 
+        .bottom-left {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
     </style>
     <style>
         /* Tùy chỉnh kiểu của trang loading */
@@ -80,6 +86,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .full-height {
             min-height: 80vh;
         }
@@ -104,7 +111,8 @@
 
         </div>
     </div>
-    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center">
+    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+         class="containerLoading d-flex align-items-center justify-content-center">
         <div>
             <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
@@ -112,7 +120,23 @@
         </div>
     </div>
     <div class="bg-white calendar-container d-none">
-        <h1 class="text-center" id="currentMonthYear"></h1>
+        <div class="d-flex justify-content-between">
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2">
+                <div class="card-body text-muted">
+                    <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
+                        <span class="trending-ribbon-text">Focus</span> <i
+                            class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
+                    </div>
+                    <h5 class="fs-14 text-end mb-3">Target of July</h5>
+                    <p class="mb-0">Listen to JavaScript lectures and develop programs</p>
+                    <p class="mb-0">Create a daily evaluation diary habit</p>
+                </div>
+            </div>
+            <h1 class="text-center" id="currentMonthYear"></h1>
+            <div style="width: 345px" class="m-3 p-1 position-relative">
+                <button class="btn btn-primary bottom-left" onclick="saveCalendar()">Save</button>
+            </div>
+        </div>
         <table class="table table-nowrap table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
@@ -204,9 +228,9 @@
     // const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
     // const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
 
-    var rsSuccess = (text) =>{
+    var rsSuccess = (text) => {
         Swal.fire({
-            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">' + text + ' successfully</p></div></div>',
             showCancelButton: !0,
             showConfirmButton: !1,
             customClass: {
@@ -217,7 +241,7 @@
             showCloseButton: !0
         })
     }
-    var rsUnSuccess = () =>{
+    var rsUnSuccess = () => {
         Swal.fire({
             html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
             showCancelButton: !0,
@@ -260,7 +284,7 @@
                 })
                 $("#weeklyToDo").modal("hide")
                 rsSuccess("Save")
-            } else{
+            } else {
                 rsUnSuccess()
             }
             BtnLoadRemove()
@@ -318,7 +342,7 @@
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + startDateOfCurrentDate.toLocaleDateString('en-US', options);
-                    currentMonthYear.classList.add('fst-italic','p-3');
+                    currentMonthYear.classList.add('fst-italic', 'p-3');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
                     span.textContent = "Username: " + fullName;
@@ -384,7 +408,7 @@
                                     <%--        cell.appendChild(link);--%>
                                     <%--    }--%>
                                     <%--} else --%>
-                                        if (dayNumber > 0 && dayNumber <= daysInMonth) {
+                                    if (dayNumber > 0 && dayNumber <= daysInMonth) {
                                         let found = false;
                                         if (responseData != null && responseData.length > 0) {
                                             responseData.forEach((e) => {
@@ -401,11 +425,10 @@
                                                         link.textContent = dayNumber;
                                                         link.href = "${user.id}" + '/day/?id=' + week.id;
                                                         if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
-                                                            link.classList.add("badge", "badge-soft-danger","rounded-pill");
+                                                            link.classList.add("badge", "badge-soft-danger", "rounded-pill");
                                                         }
                                                         cell.appendChild(link);
                                                         found = true;
-
                                                     }
                                                 })
                                             });
@@ -417,7 +440,7 @@
                                             link.classList.add("p-2");
                                             link.classList.add("fs-6");
                                             if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
-                                                link.classList.add("badge", "badge-soft-danger","rounded-pill");
+                                                link.classList.add("badge", "badge-soft-danger", "rounded-pill");
                                             }
                                             const year = currentDate.getFullYear();
                                             const currentMonth = currentDate.getMonth() + 1;
@@ -464,29 +487,58 @@
                                     cell.classList.add("fw-bold")
                                     cell.classList.add("fst-italic")
                                 } else if (j < 8) {
-                                    if (responseData != null && responseData.length > 0) {
-                                        cell.classList.add("fst-italic")
-                                        responseData.forEach((e) => {
-                                            e.listDayOfWeek.forEach((week) => {
-                                                const dateInResponse = new Date(week.day);
-                                                const currentDay = countLine * 7 + j - startDay;
-                                                const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                                if (
-                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                    currentDay === dateInResponse.getDate()
-                                                ) {
+                                    const dayNumber = countLine * 7 + j - startDay;
+                                    if (dayNumber > 0 && dayNumber <= daysInMonth) {
+                                        const year = currentDate.getFullYear();
+                                        const currentMonth = currentDate.getMonth() + 1;
+                                        const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
+                                        if (responseData != null && responseData.length > 0) {
+                                            cell.classList.add("fst-italic")
+                                            responseData.forEach((e) => {
+                                                e.listDayOfWeek.forEach((week) => {
+                                                    const dateInResponse = new Date(week.day);
+                                                    const currentDay = countLine * 7 + j - startDay;
+                                                    const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
                                                     const dayTodo = dayNames[(i % 6) - 1];
-                                                    const targetTodo = week.data.oneThingCalendar[dayTodo];
-                                                    if (targetTodo != null) {
-                                                        cell.textContent = targetTodo.target;
+                                                    if (
+                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                        currentDay === dateInResponse.getDate()
+                                                    ) {
+                                                        const targetTodo = week.data.oneThingCalendar[dayTodo];
+                                                        if (targetTodo != null) {
+                                                            cell.textContent = targetTodo.target;
+                                                            cell.setAttribute('data-name', dayTodo);
+                                                            cell.setAttribute('data-day', currentColDay);
+                                                        } else {
+                                                            cell.setAttribute('data-name', dayTodo);
+                                                            cell.setAttribute('data-day', currentColDay);
+                                                        }
                                                     } else {
-                                                        cell.textContent = "";
+                                                        cell.setAttribute('data-name', dayTodo);
+                                                        cell.setAttribute('data-day', currentColDay);
                                                     }
-                                                }
+                                                })
                                             })
-                                        })
+                                        } else {
+                                            const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
+                                            const dayTodo = dayNames[(i % 6) - 1];
+                                            cell.setAttribute('data-name', dayTodo);
+                                            cell.setAttribute('data-day', currentColDay);
+                                        }
+                                        cell.setAttribute('contenteditable', 'true');
                                     }
                                 } else {
+                                    const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
+                                    const dayTodo = dayNames[(i % 6) - 1];
+                                    const dayNumber = countLine * 7 + j - startDay;
+                                    const year = currentDate.getFullYear();
+                                    const currentMonth = currentDate.getMonth() + 1;
+                                    let currentColDay;
+                                    if(dayNumber>daysInMonth) {
+                                        currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + daysInMonth;
+                                    } else {
+                                        currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
+                                    }
                                     if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("fw-bold")
                                         cell.classList.add("fst-italic")
@@ -506,8 +558,14 @@
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklyContents[(i % 6) - 1];
                                             }
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay));
+                                            cell.setAttribute('data-name', dayTodo);
                                         });
+                                    } else {
+                                        cell.setAttribute('data-name', dayTodo);
+                                        cell.setAttribute('data-week', getPreviousSunday(currentColDay));
                                     }
+                                    cell.setAttribute('contenteditable', 'true');
                                 }
                             }
                             row.appendChild(cell);
@@ -594,6 +652,64 @@
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
         return year + '-' + month + '-' + day;
+    }
+
+    function saveCalendar() {
+        const data = {
+            userId: userCurrent.id,
+            days: [],
+            weeklys: []
+        }
+        const days = [];
+        const weeklys = [];
+        $('td[contenteditable="true"]').each(function () {
+            const day = $(this).data('day');
+            const name = $(this).data('name');
+            const value = $(this).text().trim();
+            const week = $(this).data('week');
+            if (week != null) {
+                let weekObj = weeklys.find(w => w.startDay === week);
+                if (!weekObj) {
+                    weekObj = {
+                        startDay: week,
+                        content: {}
+                    };
+                    weeklys.push(weekObj);
+                }
+                weekObj.content[name] = value;
+            }
+            if (day != null) {
+                let dayObj = days.find(d => d.day === day);
+                if (!dayObj) {
+                    dayObj = {
+                        day: day,
+                        content: {}
+                    };
+                    days.push(dayObj);
+                }
+                dayObj.content[name] = value;
+            }
+        })
+        console.log(days);
+        data.days.push(...days);
+        data.weeklys.push(...weeklys);
+        console.log(data);
+    }
+
+    function getPreviousSunday(currentDate) {
+        const dateObject = new Date(currentDate);
+
+        // Get the day of the week (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
+        let currentDayOfWeek = dateObject.getDay();
+
+        // Calculate the number of days to subtract to get to the previous Sunday
+        let daysToSubtract = currentDayOfWeek === 0 ? 7 : currentDayOfWeek;
+
+        // Create a new date by subtracting the days
+        const sundayDate = new Date(dateObject);
+        sundayDate.setDate(dateObject.getDate() - daysToSubtract);
+
+        return sundayDate.toISOString().split('T')[0];
     }
 </script>
 </body>

@@ -1,12 +1,12 @@
 <%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     session.setAttribute("pathMain", "/todo/");
 %>
-<c:set var="data" value="${dayResponse.data}" />
-<c:set var="oneThingCalendar" value="${data.oneThingCalendar}" />
-<c:set var="toDoList" value="${data.toDoList}" />
+<c:set var="data" value="${dayResponse.data}"/>
+<c:set var="oneThingCalendar" value="${data.oneThingCalendar}"/>
+<c:set var="toDoList" value="${data.toDoList}"/>
 <c:set var="showButtonResult" value='${dayResponse!=null ? "" : "disabled"}'/>
 <c:set var="infoButtonResult" value='${dayResponse!=null ? "Update" : "Create"}'/>
 <c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
@@ -17,12 +17,16 @@
         .full-height {
             min-height: 80vh;
         }
+
         .table-container {
             width: 100%; /* Đặt chiều rộng tùy ý */
             overflow-x: auto;
+            cursor: grab;
         }
-        table {
-            border-collapse: collapse;
+
+        .oneThingCalendar th {
+            max-width: 70px;
+            line-height: 100%;
         }
 
         .table-container th {
@@ -31,15 +35,43 @@
             min-width: 500px;
             text-align: center;
             border: 1px solid #000;
-            cursor: grab;
+            padding-top: 5px;
+            font-weight: bold;
+            font-family: Poppins, sans-serif;
         }
 
         .table-container td {
-            padding: 8px;
+            padding: 5px;
             white-space: nowrap;
             text-align: center;
             border: 1px solid #000;
-            cursor: grab;
+            font-family: Poppins, sans-serif;
+            height: 32.5px;
+        }
+
+        .table-detail {
+            width: 60%; /* Đặt chiều rộng tùy ý */
+        }
+
+        .table-detail th {
+            height: 38.4px;
+            background-color: #f2f2f2;
+            white-space: nowrap;
+            min-width: 400px;
+            text-align: center;
+            border: 1px solid #000;
+            font-weight: bold;
+            font-family: Poppins, sans-serif;
+            padding-top: 8px;
+        }
+
+        .table-detail td {
+            padding: 5px;
+            white-space: nowrap;
+            text-align: center;
+            border: 1px solid #000;
+            font-family: Poppins, sans-serif;
+            height: 32.5px;
         }
     </style>
 </head>
@@ -47,7 +79,9 @@
 <div class="row position-relative full-height">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0">Management Time: <span class="fw-semibold text-success fst-italic">${dayResponse != null ? dayResponse.day : day}</span> </h4>
+            <h4 class="mb-sm-0">Management Time: <span
+                    class="fw-semibold text-success fst-italic">${dayResponse != null ? dayResponse.day : day}</span>
+            </h4>
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="/management-time/${userId}">Management Time</a></li>
@@ -56,7 +90,8 @@
             </div>
         </div>
     </div>
-    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" class="containerLoading d-flex align-items-center justify-content-center">
+    <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+         class="containerLoading d-flex align-items-center justify-content-center">
         <div>
             <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
@@ -66,9 +101,83 @@
     <div class="row calendar-container d-none" data-date="${day}" data-id="${dayResponse.id}">
         <div class="card">
             <div class="row card-body">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h4 class="fw-bolder">One Thing Calendar</h4>
                     <h5 class="fst-italic">Daily Important</h5>
+                    <table class="table table-bordered oneThingCalendar text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th class="w-25">Objective</th>
+                            <th>Key Results</th>
+                            <th>Rate</th>
+                            <th>Target</th>
+                            <th class="text-wrap">Performance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:set var="theSingleMostImportantThing"
+                               value="${oneThingCalendar.theSingleMostImportantThing}"/>
+                        <tr name="theSingleMostImportantThing">
+                            <td class="text-start" rowspan="5">Repeat consistently every day</td>
+                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}">
+                            </td>
+                            <td class="text-center">0%</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
+                        <tr name="lecture">
+                            <td><input class="form-control" type="text" value="${lecture.target}"></td>
+                            <td class="text-center">0%</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
+                        <tr name="dailyEvaluation">
+                            <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
+                            <td class="text-center">0%</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        <c:set var="work" value="${oneThingCalendar.work}"/>
+                        <tr name="work">
+                            <td><input class="form-control" type="text" value="${work.target}"></td>
+                            <td class="text-center">0%</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        <c:set var="reading" value="${oneThingCalendar.reading}"/>
+                        <tr name="reading">
+                            <td><input class="form-control" type="text" value="${reading.target}"></td>
+                            <td class="text-center">0%</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="fw-bolder">Month Target</h4>
+                    <table class="table table-bordered oneThingCalendar text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th class="w-25">Objective</th>
+                            <th>Key Results</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr name="reading">
+                            <td class="text-start" rowspan="3">Main target</td>
+                            <td><input class="form-control" type="text" value="${reading.target}"></td>
+                        </tr>
+                        <tr name="reading">
+                            <td><input class="form-control" type="text" value="${reading.target}"></td>
+                        </tr>
+                        <tr name="reading">
+                            <td><input class="form-control" type="text" value="${reading.target}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 class="fw-bolder">Weekly Todolist</h4>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
                         <tr>
@@ -78,53 +187,104 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:set var="theSingleMostImportantThing" value="${oneThingCalendar.theSingleMostImportantThing}" />
+                        <c:set var="theSingleMostImportantThing"
+                               value="${oneThingCalendar.theSingleMostImportantThing}"/>
                         <tr name="theSingleMostImportantThing">
                             <td class="text-start">Single Most Important Thing</td>
-                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}></td>
+                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}">
+                            </td>
+                            <td><input class="form-check-input"
+                                       type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}></td>
                         </tr>
-                        <c:set var="lecture" value="${oneThingCalendar.lecture}" />
+                        <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
                         <tr name="lecture">
                             <td class="text-start">Lecture</td>
                             <td><input class="form-control" type="text" value="${lecture.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
+                            <td><input class="form-check-input" type="checkbox" ${lecture.performance ? 'checked' : ''}>
+                            </td>
                         </tr>
-                        <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}" />
+                        <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
                         <tr name="dailyEvaluation">
                             <td class="text-start">Daily Evaluation</td>
                             <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
+                            <td><input class="form-check-input"
+                                       type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                         </tr>
-                        <c:set var="work" value="${oneThingCalendar.work}" />
+                        <c:set var="work" value="${oneThingCalendar.work}"/>
                         <tr name="work">
                             <td class="text-start">Work</td>
                             <td><input class="form-control" type="text" value="${work.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}></td>
+                            <td><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
+                            </td>
                         </tr>
-                        <c:set var="reading" value="${oneThingCalendar.reading}" />
+                        <c:set var="reading" value="${oneThingCalendar.reading}"/>
                         <tr name="reading">
                             <td class="text-start">Reading</td>
                             <td><input class="form-control" type="text" value="${reading.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            <td><input class="form-check-input" type="checkbox" ${reading.performance ? 'checked' : ''}>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-                    <h4 class="fw-bolder">Gratitude Diary</h4>
-                    <ul class="list-group mb-2" name="gratitudeDiary">
-                        <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
-                            <li class="list-group-item"><textarea class="form-control">${entry}</textarea></li>
-                        </c:forEach>
-                        <c:if test="${3-data.gratitudeDiary.size()>0}">
-                            <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
-                                <li class="list-group-item"><textarea class="form-control"></textarea></li>
-                            </c:forEach>
-                        </c:if>
-                    </ul>
-                    <h4 class="fw-bolder">Affirmation:</h4>
-                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8 d-inline-flex">
+                    <div class="table-detail">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th colspan="2" class="fw-bolder"><h5>Detail</h5></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="fw-bolder">Categories</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething calendar</td>
+                                <td>The single most important thing</td>
+                            </tr>
+                            <tr>
+                                <td>Lecture</td>
+                            </tr>
+                            <tr>
+                                <td>Daily evaluation</td>
+                            </tr>
+                            <tr>
+                                <td>Work</td>
+                            </tr>
+                            <tr>
+                                <td>Reading</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do List</td>
+                                <td style="height: 65px">Six to Twelve PM</td>
+                            </tr>
+                            <tr>
+                                <td style="height: 65px">Twelve to Six PM</td>
+                            </tr>
+                            <tr>
+                                <td style="height: 65px">Six to Twelve AM</td>
+                            </tr>
+                            <tr><td colspan="2" style="height: 162.5px"><h5 class="fw-bolder">Daily Routine</h5></td></tr>
+                            <tr>
+                                <td colspan="2" style="height: 215px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Affirmation</h5></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Compliment for me today</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Today’s reflections and
+                                    improvements</h5></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="table-container">
                         <table>
                             <thead>
@@ -144,40 +304,138 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>Target</td>
-                                <td>Performance</td>
+                                <td class="fw-bolder w-75">Target</td>
+                                <td class="fw-bolder">Performance</td>
                             </tr>
-                            <c:set var="theSingleMostImportantThing" value="${oneThingCalendar.theSingleMostImportantThing}" />
+                            <%--one-thing--%>
+                            <c:set var="theSingleMostImportantThing"
+                                   value="${oneThingCalendar.theSingleMostImportantThing}"/>
                             <tr name="theSingleMostImportantThing">
-                                <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}"></td>
-                                <td><input class="form-check-input" type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}></td>
+                                <td contenteditable="true">${theSingleMostImportantThing.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
+                                </td>
                             </tr>
-                            <c:set var="lecture" value="${oneThingCalendar.lecture}" />
+                            <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
                             <tr name="lecture">
-                                <td><input class="form-control" type="text" value="${lecture.target}"></td>
-                                <td><input class="form-check-input" type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
+                                <td contenteditable="true">${lecture.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                             </tr>
-                            <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}" />
+                            <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
                             <tr name="dailyEvaluation">
-                                <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
-                                <td><input class="form-check-input" type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
+                                <td contenteditable="true">${dailyEvaluation.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                             </tr>
-                            <c:set var="work" value="${oneThingCalendar.work}" />
+                            <c:set var="work" value="${oneThingCalendar.work}"/>
                             <tr name="work">
-                                <td><input class="form-control" type="text" value="${work.target}"></td>
-                                <td><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}></td>
+                                <td contenteditable="true">${work.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${work.performance ? 'checked' : ''}></td>
                             </tr>
-                            <c:set var="reading" value="${oneThingCalendar.reading}" />
+                            <c:set var="reading" value="${oneThingCalendar.reading}"/>
                             <tr name="reading">
-                                <td><input class="form-control" type="text" value="${reading.target}"></td>
-                                <td><input class="form-check-input" type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <%--to-do--%>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+<%--                            daily--%>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+                            <tr name="daily">
+                                <td contenteditable="true">${reading.target}</td>
+                                <td><input class="form-check-input"
+                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                            </tr>
+
+
+                            <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
+                                <tr name="gratitudeDiary">
+                                    <td colspan="2"><textarea
+                                            class="form-control">${entry}</textarea></td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${3-data.gratitudeDiary.size()>0}">
+                                <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
+                                    <tr  name="gratitudeDiary">
+                                        <td colspan="2" ><textarea
+                                                class="form-control"></textarea></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="col-md-12 text-center align-middle">
-                    <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">Back</button>
+                    <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">
+                        Back
+                    </button>
                     <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
                 </div>
             </div>
@@ -185,7 +443,8 @@
     </div> <!-- end row-->
 </div>
 
-<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="margin-top: 30%;">
             <div class="modal-header">
@@ -219,14 +478,15 @@
         font-size: 1.2rem;
     }
 
-    textarea.form-control{
-        min-height: 60px
-    }
-    textarea.affirmation{
+    textarea.form-control {
         min-height: 60px
     }
 
-    .form-check-input{
+    textarea.affirmation {
+        min-height: 60px
+    }
+
+    .form-check-input {
         margin: 0;
     }
 
@@ -241,13 +501,13 @@
     const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
 
     const CodeToDetail = {
-        "sixToTwelvePm" : "Six to Twelve PM",
-        "twelveToSixPm" : "Twelve to Six PM",
-        "sixToTwelveAm"  : "Six to Twelve AM"
+        "sixToTwelvePm": "Six to Twelve PM",
+        "twelveToSixPm": "Twelve to Six PM",
+        "sixToTwelveAm": "Six to Twelve AM"
     }
-    var rsSuccess = (text) =>{
+    var rsSuccess = (text) => {
         Swal.fire({
-            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">' + text + ' successfully</p></div></div>',
             showCancelButton: !0,
             showConfirmButton: !1,
             customClass: {
@@ -258,7 +518,7 @@
             showCloseButton: !0
         })
     }
-    var rsUnSuccess = () =>{
+    var rsUnSuccess = () => {
         Swal.fire({
             html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
             showCancelButton: !0,
@@ -271,7 +531,7 @@
             showCloseButton: !0
         })
     }
-    let qresult = (name)=>{
+    let qresult = (name) => {
         let array = {
             sixToTwelvePm: "6~12pm",
             twelveToSixPm: "12~6pm",
@@ -279,9 +539,9 @@
         }
         return array[name]
     }
-    let interval = (name) =>{
+    let interval = (name) => {
         let intervalResult = []
-        if(name == "sixToTwelvePm"){
+        if (name == "sixToTwelvePm") {
             for (var i = 6; i < 12; i++) {
                 if (i === 11) {
                     intervalResult.push(i + "~" + (i + 1) + "pm");
@@ -289,15 +549,15 @@
                     intervalResult.push(i + "~" + (i + 1) + "am");
                 }
             }
-        }else if(name == "twelveToSixPm"){
+        } else if (name == "twelveToSixPm") {
             for (var i = 0; i <= 5; i++) {
                 if (i === 0) {
-                    intervalResult.push(12 + "~" + (i+1) + "pm");
+                    intervalResult.push(12 + "~" + (i + 1) + "pm");
                 } else {
                     intervalResult.push(i + "~" + (i + 1) + "pm");
                 }
             }
-        }else{
+        } else {
             for (var i = 6; i < 12; i++) {
                 if (i == 11) {
                     intervalResult.push(i + "~" + (i + 1) + "am");
@@ -308,7 +568,7 @@
         }
         return intervalResult
     }
-    let getCodeTime = (code)=>{
+    let getCodeTime = (code) => {
         let arr = {
             sixToTwelvePm: M_SIX_TO_TWELVE_PM,
             twelveToSixPm: M_TWELVE_TO_SIX_PM,
@@ -316,51 +576,51 @@
         }
         return arr[code]
     }
-    $("#showDetailSubmit").click(function (){
+    $("#showDetailSubmit").click(function () {
         let target = $(this)
         target.addClass("d-none")
         target.before(BtnPrimaryLoad)
-        $(".container-fluid button").each(function (){
-            $(this).prop("disabled",true)
+        $(".container-fluid button").each(function () {
+            $(this).prop("disabled", true)
         })
         var dayId = $("div.calendar-container").attr("data-id")
         var codeData = $("#detailModal").attr("data-code")
         var code = getCodeTime(codeData)
         var targetArr = []
-        $("#detailModal tr input.inputTarget").each(function() {
+        $("#detailModal tr input.inputTarget").each(function () {
             let target = $(this).val()
             targetArr.push(target)
         })
         var data = {
             dayId: dayId,
             code: code,
-            data:targetArr
+            data: targetArr
         }
 
         callAjaxByJsonWithData('/api/v1/management-time-detail/exist/' + dayId, 'GET', null, function (rs) {
-            if(!(typeof rs === 'boolean')){
-                $("button").each(function (){
-                    $(this).prop("disabled",false)
+            if (!(typeof rs === 'boolean')) {
+                $("button").each(function () {
+                    $(this).prop("disabled", false)
                 })
                 target.removeClass("d-none")
                 BtnLoadRemove()
                 rsUnSuccess()
                 return
             }
-            if(rs){ // update
+            if (rs) { // update
                 callAjaxByJsonWithData('/api/v1/management-time-detail', 'PUT', data, function (rs) {
-                    $("button").each(function (){
-                        $(this).prop("disabled",false)
+                    $("button").each(function () {
+                        $(this).prop("disabled", false)
                     })
                     $("#detailModal").modal("hide")
                     target.removeClass("d-none")
                     BtnLoadRemove()
                     rsSuccess("Update")
                 });
-            } else{ // create
+            } else { // create
                 callAjaxByJsonWithData('/api/v1/management-time-detail', 'POST', data, function (rs) {
-                    $("button").each(function (){
-                        $(this).prop("disabled",false)
+                    $("button").each(function () {
+                        $(this).prop("disabled", false)
                     })
                     $("#detailModal").modal("hide")
                     target.removeClass("d-none")
@@ -368,45 +628,45 @@
                     rsSuccess("Update")
                 });
             }
-        }, function (error){
+        }, function (error) {
             rsUnSuccess()
         });
     })
-    $("button.showDetail").click(function (){
+    $("button.showDetail").click(function () {
         $(this).addClass("d-none")
         $(this).after(BtnSmPrimaryLoad)
         $('.message-noti-day-detail').text('');
         var modal = $("#detailModal")
         var name = $(this).attr("data-name")
         var nameDisplay = CodeToDetail[name]
-        $(".container-fluid button").each(function (){
-            $(this).prop("disabled",true)
+        $(".container-fluid button").each(function () {
+            $(this).prop("disabled", true)
         })
-        modal.attr("data-code",name )
+        modal.attr("data-code", name)
         $("#detailModalLabel").text(nameDisplay)
         let arrayTime = interval(name)
         var code = getCodeTime(name)
         let html = '<tr>' +
-            '<td rowspan="7" class="align-middle text-center">'+ qresult(name) +'</td>'+
+            '<td rowspan="7" class="align-middle text-center">' + qresult(name) + '</td>' +
             '</tr>'
         let idResponse = $(".calendar-container").attr("data-id")
-        callAjaxByJsonWithData('/api/v1/management-time-detail/'+ idResponse +'/'+code, 'GET', null, function (rs) {
-            if(rs.id != null) {
-                if(rs.data != null) {
+        callAjaxByJsonWithData('/api/v1/management-time-detail/' + idResponse + '/' + code, 'GET', null, function (rs) {
+            if (rs.id != null) {
+                if (rs.data != null) {
                     let data = rs.data;
-                    if(arrayTime){
-                        arrayTime.forEach((e, index)=>{
+                    if (arrayTime) {
+                        arrayTime.forEach((e, index) => {
                             var dataOfArray = data[index];
                             if (data[index] == '' || data[index] == undefined) dataOfArray = '';
-                            html+=
-                                '<tr>'+
-                                '<td class="align-middle">'+ e +'</td>'+
-                                '<td><input type="text" class="form-control inputTarget" value="'+ dataOfArray + '" placeholder="Input target..."></td>'+
+                            html +=
+                                '<tr>' +
+                                '<td class="align-middle">' + e + '</td>' +
+                                '<td><input type="text" class="form-control inputTarget" value="' + dataOfArray + '" placeholder="Input target..."></td>' +
                                 '</tr>'
                         })
                     }
                 }
-            }else{
+            } else {
                 if (arrayTime) {
                     arrayTime.forEach((e) => {
                         html +=
@@ -421,22 +681,22 @@
             $('button.showDetail').removeClass("d-none")
             $("#detailModal tbody").html(html)
             modal.modal("show")
-            $("button").each(function (){
-                $(this).prop("disabled",false)
+            $("button").each(function () {
+                $(this).prop("disabled", false)
             })
         })
     })
 
-    $("#updateButton").click(function() {
+    $("#updateButton").click(function () {
         $(this).addClass("d-none")
         $(this).before(BtnSuccessLoad)
         var id = "${dayResponse.id}"
         var oneThingCalendar = {};
-        $(".oneThingCalendar tr").each(function() {
+        $(".oneThingCalendar tr").each(function () {
             let name = $(this).attr("name")
             let target = $(this).find('input[type="text"]').val()
             let performance = $(this).find('input[type="checkbox"]').prop('checked')
-            if(name && target != ""){
+            if (name && target != "") {
                 oneThingCalendar[name] = {
                     target: target,
                     performance: performance
@@ -447,10 +707,10 @@
         var twelveToSixPm = []
         var sixToTwelveAm = []
 
-        $("table.sixToTwelvePm tr").each(function() {
+        $("table.sixToTwelvePm tr").each(function () {
             let target = $(this).find('input[type="text"]').val()
             let performance = $(this).find('input[type="checkbox"]').prop('checked')
-            if(target && target != ""){
+            if (target && target != "") {
                 let newObject = {
                     target: target,
                     performance: performance
@@ -459,10 +719,10 @@
             }
         })
 
-        $("table.twelveToSixPm tr").each(function() {
+        $("table.twelveToSixPm tr").each(function () {
             let target = $(this).find('input[type="text"]').val()
             let performance = $(this).find('input[type="checkbox"]').prop('checked')
-            if(target && target != ""){
+            if (target && target != "") {
                 let newObject = {
                     target: target,
                     performance: performance
@@ -471,10 +731,10 @@
             }
         })
 
-        $("table.sixToTwelveAm tr").each(function() {
+        $("table.sixToTwelveAm tr").each(function () {
             let target = $(this).find('input[type="text"]').val()
             let performance = $(this).find('input[type="checkbox"]').prop('checked')
-            if(target && target != ""){
+            if (target && target != "") {
                 let newObject = {
                     target: target,
                     performance: performance
@@ -490,9 +750,9 @@
         }
 
         var gratitudeDiary = []
-        $('ul[name="gratitudeDiary"] textarea').each(function (){
+        $('ul[name="gratitudeDiary"] textarea').each(function () {
             let text = $(this).val()
-            if(text && text!=""){
+            if (text && text != "") {
                 gratitudeDiary.push(text)
             }
         })
@@ -505,17 +765,17 @@
         }
         var apiUrlManagementTimeDayApi = "/api/v1/management-time/day"
 
-        if("${day}" != "" && $("div.calendar-container").attr("data-id") == ""){
+        if ("${day}" != "" && $("div.calendar-container").attr("data-id") == "") {
             dataCreate = {
                 day: "${day}",
                 userId: "${userId}",
                 data: dataInfor
             }
             callAjaxByJsonWithData(apiUrlManagementTimeDayApi, 'POST', dataCreate, function (rs) {
-                if(rs!=null){
+                if (rs != null) {
                     rsSuccess("Create")
                     $("#updateButton").text("Update")
-                    $("button.showDetail").prop("disabled",false)
+                    $("button.showDetail").prop("disabled", false)
                     $("div.calendar-container").attr("data-id", rs.id)
                     $("#updateButton").removeClass("d-none")
                     BtnLoadRemove()
@@ -523,7 +783,7 @@
                 }
                 rsUnSuccess()
             })
-        }else if($("div.calendar-container").attr("data-id") != "") {
+        } else if ($("div.calendar-container").attr("data-id") != "") {
             var dataUpdate = {
                 id: $("div.calendar-container").attr("data-id"),
                 userId: userCurrent.id,
@@ -538,10 +798,63 @@
                 }
                 rsUnSuccess()
             })
-        } else if("${day}" == ''){
+        } else if ("${day}" == '') {
             console.log("Error")
         }
     })
+
+    $(document).ready(function() {
+        let isMouseDown = false;
+        let startX;
+        let startScrollLeft;
+
+        $(".table-container").mousedown(function(e) {
+            // Kiểm tra xem nút chuột có phải là nút trái không
+            if (e.button === 0) {
+                isMouseDown = true;
+                startX = e.pageX - $(".table-container").offset().left;
+                startScrollLeft = $(".table-container").scrollLeft();
+            }
+        });
+
+        $(document).mouseup(function() {
+            isMouseDown = false;
+        });
+
+        $(".table-container").on('mousemove', function(e) {
+            // Kiểm tra xem nút chuột có đang được giữ không
+            if (isMouseDown) {
+                const mouseX = e.pageX - $(".table-container").offset().left;
+                const scrollX = startScrollLeft + (startX - mouseX);
+                $(".table-container").scrollLeft(scrollX);
+            }
+        });
+    });
+
+
+    $(document).ready(function() {
+        $(".table-container").on('wheel', function(e) {
+            // Điều chỉnh giá trị này để thay đổi tốc độ cuộn
+            const scrollSpeed = 50;
+
+            // Lấy giá trị cuộn ngang hiện tại
+            let currentScrollLeft = $(this).scrollLeft();
+
+            // Tính toán hướng cuộn dựa trên sự kiện chuột
+            let delta = e.originalEvent.deltaY || e.originalEvent.wheelDelta;
+            let direction = delta > 0 ? 1 : -1;
+
+            // Cập nhật giá trị cuộn ngang
+            currentScrollLeft += direction * scrollSpeed;
+
+            // Áp dụng giá trị cuộn ngang mới
+            $(this).scrollLeft(currentScrollLeft);
+
+            // Ngăn chặn sự kiện mặc định của trình duyệt (cuộn trang web)
+            e.preventDefault();
+        });
+    });
+
 </script>
 </body>
 </html>
