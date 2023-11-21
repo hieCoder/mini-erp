@@ -7,9 +7,9 @@ const U_MANAGER = 'MANAGER';
 const SUCCESS_ALERT = 'SUCCESS_ALERT';
 const DANGER_ALERT = 'DANGER_ALERT';
 
-const INVALID_FILES_LIMIT = 'INVALID_FILES_LIMIT';
-const INVALID_FILES_FILESIZE = 'INVALID_FILES_FILESIZE';
-const INVALID_FILES_FILETYPE = 'INVALID_FILES_FILETYPE';
+const INVALID_FILE_LIMIT = 'INVALID_FILE_LIMIT';
+const INVALID_FILE_FILESIZE = 'INVALID_FILE_FILESIZE';
+const INVALID_FILE_FILETYPE = 'INVALID_FILE_FILETYPE';
 
 // editor
 const DEFAULT_VALUE_SNOW_EDITOR = [
@@ -276,13 +276,13 @@ function activeFile(classNameOfForm, setting) {
         var fileCountCurrent = $(classNameOfForm).find('.file-container-item').length;
         if(files.length + fileCountCurrent > parseInt(dropzone.options.maxFiles)){
             dropzone.removeFile(file);
-            errorE.innerHTML = createMessError(INVALID_FILES_LIMIT, setting);
+            errorE.innerHTML = createMessError(INVALID_FILE_LIMIT, setting);
         } else if(!setting.fileType.includes(fileExtension)){
             dropzone.removeFile(file);
-            errorE.innerHTML = createMessError(INVALID_FILES_FILETYPE, setting);
+            errorE.innerHTML = createMessError(INVALID_FILE_FILETYPE, setting);
         } else if(fileSize > convertMbToB(setting.fileSize)){
             dropzone.removeFile(file);
-            errorE.innerHTML = createMessError(INVALID_FILES_FILESIZE, setting);
+            errorE.innerHTML = createMessError(INVALID_FILE_FILESIZE, setting);
         }
     });
 
@@ -300,13 +300,13 @@ function getMessageTypeFile(fileType) {
 function createMessError(INVALID, setting){
     var mess = '';
     switch (INVALID){
-        case INVALID_FILES_LIMIT:
+        case INVALID_FILE_LIMIT:
             mess = getMessageLimitFile(setting.fileLimit);
             break;
-        case INVALID_FILES_FILESIZE:
+        case INVALID_FILE_FILESIZE:
             mess = getMessageSizeFile(setting.fileSize);
             break;
-        case INVALID_FILES_FILETYPE:
+        case INVALID_FILE_FILETYPE:
             mess = getMessageTypeFile(setting.fileType);
             break;
         default:

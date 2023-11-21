@@ -5,6 +5,14 @@
     <title>Book detail</title>
     <!-- Sweet Alert css-->
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        a {
+            cursor: default;
+        }
+        textarea {
+            height: 110px;
+        }
+    </style>
 </head>
 <body>
 
@@ -35,7 +43,7 @@
                         <img src="${bookDetail.book.image}" class="img-fluid" alt="User Avatar" width="200">
                         <h4 class="mt-2 font-weight-bold">${bookDetail.book.title}</h4>
                         <p class="text-muted">Author: ${bookDetail.book.author}</p>
-                        <a href="${bookDetail.book.link}" class="text-decoration-none">Link To Book</a>
+                        <a href="${bookDetail.book.link}" class="cursor-pointer">Link To Book</a>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -48,24 +56,6 @@
                                 </div>
                             </div>
                             <form class="d-none feeling">
-                                <%--                                    <div class="form-group mb-2">--%>
-                                <%--                                        <label for="">Feel about the book:</label>--%>
-                                <%--                                        <input type="text" class="form-control quote" >--%>
-                                <%--                                    </div>--%>
-                                <%--                                    <div class="form-group mb-2">--%>
-                                <%--                                        <label for="">Lesson learned after reading the book:</label>--%>
-                                <%--                                        <input type="text" class="form-control quote">--%>
-                                <%--                                    </div>--%>
-                                <%--                                    <div class="form-group mb-2">--%>
-                                <%--                                        <label for="">Great quotes</label>--%>
-                                <%--                                        <input type="text" class="form-control quote" >--%>
-                                <%--                                    </div>--%>
-                                <%--                                    <div class="form-group mb-2">--%>
-                                <%--                                        <label for="">Action</label>--%>
-                                <%--                                        <input type="text" class="form-control quote">--%>
-                                <%--                                    </div>--%>
-                                <!-- Accordions with Icons -->
-                                <!-- Accordions with Icons -->
                                 <div class="accordion custom-accordionwithicon "
                                      id="accordionWithicon">
                                     <div class="accordion-item">
@@ -111,7 +101,7 @@
                                         <div id="quotes" class="accordion-collapse collapse"
                                              aria-labelledby="quoteBook"
                                              data-bs-parent="#accordionWithicon">
-                                            <textarea class="form-control"></textarea>
+                                            <textarea class="form-control" ></textarea>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
@@ -156,29 +146,79 @@
                         </div>
                         <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
                         <div class="col-md-12">
-                            <div class="p-3" data-simplebar style="max-height: 350px">
+                            <div data-simplebar style="max-height: 350px">
                                 <div class="text-center loading-feeling">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
-                                <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">
-                                    <div class="row border mb-2 d-none feeling">
-                                        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center border-end">
-                                            <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"
-                                                 alt="User Avatar" width="70px">
-                                            <p class="m-0">${feeling.fullnameUser}</p>
+<%--                                <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">--%>
+<%--                                    <div class="row border mb-2 d-none feeling">--%>
+<%--                                        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center border-end">--%>
+<%--                                            <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"--%>
+<%--                                                 alt="User Avatar" width="70px">--%>
+<%--                                            <p class="m-0">${feeling.fullnameUser}</p>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="col-md-10 d-flex flex-column justify-content-center"--%>
+<%--                                             style="min-height: 120px">--%>
+<%--                                            <c:forEach var="quote" items="${feeling.quotes}">--%>
+<%--                                                <c:if test='${!quote.equals("")}'>--%>
+<%--                                                    <p class="mt-1 mb-1">- ${quote}</p>--%>
+<%--                                                </c:if>--%>
+<%--                                            </c:forEach>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </c:forEach>--%>
+                                <div class="list-group">
+                                    <a href="javascript:void(0);" class="list-group-item">
+                                        <div class="d-flex mb-2 align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="/assets/images/users/avatar-2.jpg" alt="" class="avatar-sm rounded-circle" />
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="list-title fs-15 mb-1">Dominic Charlton</h5>
+                                                <p class="list-text mb-0 fs-12">12 min Ago</p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-10 d-flex flex-column justify-content-center"
-                                             style="min-height: 120px">
-                                            <c:forEach var="quote" items="${feeling.quotes}">
-                                                <c:if test='${!quote.equals("")}'>
-                                                    <p class="mt-1 mb-1">- ${quote}</p>
-                                                </c:if>
-                                            </c:forEach>
+                                        <p class="list-text mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin.</p>
+                                    </a>
+                                    <a href="javascript:void(0);" class="list-group-item">
+                                        <div class="d-flex mb-2 align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="/assets/images/users/avatar-2.jpg" alt="" class="avatar-sm rounded-circle" />
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="list-title fs-15 mb-1">Dominic Charlton</h5>
+                                                <p class="list-text mb-0 fs-12">12 min Ago</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </c:forEach>
+                                        <p class="list-text mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin.</p>
+                                    </a>
+                                    <a href="javascript:void(0);" class="list-group-item">
+                                        <div class="d-flex mb-2 align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="/assets/images/users/avatar-3.jpg" alt="" class="avatar-sm rounded-circle" />
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="list-title fs-15 mb-1">Declan Long</h5>
+                                                <p class="list-text mb-0 fs-12">12 min Ago</p>
+                                            </div>
+                                        </div>
+                                        <p class="list-text mb-0">Big July earthquakes confound zany experimental vow. My girl wove six dozen plaid jackets before she quit. Six big devils from Japan quickly forgot how to waltz. try again until it looks right, and each assumenda labore aes Homo nostrud organic, assumenda labore aesthetic magna elements, buttons, everything.</p>
+                                    </a>
+                                    <a href="javascript:void(0);" class="list-group-item">
+                                        <div class="d-flex mb-2 align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <img src="/assets/images/users/avatar-4.jpg" alt="" class="avatar-sm rounded-circle" />
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="list-title fs-15 mb-1">Angela Bernier</h5>
+                                                <p class="list-text mb-0 fs-12">5 days Ago</p>
+                                            </div>
+                                        </div>
+                                        <p class="list-text mb-0">Just like in the image where we talked about using multiple fonts, you can see that the background in this graphic design is blurred. Whenever you put text on top of an image, it’s important that your viewers can understand the text, and sometimes that means applying a gaussian readable.</p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

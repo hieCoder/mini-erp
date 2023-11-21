@@ -10,15 +10,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="TITLE" type="VARCHAR(255)"/>
-            <column name="CURRENT_WEEKLY_CONTENT" type="TEXT"/>
-            <column name="NEXT_WEEKLY_CONTENT" type="TEXT"/>
+            <column name="CURRENT_WEEKLY_CONTENT" type="LONGTEXT"/>
+            <column name="NEXT_WEEKLY_CONTENT" type="LONGTEXT"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <modifyDataType tableName="WEEKLY_REPORT" columnName="CURRENT_WEEKLY_CONTENT" newDataType="LONGTEXT"/>
-        <modifyDataType tableName="WEEKLY_REPORT" columnName="NEXT_WEEKLY_CONTENT" newDataType="LONGTEXT"/>
     </changeSet>
 </databaseChangeLog>

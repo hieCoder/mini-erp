@@ -48,7 +48,7 @@ public class CommentTaskConverter {
                 .id(commentTask.getId())
                 .title(commentTask.getTitle())
                 .content(commentTask.getContent())
-                .files(StringUtils.splitPathFile(CommentTask.class, commentTask.getFiles(), ","))
+                .files(FileUtils.getPathUploadList(CommentTask.class, commentTask.getFiles()))
                 .createdDate(DateUtils.formatDateTime(commentTask.getCreatedDate()))
                 .modifiedBy(commentTask.getModifiedBy())
                 .modifiedDate(DateUtils.formatDateTime(commentTask.getModifiedDate()))

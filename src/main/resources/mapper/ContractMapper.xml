@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
 
     <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
-        INSERT INTO CONTRACT (ID, BASIC_SALARY, FILES, CREATED_DATE, USER_ID, INSURANCE, STATUS, HISTORY_ID)
-        VALUES (#{id}, #{basicSalary}, #{files}, #{createdDate}, #{user.id}, #{insurance}, #{status}, #{parentContract.id})
+        INSERT INTO CONTRACT (ID, BASIC_SALARY, FILES, CREATED_DATE, USER_ID, STATUS, HISTORY_ID)
+        VALUES (#{id}, #{basicSalary}, #{files}, #{createdDate}, #{user.id}, #{status}, #{parentContract.id})
     </insert>
 
     <delete id="deleteById" parameterType="java.lang.String">
@@ -19,39 +19,37 @@
             c.FILES AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
-            c.INSURANCE AS contract_insurance,
-            a.ID AS allowance_id,
-            a.ITEM AS allowance_item,
-            a.ITEM_VALUE AS allowance_item_value
+            a.ID AS allowance_insurance_id,
+            a.ITEM AS allowance_insurance_item,
+            a.ITEM_VALUE AS allowance_insurance_item_value,
+            a.TYPE AS allowance_insurance_type
         FROM CONTRACT c
-        LEFT JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+        LEFT JOIN ALLOWANCE_INSURANCE a ON c.ID = a.CONTRACT_ID
         WHERE c.ID = #{id}
     </select>
 
     <resultMap id="contractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract">
         <id property="id" column="contract_id"/>
         <result property="basicSalary" column="contract_basic_salary"/>
-        <result property="allowance" column="contract_allowance"/>
         <result property="files" column="contract_contractFile"/>
         <result property="createdDate" column="contract_created_date"/>
         <result property="status" column="contract_status"/>
-        <result property="insurance" column="contract_insurance"/>
-        <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
-                    resultMap="allowanceResultMap"/>
+        <collection property="allowanceInsurances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance"
+                    resultMap="allowanceInsuranceResultMap"/>
     </resultMap>
 
-    <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
-        <id property="id" column="allowance_id" />
-        <result property="item" column="allowance_item" />
-        <result property="itemValue" column="allowance_item_value" />
+    <resultMap id="allowanceInsuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance">
+        <id property="id" column="allowance_insurance_id" />
+        <result property="item" column="allowance_insurance_item" />
+        <result property="itemValue" column="allowance_insurance_item_value" />
+        <result property="type" column="allowance_insurance_type" />
     </resultMap>
 
     <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
         UPDATE CONTRACT
-        SET BASIC_SALARY    = #{basicSalary},
-            FILES        = #{files},
-            INSURANCE  = #{insurance}
-        WHERE id = #{id};
+        SET BASIC_SALARY = #{basicSalary},
+            FILES = #{files}
+        WHERE ID = #{id};
     </update>
 
     <update id="changeStatusContract" parameterType="String">
@@ -67,12 +65,12 @@
             c.FILES AS contract_contractFile,
             c.CREATED_DATE AS contract_created_date,
             c.STATUS AS contract_status,
-            c.INSURANCE AS contract_insurance,
-            a.ID AS allowance_id,
-            a.ITEM AS allowance_item,
-            a.ITEM_VALUE AS allowance_item_value
+            a.ID AS allowance_insurance_id,
+            a.ITEM AS allowance_insurance_item,
+            a.ITEM_VALUE AS allowance_insurance_item_value,
+            a.TYPE AS allowance_insurance_type
         FROM CONTRACT c
-                 INNER JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+        INNER JOIN ALLOWANCE_INSURANCE a ON c.ID = a.CONTRACT_ID
         WHERE c.HISTORY_ID = #{id}
         ORDER BY c.CREATED_DATE ASC;
     </select>

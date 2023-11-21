@@ -86,11 +86,11 @@
                      c.CREATED_DATE AS c_created_date,
                      c.USER_ID,
                      c.STATUS AS c_status,
-                     c.INSURANCE,
                      a.ID AS a_id,
                      a.ITEM,
-                     a.ITEM_VALUE
-              FROM CONTRACT c INNER JOIN ALLOWANCE a ON c.ID = a.CONTRACT_ID
+                     a.ITEM_VALUE,
+                     a.TYPE AS a_type
+              FROM CONTRACT c INNER JOIN ALLOWANCE_INSURANCE a ON c.ID = a.CONTRACT_ID
               WHERE c.STATUS = 'ACTIVE' AND c.HISTORY_ID IS NULL) AS ca
              ON u.ID = ca.USER_ID
         WHERE u.ID = #{id} AND u.status = 'ACTIVE'
@@ -125,15 +125,15 @@
         <result property="files" column="FILES"/>
         <result property="createdDate" column="c_created_date"/>
         <result property="status" column="c_status"/>
-        <result property="insurance" column="INSURANCE"/>
-        <collection property="allowances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.Allowance"
-                    resultMap="allowanceResultMap"/>
+        <collection property="allowanceInsurances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance"
+                    resultMap="allowanceInsuranceResultMap"/>
     </resultMap>
 
-    <resultMap id="allowanceResultMap" type="com.shsoftvina.erpshsoftvina.entity.Allowance">
+    <resultMap id="allowanceInsuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance">
         <id property="id" column="a_id" />
         <result property="item" column="ITEM" />
         <result property="itemValue" column="ITEM_VALUE" />
+        <result property="type" column="a_type" />
     </resultMap>
 
     <update id="changeStatusUser" parameterType="String" >

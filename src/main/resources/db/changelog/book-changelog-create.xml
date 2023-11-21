@@ -14,12 +14,8 @@
             <column name="LINK" type="VARCHAR(255)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="CREATED_BY" type="VARCHAR(255)"/>
-            <column name="IMAGE" type="TEXT"/>
+            <column name="IMAGE" type="NVARCHAR(1000)"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <modifyDataType tableName="BOOK" columnName="IMAGE" newDataType="NVARCHAR(1000)"/>
     </changeSet>
 </databaseChangeLog>
 

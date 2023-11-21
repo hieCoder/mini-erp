@@ -25,25 +25,6 @@ public class StringUtils {
         return null;
     }
 
-    public static String[] splitPathFile(Class<?> entityClass, String s, String regex){
-        if (!isBlank(s)) {
-            String[] parts = s.split(regex);
-            for (int i = 0; i < parts.length; i++) {
-                String pathRoot = "";
-                if(entityClass == User.class){
-                    pathRoot = UserConstant.PATH_FILE;
-                } else if(entityClass == Accounting.class){
-                    pathRoot = AccountingConstant.PATH_FILE;
-                } else if(entityClass == CommentTask.class){
-                    pathRoot = CommentTaskConstant.PATH_FILE;
-                }
-                parts[i] = pathRoot + parts[i];
-            }
-            return parts;
-        }
-        return null;
-    }
-
     public static String getDifference(String old, String newStr) {
 
         if(isBlank(newStr)) return old;
