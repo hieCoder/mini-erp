@@ -39,28 +39,28 @@ public class ManagementTimeDayController {
         return view;
     }
 
-    @GetMapping("/{userId}/day")
-    public ModelAndView getDetailDay(
-            @PathVariable("userId") String userId,
-            @RequestParam(name = "id", required = false, defaultValue = "") String id,
-            @RequestParam(name = "day", required = false, defaultValue = "") String day
-    ) {
-        applicationUtils.checkUserAllow(userId);
-        ModelAndView mav = new ModelAndView();
-            DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
-            if(dayResponse!=null){
-                mav.addObject("dayResponse", dayResponse);
-            } else{
-                if(!DateUtils.isValidDate(day)){
-                    mav.setViewName("redirect:/management-time/"+ userId);
-                    return mav;
-                }
-                mav.addObject("day", day);
-            }
-            mav.setViewName("management-time/day/detail");
-            mav.addObject("userId",userId);
-            return mav;
-    }
+//    @GetMapping("/{userId}/day")
+//    public ModelAndView getDetailDay(
+//            @PathVariable("userId") String userId,
+//            @RequestParam(name = "id", required = false, defaultValue = "") String id,
+//            @RequestParam(name = "day", required = false, defaultValue = "") String day
+//    ) {
+//        applicationUtils.checkUserAllow(userId);
+//        ModelAndView mav = new ModelAndView();
+//            DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
+//            if(dayResponse!=null){
+//                mav.addObject("dayResponse", dayResponse);
+//            } else{
+//                if(!DateUtils.isValidDate(day)){
+//                    mav.setViewName("redirect:/management-time/"+ userId);
+//                    return mav;
+//                }
+//                mav.addObject("day", day);
+//            }
+//            mav.setViewName("management-time/day/detail");
+//            mav.addObject("userId",userId);
+//            return mav;
+//    }
 
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {

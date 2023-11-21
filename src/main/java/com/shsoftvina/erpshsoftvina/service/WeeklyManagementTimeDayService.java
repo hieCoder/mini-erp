@@ -4,6 +4,6 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.weekly.WeeklyMa
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
 
 public interface WeeklyManagementTimeDayService {
-    int updateWeekly(WeeklyManagementTimeDayUpdateRequest content);
-    WeeklyManagementTimeDayResponse getWeekly(String id);
+//    int updateWeekly(WeeklyManagementTimeDayUpdateRequest content);
+//    WeeklyManagementTimeDayResponse getWeekly(String id);
 }
