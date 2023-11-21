@@ -40,50 +40,119 @@
                 </div>
                 <div class="col-md-9">
                     <div class="row">
-                        <h3 class="mt-2 font-weight-bold">Your Feelings</h3>
                         <div class="col-md-12">
-                            <div class="p-3">
-                                <div class="text-center loading-feeling">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="sr-only">Loading...</span>
+
+                            <div class="text-center loading-feeling">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <form class="d-none feeling">
+                                <%--                                    <div class="form-group mb-2">--%>
+                                <%--                                        <label for="">Feel about the book:</label>--%>
+                                <%--                                        <input type="text" class="form-control quote" >--%>
+                                <%--                                    </div>--%>
+                                <%--                                    <div class="form-group mb-2">--%>
+                                <%--                                        <label for="">Lesson learned after reading the book:</label>--%>
+                                <%--                                        <input type="text" class="form-control quote">--%>
+                                <%--                                    </div>--%>
+                                <%--                                    <div class="form-group mb-2">--%>
+                                <%--                                        <label for="">Great quotes</label>--%>
+                                <%--                                        <input type="text" class="form-control quote" >--%>
+                                <%--                                    </div>--%>
+                                <%--                                    <div class="form-group mb-2">--%>
+                                <%--                                        <label for="">Action</label>--%>
+                                <%--                                        <input type="text" class="form-control quote">--%>
+                                <%--                                    </div>--%>
+                                <!-- Accordions with Icons -->
+                                <!-- Accordions with Icons -->
+                                <div class="accordion custom-accordionwithicon "
+                                     id="accordionWithicon">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="feelingBook">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#feeling" aria-expanded="false"
+                                                    aria-controls="feeling">
+                                                <i class="ri-message-2-line me-2 fs-4"></i> Feel about the book?
+                                            </button>
+                                        </h2>
+                                        <div id="feeling" class="accordion-collapse collapse"
+                                             aria-labelledby="feelingBook"
+                                             data-bs-parent="#accordionWithicon">
+                                            <textarea class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="lessonBook">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#lesson" aria-expanded="false"
+                                                    aria-controls="lesson">
+                                                <i class="ri-pencil-ruler-line me-2 fs-4"></i> Lesson learned after
+                                                reading the book?
+                                            </button>
+                                        </h2>
+                                        <div id="lesson" class="accordion-collapse collapse"
+                                             aria-labelledby="lessonBook"
+                                             data-bs-parent="#accordionWithicon">
+                                            <textarea class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="quoteBook">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#quotes" aria-expanded="false"
+                                                    aria-controls="quotes">
+                                                <i class="ri-double-quotes-l me-2 fs-4"></i> Great quotes?
+                                            </button>
+                                        </h2>
+                                        <div id="quotes" class="accordion-collapse collapse"
+                                             aria-labelledby="quoteBook"
+                                             data-bs-parent="#accordionWithicon">
+                                            <textarea class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="actionBook">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#action" aria-expanded="false"
+                                                    aria-controls="action">
+                                                <i class="ri-user-location-line me-2 fs-4"></i> Action?
+                                            </button>
+                                        </h2>
+                                        <div id="action" class="accordion-collapse collapse"
+                                             aria-labelledby="actionBook"
+                                             data-bs-parent="#accordionWithicon">
+                                            <textarea class="form-control"></textarea>
+                                        </div>
                                     </div>
                                 </div>
-                                <form class="d-none feeling">
-                                    <div class="form-group mb-2">
-                                        <label for="quotes1">Feel 1:</label>
-                                        <input type="text" class="form-control quote" id="quotes1">
-                                    </div>
-                                    <div class="form-group mb-2">
-                                        <label for="quotes2">Feel 2:</label>
-                                        <input type="text" class="form-control quote" id="quotes2">
-                                    </div>
-                                    <div class="form-group mb-2">
-                                        <label for="quotes3">Feel 3:</label>
-                                        <input type="text" class="form-control quote" id="quotes3">
-                                    </div>
-                                    <div class="form-group mb-2">
-                                        <button type="button" class="btn btn-primary btn-load submit-btn" id="submit">
+                                <div class="form-group mb-2 mt-2">
+                                    <button type="button" class="btn btn-primary btn-load submit-btn" id="submit">
                                         <span class="d-flex align-items-center">
                                             <span class="spinner-border flex-shrink-0 d-none"
                                                   style="margin-right: 5px;"></span>
                                             <span class="flex-grow-1">Submit</span>
                                         </span>
-                                        </button>
-                                        <button type="button" class="btn btn-primary btn-load submit-btn d-none"
-                                                id="update" data-id="">
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-load submit-btn d-none"
+                                            id="update" data-id="">
                                         <span class="d-flex align-items-center">
                                             <span class="spinner-border flex-shrink-0 d-none"
                                                   style="margin-right: 5px;"></span>
                                             <span class="flex-grow-1">Update</span>
                                         </span>
-                                        </button>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                data-target="#deleteFeelingModal" id="delete-btn">Delete
-                                        </button>
-                                        <a href="/books" type="button" class="btn btn-secondary">Back</a>
-                                    </div>
-                                </form>
-                            </div>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                            data-target="#deleteFeelingModal" id="delete-btn">Delete
+                                    </button>
+                                    <a href="/books" type="button" class="btn btn-secondary">Back</a>
+                                </div>
+                            </form>
+
                         </div>
                         <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
                         <div class="col-md-12">
@@ -100,7 +169,8 @@
                                                  alt="User Avatar" width="70px">
                                             <p class="m-0">${feeling.fullnameUser}</p>
                                         </div>
-                                        <div class="col-md-10 d-flex flex-column justify-content-center" style="min-height: 120px">
+                                        <div class="col-md-10 d-flex flex-column justify-content-center"
+                                             style="min-height: 120px">
                                             <c:forEach var="quote" items="${feeling.quotes}">
                                                 <c:if test='${!quote.equals("")}'>
                                                     <p class="mt-1 mb-1">- ${quote}</p>
