@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CalendarContent {
-    private String oneThingOfTheDay;
-    private String selfDevelopmentLecture;
+    private String theSingleMostImportantThing;
+    private String lecture;
     private String dailyEvaluation;
     private String work;
     private String reading;

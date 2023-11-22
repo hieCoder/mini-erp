@@ -8,6 +8,8 @@ import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarWeeklyRequest;
@@ -55,7 +57,15 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 dayEntity = managementTimeDayConvert.toEntity(userId, d);
                 managementTimeDayMapper.createCalendarDay(dayEntity);
             } else{
-                dayEntity.setOneThingCalendar(JsonUtils.objectToJson(d.getContent()));
+
+                OneThingCalendarDto o = OneThingCalendarDto.builder()
+                        .theSingleMostImportantThing(new ItemDto(d.getContent().getTheSingleMostImportantThing(), false))
+                        .lecture(new ItemDto(d.getContent().getLecture(), false))
+                        .dailyEvaluation(new ItemDto(d.getContent().getDailyEvaluation(), false))
+                        .work(new ItemDto(d.getContent().getWork(), false))
+                        .reading(new ItemDto(d.getContent().getReading(), false)).build();
+                dayEntity.setOneThingCalendar(JsonUtils.objectToJson(o));
+
                 managementTimeDayMapper.updateCalendarDay(dayEntity);
             }
         }
