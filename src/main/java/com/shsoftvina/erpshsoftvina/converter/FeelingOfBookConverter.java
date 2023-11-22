@@ -34,8 +34,11 @@ public class FeelingOfBookConverter {
         if(feelingOfBook == null) return null;
         return FeelingOfBookResponse.builder()
                 .id(feelingOfBook.getId())
-                .quotes(feelingOfBook.getQuote().split("---"))
-                .createdDate(DateUtils.formatDate(feelingOfBook.getCreatedDate()))
+                .feeling(feelingOfBook.getFeeling())
+                .quote(feelingOfBook.getQuote())
+                .lesson(feelingOfBook.getLesson())
+                .action(feelingOfBook.getAction())
+                .createdDate(DateUtils.formatDateTime(feelingOfBook.getCreatedDate()))
                 .idUser(feelingOfBook.getUser().getId())
                 .fullnameUser(feelingOfBook.getUser().getFullname())
                 .avatarUser(FileUtils.getPathUpload(User.class,feelingOfBook.getUser().getAvatar()))
@@ -50,7 +53,10 @@ public class FeelingOfBookConverter {
         return FeelingOfBook.builder()
                 .id(ApplicationUtils.generateId())
                 .user(userMapper.findById(feelingOfBookCreateRequest.getUserId()))
+                .feeling(feelingOfBookCreateRequest.getFeeling())
                 .quote(feelingOfBookCreateRequest.getQuote())
+                .lesson(feelingOfBookCreateRequest.getLesson())
+                .action(feelingOfBookCreateRequest.getAction())
                 .createdDate(new Date())
                 .book(bookMapper.findById(feelingOfBookCreateRequest.getBookId())).build();
     }
@@ -58,7 +64,10 @@ public class FeelingOfBookConverter {
     public FeelingOfBook toEntity(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest){
 
         FeelingOfBook feelingOfBook = feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId());
+        feelingOfBook.setFeeling(feelingOfBookUpdateRequest.getFeeling());
         feelingOfBook.setQuote(feelingOfBookUpdateRequest.getQuote());
+        feelingOfBook.setLesson(feelingOfBookUpdateRequest.getLesson());
+        feelingOfBook.setAction(feelingOfBookUpdateRequest.getAction());
         return feelingOfBook;
     }
 }

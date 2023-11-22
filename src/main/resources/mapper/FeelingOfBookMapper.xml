@@ -12,7 +12,11 @@
 
     <update id="updateFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         UPDATE FEELING_OF_BOOK
-        SET QUOTE = #{quote}
+        SET
+            FEELING = #{feeling},
+            QUOTE = #{quote},
+            LESSON = #{lesson},
+            ACTION = #{action}
         WHERE ID = #{id}
     </update>
 
@@ -24,7 +28,10 @@
 
     <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         <id property="id" column="id"/>
+        <result property="feeling" column="FEELING"/>
         <result property="quote" column="QUOTE"/>
+        <result property="lesson" column="LESSON"/>
+        <result property="action" column="ACTION"/>
         <result property="createdDate" column="CREATED_DATE"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>
     </resultMap>
@@ -38,8 +45,8 @@
 
     <insert id="createFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         INSERT
-        INTO FEELING_OF_BOOK (ID, USER_ID, QUOTE, CREATED_DATE, BOOK_ID)
-        VALUES (#{id}, #{user.id}, #{quote}, #{createdDate}, #{book.id})
+        INTO FEELING_OF_BOOK (ID, USER_ID, FEELING, QUOTE, LESSON, ACTION, CREATED_DATE, BOOK_ID)
+        VALUES (#{id}, #{user.id}, #{feeling}, #{quote}, #{lesson}, #{action}, #{createdDate}, #{book.id})
     </insert>
 
     <delete id="deleteFeelingOfBook" parameterType="String">
@@ -65,7 +72,10 @@
 
     <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         <id property="id" column="id"/>
+        <result property="feeling" column="FEELING"/>
         <result property="quote" column="QUOTE"/>
+        <result property="lesson" column="LESSON"/>
+        <result property="action" column="ACTION"/>
         <result property="createdDate" column="CREATED_DATE"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>
     </resultMap>
