@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ManagementTimeDayDetail {
-
+public class MonthlyManagementTimeDay {
     private String id;
-    private ManagementTimeDay managementTimeDay;
-    private String sixToTwelvePM;
-    private String twelveToSixPM;
-    private String sixToTwelveAM;
-
+    private String code;
+    private String content;
+    private User user;
 }

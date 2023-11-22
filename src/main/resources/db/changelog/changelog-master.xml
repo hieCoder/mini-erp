@@ -15,13 +15,13 @@
     <include file="db/changelog/weekly-report-changelog-create.xml" />
     <include file="db/changelog/setting-changelog-create.xml" />
     <include file="db/changelog/management-time-day-changelog-create.xml" />
-    <include file="db/changelog/management-time-day-detail-changelog-create.xml" />
     <include file="db/changelog/book-changelog-create.xml" />
     <include file="db/changelog/feeling-of-book-changelog-create.xml" />
     <include file="db/changelog/weekly-management-time-day-changelog-create.xml" />
     <include file="db/changelog/event-changelog-create.xml"/>
     <include file="db/changelog/subscribe-changelog-create.xml"/>
     <include file="db/changelog/allowance-insurance-changelog-create.xml"/>
+    <include file="db/changelog/monthly-management-time-day-changelog-create.xml" />
     <include file="db/changelog/changelog-add-constraint.xml" />
 
     <include file="db/changelog/add-data-changelog-create.xml" />

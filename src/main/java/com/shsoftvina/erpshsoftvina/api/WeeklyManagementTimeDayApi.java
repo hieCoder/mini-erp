@@ -13,13 +13,13 @@ public class WeeklyManagementTimeDayApi {
     @Autowired
     private WeeklyManagementTimeDayService weeklyManagementTimeDayService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getWeekly(@PathVariable("id") String id) {
-        return ResponseEntity.ok(weeklyManagementTimeDayService.getWeekly(id));
-    }
-
-    @PutMapping
-    public ResponseEntity<?> updateWeekly(@RequestBody WeeklyManagementTimeDayUpdateRequest weeklyManagementTimeDayUpdateRequest) {
-        return ResponseEntity.ok(weeklyManagementTimeDayService.updateWeekly(weeklyManagementTimeDayUpdateRequest));
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<?> getWeekly(@PathVariable("id") String id) {
+//        return ResponseEntity.ok(weeklyManagementTimeDayService.getWeekly(id));
+//    }
+//
+//    @PutMapping
+//    public ResponseEntity<?> updateWeekly(@RequestBody WeeklyManagementTimeDayUpdateRequest weeklyManagementTimeDayUpdateRequest) {
+//        return ResponseEntity.ok(weeklyManagementTimeDayService.updateWeekly(weeklyManagementTimeDayUpdateRequest));
+//    }
 }

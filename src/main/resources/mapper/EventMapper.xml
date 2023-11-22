@@ -21,14 +21,14 @@
         select e.*, u.fullname, u.avatar
         from EVENT e
                  inner join USER u on e.user_id = u.id
-        where e.START_DATE &gt;= #{day}
+        where e.START_DATE &gt;= #{day} and e.START_DATE &lt;= LAST_DAY(#{day})
         order by e.START_DATE asc;
     </select>
 
     <select id="getTotalRecordCountUpcoming" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM EVENT
-        where START_DATE &gt;= #{day};
+        where START_DATE &gt;= #{day} and START_DATE &lt;= LAST_DAY(#{day})
     </select>
 
     <select id="findById" resultMap="eventResultMap">
@@ -45,7 +45,7 @@
 
     <insert id="createEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
         INSERT INTO EVENT(id,created_date, start_date, end_date, title, content, type, user_id)
-        VALUES (#{id},#{createdDate}, #{startDate}, #{endDate}, #{title}, #{content}, #{type}, #{user.id});
+        VALUES (#{id},now(), #{startDate}, #{endDate}, #{title}, #{content}, #{type}, #{user.id});
     </insert>
 
     <update id="editEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">

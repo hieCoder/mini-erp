@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ToDoListDto {
-    private List<ItemDto> sixToTwelvePm;
-    private List<ItemDto> twelveToSixPm;
-    private List<ItemDto> sixToTwelveAm;
+    private ItemDto[] sixToTwelvePm;
+    private ItemDto[] twelveToSixPm;
+    private ItemDto[] sixToTwelveAm;
 }

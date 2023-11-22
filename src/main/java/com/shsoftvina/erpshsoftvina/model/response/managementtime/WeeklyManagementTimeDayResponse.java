@@ -1,5 +1,7 @@
-package com.shsoftvina.erpshsoftvina.model.response.managementtime.day;
+package com.shsoftvina.erpshsoftvina.model.response.managementtime;
 
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +16,6 @@ import java.util.List;
 public class WeeklyManagementTimeDayResponse {
     private String weeklyId;
     private String startDate;
-    private String[] weeklyContents;
+    private CalendarWeeklyContent weeklyContents;
     private List<DayResponse> listDayOfWeek;
 }

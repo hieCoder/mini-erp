@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.managementtimedetail;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DayDetailResponse {
-    private String id;
-    private String[] data;
+public class MonthlyRequest {
+    private String month;
+    private String[] content;
 }

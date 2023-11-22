@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingCreateRe
 import com.shsoftvina.erpshsoftvina.model.request.accountings.AccountingUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.accounting.PageAccountListResponse;
 import com.shsoftvina.erpshsoftvina.service.AccountingService;
+import com.shsoftvina.erpshsoftvina.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -50,11 +52,13 @@ public class AccountingApi {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createAccounting(@Valid AccountingCreateRequest accountingCreateRequest,BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> createAccounting(AccountingCreateRequest accountingCreateRequest) throws IllegalAccessException {
+        Map<String, String> errors = ValidateUtils.validate(accountingCreateRequest);
+        if (errors.isEmpty()) {
+            return new ResponseEntity<>(accountingService.createAccounting(accountingCreateRequest),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(accountingService.createAccounting(accountingCreateRequest),HttpStatus.OK);
     }
 
     @PostMapping("/edit")
