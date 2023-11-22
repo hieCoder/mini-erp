@@ -97,34 +97,4 @@ public class WeeklyManagementTimeDayConverter {
         List<WeeklyManagementTimeDayResponse> result = new ArrayList<>(map.values());
         return result;
     }
-
-
-
-//        List<WeeklyManagementTimeDayResponse> rs = new ArrayList<>();
-//
-//        Map<String, List<ManagementTimeDay>> groupedByWeeklyCode = days.stream()
-//                .collect(Collectors.groupingBy(ManagementTimeDay::getWeeklyCode));
-//
-//        for (String weeklyCode : groupedByWeeklyCode.keySet()) {
-//
-//            WeeklyManagementTimeDayResponse weeklyManagementTimeDayResponse = new WeeklyManagementTimeDayResponse();
-//
-//            WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
-//            if (weeklyManagementTimeDay != null) {
-//                weeklyManagementTimeDayResponse.setWeeklyId(weeklyManagementTimeDay.getId());
-//                weeklyManagementTimeDayResponse.setStartDate(weeklyManagementTimeDay.getCode());
-//                String contentOfWeekly = weeklyManagementTimeDay.getContent();
-//                if(!StringUtils.isBlank(contentOfWeekly)){
-//                    CalendarWeeklyContent calendarWeeklyContent = JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class);
-//                    weeklyManagementTimeDayResponse.setWeeklyContents(calendarWeeklyContent);
-//                }
-//
-//                List<ManagementTimeDay> daysWithSameWeeklyCode = groupedByWeeklyCode.get(weeklyCode);
-//                List<DayResponse> listDayOfWeek = daysWithSameWeeklyCode.stream()
-//                        .map(day-> managementTimeDayConvert.toResponse(day)).collect(Collectors.toList());
-//                weeklyManagementTimeDayResponse.setListDayOfWeek(listDayOfWeek);
-//                rs.add(weeklyManagementTimeDayResponse);
-//            }
-//        }
-//        return rs;
 }

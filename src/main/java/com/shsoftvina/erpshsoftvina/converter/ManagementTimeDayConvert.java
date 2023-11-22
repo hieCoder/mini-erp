@@ -49,8 +49,8 @@ public class ManagementTimeDayConvert {
     public ManagementTimeDay toEntity(String userId, CalendarDayRequest calendarDayRequest){
 
         OneThingCalendarDto o = new OneThingCalendarDto();
-        o.setTheSingleMostImportantThing(new ItemDto(calendarDayRequest.getContent().getOneThingOfTheDay(), false));
-        o.setLecture(new ItemDto(calendarDayRequest.getContent().getSelfDevelopmentLecture(), false));
+        o.setTheSingleMostImportantThing(new ItemDto(calendarDayRequest.getContent().getTheSingleMostImportantThing(), false));
+        o.setLecture(new ItemDto(calendarDayRequest.getContent().getLecture(), false));
         o.setDailyEvaluation(new ItemDto(calendarDayRequest.getContent().getDailyEvaluation(), false));
         o.setWork(new ItemDto(calendarDayRequest.getContent().getWork(), false));
         o.setReading(new ItemDto(calendarDayRequest.getContent().getReading(), false));
