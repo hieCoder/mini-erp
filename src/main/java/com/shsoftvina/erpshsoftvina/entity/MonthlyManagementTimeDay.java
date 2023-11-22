@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.response.allowance;
+package com.shsoftvina.erpshsoftvina.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AllowanceResponse {
+public class MonthlyManagementTimeDay {
     private String id;
-    private String item;
-    private Integer itemValue;
+    private String code;
+    private String content;
+    private User user;
 }

@@ -385,7 +385,7 @@
                         <%--========================== Resume =================================--%>
                         <div class="tab-pane" id="resumeSession" role="tabpanel">
                             <div class="row">
-                                <h6 class="mb-3 fw-semibold text-uppercase">Files Uploaded</h6>
+                                <h6 class="mb-3 fw-semibold">Files Uploaded</h6>
                                 <c:forEach var="resume" items="${resumes}">
                                     <div class="col-xxl-4 col-lg-6 mt-2 delete-fileResume">
                                         <div class="border rounded border-dashed p-2">
@@ -475,7 +475,7 @@
                                             <thead class="table-light">
                                             <tr>
                                                 <th>Basic Salary</th>
-                                                <th width="200">Allowance</th>
+                                                <th width="150">Allowance</th>
                                                 <th>Insurance</th>
                                                 <th>File Contract</th>
                                                 <th>Action</th>
@@ -486,13 +486,23 @@
                                                 <tr>
                                                     <td>${contract.basicSalary}đ</td>
                                                     <td data-simplebar style="max-height: 200px; font-size: 14px">
-                                                        <c:forEach var="allowance" items="${contract.allowances}">
-                                                            <strong st>${allowance.item}</strong>: ${allowance.itemValue}
-                                                            <br>
+                                                        <c:forEach var="allowance"
+                                                                   items="${contract.allowanceInsurances}">
+                                                            <c:if test="${allowance.type.equals('ALLOWANCE')}">
+                                                                <strong st>${allowance.item}</strong>: ${allowance.itemValue}
+                                                                <br>
+                                                            </c:if>
                                                         </c:forEach>
                                                     </td>
-
-                                                    <td class="format-insurance">${contract.insurance}</td>
+                                                    <td class="format-insurance">
+                                                        <c:forEach var="insurance"
+                                                                   items="${contract.allowanceInsurances}">
+                                                            <c:if test="${insurance.type.equals('INSURANCE')}">
+                                                                <strong st>${insurance.item}</strong>: ${insurance.itemValue}
+                                                                <br>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </td>
                                                     <td>
                                                         <c:set var="contractPath" value="${contract.getFiles()}"/>
                                                         <c:set var="fileNameContract"
@@ -509,17 +519,17 @@
                                                             <div class="col-lg-12 text-center">
                                                                 <button value="${contract.id}"
                                                                         class="btn btn-success edit-contract-btn">
-                                                                    Edit
+                                                                    <i class="ri-edit-line fs-6"></i> Edit
                                                                 </button>
                                                                 <button value="${contract.id}"
                                                                         class="btn btn-danger del-contract-btn"
-                                                                >Remove
+                                                                ><i class="ri-delete-bin-line fs-6"></i> Delete
                                                                 </button>
                                                             </div>
                                                             <div class="col-lg-12 mt-2 text-center">
                                                                 <button value="${contract.id}"
                                                                         class="btn btn-warning w-lg history-contract-button"
-                                                                >History Update
+                                                                ><i class="ri-history-line fs-6"></i> History Edit
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -590,16 +600,16 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="telephone" class="form-label">Telephone:</label>
-                                            <input type="number" class="form-control" id="telephone"
-                                                   required max="2000000000" >
+                                            <input type="number" class="form-control allowance" id="telephone"
+                                                   required max="2000000000" data-name="Telephone">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="meal" class="form-label">Meal:</label>
-                                            <input type="number" class="form-control" id="meal"
-                                                   required max="2000000000">
+                                            <input type="number" class="form-control allowance" id="meal"
+                                                   required max="2000000000" data-name="Meal">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -608,16 +618,16 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="gasoline" class="form-label">Gasoline:</label>
-                                            <input type="number" class="form-control" id="gasoline"
-                                                   required max="2000000000">
+                                            <input type="number" class="form-control allowance" id="gasoline"
+                                                   required max="2000000000" data-name="Gasoline">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="uniform" class="form-label">Uniform:</label>
-                                            <input type="number" class="form-control" id="uniform"
-                                                   required max="2000000000">
+                                            <input type="number" class="form-control allowance" id="uniform"
+                                                   required max="2000000000" data-name="Uniform">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -626,23 +636,22 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="attendance" class="form-label">Attendance:</label>
-                                            <input type="number" class="form-control" id="attendance"
-                                                   required max="2000000000">
+                                            <input type="number" class="form-control allowance" id="attendance"
+                                                   required max="2000000000" data-name="Attendance">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="other" class="form-label">Other:</label>
-                                            <input type="number" class="form-control" id="other"
-                                                   required max="2000000000" >
+                                            <input type="number" class="form-control allowance" id="other"
+                                                   required max="2000000000" data-name="Other">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-2" id="additionalInputs">
-
-
+                                    <%--Add field Allowance--%>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
@@ -666,8 +675,10 @@
                                            value="HEALTH_INSURANCE">
                                     <label class="form-check-label" for="addHealthInsuranceCheckbox">Health
                                         insurance</label>
-                                    <input type="number" class="form-control d-none" id="addHealthInsuranceInput"
+                                    <input type="number" class="form-control d-none insurance"
+                                           id="addHealthInsuranceInput"
                                            placeholder="Enter Value Health Insurance" max="2000000000"
+                                           data-name="Health Insurance"
                                     >
                                 </div>
                                 <div class="form-check">
@@ -675,8 +686,10 @@
                                            value="SOCIAL_INSURANCE">
                                     <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
                                         insurance</label>
-                                    <input type="number" class="form-control d-none" id="addSocialInsuranceInput"
+                                    <input type="number" class="form-control d-none insurance"
+                                           id="addSocialInsuranceInput"
                                            placeholder="Enter Value Social Insurance" max="2000000000"
+                                           data-name="Social Insurance"
                                     >
                                 </div>
                             </div>
@@ -712,78 +725,78 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     ></button>
                 </div>
-                <form>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="editBasicSalary" class="form-label">Basic Salary:</label>
-                            <input type="number" class="form-control" id="editBasicSalary" name="basicSalary"
-                                   max="2000000000" required/>
-                        </div>
-                        <div class="mb-3">
-                            <label>Allowance:</label>
-                            <button type="button" class="btn btn-primary waves-effect waves-light"
-                                    id="edit-allowance-btn">Edit Allowance
-                            </button>
-                            <div class="p-3 mt-2 border bg-light" id="editAllowanceSession"
-                                 style="display: none; max-height: 255px" data-simplebar>
-                                <div id="exitElement">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editBasicSalary" class="form-label">Basic Salary:</label>
+                        <input type="number" class="form-control" id="editBasicSalary" name="basicSalary"
+                               max="2000000000" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label>Allowance:</label>
+                        <button type="button" class="btn btn-primary waves-effect waves-light"
+                                id="edit-allowanceInsurance-btn">Edit Allowance
+                        </button>
+                        <div class="p-3 mt-2 border bg-light" id="editAllowanceSession"
+                             style="display: none; max-height: 255px" data-simplebar>
+                            <div id="exitElement">
 
-                                </div>
-                                <div class="row mt-2" id="editionalInputs">
+                            </div>
+                            <div class="row mt-2" id="editionalInputs">
 
 
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <button type="button" id="editAllowanceButton"
-                                                    class="btn btn-success waves-effect waves-light"
-                                                    onclick="editInput()">
-                                                <i class="ri-add-line align-bottom me-1"></i> Allowance
-                                            </button>
-                                        </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" id="editAllowanceButton"
+                                                class="btn btn-success waves-effect waves-light"
+                                                onclick="editInput()">
+                                            <i class="ri-add-line align-bottom me-1"></i> Allowance
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Insurance Type</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="HEALTH_INSURANCE"
-                                       id="editHealthInsuranceCheckbox"
-                                >
-                                <label class="form-check-label" for="editHealthInsuranceCheckbox">Health
-                                    insurance</label>
-                                <input type="number" class="form-control d-none" id="editHealthInsuranceInput"
-                                       placeholder="Enter Value Health Insurance" max="2000000000">
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="SOCIAL_INSURANCE"
-                                       id="editSocialInsuranceCheckbox"
-                                >
-                                <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
-                                    insurance</label>
-                                <input type="number" class="form-control d-none" id="editSocialInsuranceInput"
-                                       placeholder="Enter Value Social Insurance" max="2000000000">
-                            </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Insurance Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Health Insurance"
+                                   id="editHealthInsuranceCheckbox"
+                            >
+                            <label class="form-check-label" for="editHealthInsuranceCheckbox">Health
+                                insurance</label>
+                            <input type="number" class="form-control d-none insurance" id="editHealthInsuranceInput"
+                                   placeholder="Enter Value Health Insurance" max="2000000000"
+                                   data-name="Health Insurance">
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Social Insurance"
+                                   id="editSocialInsuranceCheckbox"
+                            >
+                            <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
+                                insurance</label>
+                            <input type="number" class="form-control d-none insurance" id="editSocialInsuranceInput"
+                                   placeholder="Enter Value Social Insurance" max="2000000000"
+                                   data-name="Social Insurance">
+                        </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="editContract">Contract</label>
-                            <input type="file" class="form-control mt-2" id="editContract" name="contract">
-                            <small class="text-muted ml-2">Choose Contract File</small>
-                        </div>
+                    <div class="mb-3">
+                        <label for="editContract">Contract</label>
+                        <input type="file" class="form-control mt-2" id="editContract" name="file">
+                        <small class="text-muted ml-2">Choose Contract File</small>
                     </div>
-                    <div class="modal-footer">
-                        <div class="hstack gap-2 justify-content-end">
-                            <button type="submit" class="btn btn-success" id="edit-confirm-btn"
-                                    onclick="addLoadingSuccess(this)">
-                                Confirm
-                            </button>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="submit" class="btn btn-success" id="edit-confirm-btn"
+                                onclick="addLoadingSuccess(this)">
+                            Confirm
+                        </button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -1392,32 +1405,22 @@
         });
     });
 
-    // Format Allowance
+    // Format allowanceInsurances
     document.addEventListener("DOMContentLoaded", function () {
-        var tdElements = document.getElementsByClassName('format-allowance');
+        var tdElements = document.getElementsByClassName('format-allowanceInsurance');
         for (var i = 0; i < tdElements.length; i++) {
             var tdElement = tdElements[i];
             var jsonText = tdElement.textContent;
 
-            tdElement.innerHTML = allowanceFormat(jsonText);
+            tdElement.innerHTML = allowanceInsurancesFormat(jsonText);
         }
-    });
-
-    // Format Insurance
-    document.addEventListener("DOMContentLoaded", function () {
-        $('.format-insurance').each(function () {
-            var insuranceData = $(this).text();
-            var formattedInsurance = insuranceFormat(insuranceData);
-
-            $(this).html(formattedInsurance);
-        });
     });
 
     // Handle when user click button "+ Allowance"
     let addedInputCount = 0;
     let editInputCount = 0;
 
-    // Add input allowance
+    // Add input allowanceInsurance
     function addInput() {
         if (addedInputCount < 4) {
             const additionalInputs = document.getElementById("additionalInputs");
@@ -1518,33 +1521,13 @@
         if (editInputCount < 4) document.getElementById('editAllowanceButton').style.display = 'inline-block';
     }
 
-    // Function Format Allowance
-    function allowanceFormat(data) {
+    // Function Format allowanceInsurances
+    function allowanceInsurancesFormat(data) {
         var keyValueString = '';
         data.forEach(function (e) {
             keyValueString += '<strong>' + e.item + '</strong>' + ' : ' + e.itemValue + 'đ' + '<br><br>';
         });
         return keyValueString.slice(0, -2);
-    }
-
-    // Function Format Insurance
-    function insuranceFormat(data) {
-        var jsonArray = JSON.parse(data);
-        var resultArray = [];
-        var keyValueString = '';
-
-        jsonArray.forEach(item => {
-            const key = item.code;
-            const value = item.money;
-            resultArray.push({key, value});
-        });
-
-        for (var i = 0; i < resultArray.length; i++) {
-            if (resultArray[i].value != null && resultArray[i].value !== "") {
-                keyValueString += '<strong>' + resultArray[i].key + '</strong>' + ' : ' + resultArray[i].value + 'đ' + '<br><br>';
-            }
-        }
-        return keyValueString;
     }
 
     // Click checkbox ADD Insurance Type
@@ -1613,54 +1596,46 @@
         errorSelector: '.form-message',
         rules: [],
         onSubmit: function (formData) {
-            disableBtn();
-
-            var telPhone = document.getElementById('telephone').value;
-            var meal = document.getElementById('meal').value;
-            var gasoline = document.getElementById('gasoline').value;
-            var uniform = document.getElementById('uniform').value;
-            var attendance = document.getElementById('attendance').value;
-            var other = document.getElementById('other').value;
-            var titles = document.querySelectorAll('.title');
-            var values = document.querySelectorAll('.value');
-            var formDataObject = {
-                "Telephone": telPhone,
-                "Meal": meal,
-                "Gasoline": gasoline,
-                "Uniform": uniform,
-                "Attendance": attendance,
-                "Other": other
-            };
-
-            if (titles.length === values.length && titles.length > 0 && values.length > 0) {
-                for (var i = 0; i < titles.length; i++) {
-                    formDataObject[titles[i].value] = values[i].value;
-                }
-            }
-
-            var codeInsurance = document.getElementById('addHealthInsuranceCheckbox').value;
-            var moneyInsurance = document.getElementById('addHealthInsuranceInput').value;
-            var codeSocialInsurance = document.getElementById('addSocialInsuranceCheckbox').value;
-            var moneySocialInsurance = document.getElementById('addSocialInsuranceInput').value;
-            var strings = [codeInsurance, moneyInsurance, codeSocialInsurance, moneySocialInsurance];
-
-            var objects = [];
-            for (var i = 0; i < strings.length; i += 2) {
-                if (i + 1 < strings.length) {
-                    var obj = {code: strings[i], money: strings[i + 1]};
-                    objects.push(obj);
-                }
-            }
-
-            var insurance = JSON.stringify(objects);
-
-            formData.append('insurance', insurance);
-            formData.append('userId', '${user.id}');
-            formData.set('allowance', JSON.stringify(formDataObject));
-
             var addContractBtn = document.getElementById('add-btn');
             addContractBtn.disabled = true;
             addLoadingSuccess(addContractBtn);
+            disableBtn();
+
+            var allowances = document.querySelectorAll('.allowance');
+            var titles = document.querySelectorAll('.title');
+            var values = document.querySelectorAll('.value');
+            var insurances = document.querySelectorAll('.insurance');
+            var arrayObject = [];
+
+            allowances.forEach(function (e) {
+                var allowance = {};
+                allowance['item'] = e.getAttribute('data-name');
+                allowance['itemValue'] = e.value;
+                allowance['type'] = 'ALLOWANCE';
+                arrayObject.push(allowance);
+            })
+
+            if (titles.length === values.length && titles.length > 0 && values.length > 0) {
+                for (var i = 0; i < titles.length; i++) {
+                    var allowance = {};
+                    allowance['item'] = titles[i].value;
+                    allowance['itemValue'] = values[i].value;
+                    allowance['type'] = 'ALLOWANCE';
+                    arrayObject.push(allowance);
+                }
+            }
+            insurances.forEach(function (e) {
+                if (e.value.trim() !== "") {
+                    var insurance = {};
+                    insurance['item'] = e.getAttribute('data-name');
+                    insurance['itemValue'] = e.value;
+                    insurance['type'] = 'INSURANCE';
+                    arrayObject.push(insurance);
+                }
+            })
+
+            formData.append('userId', '${user.id}');
+            formData.set('allowanceInsurances', JSON.stringify(arrayObject));
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
                 formData.append('parentId', rs.id);
                 callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
@@ -1674,7 +1649,7 @@
     // Handle when user click 'Edit Contract' button
     document.addEventListener("DOMContentLoaded", function () {
         // Hand button Edit Allowance
-        document.getElementById('edit-allowance-btn').addEventListener('click', function () {
+        document.getElementById('edit-allowanceInsurance-btn').addEventListener('click', function () {
             var elementAllowance = document.getElementById('editAllowanceSession');
             if (elementAllowance.style.display == 'none') elementAllowance.style.display = 'block';
             else elementAllowance.style.display = 'none';
@@ -1729,68 +1704,72 @@
                 callAjaxByJsonWithData('/api/v1/contracts/' + editContractId, 'GET', null, function (rs) {
                     document.getElementById("editBasicSalary").value = rs.basicSalary;
 
-                    var allowances = rs.allowances
+                    var allowanceInsurances = rs.allowanceInsurances
                     var divRow;
                     var count = 0;
                     var exitElement = document.getElementById('exitElement');
 
                     if (exitElement.querySelectorAll('.row').length > 0) $('#exitElement').empty();
 
-                    for (var allowanceItem of allowances) {
-                        var key = allowanceItem.item;
-                        var value = allowanceItem.itemValue;
+                    for (var allowanceInsurance of allowanceInsurances) {
+                        if (allowanceInsurance.type == 'ALLOWANCE') {
+                            var key = allowanceInsurance.item;
+                            var value = allowanceInsurance.itemValue;
 
-                        if (count % 2 === 0) {
-                            divRow = document.createElement("div");
-                            divRow.className = "row";
+                            if (count % 2 === 0) {
+                                divRow = document.createElement("div");
+                                divRow.className = "row";
+                            }
+
+                            var divCol = document.createElement("div");
+                            divCol.className = "col";
+
+                            var formGroupLabel = document.createElement("div");
+                            formGroupLabel.className = "form-group";
+
+                            var label = document.createElement("label");
+                            label.setAttribute("for", "edit" + key);
+                            label.classList.add("form-label", "mt-2", "title");
+                            label.textContent = key;
+
+                            var input = document.createElement("input");
+                            input.setAttribute("type", "text");
+                            input.classList.add("form-control", "value");
+                            input.id = "edit" + key;
+                            input.value = value;
+                            input.setAttribute("max", "2000000000");
+                            input.required = true;
+
+                            var small = document.createElement("small");
+                            small.className = "form-message";
+
+                            small.appendChild(document.createTextNode(""));
+                            formGroupLabel.appendChild(label);
+                            formGroupLabel.appendChild(input);
+                            formGroupLabel.appendChild(small);
+                            divCol.appendChild(formGroupLabel);
+                            divRow.appendChild(divCol);
+
+                            if (count % 2 === 1 || count === allowanceInsurances.length - 1) {
+                                document.getElementById("exitElement").appendChild(divRow);
+                            }
+                            count++;
                         }
-
-                        var divCol = document.createElement("div");
-                        divCol.className = "col";
-
-                        var formGroupLabel = document.createElement("div");
-                        formGroupLabel.className = "form-group";
-
-                        var label = document.createElement("label");
-                        label.setAttribute("for", "edit" + key);
-                        label.classList.add("form-label", "mt-2", "title");
-                        label.textContent = key;
-
-                        var input = document.createElement("input");
-                        input.setAttribute("type", "text");
-                        input.classList.add("form-control", "value");
-                        input.id = "edit" + key;
-                        input.value = value;
-                        input.setAttribute("max", "2000000000");
-                        input.required = true;
-
-                        var small = document.createElement("small");
-                        small.className = "form-message";
-
-                        small.appendChild(document.createTextNode(""));
-                        formGroupLabel.appendChild(label);
-                        formGroupLabel.appendChild(input);
-                        formGroupLabel.appendChild(small);
-                        divCol.appendChild(formGroupLabel);
-                        divRow.appendChild(divCol);
-
-                        if (count % 2 === 1 || count === allowances.length - 1) {
-                            document.getElementById("exitElement").appendChild(divRow);
-                        }
-                        count++;
                     }
 
-                    var insurance = JSON.parse(rs.insurance);
                     var editHealth = document.getElementById('editHealthInsuranceInput');
                     var editSocial = document.getElementById('editSocialInsuranceInput');
                     var editHealthCheckBox = document.getElementById('editHealthInsuranceCheckbox');
                     var editSocialCheckBox = document.getElementById('editSocialInsuranceCheckbox');
 
-                    for (var i = 0; i < insurance.length; i++) {
-                        if (insurance[i].code === editHealthCheckBox.value) {
-                            editHealth.value = insurance[i].money
-                        } else if (insurance[i].code === editSocialCheckBox.value) {
-                            editSocial.value = insurance[i].money
+                    for (var allowanceInsurance of allowanceInsurances) {
+                        if (allowanceInsurance.item === editHealthCheckBox.value) {
+                            editHealth.value = allowanceInsurance.itemValue;
+                        } else if (allowanceInsurance.item === editSocialCheckBox.value) {
+                            editSocial.value = allowanceInsurance.itemValue;
+                        } else {
+                            editHealth.value = '';
+                            editSocial.value = '';
                         }
                     }
                 });
@@ -1847,16 +1826,24 @@
                             var values = formUpdateContract.querySelectorAll('.value');
                             var newTitles = formUpdateContract.querySelectorAll('.newTitle');
                             var newValues = formUpdateContract.querySelectorAll('.newValue');
-                            var formDataObject = {};
+                            var insurances = formUpdateContract.querySelectorAll('.insurance');
+                            var arrayObject = [];
 
-                            if (titles.length === values.length && titles.length > 0 && values.length > 0) {
-                                for (var i = 0; i < titles.length; i++) {
-                                    formDataObject[titles[i].textContent] = values[i].value;
-                                }
-                            }
+                            titles.forEach(function (e, index) {
+                                var allowance = {};
+                                allowance['item'] = e.textContent
+                                allowance['itemValue'] = values[index].value
+                                allowance['type'] = 'ALLOWANCE';
+                                arrayObject.push(allowance);
+                            })
+
                             if (newTitles.length === newValues.length && newTitles.length > 0 && newValues.length > 0) {
-                                for (var j = 0; j < newTitles.length; j++) {
-                                    formDataObject[newTitles[j].value] = newValues[j].value;
+                                for (var i = 0; i < newTitles.length; i++) {
+                                    var allowance = {};
+                                    allowance['item'] = newTitles[i].value;
+                                    allowance['itemValue'] = newValues[i].value;
+                                    allowance['type'] = 'ALLOWANCE';
+                                    arrayObject.push(allowance);
                                 }
                             }
 
@@ -1868,22 +1855,22 @@
                             if (!codeInsurance.checked) moneyInsurance.value = '';
                             if (!codeSocialInsurance.checked) moneySocialInsurance.value = '';
 
-                            var strings = [codeInsurance.value, moneyInsurance.value, codeSocialInsurance.value, moneySocialInsurance.value];
-
-                            var objects = [];
-                            for (var i = 0; i < strings.length; i += 2) {
-                                if (i + 1 < strings.length) {
-                                    var obj = {code: strings[i], money: strings[i + 1]};
-                                    objects.push(obj);
+                            insurances.forEach(function (e) {
+                                if (e.value.trim() !== '') {
+                                    var insurance = {};
+                                    insurance['item'] = e.getAttribute('data-name');
+                                    insurance['itemValue'] = e.value;
+                                    insurance['type'] = 'INSURANCE';
+                                    arrayObject.push(insurance);
                                 }
-                            }
+                            })
 
-                            formData.append('insurance', JSON.stringify(objects));
-                            formData.append('allowance', JSON.stringify(formDataObject));
+                            formData.set('allowanceInsurances', JSON.stringify(arrayObject));
                             formData.append('userId', '${user.id}');
                             formData.append('parentId', editContractId);
                             document.getElementById('edit-confirm-btn').disabled = true;
 
+                            // Create History Contract
                             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
 
                             }, 'formAddContract');
@@ -1891,6 +1878,7 @@
                             formData.delete('parentId');
                             formData.delete('userId');
                             formData.append('id', editContractId);
+                            // Call API UPDATE CONTRACT
                             callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                                 localStorage.setItem("result", "updateContractSuccess");
                                 location.reload();
@@ -1961,23 +1949,29 @@
                         columns: [
                             {data: 'basicSalary'},
                             {
-                                data: 'allowances',
+                                data: 'allowanceInsurances',
                                 render: function (data, type, row) {
-                                    return allowanceFormat(data);
+                                    var allowance = data.filter(function (item) {
+                                        return item.type === "ALLOWANCE";
+                                    });
+                                    return allowanceInsurancesFormat(allowance);
                                 }
                             },
                             {
-                                data: 'insurance',
+                                data: 'allowanceInsurances',
                                 render: function (data, type, row) {
-                                    return insuranceFormat(data);
+                                    var insurance = data.filter(function (i) {
+                                        return i.type === "INSURANCE";
+                                    });
+                                    return allowanceInsurancesFormat(insurance);
                                 }
                             },
                             {
                                 data: 'files',
                                 render: function (data, type, row) {
                                     if (data != null) {
-                                        var fileName = data.substring(data.lastIndexOf('/') + 1);
-                                        return '<a class="cut-file-name" href="' + data + '" data-toggle="tooltip" data-bs-placement="bottom" title="' + fileName + '">' + data + '</a>';
+                                        var fileName = data.substring(data.lastIndexOf('/') + 1).replace(/-\d+/, '');
+                                        return '<a class="cut-file-name" href="' + data + '" data-toggle="tooltip" data-bs-placement="bottom" title="' + fileName + '">' + fileName + '</a>';
                                     }
                                     return '';
                                 }

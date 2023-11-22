@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_DIR" value="/src/main/resources/logs"/>
+    <property name="LOG_DIR" value="/logs"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -49,6 +49,10 @@
     <logger name="com.shsoftvina.erpshsoftvina" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="file-debug" />
+    </logger>
+
+    <logger name="org.springframework.core" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="com.shsoftvina.erpshsoftvina" level="info" additivity="false">

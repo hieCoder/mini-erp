@@ -7,7 +7,6 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
 import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
-import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import com.shsoftvina.erpshsoftvina.utils.StringUtils;
@@ -29,7 +28,7 @@ public class ContractConverter {
     private UserMapper userMapper;
 
     @Autowired
-    private AllowanceConverter allowanceConverter;
+    private AllowanceInsuranceConverter allowanceInsuranceConverter;
 
     public Contract toEntity(CreateContractRequest createContractRequest, String contractFileName){
         String parentContractId = createContractRequest.getParentId();
@@ -42,7 +41,6 @@ public class ContractConverter {
                 .files(contractFileName)
                 .createdDate(new Date())
                 .user(userMapper.findById(createContractRequest.getUserId()))
-                .insurance(createContractRequest.getInsurance())
                 .parentContract(contract)
                 .status(StatusContractEnum.ACTIVE).build();
     }
@@ -54,10 +52,9 @@ public class ContractConverter {
         return ContractResponse.builder()
                 .id(contract.getId())
                 .basicSalary(contract.getBasicSalary())
-                .insurance((contract.getInsurance()))
                 .files(FileUtils.getPathUpload(Contract.class, contract.getFiles()))
                 .createdDate(DateUtils.formatDateTime(contract.getCreatedDate()))
-                .allowances(allowanceConverter.toListAllowanceResponse(contract.getAllowances()))
+                .allowanceInsurances(allowanceInsuranceConverter.toListAllowanceResponse(contract.getAllowanceInsurances()))
                 .build();
     }
 
@@ -71,7 +68,6 @@ public class ContractConverter {
                 .id(updateContractRequest.getId())
                 .basicSalary(updateContractRequest.getBasicSalary())
                 .files(contractFileName)
-                .insurance(updateContractRequest.getInsurance())
                 .build();
     }
 }

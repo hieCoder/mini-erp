@@ -4,11 +4,9 @@ package com.shsoftvina.erpshsoftvina.utils;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -16,11 +14,6 @@ import java.util.regex.Pattern;
 
 
 public class DateUtils {
-    public static Date getDefaultStartDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        return calendar.getTime();
-    }
 
     public static String formatDateTime(Date date) {
         if(date != null){
@@ -33,6 +26,18 @@ public class DateUtils {
     public static Date parseDateTime(String date) {
         if(date != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            try {
+                return sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static Date parseDate(String date) {
+        if(date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 return sdf.parse(date);
             } catch (ParseException e) {
@@ -83,29 +88,17 @@ public class DateUtils {
     }
 
     public static String formatLocalDateTime(LocalDateTime time) {
-
-        // Define a DateTimeFormatter for the desired format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-        // Format the LocalDateTime to a string
         return time.format(formatter);
     }
 
     public static String formatDate(LocalDateTime time) {
-
-        // Define a DateTimeFormatter for the desired format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // Format the LocalDateTime to a string
         return time.format(formatter);
     }
 
     public static String formatYearMonth(LocalDateTime time) {
-
-        // Define a DateTimeFormatter for the desired format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-
-        // Format the LocalDateTime to a string
         return time.format(formatter);
     }
 

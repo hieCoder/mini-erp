@@ -8,6 +8,11 @@ public class JsonUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static <T> T jsonToObject(String json, Class<T> valueType) {
+
+        if(StringUtils.isBlank(json)){
+            return null;
+        }
+
         try {
             return objectMapper.readValue(json, valueType);
         } catch (Exception e) {

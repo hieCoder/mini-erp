@@ -39,27 +39,27 @@ public class ManagementTimeDayController {
         return view;
     }
 
-    @GetMapping("/{userId}/day")
+    @GetMapping("/weekly-detail/{userId}")
     public ModelAndView getDetailDay(
-            @PathVariable("userId") String userId,
-            @RequestParam(name = "id", required = false, defaultValue = "") String id,
-            @RequestParam(name = "day", required = false, defaultValue = "") String day
+            @PathVariable String userId,
+            @RequestParam(name = "currentDay", required = false, defaultValue = "") String currentDay
     ) {
         applicationUtils.checkUserAllow(userId);
         ModelAndView mav = new ModelAndView();
-            DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
-            if(dayResponse!=null){
-                mav.addObject("dayResponse", dayResponse);
-            } else{
-                if(!DateUtils.isValidDate(day)){
-                    mav.setViewName("redirect:/management-time/"+ userId);
-                    return mav;
-                }
-                mav.addObject("day", day);
-            }
-            mav.setViewName("management-time/day/detail");
-            mav.addObject("userId",userId);
-            return mav;
+//        DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
+//        if (dayResponse != null) {
+//            mav.addObject("dayResponse", dayResponse);
+//        } else {
+//            if (!DateUtils.isValidDate(day)) {
+//                mav.setViewName("redirect:/management-time/" + userId);
+//                return mav;
+//            }
+//            mav.addObject("day", day);
+//        }
+        mav.addObject("weekly",managementTimeDayService.showListDayOfWeek(userId, currentDay));
+        mav.setViewName("management-time/day/week-detail");
+        mav.addObject("userId", userId);
+        return mav;
     }
 
     @GetMapping("/{userId}")
@@ -67,7 +67,7 @@ public class ManagementTimeDayController {
         applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
-        modelAndView.addObject("user",user);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 }

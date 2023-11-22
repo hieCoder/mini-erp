@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,8 +27,11 @@ public class FileUtils {
     private static String uploadDirectory;
 
     @Value("${file.uploadDir}")
-    public void setUploadDirectory(String uploadDirectory) {
-        FileUtils.uploadDirectory = uploadDirectory;
+    private String uploadDirValue;
+
+    @PostConstruct
+    private void init() {
+        uploadDirectory = uploadDirValue;
     }
 
     private static String getFileExtension(String filename) {
@@ -177,24 +181,23 @@ public class FileUtils {
             else if (c == Book.class) {
                 return BookConstant.PATH_FILE + fileName;
             }
+            else if(c == CommentTask.class){
+                return CommentTaskConstant.PATH_FILE + fileName;
+            }
         }
         return null;
     }
 
     public static String[] getPathUploadList(Class<?> c, String fileNames) {
-        if(fileNames != null && !fileNames.isEmpty()){
+        if (fileNames != null && !fileNames.isEmpty()) {
             String[] rs = fileNames.split(",");
-            return Stream.of(rs).map(fileName -> {
-                if (c == User.class) {
-                    return UserConstant.PATH_FILE + fileName;
-                }
-                else if (c == Accounting.class) {
-                    return AccountingConstant.PATH_FILE + fileName;
-                }
-                else if (c == Notification.class) {
-                    return NotificationConstant.PATH_FILE + fileName;
-                } else return null;
-            }).toArray(String[]::new);
+            String[] paths = new String[rs.length];
+
+            for (int i = 0; i < rs.length; i++) {
+                paths[i] = getPathUpload(c, rs[i].trim());
+            }
+
+            return paths;
         }
         return null;
     }

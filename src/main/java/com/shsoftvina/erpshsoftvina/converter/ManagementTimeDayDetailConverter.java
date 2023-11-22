@@ -29,25 +29,26 @@ public class ManagementTimeDayDetailConverter {
 
     public ManagementTimeDayDetail toEntity(DayDetailCreateRequest dayDetailCreateRequest) {
 
-        String sixToTwelvePM = null;
-        String twelveToSixPM = null;
-        String sixToTwelveAM = null;
-
-        if (dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_PM.toString())) {
-            sixToTwelvePM = String.join(",", dayDetailCreateRequest.getData());
-        } else if(dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.TWELVE_TO_SIX_PM.toString())){
-            twelveToSixPM = String.join(",", dayDetailCreateRequest.getData());
-        } else if(dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_AM.toString())){
-            sixToTwelveAM = String.join(",", dayDetailCreateRequest.getData());
-        }
-
-        return ManagementTimeDayDetail.builder()
-                .id(ApplicationUtils.generateId())
-                .managementTimeDay(managementTimeDayMapper.findById(dayDetailCreateRequest.getDayId()))
-                .sixToTwelvePM(sixToTwelvePM)
-                .twelveToSixPM(twelveToSixPM)
-                .sixToTwelveAM(sixToTwelveAM)
-                .build();
+//        String sixToTwelvePM = null;
+//        String twelveToSixPM = null;
+//        String sixToTwelveAM = null;
+//
+//        if (dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_PM.toString())) {
+//            sixToTwelvePM = String.join(",", dayDetailCreateRequest.getData());
+//        } else if(dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.TWELVE_TO_SIX_PM.toString())){
+//            twelveToSixPM = String.join(",", dayDetailCreateRequest.getData());
+//        } else if(dayDetailCreateRequest.getCode().equals(DayDetailCodeEnum.SIX_TO_TWELVE_AM.toString())){
+//            sixToTwelveAM = String.join(",", dayDetailCreateRequest.getData());
+//        }
+//
+//        return ManagementTimeDayDetail.builder()
+//                .id(ApplicationUtils.generateId())
+//                .managementTimeDay(managementTimeDayMapper.findById(dayDetailCreateRequest.getDayId()))
+//                .sixToTwelvePM(sixToTwelvePM)
+//                .twelveToSixPM(twelveToSixPM)
+//                .sixToTwelveAM(sixToTwelveAM)
+//                .build();
+        return null;
     }
 
     public ManagementTimeDayDetail toUpdateEntity(DayDetailUpdateRequest dayDetailUpdateRequest) {
