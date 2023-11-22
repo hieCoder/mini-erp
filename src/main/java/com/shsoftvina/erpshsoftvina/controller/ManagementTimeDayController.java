@@ -39,11 +39,10 @@ public class ManagementTimeDayController {
         return view;
     }
 
-    @GetMapping("/{userId}/day")
+    @GetMapping("/weekly-detail/{userId}")
     public ModelAndView getDetailDay(
-            @PathVariable("userId") String userId,
-            @RequestParam(name = "id", required = false, defaultValue = "") String id,
-            @RequestParam(name = "day", required = false, defaultValue = "") String day
+            @PathVariable String userId,
+            @RequestParam(name = "currentDay", required = false, defaultValue = "") String currentDay
     ) {
         applicationUtils.checkUserAllow(userId);
         ModelAndView mav = new ModelAndView();
@@ -57,6 +56,7 @@ public class ManagementTimeDayController {
 //            }
 //            mav.addObject("day", day);
 //        }
+        mav.addObject("weekly",managementTimeDayService.showListDayOfWeek(userId, currentDay));
         mav.setViewName("management-time/day/week-detail");
         mav.addObject("userId", userId);
         return mav;

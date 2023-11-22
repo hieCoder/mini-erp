@@ -253,61 +253,61 @@
         })
     }
 
-    $(document).on("click", ".saveWeeklyToDo", function () {
-        let target = $(this)
-        target.addClass("d-none")
-        target.before(BtnPrimaryLoad)
-        let id = $("#weeklyToDo").attr("data-id")
-        let content = ""
-        let arrContent = []
-        $("#weeklyToDo .contentData").each(function (index) {
-            content += $(this).val();
-            arrContent.push($(this).val())
-            if (index < $("#weeklyToDo .contentData").length - 1) {
-                content += ",";
-            }
-        })
-        let data = {
-            id: id,
-            content: content,
-        }
-        callAjaxByJsonWithData('/api/v1/weekly-management-time-day', 'PUT', data, function (rs) {
-            if (rs === 1) {
-                let selector = '.showWeeklyUpdate[data-id="' + id + '"]'
-                let button = $(selector)
-                let indexMain = parseInt(button.parent().parent().index()) / 6
-                arrContent.forEach((item, index) => {
-                    let selector = 'tr.' + dayCodeTrTag[index]
-                    $(selector).eq(indexMain).children().last().text(item)
-                })
-                $("#weeklyToDo").modal("hide")
-                rsSuccess("Save")
-            } else {
-                rsUnSuccess()
-            }
-            BtnLoadRemove()
-            target.removeClass("d-none")
-        })
-    })
+    // $(document).on("click", ".saveWeeklyToDo", function () {
+    //     let target = $(this)
+    //     target.addClass("d-none")
+    //     target.before(BtnPrimaryLoad)
+    //     let id = $("#weeklyToDo").attr("data-id")
+    //     let content = ""
+    //     let arrContent = []
+    //     $("#weeklyToDo .contentData").each(function (index) {
+    //         content += $(this).val();
+    //         arrContent.push($(this).val())
+    //         if (index < $("#weeklyToDo .contentData").length - 1) {
+    //             content += ",";
+    //         }
+    //     })
+    //     let data = {
+    //         id: id,
+    //         content: content,
+    //     }
+    //     callAjaxByJsonWithData('/api/v1/weekly-management-time-day', 'PUT', data, function (rs) {
+    //         if (rs === 1) {
+    //             let selector = '.showWeeklyUpdate[data-id="' + id + '"]'
+    //             let button = $(selector)
+    //             let indexMain = parseInt(button.parent().parent().index()) / 6
+    //             arrContent.forEach((item, index) => {
+    //                 let selector = 'tr.' + dayCodeTrTag[index]
+    //                 $(selector).eq(indexMain).children().last().text(item)
+    //             })
+    //             $("#weeklyToDo").modal("hide")
+    //             rsSuccess("Save")
+    //         } else {
+    //             rsUnSuccess()
+    //         }
+    //         BtnLoadRemove()
+    //         target.removeClass("d-none")
+    //     })
+    // })
 
-    $(document).on("click", "button.showWeeklyUpdate", function () {
-        let target = $(this)
-        target.addClass("d-none")
-        target.before(BtnPrimaryLoad)
-        let id = target.attr("data-id")
-        let modal = $("#weeklyToDo")
-        modal.attr("data-id", id)
-        callAjaxByJsonWithData('/api/v1/weekly-management-time-day/' + id, 'GET', null, function (rs) {
-            if (rs.weeklyContents != null) {
-                $("#weeklyToDo div.content > input").each(function (index) {
-                    $(this).val(rs.weeklyContents[index])
-                })
-            }
-            target.removeClass("d-none")
-            BtnLoadRemove()
-            modal.modal("show")
-        })
-    })
+    // $(document).on("click", "button.showWeeklyUpdate", function () {
+    //     let target = $(this)
+    //     target.addClass("d-none")
+    //     target.before(BtnPrimaryLoad)
+    //     let id = target.attr("data-id")
+    //     let modal = $("#weeklyToDo")
+    //     modal.attr("data-id", id)
+    //     callAjaxByJsonWithData('/api/v1/weekly-management-time-day/' + id, 'GET', null, function (rs) {
+    //         if (rs.weeklyContents != null) {
+    //             $("#weeklyToDo div.content > input").each(function (index) {
+    //                 $(this).val(rs.weeklyContents[index])
+    //             })
+    //         }
+    //         target.removeClass("d-none")
+    //         BtnLoadRemove()
+    //         modal.modal("show")
+    //     })
+    // })
 
     function getWeeksInMonth(year, month) {
         const firstDayOfMonth = new Date(year, month, 1);
@@ -407,44 +407,44 @@
                                     <%--    }--%>
                                     <%--} else --%>
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
-                                        let found = false;
-                                        if (responseData != null && responseData.length > 0) {
-                                            responseData.forEach((e) => {
-                                                e.listDayOfWeek.forEach((week) => {
-                                                    const dateInResponse = new Date(week.day);
-                                                    if (
-                                                        currentDate.getFullYear() === dateInResponse.getFullYear() &&
-                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                        dayNumber === dateInResponse.getDate()
-                                                    ) {
-                                                        const link = document.createElement('a');
-                                                        link.classList.add("p-2");
-                                                        link.classList.add("fs-6");
-                                                        link.textContent = dayNumber;
-                                                        link.href = "${user.id}" + '/day/?id=' + week.id;
-                                                        if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
-                                                            link.classList.add("badge", "badge-soft-danger", "rounded-pill");
-                                                        }
-                                                        cell.appendChild(link);
-                                                        found = true;
-                                                    }
-                                                })
-                                            });
-                                        }
+                                        <%--let found = false;--%>
+                                        <%--if (responseData != null && responseData.length > 0) {--%>
+                                        <%--    responseData.forEach((e) => {--%>
+                                        <%--        e.listDayOfWeek.forEach((week) => {--%>
+                                        <%--            const dateInResponse = new Date(week.day);--%>
+                                        <%--            if (--%>
+                                        <%--                currentDate.getFullYear() === dateInResponse.getFullYear() &&--%>
+                                        <%--                currentDate.getMonth() === dateInResponse.getMonth() &&--%>
+                                        <%--                dayNumber === dateInResponse.getDate()--%>
+                                        <%--            ) {--%>
+                                        <%--                const link = document.createElement('a');--%>
+                                        <%--                link.classList.add("p-2");--%>
+                                        <%--                link.classList.add("fs-6");--%>
+                                        <%--                link.textContent = dayNumber;--%>
+                                        <%--                link.href = "${user.id}" + '/day/?id=' + week.id;--%>
+                                        <%--                if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {--%>
+                                        <%--                    link.classList.add("badge", "badge-soft-danger", "rounded-pill");--%>
+                                        <%--                }--%>
+                                        <%--                cell.appendChild(link);--%>
+                                        <%--                found = true;--%>
+                                        <%--            }--%>
+                                        <%--        })--%>
+                                        <%--    });--%>
+                                        <%--}--%>
 
-                                        if (!found) {
-                                            const link = document.createElement('a');
-                                            link.textContent = dayNumber;
-                                            link.classList.add("p-2");
-                                            link.classList.add("fs-6");
-                                            if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
-                                                link.classList.add("badge", "badge-soft-danger", "rounded-pill");
-                                            }
-                                            const year = currentDate.getFullYear();
-                                            const currentMonth = currentDate.getMonth() + 1;
-                                            link.href = "${user.id}" + "/day/?day=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
-                                            cell.appendChild(link);
+                                        // if (!found) {
+                                        const link = document.createElement('a');
+                                        link.textContent = dayNumber;
+                                        link.classList.add("p-2");
+                                        link.classList.add("fs-6");
+                                        if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
+                                            link.classList.add("badge", "badge-soft-danger", "rounded-pill");
                                         }
+                                        const year = currentDate.getFullYear();
+                                        const currentMonth = currentDate.getMonth() + 1;
+                                        link.href = "${user.id}" + "/day/?day=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
+                                        cell.appendChild(link);
+                                        // }
                                     }
                                     cell.classList.add("fw-bold")
                                     cell.classList.add("fst-italic")
@@ -622,16 +622,6 @@
         }
         const lastDay = lastDayOfPreviousMonth.getDate();
         return new Date(year, month - 1, lastDay - lastDayOfPreviousMonth.getDay());
-    }
-
-    function getFirstAndLastDateOfMonth(year, month) {
-        const firstDay = new Date(year, month, 1);
-
-        const lastDay = new Date(year, month + 1, 0);
-        return {
-            firstDay,
-            lastDay
-        };
     }
 
     function formatDate(date) {

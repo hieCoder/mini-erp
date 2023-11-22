@@ -489,10 +489,6 @@
 
 </style>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        $(".containerLoading").addClass("d-none")
-        $(".calendar-container").removeClass("d-none")
-    })
     const M_SIX_TO_TWELVE_PM = 'SIX_TO_TWELVE_PM';
     const M_TWELVE_TO_SIX_PM = 'TWELVE_TO_SIX_PM';
     const M_SIX_TO_TWELVE_AM = 'SIX_TO_TWELVE_AM';
@@ -536,6 +532,14 @@
         }
         return array[name]
     }
+    let getCodeTime = (code) => {
+        let arr = {
+            sixToTwelvePm: M_SIX_TO_TWELVE_PM,
+            twelveToSixPm: M_TWELVE_TO_SIX_PM,
+            sixToTwelveAm: M_SIX_TO_TWELVE_AM,
+        }
+        return arr[code]
+    }
     let interval = (name) => {
         let intervalResult = []
         if (name == "sixToTwelvePm") {
@@ -565,14 +569,14 @@
         }
         return intervalResult
     }
-    let getCodeTime = (code) => {
-        let arr = {
-            sixToTwelvePm: M_SIX_TO_TWELVE_PM,
-            twelveToSixPm: M_TWELVE_TO_SIX_PM,
-            sixToTwelveAm: M_SIX_TO_TWELVE_AM,
-        }
-        return arr[code]
-    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        $(".containerLoading").addClass("d-none")
+        $(".calendar-container").removeClass("d-none")
+
+    })
+
     $("#showDetailSubmit").click(function () {
         let target = $(this)
         target.addClass("d-none")
@@ -806,7 +810,6 @@
         let startScrollLeft;
 
         $(".table-container").mousedown(function(e) {
-            // Kiểm tra xem nút chuột có phải là nút trái không
             if (e.button === 0) {
                 isMouseDown = true;
                 startX = e.pageX - $(".table-container").offset().left;
@@ -819,7 +822,6 @@
         });
 
         $(".table-container").on('mousemove', function(e) {
-            // Kiểm tra xem nút chuột có đang được giữ không
             if (isMouseDown) {
                 const mouseX = e.pageX - $(".table-container").offset().left;
                 const scrollX = startScrollLeft + (startX - mouseX);
@@ -831,23 +833,17 @@
 
     $(document).ready(function() {
         $(".table-container").on('wheel', function(e) {
-            // Điều chỉnh giá trị này để thay đổi tốc độ cuộn
             const scrollSpeed = 50;
 
-            // Lấy giá trị cuộn ngang hiện tại
             let currentScrollLeft = $(this).scrollLeft();
 
-            // Tính toán hướng cuộn dựa trên sự kiện chuột
             let delta = e.originalEvent.deltaY || e.originalEvent.wheelDelta;
             let direction = delta > 0 ? 1 : -1;
 
-            // Cập nhật giá trị cuộn ngang
             currentScrollLeft += direction * scrollSpeed;
 
-            // Áp dụng giá trị cuộn ngang mới
             $(this).scrollLeft(currentScrollLeft);
 
-            // Ngăn chặn sự kiện mặc định của trình duyệt (cuộn trang web)
             e.preventDefault();
         });
     });
