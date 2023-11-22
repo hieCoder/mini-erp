@@ -15,7 +15,6 @@
     <include file="db/changelog/weekly-report-changelog-create.xml" />
     <include file="db/changelog/setting-changelog-create.xml" />
     <include file="db/changelog/management-time-day-changelog-create.xml" />
-    <include file="db/changelog/management-time-day-detail-changelog-create.xml" />
     <include file="db/changelog/book-changelog-create.xml" />
     <include file="db/changelog/feeling-of-book-changelog-create.xml" />
     <include file="db/changelog/weekly-management-time-day-changelog-create.xml" />

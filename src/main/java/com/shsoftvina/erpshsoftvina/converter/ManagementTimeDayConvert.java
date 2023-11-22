@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
@@ -10,10 +8,6 @@ import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -28,7 +22,6 @@ import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -75,8 +68,9 @@ public class ManagementTimeDayConvert {
         DataOfDayDto data = new DataOfDayDto();
         data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), OneThingCalendarDto.class));
         data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));
-        data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), List.class));
+        data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), String[].class));
         data.setAffirmation(day.getAffirmation());
+        data.setToDoDetail(JsonUtils.jsonToObject(day.getToDoDetail(), String[].class));
 
         return DayResponse.builder()
                 .id(day.getId())

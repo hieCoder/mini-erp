@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.MonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
@@ -7,15 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CalendarUpdateRequest {
+public class DaysUpdateRequest {
     private String userId;
-    private List<CalendarDayRequest> days;
-    private List<WeeklyRequest> weeklys;
     private MonthlyRequest monthly;
+    private WeeklyRequest weekly;
+    private DayRequest[] days;
 }
