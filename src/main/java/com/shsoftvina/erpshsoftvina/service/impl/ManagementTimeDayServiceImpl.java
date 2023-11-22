@@ -141,7 +141,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         String weeklyCode = generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
         WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
 
-        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, weeklyCode.substring(0, 7));
+        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, currentDay.substring(0, 7));
 
         List<ManagementTimeDay> daysOfWeek = managementTimeDayMapper.findByCode(userId, weeklyCode);
         return WeeklyManagementTimeDayResponse.builder()

@@ -162,16 +162,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr name="reading">
-                            <td class="text-start" rowspan="3">Main target</td>
-                            <td><input class="form-control" type="text" value="${reading.target}"></td>
-                        </tr>
-                        <tr name="reading">
-                            <td><input class="form-control" type="text" value="${reading.target}"></td>
-                        </tr>
-                        <tr name="reading">
-                            <td><input class="form-control" type="text" value="${reading.target}"></td>
-                        </tr>
+                        <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlyContents}">
+                            <tr name="reading">
+                                <c:if test="${loop.index == 0}">
+                                    <td class="text-start" rowspan="3">Main target</td>
+                                </c:if>
+                                <td><input class="form-control" type="text" value="${monthly}"></td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
 
@@ -185,31 +183,32 @@
                         </thead>
                         <tbody>
                         <c:set var="theSingleMostImportantThing"
-                               value="${oneThingCalendar.theSingleMostImportantThing}"/>
+                               value="${weekly.weeklyContents.theSingleMostImportantThing}"/>
                         <tr name="theSingleMostImportantThing">
                             <td class="text-start">Single Most Important Thing</td>
-                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}"></td>
-                        </tr>
-                        <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
-                        <tr name="lecture">
-                            <td class="text-start">Lecture</td>
-                            <td><input class="form-control" type="text" value="${lecture.target}"></td>
-                        </tr>
-                        <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
-                        <tr name="dailyEvaluation">
-                            <td class="text-start">Daily Evaluation</td>
-                            <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
-                        </tr>
-                        <c:set var="work" value="${oneThingCalendar.work}"/>
-                        <tr name="work">
-                            <td class="text-start">Work</td>
-                            <td><input class="form-control" type="text" value="${work.target}"></td>
+                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing}">
                             </td>
                         </tr>
-                        <c:set var="reading" value="${oneThingCalendar.reading}"/>
+                        <c:set var="lecture" value="${weekly.weeklyContents.lecture}"/>
+                        <tr name="lecture">
+                            <td class="text-start">Lecture</td>
+                            <td><input class="form-control" type="text" value="${lecture}"></td>
+                        </tr>
+                        <c:set var="dailyEvaluation" value="${weekly.weeklyContents.dailyEvaluation}"/>
+                        <tr name="dailyEvaluation">
+                            <td class="text-start">Daily Evaluation</td>
+                            <td><input class="form-control" type="text" value="${dailyEvaluation}"></td>
+                        </tr>
+                        <c:set var="work" value="${weekly.weeklyContents.work}"/>
+                        <tr name="work">
+                            <td class="text-start">Work</td>
+                            <td><input class="form-control" type="text" value="${work}"></td>
+                            </td>
+                        </tr>
+                        <c:set var="reading" value="${weekly.weeklyContents.reading}"/>
                         <tr name="reading">
                             <td class="text-start">Reading</td>
-                            <td><input class="form-control" type="text" value="${reading.target}"></td>
+                            <td><input class="form-control" type="text" value="${reading}"></td>
                             </td>
                         </tr>
                         </tbody>
@@ -229,7 +228,9 @@
                                 <td class="fw-bolder">Categories</td>
                             </tr>
                             <tr>
-                                <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething calendar</td>
+                                <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething
+                                    calendar
+                                </td>
                                 <td>The single most important thing</td>
                             </tr>
                             <tr>
@@ -245,7 +246,9 @@
                                 <td>Reading</td>
                             </tr>
                             <tr>
-                                <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do List</td>
+                                <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do
+                                    List
+                                </td>
                                 <td style="height: 65px">Six to Twelve PM</td>
                             </tr>
                             <tr>
@@ -254,7 +257,9 @@
                             <tr>
                                 <td style="height: 65px">Six to Twelve AM</td>
                             </tr>
-                            <tr><td colspan="2" style="height: 162.5px"><h5 class="fw-bolder">Daily Routine</h5></td></tr>
+                            <tr>
+                                <td colspan="2" style="height: 162.5px"><h5 class="fw-bolder">Daily Routine</h5></td>
+                            </tr>
                             <tr>
                                 <td colspan="2" style="height: 213px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
                             </tr>
@@ -270,10 +275,12 @@
                                     improvements</h5></td>
                             </tr>
                             <tr>
-                                <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">Timeline</td>
+                                <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">
+                                    Timeline
+                                </td>
                                 <td>00:00</td>
                             </tr>
-                            <c:forEach var="time" begin="1" end="23" >
+                            <c:forEach var="time" begin="1" end="23">
                                 <tr>
                                     <td>${time}:00</td>
                                 </tr>
@@ -360,7 +367,7 @@
                                 <td><input class="form-check-input"
                                            type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                             </tr>
-<%--                            daily--%>
+                            <%--                            daily--%>
                             <tr name="daily">
                                 <td contenteditable="true">${reading.target}</td>
                                 <td><input class="form-check-input"
@@ -396,8 +403,8 @@
                             </c:forEach>
                             <c:if test="${3-data.gratitudeDiary.size()>0}">
                                 <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
-                                    <tr  name="gratitudeDiary">
-                                        <td colspan="2" ><textarea
+                                    <tr name="gratitudeDiary">
+                                        <td colspan="2"><textarea
                                                 class="form-control"></textarea></td>
                                     </tr>
                                 </c:forEach>
@@ -417,7 +424,7 @@
                                     <textarea class="form-control affirmation">${data.affirmation}</textarea>
                                 </td>
                             </tr>
-                            <c:forEach var="time" begin="1" end="24" >
+                            <c:forEach var="time" begin="1" end="24">
                                 <tr name="theSingleMostImportantThing">
                                     <td contenteditable="true">${theSingleMostImportantThing.target}</td>
                                     <td><input class="form-check-input"
@@ -804,12 +811,12 @@
         }
     })
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         let isMouseDown = false;
         let startX;
         let startScrollLeft;
 
-        $(".table-container").mousedown(function(e) {
+        $(".table-container").mousedown(function (e) {
             if (e.button === 0) {
                 isMouseDown = true;
                 startX = e.pageX - $(".table-container").offset().left;
@@ -817,11 +824,11 @@
             }
         });
 
-        $(document).mouseup(function() {
+        $(document).mouseup(function () {
             isMouseDown = false;
         });
 
-        $(".table-container").on('mousemove', function(e) {
+        $(".table-container").on('mousemove', function (e) {
             if (isMouseDown) {
                 const mouseX = e.pageX - $(".table-container").offset().left;
                 const scrollX = startScrollLeft + (startX - mouseX);
@@ -831,8 +838,8 @@
     });
 
 
-    $(document).ready(function() {
-        $(".table-container").on('wheel', function(e) {
+    $(document).ready(function () {
+        $(".table-container").on('wheel', function (e) {
             const scrollSpeed = 50;
 
             let currentScrollLeft = $(this).scrollLeft();

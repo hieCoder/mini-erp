@@ -90,6 +90,9 @@
         .full-height {
             min-height: 80vh;
         }
+        input {
+            display: none;
+        }
     </style>
     <title>Calendars</title>
 </head>
@@ -121,15 +124,18 @@
     </div>
     <div class="bg-white calendar-container d-none">
         <div class="d-flex justify-content-between">
-            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2">
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 15rem">
                 <div class="card-body text-muted">
                     <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                         <span class="trending-ribbon-text">Focus</span> <i
                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                     </div>
                     <h5 class="fs-14 text-end mb-3">Target of July</h5>
-                    <p class="mb-0">Listen to JavaScript lectures and develop programs</p>
-                    <p class="mb-0">Create a daily evaluation diary habit</p>
+                    <div class="m-0" id="monthlyTarget">
+                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit 1</p>
+                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit 2</p>
+                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit 3</p>
+                    </div>
                 </div>
             </div>
             <h1 class="text-center" id="currentMonthYear"></h1>
@@ -442,7 +448,7 @@
                                         }
                                         const year = currentDate.getFullYear();
                                         const currentMonth = currentDate.getMonth() + 1;
-                                        link.href = "${user.id}" + "/day/?day=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
+                                        link.href = "weekly-detail/" + "${user.id}" + "?currentDay=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                         cell.appendChild(link);
                                         // }
                                     }
@@ -635,10 +641,20 @@
         const data = {
             userId: userCurrent.id,
             days: [],
-            weeklys: []
+            weeklys: [],
+            monthly : {}
         }
         const days = [];
         const weeklys = [];
+        console.log(currentDate.getMonth() + 1)
+        const monthly = {
+            month : currentDate.getFullYear()  + '-' + (currentDate.getMonth() + 1),
+            content: []
+        };
+        $('.editable').each(function () {
+            const content = $(this).text();
+            monthly.content.push(content);
+        })
         $('td[contenteditable="true"]').each(function () {
             const day = $(this).data('day');
             const name = $(this).data('name');
@@ -669,6 +685,7 @@
         })
         data.days.push(...days);
         data.weeklys.push(...weeklys);
+        data.monthly = monthly;
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             if (rs) {
                 populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
@@ -690,6 +707,40 @@
         sundayDate.setDate(dateObject.getDate() - daysToSubtract);
 
         return sundayDate.toISOString().split('T')[0];
+    }
+
+    document.addEventListener('click', function(event) {
+        var editableElements = document.querySelectorAll('.editing');
+        editableElements.forEach(function(element) {
+            // Kiểm tra xem click có xảy ra bên ngoài phần tử đang chỉnh sửa hay không
+            if (!element.contains(event.target)) {
+                toggleEdit(element);
+            }
+        });
+    });
+
+    function toggleEdit(element) {
+        var isEditing = element.classList.contains('editing');
+
+        if (isEditing) {
+            var paragraphElement = document.createElement('p');
+            paragraphElement.innerText = element.value;
+            paragraphElement.classList.add('editable','m-0');
+            paragraphElement.ondblclick = function() { toggleEdit(paragraphElement); };
+
+            element.replaceWith(paragraphElement);
+        } else {
+            var inputElement = document.createElement('input');
+            inputElement.value = element.innerText;
+            inputElement.classList.add('editable', 'editing','m-0');
+            inputElement.ondblclick = function() { toggleEdit(inputElement); };
+
+            element.replaceWith(inputElement);
+
+            inputElement.style.display = 'block';
+
+            inputElement.focus();
+        }
     }
 </script>
 </body>
