@@ -17,4 +17,5 @@ public interface ManagementTimeDayService {
 //    DayResponse findByDay(String userId, String day);
 //    DayResponse findDayResponse(String userId, String day, String id);
     List<WeeklyManagementTimeDayResponse> showCalendar(String userId, String startDate, String endDate);
+    WeeklyManagementTimeDayResponse showListDayOfWeek(String userId, String currentDay);
 }

@@ -5,9 +5,8 @@
 
     <select id="findByDay" resultMap="dayResultMap">
         SELECT *
-        FROM MANAGEMENT_TIME_DAY m
-        INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND m.DAY = #{day, jdbcType=DATE}
+        FROM MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId} AND DAY = #{day, jdbcType=DATE}
     </select>
 
     <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
@@ -20,13 +19,6 @@
         <result property="todaysReflectionsAndImprovements" column="TODAYS_REFLECTIONS_AND_IMPROVEMENTS"/>
         <result property="day" column="DAY"/>
         <result property="weeklyCode" column="WEEKLY_CODE"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
-        </association>
-    </resultMap>
-
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="USER_ID" />
-        <result property="fullname" column="FULLNAME" />
     </resultMap>
 
     <insert id="createCalendarDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
@@ -44,6 +36,12 @@
         SELECT *
         FROM MANAGEMENT_TIME_DAY
         WHERE USER_ID = #{userId} AND DAY BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="findByCode" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId} AND WEEKLY_CODE = #{weeklyCode}
     </select>
 
 <!--    <insert id="createDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">-->

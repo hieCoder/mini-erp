@@ -13,6 +13,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDt
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarWeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
@@ -22,6 +23,12 @@ import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -95,6 +102,29 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         List<WeeklyManagementTimeDayResponse> rs = weeklyManagementTimeDayConverter.toListWeeklyResponse(userId, managementTimeDays);
 
         return rs;
+    }
+
+    private String generateWeeklyCodeOfDay(Date currentDate) {
+        Instant instant = currentDate.toInstant();
+        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        currentLocalDate = currentLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        return DateUtils.formatDate(currentLocalDate);
+    }
+
+    @Override
+    public WeeklyManagementTimeDayResponse showListDayOfWeek(String userId, String currentDay) {
+
+        applicationUtils.checkUserAllow(userId);
+        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+
+        String weeklyCode = generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
+        WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+        List<ManagementTimeDay> daysOfWeek = managementTimeDayMapper.findByCode(userId, weeklyCode);
+        return WeeklyManagementTimeDayResponse.builder()
+                .weeklyId(weeklyManagementTimeDay.getId())
+                .startDate(weeklyManagementTimeDay.getCode())
+                .weeklyContents(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class))
+                .listDayOfWeek(managementTimeDayConvert.toListResponse(daysOfWeek)).build();
     }
 
 //    @Override
