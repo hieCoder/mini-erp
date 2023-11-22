@@ -328,7 +328,7 @@
         const formattedFirstSunday = formatDate(result.firstSunday);
         const formattedLastDay = formatDate(result.lastDay);
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastDay, true);
+        xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastDay, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -578,9 +578,10 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
-                } else {
-                    window.location.href = "/management-time/";
                 }
+                // else {
+                //     window.location.href = "/management-time/";
+                // }
             }
 
         }
@@ -694,6 +695,15 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         console.log(data);
+        callAjaxByJsonWithData("/api/v1/management-time/calendar","POST",data,function (rs) {
+            if (rs) {
+                populateCalendar(currentDate.getFullYear(),currentDate.getMonth());
+                console.log(rs);
+                rsSuccess();
+            } else {
+                rsUnSuccess();
+            }
+        })
     }
 
     function getPreviousSunday(currentDate) {
