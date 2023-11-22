@@ -13,10 +13,12 @@ import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.CalendarContent;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.MonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
@@ -135,20 +137,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return calendarResponse;
     }
 
-    private String generateWeeklyCodeOfDay(Date currentDate) {
-        Instant instant = currentDate.toInstant();
-        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-        currentLocalDate = currentLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-        return DateUtils.formatDate(currentLocalDate);
-    }
-
     @Override
     public DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay) {
 
         applicationUtils.checkUserAllow(userId);
         if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
-        String weeklyCode = generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
+        String weeklyCode = ApplicationUtils.generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
         WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
 
         MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, currentDay.substring(0, 7));
@@ -177,9 +172,32 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
         String monthlyCode = monthlyRequest.getMonth();
         String[] monthlyContent = monthlyRequest.getContent();
+        MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
+        if(monthlyEntity == null){
+            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode, JsonUtils.objectToJson(monthlyContent));
+            monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyEntity);
+        } else{
+            monthlyEntity.setContent(JsonUtils.objectToJson(monthlyContent));
+            monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
+        }
 
+        WeeklyRequest weeklyRequest = daysUpdateRequest.getWeekly();
+        String weeklyCode = DateUtils.formatDate(weeklyRequest.getStartDay());
+        CalendarContent weeklyContent = weeklyRequest.getContent();
+        WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+        if(weeklyEntity == null){
+            weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklyContent));
+            weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyEntity);
+        } else{
+            weeklyEntity.setContent(JsonUtils.objectToJson(weeklyContent));
+            weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
+        }
 
-        return 0;
+        DayRequest[] days = daysUpdateRequest.getDays();
+        List<ManagementTimeDay> managementTimeDays = managementTimeDayConvert.toListEntity(userId, days);
+        managementTimeDayMapper.insertDaysBatch(managementTimeDays);
+
+        return 1;
     }
 
 //    @Override

@@ -21,4 +21,5 @@ public interface ManagementTimeDayMapper {
     int updateCalendarDay(ManagementTimeDay day);
     List<ManagementTimeDay> findDays(String userId, String startDate, String endDate);
     List<ManagementTimeDay> findByCode(String userId, String weeklyCode);
+    int insertDaysBatch(List<ManagementTimeDay> list);
 }

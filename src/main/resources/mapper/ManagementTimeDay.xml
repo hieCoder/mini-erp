@@ -55,6 +55,16 @@
         WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
     </select>
 
+    <insert id="insertDaysBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
+            COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL)
+        VALUES
+        <foreach collection="list" item="day" separator=",">
+            (UUID(), #{day.oneThingCalendar}, #{day.toDoList}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
+             #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail})
+        </foreach>
+    </insert>
+
 <!--    <insert id="createDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">-->
 <!--        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE)-->
 <!--        VALUES (#{id}, #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id}, #{weeklyCode})-->

@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.Random;
 
 @Component
@@ -98,6 +100,13 @@ public class ApplicationUtils {
         }
 
         return code.toString();
+    }
+
+    public static String generateWeeklyCodeOfDay(Date currentDate) {
+        Instant instant = currentDate.toInstant();
+        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        currentLocalDate = currentLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        return DateUtils.formatDate(currentLocalDate);
     }
 
     private Setting getSetting(Class<?> c){
