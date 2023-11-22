@@ -132,9 +132,6 @@
                     </div>
                     <h5 class="fs-14 text-end mb-3">Target of July</h5>
                     <div class="m-0" id="monthlyTarget">
-                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit 1</p>
-                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit 2</p>
-                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit 3</p>
                     </div>
                 </div>
             </div>
@@ -329,14 +326,25 @@
 
     function populateCalendar(year, month, button) {
         const result = getFirstSundayLastSaturday(year, month);
-        const formattedFirstSunday = formatDate(result.firstSunday);
+        const formattedFirstSunday = formatDate(getLastSundayOfPreviousMonth(year, month));
+        const formattedFirstDay = formatDate(result.firstSunday);
         const formattedLastDay = formatDate(result.lastDay);
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstSunday + "&endDate=" + formattedLastDay, true);
+        xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstDay + "&endDate=" + formattedLastDay, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    var responseData = JSON.parse(xhr.responseText);
+                    const parseData = JSON.parse(xhr.responseText);
+                    var responseData = parseData.weeklys;
+                    let monthlyTarget = document.getElementById("monthlyTarget");
+                    monthlyTarget.innerHTML = ''
+                    console.log(monthlyTarget)
+                    let xhtml = '';
+                    parseData.monthlyContents.forEach((e) => {
+                        xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
+                    })
+                    console.log(xhtml)
+                    monthlyTarget.innerHTML = xhtml;
                     // Clear the table
                     table.querySelector('tbody').innerHTML = '';
 
@@ -498,6 +506,7 @@
                                         const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
                                         if (responseData != null && responseData.length > 0) {
                                             cell.classList.add("fst-italic")
+                                            cell.classList.add("text-wrap")
                                             responseData.forEach((e) => {
                                                 e.listDayOfWeek.forEach((week) => {
                                                     const dateInResponse = new Date(week.day);
@@ -536,6 +545,7 @@
                                     if (responseData != null && responseData.length > 0) {
                                         cell.classList.add("fw-bold")
                                         cell.classList.add("fst-italic")
+                                        cell.classList.add("text-wrap")
                                         responseData.forEach((e) => {
                                             if (e.weeklyContents === null) {
                                                 return;
@@ -611,7 +621,7 @@
     }
 
     function getFirstSundayLastSaturday(year, month) {
-        const firstSunday = getLastSundayOfPreviousMonth(year, month);
+        const firstSunday = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
 
         return {

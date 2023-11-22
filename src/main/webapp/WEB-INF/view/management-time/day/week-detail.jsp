@@ -182,30 +182,29 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:set var="theSingleMostImportantThing"
-                               value="${weekly.weeklyContents.theSingleMostImportantThing}"/>
+                        <c:set var="theSingleMostImportantThing" value="${weekly.weeklys.weeklyContents.theSingleMostImportantThing}"/>
                         <tr name="theSingleMostImportantThing">
                             <td class="text-start">Single Most Important Thing</td>
                             <td><input class="form-control" type="text" value="${theSingleMostImportantThing}">
                             </td>
                         </tr>
-                        <c:set var="lecture" value="${weekly.weeklyContents.lecture}"/>
+                        <c:set var="lecture" value="${weekly.weeklys.weeklyContents.lecture}"/>
                         <tr name="lecture">
                             <td class="text-start">Lecture</td>
                             <td><input class="form-control" type="text" value="${lecture}"></td>
                         </tr>
-                        <c:set var="dailyEvaluation" value="${weekly.weeklyContents.dailyEvaluation}"/>
+                        <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklyContents.dailyEvaluation}"/>
                         <tr name="dailyEvaluation">
                             <td class="text-start">Daily Evaluation</td>
                             <td><input class="form-control" type="text" value="${dailyEvaluation}"></td>
                         </tr>
-                        <c:set var="work" value="${weekly.weeklyContents.work}"/>
+                        <c:set var="work" value="${weekly.weeklys.weeklyContents.work}"/>
                         <tr name="work">
                             <td class="text-start">Work</td>
                             <td><input class="form-control" type="text" value="${work}"></td>
                             </td>
                         </tr>
-                        <c:set var="reading" value="${weekly.weeklyContents.reading}"/>
+                        <c:set var="reading" value="${weekly.weeklys.weeklyContents.reading}"/>
                         <tr name="reading">
                             <td class="text-start">Reading</td>
                             <td><input class="form-control" type="text" value="${reading}"></td>
