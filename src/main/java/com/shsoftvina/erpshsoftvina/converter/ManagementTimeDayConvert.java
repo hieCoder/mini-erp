@@ -75,11 +75,6 @@ public class ManagementTimeDayConvert {
         data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), OneThingCalendarDto.class));
         data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));
         data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), List.class));
-
-        String userId = day.getUser().getId();
-        String weeklyCode = day.getWeeklyCode();
-        WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
-        data.setTodoListOnThisWeek(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class));
         data.setAffirmation(day.getAffirmation());
 
         return DayResponse.builder()
