@@ -489,7 +489,7 @@
                                                         <c:forEach var="allowance"
                                                                    items="${contract.allowanceInsurances}">
                                                             <c:if test="${allowance.type.equals('ALLOWANCE')}">
-                                                                <strong st>${allowance.item}</strong>: ${allowance.itemValue}
+                                                                <strong st>${allowance.item}</strong>: ${allowance.itemValue}đ
                                                                 <br>
                                                             </c:if>
                                                         </c:forEach>
@@ -498,7 +498,7 @@
                                                         <c:forEach var="insurance"
                                                                    items="${contract.allowanceInsurances}">
                                                             <c:if test="${insurance.type.equals('INSURANCE')}">
-                                                                <strong st>${insurance.item}</strong>: ${insurance.itemValue}
+                                                                <strong st>${insurance.item}</strong>: ${insurance.itemValue}đ
                                                                 <br>
                                                             </c:if>
                                                         </c:forEach>

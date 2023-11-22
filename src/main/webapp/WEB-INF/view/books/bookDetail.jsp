@@ -41,12 +41,6 @@
                 <div class="col-md-9">
                     <div class="row">
                         <div class="col-md-12">
-
-                            <%--                            <div class="text-center loading-feeling">--%>
-                            <%--                                <div class="spinner-border text-primary" role="status">--%>
-                            <%--                                    <span class="sr-only">Loading...</span>--%>
-                            <%--                                </div>--%>
-                            <%--                            </div>--%>
                             <form class="feeling" id="feelingBook">
                                 <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary"
                                      id="accordionWithicon">
@@ -126,37 +120,23 @@
                                     <button type="button" class="btn btn-danger d-none" data-toggle="modal"
                                             data-target="#deleteFeelingModal" id="delete">Delete
                                     </button>
-                                    <button type="button" class="btn btn-secondary"><a href="/books" class="text-white">Back</a>
-                                    </button>
+                                    <a href="/books">
+                                        <button type="button" class="btn btn-secondary">Back
+                                        </button>
+                                    </a>
+
                                 </div>
                             </form>
 
                         </div>
                         <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
-                        <div class="col-md-12">
+                        <div class="text-center loading-feeling">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-none" id="othersSession">
                             <div data-simplebar style="max-height: 350px">
-                                <%--                                <div class="text-center loading-feeling">--%>
-                                <%--                                    <div class="spinner-border text-primary" role="status">--%>
-                                <%--                                        <span class="sr-only">Loading...</span>--%>
-                                <%--                                    </div>--%>
-                                <%--                                </div>--%>
-                                <%--                                <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}">--%>
-                                <%--                                    <div class="row border mb-2 d-none feeling">--%>
-                                <%--                                        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center border-end">--%>
-                                <%--                                            <img src="${feeling.avatarUser}" class="img-fluid rounded-circle"--%>
-                                <%--                                                 alt="User Avatar" width="70px">--%>
-                                <%--                                            <p class="m-0">${feeling.fullnameUser}</p>--%>
-                                <%--                                        </div>--%>
-                                <%--                                        <div class="col-md-10 d-flex flex-column justify-content-center"--%>
-                                <%--                                             style="min-height: 120px">--%>
-                                <%--                                            <c:forEach var="quote" items="${feeling.quotes}">--%>
-                                <%--                                                <c:if test='${!quote.equals("")}'>--%>
-                                <%--                                                    <p class="mt-1 mb-1">- ${quote}</p>--%>
-                                <%--                                                </c:if>--%>
-                                <%--                                            </c:forEach>--%>
-                                <%--                                        </div>--%>
-                                <%--                                    </div>--%>
-                                <%--                                </c:forEach>--%>
                                 <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}" varStatus="loopStatus">
                                     <div class="list-group mt-2">
                                         <div class="list-group-item">
@@ -290,6 +270,8 @@
             $('#submit').addClass('d-none');
             $('#update').removeClass('d-none');
             $('#delete').removeClass('d-none');
+            $('#othersSession').removeClass('d-none');
+            $('.loading-feeling').remove();
 
             // Update Feeling
             Validator({
@@ -335,6 +317,8 @@
         }, function (rs) {
             $('#submit').removeClass('d-none');
             $('#update').addClass('d-none');
+            $('#othersSession').removeClass('d-none');
+            $('.loading-feeling').remove();
 
             var textarea = document.querySelectorAll('.data');
             textarea.forEach(function (input) {
@@ -386,9 +370,7 @@
                 {
                     title: title,
                     icon: 'success',
-                    showCancelButton: true,
                     confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
-                    cancelButtonClass: 'btn btn-danger w-xs mt-2',
                     buttonsStyling: false,
                     showCloseButton: true
                 }
