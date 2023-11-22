@@ -29,6 +29,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class ManagementTimeDayConvert {
@@ -82,6 +83,10 @@ public class ManagementTimeDayConvert {
                 .day(DateUtils.formatDate(day.getDay()))
                 .data(data)
                 .build();
+    }
+
+    public List<DayResponse> toListResponse(List<ManagementTimeDay> days){
+        return days.stream().map(this::toResponse).collect(Collectors.toList());
     }
 //
 //    public ManagementTimeDay toEntity(DayCreateRequest dayCreateRequest){

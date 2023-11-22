@@ -27,6 +27,11 @@ public class ManagementTimeDayApi {
         return ResponseEntity.ok(managementTimeDayService.showCalendar(userId, startDate, endDate));
     }
 
+    @GetMapping("/weekly-detail/{userId}")
+    public ResponseEntity<?> showListDayOfWeek(@PathVariable String userId, @RequestParam String currentDay) {
+        return ResponseEntity.ok(managementTimeDayService.showListDayOfWeek(userId, currentDay));
+    }
+
 //    @PostMapping("/day")
 //    public ResponseEntity<?> createDay(@RequestBody DayCreateRequest dayCreateRequest) {
 //        return ResponseEntity.ok(managementTimeDayService.createDay(dayCreateRequest));
