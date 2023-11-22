@@ -36,14 +36,4 @@ public class ManagementTimeDayApi {
     public ResponseEntity<?> updateListDayOfWeek(@RequestBody DaysUpdateRequest daysUpdateRequest) {
         return ResponseEntity.ok(managementTimeDayService.updateListDayOfWeek(daysUpdateRequest));
     }
-
-//    @PutMapping("/day")
-//    public ResponseEntity<?> updateDay(@RequestBody DayUpdateRequest updateRequest) {
-//        return ResponseEntity.ok(managementTimeDayService.updateDay(updateRequest));
-//    }
-//
-//    @GetMapping("/day/{id}")
-//    public ResponseEntity<?> getDay(@PathVariable String id) {
-//        return ResponseEntity.ok(managementTimeDayService.findById(id));
-//    }
 }

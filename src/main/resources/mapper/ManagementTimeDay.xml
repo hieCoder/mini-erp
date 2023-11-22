@@ -64,25 +64,4 @@
              #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail})
         </foreach>
     </insert>
-
-<!--    <insert id="createDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">-->
-<!--        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE)-->
-<!--        VALUES (#{id}, #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id}, #{weeklyCode})-->
-<!--    </insert>-->
-
-<!--    <select id="findById" resultMap="dayResultMap">-->
-<!--        SELECT *,u.fullname-->
-<!--        FROM MANAGEMENT_TIME_DAY m-->
-<!--                 INNER JOIN USER u ON m.user_id = u.id-->
-<!--        WHERE m.ID = #{id}-->
-<!--    </select>-->
-
-<!--    <update id="updateDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">-->
-<!--        UPDATE MANAGEMENT_TIME_DAY SET-->
-<!--        ONE_THING_CALENDAR = #{oneThingCalendar},-->
-<!--        TO_DO_LIST = #{toDoList},-->
-<!--        GRATITUDE_DIARY = #{gratitudeDiary},-->
-<!--        AFFIRMATION = #{affirmation}-->
-<!--        WHERE ID = #{id};-->
-<!--    </update>-->
 </mapper>
