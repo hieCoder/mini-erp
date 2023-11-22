@@ -19,7 +19,6 @@
         }
 
         .table-container {
-            width: 100%; /* Đặt chiều rộng tùy ý */
             overflow-x: auto;
             cursor: grab;
         }
@@ -50,14 +49,14 @@
         }
 
         .table-detail {
-            width: 60%; /* Đặt chiều rộng tùy ý */
+            width: 100%; /* Đặt chiều rộng tùy ý */
         }
 
         .table-detail th {
+            min-width: 340px;
             height: 38.4px;
             background-color: #f2f2f2;
             white-space: nowrap;
-            min-width: 400px;
             text-align: center;
             border: 1px solid #000;
             font-weight: bold;
@@ -228,7 +227,7 @@
                     </table>
                 </div>
                 <div class="col-md-8 d-inline-flex">
-                    <div class="table-detail">
+                    <div class="table-detail col-md-4">
                         <table>
                             <thead>
                             <tr>
@@ -268,7 +267,7 @@
                             </tr>
                             <tr><td colspan="2" style="height: 162.5px"><h5 class="fw-bolder">Daily Routine</h5></td></tr>
                             <tr>
-                                <td colspan="2" style="height: 215px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
+                                <td colspan="2" style="height: 213px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Affirmation</h5></td>
@@ -281,11 +280,20 @@
                                 <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Today’s reflections and
                                     improvements</h5></td>
                             </tr>
+                            <tr>
+                                <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">Timeline</td>
+                                <td>00:00</td>
+                            </tr>
+                            <c:forEach var="time" begin="1" end="23" >
+                                <tr>
+                                    <td>${time}:00</td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="table-container">
+                    <div class="table-container col-md-8">
                         <table>
                             <thead>
                             <tr>
@@ -428,11 +436,19 @@
                                     <textarea class="form-control affirmation">${data.affirmation}</textarea>
                                 </td>
                             </tr>
+                            <c:forEach var="time" begin="1" end="24" >
+                                <tr name="theSingleMostImportantThing">
+                                    <td contenteditable="true">${theSingleMostImportantThing.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="col-md-12 text-center align-middle">
+                <div class="col-md-12 text-center align-middle mt-3">
                     <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">
                         Back
                     </button>
