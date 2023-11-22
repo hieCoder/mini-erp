@@ -32,9 +32,6 @@ public class ManagementTimeDayConvert {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private WeeklyManagementTimeDayMapper weeklyManagementTimeDayMapper;
-
     public ManagementTimeDay toEntity(String userId, CalendarDayRequest calendarDayRequest){
 
         OneThingCalendarDto o = OneThingCalendarDto.builder()
@@ -54,10 +51,6 @@ public class ManagementTimeDayConvert {
                 .build();
     }
 
-
-//    @Autowired
-//    private ManagementTimeDayMapper managementTimeDayMapper;
-//
     public DayResponse toResponse(ManagementTimeDay day){
         if(day == null) return null;
         DataOfDayDto data = new DataOfDayDto();
@@ -99,19 +92,4 @@ public class ManagementTimeDayConvert {
     public List<ManagementTimeDay> toListEntity(String userId, DayRequest[] dayRequests) {
         return Arrays.stream(dayRequests).map(e -> this.toEntity(userId, e)).collect(Collectors.toList());
     }
-
-//
-//    public ManagementTimeDay toEntity(DayUpdateRequest dayUpdateRequest){
-//
-//        ManagementTimeDay day = managementTimeDayMapper.findById(dayUpdateRequest.getId());
-//
-//        DataOfDayDto dataRequest = dayUpdateRequest.getData();
-//
-//        day.setOneThingCalendar(JsonUtils.objectToJson(dataRequest.getOneThingCalendar()));
-//        day.setToDoList(JsonUtils.objectToJson(dataRequest.getToDoList()));
-//        day.setGratitudeDiary(JsonUtils.objectToJson(dataRequest.getGratitudeDiary()));
-//        day.setAffirmation(dataRequest.getAffirmation());
-//
-//        return day;
-//    }
 }
