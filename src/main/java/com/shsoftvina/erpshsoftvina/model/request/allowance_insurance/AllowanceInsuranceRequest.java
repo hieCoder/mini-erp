@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.entity;
+package com.shsoftvina.erpshsoftvina.model.request.allowance_insurance;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Allowance {
-    private String id;
+public class AllowanceInsuranceRequest {
     private String item;
     private Integer itemValue;
-    private Contract contract;
+    private String type;
 }

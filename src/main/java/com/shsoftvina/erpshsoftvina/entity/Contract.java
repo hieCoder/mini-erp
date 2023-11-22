@@ -19,8 +19,7 @@ public class Contract {
     private String files;
     private Date createdDate;
     private User user;
-    private String insurance;
     private StatusContractEnum status;
     private Contract parentContract;
-    private List<Allowance> allowances;
+    private List<AllowanceInsurance> allowanceInsurances;
 }

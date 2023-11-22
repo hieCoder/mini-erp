@@ -15,7 +15,5 @@ public class WeeklyManagementTimeDay {
     private String id;
     private String code;
     private String content;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private User user;
 }

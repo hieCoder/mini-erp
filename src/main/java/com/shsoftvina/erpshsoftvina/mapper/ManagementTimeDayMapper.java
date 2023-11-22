@@ -6,17 +6,18 @@ import com.shsoftvina.erpshsoftvina.entity.Timesheets;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface ManagementTimeDayMapper {
 
-    int createDayInfo(ManagementTimeDay day);
-    int updateDayInfo(ManagementTimeDay day);
-    ManagementTimeDay findById(String id);
-    ManagementTimeDay findByDay(String userId, String day);
-    List<ManagementTimeDay> findAllByMonthYear(String userId,
-                                               String startDate,
-                                               String endDate);
+//    int createDayInfo(ManagementTimeDay day);
+//    int updateDayInfo(ManagementTimeDay day);
+//    ManagementTimeDay findById(String id);
+    ManagementTimeDay findByDay(String userId, Date day);
+    int createCalendarDay(ManagementTimeDay day);
+    int updateCalendarDay(ManagementTimeDay day);
+    List<ManagementTimeDay> findDays(String userId, String startDate, String endDate);
 }

@@ -47,19 +47,19 @@ public class ManagementTimeDayController {
     ) {
         applicationUtils.checkUserAllow(userId);
         ModelAndView mav = new ModelAndView();
-            DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
-            if(dayResponse!=null){
-                mav.addObject("dayResponse", dayResponse);
-            } else{
-                if(!DateUtils.isValidDate(day)){
-                    mav.setViewName("redirect:/management-time/"+ userId);
-                    return mav;
-                }
-                mav.addObject("day", day);
-            }
-            mav.setViewName("management-time/day/week-detail");
-            mav.addObject("userId",userId);
-            return mav;
+//        DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
+//        if (dayResponse != null) {
+//            mav.addObject("dayResponse", dayResponse);
+//        } else {
+//            if (!DateUtils.isValidDate(day)) {
+//                mav.setViewName("redirect:/management-time/" + userId);
+//                return mav;
+//            }
+//            mav.addObject("day", day);
+//        }
+        mav.setViewName("management-time/day/week-detail");
+        mav.addObject("userId", userId);
+        return mav;
     }
 
     @GetMapping("/{userId}")
@@ -67,7 +67,7 @@ public class ManagementTimeDayController {
         applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
-        modelAndView.addObject("user",user);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 }

@@ -108,6 +108,13 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
+    @ExceptionHandler(ErrorServerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleErrorServerException(ErrorServerException ex, WebRequest req) {
+        log.error(ex.getMessage(),ex);
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception ex, WebRequest req, HttpServletResponse response) throws IOException {

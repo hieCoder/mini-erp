@@ -244,15 +244,20 @@ public class ApplicationUtils {
         }
     }
 
-    public boolean checkUserWebSocketAllow(User user){
-        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER))){
+    public boolean isUserAllow(){
+        User userCurrent = Principal.getUserCurrent();
+        RoleEnum roleCurrent = userCurrent.getRole();
+        if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER))){
             return false;
         }
         return true;
     }
 
-    public boolean checkUserWebSocketAllow(User user, String userId){
-        if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER) || userId.equals(user.getId()))){
+    public boolean isUserAllow(String idUser){
+        User userCurrent = Principal.getUserCurrent();
+        RoleEnum roleCurrent = userCurrent.getRole();
+        String idUserCurrent = userCurrent.getId();
+        if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER) || idUser.equals(idUserCurrent))){
             return false;
         }
         return true;

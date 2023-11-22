@@ -3,23 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper">
 
-    <insert id="createDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
-        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE)
-        VALUES (#{id}, #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id}, #{weeklyCode})
-    </insert>
-
-    <select id="findById" resultMap="dayResultMap">
-        SELECT *,u.fullname
-        FROM MANAGEMENT_TIME_DAY m
-                 INNER JOIN USER u ON m.user_id = u.id
-        WHERE m.ID = #{id}
-    </select>
-
     <select id="findByDay" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY m
-                 INNER JOIN USER u ON m.user_id = u.id
-        WHERE m.USER_ID = #{userId} AND m.DAY = #{day}
+        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND m.DAY = #{day, jdbcType=DATE}
     </select>
 
     <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
@@ -35,22 +23,45 @@
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="user_id" />
-        <result property="fullname" column="fullname" />
+        <id property="id" column="USER_ID" />
+        <result property="fullname" column="FULLNAME" />
     </resultMap>
 
-    <update id="updateDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
-        UPDATE MANAGEMENT_TIME_DAY SET
-        ONE_THING_CALENDAR = #{oneThingCalendar},
-        TO_DO_LIST = #{toDoList},
-        GRATITUDE_DIARY = #{gratitudeDiary},
-        AFFIRMATION = #{affirmation}
-        WHERE ID = #{id};
+    <insert id="createCalendarDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, DAY, USER_ID, WEEKLY_CODE)
+        VALUES (UUID(), #{oneThingCalendar}, #{day}, #{user.id}, #{weeklyCode})
+    </insert>
+
+    <update id="updateCalendarDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        UPDATE MANAGEMENT_TIME_DAY
+        SET ONE_THING_CALENDAR = #{oneThingCalendar}
+        WHERE USER_ID = #{user.id} AND DAY = #{day, jdbcType=DATE}
     </update>
 
-    <select id="findAllByMonthYear" resultMap="dayResultMap">
+    <select id="findDays" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY
-        WHERE USER_ID = #{userId} AND DAY between #{startDate} AND #{endDate}
+        WHERE USER_ID = #{userId} AND DAY BETWEEN #{startDate} AND #{endDate}
     </select>
+
+<!--    <insert id="createDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">-->
+<!--        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE)-->
+<!--        VALUES (#{id}, #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id}, #{weeklyCode})-->
+<!--    </insert>-->
+
+<!--    <select id="findById" resultMap="dayResultMap">-->
+<!--        SELECT *,u.fullname-->
+<!--        FROM MANAGEMENT_TIME_DAY m-->
+<!--                 INNER JOIN USER u ON m.user_id = u.id-->
+<!--        WHERE m.ID = #{id}-->
+<!--    </select>-->
+
+<!--    <update id="updateDayInfo" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">-->
+<!--        UPDATE MANAGEMENT_TIME_DAY SET-->
+<!--        ONE_THING_CALENDAR = #{oneThingCalendar},-->
+<!--        TO_DO_LIST = #{toDoList},-->
+<!--        GRATITUDE_DIARY = #{gratitudeDiary},-->
+<!--        AFFIRMATION = #{affirmation}-->
+<!--        WHERE ID = #{id};-->
+<!--    </update>-->
 </mapper>

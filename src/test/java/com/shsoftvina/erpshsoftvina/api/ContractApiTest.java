@@ -1,8 +1,5 @@
 package com.shsoftvina.erpshsoftvina.api;
 
-import com.shsoftvina.erpshsoftvina.model.request.contract.CreateContractRequest;
-import com.shsoftvina.erpshsoftvina.model.request.contract.UpdateContractRequest;
-import com.shsoftvina.erpshsoftvina.model.response.contract.ContractResponse;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
