@@ -17,6 +17,8 @@ public class ManagementTimeDay {
     private String toDoList;
     private String gratitudeDiary;
     private String affirmation;
+    private String complimentForMeToday;
+    private String todaysReflectionsAndImprovements;
     private Date day;
     private User user;
     private String weeklyCode;

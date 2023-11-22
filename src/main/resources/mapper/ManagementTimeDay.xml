@@ -16,6 +16,8 @@
         <result property="toDoList" column="TO_DO_LIST"/>
         <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
         <result property="affirmation" column="AFFIRMATION"/>
+        <result property="complimentForMeToday" column="COMPLIMENT_FOR_ME_TODAY"/>
+        <result property="todaysReflectionsAndImprovements" column="TODAYS_REFLECTIONS_AND_IMPROVEMENTS"/>
         <result property="day" column="DAY"/>
         <result property="weeklyCode" column="WEEKLY_CODE"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">

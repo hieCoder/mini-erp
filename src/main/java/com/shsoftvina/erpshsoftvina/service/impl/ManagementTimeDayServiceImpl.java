@@ -87,19 +87,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return rs;
     }
 
-
-//    private LocalDate getFisrtDateOfWeek(Date currentDate){
-//        Instant instant = currentDate.toInstant();
-//        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-//        return currentLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-//    }
-//
-//    private LocalDate getLastDateOfWeek(Date currentDate){
-//        Instant instant = currentDate.toInstant();
-//        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-//        return currentLocalDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
-//    }
-//
 //    @Override
 //    public DayResponse createDay(DayCreateRequest dayCreateRequest) {
 //

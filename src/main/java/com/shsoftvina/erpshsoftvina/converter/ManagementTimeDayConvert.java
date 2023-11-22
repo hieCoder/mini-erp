@@ -1,8 +1,10 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
@@ -11,6 +13,7 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.Calend
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -32,6 +35,9 @@ public class ManagementTimeDayConvert {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private WeeklyManagementTimeDayMapper weeklyManagementTimeDayMapper;
 
     private String generateWeeklyCodeOfDay(Date currentDate) {
         Instant instant = currentDate.toInstant();
@@ -69,6 +75,11 @@ public class ManagementTimeDayConvert {
         data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), OneThingCalendarDto.class));
         data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));
         data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), List.class));
+
+        String userId = day.getUser().getId();
+        String weeklyCode = day.getWeeklyCode();
+        WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+        data.setTodoListOnThisWeek(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class));
         data.setAffirmation(day.getAffirmation());
 
         return DayResponse.builder()
