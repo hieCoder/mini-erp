@@ -277,7 +277,7 @@
                                 <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">
                                     Timeline
                                 </td>
-                                <td>00:00</td>
+                                <td>0:00</td>
                             </tr>
                             <c:forEach var="time" begin="1" end="23">
                                 <tr>
@@ -292,8 +292,8 @@
                         <table>
                             <thead>
                             <tr>
-                                <c:forEach var="day" begin="1" end="8">
-                                    <th colspan="2"><h5>2023. 11. 0${day}. (월)</h5></th>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <th colspan="2"><h5>${day.day}</h5></th>
                                 </c:forEach>
                             </tr>
                             </thead>
