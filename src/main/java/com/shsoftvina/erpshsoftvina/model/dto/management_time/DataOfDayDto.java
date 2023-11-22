@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +15,9 @@ import java.util.List;
 public class DataOfDayDto {
     private OneThingCalendarDto oneThingCalendar;
     private ToDoListDto toDoList;
-    private List<String> gratitudeDiary;
+    private String[] gratitudeDiary;
     private String complimentForMeToday;
     private String todaysReflectionsAndImprovements;
     private String affirmation;
+    private String[] toDoDetail;
 }

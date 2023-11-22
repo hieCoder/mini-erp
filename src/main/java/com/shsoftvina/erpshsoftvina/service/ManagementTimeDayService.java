@@ -1,12 +1,10 @@
 package com.shsoftvina.erpshsoftvina.service;
 
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayCreateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
-
-import java.util.List;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DaysOfWeeklyResponse;
 
 public interface ManagementTimeDayService {
 
@@ -16,6 +14,7 @@ public interface ManagementTimeDayService {
 //    DayResponse findById(String id);
 //    DayResponse findByDay(String userId, String day);
 //    DayResponse findDayResponse(String userId, String day, String id);
-    List<WeeklyManagementTimeDayResponse> showCalendar(String userId, String startDate, String endDate);
-    WeeklyManagementTimeDayResponse showListDayOfWeek(String userId, String currentDay);
+    CalendarResponse showCalendar(String userId, String startDate, String endDate);
+    DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay);
+    int updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest);
 }

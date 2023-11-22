@@ -12,8 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DayCreateRequest {
+public class DayRequest {
     private Date day;
     private DataOfDayDto data;
-    private String userId;
 }

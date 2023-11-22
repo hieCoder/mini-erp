@@ -14,11 +14,14 @@ import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarMonthlyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.MonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarWeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DaysOfWeeklyResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -87,8 +90,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         }
 
-        List<CalendarWeeklyRequest> weeklys = req.getWeeklys();
-        for(CalendarWeeklyRequest w: weeklys){
+        List<WeeklyRequest> weeklys = req.getWeeklys();
+        for(WeeklyRequest w: weeklys){
             WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, DateUtils.formatDate(w.getStartDay()));
             if(weeklyEntity == null){
                 weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, w);
@@ -99,7 +102,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         }
 
-        CalendarMonthlyRequest monthlyReq = req.getMonthly();
+        MonthlyRequest monthlyReq = req.getMonthly();
         String monthlyCode = monthlyReq.getMonth();
 
         MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
@@ -114,15 +117,22 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     }
 
     @Override
-    public List<WeeklyManagementTimeDayResponse> showCalendar(String userId, String startDate, String endDate) {
+    public CalendarResponse showCalendar(String userId, String startDate, String endDate) {
 
         applicationUtils.checkUserAllow(userId);
         if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
-        List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findDays(userId, startDate, endDate);
-        List<WeeklyManagementTimeDayResponse> rs = weeklyManagementTimeDayConverter.toListWeeklyResponse(userId, managementTimeDays);
+        CalendarResponse calendarResponse = new CalendarResponse();
 
-        return rs;
+        List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findDays(userId, startDate, endDate);
+        List<WeeklyManagementTimeDayResponse> data = weeklyManagementTimeDayConverter.toListWeeklyResponse(userId, managementTimeDays);
+        calendarResponse.setWeeklys(data);
+
+        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, startDate.substring(0, 7));
+        String[] monthlyContent = JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class);
+
+        calendarResponse.setMonthlyContents(monthlyContent);
+        return calendarResponse;
     }
 
     private String generateWeeklyCodeOfDay(Date currentDate) {
@@ -133,7 +143,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     }
 
     @Override
-    public WeeklyManagementTimeDayResponse showListDayOfWeek(String userId, String currentDay) {
+    public DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay) {
 
         applicationUtils.checkUserAllow(userId);
         if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
@@ -144,12 +154,32 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, currentDay.substring(0, 7));
 
         List<ManagementTimeDay> daysOfWeek = managementTimeDayMapper.findByCode(userId, weeklyCode);
-        return WeeklyManagementTimeDayResponse.builder()
+
+        DaysOfWeeklyResponse daysOfWeeklyResponse = new DaysOfWeeklyResponse();
+        WeeklyManagementTimeDayResponse weekly = WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay.getId())
                 .startDate(weeklyManagementTimeDay.getCode())
                 .weeklyContents(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class))
-                .monthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class))
                 .listDayOfWeek(managementTimeDayConvert.toListResponse(daysOfWeek)).build();
+        daysOfWeeklyResponse.setWeeklys(weekly);
+        daysOfWeeklyResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
+        return daysOfWeeklyResponse;
+    }
+
+    @Override
+    public int updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest) {
+
+        String userId = daysUpdateRequest.getUserId();
+
+        applicationUtils.checkUserAllow(userId);
+        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+
+        MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
+        String monthlyCode = monthlyRequest.getMonth();
+        String[] monthlyContent = monthlyRequest.getContent();
+
+
+        return 0;
     }
 
 //    @Override

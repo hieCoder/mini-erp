@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CalendarWeeklyRequest {
+public class WeeklyRequest {
     private Date startDay;
     private CalendarContent content;
 }

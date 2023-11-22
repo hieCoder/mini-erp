@@ -4,20 +4,16 @@ import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarWeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
-import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
-import com.shsoftvina.erpshsoftvina.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class WeeklyManagementTimeDayConverter {
@@ -31,10 +27,10 @@ public class WeeklyManagementTimeDayConverter {
     @Autowired
     private ManagementTimeDayConvert managementTimeDayConvert;
 
-    public WeeklyManagementTimeDay toEntity(String userId, CalendarWeeklyRequest calendarWeeklyRequest){
+    public WeeklyManagementTimeDay toEntity(String userId, WeeklyRequest weeklyRequest){
         return WeeklyManagementTimeDay.builder()
-                .code(DateUtils.formatDate(calendarWeeklyRequest.getStartDay()))
-                .content(JsonUtils.objectToJson(calendarWeeklyRequest.getContent()))
+                .code(DateUtils.formatDate(weeklyRequest.getStartDay()))
+                .content(JsonUtils.objectToJson(weeklyRequest.getContent()))
                 .user(userMapper.findById(userId)).build();
     }
 
