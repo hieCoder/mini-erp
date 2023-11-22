@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CalendarUpdateRequest {
-    private String userId;
-    private List<CalendarDayRequest> days;
-    private List<CalendarWeeklyRequest> weeklys;
-    private CalendarMonthlyRequest monthly;
+public class CalendarMonthlyRequest {
+    private String month;
+    private String[] content;
 }

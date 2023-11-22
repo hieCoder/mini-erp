@@ -16,8 +16,9 @@
 
     <select id="findByCode" resultMap="weeklyManagementTimeDayResultMap">
         SELECT *
-        FROM WEEKLY_MANAGEMENT_TIME_DAY
-        WHERE USER_ID = #{userId} AND CODE = #{code}
+        FROM WEEKLY_MANAGEMENT_TIME_DAY w
+        INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.USER_ID = #{userId} AND w.CODE = #{code}
     </select>
 
     <resultMap id="weeklyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
