@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -20,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,13 +34,6 @@ public class ManagementTimeDayConvert {
 
     @Autowired
     private WeeklyManagementTimeDayMapper weeklyManagementTimeDayMapper;
-
-    private String generateWeeklyCodeOfDay(Date currentDate) {
-        Instant instant = currentDate.toInstant();
-        LocalDate currentLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-        currentLocalDate = currentLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-        return DateUtils.formatDate(currentLocalDate);
-    }
 
     public ManagementTimeDay toEntity(String userId, CalendarDayRequest calendarDayRequest){
 
@@ -55,7 +50,7 @@ public class ManagementTimeDayConvert {
                 .oneThingCalendar(JsonUtils.objectToJson(o))
                 .day(day)
                 .user(userMapper.findById(userId))
-                .weeklyCode(generateWeeklyCodeOfDay(day))
+                .weeklyCode(ApplicationUtils.generateWeeklyCodeOfDay(day))
                 .build();
     }
 
@@ -82,21 +77,29 @@ public class ManagementTimeDayConvert {
     public List<DayResponse> toListResponse(List<ManagementTimeDay> days){
         return days.stream().map(this::toResponse).collect(Collectors.toList());
     }
-//
-//    public ManagementTimeDay toEntity(DayCreateRequest dayCreateRequest){
-//
-//        DataOfDayDto dataRequest = dayCreateRequest.getData();
-//
-//        return ManagementTimeDay.builder()
-//                .id(ApplicationUtils.generateId())
-//                .day(dayCreateRequest.getDay())
-//                .oneThingCalendar(JsonUtils.objectToJson(dataRequest.getOneThingCalendar()))
-//                .toDoList(JsonUtils.objectToJson(dataRequest.getToDoList()))
-//                .gratitudeDiary(JsonUtils.objectToJson(dataRequest.getGratitudeDiary()))
-//                .affirmation(dataRequest.getAffirmation())
-//                .user(userMapper.findById(dayCreateRequest.getUserId()))
-//                .build();
-//    }
+
+    public ManagementTimeDay toEntity(String userId, DayRequest dayRequest){
+
+        DataOfDayDto dataRequest = dayRequest.getData();
+
+        return ManagementTimeDay.builder()
+                .day(dayRequest.getDay())
+                .oneThingCalendar(JsonUtils.objectToJson(dataRequest.getOneThingCalendar()))
+                .toDoList(JsonUtils.objectToJson(dataRequest.getToDoList()))
+                .gratitudeDiary(JsonUtils.objectToJson(dataRequest.getGratitudeDiary()))
+                .affirmation(dataRequest.getAffirmation())
+                .complimentForMeToday(JsonUtils.objectToJson(dataRequest.getComplimentForMeToday()))
+                .todaysReflectionsAndImprovements(JsonUtils.objectToJson(dataRequest.getTodaysReflectionsAndImprovements()))
+                .toDoDetail(JsonUtils.objectToJson(dataRequest.getToDoDetail()))
+                .weeklyCode(ApplicationUtils.generateWeeklyCodeOfDay(dayRequest.getDay()))
+                .user(userMapper.findById(userId))
+                .build();
+    }
+
+    public List<ManagementTimeDay> toListEntity(String userId, DayRequest[] dayRequests) {
+        return Arrays.stream(dayRequests).map(e -> this.toEntity(userId, e)).collect(Collectors.toList());
+    }
+
 //
 //    public ManagementTimeDay toEntity(DayUpdateRequest dayUpdateRequest){
 //

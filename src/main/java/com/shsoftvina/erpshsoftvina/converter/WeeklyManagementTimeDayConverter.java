@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
@@ -31,6 +32,13 @@ public class WeeklyManagementTimeDayConverter {
         return WeeklyManagementTimeDay.builder()
                 .code(DateUtils.formatDate(weeklyRequest.getStartDay()))
                 .content(JsonUtils.objectToJson(weeklyRequest.getContent()))
+                .user(userMapper.findById(userId)).build();
+    }
+
+    public WeeklyManagementTimeDay toEntity(String userId, String code, String content){
+        return WeeklyManagementTimeDay.builder()
+                .code(code)
+                .content(content)
                 .user(userMapper.findById(userId)).build();
     }
 

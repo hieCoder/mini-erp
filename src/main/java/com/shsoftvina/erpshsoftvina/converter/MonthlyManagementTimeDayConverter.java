@@ -19,4 +19,11 @@ public class MonthlyManagementTimeDayConverter {
                 .content(JsonUtils.objectToJson(monthlyRequest.getContent()))
                 .user(userMapper.findById(userId)).build();
     }
+
+    public MonthlyManagementTimeDay toEntity(String userId, String code, String content){
+        return MonthlyManagementTimeDay.builder()
+                .code(code)
+                .content(content)
+                .user(userMapper.findById(userId)).build();
+    }
 }
