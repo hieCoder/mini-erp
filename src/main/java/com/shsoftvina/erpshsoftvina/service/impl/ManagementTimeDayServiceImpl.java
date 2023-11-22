@@ -1,16 +1,20 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
 import com.shsoftvina.erpshsoftvina.converter.ManagementTimeDayConvert;
+import com.shsoftvina.erpshsoftvina.converter.MonthlyManagementTimeDayConverter;
 import com.shsoftvina.erpshsoftvina.converter.WeeklyManagementTimeDayConverter;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
+import com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarMonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarWeeklyRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
@@ -52,6 +56,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private ApplicationUtils applicationUtils;
 
+    @Autowired
+    private MonthlyManagementTimeDayMapper monthlyManagementTimeDayMapper;
+
+    @Autowired
+    private MonthlyManagementTimeDayConverter monthlyManagementTimeDayConverter;
+
     @Override
     public int updateCalendar(CalendarUpdateRequest req) {
         String userId = req.getUserId();
@@ -89,6 +99,17 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         }
 
+        CalendarMonthlyRequest monthlyReq = req.getMonthly();
+        String monthlyCode = monthlyReq.getMonth();
+
+        MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
+        if(monthlyEntity == null){
+            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyReq);
+            monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyEntity);
+        } else{
+            monthlyEntity.setContent(JsonUtils.objectToJson(monthlyReq.getContent()));
+            monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
+        }
         return 1;
     }
 
@@ -119,11 +140,15 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         String weeklyCode = generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
         WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+
+        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, weeklyCode.substring(0, 7));
+
         List<ManagementTimeDay> daysOfWeek = managementTimeDayMapper.findByCode(userId, weeklyCode);
         return WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay.getId())
                 .startDate(weeklyManagementTimeDay.getCode())
                 .weeklyContents(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class))
+                .monthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class))
                 .listDayOfWeek(managementTimeDayConvert.toListResponse(daysOfWeek)).build();
     }
 

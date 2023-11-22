@@ -180,4 +180,12 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_ALLOWANCE_INSURANCE_CONTRACT"/>
     </changeSet>
+
+    <changeSet id="22" author="team2">
+        <addForeignKeyConstraint baseTableName="MONTHLY_MANAGEMENT_TIME_DAY"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_MONTHLY_MANAGEMENT_TIME_DAY_USER"/>
+    </changeSet>
 </databaseChangeLog>
