@@ -54,14 +54,13 @@
 
         .table-detail th {
             min-width: 340px;
-            height: 38.4px;
             background-color: #f2f2f2;
             white-space: nowrap;
             text-align: center;
             border: 1px solid #000;
             font-weight: bold;
             font-family: Poppins, sans-serif;
-            padding-top: 8px;
+            padding-top: 5px;
         }
 
         .table-detail td {
@@ -121,35 +120,35 @@
                             <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}">
                             </td>
                             <td class="text-center">0%</td>
-                            <td class="text-center">5</td>
+                            <td class="text-center" contenteditable="true">5</td>
                             <td class="text-center">0</td>
                         </tr>
                         <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
                         <tr name="lecture">
                             <td><input class="form-control" type="text" value="${lecture.target}"></td>
                             <td class="text-center">0%</td>
-                            <td class="text-center">5</td>
+                            <td class="text-center" contenteditable="true">5</td>
                             <td class="text-center">0</td>
                         </tr>
                         <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
                         <tr name="dailyEvaluation">
                             <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
                             <td class="text-center">0%</td>
-                            <td class="text-center">5</td>
+                            <td class="text-center" contenteditable="true">5</td>
                             <td class="text-center">0</td>
                         </tr>
                         <c:set var="work" value="${oneThingCalendar.work}"/>
                         <tr name="work">
                             <td><input class="form-control" type="text" value="${work.target}"></td>
                             <td class="text-center">0%</td>
-                            <td class="text-center">5</td>
+                            <td class="text-center" contenteditable="true">5</td>
                             <td class="text-center">0</td>
                         </tr>
                         <c:set var="reading" value="${oneThingCalendar.reading}"/>
                         <tr name="reading">
                             <td><input class="form-control" type="text" value="${reading.target}"></td>
                             <td class="text-center">0%</td>
-                            <td class="text-center">5</td>
+                            <td class="text-center" contenteditable="true">5</td>
                             <td class="text-center">0</td>
                         </tr>
                         </tbody>
@@ -180,9 +179,8 @@
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
                         <tr>
-                            <th>Category</th>
+                            <th class="w-25">Category</th>
                             <th>Target</th>
-                            <th>Performance</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -190,37 +188,28 @@
                                value="${oneThingCalendar.theSingleMostImportantThing}"/>
                         <tr name="theSingleMostImportantThing">
                             <td class="text-start">Single Most Important Thing</td>
-                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}">
-                            </td>
-                            <td><input class="form-check-input"
-                                       type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}></td>
+                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}"></td>
                         </tr>
                         <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
                         <tr name="lecture">
                             <td class="text-start">Lecture</td>
                             <td><input class="form-control" type="text" value="${lecture.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${lecture.performance ? 'checked' : ''}>
-                            </td>
                         </tr>
                         <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
                         <tr name="dailyEvaluation">
                             <td class="text-start">Daily Evaluation</td>
                             <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
-                            <td><input class="form-check-input"
-                                       type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                         </tr>
                         <c:set var="work" value="${oneThingCalendar.work}"/>
                         <tr name="work">
                             <td class="text-start">Work</td>
                             <td><input class="form-control" type="text" value="${work.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
                             </td>
                         </tr>
                         <c:set var="reading" value="${oneThingCalendar.reading}"/>
                         <tr name="reading">
                             <td class="text-start">Reading</td>
                             <td><input class="form-control" type="text" value="${reading.target}"></td>
-                            <td><input class="form-check-input" type="checkbox" ${reading.performance ? 'checked' : ''}>
                             </td>
                         </tr>
                         </tbody>
@@ -297,17 +286,9 @@
                         <table>
                             <thead>
                             <tr>
-                                <th colspan="2"><h5>2023. 8. 28. (월)</h5></th>
-                                <th><h5>2023. 8. 28. (월)</h5></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <th><h4>2023. 8. 28. (월)</h4></th>
-                                <!-- Thêm các cột khác nếu cần -->
+                                <c:forEach var="day" begin="1" end="8">
+                                    <th colspan="2"><h5>2023. 11. 0${day}. (월)</h5></th>
+                                </c:forEach>
                             </tr>
                             </thead>
                             <tbody>
