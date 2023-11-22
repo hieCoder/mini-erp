@@ -225,8 +225,6 @@
     const dayCodeTrTag = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
 
     const currentDate = new Date();
-    // const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
-    // const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
 
     var rsSuccess = (text) => {
         Swal.fire({
@@ -450,38 +448,37 @@
                                     }
                                     cell.classList.add("fw-bold")
                                     cell.classList.add("fst-italic")
-                                } else {
-                                    if (responseData != null && responseData.length > 0) {
-                                        responseData.forEach((e) => {
-                                            const startDate = new Date(e.startDate);
-                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
-                                            var weekNumber;
-                                            if (e.startDate === formattedFirstSunday) {
-                                                weekNumber = 1;
-                                            } else {
-                                                weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
-                                            }
-                                            if (weekNumber === ((i / 6) + 1)) {
-                                                const link = document.createElement("button");
-                                                link.textContent = "Edit";
-                                                link.classList.add("btn");
-                                                link.classList.add("btn-primary");
-                                                link.classList.add("showWeeklyUpdate");
-                                                link.setAttribute("data-id", e.weeklyId);
-                                                cell.appendChild(link);
-                                            }
-                                        })
-                                        cell.classList.add("fw-bold")
-                                        cell.classList.add("fst-italic")
-                                    }
                                 }
+                                // else {
+                                //     if (responseData != null && responseData.length > 0) {
+                                //         responseData.forEach((e) => {
+                                //             const startDate = new Date(e.startDate);
+                                //             const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                                //             const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
+                                //             var weekNumber;
+                                //             if (e.startDate === formattedFirstSunday) {
+                                //                 weekNumber = 1;
+                                //             } else {
+                                //                 weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                //             }
+                                //             if (weekNumber === ((i / 6) + 1)) {
+                                //                 const link = document.createElement("button");
+                                //                 link.textContent = "Edit";
+                                //                 link.classList.add("btn");
+                                //                 link.classList.add("btn-primary");
+                                //                 link.classList.add("showWeeklyUpdate");
+                                //                 link.setAttribute("data-id", e.weeklyId);
+                                //                 cell.appendChild(link);
+                                //             }
+                                //         })
+                                //         cell.classList.add("fw-bold")
+                                //         cell.classList.add("fst-italic")
+                                //     }
+                                // }
                             } else {
                                 if (j === 0) {
-                                    // Đây là hàng đầu tiên của ngày trong tuần, có thể thêm tên thích hợp
                                     const dayNames = ['The Single Most Important Thing', 'Lecture', 'Daily Evaluation', 'Work', 'Reading'];
-                                    const dayNamesCode = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                    row.classList.add(dayNamesCode[(i % 6) - 1])
+                                    row.classList.add(dayCodeTrTag[(i % 6) - 1])
                                     cell.textContent = dayNames[(i % 6) - 1];
                                     cell.classList.add("text-wrap")
                                     cell.classList.add("fw-bold")
@@ -489,6 +486,7 @@
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
+                                        const dayTodo = dayCodeTrTag[(i % 6) - 1];
                                         const year = currentDate.getFullYear();
                                         const currentMonth = currentDate.getMonth() + 1;
                                         const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
@@ -498,8 +496,6 @@
                                                 e.listDayOfWeek.forEach((week) => {
                                                     const dateInResponse = new Date(week.day);
                                                     const currentDay = countLine * 7 + j - startDay;
-                                                    const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                                    const dayTodo = dayNames[(i % 6) - 1];
                                                     if (
                                                         currentDate.getMonth() === dateInResponse.getMonth() &&
                                                         currentDay === dateInResponse.getDate()
@@ -507,34 +503,26 @@
                                                         const targetTodo = week.data.oneThingCalendar[dayTodo];
                                                         if (targetTodo != null) {
                                                             cell.textContent = targetTodo.target;
-                                                            cell.setAttribute('data-name', dayTodo);
-                                                            cell.setAttribute('data-day', currentColDay);
-                                                        } else {
-                                                            cell.setAttribute('data-name', dayTodo);
-                                                            cell.setAttribute('data-day', currentColDay);
                                                         }
-                                                    } else {
-                                                        cell.setAttribute('data-name', dayTodo);
-                                                        cell.setAttribute('data-day', currentColDay);
                                                     }
+
                                                 })
                                             })
                                         } else {
-                                            const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                            const dayTodo = dayNames[(i % 6) - 1];
                                             cell.setAttribute('data-name', dayTodo);
                                             cell.setAttribute('data-day', currentColDay);
                                         }
+                                        cell.setAttribute('data-name', dayTodo);
+                                        cell.setAttribute('data-day', currentColDay);
                                         cell.setAttribute('contenteditable', 'true');
                                     }
                                 } else {
-                                    const dayNames = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
-                                    const dayTodo = dayNames[(i % 6) - 1];
+                                    const dayTodo = dayCodeTrTag[(i % 6) - 1];
                                     const dayNumber = countLine * 7 + j - startDay;
                                     const year = currentDate.getFullYear();
                                     const currentMonth = currentDate.getMonth() + 1;
                                     let currentColDay;
-                                    if(dayNumber>daysInMonth) {
+                                    if (dayNumber > daysInMonth) {
                                         currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + daysInMonth;
                                     } else {
                                         currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
@@ -556,7 +544,7 @@
                                                 weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
-                                                cell.textContent = e.weeklyContents[(i % 6) - 1];
+                                                cell.textContent = e.weeklyContents[dayTodo];
                                             }
                                             cell.setAttribute('data-week', getPreviousSunday(currentColDay));
                                             cell.setAttribute('data-name', dayTodo);
@@ -578,10 +566,9 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
+                } else {
+                    window.location.href = "/management-time/";
                 }
-                // else {
-                //     window.location.href = "/management-time/";
-                // }
             }
 
         }
@@ -634,8 +621,7 @@
             return firstSundayIsBeginningDay;
         }
         const lastDay = lastDayOfPreviousMonth.getDate();
-        const lastSundayOfPreviousMonth = new Date(year, month - 1, lastDay - lastDayOfPreviousMonth.getDay());
-        return lastSundayOfPreviousMonth;
+        return new Date(year, month - 1, lastDay - lastDayOfPreviousMonth.getDay());
     }
 
     function getFirstAndLastDateOfMonth(year, month) {
@@ -691,15 +677,12 @@
                 dayObj.content[name] = value;
             }
         })
-        console.log(days);
         data.days.push(...days);
         data.weeklys.push(...weeklys);
-        console.log(data);
-        callAjaxByJsonWithData("/api/v1/management-time/calendar","POST",data,function (rs) {
+        callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             if (rs) {
-                populateCalendar(currentDate.getFullYear(),currentDate.getMonth());
-                console.log(rs);
-                rsSuccess();
+                populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+                rsSuccess("Add");
             } else {
                 rsUnSuccess();
             }
@@ -709,13 +692,10 @@
     function getPreviousSunday(currentDate) {
         const dateObject = new Date(currentDate);
 
-        // Get the day of the week (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
         let currentDayOfWeek = dateObject.getDay();
 
-        // Calculate the number of days to subtract to get to the previous Sunday
         let daysToSubtract = currentDayOfWeek === 0 ? 7 : currentDayOfWeek;
 
-        // Create a new date by subtracting the days
         const sundayDate = new Date(dateObject);
         sundayDate.setDate(dateObject.getDate() - daysToSubtract);
 
