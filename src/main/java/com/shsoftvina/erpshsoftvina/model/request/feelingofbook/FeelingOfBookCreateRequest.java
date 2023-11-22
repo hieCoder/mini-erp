@@ -16,8 +16,10 @@ public class FeelingOfBookCreateRequest {
     @NotBlank(message = "Field userId is not filled")
     private String userId;
 
-    @NotBlank(message = "Field quote is not filled")
+    private String feeling;
     private String quote;
+    private String lesson;
+    private String action;
 
     @NotBlank(message = "Field bookId is not filled")
     private String bookId;

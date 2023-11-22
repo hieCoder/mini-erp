@@ -12,7 +12,10 @@ import lombok.NoArgsConstructor;
 public class FeelingOfBookResponse {
 
     private String id;
-    private String[] quotes;
+    private String feeling;
+    private String quote;
+    private String lesson;
+    private String action;
     private String createdDate;
     private String fullnameUser;
     private String avatarUser;
