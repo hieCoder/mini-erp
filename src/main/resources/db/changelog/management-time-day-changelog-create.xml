@@ -13,6 +13,8 @@
             <column name="TO_DO_LIST" type="TEXT"/>
             <column name="GRATITUDE_DIARY" type="TEXT"/>
             <column name="AFFIRMATION" type="TEXT"/>
+            <column name="COMPLIMENT_FOR_ME_TODAY" type="TEXT"/>
+            <column name="TODAYS_REFLECTIONS_AND_IMPROVEMENTS" type="TEXT"/>
             <column name="DAY" type="DATE"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
             <column name="WEEKLY_CODE" type="VARCHAR(255)"/>
