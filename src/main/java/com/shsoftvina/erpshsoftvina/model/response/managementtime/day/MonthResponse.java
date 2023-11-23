@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DaysOfWeeklyResponse {
-    private MonthResponse monthlys;
-    private WeeklyManagementTimeDayResponse weeklys;
+public class MonthResponse {
+    private String[] monthlyContents;
+    private DailyRoutineResponse[] dailyRoutine;
 }

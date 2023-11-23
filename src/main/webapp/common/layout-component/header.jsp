@@ -156,7 +156,7 @@
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="<%="/upload/user/" + Principal.getUserCurrent().getAvatar()%>"
+                            <img class="rounded-circle header-profile-user" src="<%="/uploaded/user/" + Principal.getUserCurrent().getAvatar()%>"
                                  alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><%=Principal.getUserCurrent().getFullname()%></span>

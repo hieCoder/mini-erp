@@ -19,6 +19,7 @@
         <result property="complimentForMeToday" column="COMPLIMENT_FOR_ME_TODAY"/>
         <result property="todaysReflectionsAndImprovements" column="TODAYS_REFLECTIONS_AND_IMPROVEMENTS"/>
         <result property="toDoDetail" column="TODO_DETAIL"/>
+        <result property="dailyRoutine" column="DAILY_ROUTINE"/>
         <result property="day" column="DAY"/>
         <result property="weeklyCode" column="WEEKLY_CODE"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
@@ -55,13 +56,30 @@
         WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
     </select>
 
-    <insert id="insertDaysBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay" >
         INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
-            COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL)
-        VALUES
-        <foreach collection="list" item="day" separator=",">
-            (UUID(), #{day.oneThingCalendar}, #{day.toDoList}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
-             #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail})
-        </foreach>
+            COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE)
+        VALUES (UUID(), #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id}, #{weeklyCode},
+             #{complimentForMeToday}, #{todaysReflectionsAndImprovements}, #{toDoDetail}, #{dailyRoutine})
     </insert>
+
+    <update id="editDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
+        UPDATE MANAGEMENT_TIME_DAY
+        SET ONE_THING_CALENDAR = #{oneThingCalendar},
+            TO_DO_LIST = #{toDoList},
+            GRATITUDE_DIARY = #{gratitudeDiary},
+            AFFIRMATION = #{affirmation},
+            COMPLIMENT_FOR_ME_TODAY = #{complimentForMeToday},
+            TODAYS_REFLECTIONS_AND_IMPROVEMENTS = #{todaysReflectionsAndImprovements},
+            TODO_DETAIL = #{toDoDetail},
+            DAILY_ROUTINE = #{dailyRoutine}
+        WHERE ID = #{id}
+    </update>
+
+    <select id="findAllDailyRoutineOfMonth" resultMap="dayResultMap">
+        SELECT m.DAILY_ROUTINE FROM MANAGEMENT_TIME_DAY m
+        INNER JOIN MONTHLY_MANAGEMENT_TIME_DAY mo ON DATE_FORMAT(m.DAY, '%Y-%m') = mo.CODE
+        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode}
+    </select>
 </mapper>

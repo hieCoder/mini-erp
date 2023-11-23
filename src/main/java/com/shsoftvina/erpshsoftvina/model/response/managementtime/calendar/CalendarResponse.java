@@ -1,6 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar;
 
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

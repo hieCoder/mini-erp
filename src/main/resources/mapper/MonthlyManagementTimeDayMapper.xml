@@ -14,6 +14,7 @@
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="content" column="CONTENT"/>
+        <result property="dailyRoutine" column="DAILY_ROUTINE"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -23,12 +24,14 @@
     </resultMap>
 
     <insert id="createMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
-        INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID)
-        VALUES (UUID(), #{code}, #{content}, #{user.id})
+        INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID, DAILY_ROUTINE)
+        VALUES (UUID(), #{code}, #{content}, #{user.id}, #{dailyRoutine})
     </insert>
 
     <update id="updateMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
-        UPDATE MONTHLY_MANAGEMENT_TIME_DAY SET CONTENT = #{content}
+        UPDATE MONTHLY_MANAGEMENT_TIME_DAY
+        SET CONTENT = #{content},
+            DAILY_ROUTINE = #{dailyRoutine}
         WHERE ID = #{id};
     </update>
 </mapper>
