@@ -378,7 +378,7 @@
                             </c:forEach>
 
                             <%--Gratitude Diary--%>
-                            <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
+                            <c:forEach begin="1" end="3" var="entry" varStatus="loop">
                                 <tr name="gratitudeDiary">
                                     <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                         <td colspan="2"><textarea
@@ -386,16 +386,6 @@
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
-                            <c:if test="${3-data.gratitudeDiary.size()>0}">
-                                <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
-                                    <tr name="gratitudeDiary">
-                                        <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                            <td colspan="2"><textarea
-                                                    class="form-control gratitudeDiary" data-day="${day.day}"></textarea></td>
-                                        </c:forEach>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
 
                             <%--Affirmation--%>
                             <tr>
