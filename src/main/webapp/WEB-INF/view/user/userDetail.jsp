@@ -988,15 +988,26 @@
         sessionStorage.setItem('result2', 'saveResumeSuccess');
     });
 
-    // Click button 'X' to delete avatar
-    document.getElementById("profile-img-file-input").addEventListener("change", function (e) {
-        document.getElementById("delete-avatar-button").style.display = "block";
-    });
-    document.getElementById("delete-avatar-button").addEventListener("click", function () {
-        document.getElementById("avatar-user").src = userCurrent.avatar;
-        document.getElementById("delete-avatar-button").style.display = "none";
-        document.getElementById("profile-img-file-input").value = "";
-    });
+    // Show avatar default
+    document.addEventListener("DOMContentLoaded", function () {
+        var avatarUser = document.getElementById('avatar-user');
+        var src = avatarUser.getAttribute('src');
+        if (src.includes('avatar-default.jpg')) avatarUser.setAttribute('src', '/upload/user/avatar-default.jpg');
+
+        // Click button 'X' to delete avatar
+        document.getElementById("profile-img-file-input").addEventListener("change", function (e) {
+            document.getElementById("delete-avatar-button").style.display = "block";
+        });
+
+        // Show avatar user after click X button delete avatar
+        document.getElementById("delete-avatar-button").addEventListener("click", function () {
+            if (src.includes('avatar-default.jpg')) avatarUser.setAttribute('src', '/upload/user/avatar-default.jpg');
+            else document.getElementById("avatar-user").src = '${user.getAvatar()}';
+            document.getElementById("delete-avatar-button").style.display = "none";
+            document.getElementById("profile-img-file-input").value = "";
+        });
+    })
+
 
     // Handle Password
     var isNewPassword = false;
@@ -1127,7 +1138,6 @@
         });
     });
 
-
     // Validate Date of birth
     document.addEventListener("DOMContentLoaded", function () {
         var dateInput = document.getElementById("dateOfBirth");
@@ -1235,7 +1245,7 @@
                     callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                         localStorage.setItem('result', 'updateUserSuccess');
                         location.href = "/users/" + '${user.id}';
-                    }, function () {
+                    }, function (rs) {
                         enableBtn();
                         $('.d-flex.align-items-center').remove();
                         $('#updateDetail').removeClass('btn-load').text('Update');
@@ -1256,20 +1266,19 @@
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     localStorage.setItem('result', 'updateUserSuccess');
                     location.href = "/users/" + '${user.id}';
-                }, function () {
+                }, function (error) {
                     enableBtn();
                     $('.d-flex.align-items-center').remove();
                     $('#updateDetail').removeClass('btn-load').text('Update');
                     $('#updateBasic').removeClass('btn-load').text('Update');
 
-                    Swal.fire(
-                        {
-                            title: 'Email or TimeSheets Code exists',
-                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
-                            buttonsStyling: false,
-                            showCloseButton: true
-                        }
-                    )
+
+                    if (error.status === 400) {
+                        var errorMessage = error.responseText;
+
+                        if (errorMessage.includes('Duplicate Timesheets Code')) errorMessageTimeSheetsEmail('Timesheets already exists');
+                        else if (errorMessage.includes('Duplicate Email')) errorMessageTimeSheetsEmail('Email already exists');
+                    }
                 });
             }
         }
@@ -1564,7 +1573,7 @@
                     Swal.fire(
                         {
                             title: 'Oops...',
-                            text: 'You cannot upload this file!',
+                            text: 'Only for smaller file sizes: ' + convertMbToB(setting.fileSize) + 'MB',
                             icon: 'error',
                             confirmButtonClass: 'btn btn-primary w-xs mt-2',
                             buttonsStyling: false,
@@ -1578,7 +1587,7 @@
                     Swal.fire(
                         {
                             title: 'Oops...',
-                            text: 'You cannot upload this file!',
+                            text: 'Only files allowed: ' + allowedFile,
                             icon: 'error',
                             confirmButtonClass: 'btn btn-primary w-xs mt-2',
                             buttonsStyling: false,
@@ -2062,6 +2071,17 @@
                 icon: 'success',
                 confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
                 cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                buttonsStyling: false,
+                showCloseButton: true
+            }
+        )
+    }
+
+    function errorMessageTimeSheetsEmail(title) {
+        Swal.fire(
+            {
+                title: title,
+                confirmButtonClass: 'btn btn-primary w-xs mt-2',
                 buttonsStyling: false,
                 showCloseButton: true
             }

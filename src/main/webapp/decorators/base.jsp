@@ -51,7 +51,7 @@
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
-            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+            avatar: <%="'/uploaded/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
         };
     </script>
     <script src="/assets/custom/js/main.js"></script>

@@ -1,6 +1,8 @@
 package com.shsoftvina.erpshsoftvina.api;
 
 
+import com.shsoftvina.erpshsoftvina.exception.EmailDuplicateException;
+import com.shsoftvina.erpshsoftvina.exception.TimesheetDuplicateException;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserActiveRequest;
 import com.shsoftvina.erpshsoftvina.model.request.user.UserUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.user.PageUserListRespone;
@@ -21,9 +23,16 @@ public class UserApi {
 
     @PostMapping("/updation")
     public ResponseEntity<?> updateUser(@Valid UserUpdateRequest userUpdateRequest) {
-        int user = userService.updateUserDetail(userUpdateRequest);
-        if (user == 1) return ResponseEntity.ok().build();
-        return (ResponseEntity<?>) ResponseEntity.badRequest();
+        try {
+            userService.updateUserDetail(userUpdateRequest);
+        } catch (TimesheetDuplicateException e) {
+            return ResponseEntity.badRequest().body("Duplicate Timesheets Code");
+        } catch (EmailDuplicateException e) {
+            return ResponseEntity.badRequest().body("Duplicate Email");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

@@ -8,10 +8,7 @@ import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
-import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
-import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
-import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
+import com.shsoftvina.erpshsoftvina.exception.*;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
@@ -213,6 +210,12 @@ public class UserServiceImpl implements UserService {
 
             return 1;
         } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains("Duplicate entry '1' for key 'user.TIMESHEETS_CODE'")) {
+                throw new TimesheetDuplicateException("Duplicate Timesheets Code");
+            } else if (errorMessage.contains("Duplicate entry 'canh@gmail.com' for key 'user.EMAIL'")) {
+                throw new EmailDuplicateException("Duplicate Email");
+            }
             return 0;
         }
     }
@@ -235,7 +238,7 @@ public class UserServiceImpl implements UserService {
                 Object oldValue = map.get(oldKey);
                 String newValue = FileUtils.getPathUpload(User.class, oldValue.toString());
                 if(newValue == null) {
-                    newValue = "/upload/user/avatar-default.jpg" ;
+                    newValue = "/uploaded/user/avatar-default.jpg" ;
                 }
                 map.put(oldKey, newValue);
             }
