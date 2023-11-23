@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.dto.management_time;
+package com.shsoftvina.erpshsoftvina.model.response.managementtime.day;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DailyRoutineDto{
+public class DailyRoutineResponse {
     private String title;
     private int target;
+    private int performance;
 }
