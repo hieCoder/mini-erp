@@ -163,11 +163,11 @@
                         </thead>
                         <tbody>
                         <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlyContents}">
-                            <tr name="reading">
+                            <tr>
                                 <c:if test="${loop.index == 0}">
                                     <td class="text-start" rowspan="3">Main target</td>
                                 </c:if>
-                                <td><input class="form-control" type="text" value="${monthly}"></td>
+                                <td><input class="form-control monthTarget" type="text" value="${monthly}"></td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -184,31 +184,31 @@
                         <tbody>
                         <c:set var="theSingleMostImportantThing"
                                value="${weekly.weeklys.weeklyContents.theSingleMostImportantThing}"/>
-                        <tr name="theSingleMostImportantThing">
+                        <tr>
                             <td class="text-start">Single Most Important Thing</td>
-                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing}">
+                            <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text" value="${theSingleMostImportantThing}">
                             </td>
                         </tr>
                         <c:set var="lecture" value="${weekly.weeklys.weeklyContents.lecture}"/>
-                        <tr name="lecture">
+                        <tr>
                             <td class="text-start">Lecture</td>
-                            <td><input class="form-control" type="text" value="${lecture}"></td>
+                            <td><input class="form-control weekTarget" name="lecture" type="text" value="${lecture}"></td>
                         </tr>
                         <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklyContents.dailyEvaluation}"/>
-                        <tr name="dailyEvaluation">
+                        <tr>
                             <td class="text-start">Daily Evaluation</td>
-                            <td><input class="form-control" type="text" value="${dailyEvaluation}"></td>
+                            <td><input class="form-control weekTarget" name="dailyEvaluation" type="text" value="${dailyEvaluation}"></td>
                         </tr>
                         <c:set var="work" value="${weekly.weeklys.weeklyContents.work}"/>
-                        <tr name="work">
+                        <tr>
                             <td class="text-start">Work</td>
-                            <td><input class="form-control" type="text" value="${work}"></td>
+                            <td><input class="form-control weekTarget" name="work" type="text" value="${work}"></td>
                             </td>
                         </tr>
                         <c:set var="reading" value="${weekly.weeklys.weeklyContents.reading}"/>
-                        <tr name="reading">
+                        <tr >
                             <td class="text-start">Reading</td>
-                            <td><input class="form-control" type="text" value="${reading}"></td>
+                            <td><input class="form-control weekTarget" name="reading" type="text" value="${reading}"></td>
                             </td>
                         </tr>
                         </tbody>
@@ -309,7 +309,7 @@
                             <tr name="theSingleMostImportantThing">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="theSingleMostImportantThing" value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
-                                    <td contenteditable="true">${theSingleMostImportantThing.target}</td>
+                                    <td contenteditable="true" data-name="theSingleMostImportantThing" data-day="${day.day}">${theSingleMostImportantThing.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
@@ -318,7 +318,7 @@
                             <tr name="lecture">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
-                                    <td contenteditable="true">${lecture.target}</td>
+                                    <td contenteditable="true" data-name="lecture" data-day="${day.day}">${lecture.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -326,7 +326,7 @@
                             <tr name="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
-                                    <td contenteditable="true">${dailyEvaluation.target}</td>
+                                    <td contenteditable="true" data-name="dailyEvaluation" data-day="${day.day}">${dailyEvaluation.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -334,7 +334,7 @@
                             <tr name="work">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
-                                    <td contenteditable="true">${work.target}</td>
+                                    <td contenteditable="true" data-name="work" data-day="${day.day}">${work.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -342,7 +342,7 @@
                             <tr name="reading">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-name="reading" data-day="${day.day}">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -452,24 +452,27 @@
                             <%--Affirmation--%>
                             <tr>
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="affirmation" value="${day.data.affirmation}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                        <textarea class="form-control affirmation">${affirmation}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <%--Compliment--%>
                             <tr>
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="complimentForMeToday" value="${day.data.complimentForMeToday}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                        <textarea class="form-control affirmation">${complimentForMeToday}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <%--Reflection--%>
                             <tr>
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="todaysReflectionsAndImprovements" value="${day.data.todaysReflectionsAndImprovements}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                        <textarea class="form-control affirmation">${todaysReflectionsAndImprovements}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
@@ -747,7 +750,7 @@
         })
     })
 
-    $("#updateButton").click(function () {
+    $("#updatedButton").click(function () {
         $(this).addClass("d-none")
         $(this).before(BtnSuccessLoad)
         var id = "${dayResponse.id}"
@@ -863,6 +866,53 @@
         }
     })
 
+    $("#updateButton").click(function () {
+        const currentYearMonth = getCurrentYearMonth();
+        const data = {
+            userId: userCurrent.id,
+            days: [],
+            weekly: {
+                startDay: getPreviousSunday(currentYearMonth.currentDayParam),
+                content: {}
+            },
+            monthly : {}
+        }
+
+        const monthly = {
+            month : currentYearMonth.year  + '-' + currentYearMonth.month,
+            content: []
+        };
+        $('.monthTarget').each(function () {
+            monthly.content.push($(this).val())
+        });
+        data.monthly = monthly;
+
+        $("input.form-control.weekTarget").each(function () {
+            let inputName = $(this).attr("name");
+            data.weekly.content[inputName] = $(this).val();
+        })
+
+        const days = [];
+        $('td[contenteditable="true"]').each(function () {
+            const day = $(this).data('day');
+            const name = $(this).data('name');
+            const value = $(this).text().trim();
+            if (day !=null ) {
+                let dayObj = days.find(d => d.day = day);
+                if (!dayObj) {
+                    dayObj = {
+                        day:day,
+                        content:{}
+                    };
+                    days.push(dayObj);
+                }
+                dayObj.content[name] = value;
+            }
+        })
+        data.days.push(...days);
+        console.log(data)
+    })
+
     $(document).ready(function () {
         let isMouseDown = false;
         let startX;
@@ -907,6 +957,33 @@
         });
     });
 
+    function getCurrentYearMonth() {
+        let currentURL = window.location.href;
+        const url = new URL(currentURL);
+        let urlSearchParams = new URLSearchParams(url.search);
+        let currentDayParam = urlSearchParams.get("currentDay");
+        let currentDate = new Date(currentDayParam);
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+        return {
+            month,
+            year,
+            currentDayParam
+        };
+    }
+
+    function getPreviousSunday(currentDate) {
+        const dateObject = new Date(currentDate);
+
+        let currentDayOfWeek = dateObject.getDay();
+
+        let daysToSubtract = currentDayOfWeek === 0 ? 0 : currentDayOfWeek;
+
+        const sundayDate = new Date(dateObject);
+        sundayDate.setDate(dateObject.getDate() - daysToSubtract);
+
+        return sundayDate.toISOString().split('T')[0];
+    }
 </script>
 </body>
 </html>
