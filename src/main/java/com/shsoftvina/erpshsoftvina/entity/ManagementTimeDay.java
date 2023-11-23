@@ -20,6 +20,7 @@ public class ManagementTimeDay {
     private String complimentForMeToday;
     private String todaysReflectionsAndImprovements;
     private String toDoDetail;
+    private String dailyRoutine;
     private Date day;
     private User user;
     private String weeklyCode;

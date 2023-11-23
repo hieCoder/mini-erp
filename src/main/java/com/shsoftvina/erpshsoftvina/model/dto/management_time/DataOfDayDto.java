@@ -20,4 +20,5 @@ public class DataOfDayDto {
     private String todaysReflectionsAndImprovements;
     private String affirmation;
     private String[] toDoDetail;
+    private Boolean[] dailyRoutine;
 }
