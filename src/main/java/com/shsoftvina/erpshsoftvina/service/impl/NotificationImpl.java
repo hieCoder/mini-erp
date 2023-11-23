@@ -36,8 +36,6 @@ public class NotificationImpl implements NotificationService {
     @Autowired
     private NotificationConverter notificationConverter;
 
-    @Autowired
-    private HttpServletRequest request;
 
     @Autowired
     private ApplicationUtils applicationUtils;
@@ -71,7 +69,7 @@ public class NotificationImpl implements NotificationService {
         if (files!= null){
             applicationUtils.checkValidateFile(Notification.class, files);
 
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, files);
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(dir, files);
         } else{
             listFileNameSaveFileSuccess = new ArrayList<>();
         }
@@ -82,7 +80,7 @@ public class NotificationImpl implements NotificationService {
                 notificationMapper.createNoti(notification);
                 return notificationConverter.toNotificationDetailResponse(notification);
             } catch (Exception e){
-                FileUtils.deleteMultipleFilesToServer(request,dir, notification.getFiles());
+                FileUtils.deleteMultipleFilesToServer(dir, notification.getFiles());
                 return null;
             }
         }
@@ -122,7 +120,7 @@ public class NotificationImpl implements NotificationService {
                 throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
             }
 
-            newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, upFiles);
+            newFilesUpdate = FileUtils.saveMultipleFilesToServer(dir, upFiles);
             newFiles.addAll(newFilesUpdate);
         }
         List<String> listFileNameSaveFileSuccess = newFiles;
@@ -130,10 +128,10 @@ public class NotificationImpl implements NotificationService {
         int rs = notificationMapper.updateNotification(notificationUpdate);
         if(rs > 0){
             NotificationDetailResponse updateNotification = notificationConverter.toNotificationDetailResponse(notificationMapper.getNotificationById(id));
-            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+            FileUtils.deleteMultipleFilesToServer(dir, String.join(",", removeFiles));
             return (updateNotification);
         } else{
-            FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+            FileUtils.deleteMultipleFilesToServer(dir, String.join(",", newFilesUpdate));
             throw new NotFoundException("Fail to update notification");
         }
     }
