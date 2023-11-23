@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
     @Value("${file.uploadDir}")
     private String upload;

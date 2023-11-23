@@ -131,9 +131,11 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         calendarResponse.setWeeklys(data);
 
         MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, startDate.substring(0, 7));
-        String[] monthlyContent = JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class);
+        if(monthlyManagementTimeDay!= null){
+            String[] monthlyContent = JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class);
+            calendarResponse.setMonthlyContents(monthlyContent);
+        }
 
-        calendarResponse.setMonthlyContents(monthlyContent);
         return calendarResponse;
     }
 
