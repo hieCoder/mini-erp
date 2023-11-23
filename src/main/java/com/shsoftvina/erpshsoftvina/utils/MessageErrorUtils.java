@@ -44,4 +44,8 @@ public class MessageErrorUtils {
     public static String missing(String s){
         return s + " can not be missing";
     }
+
+    public static String duplicate(String s){
+        return s + " is duplicate";
+    }
 }

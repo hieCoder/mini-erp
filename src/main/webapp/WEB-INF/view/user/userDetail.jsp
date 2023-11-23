@@ -990,9 +990,6 @@
 
     // Show avatar default
     document.addEventListener("DOMContentLoaded", function () {
-        var avatarUser = document.getElementById('avatar-user');
-        var src = avatarUser.getAttribute('src');
-        if (src.includes('avatar-default.jpg')) avatarUser.setAttribute('src', '/upload/user/avatar-default.jpg');
 
         // Click button 'X' to delete avatar
         document.getElementById("profile-img-file-input").addEventListener("change", function (e) {
@@ -1001,8 +998,7 @@
 
         // Show avatar user after click X button delete avatar
         document.getElementById("delete-avatar-button").addEventListener("click", function () {
-            if (src.includes('avatar-default.jpg')) avatarUser.setAttribute('src', '/upload/user/avatar-default.jpg');
-            else document.getElementById("avatar-user").src = '${user.getAvatar()}';
+            document.getElementById("avatar-user").src = '${user.getAvatar()}';
             document.getElementById("delete-avatar-button").style.display = "none";
             document.getElementById("profile-img-file-input").value = "";
         });
@@ -1247,7 +1243,7 @@
                         location.href = "/users/" + '${user.id}';
                     }, function (rs) {
                         enableBtn();
-                        $('.d-flex.align-items-center').remove();
+                        //$('.d-flex.align-items-center').remove();
                         $('#updateDetail').removeClass('btn-load').text('Update');
                         $('#updateBasic').removeClass('btn-load').text('Update');
 
@@ -1266,19 +1262,17 @@
                 callAjaxByDataFormWithDataForm('/api/v1/users/updation', 'POST', formData, function (rs) {
                     localStorage.setItem('result', 'updateUserSuccess');
                     location.href = "/users/" + '${user.id}';
-                }, function (error) {
+                }, function (err) {
                     enableBtn();
-                    $('.d-flex.align-items-center').remove();
+                    //$('.d-flex.align-items-center').remove();
                     $('#updateDetail').removeClass('btn-load').text('Update');
                     $('#updateBasic').removeClass('btn-load').text('Update');
 
+                    var errorMessage = err.responseJSON.message;
 
-                    if (error.status === 400) {
-                        var errorMessage = error.responseText;
-
-                        if (errorMessage.includes('Duplicate Timesheets Code')) errorMessageTimeSheetsEmail('Timesheets already exists');
-                        else if (errorMessage.includes('Duplicate Email')) errorMessageTimeSheetsEmail('Email already exists');
-                    }
+                    if(errorMessage.includes('Timesheets code is duplicate')){
+                        errorMessageTimeSheetsEmail(errorMessage);
+                    } else if (errorMessage.includes('Email is duplicate')) errorMessageTimeSheetsEmail(errorMessage);
                 });
             }
         }
