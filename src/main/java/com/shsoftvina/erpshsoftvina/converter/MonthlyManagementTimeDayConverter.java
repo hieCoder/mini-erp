@@ -20,10 +20,11 @@ public class MonthlyManagementTimeDayConverter {
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(String userId, String code, String content){
+    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine){
         return MonthlyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
+                .dailyRoutine(dailyRoutine)
                 .user(userMapper.findById(userId)).build();
     }
 }

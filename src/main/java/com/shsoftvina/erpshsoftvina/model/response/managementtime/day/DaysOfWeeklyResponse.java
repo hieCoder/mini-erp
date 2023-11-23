@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DaysOfWeeklyResponse {
-    private String[] monthlyContents;
+    private MonthResponse monthlys;
     private WeeklyManagementTimeDayResponse weeklys;
 }

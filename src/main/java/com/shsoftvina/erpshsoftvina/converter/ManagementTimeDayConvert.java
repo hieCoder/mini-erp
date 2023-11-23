@@ -58,7 +58,10 @@ public class ManagementTimeDayConvert {
         data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));
         data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), String[].class));
         data.setAffirmation(day.getAffirmation());
+        data.setComplimentForMeToday(day.getComplimentForMeToday());
+        data.setTodaysReflectionsAndImprovements(day.getTodaysReflectionsAndImprovements());
         data.setToDoDetail(JsonUtils.jsonToObject(day.getToDoDetail(), String[].class));
+        data.setDailyRoutine(JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class));
 
         return DayResponse.builder()
                 .id(day.getId())
@@ -81,9 +84,10 @@ public class ManagementTimeDayConvert {
                 .toDoList(JsonUtils.objectToJson(dataRequest.getToDoList()))
                 .gratitudeDiary(JsonUtils.objectToJson(dataRequest.getGratitudeDiary()))
                 .affirmation(dataRequest.getAffirmation())
-                .complimentForMeToday(JsonUtils.objectToJson(dataRequest.getComplimentForMeToday()))
-                .todaysReflectionsAndImprovements(JsonUtils.objectToJson(dataRequest.getTodaysReflectionsAndImprovements()))
+                .complimentForMeToday(dataRequest.getComplimentForMeToday())
+                .todaysReflectionsAndImprovements(dataRequest.getTodaysReflectionsAndImprovements())
                 .toDoDetail(JsonUtils.objectToJson(dataRequest.getToDoDetail()))
+                .dailyRoutine(JsonUtils.objectToJson(dataRequest.getDailyRoutine()))
                 .weeklyCode(ApplicationUtils.generateWeeklyCodeOfDay(dayRequest.getDay()))
                 .user(userMapper.findById(userId))
                 .build();

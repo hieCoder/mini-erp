@@ -14,4 +14,5 @@ public class MonthlyManagementTimeDay {
     private String code;
     private String content;
     private User user;
+    private String dailyRoutine;
 }
