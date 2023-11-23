@@ -114,14 +114,15 @@
                         </thead>
                         <tbody>
                         <c:forEach var="month" varStatus="loop" begin="0" end="4">
+                            <c:set var="dailyRoutine" value="${weekly.monthlys.dailyRoutine[loop.index]}"/>
                             <tr name="theSingleMostImportantThing">
                                 <c:if test="${loop.index == 0}">
                                     <td class="text-start" rowspan="5">Repeat consistently every day</td>
                                 </c:if>
-                                <td><input class="form-control dailyRoutineInput" type="text" value="${target}">
+                                <td><input class="form-control dailyRoutineInput" type="text" value="${dailyRoutine.title}">
                                 </td>
                                 <td class="text-center">0%</td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true">5</td>
+                                <td class="text-center dailyRoutineTarget" contenteditable="true">${dailyRoutine.target}</td>
                                 <td class="text-center">0</td>
                             </tr>
                         </c:forEach>
@@ -325,52 +326,53 @@
                             <%--to-do--%>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelvePm">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelvePm">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-day="${day.day}" data-name="twelveToSixPm">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-day="${day.day}" data-name="twelveToSixPm">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelveAm">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td contenteditable="true">${reading.target}</td>
+                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelveAm">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
 
                             <%--daily routine--%>
-                            <c:forEach var="dailyRoutine" begin="1" end="5">
+                            <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
                                 <tr name="daily">
                                     <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                        <td>${reading.target}</td>
+                                        <c:set var="dailyRoutine" value="${weekly.monthlys.dailyRoutine}"/>
+                                        <td>${dailyRoutine[loop.index].title}</td>
                                         <td><input class="form-check-input dailyRoutine"
                                                    type="checkbox" ${reading.performance ? 'checked' : ''} data-day="${day.day}"></td>
                                     </c:forEach>
@@ -415,13 +417,11 @@
                                 </c:forEach>
                             </tr>
                             <%--Timeline--%>
-                            <c:forEach var="time" begin="1" end="24">
+                            <c:forEach var="time" varStatus="loop" begin="1" end="24">
                                 <tr name="theSingleMostImportantThing">
                                     <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                        <td contenteditable="true">${theSingleMostImportantThing.target}</td>
-                                        <td><input class="form-check-input"
-                                                   type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
-                                        </td>
+                                        <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
+                                        <td contenteditable="true">${data}</td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -857,7 +857,8 @@
                             todaysReflectionsAndImprovements : getTextAreaValuesByDayAndClass(day,'todaysReflectionsAndImprovements'),
                             affirmation : getTextAreaValuesByDayAndClass(day,'affirmation'),
                             toDoDetail : [],
-                            dailyRoutine: getDailyRoutineList(day,'dailyRoutine')
+                            dailyRoutine: getDailyRoutineList(day,'dailyRoutine'),
+                            toDoList : {}
                         }
                     };
                     days.push(dayObj);
@@ -870,6 +871,13 @@
         })
         data.days.push(...days);
         console.log(data)
+        callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+            if (rs) {
+                rsSuccess("Add");
+            } else {
+                rsUnSuccess();
+            }
+        })
     })
 
     $(document).ready(function () {
@@ -920,13 +928,15 @@
         const selector = 'textarea[data-day="' + day + '"].' + className;
         const textareas = $(selector);
 
-        if (textareas.length > 0) {
-            const values = textareas.map(function() {
+        if (textareas.length >= 2) {
+            const values = textareas.map(function () {
                 return $(this).val();
             }).get();
             return values;
+        } else if (textareas.length > 0) {
+            return textareas.first().val() || "";
         } else {
-            return null;
+            return "";
         }
     }
 
