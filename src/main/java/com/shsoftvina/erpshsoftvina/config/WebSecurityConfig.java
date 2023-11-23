@@ -47,38 +47,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
-
-                .antMatchers("/api/**").permitAll()
-//                // API
-//                // auth
-//                .antMatchers("/api/v1/auth/**").permitAll()
-//                // subscribe
-//                .antMatchers("/api/v1/subscribe").permitAll()
-//                // accounting
-//                .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                // timesheets
-//                .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                // book
-//                .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                // contract
-//                .antMatchers("/api/v1/contracts/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                // notification
-//                .antMatchers(HttpMethod.POST, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.PUT, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.DELETE, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                //event
-//                .antMatchers(HttpMethod.POST, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.PUT, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.DELETE, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                // setting
-//                .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                // user
-//                .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
-//                .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
+                // API
+                // auth
+                .antMatchers("/api/v1/auth/**").permitAll()
+                // subscribe
+                .antMatchers("/api/v1/subscribe").permitAll()
+                // accounting
+                .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                // timesheets
+                .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                // book
+                .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                // contract
+                .antMatchers("/api/v1/contracts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                // notification
+                .antMatchers(HttpMethod.POST, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.PUT, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                //event
+                .antMatchers(HttpMethod.POST, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.PUT, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                // setting
+                .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                // user
+                .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
+                .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
 
                 // CONTROLLER
                 // auth
