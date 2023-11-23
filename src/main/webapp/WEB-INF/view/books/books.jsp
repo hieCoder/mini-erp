@@ -36,7 +36,9 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All books</h5>
                     <div class="flex-shrink-0">
-                        <button data-bs-toggle="modal" data-bs-target="#addBookModal" id="add-book-btn" class="btn btn-success d-none"><i class="ri-add-line align-bottom me-1"></i> Add book</button>
+                        <button data-bs-toggle="modal" data-bs-target="#addBookModal" id="add-book-btn"
+                                class="btn btn-success d-none"><i class="ri-add-line align-bottom me-1"></i> Add book
+                        </button>
                     </div>
                 </div>
             </div>
@@ -45,7 +47,8 @@
                     <div class="row g-3">
                         <div class="col-xxl-9 col-sm-12">
                             <div class="search-box">
-                                <input id="search-input" type="text" class="form-control search bg-light border-light" placeholder="Search by title, username">
+                                <input id="search-input" type="text" class="form-control search bg-light border-light"
+                                       placeholder="Search by title, username">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -62,7 +65,7 @@
                         </div>
                         <!--end col-->
                         <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
-                            <div style="margin-right: 5px;">Show entries: </div>
+                            <div style="margin-right: 5px;">Show entries:</div>
                             <div class="page-count-item-container d-flex align-items-center align-items-center">
                                 <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
                                     <option value="10">10</option>
@@ -82,7 +85,8 @@
             <!--end card-body-->
             <div class="card-body">
                 <div class="table-responsive table-card">
-                    <table id="datatable-book" class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;">
+                    <table id="datatable-book" class="table align-middle table-nowrap mb-0 w-100"
+                           style="margin: 0px!important;">
                         <thead>
                         <tr>
                             <th>ID</th>
@@ -116,7 +120,8 @@
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
                 <h5 class="modal-title" id="exampleModalLabel">Add book</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
             </div>
             <form id="addBookForm">
                 <div class="modal-body">
@@ -124,14 +129,16 @@
                         <div class="col-lg-12">
                             <div>
                                 <label for="title-add" class="form-label">Title</label>
-                                <input type="text" id="title-add" name="title" class="form-control" placeholder="Title"/>
+                                <input type="text" id="title-add" name="title" class="form-control"
+                                       placeholder="Title"/>
                                 <small class="form-message"></small>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div>
                                 <label for="author-add" class="form-label">Author</label>
-                                <input type="text" id="author-add" name="author" class="form-control" placeholder="Author"/>
+                                <input type="text" id="author-add" name="author" class="form-control"
+                                       placeholder="Author"/>
                                 <small class="form-message"></small>
                             </div>
                         </div>
@@ -145,8 +152,10 @@
                         <div class="col-lg-12">
                             <div>
                                 <label for="image-add" class="form-label">Image</label>
-                                <input type="file" id="image-add" name="image" class="form-control file-image" accept="image/*" placeholder="Image"/>
-                                <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-add" class="image-preview d-none">
+                                <input type="file" id="image-add" name="image" class="form-control file-image"
+                                       accept="image/*" placeholder="Image"/>
+                                <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-add"
+                                     class="image-preview d-none">
                                 <small class="form-message"></small>
                             </div>
                         </div>
@@ -161,7 +170,8 @@
                                 <span class="flex-grow-1">Add</span>
                             </span>
                         </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+                        </button>
                     </div>
                 </div>
             </form>
@@ -176,7 +186,8 @@
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
                 <h5 class="modal-title" id="exampleModalLabel">Edit book</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
             </div>
             <form id="editBookForm">
                 <div class="modal-body">
@@ -184,14 +195,16 @@
                         <div class="col-lg-12">
                             <div>
                                 <label for="title-add" class="form-label">Title</label>
-                                <input type="text" id="title-edit" name="title" class="form-control" placeholder="Title"/>
+                                <input type="text" id="title-edit" name="title" class="form-control"
+                                       placeholder="Title"/>
                                 <small class="form-message"></small>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div>
                                 <label for="author-add" class="form-label">Author</label>
-                                <input type="text" id="author-edit" name="author" class="form-control" placeholder="Author"/>
+                                <input type="text" id="author-edit" name="author" class="form-control"
+                                       placeholder="Author"/>
                                 <small class="form-message"></small>
                             </div>
                         </div>
@@ -205,8 +218,10 @@
                         <div class="col-lg-12">
                             <div>
                                 <label for="image-add" class="form-label">Image</label>
-                                <input type="file" id="image-edit" name="image" class="form-control file-image" accept="image/*" placeholder="Image"/>
-                                <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-edit" class="image-preview d-none">
+                                <input type="file" id="image-edit" name="image" class="form-control file-image"
+                                       accept="image/*" placeholder="Image"/>
+                                <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-edit"
+                                     class="image-preview d-none">
                                 <small class="form-message"></small>
                             </div>
                         </div>
@@ -221,7 +236,8 @@
                                 <span class="flex-grow-1">Edit</span>
                             </span>
                         </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+                        </button>
                     </div>
                 </div>
             </form>
@@ -234,7 +250,8 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body p-5 text-center">
-                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                           colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
                 <div class="mt-4 text-center">
                     <h4>You are about to delete a book ?</h4>
                     <p class="text-muted fs-14 mb-4">Deleting your book will remove all of
@@ -246,7 +263,10 @@
                                 <span class="flex-grow-1">Yes, Delete It</span>
                             </span>
                         </button>
-                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="delete-task-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none"
+                                id="delete-task-close" data-bs-dismiss="modal"><i
+                                class="ri-close-line me-1 align-middle"></i> Close
+                        </button>
                     </div>
                 </div>
             </div>
@@ -258,26 +278,26 @@
 <script>
 
     function getUrlApiBooks(search, page, pageSize) {
-        return '/api/v1/books?search='+search+'&page='+page+'&pageSize='+pageSize;
+        return '/api/v1/books?search=' + search + '&page=' + page + '&pageSize=' + pageSize;
     }
 
     function getCountListApiUrl(search) {
-        return '/api/v1/books/count?search='+search;
+        return '/api/v1/books/count?search=' + search;
     }
 
     var objPaging = {
-        search:'',
+        search: '',
         page: 1,
         pageSize: $('#page-count-select').val()
     }
 
     var table = null;
 
-    $(document).ready(function (){
+    $(document).ready(function () {
 
-        if(isDeleveloper()){
+        if (isDeleveloper()) {
             $('#add-book-btn').remove();
-        } else{
+        } else {
             $('#add-book-btn').removeClass('d-none');
         }
 
@@ -286,11 +306,10 @@
                 url: getUrlApiBooks(objPaging.search, 1, objPaging.pageSize),
                 method: 'GET',
                 dataSrc: function (json) {
-                    if(json.length != 0) {
+                    if (json.length != 0) {
                         loadPaging();
                         $('#pagination').addClass('mt-4');
-                    }
-                    else {
+                    } else {
                         removePagingIfExsit();
                         $('#pagination').removeClass('mt-4');
                     }
@@ -301,14 +320,14 @@
                 {data: 'id'},
                 {
                     data: 'image',
-                    render: function(data, type, row) {
-                        return `<img src="`+data+`" height="40"/>`;
+                    render: function (data, type, row) {
+                        return `<img src="` + data + `" height="40"/>`;
                     }
                 },
                 {
                     data: 'title',
-                    render: function(data, type, row) {
-                        return `<a class="fw-medium link-primary text-decoration-underline" href="/books/`+row.id+`">`+data+`</a>`;
+                    render: function (data, type, row) {
+                        return `<a class="fw-medium link-primary text-decoration-underline" href="/books/` + row.id + `">` + data + `</a>`;
                     }
                 },
                 {data: 'author'},
@@ -318,10 +337,10 @@
                     render: function (data, type, row) {
                         return `<div class="d-flex gap-2">
                                     <div class="edit">
-                                        <button data-id="`+row.id+ `" class="btn btn-sm btn-success edit-book-btn">Edit</button>
+                                        <button data-id="` + row.id + `" class="btn btn-sm btn-success edit-book-btn">Edit</button>
                                     </div>
                                     <div class="remove">
-                                        <button data-bs-toggle="modal" href="#deleteBookModal" data-id="`+row.id+`" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
+                                        <button data-bs-toggle="modal" href="#deleteBookModal" data-id="` + row.id + `" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
                                     </div>
                         </div>`;
                     }
@@ -335,7 +354,7 @@
         });
     });
 
-    $(document).on('click', '#filter-btn', function() {
+    $(document).on('click', '#filter-btn', function () {
         objPaging.search = $('#search-input').val();
         objPaging.page = 1;
 
@@ -348,7 +367,7 @@
         });
     });
 
-    $(document).on('change', '#page-count-select', function() {
+    $(document).on('change', '#page-count-select', function () {
         var selectedValue = $(this).val();
         objPaging.page = 1;
         objPaging.pageSize = selectedValue;
@@ -361,20 +380,20 @@
         });
     });
 
-    function removePagingIfExsit(){
+    function removePagingIfExsit() {
         if (window.pagObj) {
             window.pagObj.twbsPagination('destroy');
         }
     }
 
-    function loadPaging(){
+    function loadPaging() {
         callAjaxByJsonWithData(getCountListApiUrl(objPaging.search), 'GET', null, function (totalItem) {
 
             removePagingIfExsit();
 
             //paging
             var totalPages = 0;
-            if(totalItem <= objPaging.pageSize) totalPages = 1;
+            if (totalItem <= objPaging.pageSize) totalPages = 1;
             else totalPages = Math.ceil(totalItem / objPaging.pageSize);
             var currentPage = objPaging.page;
 
@@ -395,22 +414,60 @@
         });
     }
 
-    $(document).on('change', '.file-image', function() {
+    $(document).on('change', '.file-image', function () {
         const selectedFile = this.files[0];
         if (selectedFile) {
             const reader = new FileReader();
             const imagePreview = $(this).siblings('.image-preview');
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 imagePreview.attr('src', e.target.result);
                 imagePreview.removeClass('d-none');
             };
 
             reader.readAsDataURL(selectedFile);
         }
+
+        var fileImage = document.querySelectorAll('.file-image');
+        fileImage.forEach(function (element) {
+            callAjaxByJsonWithData('/api/v1/settings/code?code=BOOK', 'GET', null, function (rs) {
+                var setting = rs;
+                var allowedFile = setting.imageType.split(',');
+                var fileName = element.files[0].name.split('.').pop();
+                var fileSize = element.files[0].size;
+
+                if (fileSize > convertMbToB(setting.fileSize)) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'Only for smaller file sizes: ' + convertMbToB(setting.fileSize) + 'MB',
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    element.value = null;
+                }
+
+                if (!(allowedFile.includes(fileName))) {
+                    Swal.fire(
+                        {
+                            title: 'Oops...',
+                            text: 'Only files allowed: ' + allowedFile,
+                            icon: 'error',
+                            confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }
+                    )
+                    element.value = null;
+                }
+            });
+        })
     });
 
-    $(document).on('shown.bs.modal', '#addBookModal', function() {
+    $(document).on('shown.bs.modal', '#addBookModal', function () {
 
         $('#title-add').val('');
         $('#author-add').val('');
@@ -421,9 +478,9 @@
         imagepreview.addClass('d-none');
 
         Validator({
-            form:'#addBookForm',
+            form: '#addBookForm',
             errorSelector: '.form-message',
-            rules:[
+            rules: [
                 Validator.isRequired('#title-add'),
                 Validator.isRequired('#author-add'),
                 Validator.isRequired('#link-add'),
@@ -465,9 +522,9 @@
         });
 
         Validator({
-            form:'#editBookForm',
+            form: '#editBookForm',
             errorSelector: '.form-message',
-            rules:[
+            rules: [
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#author-edit'),
                 Validator.isRequired('#link-edit')
