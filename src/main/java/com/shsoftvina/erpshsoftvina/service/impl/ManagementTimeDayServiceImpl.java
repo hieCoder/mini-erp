@@ -11,6 +11,7 @@ import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.DailyRoutineDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.CalendarContent;
@@ -24,6 +25,7 @@ import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.Calen
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DaysOfWeeklyResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.MonthResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -149,25 +151,25 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, currentDay.substring(0, 7));
         if(monthlyManagementTimeDay!=null){
-            daysOfWeeklyResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
+            MonthResponse monthResponse = new MonthResponse();
+            monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
+            monthResponse.setDailyRoutine(JsonUtils.jsonToObject(monthlyManagementTimeDay.getDailyRoutine(), DailyRoutineDto[].class));
+            daysOfWeeklyResponse.setMonthlys(monthResponse);
         }
 
         String weeklyCode = ApplicationUtils.generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
         WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+        if(weeklyManagementTimeDay != null){
 
-        List<ManagementTimeDay> daysOfWeek = managementTimeDayMapper.findByCode(userId, weeklyCode);
+            List<ManagementTimeDay> daysOfWeek = managementTimeDayMapper.findByCode(userId, weeklyCode);
 
-        WeeklyManagementTimeDayResponse weekly = null;
-        if(weeklyManagementTimeDay == null){
-            weekly = WeeklyManagementTimeDayResponse.builder().listDayOfWeek(managementTimeDayConvert.toListResponse(daysOfWeek)).build();
-        } else{
-            weekly = WeeklyManagementTimeDayResponse.builder()
+            WeeklyManagementTimeDayResponse weekly = WeeklyManagementTimeDayResponse.builder()
                     .weeklyId(weeklyManagementTimeDay.getId())
                     .startDate(weeklyManagementTimeDay.getCode())
                     .weeklyContents(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class))
                     .listDayOfWeek(managementTimeDayConvert.toListResponse(daysOfWeek)).build();
+            daysOfWeeklyResponse.setWeeklys(weekly);
         }
-        daysOfWeeklyResponse.setWeeklys(weekly);
 
         return daysOfWeeklyResponse;
     }
@@ -183,12 +185,16 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
         String monthlyCode = monthlyRequest.getMonth();
         String[] monthlyContent = monthlyRequest.getContent();
+        DailyRoutineDto[] dailyRoutine = monthlyRequest.getDailyRoutine();
         MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
         if(monthlyEntity == null){
-            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode, JsonUtils.objectToJson(monthlyContent));
+            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
+                    JsonUtils.objectToJson(monthlyContent),
+                    JsonUtils.objectToJson(dailyRoutine));
             monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyEntity);
         } else{
             monthlyEntity.setContent(JsonUtils.objectToJson(monthlyContent));
+            monthlyEntity.setDailyRoutine(JsonUtils.objectToJson(dailyRoutine));
             monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
         }
 
@@ -206,7 +212,15 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         DayRequest[] days = daysUpdateRequest.getDays();
         List<ManagementTimeDay> managementTimeDays = managementTimeDayConvert.toListEntity(userId, days);
-        managementTimeDayMapper.insertDaysBatch(managementTimeDays);
+        for(ManagementTimeDay managementTimeDay: managementTimeDays){
+            ManagementTimeDay m = managementTimeDayMapper.findByDay(userId, managementTimeDay.getDay());
+            if(m == null){
+                managementTimeDayMapper.insertDay(managementTimeDay);
+            } else{
+                managementTimeDay.setId(m.getId());
+                managementTimeDayMapper.editDay(managementTimeDay);
+            }
+        }
 
         return 1;
     }
