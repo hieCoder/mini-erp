@@ -582,9 +582,10 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
-                } else {
-                    window.location.href = "/management-time/";
                 }
+                // else {
+                //     window.location.href = "/management-time/";
+                // }
             }
 
         }
