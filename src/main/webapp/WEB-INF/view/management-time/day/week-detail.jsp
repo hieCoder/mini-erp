@@ -113,44 +113,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:set var="theSingleMostImportantThing"
-                               value="${oneThingCalendar.theSingleMostImportantThing}"/>
-                        <tr name="theSingleMostImportantThing">
-                            <td class="text-start" rowspan="5">Repeat consistently every day</td>
-                            <td><input class="form-control" type="text" value="${theSingleMostImportantThing.target}">
-                            </td>
-                            <td class="text-center">0%</td>
-                            <td class="text-center" contenteditable="true">5</td>
-                            <td class="text-center">0</td>
-                        </tr>
-                        <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
-                        <tr name="lecture">
-                            <td><input class="form-control" type="text" value="${lecture.target}"></td>
-                            <td class="text-center">0%</td>
-                            <td class="text-center" contenteditable="true">5</td>
-                            <td class="text-center">0</td>
-                        </tr>
-                        <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
-                        <tr name="dailyEvaluation">
-                            <td><input class="form-control" type="text" value="${dailyEvaluation.target}"></td>
-                            <td class="text-center">0%</td>
-                            <td class="text-center" contenteditable="true">5</td>
-                            <td class="text-center">0</td>
-                        </tr>
-                        <c:set var="work" value="${oneThingCalendar.work}"/>
-                        <tr name="work">
-                            <td><input class="form-control" type="text" value="${work.target}"></td>
-                            <td class="text-center">0%</td>
-                            <td class="text-center" contenteditable="true">5</td>
-                            <td class="text-center">0</td>
-                        </tr>
-                        <c:set var="reading" value="${oneThingCalendar.reading}"/>
-                        <tr name="reading">
-                            <td><input class="form-control" type="text" value="${reading.target}"></td>
-                            <td class="text-center">0%</td>
-                            <td class="text-center" contenteditable="true">5</td>
-                            <td class="text-center">0</td>
-                        </tr>
+                        <c:forEach var="month" varStatus="loop" begin="0" end="4">
+                            <tr name="theSingleMostImportantThing">
+                                <c:if test="${loop.index == 0}">
+                                    <td class="text-start" rowspan="5">Repeat consistently every day</td>
+                                </c:if>
+                                <td><input class="form-control dailyRoutineInput" type="text" value="${target}">
+                                </td>
+                                <td class="text-center">0%</td>
+                                <td class="text-center dailyRoutineTarget" contenteditable="true">5</td>
+                                <td class="text-center">0</td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                     <h4 class="fw-bolder">Month Target</h4>
@@ -162,7 +136,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlyContents}">
+                        <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlys.monthlyContents}">
                             <tr>
                                 <c:if test="${loop.index == 0}">
                                     <td class="text-start" rowspan="3">Main target</td>
@@ -393,48 +367,22 @@
                             </tr>
 
                             <%--daily routine--%>
-                            <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td>${reading.target}</td>
-                                    <td><input class="form-check-input"
-                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                                </c:forEach>
-                            </tr>
-                            <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td>${reading.target}</td>
-                                    <td><input class="form-check-input"
-                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                                </c:forEach>
-                            </tr>
-                            <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td>${reading.target}</td>
-                                    <td><input class="form-check-input"
-                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                                </c:forEach>
-                            </tr>
-                            <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td>${reading.target}</td>
-                                    <td><input class="form-check-input"
-                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                                </c:forEach>
-                            </tr>
-                            <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
-                                    <td>${reading.target}</td>
-                                    <td><input class="form-check-input"
-                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                                </c:forEach>
-                            </tr>
+                            <c:forEach var="dailyRoutine" begin="1" end="5">
+                                <tr name="daily">
+                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                        <td>${reading.target}</td>
+                                        <td><input class="form-check-input dailyRoutine"
+                                                   type="checkbox" ${reading.performance ? 'checked' : ''} data-day="${day.day}"></td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
 
                             <%--Gratitude Diary--%>
                             <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
                                 <tr name="gratitudeDiary">
                                     <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                         <td colspan="2"><textarea
-                                                class="form-control">${entry}</textarea></td>
+                                                class="form-control gratitudeDiary" data-day="${day.day}">${entry}</textarea></td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -443,7 +391,7 @@
                                     <tr name="gratitudeDiary">
                                         <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                             <td colspan="2"><textarea
-                                                    class="form-control"></textarea></td>
+                                                    class="form-control gratitudeDiary" data-day="${day.day}"></textarea></td>
                                         </c:forEach>
                                     </tr>
                                 </c:forEach>
@@ -454,7 +402,7 @@
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="affirmation" value="${day.data.affirmation}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation">${affirmation}</textarea>
+                                        <textarea class="form-control affirmation" data-day="${day.day}">${affirmation}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
@@ -463,7 +411,7 @@
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="complimentForMeToday" value="${day.data.complimentForMeToday}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation">${complimentForMeToday}</textarea>
+                                        <textarea class="form-control complimentForMeToday" data-day="${day.day}">${complimentForMeToday}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
@@ -472,7 +420,7 @@
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="todaysReflectionsAndImprovements" value="${day.data.todaysReflectionsAndImprovements}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation">${todaysReflectionsAndImprovements}</textarea>
+                                        <textarea class="form-control todaysReflectionsAndImprovements" data-day="${day.day}">${todaysReflectionsAndImprovements}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
@@ -880,11 +828,19 @@
 
         const monthly = {
             month : currentYearMonth.year  + '-' + currentYearMonth.month,
-            content: []
+            content: [],
+            dailyRoutine:[]
         };
         $('.monthTarget').each(function () {
             monthly.content.push($(this).val())
         });
+        $('input.dailyRoutineInput').each(function () {
+            let obj = {
+                title:$(this).val(),
+                target:$(this).closest('tr').find('.dailyRoutineTarget').text()
+            }
+            monthly.dailyRoutine.push(obj)
+        })
         data.monthly = monthly;
 
         $("input.form-control.weekTarget").each(function () {
@@ -897,16 +853,29 @@
             const day = $(this).data('day');
             const name = $(this).data('name');
             const value = $(this).text().trim();
-            if (day !=null ) {
-                let dayObj = days.find(d => d.day = day);
+            const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
+
+            if (day != null) {
+                let dayObj = days.find(d => d.day === day);
                 if (!dayObj) {
                     dayObj = {
-                        day:day,
-                        content:{}
+                        day: day,
+                        data: {
+                            oneThingCalendar : {},
+                            gratitudeDiary : getTextAreaValuesByDayAndClass(day,'gratitudeDiary'),
+                            complimentForMeToday : getTextAreaValuesByDayAndClass(day,'complimentForMeToday'),
+                            todaysReflectionsAndImprovements : getTextAreaValuesByDayAndClass(day,'todaysReflectionsAndImprovements'),
+                            affirmation : getTextAreaValuesByDayAndClass(day,'affirmation'),
+                            toDoDetail : [],
+                            dailyRoutine: getDailyRoutineList(day,'dailyRoutine')
+                        }
                     };
                     days.push(dayObj);
                 }
-                dayObj.content[name] = value;
+                dayObj.data.oneThingCalendar[name] = {
+                    target : value,
+                    performance : isChecked
+                };
             }
         })
         data.days.push(...days);
@@ -956,6 +925,32 @@
             e.preventDefault();
         });
     });
+
+    function getTextAreaValuesByDayAndClass(day, className) {
+        const selector = 'textarea[data-day="' + day + '"].' + className;
+        const textareas = $(selector);
+
+        if (textareas.length > 0) {
+            const values = textareas.map(function() {
+                return $(this).val();
+            }).get();
+            return values;
+        } else {
+            return null;
+        }
+    }
+
+    function getDailyRoutineList(day, className) {
+        var dailyRoutineList = [];
+
+        var selector = 'input.' + className + '[data-day="' + day + '"]';
+
+        $(selector).each(function () {
+            var isChecked = $(this).prop('checked');
+            dailyRoutineList.push(isChecked);
+        });
+        return dailyRoutineList;
+    }
 
     function getCurrentYearMonth() {
         let currentURL = window.location.href;
