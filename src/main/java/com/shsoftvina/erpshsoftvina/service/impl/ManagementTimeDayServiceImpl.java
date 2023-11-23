@@ -28,10 +28,7 @@ import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyMana
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DaysOfWeeklyResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.MonthResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
-import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
-import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
+import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -169,18 +166,22 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             MonthResponse monthResponse = new MonthResponse();
             monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
 
-            DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(monthlyManagementTimeDay.getDailyRoutine(), DailyRoutineResponse[].class);
-            List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
-            List<Boolean[]> listDailyRoutine = list.stream()
-                    .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
-                    .collect(Collectors.toList());
-            int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
+            String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
+            if(!StringUtils.isBlank(dailyRoutineJson)){
+                DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
+                List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
+                List<Boolean[]> listDailyRoutine = list.stream()
+                        .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
+                        .collect(Collectors.toList());
+                int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
 
-            for(int i = 0; i < dailyRoutineResponses.length; i++){
-                dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                for(int i = 0; i < dailyRoutineResponses.length; i++){
+                    dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                }
+
+                monthResponse.setDailyRoutine(dailyRoutineResponses);
             }
 
-            monthResponse.setDailyRoutine(dailyRoutineResponses);
             daysOfWeeklyResponse.setMonthlys(monthResponse);
         }
 
