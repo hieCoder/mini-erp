@@ -19,4 +19,5 @@ public interface ManagementTimeDayMapper {
     List<ManagementTimeDay> findByCode(String userId, String weeklyCode);
     int insertDay(ManagementTimeDay day);
     int editDay(ManagementTimeDay managementTimeDay);
+    List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
 }

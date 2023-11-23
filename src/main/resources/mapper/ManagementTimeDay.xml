@@ -75,4 +75,11 @@
             DAILY_ROUTINE = #{dailyRoutine}
         WHERE ID = #{id}
     </update>
+
+    <select id="findAllDailyRoutineOfMonth" resultMap="dayResultMap">
+        SELECT m.DAILY_ROUTINE FROM MANAGEMENT_TIME_DAY m
+        INNER JOIN MONTHLY_MANAGEMENT_TIME_DAY mo ON DATE_FORMAT(m.DAY, '%Y-%m') = mo.CODE
+        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode}
+    </select>
 </mapper>

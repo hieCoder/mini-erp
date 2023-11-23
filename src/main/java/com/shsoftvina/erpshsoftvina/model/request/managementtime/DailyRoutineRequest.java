@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MonthlyRequest {
-    private String month;
-    private String[] content;
-    private DailyRoutineRequest[] dailyRoutine;
+public class DailyRoutineRequest {
+    private String title;
+    private int target;
 }
