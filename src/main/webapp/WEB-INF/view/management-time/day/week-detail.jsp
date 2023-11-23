@@ -182,7 +182,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:set var="theSingleMostImportantThing" value="${weekly.weeklys.weeklyContents.theSingleMostImportantThing}"/>
+                        <c:set var="theSingleMostImportantThing"
+                               value="${weekly.weeklys.weeklyContents.theSingleMostImportantThing}"/>
                         <tr name="theSingleMostImportantThing">
                             <td class="text-start">Single Most Important Thing</td>
                             <td><input class="form-control" type="text" value="${theSingleMostImportantThing}">
@@ -299,136 +300,188 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="fw-bolder w-75">Target</td>
-                                <td class="fw-bolder">Performance</td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td class="fw-bolder w-75">Target</td>
+                                    <td class="fw-bolder">Performance</td>
+                                </c:forEach>
                             </tr>
                             <%--one-thing--%>
-                            <c:set var="theSingleMostImportantThing"
-                                   value="${oneThingCalendar.theSingleMostImportantThing}"/>
                             <tr name="theSingleMostImportantThing">
-                                <td contenteditable="true">${theSingleMostImportantThing.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
-                                </td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="theSingleMostImportantThing" value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
+                                    <td contenteditable="true">${theSingleMostImportantThing.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
+                                    </td>
+                                </c:forEach>
                             </tr>
-                            <c:set var="lecture" value="${oneThingCalendar.lecture}"/>
                             <tr name="lecture">
-                                <td contenteditable="true">${lecture.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
+                                    <td contenteditable="true">${lecture.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
-                            <c:set var="dailyEvaluation" value="${oneThingCalendar.dailyEvaluation}"/>
                             <tr name="dailyEvaluation">
-                                <td contenteditable="true">${dailyEvaluation.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
+                                    <td contenteditable="true">${dailyEvaluation.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
-                            <c:set var="work" value="${oneThingCalendar.work}"/>
                             <tr name="work">
-                                <td contenteditable="true">${work.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${work.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
+                                    <td contenteditable="true">${work.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${work.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
-                            <c:set var="reading" value="${oneThingCalendar.reading}"/>
                             <tr name="reading">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
+
                             <%--to-do--%>
                             <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                            </tr>
-                            <%--                            daily--%>
-                            <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                            </tr>
-                            <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                            </tr>
-                            <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                            </tr>
-                            <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
-                            </tr>
-                            <tr name="daily">
-                                <td contenteditable="true">${reading.target}</td>
-                                <td><input class="form-check-input"
-                                           type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td contenteditable="true">${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
                             </tr>
 
+                            <%--daily routine--%>
+                            <tr name="daily">
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td>${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="daily">
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td>${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="daily">
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td>${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="daily">
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td>${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="daily">
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td>${reading.target}</td>
+                                    <td><input class="form-check-input"
+                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                </c:forEach>
+                            </tr>
 
+                            <%--Gratitude Diary--%>
                             <c:forEach items="${data.gratitudeDiary}" var="entry" varStatus="loop">
                                 <tr name="gratitudeDiary">
-                                    <td colspan="2"><textarea
-                                            class="form-control">${entry}</textarea></td>
+                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                        <td colspan="2"><textarea
+                                                class="form-control">${entry}</textarea></td>
+                                    </c:forEach>
                                 </tr>
                             </c:forEach>
                             <c:if test="${3-data.gratitudeDiary.size()>0}">
                                 <c:forEach begin="1" end="${3-data.gratitudeDiary.size()}" varStatus="loop">
                                     <tr name="gratitudeDiary">
-                                        <td colspan="2"><textarea
-                                                class="form-control"></textarea></td>
+                                        <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                            <td colspan="2"><textarea
+                                                    class="form-control"></textarea></td>
+                                        </c:forEach>
                                     </tr>
                                 </c:forEach>
                             </c:if>
+
+                            <%--Affirmation--%>
                             <tr>
-                                <td colspan="2">
-                                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
-                                </td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td colspan="2">
+                                        <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                    </td>
+                                </c:forEach>
                             </tr>
+                            <%--Compliment--%>
                             <tr>
-                                <td colspan="2">
-                                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
-                                </td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td colspan="2">
+                                        <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                    </td>
+                                </c:forEach>
                             </tr>
+                            <%--Reflection--%>
                             <tr>
-                                <td colspan="2">
-                                    <textarea class="form-control affirmation">${data.affirmation}</textarea>
-                                </td>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <td colspan="2">
+                                        <textarea class="form-control affirmation">${data.affirmation}</textarea>
+                                    </td>
+                                </c:forEach>
                             </tr>
+                            <%--Timeline--%>
                             <c:forEach var="time" begin="1" end="24">
                                 <tr name="theSingleMostImportantThing">
-                                    <td contenteditable="true">${theSingleMostImportantThing.target}</td>
-                                    <td><input class="form-check-input"
-                                               type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
-                                    </td>
+                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                        <td contenteditable="true">${theSingleMostImportantThing.target}</td>
+                                        <td><input class="form-check-input"
+                                                   type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
+                                        </td>
+                                    </c:forEach>
                                 </tr>
                             </c:forEach>
                             </tbody>
