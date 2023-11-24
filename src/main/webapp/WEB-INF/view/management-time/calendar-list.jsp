@@ -720,7 +720,7 @@
 
         let currentDayOfWeek = dateObject.getDay();
 
-        let daysToSubtract = currentDayOfWeek === 0 ? 7 : currentDayOfWeek;
+        let daysToSubtract = currentDayOfWeek === 0 ? 0 : currentDayOfWeek;
 
         const sundayDate = new Date(dateObject);
         sundayDate.setDate(dateObject.getDate() - daysToSubtract);
