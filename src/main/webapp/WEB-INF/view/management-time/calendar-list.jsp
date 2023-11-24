@@ -341,7 +341,11 @@
                     let xhtml = '';
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e) => {
-                            xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
+                            if (e === "") {
+                                xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Click to edit</p>'
+                            } else {
+                                xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
+                            }
                         })
                         monthlyTarget.innerHTML = xhtml;
                     } else {
