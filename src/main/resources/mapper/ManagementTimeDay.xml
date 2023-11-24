@@ -42,13 +42,6 @@
         WHERE USER_ID = #{user.id} AND DAY = #{day, jdbcType=DATE}
     </update>
 
-    <select id="findDays" resultMap="dayResultMap">
-        SELECT *
-        FROM MANAGEMENT_TIME_DAY m
-        INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE USER_ID = #{userId} AND DAY BETWEEN #{startDate} AND #{endDate}
-    </select>
-
     <select id="findByCode" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY m
