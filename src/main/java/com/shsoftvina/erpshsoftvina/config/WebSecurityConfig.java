@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.config;
 
 import com.shsoftvina.erpshsoftvina.security.CustomAuthenticationFailureHandler;
 import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
-import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
+import com.shsoftvina.erpshsoftvina.security.UpdateProfileFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import com.shsoftvina.erpshsoftvina.security.oauth2.CustomFailureOauth2Handler;
 import com.shsoftvina.erpshsoftvina.security.oauth2.CustomOAuth2UserService;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UpdateProfileInterceptorFilter updateProfileInterceptorFilter;
+    private UpdateProfileFilter updateProfileFilter;
 
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
@@ -45,9 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/forbidden") // 403 no access
                 .and()
                 .authorizeRequests()
-                .antMatchers("/upload/**").permitAll() // resource
-                .antMatchers("/uploaded/**").permitAll() // resource
+                .antMatchers("/upload/**", "/uploaded/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
+
                 // API
                 // auth
                 .antMatchers("/api/v1/auth/**").permitAll()
@@ -117,7 +117,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
                 .and()
-                .addFilterBefore(updateProfileInterceptorFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(updateProfileFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
 

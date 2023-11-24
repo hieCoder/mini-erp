@@ -3,6 +3,7 @@
 const U_DEVELOPER = 'DEVELOPER';
 const U_OWNER = 'OWNER';
 const U_MANAGER = 'MANAGER';
+const U_AVATAR_DEFAULT = 'avatar-default.jpg';
 
 const SUCCESS_ALERT = 'SUCCESS_ALERT';
 const DANGER_ALERT = 'DANGER_ALERT';

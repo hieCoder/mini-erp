@@ -46,8 +46,6 @@ public class AccountingServiceImpl implements AccountingService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private HttpServletRequest request;
-    @Autowired
     private ApplicationUtils applicationUtils;
     @Autowired
     private SettingMapper settingMapper;
@@ -95,7 +93,7 @@ public class AccountingServiceImpl implements AccountingService {
         }
 
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
-        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
+        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(dir, billFile);
         if (listFileNameSaveFileSuccess != null) {
             User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
@@ -109,7 +107,7 @@ public class AccountingServiceImpl implements AccountingService {
                 }
                 accountingMapper.updateRecordsBatch(remainRecordInMonthList);
             } catch (Exception e) {
-                FileUtils.deleteMultipleFilesToServer(request, dir, newAccounting.getBill());
+                FileUtils.deleteMultipleFilesToServer(dir, newAccounting.getBill());
                 return 0;
             }
             return 1;
@@ -150,7 +148,7 @@ public class AccountingServiceImpl implements AccountingService {
         if (accountingUpdateRequest.getBill() != null && (billFile.length + oldFile.size()) > setting.getFileLimit()) {
             throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
         }
-        newFilesUpdate = FileUtils.saveMultipleFilesToServer(request, dir, billFile);
+        newFilesUpdate = FileUtils.saveMultipleFilesToServer(dir, billFile);
         assert newFilesUpdate != null;
         newFiles.addAll(newFilesUpdate);
         Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, newFiles);
@@ -171,9 +169,9 @@ public class AccountingServiceImpl implements AccountingService {
                     }
                     accountingMapper.updateRecordsBatch(remainRecordInMonthList);
                 }
-                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+                FileUtils.deleteMultipleFilesToServer(dir, String.join(",", removeFiles));
             } catch (Exception e) {
-                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+                FileUtils.deleteMultipleFilesToServer(dir, String.join(",", newFilesUpdate));
                 return null;
             }
         } else {
@@ -185,9 +183,9 @@ public class AccountingServiceImpl implements AccountingService {
                     updateRemainsInTwoMonth(currentAccounting);
                 }
 
-                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", removeFiles));
+                FileUtils.deleteMultipleFilesToServer(dir, String.join(",", removeFiles));
             } catch (Exception e) {
-                FileUtils.deleteMultipleFilesToServer(request, dir, String.join(",", newFilesUpdate));
+                FileUtils.deleteMultipleFilesToServer(dir, String.join(",", newFilesUpdate));
                 return null;
             }
         }

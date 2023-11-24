@@ -35,8 +35,6 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private HttpServletRequest request;
 
     @Autowired
     private ApplicationUtils applicationUtils;
@@ -61,8 +59,7 @@ public class ContractServiceImpl implements ContractService {
 
         if(contractFile != null){
             fileNameContract = FileUtils.formatNameImage(contractFile);
-            isSaveContractSuccess = FileUtils.saveImageToServer(
-                    request, ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getFile(), fileNameContract);
+            isSaveContractSuccess = FileUtils.saveImageToServer(ContractConstant.UPLOAD_FILE_DIR, createContractRequest.getFile(), fileNameContract);
         }
 
         if(isSaveContractSuccess){
@@ -76,10 +73,10 @@ public class ContractServiceImpl implements ContractService {
                     return contractConverter.toResponse(c);
                 } else{
                     contractMapper.deleteById(c.getId());
-                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                    FileUtils.deleteImageFromServer(ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                 }
             } catch (Exception e){
-                FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                FileUtils.deleteImageFromServer(ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
             }
         }
         return null;
@@ -103,8 +100,7 @@ public class ContractServiceImpl implements ContractService {
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
         if(contractFile != null){
             fileNameContract = FileUtils.formatNameImage(contractFile);
-            isSaveContractSuccess = FileUtils.saveImageToServer(
-                    request, ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getFile(), fileNameContract);
+            isSaveContractSuccess = FileUtils.saveImageToServer(ContractConstant.UPLOAD_FILE_DIR, updateContractRequest.getFile(), fileNameContract);
         } else isSaveContractSuccess = false;
 
         Contract c;
@@ -115,14 +111,14 @@ public class ContractServiceImpl implements ContractService {
                 List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowanceInsurances());
                 if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
-                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                    FileUtils.deleteImageFromServer(ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                     return 0;
                 } else{
-                    FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, contract.getFiles());
+                    FileUtils.deleteImageFromServer(ContractConstant.UPLOAD_FILE_DIR, contract.getFiles());
                     return 1;
                 }
             } catch (Exception e){
-                FileUtils.deleteImageFromServer(request, ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
+                FileUtils.deleteImageFromServer(ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
                 return 0;
             }
         } else {

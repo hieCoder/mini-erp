@@ -31,8 +31,6 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookMapper bookMapper;
 
-    @Autowired
-    private HttpServletRequest request;
 
     @Autowired
     private BookConverter bookConverter;
@@ -66,8 +64,7 @@ public class BookServiceImpl implements BookService {
             applicationUtils.checkValidateImage(Book.class, bookImage);
 
             bookImageFileName = FileUtils.formatNameImage(bookImage);
-            isSaveImageSuccess = FileUtils.saveImageToServer(
-                    request, BookConstant.UPLOAD_FILE_DIR, bookCreateRequest.getImage(), bookImageFileName);
+            isSaveImageSuccess = FileUtils.saveImageToServer(BookConstant.UPLOAD_FILE_DIR, bookCreateRequest.getImage(), bookImageFileName);
         } else{
             throw new MissingException(MessageErrorUtils.missing("image"));
         }
@@ -78,7 +75,7 @@ public class BookServiceImpl implements BookService {
                 bookMapper.createBook(book);
                 return 1;
             } catch (Exception e){
-                FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, bookImageFileName);
+                FileUtils.deleteImageFromServer(BookConstant.UPLOAD_FILE_DIR, bookImageFileName);
                 return 0;
             }
         }
@@ -106,8 +103,7 @@ public class BookServiceImpl implements BookService {
             applicationUtils.checkValidateImage(Book.class, bookFile);
 
             fileNameBook = FileUtils.formatNameImage(bookFile);
-            isSaveBookSuccess = FileUtils.saveImageToServer(
-                    request, BookConstant.UPLOAD_FILE_DIR, bookUpdateRequest.getImage(), fileNameBook);
+            isSaveBookSuccess = FileUtils.saveImageToServer(BookConstant.UPLOAD_FILE_DIR, bookUpdateRequest.getImage(), fileNameBook);
         } else{
             fileNameBook = oldImage;
         }
@@ -118,11 +114,11 @@ public class BookServiceImpl implements BookService {
             try {
                 bookMapper.updateBook(b);
                 if(!fileNameBook.equals(oldImage)){
-                    FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, oldImage);
+                    FileUtils.deleteImageFromServer(BookConstant.UPLOAD_FILE_DIR, oldImage);
                 }
                 return 1;
             } catch (Exception e){
-                FileUtils.deleteImageFromServer(request, BookConstant.UPLOAD_FILE_DIR, fileNameBook);
+                FileUtils.deleteImageFromServer(BookConstant.UPLOAD_FILE_DIR, fileNameBook);
                 return 0;
             }
         }
