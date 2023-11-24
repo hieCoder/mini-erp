@@ -121,9 +121,29 @@
                                 </c:if>
                                 <td><input class="form-control dailyRoutineInput" type="text" value="${dailyRoutine.title}">
                                 </td>
-                                <td class="text-center">0%</td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true">${dailyRoutine.target}</td>
-                                <td class="text-center">0</td>
+                                <td class="text-center">
+                                    <c:if test="${not empty dailyRoutine.target and not empty dailyRoutine.performance}">
+                                        <c:choose>
+                                            <c:when test="${dailyRoutine.target == 0}">
+                                                0%
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${((dailyRoutine.performance / dailyRoutine.target) * 100)}%
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                </td>
+                                <td class="text-center dailyRoutineTarget" contenteditable="true">
+                                    <c:choose>
+                                        <c:when test="${dailyRoutine.target == null}">
+                                            0
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${dailyRoutine.target}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td class="text-center">${dailyRoutine.performance}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -455,7 +475,7 @@
                     <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">
                         Back
                     </button>
-                    <button class="btn btn-success ml-2" id="updateButton">${infoButtonResult}</button>
+                    <button class="btn btn-success ml-2" id="updateButton">Save</button>
                 </div>
             </div>
         </div>
@@ -523,27 +543,35 @@
     var rsSuccess = (text) => {
         Swal.fire({
             html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">' + text + ' successfully</p></div></div>',
-            showCancelButton: !0,
-            showConfirmButton: !1,
+            showCancelButton: true,
+            showConfirmButton: false,
             customClass: {
                 cancelButton: 'btn btn-primary w-xs mb-1'
             },
             cancelButtonText: "Back",
-            buttonsStyling: !1,
-            showCloseButton: !0
+            buttonsStyling: false,
+            showCloseButton: true
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.close) {
+                window.location.reload();
+            }
         })
     }
     var rsUnSuccess = () => {
         Swal.fire({
             html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
-            showCancelButton: !0,
-            showConfirmButton: !1,
+            showCancelButton: true,
+            showConfirmButton: false,
             customClass: {
                 cancelButton: 'btn btn-primary w-xs mb-1'
             },
             cancelButtonText: "Dismiss",
-            buttonsStyling: !1,
-            showCloseButton: !0
+            buttonsStyling: false,
+            showCloseButton: true
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.close) {
+                window.location.reload();
+            }
         })
     }
     let qresult = (name) => {
