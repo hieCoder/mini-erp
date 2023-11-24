@@ -145,16 +145,16 @@
                                 <td><input class="form-control monthTarget" type="text" value="${monthly}"></td>
                             </tr>
                         </c:forEach>
-                        <c:if test="${3-weekly.monthlys.size()>0}">
-                            <c:forEach begin="1" end="${3-weekly.monthlys.size()}" varStatus="loop">
-                                <tr>
-                                    <c:if test="${loop.index == 1}">
-                                        <td class="text-start" rowspan="3">Main target</td>
-                                    </c:if>
-                                    <td><input class="form-control monthTarget" type="text"></td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
+<%--                        <c:if test="${3-weekly.monthlys.size()>0}">--%>
+<%--                            <c:forEach begin="1" end="${3-weekly.monthlys.size()}" varStatus="loop">--%>
+<%--                                <tr>--%>
+<%--                                    <c:if test="${loop.index == 1}">--%>
+<%--                                        <td class="text-start" rowspan="3">Main target</td>--%>
+<%--                                    </c:if>--%>
+<%--                                    <td><input class="form-control monthTarget" type="text"></td>--%>
+<%--                                </tr>--%>
+<%--                            </c:forEach>--%>
+<%--                        </c:if>--%>
                         </tbody>
                     </table>
 
