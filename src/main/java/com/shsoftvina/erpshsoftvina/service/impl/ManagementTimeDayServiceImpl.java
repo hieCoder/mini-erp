@@ -234,7 +234,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     .weeklyId(weeklyManagementTimeDay.getId())
                     .startDate(weeklyManagementTimeDay.getCode())
                     .weeklyContents(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class))
-                    .listDayOfWeek(managementTimeDayConvert.toListResponse(daysOfWeek)).build();
+                    .listDayOfWeek(managementTimeDayConvert.toListDayDetailResponse(daysOfWeek, weeklyCode)).build();
             daysOfWeeklyResponse.setWeeklys(weekly);
         }
 
