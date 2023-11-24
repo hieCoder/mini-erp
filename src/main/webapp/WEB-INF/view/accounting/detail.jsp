@@ -743,15 +743,17 @@
                 $("#remainAccount").text(formatCurrency(rs.remain));
                 $("#fullnameAccount").text(rs.user.fullname);
                 $("#noteAccount").text(rs.note);
-                let fileNameArr = []
-                rs.bill.forEach(item => {
-                    fileNameArr.push(item);
-                })
+                let fileNameArr = [];
+               if (rs.bill != null) {
+                   rs.bill.forEach(item => {
+                       fileNameArr.push(item);
+                   })
+               }
                 loadFilesName(fileNameArr);
                 $('#editModal').modal('hide');
-                BtnLoadRemove()
-                $("button.editBtn").removeClass("d-none")
-                rsSuccess("Updated")
+                BtnLoadRemove();
+                $("button.editBtn").removeClass("d-none");
+                rsSuccess("Updated");
                 $('#editBill').val("");
             }
         }, function (error) {

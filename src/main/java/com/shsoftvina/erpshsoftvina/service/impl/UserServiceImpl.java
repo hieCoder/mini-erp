@@ -208,16 +208,16 @@ public class UserServiceImpl implements UserService {
                 FileUtils.deleteMultipleFilesToServer(uploadDir, deleteFiles);
             }
 
-            user = userMapper.findByEmail(user.getEmail());
+            user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
             Principal.updateUserCurrent(user);
 
             return 1;
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             System.out.println(errorMessage);
-            if (errorMessage.contains("'TIMESHEETS_CODE'")) {
+            if (errorMessage.contains("TIMESHEETS_CODE")) {
                 throw new DuplicateException(MessageErrorUtils.duplicate("Timesheets code"));
-            } else if (errorMessage.contains("'EMAIL'")) {
+            } else if (errorMessage.contains("EMAIL")) {
                 throw new DuplicateException(MessageErrorUtils.duplicate("Email"));
             }
             return 0;
