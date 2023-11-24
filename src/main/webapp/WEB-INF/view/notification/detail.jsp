@@ -854,14 +854,18 @@
                 }
             }
             callAjaxByDataFormWithDataForm("${apiURL}${pathMain}update/" + notificationId,"POST", formData ,function (rs){
-                console.log(rs)
                 if(rs){
                     $("h5.titleView strong").text(rs.title)
                     let contentParse = JSON.parse(rs.content)
                     quillView.setContents(contentParse)
                     if(rs.files && rs.files.length>0){
                         loadFilesName(rs.files);
+                    } else {
+                        document.querySelectorAll('.showFilesUploaded').forEach( function (e) {
+                            e.textContent = '';
+                        })
                     }
+
                     INFORM_SUCCESS("Notification updated successfully.")
                     $("#formEditNotification").modal("hide")
                 }
@@ -924,7 +928,7 @@
 
         let fileNameArr = []
         function loadFilesName(fileNameArr){
-            let html =""
+            let html ="";
             handleFiles(fileNameArr, function handleEachFunc (fileName, fileSize, url) {
                 html += showFileUploaded(fileName, fileSize, url, "view")
                 $("#viewNotification .showFilesUploaded").html(html)

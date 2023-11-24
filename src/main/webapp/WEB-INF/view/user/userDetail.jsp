@@ -80,7 +80,7 @@
                             </div>
                             <div id="delete-avatar-button"
                                  style="position: absolute; top: -8px; right: -8px; color: black; padding: 0px; cursor: pointer; display: none;">
-                                <i class="ri-close-line" style="font-size: 15px"></i>
+                                <i class="ri-close-circle-line fs-4 text-danger"></i>
                             </div>
                         </div>
                         <h5 class="fs-16 mb-1">${user.fullname}</h5>
@@ -1243,7 +1243,6 @@
                         location.href = "/users/" + '${user.id}';
                     }, function (rs) {
                         enableBtn();
-                        //$('.d-flex.align-items-center').remove();
                         $('#updateDetail').removeClass('btn-load').text('Update');
                         $('#updateBasic').removeClass('btn-load').text('Update');
 
@@ -1264,12 +1263,11 @@
                     location.href = "/users/" + '${user.id}';
                 }, function (err) {
                     enableBtn();
-                    //$('.d-flex.align-items-center').remove();
                     $('#updateDetail').removeClass('btn-load').text('Update');
                     $('#updateBasic').removeClass('btn-load').text('Update');
 
                     var errorMessage = err.responseJSON.message;
-
+                    console.log(errorMessage);
                     if(errorMessage.includes('Timesheets code is duplicate')){
                         errorMessageTimeSheetsEmail(errorMessage);
                     } else if (errorMessage.includes('Email is duplicate')) errorMessageTimeSheetsEmail(errorMessage);

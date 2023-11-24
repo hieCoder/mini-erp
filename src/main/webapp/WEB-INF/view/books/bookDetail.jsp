@@ -66,8 +66,7 @@
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#lesson" aria-expanded="false"
                                                     aria-controls="lesson">
-                                                <i class="ri-pencil-ruler-line me-2 fs-4"></i> Lesson learned after
-                                                reading the book?
+                                                <i class="ri-pencil-ruler-line me-2 fs-4"></i> Lessons Learned ?
                                             </button>
                                         </h2>
                                         <div id="lesson" class="accordion-collapse collapse"
@@ -83,7 +82,7 @@
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#quotes" aria-expanded="false"
                                                     aria-controls="quotes">
-                                                <i class="ri-double-quotes-l me-2 fs-4"></i> Great quotes?
+                                                <i class="ri-double-quotes-l me-2 fs-4"></i> Quotes?
                                             </button>
                                         </h2>
                                         <div id="quotes" class="accordion-collapse collapse"
