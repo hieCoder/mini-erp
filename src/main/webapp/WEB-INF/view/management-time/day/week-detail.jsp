@@ -867,7 +867,7 @@
         }
 
         const monthly = {
-            month : currentYearMonth.year  + '-' + currentYearMonth.month,
+            month : currentYearMonth.year  + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
             content: [],
             dailyRoutine:[]
         };
