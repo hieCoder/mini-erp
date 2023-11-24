@@ -569,12 +569,20 @@
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklyContents[dayTodo];
                                             }
-                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay));
+                                            if ((dayNumber - 7) === daysInMonth) {
+                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay,true));
+                                            } else {
+                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay,false));
+                                            }
                                             cell.setAttribute('data-name', dayTodo);
                                         });
                                     } else {
                                         cell.setAttribute('data-name', dayTodo);
-                                        cell.setAttribute('data-week', getPreviousSunday(currentColDay));
+                                        if ((dayNumber - 7) === daysInMonth) {
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay,true));
+                                        } else {
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay,false));
+                                        }
                                     }
                                     cell.setAttribute('contenteditable', 'true');
                                 }
@@ -715,16 +723,19 @@
         })
     }
 
-    function getPreviousSunday(currentDate) {
+    function getPreviousSunday(currentDate,isLastSunday) {
         const dateObject = new Date(currentDate);
 
         let currentDayOfWeek = dateObject.getDay();
 
-        let daysToSubtract = currentDayOfWeek === 0 ? 0 : currentDayOfWeek;
+        let daysToSubtract = currentDayOfWeek === 0 ? 7 : currentDayOfWeek;
 
         const sundayDate = new Date(dateObject);
-        sundayDate.setDate(dateObject.getDate() - daysToSubtract);
-
+        if (isLastSunday) {
+            sundayDate.setDate(dateObject.getDate());
+        } else {
+            sundayDate.setDate(dateObject.getDate() - daysToSubtract);
+        }
         return sundayDate.toISOString().split('T')[0];
     }
 
