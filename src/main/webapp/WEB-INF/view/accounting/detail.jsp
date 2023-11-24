@@ -748,7 +748,12 @@
                    rs.bill.forEach(item => {
                        fileNameArr.push(item);
                    })
+               } else {
+                   document.querySelectorAll('.showFilesUploaded').forEach( function (e) {
+                       e.textContent = '';
+                   })
                }
+
                 loadFilesName(fileNameArr);
                 $('#editModal').modal('hide');
                 BtnLoadRemove();
