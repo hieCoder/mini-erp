@@ -209,6 +209,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
                 List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
                 List<Boolean[]> listDailyRoutine = list.stream()
+                        .filter(day -> day != null)
                         .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
                         .collect(Collectors.toList());
                 int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);

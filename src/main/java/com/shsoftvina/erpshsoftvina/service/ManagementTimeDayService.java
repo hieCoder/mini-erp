@@ -8,11 +8,6 @@ import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DaysOfWeek
 public interface ManagementTimeDayService {
 
     int updateCalendar(CalendarUpdateRequest req);
-//    DayResponse createDay(DayCreateRequest dayCreateRequest);
-//    DayResponse updateDay(DayUpdateRequest dayUpdateRequest);
-//    DayResponse findById(String id);
-//    DayResponse findByDay(String userId, String day);
-//    DayResponse findDayResponse(String userId, String day, String id);
     CalendarResponse showCalendar(String userId, String startDate, String endDate);
     DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay);
     int updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest);
