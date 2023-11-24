@@ -574,6 +574,19 @@
             }
         })
     }
+    var validateFail = (error) => {
+        Swal.fire({
+            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>' + error + '</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
+            showCancelButton: true,
+            showConfirmButton: false,
+            customClass: {
+                cancelButton: 'btn btn-primary w-xs mb-1'
+            },
+            cancelButtonText: "Dismiss",
+            buttonsStyling: false,
+            showCloseButton: true
+        })
+    }
     let qresult = (name) => {
         let array = {
             sixToTwelvePm: "6~12pm",
@@ -853,6 +866,28 @@
             console.log("Error")
         }
     })
+
+    $('td.dailyRoutineTarget').on('blur', function () {
+        const target = $(this).text();
+        if (target > 31 || target < 0) {
+            $(this).text('0');
+            validateFail("Daily target shouln't exceed 30 or below 0");
+            return false;
+        }
+    });
+
+    $('input.dailyRoutine').on('change', function(event) {
+        var checkbox = $(this);
+
+        var previousTd = checkbox.closest('td').prev('td');
+        console.log(checkbox.prop('checked'))
+        if (previousTd.text().trim() !== '') {
+            // Đánh dấu (checked) checkbox
+            checkbox.prop('checked', !checkbox.prop('checked'));
+        } else {
+            checkbox.prop('checked', false);
+        }
+    });
 
     $("#updateButton").click(function () {
         const currentYearMonth = getCurrentYearMonth();
