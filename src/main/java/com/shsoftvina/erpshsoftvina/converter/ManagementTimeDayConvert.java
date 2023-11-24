@@ -97,7 +97,7 @@ public class ManagementTimeDayConvert {
             }else{
                 DayResponse dayResponse = DayResponse.builder()
                         .day(DateUtils.formatDate(startDay))
-                        .data(new DataOfDayDto()).build();
+                        .data(null).build();
                 dayResponses.add(dayResponse);
             }
             startDay = startDay.plusDays(1);
