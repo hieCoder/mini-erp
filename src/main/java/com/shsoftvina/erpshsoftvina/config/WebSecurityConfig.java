@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.config;
 
 import com.shsoftvina.erpshsoftvina.security.CustomAuthenticationFailureHandler;
 import com.shsoftvina.erpshsoftvina.security.CustomSuccessHandler;
-import com.shsoftvina.erpshsoftvina.security.UpdateProfileInterceptorFilter;
+import com.shsoftvina.erpshsoftvina.security.UpdateProfileFilter;
 import com.shsoftvina.erpshsoftvina.security.UserDetailsServiceImpl;
 import com.shsoftvina.erpshsoftvina.security.oauth2.CustomFailureOauth2Handler;
 import com.shsoftvina.erpshsoftvina.security.oauth2.CustomOAuth2UserService;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UpdateProfileInterceptorFilter updateProfileInterceptorFilter;
+    private UpdateProfileFilter updateProfileFilter;
 
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
@@ -45,38 +45,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/forbidden") // 403 no access
                 .and()
                 .authorizeRequests()
-                .antMatchers("/upload/**").permitAll() // resource
+                .antMatchers("/upload/**", "/uploaded/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
-                // API
-                // auth
-                .antMatchers("/api/v1/auth/**").permitAll()
-                // subscribe
-                .antMatchers("/api/v1/subscribe").permitAll()
-                // accounting
-                .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                // timesheets
-                .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                // book
-                .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                // contract
-                .antMatchers("/api/v1/contracts/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                // notification
-                .antMatchers(HttpMethod.POST, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.PUT, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.DELETE, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                //event
-                .antMatchers(HttpMethod.POST, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.PUT, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.DELETE, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                // setting
-                .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                // user
-                .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
-                .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
+
+                .antMatchers("/api/**").permitAll()
+//                // API
+//                // auth
+//                .antMatchers("/api/v1/auth/**").permitAll()
+//                // subscribe
+//                .antMatchers("/api/v1/subscribe").permitAll()
+//                // accounting
+//                .antMatchers("/api/v1/accounts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                // timesheets
+//                .antMatchers("/api/v1/timesheets/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                // book
+//                .antMatchers(HttpMethod.POST, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.PUT, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.DELETE, "/api/v1/books/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                // contract
+//                .antMatchers("/api/v1/contracts/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                // notification
+//                .antMatchers(HttpMethod.POST, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.PUT, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.DELETE, "/api/v1/notifications/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                //event
+//                .antMatchers(HttpMethod.POST, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.PUT, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.DELETE, "/api/v1/events/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                // setting
+//                .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                // user
+//                .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
+//                .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")
 
                 // CONTROLLER
                 // auth
@@ -116,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
                 .and()
-                .addFilterBefore(updateProfileInterceptorFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(updateProfileFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
 

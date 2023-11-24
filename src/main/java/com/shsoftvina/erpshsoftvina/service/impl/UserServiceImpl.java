@@ -8,10 +8,7 @@ import com.shsoftvina.erpshsoftvina.entity.Setting;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.StatusUserEnum;
-import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
-import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
-import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
-import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
+import com.shsoftvina.erpshsoftvina.exception.*;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.DataMailDto;
@@ -26,6 +23,8 @@ import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.*;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,8 +46,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SendMailUtils sendMailUtils;
 
-    @Autowired
-    private HttpServletRequest request;
 
     @Autowired
     private ApplicationUtils applicationUtils;
@@ -158,7 +155,7 @@ public class UserServiceImpl implements UserService {
         if (avatarFile != null) {
             applicationUtils.checkValidateImage(User.class, avatarFile);
             newAvatarName = FileUtils.formatNameImage(avatarFile);
-            if (!FileUtils.saveImageToServer(request, uploadDir, avatarFile, newAvatarName)) return 0;
+            if (!FileUtils.saveImageToServer(uploadDir, avatarFile, newAvatarName)) return 0;
         }
         if (newResumeFiles != null) {
 
@@ -168,9 +165,9 @@ public class UserServiceImpl implements UserService {
             if (!FileUtils.isAllowedFileType(newResumeFiles, setting.getFileType()))
                 throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(setting.getFileType()));
 
-            newResumeFileNameList = FileUtils.saveMultipleFilesToServer(request, uploadDir, newResumeFiles);
+            newResumeFileNameList = FileUtils.saveMultipleFilesToServer(uploadDir, newResumeFiles);
             if (newResumeFileNameList == null) {
-                if (newAvatarName != null) FileUtils.deleteImageFromServer(request, uploadDir, newAvatarName);
+                if (newAvatarName != null) FileUtils.deleteImageFromServer(uploadDir, newAvatarName);
                 return 0;
             }
         }
@@ -204,15 +201,25 @@ public class UserServiceImpl implements UserService {
             }
 
             if (!avatarNameOld.equals(avatarNameNew) && !avatarNameOld.equals(UserConstant.AVATAR_DEFAULT)) {
-                FileUtils.deleteImageFromServer(request, uploadDir, avatarNameOld);
+                FileUtils.deleteImageFromServer(uploadDir, avatarNameOld);
             }
             if (resumeNameOld!=null && !resumeNameOld.equals(resumeNameNew)) {
                 String deleteFiles = StringUtils.getDifference(resumeNameOld, remainResumeFiles);
-                FileUtils.deleteMultipleFilesToServer(request, uploadDir, deleteFiles);
+                FileUtils.deleteMultipleFilesToServer(uploadDir, deleteFiles);
             }
+
+            user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
+            Principal.updateUserCurrent(user);
 
             return 1;
         } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            System.out.println(errorMessage);
+            if (errorMessage.contains("'TIMESHEETS_CODE'")) {
+                throw new DuplicateException(MessageErrorUtils.duplicate("Timesheets code"));
+            } else if (errorMessage.contains("'EMAIL'")) {
+                throw new DuplicateException(MessageErrorUtils.duplicate("Email"));
+            }
             return 0;
         }
     }
@@ -235,7 +242,7 @@ public class UserServiceImpl implements UserService {
                 Object oldValue = map.get(oldKey);
                 String newValue = FileUtils.getPathUpload(User.class, oldValue.toString());
                 if(newValue == null) {
-                    newValue = "/upload/user/avatar-default.jpg" ;
+                    newValue = "/uploaded/user/avatar-default.jpg" ;
                 }
                 map.put(oldKey, newValue);
             }

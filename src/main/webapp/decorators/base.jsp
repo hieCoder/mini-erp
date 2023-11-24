@@ -46,15 +46,22 @@
     <script src="/assets/custom/js/validation.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+    <script src="/assets/custom/js/main.js"></script>
     <script>
+
+        var avatarUserCurrent = <%="'" + Principal.getUserCurrent().getAvatar() + "'"%>;
+        var avatarLink = null;
+        if(avatarUserCurrent == U_AVATAR_DEFAULT){
+            avatarLink = '/upload/user/' + U_AVATAR_DEFAULT;
+        }else avatarLink = '/uploaded/user/' + avatarUserCurrent;
+
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
             fullname: <%="'" + Principal.getUserCurrent().getFullname() + "'"%>,
             role: <%="'" + Principal.getUserCurrent().getRole() + "'"%>,
-            avatar: <%="'/upload/user/" + Principal.getUserCurrent().getAvatar() + "'"%>
+            avatar: avatarLink
         };
     </script>
-    <script src="/assets/custom/js/main.js"></script>
 </head>
 
 <body>
@@ -839,6 +846,8 @@
 <script src="/assets/js/app.js"></script>
 
 <script>
+
+    $('.header-profile-user').attr('src', userCurrent.avatar);
 
     var scheduleLink = '', managementTime = '';
     if (isDeleveloper()) {

@@ -41,9 +41,6 @@ public class CommentTaskImpl implements CommentTaskService {
     CommentTaskConverter commentTaskConverter;
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
     private TaskMapper taskMapper;
 
     @Autowired
@@ -87,7 +84,7 @@ public class CommentTaskImpl implements CommentTaskService {
         if (fileList!= null){
             applicationUtils.checkValidateFile(CommentTask.class, fileList);
 
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, fileList);
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(dir, fileList);
         } else{
             listFileNameSaveFileSuccess = new ArrayList<>();
         }
@@ -98,7 +95,7 @@ public class CommentTaskImpl implements CommentTaskService {
                 commentTaskMapper.createCommentTask(ct);
                 return commentTaskConverter.toResponse(ct);
             } catch (Exception e){
-                FileUtils.deleteMultipleFilesToServer(request,dir, ct.getFiles());
+                FileUtils.deleteMultipleFilesToServer(dir, ct.getFiles());
                 return null;
             }
         }
@@ -131,7 +128,7 @@ public class CommentTaskImpl implements CommentTaskService {
                 throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
             }
 
-            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(request, dir, newFiles);
+            listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(dir, newFiles);
         }
 
         if(listFileNameSaveFileSuccess != null){
@@ -148,10 +145,10 @@ public class CommentTaskImpl implements CommentTaskService {
                 CommentTask ct= commentTaskConverter.toEntity(updateCommentTaskRequest, newFilesToDB);
                 commentTaskMapper.updateCommentTask(ct);
                 String deleteFiles = StringUtils.getDifference(commentTask.getFiles(), remainFiles);
-                FileUtils.deleteMultipleFilesToServer(request, dir, deleteFiles);
+                FileUtils.deleteMultipleFilesToServer(dir, deleteFiles);
                 return commentTaskConverter.toResponse(ct);
             } catch (Exception e){
-                FileUtils.deleteMultipleFilesToServer(request,dir, String.join(",", listFileNameSaveFileSuccess));
+                FileUtils.deleteMultipleFilesToServer(dir, String.join(",", listFileNameSaveFileSuccess));
                 return null;
             }
         }
@@ -166,7 +163,7 @@ public class CommentTaskImpl implements CommentTaskService {
         try {
             commentTaskMapper.deleteById(id);
             String dir = CommentTaskConstant.UPLOAD_FILE_DIR;
-            FileUtils.deleteMultipleFilesToServer(request, dir, commentTask.getFiles());
+            FileUtils.deleteMultipleFilesToServer(dir, commentTask.getFiles());
             return 1;
         } catch (Exception e){
         }

@@ -60,7 +60,7 @@ public class FileUtils {
         return null;
     }
 
-    public static boolean saveImageToServer(HttpServletRequest request, String dir, MultipartFile file, String fileName) {
+    public static boolean saveImageToServer(String dir, MultipartFile file, String fileName) {
         if(file != null && fileName != null){
             Path savePath = Paths.get(uploadDirectory + dir);
             Path filePath = savePath.resolve(fileName);
@@ -77,7 +77,7 @@ public class FileUtils {
         return false;
     }
 
-    public static List<String> saveMultipleFilesToServer(HttpServletRequest request, String dir, MultipartFile... files) {
+    public static List<String> saveMultipleFilesToServer(String dir, MultipartFile... files) {
 
         List<String> listFileName = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public class FileUtils {
         for(MultipartFile file: files){
             if(file!= null){
                 String fileName = formatNameImage(file);
-                boolean isSave = saveImageToServer(request, dir, file, fileName);
+                boolean isSave = saveImageToServer(dir, file, fileName);
                 listFileName.add(fileName);
                 if(!isSave){
                     isSuccess = false;
@@ -99,7 +99,7 @@ public class FileUtils {
 
         if(!isSuccess){
             for(String fileName: listFileName){
-                deleteImageFromServer(request, dir, fileName);
+                deleteImageFromServer(dir, fileName);
             }
             return null;
         }
@@ -107,41 +107,22 @@ public class FileUtils {
         return listFileName;
     }
 
-    public static void deleteMultipleFilesToServer(HttpServletRequest request,String dir, String listFileName) {
+    public static void deleteMultipleFilesToServer(String dir, String listFileName) {
         if(listFileName != null){
             String[] fileNames = listFileName.split(",");
             for(String fn: fileNames){
-                deleteImageFromServer(request, dir, fn);
+                deleteImageFromServer(dir, fn);
             }
         }
     }
 
-    public static boolean deleteImageFromServer(HttpServletRequest request,String dir, String fileName) {
-        String basePath = request.getSession().getServletContext().getRealPath("/");
-        String grandparentPath = Paths.get(basePath).getParent().getParent().toString();
-        Path deletePath = Paths.get(grandparentPath + dir + fileName);
-
-        String[] parts = dir.split("upload");
-        String destinationFolder = parts[parts.length-1];
-        Path deletePathTarget = Paths.get(basePath + "/upload/" + destinationFolder + "/" + fileName);
-
-        if (Files.exists(deletePath)) {
-            try {
-                Files.delete(deletePath);
-                if (Files.exists(deletePathTarget)) {
-                    try {
-                        Files.delete(deletePathTarget);
-                        return true;
-                    } catch (IOException e) {
-                        return false;
-                    }
-                }
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
+    public static boolean deleteImageFromServer(String dir, String fileName) {
+        try {
+            Files.deleteIfExists(Paths.get(uploadDirectory + dir + fileName));
+            return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
     public static String convertMultipartFileArrayToString(MultipartFile[] files) {
@@ -166,6 +147,7 @@ public class FileUtils {
     public static String getPathUpload(Class<?> c, String fileName) {
         if(fileName != null){
             if (c == User.class) {
+                if(fileName.equals(UserConstant.AVATAR_DEFAULT)) return UserConstant.PATH_FILE_AVATAR_DEFAULT;
                 return UserConstant.PATH_FILE + fileName;
             }
             else if (c == Accounting.class) {

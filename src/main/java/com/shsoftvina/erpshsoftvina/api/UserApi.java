@@ -21,9 +21,7 @@ public class UserApi {
 
     @PostMapping("/updation")
     public ResponseEntity<?> updateUser(@Valid UserUpdateRequest userUpdateRequest) {
-        int user = userService.updateUserDetail(userUpdateRequest);
-        if (user == 1) return ResponseEntity.ok().build();
-        return (ResponseEntity<?>) ResponseEntity.badRequest();
+        return ResponseEntity.ok(userService.updateUserDetail(userUpdateRequest));
     }
 
     @GetMapping
