@@ -1243,7 +1243,6 @@
                         location.href = "/users/" + '${user.id}';
                     }, function (rs) {
                         enableBtn();
-                        //$('.d-flex.align-items-center').remove();
                         $('#updateDetail').removeClass('btn-load').text('Update');
                         $('#updateBasic').removeClass('btn-load').text('Update');
 
@@ -1264,7 +1263,6 @@
                     location.href = "/users/" + '${user.id}';
                 }, function (err) {
                     enableBtn();
-                    //$('.d-flex.align-items-center').remove();
                     $('#updateDetail').removeClass('btn-load').text('Update');
                     $('#updateBasic').removeClass('btn-load').text('Update');
 
