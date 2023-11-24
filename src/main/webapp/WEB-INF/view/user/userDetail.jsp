@@ -936,6 +936,7 @@
 
 <%--Handle User--%>
 <script>
+    console.log(userCurrent)
     // Download Resume
     $(document).on("click", "button.downFileBtn", function () {
         let dataUrl = $(this).children().attr("data-url")
