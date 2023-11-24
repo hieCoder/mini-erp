@@ -208,7 +208,7 @@ public class UserServiceImpl implements UserService {
                 FileUtils.deleteMultipleFilesToServer(uploadDir, deleteFiles);
             }
 
-            user = userMapper.findByEmail(user.getEmail());
+            user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
             Principal.updateUserCurrent(user);
 
             return 1;
