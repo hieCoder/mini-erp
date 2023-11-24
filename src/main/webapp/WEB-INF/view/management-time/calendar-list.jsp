@@ -124,13 +124,13 @@
     </div>
     <div class="bg-white calendar-container d-none">
         <div class="d-flex justify-content-between">
-            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 15rem">
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem">
                 <div class="card-body text-muted">
                     <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                         <span class="trending-ribbon-text">Focus</span> <i
                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                     </div>
-                    <h5 class="fs-14 text-end mb-3">Target of July</h5>
+                    <h5 class="fs-14 text-end mb-3" id="monthTarget"></h5>
                     <div class="m-0" id="monthlyTarget">
                     </div>
                 </div>
@@ -140,7 +140,7 @@
                 <button class="btn btn-primary bottom-left" onclick="saveCalendar()">Save</button>
             </div>
         </div>
-        <table class="table table-nowrap table-bordered" id="todoTable">
+        <table class="table table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
                 <th scope="col"></th>
@@ -337,14 +337,19 @@
                     const parseData = JSON.parse(xhr.responseText);
                     var responseData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
-                    monthlyTarget.innerHTML = ''
-                    console.log(monthlyTarget)
+                    let monthTarget = document.getElementById("monthTarget");
                     let xhtml = '';
-                    parseData.monthlyContents.forEach((e) => {
-                        xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
-                    })
-                    console.log(xhtml)
-                    monthlyTarget.innerHTML = xhtml;
+                    if (parseData.monthlyContents != null) {
+                        parseData.monthlyContents.forEach((e) => {
+                            xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
+                        })
+                        monthlyTarget.innerHTML = xhtml;
+                    } else {
+                        for (let i =0;i<3;i++) {
+                            xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Click to edit</p>'
+                        }
+                        monthlyTarget.innerHTML = xhtml;
+                    }
                     // Clear the table
                     table.querySelector('tbody').innerHTML = '';
 
@@ -353,7 +358,9 @@
 
                     // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
+                    const targetOptions = {month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + startDateOfCurrentDate.toLocaleDateString('en-US', options);
+                    monthTarget.textContent = 'Target of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
                     currentMonthYear.classList.add('fst-italic', 'p-3');
                     var fullName = "${requestScope.user.fullname}";
                     var span = document.createElement("span");
@@ -582,9 +589,10 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
-                } else {
-                    window.location.href = "/management-time/";
                 }
+                // else {
+                //     window.location.href = "/management-time/";
+                // }
             }
 
         }
@@ -696,6 +704,7 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
+        console.log(data)
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             if (rs) {
                 populateCalendar(currentDate.getFullYear(), currentDate.getMonth());

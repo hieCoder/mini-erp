@@ -32,6 +32,10 @@ import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,6 +118,28 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return 1;
     }
 
+    private static String[] getSundaysOfTheMonth(String dateString) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        List<String> sundays = new ArrayList<>();
+
+        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+
+        LocalDate firstSunday = firstDayOfMonth.with(DayOfWeek.SUNDAY);
+        if (firstSunday.isAfter(firstDayOfMonth)) {
+            firstSunday = firstSunday.minusWeeks(1);
+        }
+
+        LocalDate currentSunday = firstSunday;
+        while (currentSunday.getMonthValue() == date.getMonthValue() || currentSunday.getMonthValue() == date.getMonthValue() - 1) {
+            sundays.add(currentSunday.format(formatter));
+            currentSunday = currentSunday.plusWeeks(1);
+        }
+
+        return sundays.toArray(new String[0]);
+    }
+
     @Override
     public CalendarResponse showCalendar(String userId, String startDate, String endDate) {
 
@@ -122,15 +148,27 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CalendarResponse calendarResponse = new CalendarResponse();
 
-        List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findDays(userId, startDate, endDate);
-        List<WeeklyManagementTimeDayResponse> data = weeklyManagementTimeDayConverter.toListWeeklyResponse(userId, managementTimeDays);
-        calendarResponse.setWeeklys(data);
-
         MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, startDate.substring(0, 7));
         if(monthlyManagementTimeDay!= null){
             String[] monthlyContent = JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class);
             calendarResponse.setMonthlyContents(monthlyContent);
         }
+
+        List<WeeklyManagementTimeDayResponse> weeklys = new ArrayList<>();
+        String[] weeklyCode = getSundaysOfTheMonth(startDate);
+        for(String wc: weeklyCode){
+            WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayMapper.findByCode(userId, wc);
+
+            if(weeklyE!=null){
+                WeeklyManagementTimeDayResponse weeklyR = WeeklyManagementTimeDayResponse.builder()
+                        .weeklyId(weeklyE.getId())
+                        .startDate(weeklyE.getCode())
+                        .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
+                        .listDayOfWeek(managementTimeDayConvert.toListResponse(managementTimeDayMapper.findByCode(userId, wc))).build();
+                weeklys.add(weeklyR);
+            }
+        }
+        calendarResponse.setWeeklys(weeklys);
 
         return calendarResponse;
     }
