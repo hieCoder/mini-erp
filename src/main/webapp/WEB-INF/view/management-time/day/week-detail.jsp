@@ -145,6 +145,16 @@
                                 <td><input class="form-control monthTarget" type="text" value="${monthly}"></td>
                             </tr>
                         </c:forEach>
+                        <c:if test="${3-weekly.monthlys.size()>0}">
+                            <c:forEach begin="1" end="${3-weekly.monthlys.size()}" varStatus="loop">
+                                <tr>
+                                    <c:if test="${loop.index == 1}">
+                                        <td class="text-start" rowspan="3">Main target</td>
+                                    </c:if>
+                                    <td><input class="form-control monthTarget" type="text"></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
                         </tbody>
                     </table>
 
@@ -271,6 +281,11 @@
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <th colspan="2"><h5>${day.day}</h5></th>
                                 </c:forEach>
+                                <c:if test="${weekly.weeklys == null}">
+                                    <c:forEach var="day" begin="" items="${weekly.weeklys.listDayOfWeek}">
+                                        <th colspan="2"><h5>${day.day}</h5></th>
+                                    </c:forEach>
+                                </c:if>
                             </tr>
                             </thead>
                             <tbody>
