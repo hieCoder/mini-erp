@@ -704,6 +704,7 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
+        console.log(data)
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             if (rs) {
                 populateCalendar(currentDate.getFullYear(), currentDate.getMonth());

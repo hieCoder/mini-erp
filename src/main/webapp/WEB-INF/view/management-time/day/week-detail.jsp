@@ -891,13 +891,13 @@
         })
         data.days.push(...days);
         console.log(data)
-        // callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-        //     if (rs) {
-        //         rsSuccess("Add");
-        //     } else {
-        //         rsUnSuccess();
-        //     }
-        // })
+        callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+            if (rs) {
+                rsSuccess("Add");
+            } else {
+                rsUnSuccess();
+            }
+        })
     })
 
     $(document).ready(function () {
