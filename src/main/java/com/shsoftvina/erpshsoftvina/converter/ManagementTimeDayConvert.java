@@ -20,7 +20,9 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -72,6 +74,36 @@ public class ManagementTimeDayConvert {
 
     public List<DayResponse> toListResponse(List<ManagementTimeDay> days){
         return days.stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
+    private ManagementTimeDay isDayExistInList(List<ManagementTimeDay> days, LocalDate localDate){
+        for(ManagementTimeDay day: days){
+            if(DateUtils.formatDate(day.getDay()).equals(DateUtils.formatDate(localDate))) return day;
+        }
+        return null;
+    }
+
+    public List<DayResponse> toListDayDetailResponse(List<ManagementTimeDay> days, String weeklyCode){
+
+        List<DayResponse> dayResponses = new ArrayList<>();
+
+        LocalDate date = LocalDate.parse(weeklyCode, DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate startDay = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+
+        for (int i = 0; i < 7; i++) {
+            ManagementTimeDay managementTimeDay = isDayExistInList(days, startDay);
+            if(managementTimeDay!=null){
+                dayResponses.add(toResponse(managementTimeDay));
+            }else{
+                DayResponse dayResponse = DayResponse.builder()
+                        .day(DateUtils.formatDate(startDay))
+                        .data(new DataOfDayDto()).build();
+                dayResponses.add(dayResponse);
+            }
+            startDay = startDay.plusDays(1);
+        }
+
+        return dayResponses;
     }
 
     public ManagementTimeDay toEntity(String userId, DayRequest dayRequest){
