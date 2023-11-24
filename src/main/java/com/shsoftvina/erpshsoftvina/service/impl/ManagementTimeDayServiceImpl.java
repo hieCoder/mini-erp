@@ -67,6 +67,46 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private MonthlyManagementTimeDayConverter monthlyManagementTimeDayConverter;
 
+    private static String[] getSundaysOfTheMonth(String dateString) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        List<String> sundays = new ArrayList<>();
+
+        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+
+        LocalDate firstSunday = firstDayOfMonth.with(DayOfWeek.SUNDAY);
+        if (firstSunday.isAfter(firstDayOfMonth)) {
+            firstSunday = firstSunday.minusWeeks(1);
+        }
+
+        LocalDate currentSunday = firstSunday;
+        while (currentSunday.getMonthValue() == date.getMonthValue() || currentSunday.getMonthValue() == date.getMonthValue() - 1) {
+            sundays.add(currentSunday.format(formatter));
+            currentSunday = currentSunday.plusWeeks(1);
+        }
+
+        return sundays.toArray(new String[0]);
+    }
+
+    private static int[] mergeAndCountDailyRoutine(List<Boolean[]> list) {
+        if (list.isEmpty()) {
+            return new int[0];
+        }
+
+        int[] resultArray = new int[list.get(0).length];
+
+        for (Boolean[] boolArray : list) {
+            for (int i = 0; i < boolArray.length; i++) {
+                if (boolArray[i]) {
+                    resultArray[i]++;
+                }
+            }
+        }
+
+        return resultArray;
+    }
+
     @Override
     public int updateCalendar(CalendarUpdateRequest req) {
         String userId = req.getUserId();
@@ -118,28 +158,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return 1;
     }
 
-    private static String[] getSundaysOfTheMonth(String dateString) {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(dateString, formatter);
-        List<String> sundays = new ArrayList<>();
-
-        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
-
-        LocalDate firstSunday = firstDayOfMonth.with(DayOfWeek.SUNDAY);
-        if (firstSunday.isAfter(firstDayOfMonth)) {
-            firstSunday = firstSunday.minusWeeks(1);
-        }
-
-        LocalDate currentSunday = firstSunday;
-        while (currentSunday.getMonthValue() == date.getMonthValue() || currentSunday.getMonthValue() == date.getMonthValue() - 1) {
-            sundays.add(currentSunday.format(formatter));
-            currentSunday = currentSunday.plusWeeks(1);
-        }
-
-        return sundays.toArray(new String[0]);
-    }
-
     @Override
     public CalendarResponse showCalendar(String userId, String startDate, String endDate) {
 
@@ -171,24 +189,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         calendarResponse.setWeeklys(weeklys);
 
         return calendarResponse;
-    }
-
-    private static int[] mergeAndCountDailyRoutine(List<Boolean[]> list) {
-        if (list.isEmpty()) {
-            return new int[0];
-        }
-
-        int[] resultArray = new int[list.get(0).length];
-
-        for (Boolean[] boolArray : list) {
-            for (int i = 0; i < boolArray.length; i++) {
-                if (boolArray[i]) {
-                    resultArray[i]++;
-                }
-            }
-        }
-
-        return resultArray;
     }
 
     @Override
