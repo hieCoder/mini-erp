@@ -95,7 +95,7 @@
                             <th>Author</th>
                             <th>Created by</th>
                             <th>Created date</th>
-                            <th>Action</th>
+                            <th id="isDeveloper">Action</th>
                         </tr>
                         </thead>
                     </table>
@@ -297,6 +297,7 @@
 
         if (isDeleveloper()) {
             $('#add-book-btn').remove();
+            document.getElementById('isDeveloper').textContent = '';
         } else {
             $('#add-book-btn').removeClass('d-none');
         }
@@ -335,7 +336,10 @@
                 {data: 'createdDate'},
                 {
                     render: function (data, type, row) {
-                        return `<div class="d-flex gap-2">
+                        if (isDeleveloper()) {
+                            return '';
+                        } else {
+                            return `<div class="d-flex gap-2">
                                     <div class="edit">
                                         <button data-id="` + row.id + `" class="btn btn-sm btn-success edit-book-btn">Edit</button>
                                     </div>
@@ -343,6 +347,7 @@
                                         <button data-bs-toggle="modal" href="#deleteBookModal" data-id="` + row.id + `" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
                                     </div>
                         </div>`;
+                        }
                     }
                 }
             ],

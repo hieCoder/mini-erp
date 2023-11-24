@@ -215,9 +215,9 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             System.out.println(errorMessage);
-            if (errorMessage.contains("'TIMESHEETS_CODE'")) {
+            if (errorMessage.contains("TIMESHEETS_CODE")) {
                 throw new DuplicateException(MessageErrorUtils.duplicate("Timesheets code"));
-            } else if (errorMessage.contains("'EMAIL'")) {
+            } else if (errorMessage.contains("EMAIL")) {
                 throw new DuplicateException(MessageErrorUtils.duplicate("Email"));
             }
             return 0;
