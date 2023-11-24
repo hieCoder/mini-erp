@@ -69,11 +69,11 @@ async function createCommentForm(comment) {
         // btn reply, group edit & delete btn
         var btnReply = ``, groupEditAndDeleteBtn = ``;
         if (parentId == null && !isDeleveloper()) {
-            btnReply = `<a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="`+id+`" style="margin-right: 3px;"><i class="mdi mdi-reply"></i> Reply</a>`;
+            btnReply = `<a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="`+id+`" style="margin-right: 3px; font-size: 10px;"><i class="mdi mdi-reply"></i> Reply</a>`;
         }
         if (isAdminOrUserLogin(idUser)) {
-            groupEditAndDeleteBtn = `<a href="javascript: void(0);" data-id="`+ id + `" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
-                    <a href="#deleteCommentModal" data-bs-toggle="modal" data-id="`+ id +`" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>`;
+            groupEditAndDeleteBtn = `<a style="font-size: 10px;" href="javascript: void(0);" data-id="`+ id + `" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
+                    <a style="font-size: 10px;" href="#deleteCommentModal" data-bs-toggle="modal" data-id="`+ id +`" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>`;
         }
 
         // files
