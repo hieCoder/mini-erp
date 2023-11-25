@@ -272,12 +272,11 @@
         });
     });
 
-    $(document).on('input', '.content-report', function (e){
+    $(document).on('keyup', '.content-report', function (e){
         var ulElement = $(this).siblings('.list-title-by-hashtag');
 
         const enteredText = e.target.innerText;
         const lastIndexOfHash = enteredText.lastIndexOf('#');
-
         if (lastIndexOfHash !== -1) {
             const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
             const firstSpaceIndex = textAfterLastHash.indexOf(' ');
@@ -291,6 +290,8 @@
                                 ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
                         });
                     });
+            } else{
+                ulElement.empty();
             }
         } else{
             ulElement.empty();
