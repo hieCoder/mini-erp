@@ -297,7 +297,10 @@
                     <div class="table-container col-md-8">
                         <table>
                             <thead>
-                            <tr id="weekDaysRow">
+                            <tr>
+                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <th colspan="2" class="fw-bolder"><h5>${day.day}</h5></th>
+                                </c:forEach>
                             </tr>
                             </thead>
                             <tbody>
@@ -624,30 +627,6 @@
         }
         return intervalResult
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-       var url = new URL(window.location.href);
-       var currentDate = new Date(url.searchParams.get('currentDay'));
-        var firstDayOfWeek = new Date(currentDate);
-        firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + (currentDate.getDay() === 0 ? -6 : 1));
-
-        var lastDayOfWeek = new Date(firstDayOfWeek);
-        lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
-
-        var daysInWeek = [];
-        for (var d = new Date(firstDayOfWeek); d <= lastDayOfWeek; d.setDate(d.getDate() + 1)) {
-            daysInWeek.push(new Date(d));
-        }
-
-        // Thêm các ngày vào thẻ <tr>
-        var weekDaysRow = document.getElementById('weekDaysRow');
-        for (var i = 0; i < daysInWeek.length; i++) {
-            var thElement = document.createElement('th');
-            thElement.setAttribute('colspan', '2');
-            thElement.innerHTML = '<h5>' + daysInWeek[i].toLocaleDateString() + '</h5>';
-            weekDaysRow.appendChild(thElement);
-        }
-    })
 
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
