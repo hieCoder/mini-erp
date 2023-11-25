@@ -319,7 +319,7 @@
                             <tr name="theSingleMostImportantThing">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="theSingleMostImportantThing" value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
-                                    <td contenteditable="true" data-name="theSingleMostImportantThing" data-day="${day.day}">${theSingleMostImportantThing.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-name="theSingleMostImportantThing" data-day="${day.day}">${theSingleMostImportantThing.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
@@ -328,7 +328,7 @@
                             <tr name="lecture">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
-                                    <td contenteditable="true" data-name="lecture" data-day="${day.day}">${lecture.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-name="lecture" data-day="${day.day}">${lecture.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -336,7 +336,7 @@
                             <tr name="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
-                                    <td contenteditable="true" data-name="dailyEvaluation" data-day="${day.day}">${dailyEvaluation.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-name="dailyEvaluation" data-day="${day.day}">${dailyEvaluation.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -344,7 +344,7 @@
                             <tr name="work">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
-                                    <td contenteditable="true" data-name="work" data-day="${day.day}">${work.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-name="work" data-day="${day.day}">${work.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -352,7 +352,7 @@
                             <tr name="reading">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
-                                    <td contenteditable="true" data-name="reading" data-day="${day.day}">${reading.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-name="reading" data-day="${day.day}">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -362,7 +362,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[0]}" var="sixToTwelvePm"/>
-                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}" data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelvePm.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -370,7 +370,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[1]}" var="sixToTwelvePm"/>
-                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}" data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelvePm.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -378,7 +378,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[0]}" var="twelveToSixPm"/>
-                                    <td contenteditable="true" data-day="${day.day}" data-name="twelveToSixPm">${twelveToSixPm.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}" data-name="twelveToSixPm">${twelveToSixPm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${twelveToSixPm.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -386,7 +386,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[1]}" var="twelveToSixPm"/>
-                                    <td contenteditable="true" data-day="${day.day}" data-name="twelveToSixPm">${twelveToSixPm.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}" data-name="twelveToSixPm">${twelveToSixPm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${twelveToSixPm.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -394,7 +394,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[0]}" var="sixToTwelveAm"/>
-                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}" data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelveAm.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -402,7 +402,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[1]}" var="sixToTwelveAm"/>
-                                    <td contenteditable="true" data-day="${day.day}" data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
+                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}" data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelveAm.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -413,7 +413,7 @@
                                 <tr name="daily">
                                     <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                         <c:set var="dailyRoutine" value="${weekly.monthlys.dailyRoutine[loop.index]}"/>
-                                        <td>${dailyRoutine.title}</td>
+                                        <td class="editable-cell">${dailyRoutine.title}</td>
                                         <td><input class="form-check-input dailyRoutine"
                                                    type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''} data-day="${day.day}"></td>
                                     </c:forEach>
@@ -876,18 +876,25 @@
         }
     });
 
-    $('input.dailyRoutine').on('change', function(event) {
-        var checkbox = $(this);
+    $(document).ready(function() {
+        checkInitialValue();
 
-        var previousTd = checkbox.closest('td').prev('td');
-        console.log(checkbox.prop('checked'))
-        if (previousTd.text().trim() !== '') {
-            // Đánh dấu (checked) checkbox
-            checkbox.prop('checked', !checkbox.prop('checked'));
-        } else {
-            checkbox.prop('checked', false);
-        }
+        $('td.editable-cell').on('input', function() {
+            checkInitialValue();
+        });
     });
+
+    function checkInitialValue() {
+        $('.editable-cell').each(function() {
+            var cellValue = $(this).text().trim();
+            var checkbox = $(this).next().find('.form-check-input');
+            if (cellValue === '' || cellValue === null) {
+                checkbox.prop('disabled', true);
+            } else {
+                checkbox.prop('disabled', false);
+            }
+        });
+    }
 
     $("#updateButton").click(function () {
         const currentYearMonth = getCurrentYearMonth();
