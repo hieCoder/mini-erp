@@ -57,7 +57,7 @@
                                              aria-labelledby="feelingBook"
                                              data-bs-parent="#accordionWithicon">
                                             <textarea class="form-control data" name="feeling"
-                                                      id="feelingArea"></textarea>
+                                                      id="feelingArea" placeholder="Enter here..."></textarea>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
@@ -73,7 +73,7 @@
                                              aria-labelledby="lessonBook"
                                              data-bs-parent="#accordionWithicon">
                                             <textarea class="form-control data" name="lesson"
-                                                      id="lessonArea"></textarea>
+                                                      id="lessonArea" placeholder="Enter here..."></textarea>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
@@ -88,7 +88,7 @@
                                         <div id="quotes" class="accordion-collapse collapse"
                                              aria-labelledby="quoteBook"
                                              data-bs-parent="#accordionWithicon">
-                                            <textarea class="form-control data" name="quote" id="quoteArea"></textarea>
+                                            <textarea class="form-control data" name="quote" id="quoteArea" placeholder="Enter here..."></textarea>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
@@ -104,7 +104,7 @@
                                              aria-labelledby="actionBook"
                                              data-bs-parent="#accordionWithicon">
                                             <textarea class="form-control data" name="action"
-                                                      id="actionArea"></textarea>
+                                                      id="actionArea" placeholder="Enter here..."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +123,6 @@
                                         <button type="button" class="btn btn-secondary">Back
                                         </button>
                                     </a>
-
                                 </div>
                             </form>
 

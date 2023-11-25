@@ -1067,7 +1067,7 @@
                 userId: userCurrent.id
             };
             var jsonData = JSON.stringify(data);
-            sendComment(jsonData)
+            sendComment(jsonData);
         });
 
         $(document).on("click", "#commentList button.btn-danger", function (e) {
