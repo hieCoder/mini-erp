@@ -140,7 +140,7 @@
                 <button class="btn btn-primary bottom-left" onclick="saveCalendar()">Save</button>
             </div>
         </div>
-        <table class="table table-nowrap table-bordered" id="todoTable">
+        <table class="table table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
                 <th scope="col"></th>
