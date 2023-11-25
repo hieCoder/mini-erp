@@ -1,11 +1,9 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.service.UserService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +30,6 @@ public class ManagementTimeDayController {
 
     @GetMapping
     public ModelAndView getUser() {
-        applicationUtils.checkUserAllow();
         ModelAndView view = new ModelAndView("management-time/users-calendar");
         List<Map<String, Object>> list = userService.getAllFullname();
         view.addObject("list", list);
