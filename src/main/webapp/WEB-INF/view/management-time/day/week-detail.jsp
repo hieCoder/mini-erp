@@ -72,6 +72,25 @@
             font-family: Poppins, sans-serif;
             height: 32.5px;
         }
+        tr.theSingleMostImportantThing {
+            background-color: white;
+        }
+
+        tr.lecture {
+            background-color: #fcecec;
+        }
+
+        tr.dailyEvaluation {
+            background-color: #e6f0e2;
+        }
+
+        tr.work {
+            background-color: #fff9e6;
+        }
+
+        tr.reading {
+            background-color: #e9e4f5;
+        }
     </style>
 </head>
 <body>
@@ -233,22 +252,22 @@
                                 <td></td>
                                 <td class="fw-bolder">Categories</td>
                             </tr>
-                            <tr>
+                            <tr class="theSingleMostImportantThing">
                                 <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething
                                     calendar
                                 </td>
                                 <td>The single most important thing</td>
                             </tr>
-                            <tr>
+                            <tr class="lecture">
                                 <td>Lecture</td>
                             </tr>
-                            <tr>
+                            <tr class="dailyEvaluation">
                                 <td>Daily evaluation</td>
                             </tr>
-                            <tr>
+                            <tr class="work">
                                 <td>Work</td>
                             </tr>
-                            <tr>
+                            <tr class="reading">
                                 <td>Reading</td>
                             </tr>
                             <tr>
@@ -312,16 +331,16 @@
                                 </c:forEach>
                             </tr>
                             <%--one-thing--%>
-                            <tr name="theSingleMostImportantThing">
+                            <tr class="theSingleMostImportantThing">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="theSingleMostImportantThing" value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
-                                    <td class="editable-cell" contenteditable="true" data-name="theSingleMostImportantThing" data-day="${day.day}">${theSingleMostImportantThing.target}</td>
+                                    <td class="editable-cell " contenteditable="true" data-name="theSingleMostImportantThing" data-day="${day.day}">${theSingleMostImportantThing.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
                                 </c:forEach>
                             </tr>
-                            <tr name="lecture">
+                            <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="lecture" data-day="${day.day}">${lecture.target}</td>
@@ -329,7 +348,7 @@
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
-                            <tr name="dailyEvaluation">
+                            <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="dailyEvaluation" data-day="${day.day}">${dailyEvaluation.target}</td>
@@ -337,7 +356,7 @@
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
-                            <tr name="work">
+                            <tr class="work">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="work" data-day="${day.day}">${work.target}</td>
@@ -345,7 +364,7 @@
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
-                            <tr name="reading">
+                            <tr class="reading">
                                 <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="reading" data-day="${day.day}">${reading.target}</td>

@@ -592,8 +592,13 @@
             content: []
         };
         $('.editable').each(function () {
-            const content = $(this).text();
-            monthly.content.push(content);
+            if ($(this).hasClass('editing')) {
+                const content = $(this).val();
+                monthly.content.push(content);
+            } else {
+                const content = $(this).text();
+                monthly.content.push(content);
+            }
         })
         $('td[contenteditable="true"]').each(function () {
             const day = $(this).data('day');
