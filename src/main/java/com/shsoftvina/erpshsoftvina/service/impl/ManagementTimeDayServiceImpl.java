@@ -121,11 +121,14 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             containingMonths[0] = firstDateOfWeek;
         } else{
             containingMonths = new String[2];
-            containingMonths[0] = firstDateOfWeek;
-            containingMonths[1] = lastDateOfWeek;
+            if(day.substring(0, 7).equals(firstDateOfWeek)){
+                containingMonths[0] = firstDateOfWeek;
+                containingMonths[1] = lastDateOfWeek;
+            } else{
+                containingMonths[0] = lastDateOfWeek;
+                containingMonths[1] = firstDateOfWeek;
+            }
         }
-
-        Arrays.sort(containingMonths, Comparator.reverseOrder());
 
         return containingMonths;
     }
