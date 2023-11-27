@@ -95,6 +95,7 @@
         }
     </style>
     <title>Calendars</title>
+    <script type="text/javascript" src="../../../assets/custom/js/management-time/management-time.js"></script>
 </head>
 <body>
 <div class="row position-relative full-height">
@@ -229,89 +230,6 @@
 
     const currentDate = new Date();
 
-    var rsSuccess = (text) => {
-        Swal.fire({
-            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">' + text + ' successfully</p></div></div>',
-            showCancelButton: !0,
-            showConfirmButton: !1,
-            customClass: {
-                cancelButton: 'btn btn-primary w-xs mb-1'
-            },
-            cancelButtonText: "Back",
-            buttonsStyling: !1,
-            showCloseButton: !0
-        })
-    }
-    var rsUnSuccess = () => {
-        Swal.fire({
-            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
-            showCancelButton: !0,
-            showConfirmButton: !1,
-            customClass: {
-                cancelButton: 'btn btn-primary w-xs mb-1'
-            },
-            cancelButtonText: "Dismiss",
-            buttonsStyling: !1,
-            showCloseButton: !0
-        })
-    }
-
-    // $(document).on("click", ".saveWeeklyToDo", function () {
-    //     let target = $(this)
-    //     target.addClass("d-none")
-    //     target.before(BtnPrimaryLoad)
-    //     let id = $("#weeklyToDo").attr("data-id")
-    //     let content = ""
-    //     let arrContent = []
-    //     $("#weeklyToDo .contentData").each(function (index) {
-    //         content += $(this).val();
-    //         arrContent.push($(this).val())
-    //         if (index < $("#weeklyToDo .contentData").length - 1) {
-    //             content += ",";
-    //         }
-    //     })
-    //     let data = {
-    //         id: id,
-    //         content: content,
-    //     }
-    //     callAjaxByJsonWithData('/api/v1/weekly-management-time-day', 'PUT', data, function (rs) {
-    //         if (rs === 1) {
-    //             let selector = '.showWeeklyUpdate[data-id="' + id + '"]'
-    //             let button = $(selector)
-    //             let indexMain = parseInt(button.parent().parent().index()) / 6
-    //             arrContent.forEach((item, index) => {
-    //                 let selector = 'tr.' + dayCodeTrTag[index]
-    //                 $(selector).eq(indexMain).children().last().text(item)
-    //             })
-    //             $("#weeklyToDo").modal("hide")
-    //             rsSuccess("Save")
-    //         } else {
-    //             rsUnSuccess()
-    //         }
-    //         BtnLoadRemove()
-    //         target.removeClass("d-none")
-    //     })
-    // })
-
-    // $(document).on("click", "button.showWeeklyUpdate", function () {
-    //     let target = $(this)
-    //     target.addClass("d-none")
-    //     target.before(BtnPrimaryLoad)
-    //     let id = target.attr("data-id")
-    //     let modal = $("#weeklyToDo")
-    //     modal.attr("data-id", id)
-    //     callAjaxByJsonWithData('/api/v1/weekly-management-time-day/' + id, 'GET', null, function (rs) {
-    //         if (rs.weeklyContents != null) {
-    //             $("#weeklyToDo div.content > input").each(function (index) {
-    //                 $(this).val(rs.weeklyContents[index])
-    //             })
-    //         }
-    //         target.removeClass("d-none")
-    //         BtnLoadRemove()
-    //         modal.modal("show")
-    //     })
-    // })
-
     function getWeeksInMonth(year, month) {
         const firstDayOfMonth = new Date(year, month, 1);
 
@@ -354,13 +272,10 @@
                         }
                         monthlyTarget.innerHTML = xhtml;
                     }
-                    // Clear the table
                     table.querySelector('tbody').innerHTML = '';
 
-                    // Set the date to the 1st day of the specified month
                     let startDateOfCurrentDate = new Date(year, month, 1);
 
-                    // Update the display for the current month and year
                     const options = {year: 'numeric', month: 'long'};
                     const targetOptions = {month: 'long'};
                     currentMonthYear.textContent = "Calendar of " + startDateOfCurrentDate.toLocaleDateString('en-US', options);
@@ -373,17 +288,13 @@
                     currentMonthYear.appendChild(document.createElement("br"));
                     currentMonthYear.appendChild(span);
 
-                    // Calculate the starting day (Sunday to Saturday: 0 to 6)
                     const startDay = startDateOfCurrentDate.getDay();
 
-                    // Get the number of days in the specified month
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                    // Calculate the last day of the previous month
                     const lastDayOfPreviousMonth = getLastDayOfPreviousMonth(year, month);
 
                     var countLine = -1;
-                    // Populate the calendar
                     const tbody = table.querySelector('tbody');
                     const weeksInSpecificMonth = getWeeksInMonth(year, month) * numberOfRowsPerWeek;
                     for (let i = 0; i < weeksInSpecificMonth; i++) {
@@ -602,11 +513,10 @@
                         $("div.calendar-container").removeClass("d-none")
                     }
                 }
-                // else {
-                //     window.location.href = "/management-time/";
-                // }
+                else {
+                    window.location.href = "/management-time/";
+                }
             }
-
         }
         xhr.send();
     }
@@ -746,7 +656,6 @@
     document.addEventListener('click', function(event) {
         var editableElements = document.querySelectorAll('.editing');
         editableElements.forEach(function(element) {
-            // Kiểm tra xem click có xảy ra bên ngoài phần tử đang chỉnh sửa hay không
             if (!element.contains(event.target)) {
                 toggleEdit(element);
             }
