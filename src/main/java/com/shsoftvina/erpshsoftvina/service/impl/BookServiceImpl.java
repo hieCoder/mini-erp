@@ -3,15 +3,12 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.constant.BookConstant;
 import com.shsoftvina.erpshsoftvina.converter.BookConverter;
 import com.shsoftvina.erpshsoftvina.entity.Book;
-import com.shsoftvina.erpshsoftvina.entity.Setting;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.exception.MissingException;
 import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.book.PageBookListRespone;
 import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
 import com.shsoftvina.erpshsoftvina.service.BookService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
@@ -22,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -127,9 +123,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public int deleteBook(String id) {
-
-        if (bookMapper.findById(id) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("id"));
+        Book book = bookMapper.findById(id);
+        if (book == null)  throw new NotFoundException(MessageErrorUtils.notFound("id"));
+        FileUtils.deleteImageFromServer(BookConstant.UPLOAD_FILE_DIR, book.getImage());
 
         return bookMapper.deleteBook(id);
     }

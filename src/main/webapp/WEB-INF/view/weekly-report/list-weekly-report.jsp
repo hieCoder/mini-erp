@@ -48,16 +48,20 @@
                         <div class="d-flex align-items-center">
                             <h5 class="card-title mb-0 flex-grow-1">Weekly report</h5>
                             <div class="flex-shrink-0">
-                                <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#createReport"><i class="ri-add-line align-bottom me-1"></i> Create report</button>
+                                <button class="btn btn-success add-btn" data-bs-toggle="modal"
+                                        data-bs-target="#createReport"><i class="ri-add-line align-bottom me-1"></i>
+                                    Create report
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div class="card-body border border-dashed border-end-0 border-start-0">
                         <div class="row g-3">
                             <div class="col-xxl-4 col-sm-4 d-flex align-items-center justify-content-start">
-                                <div style="margin-right: 5px;">Show entries: </div>
+                                <div style="margin-right: 5px;">Show entries:</div>
                                 <div class="page-count-item-container d-flex align-items-center align-items-center">
-                                    <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                    <select id="page-count-select" class="form-select"
+                                            aria-label=".form-select-lg example">
                                         <option value="10">10</option>
                                         <option value="15">15</option>
                                         <option value="20">20</option>
@@ -72,7 +76,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive table-card">
-                            <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="weekly-report-table">
+                            <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;"
+                                   id="weekly-report-table">
                                 <thead class="table-light text-muted">
                                 <tr>
                                     <th>ID</th>
@@ -148,7 +153,7 @@
         pageSize: $('#page-count-select').val()
     }
 
-    $(document).ready(function (){
+    $(document).ready(function () {
 
         new Promise(function (resolve, reject) {
             if (!isOwner()) {
@@ -179,11 +184,10 @@
                     url: getListApiUrl(pagingObj.staffId, 1, pagingObj.pageSize),
                     method: 'GET',
                     dataSrc: function (json) {
-                        if(json.length != 0) {
+                        if (json.length != 0) {
                             loadPaging();
                             $('#pagination').addClass('mt-4');
-                        }
-                        else {
+                        } else {
                             removePagingIfExsit();
                             $('#pagination').removeClass('mt-4');
                         }
@@ -194,8 +198,8 @@
                     {data: 'id'},
                     {
                         data: 'title',
-                        render: function(data, type, row) {
-                            return `<a href="/weekly-reports/`+ row.id +`" class="fw-medium link-primary text-decoration-underline">` + data + `</a>`;
+                        render: function (data, type, row) {
+                            return `<a href="/weekly-reports/` + row.id + `" class="fw-medium link-primary text-decoration-underline">` + data + `</a>`;
                         }
                     },
                     {data: 'user.fullname'},
@@ -208,11 +212,11 @@
                 info: false
             });
         }).catch(function (error) {
-                console.error(error);
+            console.error(error);
         });
     });
 
-    $(document).on('shown.bs.modal', '#createReport', function() {
+    $(document).on('shown.bs.modal', '#createReport', function () {
 
         $('#title').val('');
 
@@ -221,9 +225,9 @@
         activeEditor("#create-wr-form");
 
         Validator({
-            form:'#create-wr-form',
+            form: '#create-wr-form',
             errorSelector: '.form-message',
-            rules:[
+            rules: [
                 Validator.isRequired('#title'),
                 Validator.isRequired('#this-week-content'),
                 Validator.isRequired('#next-week-content')
@@ -245,7 +249,7 @@
         });
     });
 
-    $(document).on('click', '.staff-name', function (e){
+    $(document).on('click', '.staff-name', function (e) {
         $('#staff-list').find('.staff-name').removeClass('text-decoration-underline');
         $(this).addClass('text-decoration-underline');
         pagingObj.staffId = $(this).data('id');
@@ -254,12 +258,12 @@
         var spinnerE = $(this).closest('.card-body').find('.spinner-border');
         spinnerE.removeClass('d-none');
         tableWR.ajax.url(getListApiUrl(pagingObj.staffId,
-            pagingObj.page, pagingObj.pageSize)).load(function (){
+            pagingObj.page, pagingObj.pageSize)).load(function () {
             spinnerE.addClass('d-none');
         });
     });
 
-    $(document).on('change', '#page-count-select', function() {
+    $(document).on('change', '#page-count-select', function () {
         var selectedValue = $(this).val();
         pagingObj.page = 1;
         pagingObj.pageSize = selectedValue;
@@ -272,33 +276,48 @@
         });
     });
 
-    $(document).on('keyup', '.content-report', function (e){
+    $(document).on('keyup', '.content-report', function (e) {
         var ulElement = $(this).siblings('.list-title-by-hashtag');
-
         const enteredText = e.target.innerText;
+        const caretPosition = getCaretPosition(e.target);
+        const lastHashIndex = enteredText.lastIndexOf('#', caretPosition - 1);
 
-        const hashtagMatches = enteredText.match(/#[^\s#]*/g);
+        if (lastHashIndex !== -1) {
+            const lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
+            const containsSpace = lastHashtag.includes(' ');
 
-        if (hashtagMatches && hashtagMatches.length > 0) {
-            const lastHashtag = hashtagMatches[hashtagMatches.length - 1].slice(1);
-
-            callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
-                'GET', null, function (rs) {
-                    ulElement.empty();
-                    rs.forEach(function (e) {
-                        ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action cursor-pointer" data-task-id="` + e.id + `">` + e.title + `</li>`);
+            if (containsSpace) {
+                ulElement.empty();
+            } else {
+                callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
+                    'GET', null, function (rs) {
+                        ulElement.empty();
+                        rs.forEach(function (e) {
+                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action cursor-pointer" data-task-id="` + e.id + `">` + e.title + `</li>`);
+                        });
                     });
-                });
+            }
         } else {
             ulElement.empty();
         }
     });
 
+    function getCaretPosition(element) {
+        let caretOffset = 0;
+        const doc = element.ownerDocument || element.document;
+        const win = doc.defaultView || doc.parentWindow;
+        const range = win.getSelection().getRangeAt(0);
+        const preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+        return caretOffset;
+    }
 
-    $(document).on('click', '.hashtag-e', function (e){
+    $(document).on('click', '.hashtag-e', function (e) {
         var taskTitle = $(this).text();
         var taskId = $(this).data('task-id');
-        var aE = `<a class="fw-bold" href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+        var aE = `<a class="fw-bold" href="/tasks/` + taskId + `">` + taskTitle + `</a>`;
 
         const containerListHashtag = $(this).closest('.list-title-by-hashtag');
         const contentE = containerListHashtag.siblings('.content-report');
@@ -309,8 +328,12 @@
             const firstAngleBracketIndex = substringAfterLastHash.indexOf('<');
             if (firstAngleBracketIndex !== -1) {
                 var textContentE = contentE[0].textContent;
+                console.log(textContentE)
                 var cutContent = textContentE.substring(textContentE.indexOf('#') + 1);
-                const replacedText = contentE.html().replace(substringAfterLastHash, aE + cutContent);
+                var replacedText = '';
+                if (taskTitle.includes(cutContent)) replacedText = contentE.html().replace(substringAfterLastHash, aE);
+                else replacedText = contentE.html().replace(substringAfterLastHash, aE + cutContent);
+
                 contentE.html(replacedText);
             }
         }
@@ -320,20 +343,20 @@
         containerListHashtag.empty();
     });
 
-    function removePagingIfExsit(){
+    function removePagingIfExsit() {
         if (window.pagObj) {
             window.pagObj.twbsPagination('destroy');
         }
     }
 
-    function loadPaging(){
+    function loadPaging() {
         callAjaxByJsonWithData(getCountListApiUrl(pagingObj.staffId), 'GET', null, function (totalItem) {
 
             removePagingIfExsit();
 
             //paging
             var totalPages = 0;
-            if(totalItem <= pagingObj.pageSize) totalPages = 1;
+            if (totalItem <= pagingObj.pageSize) totalPages = 1;
             else totalPages = Math.ceil(totalItem / pagingObj.pageSize);
             var currentPage = pagingObj.page;
 

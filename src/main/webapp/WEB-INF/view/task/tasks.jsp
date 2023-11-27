@@ -174,7 +174,6 @@
                 </div>
             </div>
             <div class="card-body border border-dashed border-end-0 border-start-0">
-                <form>
                     <div class="row g-3">
                         <div class="col-xxl-7 col-sm-12">
                             <div class="search-box">
@@ -223,7 +222,6 @@
                         <!--end col-->
                     </div>
                     <!--end row-->
-                </form>
             </div>
             <!--end card-body-->
             <div class="card-body">
