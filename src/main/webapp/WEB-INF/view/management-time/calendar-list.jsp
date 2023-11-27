@@ -140,7 +140,7 @@
                 <button class="btn btn-primary bottom-left" onclick="saveCalendar()">Save</button>
             </div>
         </div>
-        <table class="table table-nowrap table-bordered" id="todoTable">
+        <table class="table table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
                 <th scope="col"></th>
@@ -342,7 +342,7 @@
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e) => {
                             if (e === "") {
-                                xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Click to edit</p>'
+                                xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
                             } else {
                                 xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
                             }
@@ -350,7 +350,7 @@
                         monthlyTarget.innerHTML = xhtml;
                     } else {
                         for (let i =0;i<3;i++) {
-                            xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Click to edit</p>'
+                            xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
                         }
                         monthlyTarget.innerHTML = xhtml;
                     }
@@ -766,7 +766,7 @@
         } else {
             var inputElement = document.createElement('input');
             inputElement.value = element.innerText;
-            inputElement.classList.add('editable', 'editing','m-0');
+            inputElement.classList.add('editable', 'editing','m-0','w-100');
             inputElement.ondblclick = function() { toggleEdit(inputElement); };
 
             element.replaceWith(inputElement);

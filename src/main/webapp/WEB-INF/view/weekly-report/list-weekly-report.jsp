@@ -276,27 +276,24 @@
         var ulElement = $(this).siblings('.list-title-by-hashtag');
 
         const enteredText = e.target.innerText;
-        const lastIndexOfHash = enteredText.lastIndexOf('#');
-        if (lastIndexOfHash !== -1) {
-            const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
-            const firstSpaceIndex = textAfterLastHash.indexOf(' ');
 
-            if (firstSpaceIndex === -1) {
-                callAjaxByJsonWithData('/api/v1/tasks/search/'+userCurrent.id+'?title='+textAfterLastHash,
-                    'GET', null, function (rs) {
-                        ulElement.empty();
-                        rs.forEach(function (e) {
-                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
-                                ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
-                        });
+        const hashtagMatches = enteredText.match(/#[^\s#]*/g);
+
+        if (hashtagMatches && hashtagMatches.length > 0) {
+            const lastHashtag = hashtagMatches[hashtagMatches.length - 1].slice(1);
+
+            callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
+                'GET', null, function (rs) {
+                    ulElement.empty();
+                    rs.forEach(function (e) {
+                        ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action cursor-pointer" data-task-id="` + e.id + `">` + e.title + `</li>`);
                     });
-            } else{
-                ulElement.empty();
-            }
-        } else{
+                });
+        } else {
             ulElement.empty();
         }
     });
+
 
     $(document).on('click', '.hashtag-e', function (e){
         var taskTitle = $(this).text();
@@ -309,10 +306,11 @@
         const lastIndex = contentE.html().lastIndexOf('#');
         if (lastIndex !== -1) {
             const substringAfterLastHash = contentE.html().substring(lastIndex);
-
             const firstAngleBracketIndex = substringAfterLastHash.indexOf('<');
             if (firstAngleBracketIndex !== -1) {
-                const replacedText = contentE.html().replace(substringAfterLastHash, aE);
+                var textContentE = contentE[0].textContent;
+                var cutContent = textContentE.substring(textContentE.indexOf('#') + 1);
+                const replacedText = contentE.html().replace(substringAfterLastHash, aE + cutContent);
                 contentE.html(replacedText);
             }
         }

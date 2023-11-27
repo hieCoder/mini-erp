@@ -591,7 +591,7 @@
                         <div class="mb-3">
                             <label for="addBasicSalary" class="form-label">Basic Salary:</label>
                             <input type="number" class="form-control" id="addBasicSalary" name="basicSalary"
-                                   max="2000000000" required/>
+                                   max="2000000000" min="0" required/>
                         </div>
                         <div class="mb-3">
                             <label id="valAllowance">Allowance:</label>
@@ -601,7 +601,7 @@
                                         <div class="form-group">
                                             <label for="telephone" class="form-label">Telephone:</label>
                                             <input type="number" class="form-control allowance" id="telephone"
-                                                   required max="2000000000" data-name="Telephone">
+                                                   required max="2000000000" min="0" data-name="Telephone">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -609,7 +609,7 @@
                                         <div class="form-group">
                                             <label for="meal" class="form-label">Meal:</label>
                                             <input type="number" class="form-control allowance" id="meal"
-                                                   required max="2000000000" data-name="Meal">
+                                                   required max="2000000000" min="0" data-name="Meal">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -619,7 +619,7 @@
                                         <div class="form-group">
                                             <label for="gasoline" class="form-label">Gasoline:</label>
                                             <input type="number" class="form-control allowance" id="gasoline"
-                                                   required max="2000000000" data-name="Gasoline">
+                                                   required max="2000000000" min="0" data-name="Gasoline">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -627,7 +627,7 @@
                                         <div class="form-group">
                                             <label for="uniform" class="form-label">Uniform:</label>
                                             <input type="number" class="form-control allowance" id="uniform"
-                                                   required max="2000000000" data-name="Uniform">
+                                                   required max="2000000000" min="0" data-name="Uniform">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -637,7 +637,7 @@
                                         <div class="form-group">
                                             <label for="attendance" class="form-label">Attendance:</label>
                                             <input type="number" class="form-control allowance" id="attendance"
-                                                   required max="2000000000" data-name="Attendance">
+                                                   required max="2000000000" min="0" data-name="Attendance">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -645,7 +645,7 @@
                                         <div class="form-group">
                                             <label for="other" class="form-label">Other:</label>
                                             <input type="number" class="form-control allowance" id="other"
-                                                   required max="2000000000" data-name="Other">
+                                                   required max="2000000000" min="0" data-name="Other">
                                             <small class="form-message"></small>
                                         </div>
                                     </div>
@@ -677,7 +677,7 @@
                                         insurance</label>
                                     <input type="number" class="form-control d-none insurance"
                                            id="addHealthInsuranceInput"
-                                           placeholder="Enter Value Health Insurance" max="2000000000"
+                                           placeholder="Enter Value Health Insurance" max="2000000000" min="0"
                                            data-name="Health Insurance"
                                     >
                                 </div>
@@ -688,7 +688,7 @@
                                         insurance</label>
                                     <input type="number" class="form-control d-none insurance"
                                            id="addSocialInsuranceInput"
-                                           placeholder="Enter Value Social Insurance" max="2000000000"
+                                           placeholder="Enter Value Social Insurance" max="2000000000" min="0"
                                            data-name="Social Insurance"
                                     >
                                 </div>
@@ -729,7 +729,7 @@
                     <div class="mb-3">
                         <label for="editBasicSalary" class="form-label">Basic Salary:</label>
                         <input type="number" class="form-control" id="editBasicSalary" name="basicSalary"
-                               max="2000000000" required/>
+                               max="2000000000" min="0" required/>
                     </div>
                     <div class="mb-3">
                         <label>Allowance:</label>
@@ -767,7 +767,7 @@
                             <label class="form-check-label" for="editHealthInsuranceCheckbox">Health
                                 insurance</label>
                             <input type="number" class="form-control d-none insurance" id="editHealthInsuranceInput"
-                                   placeholder="Enter Value Health Insurance" max="2000000000"
+                                   placeholder="Enter Value Health Insurance" max="2000000000" min="0"
                                    data-name="Health Insurance">
                         </div>
                         <div class="form-check">
@@ -777,7 +777,7 @@
                             <label class="form-check-label" for="addSocialInsuranceCheckbox">Social
                                 insurance</label>
                             <input type="number" class="form-control d-none insurance" id="editSocialInsuranceInput"
-                                   placeholder="Enter Value Social Insurance" max="2000000000"
+                                   placeholder="Enter Value Social Insurance" max="2000000000" min="0"
                                    data-name="Social Insurance">
                         </div>
                     </div>
@@ -1439,7 +1439,7 @@
                             <div class="form-group">
                                 <label for="value">Value</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control value" required max="2000000000">
+                                    <input type="number" class="form-control value" required max="2000000000" min="0">
                                     <div class="input-group-append ml-2">
                                         <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput(this)"></i>
                                     </div>
@@ -1482,7 +1482,7 @@
                             <div class="form-group">
                                 <label for="value">Value</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control newValue" required max="2000000000">
+                                    <input type="number" class="form-control newValue" required max="2000000000" min="0">
                                     <div class="input-group-append ml-2">
                                         <i class="ri-close-circle-line deleteBtnAllowance" style="font-size: 25px; color: red; margin-left: 8px; cursor: pointer" onclick="delInput2(this)"></i>
                                     </div>
