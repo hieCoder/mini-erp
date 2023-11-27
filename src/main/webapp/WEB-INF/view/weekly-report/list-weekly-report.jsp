@@ -328,7 +328,6 @@
             const firstAngleBracketIndex = substringAfterLastHash.indexOf('<');
             if (firstAngleBracketIndex !== -1) {
                 var textContentE = contentE[0].textContent;
-                console.log(textContentE)
                 var cutContent = textContentE.substring(textContentE.indexOf('#') + 1);
                 var replacedText = '';
                 if (taskTitle.includes(cutContent)) replacedText = contentE.html().replace(substringAfterLastHash, aE);
