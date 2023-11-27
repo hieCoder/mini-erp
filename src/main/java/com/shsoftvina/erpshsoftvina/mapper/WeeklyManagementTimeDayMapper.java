@@ -14,4 +14,6 @@ public interface WeeklyManagementTimeDayMapper {
     WeeklyManagementTimeDay findByCode(String userId, String code);
     int createWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
     int updateWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
+
+    List<WeeklyManagementTimeDay> findByListCode(String userId, String[] codes);
 }

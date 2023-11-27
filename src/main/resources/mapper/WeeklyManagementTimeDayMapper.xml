@@ -31,4 +31,15 @@
         UPDATE WEEKLY_MANAGEMENT_TIME_DAY SET CONTENT = #{content}
         WHERE ID = #{id};
     </update>
+
+    <select id="findByListCode" resultMap="weeklyManagementTimeDayResultMap">
+        SELECT *
+        FROM WEEKLY_MANAGEMENT_TIME_DAY w
+        INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.USER_ID = #{userId}
+        AND w.CODE IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </select>
 </mapper>

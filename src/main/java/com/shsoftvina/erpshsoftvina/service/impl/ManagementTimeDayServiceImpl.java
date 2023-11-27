@@ -198,20 +198,19 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             calendarResponse.setMonthlyContents(monthlyContent);
         }
 
-        List<WeeklyManagementTimeDayResponse> weeklys = new ArrayList<>();
-        String[] weeklyCode = getSundaysOfTheMonth(startDate);
-        for(String wc: weeklyCode){
-            WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayMapper.findByCode(userId, wc);
 
-            if(weeklyE!=null){
-                WeeklyManagementTimeDayResponse weeklyR = WeeklyManagementTimeDayResponse.builder()
+        String[] weeklyCode = getSundaysOfTheMonth(startDate);
+        List<WeeklyManagementTimeDay> days = weeklyManagementTimeDayMapper.findByListCode(userId, weeklyCode);
+        List<WeeklyManagementTimeDayResponse> weeklys = days.stream()
+                .filter(weeklyE -> weeklyE != null)
+                .map(weeklyE -> WeeklyManagementTimeDayResponse.builder()
                         .weeklyId(weeklyE.getId())
                         .startDate(weeklyE.getCode())
                         .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
-                        .listDayOfWeek(managementTimeDayConvert.toListResponse(managementTimeDayMapper.findByCode(userId, wc))).build();
-                weeklys.add(weeklyR);
-            }
-        }
+                        .listDayOfWeek(managementTimeDayConvert.toListResponse(managementTimeDayMapper.findByCode(userId, weeklyE.getCode())))
+                        .build())
+                .collect(Collectors.toList());
+
         calendarResponse.setWeeklys(weeklys);
 
         return calendarResponse;
