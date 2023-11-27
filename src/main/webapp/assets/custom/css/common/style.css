@@ -55,15 +55,9 @@
     object-fit: cover;
     background-image: url("/assets/images/profile-bg.jpg");
 }
-/*@media (max-width: 575.98px) {*/
-/*    .background-content-color {*/
-/*        height: 445px;*/
-/*    }*/
-/*}*/
-
 .marquee-text {
-    color: #405189; /* Màu chữ */
-    font-size: 15px; /* Kích cỡ chữ */
+    color: #405189;
+    font-size: 15px;
     margin: 0;
     padding: 0;
     font-weight: bold;

@@ -13,7 +13,7 @@
             <h4 class="mb-sm-0">DASHBOARD</h4>
             <c:if test="${requestScope.list != null}">
                 <c:if test="${not empty requestScope.list}">
-                    <marquee class="marquee-text" behavior="scroll" direction="left" scrollamount="15">
+                    <marquee class="marquee-text" behavior="scroll" direction="right" scrollamount="10">
                         <img src="https://cdn-icons-png.flaticon.com/512/2985/2985632.png" class="cakeIconCalendar" alt="Cake" title="Cake" width="25" height="25">
                         Happy Birthday To
                         <c:forEach items="${requestScope.list}" var="person" varStatus="loop">
@@ -26,8 +26,6 @@
     </div>
 </div>
 
-
-
 <div class="row">
     <div class="col-12 background-content-color">
         <div class="row">
@@ -37,7 +35,7 @@
                         <h4 class="card-title mb-0 flex-grow-1">Upcoming Activities</h4>
                         <div class="flex-shrink-0">
                             <div>
-                                <a href="/schedules" class="">
+                                <a href="" class="schedule-item-menu">
                                     <img src="https://cdn-icons-png.flaticon.com/512/1968/1968779.png " width="25"
                                          height="25" alt="" title="" class="img-small">
                                 </a>
@@ -73,7 +71,7 @@
             <div class="col-xxl-4">
                 <div class="card card-height-75">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">My Tasks</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Ongoing Tasks</h4>
                         <div class="flex-shrink-0">
                             <div>
                                 <a href="/tasks" class="">
@@ -136,7 +134,7 @@
             <div class="col-xxl-4">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Notifications</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Latest Notifications</h4>
                         <div>
                             <a href="/notifications" class="">
                                 <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png " width="28"
@@ -327,10 +325,10 @@
                 if (rs) {
                     let data = rs;
                     let xhtml = "";
-                    data.forEach(function (notification, index) {
+                    data.forEach(function (notification) {
                         xhtml += '<div class="d-flex align-middle mt-4">' +
                             '<div class="flex-shrink-0">' +
-                            '<img src="assets/images/small/img-1.jpg" class="rounded img-fluid" style="height: 60px;" alt="">' +
+                            '<img src="../../../assets/custom/images/notification.jpg" class="rounded img-fluid" style="height: 55px;width: 60px" alt="">' +
                             '</div>' +
                             '<div class="flex-grow-1 ms-3">' +
                             '<h6 class="mb-1 lh-base"><a href="/notifications/' + notification.id + '" class="text-reset" target="_blank">' + notification.title + '</a></h6>' +
@@ -351,7 +349,7 @@
             if (rs) {
                 let data = rs;
                 let xhtml = "";
-                data.list.forEach(function (event, index) {
+                data.list.forEach(function (event) {
                     xhtml += '<li class="list-group-item ps-0">' +
                         '<div class="row align-items-center g-3">' +
                         '<div class="col-auto" data-toggle="tooltip" data-bs-placement="bottom" title="' + getDayFromDate(event.startDate) + '">' +
@@ -370,7 +368,7 @@
                         '<div class="avatar-group">' +
                         '<div class="avatar-group-item">' +
                         '<a style="cursor: default" class="d-inline-block" data-bs-toggle="tooltip" ' +
-                        'data-bs-placement="top" title="" data-bs-original-title="Stine Nielsen">' +
+                        'data-bs-placement="top" title="' + event.user.fullname + '">' +
                         '<img src="' + event.user.avatar + '" alt="" class="rounded-circle avatar-xxs">' +
                         '</a>' +
                         '</div>' +
