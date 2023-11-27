@@ -524,7 +524,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 text-center align-middle mt-3">
-                    <button class="btn btn-primary mr-2" id="backButton" onclick="window.location=document.referrer">
+                    <button class="btn btn-primary mr-2" id="backButton" onclick="history.back()">
                         Back
                     </button>
                     <button class="btn btn-success ml-2" id="updateButton">Save</button>
@@ -698,7 +698,7 @@
         console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
             if (rs) {
-                rsSuccess("Add");
+                rsSuccessLoad("Add");
             } else {
                 rsUnSuccess();
             }
