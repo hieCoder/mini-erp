@@ -110,42 +110,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return resultArray;
     }
 
-    public static String getFirstDateOfWeek(String dateString) {
-        // Định dạng để chuyển đổi chuỗi ngày tháng thành đối tượng LocalDate
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // Chuyển đổi chuỗi thành đối tượng LocalDate
-        LocalDate currentDate = LocalDate.parse(dateString, formatter);
-
-        // Xác định ngày đầu tuần
-        LocalDate firstDateOfWeek = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-
-        // Định dạng kết quả thành chuỗi "yyyy-MM"
-        String result = firstDateOfWeek.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-
-        return result;
-    }
-
-    private static String getLastDateOfWeek(String dateString) {
-        // Định dạng để chuyển đổi chuỗi ngày tháng thành đối tượng LocalDate
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // Chuyển đổi chuỗi thành đối tượng LocalDate
-        LocalDate currentDate = LocalDate.parse(dateString, formatter);
-
-        // Xác định ngày cuối tuần
-        LocalDate lastDateOfWeek = currentDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
-
-        // Định dạng kết quả thành chuỗi "yyyy-MM"
-        String result = lastDateOfWeek.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-
-        return result;
-    }
-
-
     private static String[] getMonthContainWeek(String day) {
-        String firstDateOfWeek = getFirstDateOfWeek(day);
-        String lastDateOfWeek = getLastDateOfWeek(day);
+        String firstDateOfWeek = FileUtils.getFirstDateOfWeek(day);
+        String lastDateOfWeek = FileUtils.getLastDateOfWeek(day);
 
         String[] containingMonths = null;
 
@@ -157,6 +124,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             containingMonths[0] = firstDateOfWeek;
             containingMonths[1] = lastDateOfWeek;
         }
+
+        Arrays.sort(containingMonths, Comparator.reverseOrder());
 
         return containingMonths;
     }
