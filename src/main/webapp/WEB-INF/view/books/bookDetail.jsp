@@ -35,7 +35,7 @@
                         <img src="${bookDetail.book.image}" class="img-fluid" alt="User Avatar" width="200">
                         <h4 class="mt-2 font-weight-bold">${bookDetail.book.title}</h4>
                         <p class="text-muted">Author: ${bookDetail.book.author}</p>
-                        <a href="${bookDetail.book.link}" class="cursor-pointer">Link To Book</a>
+                        <a href="${bookDetail.book.link}" class="cursor-pointer" target="_blank">Link To Book</a>
                     </div>
                 </div>
                 <div class="col-md-9">
