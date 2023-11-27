@@ -262,23 +262,21 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 monthResponse.setMonth(month);
                 monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
 
-                if(currentDay.substring(0, 7).equals(month)){
-                    String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
-                    if(!StringUtils.isBlank(dailyRoutineJson)){
-                        DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
-                        List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
-                        List<Boolean[]> listDailyRoutine = list.stream()
-                                .filter(day -> day != null)
-                                .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
-                                .collect(Collectors.toList());
-                        int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
+                String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
+                if(!StringUtils.isBlank(dailyRoutineJson)){
+                    DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
+                    List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
+                    List<Boolean[]> listDailyRoutine = list.stream()
+                            .filter(day -> day != null)
+                            .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
+                            .collect(Collectors.toList());
+                    int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
 
-                        for(int i = 0; i < dailyRoutineResponses.length; i++){
-                            dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
-                        }
-
-                        monthResponse.setDailyRoutine(dailyRoutineResponses);
+                    for(int i = 0; i < dailyRoutineResponses.length; i++){
+                        dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
                     }
+
+                    monthResponse.setDailyRoutine(dailyRoutineResponses);
                 }
 
                 monthlys.add(monthResponse);
