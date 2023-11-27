@@ -19,7 +19,6 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             if (!urlsAllow(request.getRequestURI())) {
-                //System.out.println(request.getRequestURI());
                 try {
                     if (!Principal.getUserCurrent().checkAcceptUpdateBasicInfo()) {
                         response.sendRedirect("/users/" + Principal.getUserCurrent().getId());
@@ -41,6 +40,7 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
                 "/assets/",
                 "/upload/", "/uploaded",
                 "/users/",
+                "/j_spring_security_check",
                 "/api/",
                 "/service-worker.js",
                 "/websocket"

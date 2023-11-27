@@ -32,12 +32,15 @@ import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,6 +108,57 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
         return resultArray;
+    }
+
+    public static String getFirstDateOfWeek(String dateString) {
+        // Định dạng để chuyển đổi chuỗi ngày tháng thành đối tượng LocalDate
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Chuyển đổi chuỗi thành đối tượng LocalDate
+        LocalDate currentDate = LocalDate.parse(dateString, formatter);
+
+        // Xác định ngày đầu tuần
+        LocalDate firstDateOfWeek = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+
+        // Định dạng kết quả thành chuỗi "yyyy-MM"
+        String result = firstDateOfWeek.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+        return result;
+    }
+
+    private static String getLastDateOfWeek(String dateString) {
+        // Định dạng để chuyển đổi chuỗi ngày tháng thành đối tượng LocalDate
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Chuyển đổi chuỗi thành đối tượng LocalDate
+        LocalDate currentDate = LocalDate.parse(dateString, formatter);
+
+        // Xác định ngày cuối tuần
+        LocalDate lastDateOfWeek = currentDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+
+        // Định dạng kết quả thành chuỗi "yyyy-MM"
+        String result = lastDateOfWeek.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+        return result;
+    }
+
+
+    private static String[] getMonthContainWeek(String day) {
+        String firstDateOfWeek = getFirstDateOfWeek(day);
+        String lastDateOfWeek = getLastDateOfWeek(day);
+
+        String[] containingMonths = null;
+
+        if(firstDateOfWeek.equals(lastDateOfWeek)){
+            containingMonths = new String[1];
+            containingMonths[0] = firstDateOfWeek;
+        } else{
+            containingMonths = new String[2];
+            containingMonths[0] = firstDateOfWeek;
+            containingMonths[1] = lastDateOfWeek;
+        }
+
+        return containingMonths;
     }
 
     @Override
@@ -199,31 +253,38 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = new DaysOfWeeklyResponse();
 
+        List<MonthResponse> monthlys = new ArrayList<>();
+        String[] monthContainWeek = getMonthContainWeek(currentDay);
+        for(String month: monthContainWeek){
+            MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, month);
+            if(monthlyManagementTimeDay!=null){
+                MonthResponse monthResponse = new MonthResponse();
+                monthResponse.setMonth(month);
+                monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
 
-        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, currentDay.substring(0, 7));
-        if(monthlyManagementTimeDay!=null){
-            MonthResponse monthResponse = new MonthResponse();
-            monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
+                if(currentDay.substring(0, 7).equals(month)){
+                    String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
+                    if(!StringUtils.isBlank(dailyRoutineJson)){
+                        DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
+                        List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
+                        List<Boolean[]> listDailyRoutine = list.stream()
+                                .filter(day -> day != null)
+                                .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
+                                .collect(Collectors.toList());
+                        int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
 
-            String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
-            if(!StringUtils.isBlank(dailyRoutineJson)){
-                DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
-                List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
-                List<Boolean[]> listDailyRoutine = list.stream()
-                        .filter(day -> day != null)
-                        .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
-                        .collect(Collectors.toList());
-                int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
+                        for(int i = 0; i < dailyRoutineResponses.length; i++){
+                            dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                        }
 
-                for(int i = 0; i < dailyRoutineResponses.length; i++){
-                    dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                        monthResponse.setDailyRoutine(dailyRoutineResponses);
+                    }
                 }
 
-                monthResponse.setDailyRoutine(dailyRoutineResponses);
+                monthlys.add(monthResponse);
             }
-
-            daysOfWeeklyResponse.setMonthlys(monthResponse);
         }
+        daysOfWeeklyResponse.setMonthlys(monthlys);
 
 
         String weeklyCode = ApplicationUtils.generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
