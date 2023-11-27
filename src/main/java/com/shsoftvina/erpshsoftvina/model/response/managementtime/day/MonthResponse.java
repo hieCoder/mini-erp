@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MonthResponse {
+    private String month;
     private String[] monthlyContents;
     private DailyRoutineResponse[] dailyRoutine;
 }

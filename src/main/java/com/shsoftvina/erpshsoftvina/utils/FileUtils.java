@@ -13,8 +13,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -212,5 +215,17 @@ public class FileUtils {
             if(!isAllowedFileSize(file,fileSize)) return false;
         }
         return true;
+    }
+
+    public static String getFirstDateOfWeek(String dateString) {
+        LocalDate currentDate = DateUtils.parseLocalDate(dateString);
+        LocalDate firstDateOfWeek = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        return DateUtils.formatYYYYMM(firstDateOfWeek);
+    }
+
+    public static String getLastDateOfWeek(String dateString) {
+        LocalDate currentDate = DateUtils.parseLocalDate(dateString);
+        LocalDate firstDateOfWeek = currentDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+        return DateUtils.formatYYYYMM(firstDateOfWeek);
     }
 }

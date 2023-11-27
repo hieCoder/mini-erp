@@ -32,12 +32,15 @@ import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,6 +108,29 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
         return resultArray;
+    }
+
+    private static String[] getMonthContainWeek(String day) {
+        String firstDateOfWeek = FileUtils.getFirstDateOfWeek(day);
+        String lastDateOfWeek = FileUtils.getLastDateOfWeek(day);
+
+        String[] containingMonths = null;
+
+        if(firstDateOfWeek.equals(lastDateOfWeek)){
+            containingMonths = new String[1];
+            containingMonths[0] = firstDateOfWeek;
+        } else{
+            containingMonths = new String[2];
+            if(day.substring(0, 7).equals(firstDateOfWeek)){
+                containingMonths[0] = firstDateOfWeek;
+                containingMonths[1] = lastDateOfWeek;
+            } else{
+                containingMonths[0] = lastDateOfWeek;
+                containingMonths[1] = firstDateOfWeek;
+            }
+        }
+
+        return containingMonths;
     }
 
     @Override
@@ -199,31 +225,36 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = new DaysOfWeeklyResponse();
 
+        List<MonthResponse> monthlys = new ArrayList<>();
+        String[] monthContainWeek = getMonthContainWeek(currentDay);
+        for(String month: monthContainWeek){
+            MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, month);
+            if(monthlyManagementTimeDay!=null){
+                MonthResponse monthResponse = new MonthResponse();
+                monthResponse.setMonth(month);
+                monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
 
-        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, currentDay.substring(0, 7));
-        if(monthlyManagementTimeDay!=null){
-            MonthResponse monthResponse = new MonthResponse();
-            monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class));
+                String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
+                if(!StringUtils.isBlank(dailyRoutineJson)){
+                    DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
+                    List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
+                    List<Boolean[]> listDailyRoutine = list.stream()
+                            .filter(day -> day != null)
+                            .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
+                            .collect(Collectors.toList());
+                    int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
 
-            String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
-            if(!StringUtils.isBlank(dailyRoutineJson)){
-                DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
-                List<ManagementTimeDay> list = managementTimeDayMapper.findAllDailyRoutineOfMonth(userId, monthlyManagementTimeDay.getCode());
-                List<Boolean[]> listDailyRoutine = list.stream()
-                        .filter(day -> day != null)
-                        .map(day -> JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
-                        .collect(Collectors.toList());
-                int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
+                    for(int i = 0; i < dailyRoutineResponses.length; i++){
+                        dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                    }
 
-                for(int i = 0; i < dailyRoutineResponses.length; i++){
-                    dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                    monthResponse.setDailyRoutine(dailyRoutineResponses);
                 }
 
-                monthResponse.setDailyRoutine(dailyRoutineResponses);
+                monthlys.add(monthResponse);
             }
-
-            daysOfWeeklyResponse.setMonthlys(monthResponse);
         }
+        daysOfWeeklyResponse.setMonthlys(monthlys);
 
 
         String weeklyCode = ApplicationUtils.generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));

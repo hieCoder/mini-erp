@@ -15,12 +15,15 @@ import java.util.regex.Pattern;
 
 public class DateUtils {
 
-    public static String formatDateTime(Date date) {
-        if(date != null){
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            return sdf.format(date);
+    public static Date toDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = dateFormat.parse(dateString);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public static Date parseDateTime(String date) {
@@ -43,6 +46,26 @@ public class DateUtils {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+        return null;
+    }
+
+    public static LocalDate parseLocalDate(String date) {
+        if(date != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(date, formatter);
+        }
+        return null;
+    }
+
+    public static String formatYYYYMM(LocalDate localDate){
+        return localDate.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+    }
+
+    public static String formatDateTime(Date date) {
+        if(date != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            return sdf.format(date);
         }
         return null;
     }
@@ -108,17 +131,6 @@ public class DateUtils {
         LocalTime currentTime = LocalTime.now();
 
         return LocalDateTime.of(localDate, currentTime);
-    }
-
-    public static Date toDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = dateFormat.parse(dateString);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public static boolean isValidDate(String dateStr) {
