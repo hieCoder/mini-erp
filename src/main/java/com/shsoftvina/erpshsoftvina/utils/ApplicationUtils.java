@@ -15,6 +15,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -253,33 +254,16 @@ public class ApplicationUtils {
         }
     }
 
-//    public boolean isUserAllow(){
-//        User userCurrent = Principal.getUserCurrent();
-//        RoleEnum roleCurrent = userCurrent.getRole();
-//        if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER))){
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    public boolean isUserAllow(String idUser){
-//        User userCurrent = Principal.getUserCurrent();
-//        RoleEnum roleCurrent = userCurrent.getRole();
-//        String idUserCurrent = userCurrent.getId();
-//        if(!(roleCurrent.equals(RoleEnum.OWNER) || roleCurrent.equals(RoleEnum.MANAGER) || idUser.equals(idUserCurrent))){
-//            return false;
-//        }
-//        return true;
-//    }
-
-    public boolean checkUserWebSocketAllow(User user){
+    public boolean checkUserWebSocketAllow(Authentication authentication){
+        User user = ((User) authentication.getPrincipal());
         if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER))){
             return false;
         }
         return true;
     }
 
-    public boolean checkUserWebSocketAllow(User user, String userId){
+    public boolean checkUserWebSocketAllow(Authentication authentication, String userId){
+        User user = ((User) authentication.getPrincipal());
         if(!(user.getRole().equals(RoleEnum.OWNER) || user.getRole().equals(RoleEnum.MANAGER) || userId.equals(user.getId()))){
             return false;
         }
