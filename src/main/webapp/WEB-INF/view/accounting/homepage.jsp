@@ -38,11 +38,6 @@
     </div>
     <div class="row d-none" id="containerAccounting">
         <div class="shadow p-3 bg-white rounded">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="text-center">Accounting</h3>
-                </div>
-            </div>
             <div class="row mt-1">
                 <div class="col-md-4 col-xl-6">
                     <div class="form-group">
