@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.mapper;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.Notification;
 import com.shsoftvina.erpshsoftvina.entity.Timesheets;
+import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +21,7 @@ public interface ManagementTimeDayMapper {
     int editDay(ManagementTimeDay managementTimeDay);
     List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
 
+    List<ManagementTimeDay> findByListDay(String userId, List<String> days);
     int createListCalendarDay(List<ManagementTimeDay> days);
+    void updateOneThingCalendarNull(String userId, List<String> days);
 }

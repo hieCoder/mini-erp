@@ -1,12 +1,8 @@
 package com.shsoftvina.erpshsoftvina.mapper;
 
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.WeeklyReport;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -16,4 +12,7 @@ public interface WeeklyManagementTimeDayMapper {
     int updateWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
 
     List<WeeklyManagementTimeDay> findByListCode(String userId, String[] codes);
+    List<WeeklyManagementTimeDay> findByListCode(String userId, List<String> codes);
+    int createListWeekly(List<WeeklyManagementTimeDay> weeklys);
+    void updateContentNull(String userId, List<String> codes);
 }
