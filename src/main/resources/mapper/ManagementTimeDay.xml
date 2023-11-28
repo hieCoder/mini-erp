@@ -103,4 +103,14 @@
             #{day}
         </foreach>
     </update>
+
+    <select id="findByListCode" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY m
+        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </select>
 </mapper>

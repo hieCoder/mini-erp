@@ -24,4 +24,5 @@ public interface ManagementTimeDayMapper {
     List<ManagementTimeDay> findByListDay(String userId, List<String> days);
     int createListCalendarDay(List<ManagementTimeDay> days);
     void updateOneThingCalendarNull(String userId, List<String> days);
+    List<ManagementTimeDay> findByListCode(String userId, List<String> codes);
 }
