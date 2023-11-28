@@ -107,23 +107,21 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return resultArray;
     }
 
-    private static String[] getMonthContainWeek(String day) {
+    private static List<String> getMonthContainWeek(String day) {
         String firstDateOfWeek = FileUtils.getFirstDateOfWeek(day);
         String lastDateOfWeek = FileUtils.getLastDateOfWeek(day);
 
-        String[] containingMonths = null;
+        List<String> containingMonths = new ArrayList<>();
 
         if(firstDateOfWeek.equals(lastDateOfWeek)){
-            containingMonths = new String[1];
-            containingMonths[0] = firstDateOfWeek;
+            containingMonths.add(firstDateOfWeek);
         } else{
-            containingMonths = new String[2];
             if(day.substring(0, 7).equals(firstDateOfWeek)){
-                containingMonths[0] = firstDateOfWeek;
-                containingMonths[1] = lastDateOfWeek;
+                containingMonths.add(firstDateOfWeek);
+                containingMonths.add(lastDateOfWeek);
             } else{
-                containingMonths[0] = lastDateOfWeek;
-                containingMonths[1] = firstDateOfWeek;
+                containingMonths.add(lastDateOfWeek);
+                containingMonths.add(firstDateOfWeek);
             }
         }
 
@@ -179,6 +177,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
         return sundayList;
+    }
+
+    private MonthlyManagementTimeDay getMonthlyManagementTimeDays(List<MonthlyManagementTimeDay> monthlyManagementTimeDays, String code) {
+        Optional<MonthlyManagementTimeDay> result = monthlyManagementTimeDays.stream()
+                .filter(m -> code.equals(m.getCode()))
+                .findFirst();
+        return result.orElse(null);
     }
 
     @Override
@@ -299,14 +304,14 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     public DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay) {
 
         applicationUtils.checkUserAllow(userId);
-        //if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = new DaysOfWeeklyResponse();
 
         List<MonthResponse> monthlys = new ArrayList<>();
-        String[] monthContainWeek = getMonthContainWeek(currentDay);
+        List<String> monthContainWeek = getMonthContainWeek(currentDay);
+        List<MonthlyManagementTimeDay> monthlyManagementTimeDays = monthlyManagementTimeDayMapper.findByListCode(userId, monthContainWeek);
         for(String month: monthContainWeek){
-            MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, month);
+            MonthlyManagementTimeDay monthlyManagementTimeDay = getMonthlyManagementTimeDays(monthlyManagementTimeDays, month);
             if(monthlyManagementTimeDay!=null){
                 MonthResponse monthResponse = new MonthResponse();
                 monthResponse.setMonth(month);
@@ -340,10 +345,11 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         WeeklyManagementTimeDayResponse weekly = WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay != null? weeklyManagementTimeDay.getId() : null)
                 .startDate(weeklyManagementTimeDay != null? weeklyManagementTimeDay.getCode() : null)
-                .weeklyContents(weeklyManagementTimeDay != null? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class): null)
-                //.listDayOfWeek(managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode))
-        .build();
+                .weeklyContents(weeklyManagementTimeDay != null? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class): null).build();
         daysOfWeeklyResponse.setWeeklys(weekly);
+
+
+        daysOfWeeklyResponse.setDays(managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode));
 
         return daysOfWeeklyResponse;
     }
