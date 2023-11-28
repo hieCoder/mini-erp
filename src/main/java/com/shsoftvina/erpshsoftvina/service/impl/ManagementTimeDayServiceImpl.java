@@ -70,7 +70,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private MonthlyManagementTimeDayConverter monthlyManagementTimeDayConverter;
 
-    private static String[] getSundaysOfTheMonth(String dateString) {
+    private static List<String> getSundaysOfTheMonth(String dateString) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(dateString, formatter);
@@ -89,7 +89,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             currentSunday = currentSunday.plusWeeks(1);
         }
 
-        return sundays.toArray(new String[0]);
+        return sundays;
     }
 
     private static int[] mergeAndCountDailyRoutine(List<Boolean[]> list) {
@@ -234,19 +234,27 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
 
-        String[] weeklyCode = getSundaysOfTheMonth(startDate);
-        List<WeeklyManagementTimeDay> days = weeklyManagementTimeDayMapper.findByListCode(userId, weeklyCode);
-        List<WeeklyManagementTimeDayResponse> weeklys = days.stream()
+        List<String> weeklyCode = getSundaysOfTheMonth(startDate);
+        List<WeeklyManagementTimeDay> weeklys = weeklyManagementTimeDayMapper.findByListCode(userId, weeklyCode);
+        List<ManagementTimeDay> days = managementTimeDayMapper.findByListCode(userId, weeklyCode);
+
+        List<WeeklyManagementTimeDayResponse> weeklysRs = weeklys.stream()
                 .filter(weeklyE -> weeklyE != null)
-                .map(weeklyE -> WeeklyManagementTimeDayResponse.builder()
-                        .weeklyId(weeklyE.getId())
-                        .startDate(weeklyE.getCode())
-                        .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
-                        .listDayOfWeek(managementTimeDayConvert.toListResponse(managementTimeDayMapper.findByCode(userId, weeklyE.getCode())))
-                        .build())
+                .map(weeklyE -> {
+                    List<ManagementTimeDay> filteredDays = days.stream()
+                            .filter(day -> weeklyE.getCode().equals(day.getWeeklyCode()))
+                            .collect(Collectors.toList());
+
+                    return WeeklyManagementTimeDayResponse.builder()
+                            .weeklyId(weeklyE.getId())
+                            .startDate(weeklyE.getCode())
+                            .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
+                            .listDayOfWeek(managementTimeDayConvert.toListResponse(filteredDays))
+                            .build();
+                })
                 .collect(Collectors.toList());
 
-        calendarResponse.setWeeklys(weeklys);
+        calendarResponse.setWeeklys(weeklysRs);
 
         return calendarResponse;
     }
