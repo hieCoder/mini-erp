@@ -47,8 +47,6 @@ public class AccountingServiceImpl implements AccountingService {
     private UserMapper userMapper;
     @Autowired
     private ApplicationUtils applicationUtils;
-    @Autowired
-    private SettingMapper settingMapper;
 
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
@@ -70,10 +68,7 @@ public class AccountingServiceImpl implements AccountingService {
         if (totals == null) {
             return new PageAccountListResponse();
         }
-        Long latestRemain = accountingMapper.getLatestRemain(endDateWithTime);
-        totals.setTotalRemain(latestRemain);
-        long totalRecordCount = accountingMapper.getTotalRecordCountPerMonth(startTime, endDateWithTime);
-        long totalPage = (long) Math.ceil((double) totalRecordCount / size);
+        long totalPage = (long) Math.ceil((double) totals.getTotalRecordCount() / size);
         boolean hasNext = page < totalPage;
         boolean hasPrevious = page > 1;
         return new PageAccountListResponse(accountResponses, page, totalPage, size, hasNext, hasPrevious, totals);
@@ -88,8 +83,9 @@ public class AccountingServiceImpl implements AccountingService {
         }
 
         MultipartFile[] billFile = accountingCreateRequest.getBill();
+        List<String> oldFile = new ArrayList<>();
         if (billFile != null) {
-            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile, oldFile);
         }
 
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
@@ -101,11 +97,13 @@ public class AccountingServiceImpl implements AccountingService {
             try {
                 accountingMapper.createAccounting(newAccounting);
                 List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(newAccounting,true);
-                for (Accounting accounting : remainRecordInMonthList) {
-                    latestRemain += accounting.getExpense();
-                    accounting.setRemain(latestRemain);
+                if (!(remainRecordInMonthList.size() == 1)) {
+                    for (Accounting accounting : remainRecordInMonthList) {
+                        latestRemain += accounting.getExpense();
+                        accounting.setRemain(latestRemain);
+                    }
+                    accountingMapper.updateRecordsBatch(remainRecordInMonthList);
                 }
-                accountingMapper.updateRecordsBatch(remainRecordInMonthList);
             } catch (Exception e) {
                 FileUtils.deleteMultipleFilesToServer(dir, newAccounting.getBill());
                 return 0;
@@ -140,15 +138,10 @@ public class AccountingServiceImpl implements AccountingService {
 
         MultipartFile[] billFile = accountingUpdateRequest.getBill();
         if (billFile != null) {
-            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile);
+            applicationUtils.checkValidateFileAndImage(Accounting.class, billFile, oldFile);
         }
 
-        List<String> newFilesUpdate;
-        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
-        if (accountingUpdateRequest.getBill() != null && (billFile.length + oldFile.size()) > setting.getFileLimit()) {
-            throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(setting.getFileLimit()));
-        }
-        newFilesUpdate = FileUtils.saveMultipleFilesToServer(dir, billFile);
+        List<String> newFilesUpdate = FileUtils.saveMultipleFilesToServer(dir, billFile);
         assert newFilesUpdate != null;
         newFiles.addAll(newFilesUpdate);
         Accounting updateAccounting = accountingConverter.convertToEntity(accountingUpdateRequest, currentUser, newFiles);

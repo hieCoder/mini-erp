@@ -13,5 +13,6 @@ public class TotalSpendAndRemain {
     private Long totalRevenue;
     private Long totalExpense;
     private Long totalRemain;
+    private Long totalRecordCount;
 }
 

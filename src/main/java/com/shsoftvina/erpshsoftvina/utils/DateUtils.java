@@ -6,8 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
-import java.util.Calendar;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -129,8 +128,9 @@ public class DateUtils {
     public static LocalDateTime toLocalDateTime(String dateString) {
         LocalDate localDate = LocalDate.parse(dateString);
         LocalTime currentTime = LocalTime.now();
+        LocalDateTime localDateTime = LocalDateTime.of(localDate, currentTime);
 
-        return LocalDateTime.of(localDate, currentTime);
+        return localDateTime.truncatedTo(ChronoUnit.SECONDS);
     }
 
     public static boolean isValidDate(String dateStr) {
