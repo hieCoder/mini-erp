@@ -605,33 +605,35 @@
             const name = $(this).data('name');
             const value = $(this).text().trim();
             const week = $(this).data('week');
-            if (week != null) {
-                let weekObj = weeklys.find(w => w.startDay === week);
-                if (!weekObj) {
-                    weekObj = {
-                        startDay: week,
-                        content: {}
-                    };
-                    weeklys.push(weekObj);
+            if(value !== "") {
+                if (day != null) {
+                    let dayObj = days.find(d => d.day === day);
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            content: {}
+                        };
+                        days.push(dayObj);
+                    }
+                    dayObj.content[name] = value;
                 }
-                weekObj.content[name] = value;
-            }
-            if (day != null) {
-                let dayObj = days.find(d => d.day === day);
-                if (!dayObj) {
-                    dayObj = {
-                        day: day,
-                        content: {}
-                    };
-                    days.push(dayObj);
+                if (week != null) {
+                    let weekObj = weeklys.find(w => w.startDay === week);
+                    if (!weekObj) {
+                        weekObj = {
+                            startDay: week,
+                            content: {}
+                        };
+                        weeklys.push(weekObj);
+                    }
+                    weekObj.content[name] = value;
                 }
-                dayObj.content[name] = value;
             }
         })
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
-        console.log(data)
+        console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             if (rs) {
                 populateCalendar(currentDate.getFullYear(), currentDate.getMonth());

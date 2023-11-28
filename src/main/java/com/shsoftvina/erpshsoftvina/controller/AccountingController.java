@@ -50,7 +50,6 @@ public class AccountingController {
         modelAndView.addObject("list",listResponse);
         modelAndView.addObject("setting",settings);
 
-//        modelAndView.addObject("month",monthId);
         return modelAndView;
     }
 
