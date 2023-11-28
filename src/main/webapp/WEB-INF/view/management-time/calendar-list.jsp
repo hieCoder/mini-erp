@@ -35,7 +35,6 @@
         }
     </style>
     <title>Calendars</title>
-    <script type="text/javascript" src="../../../assets/custom/js/management-time/management-time.js"></script>
     <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
 </head>
 <body>

@@ -65,7 +65,7 @@
         </if>
         <if test="inMonth == false">
             pay_date &gt;= LAST_DAY(#{currentAccounting.payDate} - INTERVAL 1 MONTH) + INTERVAL 1 DAY
-            AND pay_date &lt;= LAST_DAY(#{currentAccounting.payDate})
+            AND pay_date &lt;= CONCAT(LAST_DAY(#{currentAccounting.payDate}), ' 23:59:59')
         </if>
           AND status ='ACTIVE'
         ORDER BY pay_date ASC

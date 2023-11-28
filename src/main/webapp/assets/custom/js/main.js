@@ -75,14 +75,15 @@ function callAjaxByDataFormWithDataForm(urlAPI, methodType, formData, callbackSu
         contentType: false,
         data: formData,
         enctype: 'multipart/form-data',
-        success: function(response) {
-            if(callbackSuccess) callbackSuccess(response);
+        success: function (response) {
+            if (callbackSuccess) callbackSuccess(response);
         },
         error: function (xhr, status, error) {
-            if(callbackFail) callbackFail(xhr);
+            if (callbackFail) callbackFail(xhr);
         }
     });
 }
+
 function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSuccess, callbackFail) {
     var data = {};
     formData.forEach((value, key) => data[key] = value);
@@ -101,6 +102,7 @@ function callAjaxByJsonWithDataForm(urlAPI, methodType, formData, callbackSucces
         }
     });
 }
+
 function callAjaxByJsonWithData(urlAPI, methodType, data, callbackSuccess, callbackFail) {
     $.ajax({
         url: urlAPI,
@@ -131,6 +133,7 @@ function handleFiles(arrUrl, handleEachFunc) {
         });
     });
 }
+
 async function handleFilesAsync(arrUrl, handleEachFunc) {
     var promises = arrUrl.map(function (url) {
         return new Promise(function (resolve, reject) {
@@ -154,31 +157,39 @@ async function handleFilesAsync(arrUrl, handleEachFunc) {
 
     await Promise.all(promises);
 }
+
 function bytesToMB(bytes) {
     return parseInt((bytes / (1024 * 1024)).toFixed(0));
 }
+
 function convertMbToB(mb) {
     return mb * 1024 * 1024;
 }
+
 function bToKbShow(bytes) {
     return (bytes / 1024).toFixed(2);
 }
+
 function bytesToMBShow(bytes) {
     return (bytes / (1024 * 1024)).toFixed(2)
 }
+
 function checkLimitFile(count, limit) {
     return count <= limit ? true : false;
 }
+
 function checkTypeFile(type, listType) {
     if (listType.includes(type)) {
         return true;
     }
 }
+
 function checkLimitSize(size, limit) {
     if (parseInt(size) <= limit) {
         return true;
     }
 }
+
 function downloadFiles(url) {
     var link = document.createElement('a');
     link.download = "";
@@ -188,6 +199,7 @@ function downloadFiles(url) {
     link.click();
     document.body.removeChild(link);
 }
+
 function showFileUploaded(fileName, size, url, mode) {
     let html = ""
 
@@ -223,11 +235,13 @@ function showFileUploaded(fileName, size, url, mode) {
         + " </div>"
         + "</div>";
 }
+
 function convertExtensionsList(extensions) {
     const extensionArray = extensions.split(',');
     const formattedExtensions = extensionArray.map(extension => `.${extension.trim()}`);
     return formattedExtensions.join(',');
 }
+
 function cutShortLink() {
     var fileElements = document.querySelectorAll('a.cut-file-name');
 
@@ -249,6 +263,7 @@ function cutShortLink() {
         }
     });
 }
+
 function activeFile(classNameOfForm, setting) {
     var dropzonePreviewNode = document.querySelector(classNameOfForm + " #dropzone-preview-list");
     dropzonePreviewNode.id = "";
@@ -262,7 +277,7 @@ function activeFile(classNameOfForm, setting) {
         acceptedFiles: convertExtensionsList(setting.fileType),
         maxFilesize: convertMbToB(setting.fileSize),
         maxFiles: parseInt(setting.fileLimit),
-        uploadMultiple:true,
+        uploadMultiple: true,
         autoProcessQueue: false
     });
 
@@ -275,13 +290,13 @@ function activeFile(classNameOfForm, setting) {
         var fileExtension = file.name.split('.').pop();
 
         var fileCountCurrent = $(classNameOfForm).find('.file-container-item').length;
-        if(files.length + fileCountCurrent > parseInt(dropzone.options.maxFiles)){
+        if (files.length + fileCountCurrent > parseInt(dropzone.options.maxFiles)) {
             dropzone.removeFile(file);
             errorE.innerHTML = createMessError(INVALID_FILE_LIMIT, setting);
-        } else if(!setting.fileType.includes(fileExtension)){
+        } else if (!setting.fileType.includes(fileExtension)) {
             dropzone.removeFile(file);
             errorE.innerHTML = createMessError(INVALID_FILE_FILETYPE, setting);
-        } else if(fileSize > convertMbToB(setting.fileSize)){
+        } else if (fileSize > convertMbToB(setting.fileSize)) {
             dropzone.removeFile(file);
             errorE.innerHTML = createMessError(INVALID_FILE_FILESIZE, setting);
         }
@@ -289,18 +304,22 @@ function activeFile(classNameOfForm, setting) {
 
     return dropzone;
 }
+
 function getMessageLimitFile(limit) {
     return 'The number of files must be less than ' + limit;
 }
+
 function getMessageSizeFile(fileSize) {
     return 'The size of the file must be less than ' + fileSize + ' Mb';
 }
+
 function getMessageTypeFile(fileType) {
     return 'Files must be of the following types: ' + fileType;
 }
-function createMessError(INVALID, setting){
+
+function createMessError(INVALID, setting) {
     var mess = '';
-    switch (INVALID){
+    switch (INVALID) {
         case INVALID_FILE_LIMIT:
             mess = getMessageLimitFile(setting.fileLimit);
             break;
@@ -313,13 +332,14 @@ function createMessError(INVALID, setting){
         default:
             mess = '';
     }
-    return `<div class="alert alert-danger message-error-file mt-1 mb-0">` +mess+`</div>`;
+    return `<div class="alert alert-danger message-error-file mt-1 mb-0">` + mess + `</div>`;
 }
 
 // alert
 function removeAlert() {
     $(".alert-danger").remove();
 }
+
 function showAlertValidate(html) {
     let xhtml = '<li class="mt-2" id=""> ' +
         html +
@@ -332,6 +352,7 @@ function showAlertValidate(html) {
         $("#dropzone-preview-edit").html(xhtml)
     }
 }
+
 function showAlertValidateCreate(html) {
     let xhtml = '<li class="mt-2" id=""> ' +
         html +
@@ -345,7 +366,8 @@ function showAlertValidateCreate(html) {
     }
 
 }
-function alertSuccess(mess){
+
+function alertSuccess(mess) {
     Swal.fire(
         {
             title: 'Success!',
@@ -357,6 +379,7 @@ function alertSuccess(mess){
         }
     );
 }
+
 function showAlertLoading() {
     Swal.fire({
         title: 'Wait a minute...',
@@ -367,11 +390,12 @@ function showAlertLoading() {
     });
     return Swal;
 }
-function showAlert(type, mess){
+
+function showAlert(type, mess) {
     var className = '';
-    if(type == SUCCESS_ALERT){
+    if (type == SUCCESS_ALERT) {
         className = '.alert.alert-success';
-    } else if(type == DANGER_ALERT){
+    } else if (type == DANGER_ALERT) {
         className = '.alert.alert-danger';
     }
     $(className).text(mess);
@@ -399,9 +423,11 @@ function isBlank(a) {
 function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
+
 function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
+
 function isOwner() {
     return userCurrent.role == U_OWNER;
 }
@@ -417,13 +443,14 @@ function focusElement(element) {
 }
 
 // editor
-function getContentViewOfEditorSnow(comtentDataInDB){
+function getContentViewOfEditorSnow(comtentDataInDB) {
     var qlEditor = $(comtentDataInDB).filter('.ql-editor');
     qlEditor.attr('contenteditable', false);
     qlEditor.addClass('p-0');
     return qlEditor.prop('outerHTML');
 }
-function activeEditor(classNameOfForm){
+
+function activeEditor(classNameOfForm) {
     var ckClassicEditor = document.querySelectorAll(classNameOfForm + " .ckeditor-classic"),
         snowEditor = (ckClassicEditor && Array.from(ckClassicEditor).forEach(function () {
             ClassicEditor.create(document.querySelector(classNameOfForm + " .ckeditor-classic")).then(function (e) {
@@ -442,30 +469,21 @@ function activeEditor(classNameOfForm){
     });
 }
 
-
-
-
-
-
-
-
-
-
-function subscribeUser(){
-    navigator.serviceWorker.ready.then(function(registration) {
+function subscribeUser() {
+    navigator.serviceWorker.ready.then(function (registration) {
         try {
             if (!registration.pushManager) {
                 alert('Push Unsupported');
                 return;
             }
-            registration.pushManager.getSubscription().then(function(subscription) {
+            registration.pushManager.getSubscription().then(function (subscription) {
                 if (subscription) {
                     console.log('User is already subscribed:', subscription);
                 } else {
                     registration.pushManager.subscribe({
                         userVisibleOnly: true,
                         applicationServerKey: urlBase64ToUint8Array("BH9v1XdUflNRCS0s7vExsPf7KPj5h2wXG3hW92S2jpXcFtbCDP4jP_nW4kFOOMV2AFfb_CTTHW8soN74VsT9u9k")
-                    }).then(function(subscription) {
+                    }).then(function (subscription) {
                         console.log('User is subscribed:', subscription);
                         localStorage.setItem("webPushEndpoint", subscription.endpoint);
                         const subscriptionJson = subscription.toJSON();
@@ -474,12 +492,12 @@ function subscribeUser(){
                             p256dh: subscriptionJson.keys.p256dh,
                             auth: subscriptionJson.keys.auth
                         });
-                    }).catch(function(error) {
+                    }).catch(function (error) {
                         console.log('Failed to subscribe', error.message);
                     });
                 }
             });
-        }catch (e){
+        } catch (e) {
             console.log(e)
             unsubscribeUser()
         }
@@ -532,26 +550,26 @@ function updateSubscriptionOnServer(subscription) {
         },
         body: JSON.stringify(subscription)
     })
-        .then(function(response) {
+        .then(function (response) {
             if (!response.ok) {
                 throw new Error('Bad status code from server.');
             }
             return response.json();
         })
-        .then(function(responseData) {
+        .then(function (responseData) {
             console.log(responseData)
             if (responseData != 1) {
                 throw new Error('Bad response from server.');
             }
             console.log('User subscription updated on server.');
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.error('Error during subscription update on server:', error);
         });
 }
 
-function deleteEndPoint(endpoint){
-    if(endpoint){
+function deleteEndPoint(endpoint) {
+    if (endpoint) {
         fetch('/api/v1/subscribe', {
             method: 'DELETE',
             headers: {
@@ -560,23 +578,23 @@ function deleteEndPoint(endpoint){
             body: JSON.stringify({
                 endpoint: endpoint
             })
-        }).then(function(response) {
+        }).then(function (response) {
             localStorage.removeItem("webPushEndpoint");
             console.log('Server is notified about the unsubscription.');
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error('Failed to notify the server about the unsubscription.', error);
         });
     }
 }
 
 function unsubscribeUser() {
-    navigator.serviceWorker.ready.then(function(registration) {
-        registration.pushManager.getSubscription().then(function(subscription) {
+    navigator.serviceWorker.ready.then(function (registration) {
+        registration.pushManager.getSubscription().then(function (subscription) {
             if (subscription) {
-                subscription.unsubscribe().then(function(successful) {
+                subscription.unsubscribe().then(function (successful) {
                     deleteEndPoint(subscription.endpoint)
                     console.log('User is unsubscribed.');
-                }).catch(function(e) {
+                }).catch(function (e) {
                     console.log('Failed to unsubscribe the user: ', e);
                 });
             } else {
@@ -586,27 +604,27 @@ function unsubscribeUser() {
     });
 }
 
-function registerServiceWorker(){
+function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register("/service-worker.js")
-            .then(function(registration) {
+            .then(function (registration) {
                 console.log('Service Worker registered with scope:', registration.scope);
-            }).catch(function(error) {
+            }).catch(function (error) {
             console.log('Service Worker registration failed:', error);
         });
     }
 }
 
-function connectSocketNotification(){
+function connectSocketNotification() {
     let stompClient = Stomp.over(new SockJS("/websocket"));
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/notification/createNotification", function (rs) {
             let data = JSON.parse(rs.body)
-            if(data.idUser === userCurrent.id){
+            if (data.idUser === userCurrent.id) {
                 return
             } else {
                 Swal.fire({
-                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-push.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Notifications</span></h4><p class="text-muted mb-0 fs-13">'+ data.title +'</p></div></div>',
+                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-push.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Notifications</span></h4><p class="text-muted mb-0 fs-13">' + data.title + '</p></div></div>',
                     showCancelButton: !1,
                     customClass: {
                         confirmButton: 'btn btn-primary mb-1'
@@ -618,18 +636,18 @@ function connectSocketNotification(){
                     .then((result) => {
                         // Check if the "Show Me" button was clicked
                         if (result.isConfirmed) {
-                            window.open('/notifications/'+data.id, '_blank');
+                            window.open('/notifications/' + data.id, '_blank');
                         }
                     });
             }
         })
         stompClient.subscribe("/notification/createEvent", function (rs) {
             let data = JSON.parse(rs.body)
-            if(data.user.id == userCurrent.id){
+            if (data.user.id == userCurrent.id) {
                 return
             } else {
                 Swal.fire({
-                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-event.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Events</span></h4><p class="text-muted mb-0 fs-13">'+ data.title +'</p></div></div>',
+                    html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="/assets/images/icon-event.png" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold"><span class="fw-semibold">Events</span></h4><p class="text-muted mb-0 fs-13">' + data.title + '</p></div></div>',
                     showCancelButton: !1,
                     customClass: {
                         confirmButton: 'btn btn-primary mb-1'
@@ -641,7 +659,7 @@ function connectSocketNotification(){
                     .then((result) => {
                         // Check if the "Show Me" button was clicked
                         if (result.isConfirmed) {
-                            window.open('/schedules/detail/'+ userCurrent.id, '_blank');
+                            window.open('/schedules/detail/' + userCurrent.id, '_blank');
                         }
                     });
             }
@@ -653,13 +671,13 @@ function connectSocketNotification(){
 registerServiceWorker()
 
 // Check if notification permission has been granted
-if( typeof userCurrent !== "undefined") {
+if (typeof userCurrent !== "undefined") {
     if (Notification.permission === 'granted') {
         // Permission has been granted, you can perform notification operations here
         subscribeUser()
     } else if (Notification.permission === 'default') {
         // Permission hasn't been granted, request notification permission from the user
-        Notification.requestPermission().then(function(permission) {
+        Notification.requestPermission().then(function (permission) {
             if (permission === 'granted') {
                 // Permission has been granted, you can perform notification operations here
                 subscribeUser()
@@ -680,7 +698,7 @@ if( typeof userCurrent !== "undefined") {
         console.log('Permission for notifications denied.');
         connectSocketNotification()
     }
-} else{
+} else {
     unsubscribeUser()
     console.log('Must log in');
 }
@@ -688,7 +706,7 @@ if( typeof userCurrent !== "undefined") {
 async function fetchNotificationsData(limit) {
     return new Promise((resolve, reject) => {
         callAjaxByJsonWithData(
-            "/api/v1/notifications/latest/" + limit ,
+            "/api/v1/notifications/latest/" + limit,
             "GET",
             null,
             (rs) => {
@@ -708,7 +726,7 @@ async function fetchNotificationsData(limit) {
 async function fetchEventsData(limit) {
     return new Promise((resolve, reject) => {
         callAjaxByJsonWithData(
-            "/api/v1/events/latest/" + limit ,
+            "/api/v1/events/latest/" + limit,
             "GET",
             null,
             (rs) => {
@@ -725,7 +743,7 @@ async function fetchEventsData(limit) {
     });
 }
 
-function stringToDateValid(string){
+function stringToDateValid(string) {
     const [datePart, timePart] = string.split(' ');
     const [day, month, year] = datePart.split('/');
     const [hour, minute, second] = timePart.split(':');
@@ -733,7 +751,7 @@ function stringToDateValid(string){
     return dateObject
 }
 
-function countUnRead(){
+function countUnRead() {
     var count = $(".latestItem").filter(".active").length;
     $(".dangerCountLatest").text(count)
 }
@@ -743,20 +761,20 @@ function handleLinkClick(id, process) {
     saveIdToLocal(id, process)
     countUnRead()
     let url = ""
-    if(process === "notifications"){
+    if (process === "notifications") {
         url = "/notifications/" + id;
     }
-    if(process === "events"){
+    if (process === "events") {
         url = "/schedules/detail/" + userCurrent.id;
     }
     window.open(url, "_blank")
     return false;
 }
 
-function returnItemLatest(data,icon, process, active){
-    if(!data) return
+function returnItemLatest(data, icon, process, active) {
+    if (!data) return
     return `
-   <div class="text-reset notification-item d-block dropdown-item position-relative ${active===0 ? "" : "active"} latestItem" data-id="${data.id}">
+   <div class="text-reset notification-item d-block dropdown-item position-relative ${active === 0 ? "" : "active"} latestItem" data-id="${data.id}">
                                         <div class="d-flex">
                                             <div class="avatar-xs me-3">
                                                 <span class="avatar-title bg-soft-info text-info rounded-circle fs-16">
@@ -776,8 +794,8 @@ function returnItemLatest(data,icon, process, active){
     `
 }
 
-function viewAllLatest(check){
-    if(check === "Events"){
+function viewAllLatest(check) {
+    if (check === "Events") {
         return `
                                     <div class="my-3 text-center">
                                         <a href="/schedules/detail/${userCurrent.id}" type="button" class="btn btn-soft-success waves-effect waves-light">View
@@ -785,7 +803,7 @@ function viewAllLatest(check){
                                     </div>
         `
     }
-        return `
+    return `
                                     <div class="my-3 text-center">
                                         <a href="/${check.toLowerCase()}" type="button" class="btn btn-soft-success waves-effect waves-light">View
                                             All ${check} <i class="ri-arrow-right-line align-middle"></i></a>
@@ -803,15 +821,15 @@ async function fetchNotifications(limit) {
         let readIdEvents = getIdFromLocal("events")
         let htmlNotification = ''
         let htmlEvent = ''
-        notificationsData.forEach(e=>{
+        notificationsData.forEach(e => {
             let active = readIdNotifications.includes(e.id) ? 0 : 1
-            htmlNotification+= returnItemLatest(e, "bx bx-news", "notifications", active)
+            htmlNotification += returnItemLatest(e, "bx bx-news", "notifications", active)
         })
-        eventsData.forEach(e=>{
+        eventsData.forEach(e => {
             let active = readIdEvents.includes(e.id) ? 0 : 1
-            htmlEvent+= returnItemLatest(e, "bx bx-calendar-star", "events", active)
+            htmlEvent += returnItemLatest(e, "bx bx-calendar-star", "events", active)
         })
-        htmlNotification+= viewAllLatest("Notifications")
+        htmlNotification += viewAllLatest("Notifications")
         htmlEvent += viewAllLatest("Events")
         $(".notificationsLatestList .simplebar-content").html(htmlNotification)
         $(".eventsLatestList .simplebar-content").html(htmlEvent)
@@ -825,11 +843,68 @@ async function fetchNotifications(limit) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    if(typeof userCurrent !== "undefined"){
+    if (typeof userCurrent !== "undefined") {
         fetchNotifications(5).then(rs => {
             countUnRead()
         })
     }
 })
+
+const rsSuccess = (text) => {
+    Swal.fire({
+        html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">' + text + ' successfully</p></div></div>',
+        showCancelButton: true,
+        showConfirmButton: false,
+        customClass: {
+            cancelButton: 'btn btn-primary w-xs mb-1'
+        },
+        cancelButtonText: "Back",
+        buttonsStyling: false,
+        showCloseButton: true
+    })
+}
+const rsSuccessLoad = (text) => {
+    Swal.fire({
+        html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">' + text + ' successfully</p></div></div>',
+        showCancelButton: true,
+        showConfirmButton: false,
+        customClass: {
+            cancelButton: 'btn btn-primary w-xs mb-1'
+        },
+        cancelButtonText: "Back",
+        buttonsStyling: false,
+        showCloseButton: true
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.close) {
+            window.location.reload();
+        }
+    })
+}
+const rsUnSuccess = () => {
+    Swal.fire({
+        html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
+        showCancelButton: true,
+        showConfirmButton: false,
+        customClass: {
+            cancelButton: 'btn btn-primary w-xs mb-1'
+        },
+        cancelButtonText: "Dismiss",
+        buttonsStyling: false,
+        showCloseButton: true
+    })
+}
+const validateFail = (error) => {
+    Swal.fire({
+        html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>' + error + '</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
+        showCancelButton: true,
+        showConfirmButton: false,
+        customClass: {
+            cancelButton: 'btn btn-primary w-xs mb-1'
+        },
+        cancelButtonText: "Dismiss",
+        buttonsStyling: false,
+        showCloseButton: true
+    })
+}
 
 

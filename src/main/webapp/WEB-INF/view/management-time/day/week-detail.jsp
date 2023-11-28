@@ -14,8 +14,7 @@
 <html>
 <head>
     <title>Detail of Day</title>
-    <script type="text/javascript" src="../../../../assets/custom/js/management-time/management-time.js"></script>
-    <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
+    <link rel="stylesheet" href="../../../../assets/custom/css/management-time/style.css">
     <style>
         .table-container {
             overflow-x: auto;
@@ -48,7 +47,7 @@
         }
 
         .table-detail {
-            width: 100%; /* Đặt chiều rộng tùy ý */
+            width: 100%;
         }
 
         .table-detail th {

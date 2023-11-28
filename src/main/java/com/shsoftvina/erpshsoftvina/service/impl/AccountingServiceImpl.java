@@ -47,8 +47,6 @@ public class AccountingServiceImpl implements AccountingService {
     private UserMapper userMapper;
     @Autowired
     private ApplicationUtils applicationUtils;
-    @Autowired
-    private SettingMapper settingMapper;
 
     @Override
     public MonthHistoryList findAllMonthlyHistory() {
@@ -97,13 +95,17 @@ public class AccountingServiceImpl implements AccountingService {
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
             Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, listFileNameSaveFileSuccess);
             try {
+                System.out.println(newAccounting);
                 accountingMapper.createAccounting(newAccounting);
+                System.out.println(newAccounting);
                 List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(newAccounting,true);
-                for (Accounting accounting : remainRecordInMonthList) {
-                    latestRemain += accounting.getExpense();
-                    accounting.setRemain(latestRemain);
+                if (!remainRecordInMonthList.isEmpty()) {
+                    for (Accounting accounting : remainRecordInMonthList) {
+                        latestRemain += accounting.getExpense();
+                        accounting.setRemain(latestRemain);
+                    }
+                    accountingMapper.updateRecordsBatch(remainRecordInMonthList);
                 }
-                accountingMapper.updateRecordsBatch(remainRecordInMonthList);
             } catch (Exception e) {
                 FileUtils.deleteMultipleFilesToServer(dir, newAccounting.getBill());
                 return 0;
