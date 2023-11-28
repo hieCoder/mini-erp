@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper">
 
-    <select id="findByListCode" resultMap="weeklyManagementTimeDayResultMap">
+    <select id="findByListCode" resultMap="monthlyManagementTimeDayResultMap">
         SELECT *
         FROM MONTHLY_MANAGEMENT_TIME_DAY m
         INNER JOIN USER u ON m.USER_ID = u.ID

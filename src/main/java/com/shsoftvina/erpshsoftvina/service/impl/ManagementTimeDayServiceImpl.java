@@ -179,6 +179,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return sundayList;
     }
 
+    private MonthlyManagementTimeDay getMonthlyManagementTimeDays(List<MonthlyManagementTimeDay> monthlyManagementTimeDays, String code) {
+        Optional<MonthlyManagementTimeDay> result = monthlyManagementTimeDays.stream()
+                .filter(m -> code.equals(m.getCode()))
+                .findFirst();
+        return result.orElse(null);
+    }
+
     @Override
     public int updateCalendar(CalendarUpdateRequest req) {
         String userId = req.getUserId();
@@ -302,14 +309,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         List<MonthResponse> monthlys = new ArrayList<>();
         List<String> monthContainWeek = getMonthContainWeek(currentDay);
-//        List<MonthlyManagementTimeDay> monthlyManagementTimeDays = monthlyManagementTimeDayMapper.findByListCode(userId, monthContainWeek);
-//        for(MonthlyManagementTimeDay monthlyManagementTimeDay: monthlyManagementTimeDays){
-//
-//        }
-
-
+        List<MonthlyManagementTimeDay> monthlyManagementTimeDays = monthlyManagementTimeDayMapper.findByListCode(userId, monthContainWeek);
         for(String month: monthContainWeek){
-            MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, month);
+            MonthlyManagementTimeDay monthlyManagementTimeDay = getMonthlyManagementTimeDays(monthlyManagementTimeDays, month);
             if(monthlyManagementTimeDay!=null){
                 MonthResponse monthResponse = new MonthResponse();
                 monthResponse.setMonth(month);
@@ -343,10 +345,11 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         WeeklyManagementTimeDayResponse weekly = WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay != null? weeklyManagementTimeDay.getId() : null)
                 .startDate(weeklyManagementTimeDay != null? weeklyManagementTimeDay.getCode() : null)
-                .weeklyContents(weeklyManagementTimeDay != null? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class): null)
-                //.listDayOfWeek(managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode))
-        .build();
+                .weeklyContents(weeklyManagementTimeDay != null? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class): null).build();
         daysOfWeeklyResponse.setWeeklys(weekly);
+
+
+        daysOfWeeklyResponse.setDays(managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode));
 
         return daysOfWeeklyResponse;
     }
