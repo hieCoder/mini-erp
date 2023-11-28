@@ -19,19 +19,16 @@ public interface ManagementTimeDayMapper {
     int updateOneThingCalendarNull(String userId, List<String> days);
     int updateOneThingCalendarAllDayNull(String userId, List<String> days);
     List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
+    List<ManagementTimeDay> findByCode(String userId, String weeklyCode);
+
+
 
 
 
     ManagementTimeDay findByDay(String userId, Date day);
     int createCalendarDay(ManagementTimeDay day);
     int updateCalendarDay(ManagementTimeDay day);
-    List<ManagementTimeDay> findByCode(String userId, String weeklyCode);
     int insertDay(ManagementTimeDay day);
     int editDay(ManagementTimeDay managementTimeDay);
-
-
-
-
-
     List<ManagementTimeDay> findByListCode(String userId, List<String> codes);
 }

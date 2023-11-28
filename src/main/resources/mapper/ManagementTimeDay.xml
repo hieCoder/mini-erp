@@ -56,7 +56,12 @@
         WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode} AND mo.USER_ID = #{userId}
     </select>
 
-
+    <select id="findByCode" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY m
+                 INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
+    </select>
 
 
 
@@ -101,13 +106,6 @@
         SET ONE_THING_CALENDAR = #{oneThingCalendar}
         WHERE USER_ID = #{user.id} AND DAY = #{day, jdbcType=DATE}
     </update>
-
-    <select id="findByCode" resultMap="dayResultMap">
-        SELECT *
-        FROM MANAGEMENT_TIME_DAY m
-        INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
-    </select>
 
     <insert id="insertDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay" >
         INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,

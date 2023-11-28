@@ -48,13 +48,21 @@
         </foreach>
     </update>
 
-
     <select id="findByCode" resultMap="weeklyManagementTimeDayResultMap">
         SELECT *
         FROM WEEKLY_MANAGEMENT_TIME_DAY w
         INNER JOIN USER u ON w.USER_ID = u.ID
         WHERE w.USER_ID = #{userId} AND w.CODE = #{code}
     </select>
+
+
+
+
+
+
+
+
+
 
     <resultMap id="weeklyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
         <id property="id" column="ID"/>
@@ -77,7 +85,4 @@
         UPDATE WEEKLY_MANAGEMENT_TIME_DAY SET CONTENT = #{content}
         WHERE ID = #{id};
     </update>
-
-
-
 </mapper>
