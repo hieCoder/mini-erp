@@ -109,36 +109,48 @@
         setWeeklyReport(${wr.title} ,'${wr.currentWeeklyContent}', '${wr.nextWeeklyContent}');
     });
 
-    $(document).on('keyup', '.content-report', function (e){
+    $(document).on('keyup', '.content-report', function (e) {
         var ulElement = $(this).siblings('.list-title-by-hashtag');
-
         const enteredText = e.target.innerText;
-        const lastIndexOfHash = enteredText.lastIndexOf('#');
-        if (lastIndexOfHash !== -1) {
-            const textAfterLastHash = enteredText.slice(lastIndexOfHash + 1);
-            const firstSpaceIndex = textAfterLastHash.indexOf(' ');
+        const caretPosition = getCaretPosition(e.target);
+        const lastHashIndex = enteredText.lastIndexOf('#', caretPosition - 1);
 
-            if (firstSpaceIndex === -1) {
-                callAjaxByJsonWithData('/api/v1/tasks/search/'+userCurrent.id+'?title='+textAfterLastHash,
+        if (lastHashIndex !== -1) {
+            const lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
+            const containsSpace = lastHashtag.includes(' ');
+
+            if (containsSpace) {
+                ulElement.empty();
+            } else {
+                callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
                     'GET', null, function (rs) {
                         ulElement.empty();
                         rs.forEach(function (e) {
-                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action` +
-                                ` cursor-pointer" data-task-id="`+e.id+`">` + e.title + `</li>`);
+                            ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action cursor-pointer" data-task-id="` + e.id + `">` + e.title + `</li>`);
                         });
                     });
-            } else{
-                ulElement.empty();
             }
-        } else{
+        } else {
             ulElement.empty();
         }
     });
 
-    $(document).on('click', '.hashtag-e', function (e){
+    function getCaretPosition(element) {
+        let caretOffset = 0;
+        const doc = element.ownerDocument || element.document;
+        const win = doc.defaultView || doc.parentWindow;
+        const range = win.getSelection().getRangeAt(0);
+        const preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+        return caretOffset;
+    }
+
+    $(document).on('click', '.hashtag-e', function (e) {
         var taskTitle = $(this).text();
         var taskId = $(this).data('task-id');
-        var aE = `<a class="fw-bold" href="/tasks/`+ taskId+`">`+taskTitle+`</a>`;
+        var aE = `<a class="fw-bold" href="/tasks/` + taskId + `">` + taskTitle + `</a>`;
 
         const containerListHashtag = $(this).closest('.list-title-by-hashtag');
         const contentE = containerListHashtag.siblings('.content-report');
@@ -146,10 +158,14 @@
         const lastIndex = contentE.html().lastIndexOf('#');
         if (lastIndex !== -1) {
             const substringAfterLastHash = contentE.html().substring(lastIndex);
-
             const firstAngleBracketIndex = substringAfterLastHash.indexOf('<');
             if (firstAngleBracketIndex !== -1) {
-                const replacedText = contentE.html().replace(substringAfterLastHash, aE);
+                var textContentE = contentE[0].textContent;
+                var cutContent = textContentE.substring(textContentE.indexOf('#') + 1);
+                var replacedText = '';
+                if (taskTitle.includes(cutContent)) replacedText = contentE.html().replace(substringAfterLastHash, aE);
+                else replacedText = contentE.html().replace(substringAfterLastHash, aE + cutContent);
+
                 contentE.html(replacedText);
             }
         }

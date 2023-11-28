@@ -1,5 +1,8 @@
 package com.shsoftvina.erpshsoftvina.security;
 
+import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -14,10 +17,19 @@ import java.io.IOException;
 @Component
 public class UpdateProfileFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
+
+            if(!urlsAllow(request.getRequestURI()) || request.getRequestURI().startsWith("/users/")){
+                User user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
+                Principal.updateUserCurrent(user);
+            }
+
             if (!urlsAllow(request.getRequestURI())) {
                 try {
                     if (!Principal.getUserCurrent().checkAcceptUpdateBasicInfo()) {

@@ -43,7 +43,6 @@
                 </div>
             </div>
             <div class="card-body border border-dashed border-end-0 border-start-0">
-                <form>
                     <div class="row g-3">
                         <div class="col-xxl-9 col-sm-12">
                             <div class="search-box">
@@ -80,7 +79,6 @@
                         <!--end col-->
                     </div>
                     <!--end row-->
-                </form>
             </div>
             <!--end card-body-->
             <div class="card-body">
@@ -155,7 +153,7 @@
                                 <input type="file" id="image-add" name="image" class="form-control file-image"
                                        accept="image/*" placeholder="Image"/>
                                 <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-add"
-                                     class="image-preview d-none">
+                                     class="image-preview d-none mt-2">
                                 <small class="form-message"></small>
                             </div>
                         </div>
