@@ -19,11 +19,7 @@ public interface AccountingMapper {
 
     List<Accounting> findAccountingByMonth(RowBounds rowBounds,LocalDate startDate,LocalDateTime endDate);
 
-    long getTotalRecordCountPerMonth(LocalDate startDate,LocalDateTime endDate);
-
     TotalSpendAndRemain getTotalSpending(LocalDate startDate,LocalDateTime endDate);
-
-    Long getLatestRemain(LocalDateTime endDate);
 
     int createAccounting(Accounting accounting);
 

@@ -15,11 +15,8 @@
 <head>
     <title>Detail of Day</title>
     <script type="text/javascript" src="../../../../assets/custom/js/management-time/management-time.js"></script>
+    <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
     <style>
-        .full-height {
-            min-height: 80vh;
-        }
-
         .table-container {
             overflow-x: auto;
             cursor: grab;
@@ -72,26 +69,6 @@
             border: 1px solid #000;
             font-family: Poppins, sans-serif;
             height: 32.5px;
-        }
-
-        tr.theSingleMostImportantThing {
-            background-color: white;
-        }
-
-        tr.lecture {
-            background-color: #fcecec;
-        }
-
-        tr.dailyEvaluation {
-            background-color: #e6f0e2;
-        }
-
-        tr.work {
-            background-color: #fff9e6;
-        }
-
-        tr.reading {
-            background-color: #e9e4f5;
         }
     </style>
 </head>
@@ -584,14 +561,14 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
-        $(".calendar-container").removeClass("d-none")
+        $("div.calendar-container").removeClass("d-none")
     })
 
     $('td.dailyRoutineTarget').on('blur', function () {
         const target = $(this).text();
         if (target > 31 || target < 0) {
             $(this).text('0');
-            validateFail("Daily target shouln't exceed 30 or below 0");
+            validateFail("Daily target shouldn't exceed 30 or below 0");
             return false;
         }
     });
@@ -656,41 +633,42 @@
             const name = $(this).data('name');
             const value = $(this).text().trim();
             const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
-
-            if (day != null) {
-                let dayObj = days.find(d => d.day === day);
-                if (!dayObj) {
-                    dayObj = {
-                        day: day,
-                        data: {
-                            oneThingCalendar: {},
-                            gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
-                            complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
-                            todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
-                            affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
-                            toDoDetail: [],
-                            dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
-                            toDoList: {
-                                sixToTwelvePm: [],
-                                twelveToSixPm: [],
-                                sixToTwelveAm: []
+            if(value !== "") {
+                if (day != null) {
+                    let dayObj = days.find(d => d.day === day);
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            data: {
+                                oneThingCalendar: {},
+                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                toDoDetail: [],
+                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                toDoList: {
+                                    sixToTwelvePm: [],
+                                    twelveToSixPm: [],
+                                    sixToTwelveAm: []
+                                }
                             }
-                        }
-                    };
-                    days.push(dayObj);
-                }
-                if (name === 'timeLine') {
-                    dayObj.data.toDoDetail.push(value);
-                } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
-                    dayObj.data.toDoList[name].push({
-                        target: value,
-                        performance: isChecked
-                    });
-                } else {
-                    dayObj.data.oneThingCalendar[name] = {
-                        target: value,
-                        performance: isChecked
-                    };
+                        };
+                        days.push(dayObj);
+                    }
+                    if (name === 'timeLine') {
+                        dayObj.data.toDoDetail.push(value);
+                    } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
+                        dayObj.data.toDoList[name].push({
+                            target: value,
+                            performance: isChecked
+                        });
+                    } else {
+                        dayObj.data.oneThingCalendar[name] = {
+                            target: value,
+                            performance: isChecked
+                        };
+                    }
                 }
             }
         })

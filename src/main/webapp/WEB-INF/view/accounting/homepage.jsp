@@ -1133,7 +1133,6 @@
 
     }
 
-
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#createModal #validFileText");
@@ -1218,8 +1217,8 @@
         let title = $("#createTitle").val()
         let note = $("#createNote").val()
         let transaction = $("#transactionType").val()
-        var payDate = $("#createPayDate").val();
-        let input = document.getElementById("amount").value;
+        let payDate = $("#createPayDate").val();
+        let input = $("#amount").val();
         let amount = Number(input.replace(/[^0-9.]/g, ''))
         if (transaction === 'expense') {
             amount = -amount;
@@ -1258,7 +1257,12 @@
         $(this).before(BtnPrimaryLoad)
         callAjaxByDataFormWithDataForm(baseUrlAccount, "POST", formData, function (rs) {
             BtnLoadRemove()
-            $("button.createBtn").removeClass("d-none")
+            $("button.createBtn").removeClass("d-none");
+            title.val("");
+            note.val("");
+            transaction.val("")
+            payDate.val("")
+            input.val("")
             $("#createModal").modal("hide");
             rsSuccess("Created")
             let yearSelect = document.getElementById('account-year');
@@ -1328,7 +1332,6 @@
                 xhr.open("DELETE", "/api/v1/accounts/" + accountId, true);
                 xhr.send();
             } else if (
-                // Read more about handling dismissals
                 result.dismiss === Swal.DismissReason.cancel
             ) {
                 Swal.fire({
