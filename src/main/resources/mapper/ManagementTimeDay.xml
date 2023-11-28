@@ -75,4 +75,12 @@
         INNER JOIN USER u ON m.USER_ID = u.ID
         WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode} AND mo.USER_ID = #{userId}
     </select>
+
+    <insert id="createListCalendarDay" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, DAY, USER_ID, WEEKLY_CODE)
+        VALUES
+        <foreach collection="list" item="day" separator=",">
+            (UUID(), #{day.oneThingCalendar}, #{day.day}, #{day.user.id}, #{day.weeklyCode})
+        </foreach>
+    </insert>
 </mapper>

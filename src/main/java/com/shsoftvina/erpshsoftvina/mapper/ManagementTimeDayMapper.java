@@ -19,4 +19,6 @@ public interface ManagementTimeDayMapper {
     int insertDay(ManagementTimeDay day);
     int editDay(ManagementTimeDay managementTimeDay);
     List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
+
+    int createListCalendarDay(List<ManagementTimeDay> days);
 }
