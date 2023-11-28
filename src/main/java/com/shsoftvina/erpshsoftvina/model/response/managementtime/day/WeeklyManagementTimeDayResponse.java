@@ -17,5 +17,4 @@ public class WeeklyManagementTimeDayResponse {
     private String weeklyId;
     private String startDate;
     private CalendarWeeklyContent weeklyContents;
-    private List<DayResponse> listDayOfWeek;
 }
