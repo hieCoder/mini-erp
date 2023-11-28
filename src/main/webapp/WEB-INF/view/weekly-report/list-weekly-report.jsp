@@ -285,8 +285,7 @@
         if (lastHashIndex !== -1) {
             const lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
             const containsSpace = lastHashtag.includes(' ');
-
-            if (containsSpace) {
+            if (containsSpace || (e.which == 13)) {
                 ulElement.empty();
             } else {
                 callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
