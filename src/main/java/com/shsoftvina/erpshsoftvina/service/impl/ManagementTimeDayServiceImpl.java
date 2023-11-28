@@ -107,23 +107,21 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return resultArray;
     }
 
-    private static String[] getMonthContainWeek(String day) {
+    private static List<String> getMonthContainWeek(String day) {
         String firstDateOfWeek = FileUtils.getFirstDateOfWeek(day);
         String lastDateOfWeek = FileUtils.getLastDateOfWeek(day);
 
-        String[] containingMonths = null;
+        List<String> containingMonths = new ArrayList<>();
 
         if(firstDateOfWeek.equals(lastDateOfWeek)){
-            containingMonths = new String[1];
-            containingMonths[0] = firstDateOfWeek;
+            containingMonths.add(firstDateOfWeek);
         } else{
-            containingMonths = new String[2];
             if(day.substring(0, 7).equals(firstDateOfWeek)){
-                containingMonths[0] = firstDateOfWeek;
-                containingMonths[1] = lastDateOfWeek;
+                containingMonths.add(firstDateOfWeek);
+                containingMonths.add(lastDateOfWeek);
             } else{
-                containingMonths[0] = lastDateOfWeek;
-                containingMonths[1] = firstDateOfWeek;
+                containingMonths.add(lastDateOfWeek);
+                containingMonths.add(firstDateOfWeek);
             }
         }
 
@@ -299,12 +297,17 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     public DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay) {
 
         applicationUtils.checkUserAllow(userId);
-        //if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = new DaysOfWeeklyResponse();
 
         List<MonthResponse> monthlys = new ArrayList<>();
-        String[] monthContainWeek = getMonthContainWeek(currentDay);
+        List<String> monthContainWeek = getMonthContainWeek(currentDay);
+//        List<MonthlyManagementTimeDay> monthlyManagementTimeDays = monthlyManagementTimeDayMapper.findByListCode(userId, monthContainWeek);
+//        for(MonthlyManagementTimeDay monthlyManagementTimeDay: monthlyManagementTimeDays){
+//
+//        }
+
+
         for(String month: monthContainWeek){
             MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, month);
             if(monthlyManagementTimeDay!=null){
