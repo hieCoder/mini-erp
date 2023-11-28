@@ -593,6 +593,8 @@
     }
 
     $("#updateButton").click(function () {
+        $("div.containerLoading").removeClass("d-none")
+        $("div.calendar-container").addClass("d-none")
         const currentYearMonth = getCurrentYearMonth();
         const data = {
             userId: userCurrent.id,
@@ -676,8 +678,12 @@
         callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
             if (rs) {
                 rsSuccessLoad("Add");
+                $("div.containerLoading").addClass("d-none")
+                $("div.calendar-container").removeClass("d-none")
             } else {
                 rsUnSuccess();
+                $("div.containerLoading").addClass("d-none")
+                $("div.calendar-container").removeClass("d-none")
             }
         })
     })

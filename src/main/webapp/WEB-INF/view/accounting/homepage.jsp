@@ -1240,6 +1240,7 @@
             dropzone.removeAllFiles()
             rsSuccess("Created")
             let yearSelect = document.getElementById('account-year');
+            let monthSelect = document.getElementById('account-month');
             callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
                 let data = rs;
                 yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
@@ -1248,6 +1249,7 @@
                     option.value = entry.year;
                     option.textContent = entry.year;
                     yearSelect.appendChild(option);
+                    monthSelect.style.display = "none";
                 });
             });
             loadPage(1);
