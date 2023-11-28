@@ -301,21 +301,21 @@
                         <table>
                             <thead>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <th colspan="2" class="fw-bolder"><h5>${day.day}</h5></th>
                                 </c:forEach>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <td class="fw-bolder w-75">Target</td>
                                     <td class="fw-bolder">Performance</td>
                                 </c:forEach>
                             </tr>
                             <%--one-thing--%>
                             <tr class="theSingleMostImportantThing">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
                                     <td class="editable-cell " contenteditable="true"
@@ -327,7 +327,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="lecture">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
@@ -336,7 +336,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="dailyEvaluation">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
@@ -345,7 +345,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="work">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
@@ -354,7 +354,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="reading">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
@@ -365,7 +365,7 @@
 
                             <%--to-do--%>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[0]}" var="sixToTwelvePm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
@@ -374,7 +374,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[1]}" var="sixToTwelvePm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
@@ -383,7 +383,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[0]}" var="twelveToSixPm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="twelveToSixPm">${twelveToSixPm.target}</td>
@@ -392,7 +392,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[1]}" var="twelveToSixPm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="twelveToSixPm">${twelveToSixPm.target}</td>
@@ -401,7 +401,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[0]}" var="sixToTwelveAm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
@@ -410,7 +410,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[1]}" var="sixToTwelveAm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
@@ -422,7 +422,7 @@
                             <%--daily routine--%>
                             <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
                                 <tr name="daily">
-                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="dayMonth" value="${fn:substring(day.day, 0, 7)}"/>
                                         <c:choose>
                                             <c:when test="${dayMonth eq weekly.monthlys[0].month}">
@@ -445,7 +445,7 @@
                             <%--Gratitude Diary--%>
                             <c:forEach begin="0" end="2" var="entry" varStatus="loop">
                                 <tr name="gratitudeDiary">
-                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="gratitudeDiary" value="${day.data.gratitudeDiary[loop.index]}"/>
                                         <td colspan="2"><textarea
                                                 class="form-control gratitudeDiary"
@@ -456,7 +456,7 @@
 
                             <%--Affirmation--%>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="affirmation" value="${day.data.affirmation}"/>
                                     <td colspan="2">
                                         <textarea class="form-control affirmation"
@@ -466,7 +466,7 @@
                             </tr>
                             <%--Compliment--%>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="complimentForMeToday" value="${day.data.complimentForMeToday}"/>
                                     <td colspan="2">
                                         <textarea class="form-control complimentForMeToday"
@@ -476,7 +476,7 @@
                             </tr>
                             <%--Reflection--%>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="todaysReflectionsAndImprovements"
                                            value="${day.data.todaysReflectionsAndImprovements}"/>
                                     <td colspan="2">
@@ -488,7 +488,7 @@
                             <%--Timeline--%>
                             <c:forEach var="time" varStatus="loop" begin="0" end="23">
                                 <tr name="timeLine">
-                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
                                         <td colspan="2" contenteditable="true" data-day="${day.day}"
                                             data-name="timeLine">${data}</td>

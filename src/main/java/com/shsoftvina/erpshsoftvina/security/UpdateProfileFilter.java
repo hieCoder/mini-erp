@@ -22,17 +22,15 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
 
+            if(!urlsAllow(request.getRequestURI()) || request.getRequestURI().startsWith("/users/")){
+                User user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
+                Principal.updateUserCurrent(user);
+            }
 
-//        if(!urlsAllow(request.getRequestURI()) || request.getRequestURI().startsWith("/users/")){
-//            User user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
-//            Principal.updateUserCurrent(user);
-//        }
-
-        if (!urlsAllow(request.getRequestURI())) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null && auth.isAuthenticated()) {
-                System.out.println(request.getRequestURI());
+            if (!urlsAllow(request.getRequestURI())) {
                 try {
                     if (!Principal.getUserCurrent().checkAcceptUpdateBasicInfo()) {
                         response.sendRedirect("/users/" + Principal.getUserCurrent().getId());
