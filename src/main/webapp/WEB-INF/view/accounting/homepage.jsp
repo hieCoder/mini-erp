@@ -1258,11 +1258,11 @@
         callAjaxByDataFormWithDataForm(baseUrlAccount, "POST", formData, function (rs) {
             BtnLoadRemove()
             $("button.createBtn").removeClass("d-none");
-            title.val("");
-            note.val("");
-            transaction.val("")
-            payDate.val("")
-            input.val("")
+            $("#createTitle").val("");
+            $("#createNote").val("");
+            $("#transactionType").val("")
+            $("#createPayDate").val("")
+            $("#amount").val("")
             $("#createModal").modal("hide");
             rsSuccess("Created")
             let yearSelect = document.getElementById('account-year');
