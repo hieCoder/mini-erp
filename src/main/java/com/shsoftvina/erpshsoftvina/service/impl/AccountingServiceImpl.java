@@ -95,11 +95,9 @@ public class AccountingServiceImpl implements AccountingService {
             if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
             Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, listFileNameSaveFileSuccess);
             try {
-                System.out.println(newAccounting);
                 accountingMapper.createAccounting(newAccounting);
-                System.out.println(newAccounting);
                 List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(newAccounting,true);
-                if (!remainRecordInMonthList.isEmpty()) {
+                if (!(remainRecordInMonthList.size() == 1)) {
                     for (Accounting accounting : remainRecordInMonthList) {
                         latestRemain += accounting.getExpense();
                         accounting.setRemain(latestRemain);

@@ -36,18 +36,10 @@ public class AccountingApi {
     @GetMapping()
     public ResponseEntity<?> findAccountingByMonth(@RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
                                                    @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
-                                                   @RequestParam(name = "startDate", required = false) String startDate,
-                                                   @RequestParam(name = "endDate", required = false) String endDate
+                                                   @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                   @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
-        LocalDate startDateParsed = null;
-        LocalDate endDateParsed = null;
-        if (startDate != null && !startDate.isEmpty()) {
-            startDateParsed = LocalDate.parse(startDate);
-        }
-        if (endDate != null && !endDate.isEmpty()) {
-            endDateParsed = LocalDate.parse(endDate);
-        }
-        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(page,size,startDateParsed,endDateParsed);
+        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(page,size,startDate,endDate);
         return ResponseEntity.ok(accountListResponse);
     }
 
