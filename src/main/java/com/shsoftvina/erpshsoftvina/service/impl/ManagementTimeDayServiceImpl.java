@@ -39,12 +39,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private ManagementTimeDayMapper managementTimeDayMapper;
@@ -360,7 +358,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         String userId = daysUpdateRequest.getUserId();
 
         applicationUtils.checkUserAllow(userId);
-//        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
         String monthlyCode = monthlyRequest.getMonth();
@@ -391,16 +388,25 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
         DayRequest[] days = daysUpdateRequest.getDays();
-        List<ManagementTimeDay> managementTimeDays = managementTimeDayConvert.toListEntity(userId, days);
-        for(ManagementTimeDay managementTimeDay: managementTimeDays){
-            ManagementTimeDay m = managementTimeDayMapper.findByDay(userId, managementTimeDay.getDay());
+        List<ManagementTimeDay> managementTimeDaysReq = managementTimeDayConvert.toListEntity(userId, days);
+        List<String> dayList = Stream.of(days).map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
+        List<ManagementTimeDay> managementTimeDaysDB = managementTimeDayMapper.findByListDay(userId, dayList);
+
+        List<ManagementTimeDay> insertListDay = new ArrayList<>();
+        List<ManagementTimeDay> editListDay = new ArrayList<>();
+
+        for(ManagementTimeDay mReq: managementTimeDaysReq){
+            ManagementTimeDay m = getManagementTimeDays(managementTimeDaysDB, mReq.getDay());
             if(m == null){
-                managementTimeDayMapper.insertDay(managementTimeDay);
-            } else{
-                managementTimeDay.setId(m.getId());
-                managementTimeDayMapper.editDay(managementTimeDay);
+                insertListDay.add(mReq);
+            }else{
+                mReq.setId(m.getId());
+                editListDay.add(mReq);
             }
         }
+
+        if(insertListDay.size()>0) managementTimeDayMapper.createListDayDetail(insertListDay);
+        if(editListDay.size()>0) managementTimeDayMapper.editListDayDetail(editListDay);
 
         return 1;
     }

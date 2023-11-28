@@ -55,15 +55,6 @@
         WHERE w.USER_ID = #{userId} AND w.CODE = #{code}
     </select>
 
-
-
-
-
-
-
-
-
-
     <resultMap id="weeklyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>

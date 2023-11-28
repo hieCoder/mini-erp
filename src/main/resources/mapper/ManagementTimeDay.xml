@@ -63,6 +63,32 @@
         WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
     </select>
 
+    <insert id="createListDayDetail" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
+        COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE)
+        VALUES
+        <foreach collection="days" item="day" separator=",">
+            (UUID(), #{day.oneThingCalendar}, #{day.toDoList}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
+            #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail}, #{day.dailyRoutine})
+        </foreach>
+    </insert>
+
+    <update id="editListDayDetail" parameterType="java.util.List">
+        <foreach collection="days" item="day" separator=";">
+            UPDATE MANAGEMENT_TIME_DAY
+            SET ONE_THING_CALENDAR = #{day.oneThingCalendar},
+            TO_DO_LIST = #{day.toDoList},
+            GRATITUDE_DIARY = #{day.gratitudeDiary},
+            AFFIRMATION = #{day.affirmation},
+            COMPLIMENT_FOR_ME_TODAY = #{day.complimentForMeToday},
+            TODAYS_REFLECTIONS_AND_IMPROVEMENTS = #{day.todaysReflectionsAndImprovements},
+            TODO_DETAIL = #{day.toDoDetail},
+            DAILY_ROUTINE = #{day.dailyRoutine}
+            WHERE ID = #{day.id}
+        </foreach>
+    </update>
+
+
 
 
 

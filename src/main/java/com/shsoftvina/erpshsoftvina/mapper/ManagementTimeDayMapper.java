@@ -20,8 +20,8 @@ public interface ManagementTimeDayMapper {
     int updateOneThingCalendarAllDayNull(String userId, List<String> days);
     List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
     List<ManagementTimeDay> findByCode(String userId, String weeklyCode);
-
-
+    int createListDayDetail(List<ManagementTimeDay> days);
+    int editListDayDetail(List<ManagementTimeDay> days);
 
 
 

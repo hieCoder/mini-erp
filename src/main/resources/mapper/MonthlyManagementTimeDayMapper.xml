@@ -13,16 +13,10 @@
         </foreach>
     </select>
 
-
-
-
-
-
-
     <select id="findByCode" resultMap="monthlyManagementTimeDayResultMap">
         SELECT *
         FROM MONTHLY_MANAGEMENT_TIME_DAY m
-        INNER JOIN USER u ON m.USER_ID = u.ID
+                 INNER JOIN USER u ON m.USER_ID = u.ID
         WHERE m.USER_ID = #{userId} AND m.CODE = #{code}
     </select>
 

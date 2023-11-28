@@ -25,10 +25,10 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
 
-            if(!urlsAllow(request.getRequestURI()) || request.getRequestURI().startsWith("/users/")){
-                User user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
-                Principal.updateUserCurrent(user);
-            }
+//            if(!urlsAllow(request.getRequestURI()) || request.getRequestURI().startsWith("/users/")){
+//                User user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
+//                Principal.updateUserCurrent(user);
+//            }
 
             if (!urlsAllow(request.getRequestURI())) {
                 try {

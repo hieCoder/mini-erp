@@ -13,13 +13,6 @@ public interface WeeklyManagementTimeDayMapper {
     int updateContentNull(String userId, List<String> codes);
     int updateContentAllWeeklyNull(String userId, List<String> codes);
     WeeklyManagementTimeDay findByCode(String userId, String code);
-
-
-
     int createWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
     int updateWeeklyManagementTimeDay(WeeklyManagementTimeDay weeklyManagementTimeDay);
-
-
-
-
 }
