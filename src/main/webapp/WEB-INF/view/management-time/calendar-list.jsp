@@ -193,7 +193,8 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    var responseData = parseData.weeklys;
+                    let dayData = parseData.days;
+                    let weekData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let xhtml = '';
@@ -366,24 +367,21 @@
                                         const year = currentDate.getFullYear();
                                         const currentMonth = currentDate.getMonth() + 1;
                                         const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
-                                        if (responseData != null && responseData.length > 0) {
+                                        if (dayData != null && dayData.length > 0) {
                                             cell.classList.add("fst-italic")
                                             cell.classList.add("text-wrap")
-                                            responseData.forEach((e) => {
-                                                e.listDayOfWeek.forEach((week) => {
-                                                    const dateInResponse = new Date(week.day);
+                                            dayData.forEach((day) => {
+                                                    const dateInResponse = new Date(day.day);
                                                     const currentDay = countLine * 7 + j - startDay;
                                                     if (
                                                         currentDate.getMonth() === dateInResponse.getMonth() &&
                                                         currentDay === dateInResponse.getDate()
                                                     ) {
-                                                        const targetTodo = week.data.oneThingCalendar[dayTodo];
+                                                        const targetTodo = day.data.oneThingCalendar[dayTodo];
                                                         if (targetTodo != null) {
                                                             cell.textContent = targetTodo.target;
                                                         }
                                                     }
-
-                                                })
                                             })
                                         } else {
                                             cell.setAttribute('data-name', dayTodo);
@@ -404,11 +402,11 @@
                                     } else {
                                         currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
                                     }
-                                    if (responseData != null && responseData.length > 0) {
+                                    if (weekData != null && weekData.length > 0) {
                                         cell.classList.add("fw-bold")
                                         cell.classList.add("fst-italic")
                                         cell.classList.add("text-wrap")
-                                        responseData.forEach((e) => {
+                                        weekData.forEach((e) => {
                                             if (e.weeklyContents === null) {
                                                 return;
                                             }
