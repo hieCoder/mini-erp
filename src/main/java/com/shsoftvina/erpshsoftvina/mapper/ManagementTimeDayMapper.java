@@ -13,6 +13,15 @@ import java.util.Map;
 
 @Mapper
 public interface ManagementTimeDayMapper {
+    List<ManagementTimeDay> findByListDay(String userId, List<String> days);
+    int createListCalendarDay(List<ManagementTimeDay> days);
+    int editListCalendarDay(List<ManagementTimeDay> days);
+    int updateOneThingCalendarNull(String userId, List<String> days);
+    int updateOneThingCalendarAllDayNull(String userId, List<String> days);
+
+
+
+
     ManagementTimeDay findByDay(String userId, Date day);
     int createCalendarDay(ManagementTimeDay day);
     int updateCalendarDay(ManagementTimeDay day);
@@ -21,8 +30,8 @@ public interface ManagementTimeDayMapper {
     int editDay(ManagementTimeDay managementTimeDay);
     List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
 
-    List<ManagementTimeDay> findByListDay(String userId, List<String> days);
-    int createListCalendarDay(List<ManagementTimeDay> days);
-    void updateOneThingCalendarNull(String userId, List<String> days);
+
+
+
     List<ManagementTimeDay> findByListCode(String userId, List<String> codes);
 }

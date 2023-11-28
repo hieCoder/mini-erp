@@ -3,6 +3,52 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper">
 
+    <select id="findByListCode" resultMap="weeklyManagementTimeDayResultMap">
+        SELECT *
+        FROM WEEKLY_MANAGEMENT_TIME_DAY w
+        INNER JOIN USER u ON w.USER_ID = u.ID
+        WHERE w.USER_ID = #{userId} AND w.CODE IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </select>
+
+    <insert id="createListWeekly" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID)
+        VALUES
+        <foreach collection="weeklys" item="weekly" separator=",">
+            (UUID(), #{weekly.code}, #{weekly.content}, #{weekly.user.id})
+        </foreach>
+    </insert>
+
+    <update id="editListWeekly" parameterType="java.util.List">
+        <foreach collection="weeklys" item="w" separator=";">
+            UPDATE WEEKLY_MANAGEMENT_TIME_DAY SET CONTENT = #{w.content}
+            WHERE ID = #{w.id}
+        </foreach>
+    </update>
+
+    <update id="updateContentNull" parameterType="java.util.Map">
+        UPDATE WEEKLY_MANAGEMENT_TIME_DAY
+        SET CONTENT = null
+        WHERE USER_ID = #{userId}
+        AND CODE NOT IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </update>
+
+    <update id="updateContentAllWeeklyNull" parameterType="java.util.Map">
+        UPDATE WEEKLY_MANAGEMENT_TIME_DAY
+        SET CONTENT = null
+        WHERE USER_ID = #{userId}
+        AND CODE IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </update>
+
+
     <select id="findByCode" resultMap="weeklyManagementTimeDayResultMap">
         SELECT *
         FROM WEEKLY_MANAGEMENT_TIME_DAY w
@@ -32,32 +78,6 @@
         WHERE ID = #{id};
     </update>
 
-    <select id="findByListCode" resultMap="weeklyManagementTimeDayResultMap">
-        SELECT *
-        FROM WEEKLY_MANAGEMENT_TIME_DAY w
-        INNER JOIN USER u ON w.USER_ID = u.ID
-        WHERE w.USER_ID = #{userId}
-        AND w.CODE IN
-        <foreach item="code" collection="codes" open="(" separator="," close=")">
-            #{code}
-        </foreach>
-    </select>
 
-    <insert id="createListWeekly" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID)
-        VALUES
-        <foreach collection="list" item="weekly" separator=",">
-            (UUID(), #{weekly.code}, #{weekly.content}, #{weekly.user.id})
-        </foreach>
-    </insert>
 
-    <update id="updateContentNull" parameterType="java.util.Map">
-        UPDATE WEEKLY_MANAGEMENT_TIME_DAY
-        SET CONTENT = null
-        WHERE USER_ID = #{userId}
-        AND CODE NOT IN
-        <foreach item="code" collection="codes" open="(" separator="," close=")">
-            #{code}
-        </foreach>
-    </update>
 </mapper>

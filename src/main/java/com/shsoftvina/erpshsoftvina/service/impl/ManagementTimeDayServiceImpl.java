@@ -34,10 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -70,10 +67,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private MonthlyManagementTimeDayConverter monthlyManagementTimeDayConverter;
 
-    private static List<String> getSundaysOfTheMonth(String dateString) {
+    private static List<String> getSundaysOfTheMonth(String yyyyMMDD) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(dateString, formatter);
+        LocalDate date = LocalDate.parse(yyyyMMDD, formatter);
         List<String> sundays = new ArrayList<>();
 
         LocalDate firstDayOfMonth = date.withDayOfMonth(1);
@@ -147,19 +144,57 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return result.orElse(null);
     }
 
+    public List<String> getDaysOfMonth(String monthString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        YearMonth yearMonth = YearMonth.parse(monthString, formatter);
+
+        LocalDate firstDayOfMonth = yearMonth.atDay(1);
+
+        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
+        List<String> dayList = new ArrayList<>();
+        LocalDate currentDay = firstDayOfMonth;
+        while (!currentDay.isAfter(lastDayOfMonth)) {
+            dayList.add(currentDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            currentDay = currentDay.plusDays(1);
+        }
+
+        return dayList;
+    }
+
+    public static List<String> getSundaysOfMonth(String yyyyMM) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        YearMonth yearMonth = YearMonth.parse(yyyyMM, formatter);
+
+        LocalDate firstDayOfMonth = yearMonth.atDay(1);
+        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
+        LocalDate firstSunday = firstDayOfMonth.with(DayOfWeek.SUNDAY);
+
+        List<String> sundayList = new ArrayList<>();
+        LocalDate currentSunday = firstSunday;
+        while (!currentSunday.isAfter(lastDayOfMonth)) {
+            sundayList.add(currentSunday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            currentSunday = currentSunday.plusWeeks(1);
+        }
+
+        return sundayList;
+    }
+
     @Override
     public int updateCalendar(CalendarUpdateRequest req) {
         String userId = req.getUserId();
-        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
-
+        MonthlyRequest monthlyReq = req.getMonthly();
+        String monthlyCode = monthlyReq.getMonth();
+        List<WeeklyRequest> weeklys = req.getWeeklys();
         List<CalendarDayRequest> days = req.getDays();
-        long startTime = System.currentTimeMillis();
-        List<String> dayList = days.stream()
-                .map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
-        List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findByListDay(userId, dayList);
-        if(managementTimeDays.size() == 0){
-            managementTimeDayMapper.createListCalendarDay(managementTimeDayConvert.toListEntity(userId, days));
-        } else{
+
+
+        List<ManagementTimeDay> insertListDay = new ArrayList<>();
+        List<ManagementTimeDay> editListDay = new ArrayList<>();
+        if(days.size() != 0){
+            List<String> dayList = days.stream().map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
+            List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findByListDay(userId, dayList);
             for(CalendarDayRequest d: days){
                 ManagementTimeDay dayEntity = getManagementTimeDays(managementTimeDays, d.getDay());
                 if(dayEntity !=null){
@@ -170,43 +205,42 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                             .work(new ItemDto(d.getContent().getWork(), false))
                             .reading(new ItemDto(d.getContent().getReading(), false)).build();
                     dayEntity.setOneThingCalendar(JsonUtils.objectToJson(o));
-                    managementTimeDayMapper.updateCalendarDay(dayEntity);
+                    editListDay.add(dayEntity);
                 } else{
                     dayEntity = managementTimeDayConvert.toEntity(userId, d);
-                    managementTimeDayMapper.createCalendarDay(dayEntity);
+                    insertListDay.add(dayEntity);
                 }
             }
-        }
-        managementTimeDayMapper.updateOneThingCalendarNull(userId, dayList);
-
-
-        List<WeeklyRequest> weeklys = req.getWeeklys();
-        List<String> startDayList = weeklys.stream()
-                .map(d -> DateUtils.formatDate(d.getStartDay())).collect(Collectors.toList());
-        List<WeeklyManagementTimeDay> weeklyManagementTimeDays = weeklyManagementTimeDayMapper.findByListCode(userId, startDayList);
-        if(weeklyManagementTimeDays.size() == 0){
-            weeklyManagementTimeDayMapper.createListWeekly(weeklyManagementTimeDayConverter.toListEntity(userId, weeklys));
+            if(insertListDay.size()>0) managementTimeDayMapper.createListCalendarDay(insertListDay);
+            if(editListDay.size()>0) managementTimeDayMapper.editListCalendarDay(editListDay);
+            managementTimeDayMapper.updateOneThingCalendarNull(userId, dayList);
         } else{
+            managementTimeDayMapper.updateOneThingCalendarAllDayNull(userId, getDaysOfMonth(monthlyCode));
+        }
+
+
+        List<WeeklyManagementTimeDay> insertListWeekly = new ArrayList<>();
+        List<WeeklyManagementTimeDay> editListWeekly = new ArrayList<>();
+        if(weeklys.size() != 0){
+            List<String> startDayList = weeklys.stream().map(d -> DateUtils.formatDate(d.getStartDay())).collect(Collectors.toList());
+            List<WeeklyManagementTimeDay> weeklyManagementTimeDays = weeklyManagementTimeDayMapper.findByListCode(userId, startDayList);
             for(WeeklyRequest w: weeklys){
                 WeeklyManagementTimeDay weeklyEntity = getWeeklyManagementTimeDays(weeklyManagementTimeDays, w.getStartDay());
                 if(weeklyEntity !=null){
                     weeklyEntity.setContent(JsonUtils.objectToJson(w.getContent()));
-                    weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
+                    editListWeekly.add(weeklyEntity);
                 } else{
                     weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, w);
-                    weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyEntity);
+                    insertListWeekly.add(weeklyEntity);
                 }
             }
+            if(insertListWeekly.size()>0) weeklyManagementTimeDayMapper.createListWeekly(insertListWeekly);
+            if(editListWeekly.size()>0) weeklyManagementTimeDayMapper.editListWeekly(editListWeekly);
+            weeklyManagementTimeDayMapper.updateContentNull(userId, startDayList);
+        } else{
+            weeklyManagementTimeDayMapper.updateContentAllWeeklyNull(userId, getSundaysOfMonth(monthlyCode));
         }
-        weeklyManagementTimeDayMapper.updateContentNull(userId, startDayList);
-        // Đo thời gian sau khi kết thúc phương thức
-        long endTime = System.currentTimeMillis();
 
-        // In ra thời gian thực hiện phương thức
-        System.out.println("Execution time: " + (endTime - startTime) + " milliseconds");
-
-        MonthlyRequest monthlyReq = req.getMonthly();
-        String monthlyCode = monthlyReq.getMonth();
 
         MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
         if(monthlyEntity == null){
@@ -216,6 +250,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             monthlyEntity.setContent(JsonUtils.objectToJson(monthlyReq.getContent()));
             monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
         }
+
+
         return 1;
     }
 
@@ -223,7 +259,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     public CalendarResponse showCalendar(String userId, String startDate, String endDate) {
 
         applicationUtils.checkUserAllow(userId);
-        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         CalendarResponse calendarResponse = new CalendarResponse();
 
@@ -238,23 +273,24 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         List<WeeklyManagementTimeDay> weeklys = weeklyManagementTimeDayMapper.findByListCode(userId, weeklyCode);
         List<ManagementTimeDay> days = managementTimeDayMapper.findByListCode(userId, weeklyCode);
 
-        List<WeeklyManagementTimeDayResponse> weeklysRs = weeklys.stream()
-                .filter(weeklyE -> weeklyE != null)
-                .map(weeklyE -> {
-                    List<ManagementTimeDay> filteredDays = days.stream()
-                            .filter(day -> weeklyE.getCode().equals(day.getWeeklyCode()))
-                            .collect(Collectors.toList());
+//        List<WeeklyManagementTimeDayResponse> weeklysRs = weeklys.stream()
+//                .filter(weeklyE -> weeklyE != null)
+//                .map(weeklyE -> {
+//                    List<ManagementTimeDay> filteredDays = days.stream()
+//                            .filter(day -> weeklyE.getCode().equals(day.getWeeklyCode()) && day.getOneThingCalendar() != null)
+//                            .collect(Collectors.toList());
+//
+//                    return WeeklyManagementTimeDayResponse.builder()
+//                            .weeklyId(weeklyE.getId())
+//                            .startDate(weeklyE.getCode())
+//                            .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
+//                            .listDayOfWeek(managementTimeDayConvert.toListResponse(filteredDays))
+//                            .build();
+//                })
+//                .collect(Collectors.toList());
 
-                    return WeeklyManagementTimeDayResponse.builder()
-                            .weeklyId(weeklyE.getId())
-                            .startDate(weeklyE.getCode())
-                            .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
-                            .listDayOfWeek(managementTimeDayConvert.toListResponse(filteredDays))
-                            .build();
-                })
-                .collect(Collectors.toList());
-
-        calendarResponse.setWeeklys(weeklysRs);
+        calendarResponse.setDays(managementTimeDayConvert.toListResponse(days));
+        calendarResponse.setWeeklys(weeklyManagementTimeDayConverter.toListResponse(weeklys));
 
         return calendarResponse;
     }
@@ -263,7 +299,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     public DaysOfWeeklyResponse showListDayOfWeek(String userId, String currentDay) {
 
         applicationUtils.checkUserAllow(userId);
-        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+        //if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = new DaysOfWeeklyResponse();
 
@@ -305,7 +341,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 .weeklyId(weeklyManagementTimeDay != null? weeklyManagementTimeDay.getId() : null)
                 .startDate(weeklyManagementTimeDay != null? weeklyManagementTimeDay.getCode() : null)
                 .weeklyContents(weeklyManagementTimeDay != null? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class): null)
-                .listDayOfWeek(managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode)).build();
+                //.listDayOfWeek(managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode))
+        .build();
         daysOfWeeklyResponse.setWeeklys(weekly);
 
         return daysOfWeeklyResponse;
@@ -317,7 +354,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         String userId = daysUpdateRequest.getUserId();
 
         applicationUtils.checkUserAllow(userId);
-        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
+//        if(userMapper.findById(userId) == null) throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
         String monthlyCode = monthlyRequest.getMonth();
