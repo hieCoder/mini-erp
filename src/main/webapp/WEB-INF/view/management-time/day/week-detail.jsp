@@ -1,3 +1,4 @@
+<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -9,6 +10,7 @@
 <c:set var="toDoList" value="${data.toDoList}"/>
 <c:set var="showButtonResult" value='${dayResponse!=null ? "" : "disabled"}'/>
 <c:set var="infoButtonResult" value='${dayResponse!=null ? "Update" : "Create"}'/>
+<c:set var="userRole" value="${Principal.getUserCurrent().getRole()}"/>
 <html>
 <head>
     <title>Detail of Day</title>
@@ -78,6 +80,10 @@
             </h4>
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                    <c:if test="${userRole != 'DEVELOPER'}">
+                        <li class="breadcrumb-item"><a href="/management-time">Management Time</a></li>
+                    </c:if>
                     <li class="breadcrumb-item"><a href="/management-time/${user.id}">Management Time</a></li>
                     <li class="breadcrumb-item active">Management Time Day</li>
                 </ol>
