@@ -44,12 +44,6 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse addContract(CreateContractRequest createContractRequest) {
-        String userId = createContractRequest.getUserId();
-        String parentId = createContractRequest.getParentId();
-        if(userMapper.findById(userId) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("userId"));
-        if(parentId != null && contractMapper.findById(parentId) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("parentId"));
 
         MultipartFile contractFile = createContractRequest.getFile();
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
@@ -89,7 +83,6 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public int updateContract(UpdateContractRequest updateContractRequest) {
-
         Contract contract = contractMapper.findById(updateContractRequest.getId());
         if(contract == null) throw new NotFoundException("id");
 
