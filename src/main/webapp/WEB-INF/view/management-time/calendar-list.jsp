@@ -519,7 +519,7 @@
         $(".containerLoading ").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
         const data = {
-            userId: userCurrent.id,
+            userId: '${user.id}',
             days: [],
             weeklys: [],
             monthly : {}
