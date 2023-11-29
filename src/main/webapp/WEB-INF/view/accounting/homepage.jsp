@@ -848,33 +848,6 @@
 
 <script src="/assets/custom/js/notification/notification.js"></script>
 <script>
-    var rsSuccess = (text) =>{
-        Swal.fire({
-            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Well done !</h4><p class="text-muted mx-4 mb-0">'+ text +' successfully</p></div></div>',
-            showCancelButton: !0,
-            showConfirmButton: !1,
-            customClass: {
-                cancelButton: 'btn btn-primary w-xs mb-1'
-            },
-            cancelButtonText: "Back",
-            buttonsStyling: !1,
-            showCloseButton: !0
-        })
-    }
-    var rsUnSuccess = () =>{
-        Swal.fire({
-            html: '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="mt-4 pt-2 fs-15"><h4>Oops...! Something went Wrong !</h4><p class="text-muted mx-4 mb-0">Try Again</p></div></div>',
-            showCancelButton: !0,
-            showConfirmButton: !1,
-            customClass: {
-                cancelButton: 'btn btn-primary w-xs mb-1'
-            },
-            cancelButtonText: "Dismiss",
-            buttonsStyling: !1,
-            showCloseButton: !0
-        })
-    }
-    var htmlElement = document.documentElement;
     cutShortLink();
     const baseUrlAccount = "/api/v1/accounts/";
     const INVALID_FILLED_TEXT = ' <div class="alert alert-danger" role="alert">' +
@@ -1133,7 +1106,6 @@
 
     }
 
-
     var validFileUpload = "${setting.listTypeFile}" + "," + "${setting.listTypeImage}";
     var validExtensions = validFileUpload.split(',');
     var spanElement = $("#createModal #validFileText");
@@ -1218,8 +1190,8 @@
         let title = $("#createTitle").val()
         let note = $("#createNote").val()
         let transaction = $("#transactionType").val()
-        var payDate = $("#createPayDate").val();
-        let input = document.getElementById("amount").value;
+        let payDate = $("#createPayDate").val();
+        let input = $("#amount").val();
         let amount = Number(input.replace(/[^0-9.]/g, ''))
         if (transaction === 'expense') {
             amount = -amount;
@@ -1258,10 +1230,17 @@
         $(this).before(BtnPrimaryLoad)
         callAjaxByDataFormWithDataForm(baseUrlAccount, "POST", formData, function (rs) {
             BtnLoadRemove()
-            $("button.createBtn").removeClass("d-none")
+            $("button.createBtn").removeClass("d-none");
+            $("#createTitle").val("");
+            $("#createNote").val("");
+            $("#transactionType").val("")
+            $("#createPayDate").val("")
+            $("#amount").val("")
             $("#createModal").modal("hide");
+            dropzone.removeAllFiles()
             rsSuccess("Created")
             let yearSelect = document.getElementById('account-year');
+            let monthSelect = document.getElementById('account-month');
             callAjaxByJsonWithData('/api/v1/accounts/total-month', 'GET', null, function (rs) {
                 let data = rs;
                 yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
@@ -1270,6 +1249,7 @@
                     option.value = entry.year;
                     option.textContent = entry.year;
                     yearSelect.appendChild(option);
+                    monthSelect.style.display = "none";
                 });
             });
             loadPage(1);
@@ -1328,7 +1308,6 @@
                 xhr.open("DELETE", "/api/v1/accounts/" + accountId, true);
                 xhr.send();
             } else if (
-                // Read more about handling dismissals
                 result.dismiss === Swal.DismissReason.cancel
             ) {
                 Swal.fire({
@@ -1348,13 +1327,8 @@
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="/assets/js/pages/datatables.init.js"></script>
-<!-- Sweet Alerts js -->
-<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 </body>
 </html>
 

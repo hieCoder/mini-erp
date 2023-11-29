@@ -53,6 +53,14 @@ public class ManagementTimeDayConvert {
                 .build();
     }
 
+    public List<ManagementTimeDay> toListEntity(String userId, List<CalendarDayRequest> calendarDayRequests){
+        List<ManagementTimeDay> list = new ArrayList<>();
+        for(CalendarDayRequest calendarDayRequest: calendarDayRequests){
+            list.add(toEntity(userId, calendarDayRequest));
+        }
+        return list;
+    }
+
     public DayResponse toResponse(ManagementTimeDay day){
         if(day == null) return null;
         DataOfDayDto data = new DataOfDayDto();

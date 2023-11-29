@@ -14,12 +14,8 @@
 <html>
 <head>
     <title>Detail of Day</title>
-    <script type="text/javascript" src="../../../../assets/custom/js/management-time/management-time.js"></script>
+    <link rel="stylesheet" href="../../../../assets/custom/css/management-time/style.css">
     <style>
-        .full-height {
-            min-height: 80vh;
-        }
-
         .table-container {
             overflow-x: auto;
             cursor: grab;
@@ -51,7 +47,7 @@
         }
 
         .table-detail {
-            width: 100%; /* Đặt chiều rộng tùy ý */
+            width: 100%;
         }
 
         .table-detail th {
@@ -72,26 +68,6 @@
             border: 1px solid #000;
             font-family: Poppins, sans-serif;
             height: 32.5px;
-        }
-
-        tr.theSingleMostImportantThing {
-            background-color: white;
-        }
-
-        tr.lecture {
-            background-color: #fcecec;
-        }
-
-        tr.dailyEvaluation {
-            background-color: #e6f0e2;
-        }
-
-        tr.work {
-            background-color: #fff9e6;
-        }
-
-        tr.reading {
-            background-color: #e9e4f5;
         }
     </style>
 </head>
@@ -325,21 +301,21 @@
                         <table>
                             <thead>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <th colspan="2" class="fw-bolder"><h5>${day.day}</h5></th>
                                 </c:forEach>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <td class="fw-bolder w-75">Target</td>
                                     <td class="fw-bolder">Performance</td>
                                 </c:forEach>
                             </tr>
                             <%--one-thing--%>
                             <tr class="theSingleMostImportantThing">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
                                     <td class="editable-cell " contenteditable="true"
@@ -351,7 +327,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="lecture">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
@@ -360,7 +336,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="dailyEvaluation">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
@@ -369,7 +345,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="work">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
@@ -378,7 +354,7 @@
                                 </c:forEach>
                             </tr>
                             <tr class="reading">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
                                     <td class="editable-cell" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
@@ -389,7 +365,7 @@
 
                             <%--to-do--%>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[0]}" var="sixToTwelvePm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
@@ -398,7 +374,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[1]}" var="sixToTwelvePm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
@@ -407,7 +383,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[0]}" var="twelveToSixPm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="twelveToSixPm">${twelveToSixPm.target}</td>
@@ -416,7 +392,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[1]}" var="twelveToSixPm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="twelveToSixPm">${twelveToSixPm.target}</td>
@@ -425,7 +401,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[0]}" var="sixToTwelveAm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
@@ -434,7 +410,7 @@
                                 </c:forEach>
                             </tr>
                             <tr name="daily">
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[1]}" var="sixToTwelveAm"/>
                                     <td class="editable-cell" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
@@ -446,7 +422,7 @@
                             <%--daily routine--%>
                             <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
                                 <tr name="daily">
-                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="dayMonth" value="${fn:substring(day.day, 0, 7)}"/>
                                         <c:choose>
                                             <c:when test="${dayMonth eq weekly.monthlys[0].month}">
@@ -469,10 +445,10 @@
                             <%--Gratitude Diary--%>
                             <c:forEach begin="0" end="2" var="entry" varStatus="loop">
                                 <tr name="gratitudeDiary">
-                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="gratitudeDiary" value="${day.data.gratitudeDiary[loop.index]}"/>
                                         <td colspan="2"><textarea
-                                                class="form-control gratitudeDiary"
+                                                class="form-control" data-name="gratitudeDiary"
                                                 data-day="${day.day}">${gratitudeDiary}</textarea></td>
                                     </c:forEach>
                                 </tr>
@@ -480,31 +456,31 @@
 
                             <%--Affirmation--%>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="affirmation" value="${day.data.affirmation}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation"
+                                        <textarea class="form-control" data-name="affirmation"
                                                   data-day="${day.day}">${affirmation}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <%--Compliment--%>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="complimentForMeToday" value="${day.data.complimentForMeToday}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control complimentForMeToday"
+                                        <textarea class="form-control" data-name="complimentForMeToday"
                                                   data-day="${day.day}">${complimentForMeToday}</textarea>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <%--Reflection--%>
                             <tr>
-                                <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="todaysReflectionsAndImprovements"
                                            value="${day.data.todaysReflectionsAndImprovements}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control todaysReflectionsAndImprovements"
+                                        <textarea class="form-control" data-name="todaysReflectionsAndImprovements"
                                                   data-day="${day.day}">${todaysReflectionsAndImprovements}</textarea>
                                     </td>
                                 </c:forEach>
@@ -512,7 +488,7 @@
                             <%--Timeline--%>
                             <c:forEach var="time" varStatus="loop" begin="0" end="23">
                                 <tr name="timeLine">
-                                    <c:forEach var="day" items="${weekly.weeklys.listDayOfWeek}">
+                                    <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
                                         <td colspan="2" contenteditable="true" data-day="${day.day}"
                                             data-name="timeLine">${data}</td>
@@ -584,14 +560,14 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
-        $(".calendar-container").removeClass("d-none")
+        $("div.calendar-container").removeClass("d-none")
     })
 
     $('td.dailyRoutineTarget').on('blur', function () {
         const target = $(this).text();
         if (target > 31 || target < 0) {
             $(this).text('0');
-            validateFail("Daily target shouln't exceed 30 or below 0");
+            validateFail("Daily target shouldn't exceed 30 or below 0");
             return false;
         }
     });
@@ -617,6 +593,9 @@
     }
 
     $("#updateButton").click(function () {
+        $(this).prop('disabled',true);
+        $("div.containerLoading").removeClass("d-none")
+        $("div.calendar-container").addClass("d-none")
         const currentYearMonth = getCurrentYearMonth();
         const data = {
             userId: userCurrent.id,
@@ -651,34 +630,98 @@
         })
 
         const days = [];
+        $('textarea').each(function () {
+            const day = $(this).data('day');
+            const value = $(this).val();
+
+            let dayObj = days.find(d => d.day === day);
+            if (value !== "") {
+                if (day != null) {
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            data: {
+                                oneThingCalendar: {},
+                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                toDoDetail: [],
+                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                toDoList: {
+                                    sixToTwelvePm: [],
+                                    twelveToSixPm: [],
+                                    sixToTwelveAm: []
+                                }
+                            }
+                        };
+                        days.push(dayObj);
+                    }
+                }
+            }
+        })
+        $('input[type="checkbox"].dailyRoutine').each(function () {
+            const day = $(this).data('day');
+            const isChecked = $(this).prop('checked');
+
+            let dayObj = days.find(d => d.day === day);
+            if (isChecked !== false) {
+                if (day != null) {
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            data: {
+                                oneThingCalendar: {},
+                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                toDoDetail: [],
+                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                toDoList: {
+                                    sixToTwelvePm: [],
+                                    twelveToSixPm: [],
+                                    sixToTwelveAm: []
+                                }
+                            }
+                        };
+                        days.push(dayObj);
+                    }
+                }
+            }
+        })
         $('td[contenteditable="true"]').each(function () {
             const day = $(this).data('day');
             const name = $(this).data('name');
             const value = $(this).text().trim();
             const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
 
-            if (day != null) {
-                let dayObj = days.find(d => d.day === day);
-                if (!dayObj) {
-                    dayObj = {
-                        day: day,
-                        data: {
-                            oneThingCalendar: {},
-                            gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
-                            complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
-                            todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
-                            affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
-                            toDoDetail: [],
-                            dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
-                            toDoList: {
-                                sixToTwelvePm: [],
-                                twelveToSixPm: [],
-                                sixToTwelveAm: []
+            let dayObj = days.find(d => d.day === day);
+            if (value !== "") {
+                if (day != null) {
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            data: {
+                                oneThingCalendar: {},
+                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                toDoDetail: [],
+                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                toDoList: {
+                                    sixToTwelvePm: [],
+                                    twelveToSixPm: [],
+                                    sixToTwelveAm: []
+                                }
                             }
-                        }
-                    };
-                    days.push(dayObj);
+                        };
+                        days.push(dayObj);
+                    }
                 }
+            }
+            if (dayObj) {
                 if (name === 'timeLine') {
                     dayObj.data.toDoDetail.push(value);
                 } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
@@ -694,13 +737,18 @@
                 }
             }
         })
+
         data.days.push(...days);
         console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
             if (rs) {
                 rsSuccessLoad("Add");
+                $("div.containerLoading").addClass("d-none")
+                $("div.calendar-container").removeClass("d-none")
             } else {
                 rsUnSuccess();
+                $("div.containerLoading").addClass("d-none")
+                $("div.calendar-container").removeClass("d-none")
             }
         })
     })
@@ -749,7 +797,7 @@
     });
 
     function getTextAreaValuesByDayAndClass(day, className) {
-        const selector = 'textarea[data-day="' + day + '"].' + className;
+        const selector = 'textarea[data-day="' + day + '"][data-name="' + className + '"]';
         const textareas = $(selector);
 
         if (textareas.length >= 2) {

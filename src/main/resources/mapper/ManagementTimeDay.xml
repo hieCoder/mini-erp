@@ -3,6 +3,66 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper">
 
+    <select id="findByListDay" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY m
+        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND m.DAY IN
+        <foreach item="day" collection="days" open="(" separator="," close=")">
+            #{day}
+        </foreach>
+    </select>
+
+    <insert id="createListCalendarDay" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, DAY, USER_ID, WEEKLY_CODE)
+        VALUES
+        <foreach collection="days" item="day" separator=",">
+            (UUID(), #{day.oneThingCalendar}, #{day.day}, #{day.user.id}, #{day.weeklyCode})
+        </foreach>
+    </insert>
+
+    <update id="editListCalendarDay" parameterType="java.util.List">
+        <foreach collection="days" item="day" separator=";">
+            UPDATE MANAGEMENT_TIME_DAY
+            SET ONE_THING_CALENDAR = #{day.oneThingCalendar}
+            WHERE ID = #{day.id}
+        </foreach>
+    </update>
+
+    <update id="updateOneThingCalendarNull" parameterType="java.util.Map">
+        UPDATE MANAGEMENT_TIME_DAY
+        SET ONE_THING_CALENDAR = null
+        WHERE USER_ID = #{userId}
+        AND DAY NOT IN
+        <foreach item="day" collection="days" open="(" separator="," close=")">
+            #{day}
+        </foreach>
+    </update>
+
+    <update id="updateOneThingCalendarAllDayNull" parameterType="java.util.Map">
+        UPDATE MANAGEMENT_TIME_DAY
+        SET ONE_THING_CALENDAR = null
+        WHERE USER_ID = #{userId}
+        AND DAY IN
+        <foreach item="day" collection="days" open="(" separator="," close=")">
+            #{day}
+        </foreach>
+    </update>
+
+    <select id="findAllDailyRoutineOfMonth" resultMap="dayResultMap">
+        SELECT m.DAILY_ROUTINE FROM MANAGEMENT_TIME_DAY m
+                                        INNER JOIN MONTHLY_MANAGEMENT_TIME_DAY mo ON DATE_FORMAT(m.DAY, '%Y-%m') = mo.CODE
+                                        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode} AND mo.USER_ID = #{userId}
+    </select>
+
+
+
+
+
+
+
+
     <select id="findByDay" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY m
@@ -69,10 +129,15 @@
         WHERE ID = #{id}
     </update>
 
-    <select id="findAllDailyRoutineOfMonth" resultMap="dayResultMap">
-        SELECT m.DAILY_ROUTINE FROM MANAGEMENT_TIME_DAY m
-        INNER JOIN MONTHLY_MANAGEMENT_TIME_DAY mo ON DATE_FORMAT(m.DAY, '%Y-%m') = mo.CODE
+
+
+    <select id="findByListCode" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY m
         INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode} AND mo.USER_ID = #{userId}
+        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
     </select>
 </mapper>

@@ -7,54 +7,12 @@
 <html>
 <head>
     <style>
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            text-align: center;
-        }
-
-        .seven_day {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            text-align: center;
-        }
-
-        .calendar .day {
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-
-        .seven_day .day {
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-
         td {
             max-width: 40px;
         }
 
         tr td:first-child {
             max-width: 80px;
-        }
-
-        tr.theSingleMostImportantThing {
-            background-color: white;
-        }
-
-        tr.lecture {
-            background-color: #fcecec;
-        }
-
-        tr.dailyEvaluation {
-            background-color: #e6f0e2;
-        }
-
-        tr.work {
-            background-color: #fff9e6;
-        }
-
-        tr.reading {
-            background-color: #e9e4f5;
         }
 
         th {
@@ -72,30 +30,12 @@
             left: 0;
         }
 
-    </style>
-    <style>
-        /* Tùy chỉnh kiểu của trang loading */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .full-height {
-            min-height: 80vh;
-        }
         input {
             display: none;
         }
     </style>
     <title>Calendars</title>
-    <script type="text/javascript" src="../../../assets/custom/js/management-time/management-time.js"></script>
+    <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
 </head>
 <body>
 <div class="row position-relative full-height">
@@ -138,7 +78,7 @@
             </div>
             <h1 class="text-center" id="currentMonthYear"></h1>
             <div style="width: 345px" class="m-3 p-1 position-relative">
-                <button class="btn btn-primary bottom-left" onclick="saveCalendar()">Save</button>
+                <button class="btn btn-primary bottom-left createCalendar" type="button">Save</button>
             </div>
         </div>
         <table class="table table-bordered" id="todoTable">
@@ -253,7 +193,8 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    var responseData = parseData.weeklys;
+                    let dayData = parseData.days;
+                    let weekData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let xhtml = '';
@@ -426,24 +367,21 @@
                                         const year = currentDate.getFullYear();
                                         const currentMonth = currentDate.getMonth() + 1;
                                         const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
-                                        if (responseData != null && responseData.length > 0) {
+                                        if (dayData != null && dayData.length > 0) {
                                             cell.classList.add("fst-italic")
                                             cell.classList.add("text-wrap")
-                                            responseData.forEach((e) => {
-                                                e.listDayOfWeek.forEach((week) => {
-                                                    const dateInResponse = new Date(week.day);
+                                            dayData.forEach((day) => {
+                                                    const dateInResponse = new Date(day.day);
                                                     const currentDay = countLine * 7 + j - startDay;
                                                     if (
                                                         currentDate.getMonth() === dateInResponse.getMonth() &&
                                                         currentDay === dateInResponse.getDate()
                                                     ) {
-                                                        const targetTodo = week.data.oneThingCalendar[dayTodo];
+                                                        const targetTodo = day.data.oneThingCalendar[dayTodo];
                                                         if (targetTodo != null) {
                                                             cell.textContent = targetTodo.target;
                                                         }
                                                     }
-
-                                                })
                                             })
                                         } else {
                                             cell.setAttribute('data-name', dayTodo);
@@ -464,11 +402,11 @@
                                     } else {
                                         currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
                                     }
-                                    if (responseData != null && responseData.length > 0) {
+                                    if (weekData != null && weekData.length > 0) {
                                         cell.classList.add("fw-bold")
                                         cell.classList.add("fst-italic")
                                         cell.classList.add("text-wrap")
-                                        responseData.forEach((e) => {
+                                        weekData.forEach((e) => {
                                             if (e.weeklyContents === null) {
                                                 return;
                                             }
@@ -577,7 +515,9 @@
         return year + '-' + month + '-' + day;
     }
 
-    function saveCalendar() {
+    $(document).on("click", "button.createCalendar", function () {
+        $(".containerLoading ").removeClass("d-none")
+        $("div.calendar-container").addClass("d-none")
         const data = {
             userId: userCurrent.id,
             days: [],
@@ -586,9 +526,8 @@
         }
         const days = [];
         const weeklys = [];
-        console.log(currentDate.getMonth() + 1)
         const monthly = {
-            month : currentDate.getFullYear()  + '-' + (currentDate.getMonth() + 1),
+            month : currentDate.getFullYear()  + '-' + ((currentDate.getMonth() <10) ? '0' + currentDate.getMonth() : currentDate.getMonth() + 1),
             content: []
         };
         $('.editable').each(function () {
@@ -605,42 +544,45 @@
             const name = $(this).data('name');
             const value = $(this).text().trim();
             const week = $(this).data('week');
-            if (week != null) {
-                let weekObj = weeklys.find(w => w.startDay === week);
-                if (!weekObj) {
-                    weekObj = {
-                        startDay: week,
-                        content: {}
-                    };
-                    weeklys.push(weekObj);
+            if(value !== "") {
+                if (day != null) {
+                    let dayObj = days.find(d => d.day === day);
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            content: {}
+                        };
+                        days.push(dayObj);
+                    }
+                    dayObj.content[name] = value;
                 }
-                weekObj.content[name] = value;
-            }
-            if (day != null) {
-                let dayObj = days.find(d => d.day === day);
-                if (!dayObj) {
-                    dayObj = {
-                        day: day,
-                        content: {}
-                    };
-                    days.push(dayObj);
+                if (week != null) {
+                    let weekObj = weeklys.find(w => w.startDay === week);
+                    if (!weekObj) {
+                        weekObj = {
+                            startDay: week,
+                            content: {}
+                        };
+                        weeklys.push(weekObj);
+                    }
+                    weekObj.content[name] = value;
                 }
-                dayObj.content[name] = value;
             }
         })
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
-        console.log(data)
+        console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
-            if (rs) {
-                populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
-                rsSuccess("Add");
-            } else {
-                rsUnSuccess();
-            }
+            BtnLoadRemove()
+            $("button.createCalendar").removeClass("d-none")
+            populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            rsSuccess("Add");
+        },function (error) {
+            rsUnSuccess();
+            console.log(error);
         })
-    }
+    })
 
     function getPreviousSunday(currentDate,isLastSunday) {
         const dateObject = new Date(currentDate);

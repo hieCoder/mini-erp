@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -35,20 +36,14 @@ public class AccountingApi {
 
     @GetMapping()
     public ResponseEntity<?> findAccountingByMonth(@RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
-                                                   @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
-                                                   @RequestParam(name = "startDate", required = false) String startDate,
-                                                   @RequestParam(name = "endDate", required = false) String endDate
+                                                                                            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+                                                                                            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                                            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
-        LocalDate startDateParsed = null;
-        LocalDate endDateParsed = null;
-        if (startDate != null && !startDate.isEmpty()) {
-            startDateParsed = LocalDate.parse(startDate);
+        {
+            return ResponseEntity.ok(accountingService.findAccountingByMonth(page, size, startDate, endDate));
+
         }
-        if (endDate != null && !endDate.isEmpty()) {
-            endDateParsed = LocalDate.parse(endDate);
-        }
-        PageAccountListResponse accountListResponse = accountingService.findAccountingByMonth(page,size,startDateParsed,endDateParsed);
-        return ResponseEntity.ok(accountListResponse);
     }
 
     @PostMapping()
