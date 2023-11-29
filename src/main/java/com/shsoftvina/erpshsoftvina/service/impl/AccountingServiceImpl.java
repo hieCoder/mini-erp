@@ -73,41 +73,44 @@ public class AccountingServiceImpl implements AccountingService {
 
     @Override
     public int createAccounting(AccountingCreateRequest accountingCreateRequest) {
-        Accounting beforeCreateAccounting = accountingMapper.findBeforeCurrentAccounting(DateUtils.toLocalDateTime(accountingCreateRequest.getPayDate()));
-        long latestRemain = 0L;
-        if (beforeCreateAccounting != null) {
-            latestRemain = beforeCreateAccounting.getRemain();
-        }
+        CompletableFuture<User> currentUserFuture = CompletableFuture.supplyAsync(() -> userMapper.findById(accountingCreateRequest.getUserId()));
+        CompletableFuture<Accounting> beforeCreateAccounting = CompletableFuture.supplyAsync(() -> accountingMapper.findBeforeCurrentAccounting(DateUtils.toLocalDateTime(accountingCreateRequest.getPayDate())));
+        long latestRemain = beforeCreateAccounting.thenApply(result -> {
+            long lastRemain = 0L;
+            if (result != null) {
+                lastRemain = result.getRemain();
+            }
+            return lastRemain;
+        }).join();
+        User currentUser = currentUserFuture.thenApply(result -> {
+            if (result == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
+            return result;
+        }).join();
 
         MultipartFile[] billFile = accountingCreateRequest.getBill();
         List<String> oldFile = new ArrayList<>();
         if (billFile != null) {
             applicationUtils.checkValidateFileAndImage(Accounting.class, billFile, oldFile);
         }
-
         String dir = AccountingConstant.UPLOAD_FILE_DIR;
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(dir, billFile);
-        if (listFileNameSaveFileSuccess != null) {
-            User currentUser = userMapper.findById(accountingCreateRequest.getUserId());
-            if (currentUser == null) throw new NotFoundException(MessageErrorUtils.notFound("User id"));
-            Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, listFileNameSaveFileSuccess);
-            try {
-                accountingMapper.createAccounting(newAccounting);
-                List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(newAccounting, true);
-                if (!(remainRecordInMonthList.size() == 1)) {
-                    for (Accounting accounting : remainRecordInMonthList) {
-                        latestRemain += accounting.getExpense();
-                        accounting.setRemain(latestRemain);
-                    }
-                    accountingMapper.updateRecordsBatch(remainRecordInMonthList);
+        CompletableFuture.allOf(currentUserFuture,beforeCreateAccounting).join();
+        Accounting newAccounting = accountingConverter.convertToEntity(accountingCreateRequest, currentUser, latestRemain, listFileNameSaveFileSuccess);
+        try {
+            accountingMapper.createAccounting(newAccounting);
+            List<Accounting> remainRecordInMonthList = accountingMapper.getRemainRecordInMonth(newAccounting, true);
+            if (!(remainRecordInMonthList.size() == 1)) {
+                for (Accounting accounting : remainRecordInMonthList) {
+                    latestRemain += accounting.getExpense();
+                    accounting.setRemain(latestRemain);
                 }
-            } catch (Exception e) {
-                FileUtils.deleteMultipleFilesToServer(dir, newAccounting.getBill());
-                return 0;
+                accountingMapper.updateRecordsBatch(remainRecordInMonthList);
             }
-            return 1;
+        } catch (Exception e) {
+            FileUtils.deleteMultipleFilesToServer(dir, newAccounting.getBill());
+            return 0;
         }
-        return 0;
+        return 1;
     }
 
     @Override
@@ -179,7 +182,7 @@ public class AccountingServiceImpl implements AccountingService {
                 return null;
             }
         }
-        return findAccountingById(accountingUpdateRequest.getId()).join();
+        return findAccountingById(accountingUpdateRequest.getId());
     }
 
     private void updateRemainsInTwoMonth(Accounting currentAccounting) {
@@ -221,11 +224,10 @@ public class AccountingServiceImpl implements AccountingService {
     }
 
     @Override
-    public CompletableFuture<AccountResponse> findAccountingById(String id) {
-        return CompletableFuture.supplyAsync(() -> {
-            Accounting accounting = accountingMapper.findAccountingById(id);
-            return accountingConverter.convertToResponseDTO(accounting);
-        });
+    public AccountResponse findAccountingById(String id) {
+        CompletableFuture<Accounting> accountingFuture = CompletableFuture.supplyAsync(() -> accountingMapper.findAccountingById(id));
+        CompletableFuture<AccountResponse> processedFuture = accountingFuture.thenApply(result -> accountingConverter.convertToResponseDTO(result));
+        return processedFuture.join();
     }
 
     @Override

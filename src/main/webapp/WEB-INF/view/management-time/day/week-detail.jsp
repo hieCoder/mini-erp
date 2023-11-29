@@ -598,7 +598,7 @@
         $("div.calendar-container").addClass("d-none")
         const currentYearMonth = getCurrentYearMonth();
         const data = {
-            userId: userCurrent.id,
+            userId: '${userId}',
             days: [],
             weekly: {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
