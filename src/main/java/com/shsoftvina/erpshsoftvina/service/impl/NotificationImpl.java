@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +35,6 @@ public class NotificationImpl implements NotificationService {
     @Autowired
     private NotificationConverter notificationConverter;
 
-
     @Autowired
     private ApplicationUtils applicationUtils;
 
@@ -46,6 +44,7 @@ public class NotificationImpl implements NotificationService {
     @Override
     public List<NotificationShowResponse> getAllNoti(int start, int pageSize, String search) {
         StatusNotificationEnum status = StatusNotificationEnum.ACTIVE;
+        if (!search.isEmpty()) start = 0;
         List<Notification> notificationList = notificationMapper.getAllNoti(start, pageSize, search, status);
         return notificationConverter.toListShowResponse(notificationList);
     }
@@ -56,7 +55,6 @@ public class NotificationImpl implements NotificationService {
         List<Notification> notificationList = notificationMapper.getInactiveNoti(start, pageSize, status);
         return notificationConverter.toListShowResponse(notificationList);
     }
-
 
     @Override
     public NotificationDetailResponse createNoti(CreateNotificationRequest createNotificationRequest) {

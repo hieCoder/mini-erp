@@ -112,16 +112,16 @@
     $(document).on('keyup', '.content-report', function (e) {
         var ulElement = $(this).siblings('.list-title-by-hashtag');
         const enteredText = e.target.innerText;
-        const caretPosition = getCaretPosition(e.target);
-        const lastHashIndex = enteredText.lastIndexOf('#', caretPosition - 1);
-
+        const getCoordinate = getCoordinates(e.target);
+        const caretPosition = getCursorPosition(e.target);
+        const lastHashIndex = enteredText.lastIndexOf('#', getCoordinate - 1);
         if (lastHashIndex !== -1) {
-            const lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
+            var lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
             const containsSpace = lastHashtag.includes(' ');
-
-            if (containsSpace) {
+            if (containsSpace || (e.which == 13)) {
                 ulElement.empty();
             } else {
+                if (enteredText.includes('#') && (e.which == 13)) lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
                 callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
                     'GET', null, function (rs) {
                         ulElement.empty();
@@ -135,15 +135,36 @@
         }
     });
 
-    function getCaretPosition(element) {
-        let caretOffset = 0;
-        const doc = element.ownerDocument || element.document;
-        const win = doc.defaultView || doc.parentWindow;
-        const range = win.getSelection().getRangeAt(0);
+    function getCursorPosition(element) {
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
         const preCaretRange = range.cloneRange();
         preCaretRange.selectNodeContents(element);
         preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length;
+        const cursorPos = preCaretRange.toString().length;
+        return cursorPos;
+    }
+    function getCoordinates(element) {
+        let caretOffset = 0;
+        const doc = element.ownerDocument || element.document;
+        const win = doc.defaultView || doc.parentWindow;
+        let range, rect;
+
+        if (win.getSelection) {
+            range = win.getSelection().getRangeAt(0);
+
+            if (range.collapsed) {
+                rect = range.getBoundingClientRect();
+                caretOffset = rect.left + rect.width;
+            } else {
+                const preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                rect = preCaretRange.getBoundingClientRect();
+                caretOffset = rect.left + rect.width;
+            }
+        }
+
         return caretOffset;
     }
 
@@ -154,7 +175,6 @@
 
         const containerListHashtag = $(this).closest('.list-title-by-hashtag');
         const contentE = containerListHashtag.siblings('.content-report');
-
         const lastIndex = contentE.html().lastIndexOf('#');
         if (lastIndex !== -1) {
             const substringAfterLastHash = contentE.html().substring(lastIndex);
