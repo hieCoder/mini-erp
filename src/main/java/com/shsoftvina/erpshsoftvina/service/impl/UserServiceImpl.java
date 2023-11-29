@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageUserListRespone getAllUser(String searchTerm, String sortDirection, int start, int pageSize, String status) {
-
+        long startTime = System.currentTimeMillis();
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
         List<User> users = userMapper.getAllUser(searchTerm, sortDirection, status, rowBounds);
@@ -64,7 +64,9 @@ public class UserServiceImpl implements UserService {
         long totalPage = (long) Math.ceil((double) totalRecordCount / pageSize);
         boolean hasNext = start < totalPage;
         boolean hasPrevious = start > 1;
-
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Thời gian thực thi: " + executionTime + " milliseconds");
         return new PageUserListRespone(showUsers, start, totalPage, pageSize, hasNext, hasPrevious);
     }
 

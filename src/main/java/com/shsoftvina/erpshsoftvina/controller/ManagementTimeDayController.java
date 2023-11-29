@@ -37,22 +37,8 @@ public class ManagementTimeDayController {
     }
 
     @GetMapping("/weekly-detail/{userId}")
-    public ModelAndView getDetailDay(
-            @PathVariable String userId,
-            @RequestParam(name = "currentDay", required = false, defaultValue = "") String currentDay
-    ) {
-        applicationUtils.checkUserAllow(userId);
+    public ModelAndView getDetailDay(@PathVariable String userId, @RequestParam(name = "currentDay", required = false, defaultValue = "") String currentDay) {
         ModelAndView mav = new ModelAndView();
-//        DayResponse dayResponse = managementTimeDayService.findDayResponse(userId, day, id);
-//        if (dayResponse != null) {
-//            mav.addObject("dayResponse", dayResponse);
-//        } else {
-//            if (!DateUtils.isValidDate(day)) {
-//                mav.setViewName("redirect:/management-time/" + userId);
-//                return mav;
-//            }
-//            mav.addObject("day", day);
-//        }
         mav.addObject("weekly",managementTimeDayService.showListDayOfWeek(userId, currentDay));
         mav.setViewName("management-time/day/week-detail");
         mav.addObject("userId", userId);
