@@ -26,30 +26,23 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     @Autowired
     private FeelingOfBookConverter feelingOfBookConverter;
 
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private BookMapper bookMapper;
-
     @Override
     public List<FeelingOfBookResponse> findAll() {
-        return feelingOfBookMapper.findAll().stream().map(f->feelingOfBookConverter.toResponse(f)).collect(Collectors.toList());
+        return feelingOfBookMapper.findAll().stream().map(f -> feelingOfBookConverter.toResponse(f)).collect(Collectors.toList());
     }
 
     @Override
     public FeelingOfBookResponse createFeelingOfBook(FeelingOfBookCreateRequest feelingOfBookCreateRequest) {
 
-        if(userMapper.findById(feelingOfBookCreateRequest.getUserId())== null)
+        if (feelingOfBookCreateRequest.getBookId() == null)
+            throw new NotFoundException(MessageErrorUtils.notFound("bookId"));
+        else if (feelingOfBookCreateRequest.getUserId() == null)
             throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
-        if(bookMapper.findById(feelingOfBookCreateRequest.getBookId())== null)
-            throw new NotFoundException(MessageErrorUtils.notFound("bookId"));
-
         FeelingOfBook feelingOfBook = feelingOfBookConverter.toEntity(feelingOfBookCreateRequest);
-        try{
+        try {
             feelingOfBookMapper.createFeelingOfBook(feelingOfBook);
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return feelingOfBookConverter.toResponse(feelingOfBook);
@@ -63,13 +56,13 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     @Override
     public FeelingOfBookResponse updateFeelingOfBook(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest) {
 
-        if(feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId()) == null)
+        if (feelingOfBookUpdateRequest.getId() == null)
             throw new NotFoundException(MessageErrorUtils.notFound("id"));
 
         FeelingOfBook feelingOfBook = feelingOfBookConverter.toEntity(feelingOfBookUpdateRequest);
-        try{
+        try {
             feelingOfBookMapper.updateFeelingOfBook(feelingOfBook);
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return feelingOfBookConverter.toResponse(feelingOfBook);
@@ -82,13 +75,11 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
 
     @Override
     public int deleteFeelingOfBook(String bookId, String userId) {
-//        if(feelingOfBookMapper.findById(id) == null)
-//            throw new NotFoundException(MessageErrorUtils.notFound("id"));
-
-        try{
+        try {
             feelingOfBookMapper.deleteFeelingOfBook(bookId, userId);
             return 1;
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         return 0;
     }
 }

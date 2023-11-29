@@ -16,22 +16,10 @@ public interface ManagementTimeDayMapper {
     List<ManagementTimeDay> findByListDay(String userId, List<String> days);
     int createListCalendarDay(List<ManagementTimeDay> days);
     int editListCalendarDay(List<ManagementTimeDay> days);
-    int updateOneThingCalendarNull(String userId, List<String> days);
     int updateOneThingCalendarAllDayNull(String userId, List<String> days);
     List<ManagementTimeDay> findAllDailyRoutineOfMonth(String userId, String monthlyCode);
-
-
-
-    ManagementTimeDay findByDay(String userId, Date day);
-    int createCalendarDay(ManagementTimeDay day);
-    int updateCalendarDay(ManagementTimeDay day);
     List<ManagementTimeDay> findByCode(String userId, String weeklyCode);
-    int insertDay(ManagementTimeDay day);
-    int editDay(ManagementTimeDay managementTimeDay);
-
-
-
-
-
+    int createListDayDetail(List<ManagementTimeDay> days);
+    int editListDayDetail(List<ManagementTimeDay> days);
     List<ManagementTimeDay> findByListCode(String userId, List<String> codes);
 }
