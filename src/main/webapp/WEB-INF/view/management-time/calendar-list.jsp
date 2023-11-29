@@ -1,7 +1,6 @@
 <%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
 <c:set var="userRole" value="${Principal.getUserCurrent().getRole()}"/>
 <!DOCTYPE html>
 <html>
@@ -519,14 +518,13 @@
         $(".containerLoading ").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
         const data = {
-            userId: userCurrent.id,
+            userId: '${user.id}',
             days: [],
             weeklys: [],
             monthly : {}
         }
         const days = [];
         const weeklys = [];
-        console.log(currentDate.getMonth() + 1)
         const monthly = {
             month : currentDate.getFullYear()  + '-' + ((currentDate.getMonth() <10) ? '0' + currentDate.getMonth() : currentDate.getMonth() + 1),
             content: []
