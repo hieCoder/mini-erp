@@ -357,56 +357,56 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         String userId = daysUpdateRequest.getUserId();
 
-        applicationUtils.checkUserAllow(userId);
-
-        MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
-        String monthlyCode = monthlyRequest.getMonth();
-        String[] monthlyContent = monthlyRequest.getContent();
-        DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();
-        MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
-        if(monthlyEntity == null){
-            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
-                    JsonUtils.objectToJson(monthlyContent),
-                    JsonUtils.objectToJson(dailyRoutine));
-            monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyEntity);
-        } else{
-            monthlyEntity.setContent(JsonUtils.objectToJson(monthlyContent));
-            monthlyEntity.setDailyRoutine(JsonUtils.objectToJson(dailyRoutine));
-            monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
-        }
-
-        WeeklyRequest weeklyRequest = daysUpdateRequest.getWeekly();
-        String weeklyCode = DateUtils.formatDate(weeklyRequest.getStartDay());
-        CalendarContent weeklyContent = weeklyRequest.getContent();
-        WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
-        if(weeklyEntity == null){
-            weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklyContent));
-            weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyEntity);
-        } else{
-            weeklyEntity.setContent(JsonUtils.objectToJson(weeklyContent));
-            weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
-        }
-
-        DayRequest[] days = daysUpdateRequest.getDays();
-        List<ManagementTimeDay> managementTimeDaysReq = managementTimeDayConvert.toListEntity(userId, days);
-        List<String> dayList = Stream.of(days).map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
-        List<ManagementTimeDay> managementTimeDaysDB = managementTimeDayMapper.findByListDay(userId, dayList);
-
-        List<ManagementTimeDay> insertListDay = new ArrayList<>();
-        List<ManagementTimeDay> editListDay = new ArrayList<>();
-
-        for(ManagementTimeDay mReq: managementTimeDaysReq){
-            ManagementTimeDay m = getManagementTimeDays(managementTimeDaysDB, mReq.getDay());
-            if(m == null){
-                insertListDay.add(mReq);
-            }else{
-                mReq.setId(m.getId());
-                editListDay.add(mReq);
-            }
-        }
-
-        if(insertListDay.size()>0) managementTimeDayMapper.createListDayDetail(insertListDay);
-        if(editListDay.size()>0) managementTimeDayMapper.editListDayDetail(editListDay);
+//        applicationUtils.checkUserAllow(userId);
+//
+//        MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
+//        String monthlyCode = monthlyRequest.getMonth();
+//        String[] monthlyContent = monthlyRequest.getContent();
+//        DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();
+//        MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
+//        if(monthlyEntity == null){
+//            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
+//                    JsonUtils.objectToJson(monthlyContent),
+//                    JsonUtils.objectToJson(dailyRoutine));
+//            monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyEntity);
+//        } else{
+//            monthlyEntity.setContent(JsonUtils.objectToJson(monthlyContent));
+//            monthlyEntity.setDailyRoutine(JsonUtils.objectToJson(dailyRoutine));
+//            monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
+//        }
+//
+//        WeeklyRequest weeklyRequest = daysUpdateRequest.getWeekly();
+//        String weeklyCode = DateUtils.formatDate(weeklyRequest.getStartDay());
+//        CalendarContent weeklyContent = weeklyRequest.getContent();
+//        WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+//        if(weeklyEntity == null){
+//            weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklyContent));
+//            weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyEntity);
+//        } else{
+//            weeklyEntity.setContent(JsonUtils.objectToJson(weeklyContent));
+//            weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
+//        }
+//
+//        DayRequest[] days = daysUpdateRequest.getDays();
+//        List<ManagementTimeDay> managementTimeDaysReq = managementTimeDayConvert.toListEntity(userId, days);
+//        List<String> dayList = Stream.of(days).map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
+//        List<ManagementTimeDay> managementTimeDaysDB = managementTimeDayMapper.findByListDay(userId, dayList);
+//
+//        List<ManagementTimeDay> insertListDay = new ArrayList<>();
+//        List<ManagementTimeDay> editListDay = new ArrayList<>();
+//
+//        for(ManagementTimeDay mReq: managementTimeDaysReq){
+//            ManagementTimeDay m = getManagementTimeDays(managementTimeDaysDB, mReq.getDay());
+//            if(m == null){
+//                insertListDay.add(mReq);
+//            }else{
+//                mReq.setId(m.getId());
+//                editListDay.add(mReq);
+//            }
+//        }
+//
+//        if(insertListDay.size()>0) managementTimeDayMapper.createListDayDetail(insertListDay);
+//        if(editListDay.size()>0) managementTimeDayMapper.editListDayDetail(editListDay);
 
         return 1;
     }
