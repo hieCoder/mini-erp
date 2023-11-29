@@ -526,7 +526,6 @@
         }
         const days = [];
         const weeklys = [];
-        console.log(currentDate.getMonth() + 1)
         const monthly = {
             month : currentDate.getFullYear()  + '-' + ((currentDate.getMonth() <10) ? '0' + currentDate.getMonth() : currentDate.getMonth() + 1),
             content: []
