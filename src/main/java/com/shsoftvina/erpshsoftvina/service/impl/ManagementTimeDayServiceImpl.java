@@ -367,7 +367,16 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     }
 
                     monthlys.add(monthResponse);
+                } else{
+                    MonthResponse monthResponse = MonthResponse.builder()
+                            .month(month)
+                            .build();
+                    monthlys.add(monthResponse);
                 }
+            }
+
+            if(monthlys.size() == 2 && monthlys.get(1).getMonth().equals(currentDay.substring(0, 7))){
+                Collections.swap(monthlys, 0, 1);
             }
 
             return monthlys;

@@ -848,9 +848,12 @@
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#content-edit'),
                 Validator.isThen("#dueDateEdit", function () {
-                    return $('#selectActionEdit').val();
+                    var dueDateVal = $('#dueDateEdit').val();
+                    var status = $('#statusTaskEdit').text();
+
+                    if(status != 'REGISTERED' && dueDateVal == '') return false;
+                    return true;
                 }),
-                Validator.isDayAfterTodayOrNull("#dueDateEdit", 'Due day is not before today')
             ],
             onSubmit: function (formData) {
                 formData.append('id', idTask);
