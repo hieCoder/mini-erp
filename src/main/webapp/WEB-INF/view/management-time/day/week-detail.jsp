@@ -1,4 +1,3 @@
-<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -10,7 +9,6 @@
 <c:set var="toDoList" value="${data.toDoList}"/>
 <c:set var="showButtonResult" value='${dayResponse!=null ? "" : "disabled"}'/>
 <c:set var="infoButtonResult" value='${dayResponse!=null ? "Update" : "Create"}'/>
-<c:set var="userId" value="${Principal.getUserCurrent().getId()}"/>
 <html>
 <head>
     <title>Detail of Day</title>
@@ -75,12 +73,12 @@
 <div class="row position-relative full-height">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0">Management Time: <span
+            <h4 class="mb-sm-0">Calendar of ${user.fullname} <span
                     class="fw-semibold text-success fst-italic">${dayResponse != null ? dayResponse.day : day}</span>
             </h4>
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="/management-time/${userId}">Management Time</a></li>
+                    <li class="breadcrumb-item"><a href="/management-time/${user.id}">Management Time</a></li>
                     <li class="breadcrumb-item active">Management Time Day</li>
                 </ol>
             </div>
@@ -598,7 +596,7 @@
         $("div.calendar-container").addClass("d-none")
         const currentYearMonth = getCurrentYearMonth();
         const data = {
-            userId: '${userId}',
+            userId: '${user.id}',
             days: [],
             weekly: {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
