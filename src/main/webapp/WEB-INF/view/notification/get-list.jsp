@@ -155,7 +155,7 @@
                                 <ul class="pagination listjs-pagination mb-0" id="paginationList">
                                     <li class="paginate_button page-item previous linkStart">
                                         <span class="btn page-link fw-bold"
-                                              data-page="1">Last</span>
+                                              data-page="1">First</span>
                                     </li>
                                     <li class="paginate_button page-item previous linkStart">
                                         <span class="btn page-link fw-bold"
@@ -751,14 +751,17 @@
 
             if (currentUrl.includes("?")) {
                 if (currentUrl.includes("search=")) {
+                    console.log(1)
                     var regex = /(\?|&)search=([^&]*)/;
                     var newUrl = currentUrl.replace(regex, "$1search=" + encodeURIComponent(keyword));
                     window.location.href = newUrl;
                 } else {
+                    console.log(2)
                     var newUrl = currentUrl + "&search=" + encodeURIComponent(keyword);
                     window.location.href = newUrl;
                 }
             } else {
+                console.log(3)
                 var newUrl = currentUrl + "?search=" + encodeURIComponent(keyword);
                 window.location.href = newUrl;
             }

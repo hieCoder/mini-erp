@@ -15,13 +15,13 @@ import com.shsoftvina.erpshsoftvina.service.AllowanceInsuranceService;
 import com.shsoftvina.erpshsoftvina.service.ContractService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import com.shsoftvina.erpshsoftvina.utils.MessageErrorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -33,10 +33,6 @@ public class ContractServiceImpl implements ContractService {
     private ContractMapper contractMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-
-    @Autowired
     private ApplicationUtils applicationUtils;
 
     @Autowired
@@ -44,12 +40,6 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse addContract(CreateContractRequest createContractRequest) {
-        String userId = createContractRequest.getUserId();
-        String parentId = createContractRequest.getParentId();
-        if(userMapper.findById(userId) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("userId"));
-        if(parentId != null && contractMapper.findById(parentId) == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("parentId"));
 
         MultipartFile contractFile = createContractRequest.getFile();
         if(contractFile!=null) applicationUtils.checkValidateFile(Contract.class, contractFile);
@@ -66,8 +56,13 @@ public class ContractServiceImpl implements ContractService {
             Contract c = contractConverter.toEntity(createContractRequest, fileNameContract);
             try {
                 contractMapper.addContract(c);
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.insertAllowanceInsurances(c, createContractRequest.getAllowanceInsurances());
 
-                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.insertAllowanceInsurances(c.getId(), createContractRequest.getAllowanceInsurances());
+                createContractRequest.setParentId(c.getId());
+                Contract contractHistory = contractConverter.toEntity(createContractRequest, fileNameContract);
+                contractMapper.addContract(contractHistory);
+                allowanceInsuranceService.insertAllowanceInsurances(contractHistory, createContractRequest.getAllowanceInsurances());
+
                 if(allowanceInsurances != null){
                     c.setAllowanceInsurances(allowanceInsurances);
                     return contractConverter.toResponse(c);
@@ -89,7 +84,6 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public int updateContract(UpdateContractRequest updateContractRequest) {
-
         Contract contract = contractMapper.findById(updateContractRequest.getId());
         if(contract == null) throw new NotFoundException("id");
 
@@ -108,7 +102,15 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try {
                 contractMapper.updateContract(c);
-                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowanceInsurances());
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c, updateContractRequest.getAllowanceInsurances());
+
+                Contract contractHistory = c;
+                contractHistory.setId(UUID.randomUUID().toString());
+                contractHistory.setParentContract(contract);
+                contractHistory.setCreatedDate(new Date());
+                contractMapper.addContract(contractHistory);
+                allowanceInsuranceService.insertAllowanceInsurances(contractHistory, updateContractRequest.getAllowanceInsurances());
+
                 if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
                     FileUtils.deleteImageFromServer(ContractConstant.UPLOAD_FILE_DIR, fileNameContract);
@@ -126,7 +128,15 @@ public class ContractServiceImpl implements ContractService {
             c = contractConverter.toEntity(updateContractRequest, fileNameContract);
             try{
                 contractMapper.updateContract(c);
-                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c.getId(), updateContractRequest.getAllowanceInsurances());
+                List<AllowanceInsurance> allowanceInsurances = allowanceInsuranceService.updateAllowanceInsurances(c, updateContractRequest.getAllowanceInsurances());
+
+                Contract contractHistory = c;
+                contractHistory.setId(UUID.randomUUID().toString());
+                contractHistory.setParentContract(contract);
+                contractHistory.setCreatedDate(new Date());
+                contractMapper.addContract(contractHistory);
+                allowanceInsuranceService.insertAllowanceInsurances(contractHistory, updateContractRequest.getAllowanceInsurances());
+
                 if(allowanceInsurances == null) {
                     contractMapper.deleteById(c.getId());
                     return 0;

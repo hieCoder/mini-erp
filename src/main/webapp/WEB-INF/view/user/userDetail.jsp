@@ -1638,11 +1638,8 @@
             formData.append('userId', '${user.id}');
             formData.set('allowanceInsurances', JSON.stringify(arrayObject));
             callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-                formData.append('parentId', rs.id);
-                callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs2) {
                     localStorage.setItem('result', 'addContractSuccess');
                     location.reload();
-                });
             });
         }
     });
@@ -1867,18 +1864,9 @@
                             })
 
                             formData.set('allowanceInsurances', JSON.stringify(arrayObject));
-                            formData.append('userId', '${user.id}');
-                            formData.append('parentId', editContractId);
                             document.getElementById('edit-confirm-btn').disabled = true;
-
-                            // Create History Contract
-                            callAjaxByDataFormWithDataForm('/api/v1/contracts', 'POST', formData, function (rs) {
-
-                            }, 'formAddContract');
-
-                            formData.delete('parentId');
-                            formData.delete('userId');
                             formData.append('id', editContractId);
+
                             // Call API UPDATE CONTRACT
                             callAjaxByDataFormWithDataForm('/api/v1/contracts/updation', 'POST', formData, function (rs) {
                                 localStorage.setItem("result", "updateContractSuccess");
