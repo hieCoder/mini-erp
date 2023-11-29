@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 @RequestMapping("/accounting")
@@ -35,22 +36,27 @@ public class AccountingController {
         LocalDate today = LocalDate.now();
         LocalDate startDate = today.withDayOfMonth(1);
         LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());
-        PageAccountListResponse listResponse = accountingService.findAccountingByMonth(page, size, startDate, endDate);
-        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
-        SettingAllowanceResponse settings = new SettingAllowanceResponse(setting.getFileSize(), setting.getFileType(), setting.getImageType(), setting.getFileLimit());
-        modelAndView.addObject("list", listResponse);
-        modelAndView.addObject("setting", settings);
+        PageAccountListResponse futureListResponse = accountingService.findAccountingByMonth(page, size, startDate, endDate);
+        CompletableFuture<SettingAllowanceResponse> futureSettings = CompletableFuture.supplyAsync(() -> {
+            Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
+            return new SettingAllowanceResponse(setting.getFileSize(), setting.getFileType(), setting.getImageType(), setting.getFileLimit());
+        });
+        modelAndView.addObject("list", futureListResponse);
+        modelAndView.addObject("setting", futureSettings.join());
         return modelAndView;
     }
 
     @GetMapping("/detail/{id}")
     public ModelAndView showAccountingDetail(@PathVariable("id") String id) {
         ModelAndView modelAndView = new ModelAndView("accounting/detail");
-        AccountResponse accountingResponse = accountingService.findAccountingById(id);
-        Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
-        SettingAllowanceResponse settings = new SettingAllowanceResponse(setting.getFileSize(), setting.getFileType(), setting.getImageType(), setting.getFileLimit());
-        modelAndView.addObject("account", accountingResponse);
-        modelAndView.addObject("setting", settings);
+        CompletableFuture<AccountResponse> accountingResponse = accountingService.findAccountingById(id);
+        CompletableFuture<SettingAllowanceResponse> futureSettings = CompletableFuture.supplyAsync(() -> {
+            Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
+            return new SettingAllowanceResponse(setting.getFileSize(), setting.getFileType(), setting.getImageType(), setting.getFileLimit());
+        });
+        CompletableFuture.allOf(accountingResponse, futureSettings).join();
+        modelAndView.addObject("account", accountingResponse.join());
+        modelAndView.addObject("setting", futureSettings.join());
         return modelAndView;
     }
 }

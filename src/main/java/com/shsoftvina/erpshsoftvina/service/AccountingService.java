@@ -9,6 +9,7 @@ import com.shsoftvina.erpshsoftvina.model.response.accounting.RemainBalanceEachM
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface AccountingService {
     MonthHistoryList findAllMonthlyHistory();
@@ -21,7 +22,7 @@ public interface AccountingService {
 
     int deleteAccounting(String id);
 
-    AccountResponse findAccountingById(String id);
+    CompletableFuture<AccountResponse> findAccountingById(String id);
 
     List<RemainBalanceEachMonth> getRemainBalanceEachMonth();
 }
