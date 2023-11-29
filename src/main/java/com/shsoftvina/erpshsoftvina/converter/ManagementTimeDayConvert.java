@@ -78,8 +78,8 @@ public class ManagementTimeDayConvert {
                 .build();
     }
 
-    public List<DayResponse> toListResponse(List<ManagementTimeDay> days){
-        return days.stream().map(this::toResponse).collect(Collectors.toList());
+    public List<DayResponse> toListCalendarResponse(List<ManagementTimeDay> days){
+        return days.stream().filter(day -> day.getOneThingCalendar() != null).map(this::toResponse).collect(Collectors.toList());
     }
 
     private ManagementTimeDay isDayExistInList(List<ManagementTimeDay> days, LocalDate localDate){

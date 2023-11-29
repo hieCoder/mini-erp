@@ -38,6 +38,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,13 +67,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private MonthlyManagementTimeDayConverter monthlyManagementTimeDayConverter;
 
-    private static List<String> getSundaysOfTheMonth(String yyyyMMDD) {
-
+    private List<String> getSundaysOfTheMonth(String yyyyMMDD) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(yyyyMMDD, formatter);
         List<String> sundays = new ArrayList<>();
 
         LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+        LocalDate firstDayOfNextMonth = firstDayOfMonth.plusMonths(1);
 
         LocalDate firstSunday = firstDayOfMonth.with(DayOfWeek.SUNDAY);
         if (firstSunday.isAfter(firstDayOfMonth)) {
@@ -79,7 +81,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
         LocalDate currentSunday = firstSunday;
-        while (currentSunday.getMonthValue() == date.getMonthValue() || currentSunday.getMonthValue() == date.getMonthValue() - 1) {
+        while (currentSunday.isBefore(firstDayOfNextMonth)) {
             sundays.add(currentSunday.format(formatter));
             currentSunday = currentSunday.plusWeeks(1);
         }
@@ -87,7 +89,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return sundays;
     }
 
-    private static int[] mergeAndCountDailyRoutine(List<Boolean[]> list) {
+    private int[] mergeAndCountDailyRoutine(List<Boolean[]> list) {
         if (list.isEmpty()) {
             return new int[0];
         }
@@ -105,7 +107,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return resultArray;
     }
 
-    private static List<String> getMonthContainWeek(String day) {
+    private List<String> getMonthContainWeek(String day) {
         String firstDateOfWeek = FileUtils.getFirstDateOfWeek(day);
         String lastDateOfWeek = FileUtils.getLastDateOfWeek(day);
 
@@ -140,48 +142,36 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return result.orElse(null);
     }
 
-    public List<String> getDaysOfMonth(String monthString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        YearMonth yearMonth = YearMonth.parse(monthString, formatter);
-
-        LocalDate firstDayOfMonth = yearMonth.atDay(1);
-
-        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
-
-        List<String> dayList = new ArrayList<>();
-        LocalDate currentDay = firstDayOfMonth;
-        while (!currentDay.isAfter(lastDayOfMonth)) {
-            dayList.add(currentDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            currentDay = currentDay.plusDays(1);
-        }
-
-        return dayList;
-    }
-
-    public static List<String> getSundaysOfMonth(String yyyyMM) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        YearMonth yearMonth = YearMonth.parse(yyyyMM, formatter);
-
-        LocalDate firstDayOfMonth = yearMonth.atDay(1);
-        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
-
-        LocalDate firstSunday = firstDayOfMonth.with(DayOfWeek.SUNDAY);
-
-        List<String> sundayList = new ArrayList<>();
-        LocalDate currentSunday = firstSunday;
-        while (!currentSunday.isAfter(lastDayOfMonth)) {
-            sundayList.add(currentSunday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            currentSunday = currentSunday.plusWeeks(1);
-        }
-
-        return sundayList;
-    }
-
     private MonthlyManagementTimeDay getMonthlyManagementTimeDays(List<MonthlyManagementTimeDay> monthlyManagementTimeDays, String code) {
         Optional<MonthlyManagementTimeDay> result = monthlyManagementTimeDays.stream()
                 .filter(m -> code.equals(m.getCode()))
                 .findFirst();
         return result.orElse(null);
+    }
+
+    private List<String> getDaysNotInMonth(String monthCode, List<String> days){
+        List<String> result = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate firstDayOfMonth = LocalDate.parse(monthCode + "-01", formatter);
+        LocalDate lastDayOfMonth = firstDayOfMonth.plusMonths(1).minusDays(1);
+
+        LocalDate currentDate = firstDayOfMonth;
+        while (!currentDate.isAfter(lastDayOfMonth)) {
+            String currentDay = currentDate.format(formatter);
+            if (!days.contains(currentDay)) {
+                result.add(currentDay);
+            }
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return result;
+    }
+
+    private List<String> getWeeksNotInMonth(String monthCode, List<String> weeklyCodes){
+        return getSundaysOfTheMonth(monthCode + "-01").stream()
+                .filter(sunday -> !weeklyCodes.contains(sunday))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -192,69 +182,116 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         List<WeeklyRequest> weeklys = req.getWeeklys();
         List<CalendarDayRequest> days = req.getDays();
 
+        List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
 
-        List<ManagementTimeDay> insertListDay = new ArrayList<>();
-        List<ManagementTimeDay> editListDay = new ArrayList<>();
-        if(days.size() != 0){
-            List<String> dayList = days.stream().map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
-            List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findByListDay(userId, dayList);
-            for(CalendarDayRequest d: days){
-                ManagementTimeDay dayEntity = getManagementTimeDays(managementTimeDays, d.getDay());
-                if(dayEntity !=null){
-                    OneThingCalendarDto o = OneThingCalendarDto.builder()
-                            .theSingleMostImportantThing(new ItemDto(d.getContent().getTheSingleMostImportantThing(), false))
-                            .lecture(new ItemDto(d.getContent().getLecture(), false))
-                            .dailyEvaluation(new ItemDto(d.getContent().getDailyEvaluation(), false))
-                            .work(new ItemDto(d.getContent().getWork(), false))
-                            .reading(new ItemDto(d.getContent().getReading(), false)).build();
-                    dayEntity.setOneThingCalendar(JsonUtils.objectToJson(o));
-                    editListDay.add(dayEntity);
-                } else{
-                    dayEntity = managementTimeDayConvert.toEntity(userId, d);
-                    insertListDay.add(dayEntity);
+        CompletableFuture<Void> asyncTaskDay = CompletableFuture.runAsync(() -> {
+            List<ManagementTimeDay> insertListDay = new ArrayList<>();
+            List<ManagementTimeDay> editListDay = new ArrayList<>();
+            if(!days.isEmpty()){
+                List<String> dayList = days.stream().map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
+                List<ManagementTimeDay> managementTimeDays = managementTimeDayMapper.findByListDay(userId, dayList);
+                for(CalendarDayRequest d: days){
+                    ManagementTimeDay dayEntity = getManagementTimeDays(managementTimeDays, d.getDay());
+                    if(dayEntity !=null){
+                        OneThingCalendarDto o = OneThingCalendarDto.builder()
+                                .theSingleMostImportantThing(new ItemDto(d.getContent().getTheSingleMostImportantThing(), false))
+                                .lecture(new ItemDto(d.getContent().getLecture(), false))
+                                .dailyEvaluation(new ItemDto(d.getContent().getDailyEvaluation(), false))
+                                .work(new ItemDto(d.getContent().getWork(), false))
+                                .reading(new ItemDto(d.getContent().getReading(), false)).build();
+                        dayEntity.setOneThingCalendar(JsonUtils.objectToJson(o));
+                        editListDay.add(dayEntity);
+                    } else{
+                        dayEntity = managementTimeDayConvert.toEntity(userId, d);
+                        insertListDay.add(dayEntity);
+                    }
                 }
-            }
-            if(insertListDay.size()>0) managementTimeDayMapper.createListCalendarDay(insertListDay);
-            if(editListDay.size()>0) managementTimeDayMapper.editListCalendarDay(editListDay);
-            managementTimeDayMapper.updateOneThingCalendarNull(userId, dayList);
-        } else{
-            managementTimeDayMapper.updateOneThingCalendarAllDayNull(userId, getDaysOfMonth(monthlyCode));
-        }
-
-
-        List<WeeklyManagementTimeDay> insertListWeekly = new ArrayList<>();
-        List<WeeklyManagementTimeDay> editListWeekly = new ArrayList<>();
-        if(weeklys.size() != 0){
-            List<String> startDayList = weeklys.stream().map(d -> DateUtils.formatDate(d.getStartDay())).collect(Collectors.toList());
-            List<WeeklyManagementTimeDay> weeklyManagementTimeDays = weeklyManagementTimeDayMapper.findByListCode(userId, startDayList);
-            for(WeeklyRequest w: weeklys){
-                WeeklyManagementTimeDay weeklyEntity = getWeeklyManagementTimeDays(weeklyManagementTimeDays, w.getStartDay());
-                if(weeklyEntity !=null){
-                    weeklyEntity.setContent(JsonUtils.objectToJson(w.getContent()));
-                    editListWeekly.add(weeklyEntity);
-                } else{
-                    weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, w);
-                    insertListWeekly.add(weeklyEntity);
+                if (!insertListDay.isEmpty()) {
+                    CompletableFuture<Void> createListCalendarDayAsync = CompletableFuture.runAsync(() -> {
+                       managementTimeDayMapper.createListCalendarDay(insertListDay);
+                    });
+                    asyncTasks.add(createListCalendarDayAsync);
                 }
+                if (!editListDay.isEmpty()) {
+                    CompletableFuture<Void> editListCalendarDayAsync = CompletableFuture.runAsync(() -> {
+                        managementTimeDayMapper.editListCalendarDay(editListDay);
+                    });
+                    asyncTasks.add(editListCalendarDayAsync);
+                }
+                CompletableFuture<Void> updateOneThingCalendarNullAsync = CompletableFuture.runAsync(() -> {
+                    managementTimeDayMapper.updateOneThingCalendarAllDayNull(userId, getDaysNotInMonth(monthlyCode, dayList));
+                });
+                asyncTasks.add(updateOneThingCalendarNullAsync);
+            } else{
+                CompletableFuture<Void> updateOneThingCalendarAllDayNullAsync = CompletableFuture.runAsync(() -> {
+                    managementTimeDayMapper.updateOneThingCalendarAllDayNull(userId, getDaysNotInMonth(monthlyCode, new ArrayList<>()));
+                });
+                asyncTasks.add(updateOneThingCalendarAllDayNullAsync);
             }
-            if(insertListWeekly.size()>0) weeklyManagementTimeDayMapper.createListWeekly(insertListWeekly);
-            if(editListWeekly.size()>0) weeklyManagementTimeDayMapper.editListWeekly(editListWeekly);
-            weeklyManagementTimeDayMapper.updateContentNull(userId, startDayList);
-        } else{
-            weeklyManagementTimeDayMapper.updateContentAllWeeklyNull(userId, getSundaysOfMonth(monthlyCode));
-        }
+        });
 
+        CompletableFuture<Void> asyncTaskWeekly = CompletableFuture.runAsync(() -> {
+            List<WeeklyManagementTimeDay> insertListWeekly = new ArrayList<>();
+            List<WeeklyManagementTimeDay> editListWeekly = new ArrayList<>();
+            if(!weeklys.isEmpty()){
+                List<String> startDayList = weeklys.stream().map(d -> DateUtils.formatDate(d.getStartDay())).collect(Collectors.toList());
+                List<WeeklyManagementTimeDay> weeklyManagementTimeDays = weeklyManagementTimeDayMapper.findByListCode(userId, startDayList);
+                for(WeeklyRequest w: weeklys){
+                    WeeklyManagementTimeDay weeklyEntity = getWeeklyManagementTimeDays(weeklyManagementTimeDays, w.getStartDay());
+                    if(weeklyEntity !=null){
+                        weeklyEntity.setContent(JsonUtils.objectToJson(w.getContent()));
+                        editListWeekly.add(weeklyEntity);
+                    } else{
+                        weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, w);
+                        insertListWeekly.add(weeklyEntity);
+                    }
+                }
+                if (!insertListWeekly.isEmpty()) {
+                    CompletableFuture<Void> createListWeeklyAsync = CompletableFuture.runAsync(() -> {
+                        weeklyManagementTimeDayMapper.createListWeekly(insertListWeekly);
+                    });
+                    asyncTasks.add(createListWeeklyAsync);
+                }
+                if (!editListWeekly.isEmpty()) {
+                    CompletableFuture<Void> editListWeeklyAsync = CompletableFuture.runAsync(() -> {
+                        weeklyManagementTimeDayMapper.editListWeekly(editListWeekly);
+                    });
+                    asyncTasks.add(editListWeeklyAsync);
+                }
+                CompletableFuture<Void> updateContentNullAsync = CompletableFuture.runAsync(() -> {
+                    weeklyManagementTimeDayMapper.updateContentAllWeeklyNull(userId, getWeeksNotInMonth(monthlyCode, startDayList));
+                });
+                asyncTasks.add(updateContentNullAsync);
+            } else{
+                CompletableFuture<Void> updateContentAllWeeklyNullAsync = CompletableFuture.runAsync(() -> {
+                    weeklyManagementTimeDayMapper.updateContentAllWeeklyNull(userId, getWeeksNotInMonth(monthlyCode, new ArrayList<>()));
+                });
+                asyncTasks.add(updateContentAllWeeklyNullAsync);
+            }
+        });
 
-        MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
-        if(monthlyEntity == null){
-            monthlyEntity = monthlyManagementTimeDayConverter.toEntity(userId, monthlyReq);
-            monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyEntity);
-        } else{
-            monthlyEntity.setContent(JsonUtils.objectToJson(monthlyReq.getContent()));
-            monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
-        }
+        CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(() -> {
+            MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
+            if (monthlyEntity == null) {
+                MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(userId, monthlyReq);
+                CompletableFuture<Void> createMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyE);
+                });
+                asyncTasks.add(createMonthlyManagementTimeDayAsync);
+            } else {
+                monthlyEntity.setContent(JsonUtils.objectToJson(monthlyReq.getContent()));
+                CompletableFuture<Void> updateMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
+                });
+                asyncTasks.add(updateMonthlyManagementTimeDayAsync);
+            }
+        });
 
-
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskDay, asyncTaskWeekly, asyncTaskMonth);
+        allAsyncTasks.thenRun(() -> {
+            CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
+            allOfAsyncTasks.join();
+        }).join();
         return 1;
     }
 
@@ -265,37 +302,37 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CalendarResponse calendarResponse = new CalendarResponse();
 
-        MonthlyManagementTimeDay monthlyManagementTimeDay = monthlyManagementTimeDayMapper.findByCode(userId, startDate.substring(0, 7));
-        if(monthlyManagementTimeDay!= null){
-            String[] monthlyContent = JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), String[].class);
-            calendarResponse.setMonthlyContents(monthlyContent);
-        }
-
+        CompletableFuture<MonthlyManagementTimeDay> monthlyFuture = CompletableFuture.supplyAsync(() ->
+                monthlyManagementTimeDayMapper.findByCode(userId, startDate.substring(0, 7))
+        );
 
         List<String> weeklyCode = getSundaysOfTheMonth(startDate);
-        List<WeeklyManagementTimeDay> weeklys = weeklyManagementTimeDayMapper.findByListCode(userId, weeklyCode);
-        List<ManagementTimeDay> days = managementTimeDayMapper.findByListCode(userId, weeklyCode);
+        CompletableFuture<List<WeeklyManagementTimeDay>> weeklysFuture = CompletableFuture.supplyAsync(() ->
+                weeklyManagementTimeDayMapper.findByListCode(userId, weeklyCode)
+        );
+        CompletableFuture<List<ManagementTimeDay>> daysFuture = CompletableFuture.supplyAsync(() ->
+                managementTimeDayMapper.findByListCode(userId, weeklyCode)
+        );
 
-//        List<WeeklyManagementTimeDayResponse> weeklysRs = weeklys.stream()
-//                .filter(weeklyE -> weeklyE != null)
-//                .map(weeklyE -> {
-//                    List<ManagementTimeDay> filteredDays = days.stream()
-//                            .filter(day -> weeklyE.getCode().equals(day.getWeeklyCode()) && day.getOneThingCalendar() != null)
-//                            .collect(Collectors.toList());
-//
-//                    return WeeklyManagementTimeDayResponse.builder()
-//                            .weeklyId(weeklyE.getId())
-//                            .startDate(weeklyE.getCode())
-//                            .weeklyContents(JsonUtils.jsonToObject(weeklyE.getContent(), CalendarWeeklyContent.class))
-//                            .listDayOfWeek(managementTimeDayConvert.toListResponse(filteredDays))
-//                            .build();
-//                })
-//                .collect(Collectors.toList());
+        CompletableFuture<CalendarResponse> combinedFuture = monthlyFuture.thenCompose(monthly ->
+                weeklysFuture.thenCombine(daysFuture, (weeklys, days) -> {
+                    if (monthly != null) {
+                        String[] monthlyContent = JsonUtils.jsonToObject(monthly.getContent(), String[].class);
+                        calendarResponse.setMonthlyContents(monthlyContent);
+                    }
+                    calendarResponse.setDays(managementTimeDayConvert.toListCalendarResponse(days));
+                    calendarResponse.setWeeklys(weeklyManagementTimeDayConverter.toListResponse(weeklys));
+                    return calendarResponse;
+                })
+        );
 
-        calendarResponse.setDays(managementTimeDayConvert.toListResponse(days));
-        calendarResponse.setWeeklys(weeklyManagementTimeDayConverter.toListResponse(weeklys));
-
-        return calendarResponse;
+        try {
+            CalendarResponse result = combinedFuture.get();
+            return result;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
