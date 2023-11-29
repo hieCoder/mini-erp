@@ -30,10 +30,9 @@ public class AllowanceInsuranceServiceImpl implements AllowanceInsuranceService 
     private ContractMapper contractMapper;
 
     @Override
-    public List<AllowanceInsurance> insertAllowanceInsurances(String contractId, String json) {
+    public List<AllowanceInsurance> insertAllowanceInsurances(Contract contract, String json) {
         List<AllowanceInsurance> list = new ArrayList<>();
 
-        Contract contract = contractMapper.findById(contractId);
         if (contract != null) {
             ObjectMapper objectMapper = new ObjectMapper();
             List<AllowanceInsuranceRequest> listReq = null;
@@ -67,10 +66,9 @@ public class AllowanceInsuranceServiceImpl implements AllowanceInsuranceService 
     }
 
     @Override
-    public List<AllowanceInsurance> updateAllowanceInsurances(String contractId, String json) {
+    public List<AllowanceInsurance> updateAllowanceInsurances(Contract contract, String json) {
         List<AllowanceInsurance> list = new ArrayList<>();
 
-        Contract contract = contractMapper.findById(contractId);
         if(contract != null){
             ObjectMapper objectMapper = new ObjectMapper();
             List<AllowanceInsuranceRequest> listReq = null;
@@ -80,7 +78,7 @@ public class AllowanceInsuranceServiceImpl implements AllowanceInsuranceService 
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            int deleteSuccess = allowanceInsuranceMapper.deleteAllowanceInsurances(contractId);
+            int deleteSuccess = allowanceInsuranceMapper.deleteAllowanceInsurances(contract.getId());
             if(deleteSuccess> 0){
                 for (AllowanceInsuranceRequest ai : listReq) {
                     AllowanceInsuranceType allowanceInsuranceType = EnumUtils.getEnumFromValue(AllowanceInsuranceType.class, ai.getType());
