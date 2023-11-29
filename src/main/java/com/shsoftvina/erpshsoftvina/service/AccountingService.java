@@ -22,7 +22,7 @@ public interface AccountingService {
 
     int deleteAccounting(String id);
 
-    CompletableFuture<AccountResponse> findAccountingById(String id);
+    AccountResponse findAccountingById(String id);
 
     List<RemainBalanceEachMonth> getRemainBalanceEachMonth();
 }

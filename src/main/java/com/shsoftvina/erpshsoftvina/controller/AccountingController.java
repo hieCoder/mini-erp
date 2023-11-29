@@ -51,12 +51,13 @@ public class AccountingController {
     @GetMapping("/detail/{id}")
     public ModelAndView showAccountingDetail(@PathVariable("id") String id) {
         ModelAndView modelAndView = new ModelAndView("accounting/detail");
-        CompletableFuture<AccountResponse> accountingResponse = accountingService.findAccountingById(id);
+        CompletableFuture<AccountResponse> accountingResponse = CompletableFuture.supplyAsync(() ->
+                accountingService.findAccountingById(id));
         CompletableFuture<SettingAllowanceResponse> futureSettings = CompletableFuture.supplyAsync(() -> {
             Setting setting = settingMapper.findByCode(SettingConstant.ACCOUNTING_CODE);
             return new SettingAllowanceResponse(setting.getFileSize(), setting.getFileType(), setting.getImageType(), setting.getFileLimit());
         });
-        CompletableFuture.allOf(accountingResponse, futureSettings).join();
+        CompletableFuture.allOf(accountingResponse,futureSettings).join();
         modelAndView.addObject("account", accountingResponse.join());
         modelAndView.addObject("setting", futureSettings.join());
         return modelAndView;
