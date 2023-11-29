@@ -26,6 +26,7 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
         if (auth != null && auth.isAuthenticated()) {
 
             if(!urlsAllow(request.getRequestURI()) || request.getRequestURI().startsWith("/users/")){
+                System.out.println(request.getRequestURI());
                 User user = userMapper.findByEmail(Principal.getUserCurrent().getEmail());
                 Principal.updateUserCurrent(user);
             }
@@ -51,9 +52,8 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
         String[] urls = new String[]{
                 "/assets/",
                 "/upload/", "/uploaded",
-                "/users/",
-                "/j_spring_security_check",
-                "/api/",
+                "/users/", "/forbidden",
+                "/j_spring_security_check", "/api/",
                 "/service-worker.js",
                 "/websocket"
         };
