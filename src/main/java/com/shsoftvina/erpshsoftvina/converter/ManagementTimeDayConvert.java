@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
@@ -31,9 +32,6 @@ import java.util.stream.Collectors;
 @Component
 public class ManagementTimeDayConvert {
 
-    @Autowired
-    private UserMapper userMapper;
-
     public ManagementTimeDay toEntity(String userId, CalendarDayRequest calendarDayRequest){
 
         OneThingCalendarDto o = OneThingCalendarDto.builder()
@@ -48,9 +46,17 @@ public class ManagementTimeDayConvert {
                 .id(ApplicationUtils.generateId())
                 .oneThingCalendar(JsonUtils.objectToJson(o))
                 .day(day)
-                .user(userMapper.findById(userId))
+                .user(User.builder().id(userId).build())
                 .weeklyCode(ApplicationUtils.generateWeeklyCodeOfDay(day))
                 .build();
+    }
+
+    public List<ManagementTimeDay> toListEntity(String userId, List<CalendarDayRequest> calendarDayRequests){
+        List<ManagementTimeDay> list = new ArrayList<>();
+        for(CalendarDayRequest calendarDayRequest: calendarDayRequests){
+            list.add(toEntity(userId, calendarDayRequest));
+        }
+        return list;
     }
 
     public DayResponse toResponse(ManagementTimeDay day){
@@ -72,8 +78,8 @@ public class ManagementTimeDayConvert {
                 .build();
     }
 
-    public List<DayResponse> toListResponse(List<ManagementTimeDay> days){
-        return days.stream().map(this::toResponse).collect(Collectors.toList());
+    public List<DayResponse> toListCalendarResponse(List<ManagementTimeDay> days){
+        return days.stream().filter(day -> day.getOneThingCalendar() != null).map(this::toResponse).collect(Collectors.toList());
     }
 
     private ManagementTimeDay isDayExistInList(List<ManagementTimeDay> days, LocalDate localDate){
@@ -119,7 +125,7 @@ public class ManagementTimeDayConvert {
                 .toDoDetail(JsonUtils.objectToJson(dataRequest.getToDoDetail()))
                 .dailyRoutine(JsonUtils.objectToJson(dataRequest.getDailyRoutine()))
                 .weeklyCode(ApplicationUtils.generateWeeklyCodeOfDay(dayRequest.getDay()))
-                .user(userMapper.findById(userId))
+                .user(User.builder().id(userId).build())
                 .build();
     }
 

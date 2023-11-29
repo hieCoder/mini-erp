@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar;
 
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,5 +15,6 @@ import java.util.List;
 @Builder
 public class CalendarResponse {
     private String[] monthlyContents;
+    private List<DayResponse> days;
     private List<WeeklyManagementTimeDayResponse> weeklys;
 }

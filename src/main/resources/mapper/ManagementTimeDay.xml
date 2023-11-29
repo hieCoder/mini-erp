@@ -3,12 +3,80 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper">
 
-    <select id="findByDay" resultMap="dayResultMap">
+    <select id="findByListDay" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY m
         INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND m.DAY = #{day, jdbcType=DATE}
+        WHERE m.USER_ID = #{userId} AND m.DAY IN
+        <foreach item="day" collection="days" open="(" separator="," close=")">
+            #{day}
+        </foreach>
     </select>
+
+    <insert id="createListCalendarDay" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, DAY, USER_ID, WEEKLY_CODE)
+        VALUES
+        <foreach collection="days" item="day" separator=",">
+            (UUID(), #{day.oneThingCalendar}, #{day.day}, #{day.user.id}, #{day.weeklyCode})
+        </foreach>
+    </insert>
+
+    <update id="editListCalendarDay" parameterType="java.util.List">
+        <foreach collection="days" item="day" separator=";">
+            UPDATE MANAGEMENT_TIME_DAY
+            SET ONE_THING_CALENDAR = #{day.oneThingCalendar}
+            WHERE ID = #{day.id}
+        </foreach>
+    </update>
+
+    <update id="updateOneThingCalendarAllDayNull" parameterType="java.util.Map">
+        UPDATE MANAGEMENT_TIME_DAY
+        SET ONE_THING_CALENDAR = null
+        WHERE USER_ID = #{userId}
+        AND DAY IN
+        <foreach item="day" collection="days" open="(" separator="," close=")">
+            #{day}
+        </foreach>
+    </update>
+
+    <select id="findAllDailyRoutineOfMonth" resultMap="dayResultMap">
+        SELECT m.DAILY_ROUTINE FROM MANAGEMENT_TIME_DAY m
+                                        INNER JOIN MONTHLY_MANAGEMENT_TIME_DAY mo ON DATE_FORMAT(m.DAY, '%Y-%m') = mo.CODE
+                                        INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode} AND mo.USER_ID = #{userId}
+    </select>
+
+    <select id="findByCode" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY m
+                 INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
+    </select>
+
+    <insert id="createListDayDetail" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
+        COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE)
+        VALUES
+        <foreach collection="days" item="day" separator=",">
+            (UUID(), #{day.oneThingCalendar}, #{day.toDoList}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
+            #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail}, #{day.dailyRoutine})
+        </foreach>
+    </insert>
+
+    <update id="editListDayDetail" parameterType="java.util.List">
+        <foreach collection="days" item="day" separator=";">
+            UPDATE MANAGEMENT_TIME_DAY
+            SET ONE_THING_CALENDAR = #{day.oneThingCalendar},
+            TO_DO_LIST = #{day.toDoList},
+            GRATITUDE_DIARY = #{day.gratitudeDiary},
+            AFFIRMATION = #{day.affirmation},
+            COMPLIMENT_FOR_ME_TODAY = #{day.complimentForMeToday},
+            TODAYS_REFLECTIONS_AND_IMPROVEMENTS = #{day.todaysReflectionsAndImprovements},
+            TODO_DETAIL = #{day.toDoDetail},
+            DAILY_ROUTINE = #{day.dailyRoutine}
+            WHERE ID = #{day.id}
+        </foreach>
+    </update>
 
     <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
         <id property="id" column="ID"/>
@@ -31,48 +99,13 @@
         <result property="fullname" column="FULLNAME" />
     </resultMap>
 
-    <insert id="createCalendarDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
-        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, DAY, USER_ID, WEEKLY_CODE)
-        VALUES (UUID(), #{oneThingCalendar}, #{day}, #{user.id}, #{weeklyCode})
-    </insert>
-
-    <update id="updateCalendarDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
-        UPDATE MANAGEMENT_TIME_DAY
-        SET ONE_THING_CALENDAR = #{oneThingCalendar}
-        WHERE USER_ID = #{user.id} AND DAY = #{day, jdbcType=DATE}
-    </update>
-
-    <select id="findByCode" resultMap="dayResultMap">
+    <select id="findByListCode" resultMap="dayResultMap">
         SELECT *
         FROM MANAGEMENT_TIME_DAY m
         INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE = #{weeklyCode}
-    </select>
-
-    <insert id="insertDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay" >
-        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
-            COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE)
-        VALUES (UUID(), #{oneThingCalendar}, #{toDoList}, #{gratitudeDiary}, #{affirmation}, #{day}, #{user.id}, #{weeklyCode},
-             #{complimentForMeToday}, #{todaysReflectionsAndImprovements}, #{toDoDetail}, #{dailyRoutine})
-    </insert>
-
-    <update id="editDay" parameterType="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
-        UPDATE MANAGEMENT_TIME_DAY
-        SET ONE_THING_CALENDAR = #{oneThingCalendar},
-            TO_DO_LIST = #{toDoList},
-            GRATITUDE_DIARY = #{gratitudeDiary},
-            AFFIRMATION = #{affirmation},
-            COMPLIMENT_FOR_ME_TODAY = #{complimentForMeToday},
-            TODAYS_REFLECTIONS_AND_IMPROVEMENTS = #{todaysReflectionsAndImprovements},
-            TODO_DETAIL = #{toDoDetail},
-            DAILY_ROUTINE = #{dailyRoutine}
-        WHERE ID = #{id}
-    </update>
-
-    <select id="findAllDailyRoutineOfMonth" resultMap="dayResultMap">
-        SELECT m.DAILY_ROUTINE FROM MANAGEMENT_TIME_DAY m
-        INNER JOIN MONTHLY_MANAGEMENT_TIME_DAY mo ON DATE_FORMAT(m.DAY, '%Y-%m') = mo.CODE
-        INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND mo.CODE = #{monthlyCode} AND mo.USER_ID = #{userId}
+        WHERE m.USER_ID = #{userId} AND m.WEEKLY_CODE IN
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
     </select>
 </mapper>

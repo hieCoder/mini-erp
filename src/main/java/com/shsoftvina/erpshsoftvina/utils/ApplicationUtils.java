@@ -8,6 +8,7 @@ import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.enums.user.RoleEnum;
 import com.shsoftvina.erpshsoftvina.exception.FileLimitNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.FileSizeNotAllowException;
+import com.shsoftvina.erpshsoftvina.exception.FileTooLimitedException;
 import com.shsoftvina.erpshsoftvina.exception.FileTypeNotAllowException;
 import com.shsoftvina.erpshsoftvina.exception.UnauthorizedException;
 import com.shsoftvina.erpshsoftvina.mapper.SettingMapper;
@@ -23,6 +24,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Component
@@ -132,38 +134,25 @@ public class ApplicationUtils {
         return setting;
     }
 
-    public void checkValidateFileAndImage(Class<?> c, MultipartFile file){
-
+    public void checkValidateFileAndImage(Class<?> c, MultipartFile[] files, List<String> oldFile){
         Setting setting = getSetting(c);
 
         String imageTypes = setting.getImageType();
         String fileTypes = setting.getFileType();
         String imageAndFileTypes = imageTypes + "," + fileTypes;
 
-        int fileLimit = setting.getFileSize();
         int fileSize = setting.getFileSize();
+        int fileLimit = setting.getFileLimit();
 
-        if (!FileUtils.isAllowedFileSize(file, fileSize))
-            throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
-
-        if (fileLimit < 1)
-            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
-
-        if (!FileUtils.isAllowedFileType(file, imageAndFileTypes))
-            throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageAndFileTypes));
-    }
-
-    public void checkValidateFileAndImage(Class<?> c, MultipartFile[] files){
-
-        Setting setting = getSetting(c);
-
-        int fileLimit = setting.getFileSize();
-
-        if(fileLimit<files.length)
-            throw new FileLimitNotAllowException(MessageErrorUtils.notAllowFileLimit(fileLimit));
+        if ((files.length + oldFile.size()) > fileLimit)
+            throw new FileTooLimitedException(MessageErrorUtils.notAllowFileLimit(fileLimit));
 
         for(MultipartFile file: files){
-            checkValidateFileAndImage(c, file);
+            if (!FileUtils.isAllowedFileSize(file, fileSize))
+                throw new FileSizeNotAllowException(MessageErrorUtils.notAllowFileSize(fileSize));
+
+            if (!FileUtils.isAllowedFileType(file, imageAndFileTypes))
+                throw new FileTypeNotAllowException(MessageErrorUtils.notAllowFileType(imageAndFileTypes));
         }
     }
 
