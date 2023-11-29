@@ -448,7 +448,7 @@
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="gratitudeDiary" value="${day.data.gratitudeDiary[loop.index]}"/>
                                         <td colspan="2"><textarea
-                                                class="form-control gratitudeDiary"
+                                                class="form-control" data-name="gratitudeDiary"
                                                 data-day="${day.day}">${gratitudeDiary}</textarea></td>
                                     </c:forEach>
                                 </tr>
@@ -459,7 +459,7 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="affirmation" value="${day.data.affirmation}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control affirmation"
+                                        <textarea class="form-control" data-name="affirmation"
                                                   data-day="${day.day}">${affirmation}</textarea>
                                     </td>
                                 </c:forEach>
@@ -469,7 +469,7 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="complimentForMeToday" value="${day.data.complimentForMeToday}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control complimentForMeToday"
+                                        <textarea class="form-control" data-name="complimentForMeToday"
                                                   data-day="${day.day}">${complimentForMeToday}</textarea>
                                     </td>
                                 </c:forEach>
@@ -480,7 +480,7 @@
                                     <c:set var="todaysReflectionsAndImprovements"
                                            value="${day.data.todaysReflectionsAndImprovements}"/>
                                     <td colspan="2">
-                                        <textarea class="form-control todaysReflectionsAndImprovements"
+                                        <textarea class="form-control" data-name="todaysReflectionsAndImprovements"
                                                   data-day="${day.day}">${todaysReflectionsAndImprovements}</textarea>
                                     </td>
                                 </c:forEach>
@@ -593,6 +593,7 @@
     }
 
     $("#updateButton").click(function () {
+        $(this).prop('disabled',true);
         $("div.containerLoading").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
         const currentYearMonth = getCurrentYearMonth();
@@ -629,14 +630,13 @@
         })
 
         const days = [];
-        $('td[contenteditable="true"]').each(function () {
+        $('textarea').each(function () {
             const day = $(this).data('day');
-            const name = $(this).data('name');
-            const value = $(this).text().trim();
-            const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
-            if(value !== "") {
+            const value = $(this).val();
+
+            let dayObj = days.find(d => d.day === day);
+            if (value !== "") {
                 if (day != null) {
-                    let dayObj = days.find(d => d.day === day);
                     if (!dayObj) {
                         dayObj = {
                             day: day,
@@ -657,22 +657,87 @@
                         };
                         days.push(dayObj);
                     }
-                    if (name === 'timeLine') {
-                        dayObj.data.toDoDetail.push(value);
-                    } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
-                        dayObj.data.toDoList[name].push({
-                            target: value,
-                            performance: isChecked
-                        });
-                    } else {
-                        dayObj.data.oneThingCalendar[name] = {
-                            target: value,
-                            performance: isChecked
+                }
+            }
+        })
+        $('input[type="checkbox"].dailyRoutine').each(function () {
+            const day = $(this).data('day');
+            const isChecked = $(this).prop('checked');
+
+            let dayObj = days.find(d => d.day === day);
+            if (isChecked !== false) {
+                if (day != null) {
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            data: {
+                                oneThingCalendar: {},
+                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                toDoDetail: [],
+                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                toDoList: {
+                                    sixToTwelvePm: [],
+                                    twelveToSixPm: [],
+                                    sixToTwelveAm: []
+                                }
+                            }
                         };
+                        days.push(dayObj);
                     }
                 }
             }
         })
+        $('td[contenteditable="true"]').each(function () {
+            const day = $(this).data('day');
+            const name = $(this).data('name');
+            const value = $(this).text().trim();
+            const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
+
+            let dayObj = days.find(d => d.day === day);
+            if (value !== "") {
+                if (day != null) {
+                    if (!dayObj) {
+                        dayObj = {
+                            day: day,
+                            data: {
+                                oneThingCalendar: {},
+                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                toDoDetail: [],
+                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                toDoList: {
+                                    sixToTwelvePm: [],
+                                    twelveToSixPm: [],
+                                    sixToTwelveAm: []
+                                }
+                            }
+                        };
+                        days.push(dayObj);
+                    }
+                }
+            }
+            if (dayObj) {
+                if (name === 'timeLine') {
+                    dayObj.data.toDoDetail.push(value);
+                } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
+                    dayObj.data.toDoList[name].push({
+                        target: value,
+                        performance: isChecked
+                    });
+                } else {
+                    dayObj.data.oneThingCalendar[name] = {
+                        target: value,
+                        performance: isChecked
+                    };
+                }
+            }
+        })
+
         data.days.push(...days);
         console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
@@ -732,7 +797,7 @@
     });
 
     function getTextAreaValuesByDayAndClass(day, className) {
-        const selector = 'textarea[data-day="' + day + '"].' + className;
+        const selector = 'textarea[data-day="' + day + '"][data-name="' + className + '"]';
         const textareas = $(selector);
 
         if (textareas.length >= 2) {
