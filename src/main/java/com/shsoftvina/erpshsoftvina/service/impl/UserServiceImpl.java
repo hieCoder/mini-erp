@@ -229,8 +229,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUserBirthdayToday(LocalDate date) {
-        return userMapper.getTodayBirthday(date);
+    public List<User> findUserBirthdayToday() {
+        return userMapper.getTodayBirthday();
     }
 
     public void updateValueInList(List<Map<String, Object>> maps, String oldKey) {
