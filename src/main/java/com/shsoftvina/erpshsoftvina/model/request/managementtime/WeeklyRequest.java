@@ -13,5 +13,5 @@ import java.util.Date;
 @Builder
 public class WeeklyRequest {
     private Date startDay;
-    private CalendarContent content;
+    private WeeklyContentRequest[] weeklys;
 }

@@ -35,11 +35,11 @@ public class ManagementTimeDayConvert {
     public ManagementTimeDay toEntity(String userId, CalendarDayRequest calendarDayRequest){
 
         OneThingCalendarDto o = OneThingCalendarDto.builder()
-                .theSingleMostImportantThing(new ItemDto(calendarDayRequest.getContent().getTheSingleMostImportantThing(), false))
-                .lecture(new ItemDto(calendarDayRequest.getContent().getLecture(), false))
-                .dailyEvaluation(new ItemDto(calendarDayRequest.getContent().getDailyEvaluation(), false))
-                .work(new ItemDto(calendarDayRequest.getContent().getWork(), false))
-                .reading(new ItemDto(calendarDayRequest.getContent().getReading(), false)).build();
+                .theSingleMostImportantThing(new ItemDto(calendarDayRequest.getContent()[0], false))
+                .lecture(new ItemDto(calendarDayRequest.getContent()[1], false))
+                .dailyEvaluation(new ItemDto(calendarDayRequest.getContent()[2], false))
+                .work(new ItemDto(calendarDayRequest.getContent()[3], false))
+                .reading(new ItemDto(calendarDayRequest.getContent()[4], false)).build();
 
         Date day = calendarDayRequest.getDay();
         return ManagementTimeDay.builder()
