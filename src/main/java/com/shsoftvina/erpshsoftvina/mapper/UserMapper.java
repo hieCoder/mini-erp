@@ -43,5 +43,5 @@ public interface UserMapper {
 
     List<User> getUserBirthday( LocalDate prevMonth, LocalDate nextMonth, LocalDate monthly);
 
-    List<User> getTodayBirthday( LocalDate date);
+    List<User> getTodayBirthday();
 }
