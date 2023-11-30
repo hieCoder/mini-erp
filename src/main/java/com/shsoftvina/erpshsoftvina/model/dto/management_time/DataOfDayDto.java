@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 public class DataOfDayDto {
-    private OneThingCalendarDto oneThingCalendar;
+    private ItemDto[] oneThingCalendar;
     private ToDoListDto toDoList;
     private String[] gratitudeDiary;
     private String complimentForMeToday;

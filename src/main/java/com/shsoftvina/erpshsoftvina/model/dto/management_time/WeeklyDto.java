@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar;
+package com.shsoftvina.erpshsoftvina.model.dto.management_time;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CalendarDayRequest {
-    private Date day;
-    private String[] content;
+public class WeeklyDto {
+    private String title;
+    private String content;
 }

@@ -10,6 +10,7 @@ import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDt
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -33,18 +34,18 @@ import java.util.stream.Collectors;
 public class ManagementTimeDayConvert {
 
     public ManagementTimeDay toEntity(String userId, CalendarDayRequest calendarDayRequest){
-
-        OneThingCalendarDto o = OneThingCalendarDto.builder()
-                .theSingleMostImportantThing(new ItemDto(calendarDayRequest.getContent().getTheSingleMostImportantThing(), false))
-                .lecture(new ItemDto(calendarDayRequest.getContent().getLecture(), false))
-                .dailyEvaluation(new ItemDto(calendarDayRequest.getContent().getDailyEvaluation(), false))
-                .work(new ItemDto(calendarDayRequest.getContent().getWork(), false))
-                .reading(new ItemDto(calendarDayRequest.getContent().getReading(), false)).build();
+        ItemDto[] oneThingCalendar = new ItemDto[5];
+        for(int i =0;i<oneThingCalendar.length; i++){
+            ItemDto itemDto = ItemDto.builder()
+                    .target(calendarDayRequest.getContent()[i])
+                    .performance(false).build();
+            oneThingCalendar[i] = itemDto;
+        }
 
         Date day = calendarDayRequest.getDay();
         return ManagementTimeDay.builder()
                 .id(ApplicationUtils.generateId())
-                .oneThingCalendar(JsonUtils.objectToJson(o))
+                .oneThingCalendar(JsonUtils.objectToJson(oneThingCalendar))
                 .day(day)
                 .user(User.builder().id(userId).build())
                 .weeklyCode(ApplicationUtils.generateWeeklyCodeOfDay(day))
@@ -62,7 +63,7 @@ public class ManagementTimeDayConvert {
     public DayResponse toResponse(ManagementTimeDay day){
         if(day == null) return null;
         DataOfDayDto data = new DataOfDayDto();
-        data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), OneThingCalendarDto.class));
+        data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), ItemDto[].class));
         data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));
         data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), String[].class));
         data.setAffirmation(day.getAffirmation());
@@ -78,8 +79,19 @@ public class ManagementTimeDayConvert {
                 .build();
     }
 
-    public List<DayResponse> toListCalendarResponse(List<ManagementTimeDay> days){
-        return days.stream().filter(day -> day.getOneThingCalendar() != null).map(this::toResponse).collect(Collectors.toList());
+    public CalendarDayResponse toCalendarDayResponse(ManagementTimeDay day){
+        if(day == null) return null;
+        ItemDto[] data = JsonUtils.jsonToObject(day.getOneThingCalendar(), ItemDto[].class);
+
+        return CalendarDayResponse.builder()
+                .id(day.getId())
+                .day(DateUtils.formatDate(day.getDay()))
+                .data(data)
+                .build();
+    }
+
+    public List<CalendarDayResponse> toListCalendarResponse(List<ManagementTimeDay> days){
+        return days.stream().filter(day -> day.getOneThingCalendar() != null).map(this::toCalendarDayResponse).collect(Collectors.toList());
     }
 
     private ManagementTimeDay isDayExistInList(List<ManagementTimeDay> days, LocalDate localDate){

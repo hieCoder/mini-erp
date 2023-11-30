@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MonthlyRequest {
+public class CalendarMonthlyRequest {
     private String month;
     private String[] content;
-    private DailyRoutineRequest[] dailyRoutine;
 }
