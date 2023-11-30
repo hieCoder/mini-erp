@@ -38,16 +38,15 @@ public class ManagementTimeDayController {
 
     @GetMapping("/weekly-detail/{userId}")
     public ModelAndView getDetailDay(@PathVariable String userId, @RequestParam(name = "currentDay", required = false, defaultValue = "") String currentDay) {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("management-time/day/week-detail");
         mav.addObject("weekly",managementTimeDayService.showListDayOfWeek(userId, currentDay));
-        mav.setViewName("management-time/day/week-detail");
-        mav.addObject("userId", userId);
+        IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
+        mav.addObject("user", user);
         return mav;
     }
 
     @GetMapping("/{userId}")
     public ModelAndView getCalendar(@PathVariable("userId") String userId) {
-        applicationUtils.checkUserAllow(userId);
         ModelAndView modelAndView = new ModelAndView("management-time/calendar-list");
         IdAndFullnameUserResponse user = userService.findIdAndFullNameOfUser(userId);
         modelAndView.addObject("user", user);
