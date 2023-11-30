@@ -1,17 +1,15 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WeeklyContentRequest {
+public class DailyRoutineRequest {
     private String title;
-    private String content;
+    private int target;
 }

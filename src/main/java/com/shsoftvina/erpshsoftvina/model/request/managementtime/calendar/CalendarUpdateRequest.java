@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar;
 
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.MonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +16,5 @@ public class CalendarUpdateRequest {
     private String userId;
     private List<CalendarDayRequest> days;
     private List<WeeklyRequest> weeklys;
-    private MonthlyRequest monthly;
+    private CalendarMonthlyRequest monthly;
 }

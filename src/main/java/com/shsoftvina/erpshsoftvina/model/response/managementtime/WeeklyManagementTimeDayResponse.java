@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime;
+package com.shsoftvina.erpshsoftvina.model.response.managementtime;
 
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import lombok.AllArgsConstructor;
@@ -6,13 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class WeeklyRequest {
-    private Date startDay;
+public class WeeklyManagementTimeDayResponse {
+    private String weeklyId;
+    private String startDate;
     private WeeklyDto[] weeklys;
 }

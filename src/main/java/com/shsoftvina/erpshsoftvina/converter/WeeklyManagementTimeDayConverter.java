@@ -2,9 +2,9 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.WeeklyManagementTimeDayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class WeeklyManagementTimeDayConverter {
         return WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay.getId())
                 .startDate(weeklyManagementTimeDay.getCode())
-                .weeklyContents(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class)).build();
+                .weeklys(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), WeeklyDto[].class)).build();
     }
 
     public List<WeeklyManagementTimeDayResponse> toListResponse(List<WeeklyManagementTimeDay> weeklyManagementTimeDays){
