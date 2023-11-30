@@ -147,7 +147,7 @@ Validator.isDayAfterTodayOrNull=function(selector, message){
                 var currentDate = new Date();
                 var currentDateValue = currentDate.setHours(0, 0, 0, 0);
 
-                return (dateValue>=currentDateValue)?undefined: message||'The day is not before day of today';
+                return (dateValue>=currentDateValue)?undefined: message||'The day is not before today';
             }
         }
     };
@@ -175,15 +175,23 @@ Validator.isPhoneVN=function(selector){
         }
     };
 }
-Validator.isThen=function(selector, getValueRequired, message){
+Validator.isThen=function(selector, getValueRequired){
     return {
         selector: selector,
         test: function (value) {
-            if(getValueRequired() == ''){
-                return undefined;
-            } else{
-                if(!value) return message||'This field is not filled';
-                return undefined;
+            var rs = getValueRequired();
+
+            if(rs == 1) return undefined;
+            else if(rs == 2){
+                var date = new Date(value);
+                var dateValue = date.setHours(0, 0, 0, 0);
+
+                var currentDate = new Date();
+                var currentDateValue = currentDate.setHours(0, 0, 0, 0);
+
+                return (dateValue>=currentDateValue)?undefined: 'The day is not before today';
+            } else if(rs == 3){
+                return 'This field is not filled';
             }
         }
     };
