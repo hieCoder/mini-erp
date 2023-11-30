@@ -35,5 +35,5 @@ public interface UserService {
 
     List<Map<String, Object>> getAllFullname();
 
-    List<User> findUserBirthdayToday(LocalDate date);
+    List<User> findUserBirthdayToday();
 }

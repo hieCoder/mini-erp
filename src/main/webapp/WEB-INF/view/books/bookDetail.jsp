@@ -136,11 +136,9 @@
                         <div class="col-md-12 d-none" id="othersSession">
                             <div data-simplebar style="max-height: 350px">
                                 <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}" varStatus="loopStatus">
-                                    <div class="list-group mt-2">
-                                        <div class="list-group-item">
-                                            <div class="card">
+                                            <div class="card mt-2 border">
                                                 <div class="card-header align-items-center d-flex p-0">
-                                                    <div class="flex-grow-1 oveflow-hidden">
+                                                    <div class="flex-grow-1 oveflow-hidden m-2">
                                                         <div class="d-flex mb-2 align-items-center">
                                                             <div class="flex-shrink-0">
                                                                 <img src="${feeling.avatarUser}" alt=""
@@ -153,7 +151,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0 ms-2">
-                                                        <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0"
+                                                        <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0 me-0"
                                                             role="tablist">
                                                             <li class="nav-item">
                                                                 <a class="nav-link active d-flex align-items-center"
@@ -219,8 +217,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
                                 </c:forEach>
                             </div>
                         </div>

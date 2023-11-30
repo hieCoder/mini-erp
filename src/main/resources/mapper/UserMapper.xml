@@ -189,7 +189,7 @@
     <select id="getTodayBirthday" resultMap="birthdayResultMap">
         SELECT ID,FULLNAME, DATE_OF_BIRTH
         FROM USER
-        WHERE MONTH(DATE_OF_BIRTH) = MONTH(#{date}) AND DAY(DATE_OF_BIRTH) = DAY(#{date}) AND status = 'ACTIVE'
+        WHERE MONTH(DATE_OF_BIRTH) = MONTH(now()) AND DAY(DATE_OF_BIRTH) = DAY(now()) AND status = 'ACTIVE'
     </select>
 
     <resultMap id="birthdayResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
