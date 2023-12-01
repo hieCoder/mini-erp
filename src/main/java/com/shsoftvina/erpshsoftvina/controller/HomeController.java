@@ -22,5 +22,4 @@ public class HomeController {
         modelAndView.addObject("list",userResponse);
         return modelAndView;
     }
-
 }
