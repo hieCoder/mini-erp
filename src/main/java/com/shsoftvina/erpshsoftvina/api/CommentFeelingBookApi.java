@@ -17,6 +17,13 @@ public class CommentFeelingBookApi {
     @Autowired
     private CommentFeelingBookService commentFeelingBookService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id") String id) {
+        CommentFeelingBookResponse commentFeelingBookResponse = commentFeelingBookService.findById(id);
+        if (commentFeelingBookResponse != null) return ResponseEntity.ok(commentFeelingBookResponse);
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping
     public ResponseEntity<?> createCommentFeeling(@Valid @RequestBody CreateCommentFeelingBookRequest createCommentFeelingBookRequest) {
         CommentFeelingBookResponse commentFeelingBookResponse = commentFeelingBookService.createCommentFeeling(createCommentFeelingBookRequest);
