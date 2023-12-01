@@ -11,16 +11,11 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateCommentFeelingBookRequest {
+public class UpdateCommentFeelingBookRequest {
+
+    @NotBlank(message = "Field id is not filled")
+    private String id;
 
     @NotBlank(message = "Field content is not filled")
     private String content;
-
-    @NotBlank(message = "Field feelingBookId is not filled")
-    private String feelingBookId;
-
-    private String parentId;
-
-    @NotBlank(message = "Field userId is not filled")
-    private String userId;
 }

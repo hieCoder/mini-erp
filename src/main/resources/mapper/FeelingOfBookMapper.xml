@@ -80,8 +80,8 @@
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="fb_user_id"/>
-        <result property="id" column="fb_user_id"/>
+        <id property="id" column="comment_user_id"/>
+        <result property="id" column="user_id"/>
         <result property="fullname" column="user_fullname"/>
         <result property="avatar" column="user_avatar"/>
     </resultMap>
