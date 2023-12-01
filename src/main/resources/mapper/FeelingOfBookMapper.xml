@@ -5,18 +5,64 @@
 
     <update id="updateFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         UPDATE FEELING_OF_BOOK
-        SET
-            FEELING = #{feeling},
-            QUOTE = #{quote},
-            LESSON = #{lesson},
-            ACTION = #{action}
+        SET FEELING = #{feeling},
+            QUOTE   = #{quote},
+            LESSON  = #{lesson},
+            ACTION  = #{action}
         WHERE ID = #{id}
     </update>
 
     <select id="findById" resultMap="feelingOfBookResultMap">
-        SELECT *
-        FROM FEELING_OF_BOOK f INNER JOIN USER u ON f.USER_ID = u.ID
-        WHERE f.ID = #{id}
+        SELECT fb.ID           AS fb_id,
+               fb.FEELING      AS fb_feeling,
+               fb.QUOTE        AS fb_quote,
+               fb.LESSON       AS fb_lesson,
+               fb.ACTION       AS fb_action,
+               fb.CREATED_DATE AS fb_created_date,
+               fb.USER_ID      AS fb_user_id,
+               fb.BOOK_ID      AS fb_book_id,
+               u.ID            AS user_id,
+               u.FULLNAME      AS user_fullname,
+               u.AVATAR        AS user_avatar,
+               c.ID            AS comment_id,
+               c.USER_ID       AS comment_user_id,
+               c.CONTENT       AS comment_content,
+               c.PARENT_ID     AS comment_parent_id,
+               c.CREATED_DATE  AS comment_created_date,
+               c.MODIFIED_DATE AS comment_modified_date,
+               c.MODIFIED_BY   AS comment_modified_by
+        FROM FEELING_OF_BOOK fb
+                 LEFT JOIN COMMENT_FEELING_OF_BOOK c ON fb.ID = c.FEELING_OF_BOOK_ID AND c.PARENT_ID IS NULL
+                 LEFT JOIN USER u ON fb.USER_ID = u.ID
+                 LEFT JOIN BOOK b ON fb.BOOK_ID = b.id
+        WHERE fb.ID = #{id}
+    </select>
+
+    <select id="findAllByBook" parameterType="String"
+            resultMap="feelingOfBookResultMap">
+        SELECT fb.ID           AS fb_id,
+               fb.FEELING      AS fb_feeling,
+               fb.QUOTE        AS fb_quote,
+               fb.LESSON       AS fb_lesson,
+               fb.ACTION       AS fb_action,
+               fb.CREATED_DATE AS fb_created_date,
+               fb.USER_ID      AS fb_user_id,
+               fb.BOOK_ID      AS fb_book_id,
+               u.ID            AS user_id,
+               u.FULLNAME      AS user_fullname,
+               u.AVATAR        AS user_avatar,
+               c.ID            AS comment_id,
+               c.USER_ID       AS comment_user_id,
+               c.CONTENT       AS comment_content,
+               c.PARENT_ID     AS comment_parent_id,
+               c.CREATED_DATE  AS comment_created_date,
+               c.MODIFIED_DATE AS comment_modified_date,
+               c.MODIFIED_BY   AS comment_modified_by
+        FROM FEELING_OF_BOOK fb
+                 LEFT JOIN COMMENT_FEELING_OF_BOOK c ON fb.ID = c.FEELING_OF_BOOK_ID AND c.PARENT_ID IS NULL
+                 LEFT JOIN USER u ON fb.USER_ID = u.ID
+                 LEFT JOIN BOOK b ON fb.BOOK_ID = b.id
+        WHERE b.ID = #{bookId}
     </select>
 
     <select id="findByUserAndBook" resultMap="feelingOfBookResultMap">
@@ -26,21 +72,74 @@
     </select>
 
     <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
-        <id property="id" column="id"/>
-        <result property="feeling" column="FEELING"/>
-        <result property="quote" column="QUOTE"/>
-        <result property="lesson" column="LESSON"/>
-        <result property="action" column="ACTION"/>
-        <result property="createdDate" column="CREATED_DATE"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>
+        <id property="id" column="fb_id"/>
+        <result property="feeling" column="fb_feeling"/>
+        <result property="quote" column="fb_quote"/>
+        <result property="lesson" column="fb_lesson"/>
+        <result property="action" column="fb_action"/>
+        <result property="createdDate" column="fb_created_date"/>
+        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+                     resultMap="userResultMap"></association>
+        <collection property="comments" column="comment_id"
+                    ofType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook"
+                    resultMap="commentResultMap"/>
     </resultMap>
 
     <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="USER_ID" />
-        <result property="id" column="USER_ID" />
-        <result property="fullname" column="FULLNAME" />
-        <result property="avatar" column="AVATAR" />
+        <id property="id" column="comment_user_id"/>
+        <result property="id" column="user_id"/>
+        <result property="fullname" column="user_fullname"/>
+        <result property="avatar" column="user_avatar"/>
     </resultMap>
+
+    <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        <id property="id" column="comment_id"/>
+        <result property="content" column="comment_content"/>
+        <result property="createdDate" column="comment_created_date"/>
+        <result property="modifiedDate" column="comment_modified_date"/>
+        <result property="modifiedBy" column="comment_modified_by"/>
+        <association property="parentComment" column="comment_parent_id"
+                     javaType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getParentComment"/>
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+                     select="getUserId"/>
+        <collection property="childComments" column="comment_id"
+                    ofType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getChildComments"/>
+    </resultMap>
+
+    <select id="getParentComment" resultMap="parentCommentResultMap">
+        SELECT ID AS comment_parent_id
+        FROM COMMENT_FEELING_OF_BOOK
+        WHERE ID = #{id}
+    </select>
+
+    <resultMap id="parentCommentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        <id property="id" column="comment_parent_id"/>
+        <result property="id" column="PARENT_ID"/>
+    </resultMap>
+
+    <select id="getUserId" resultMap="userResultMap">
+        SELECT u.ID       AS comment_user_id,
+               u.FULLNAME AS user_fullname,
+               u.AVATAR   AS user_avatar
+        FROM USER u
+        WHERE u.ID = #{id}
+    </select>
+
+    <select id="getChildComments" resultMap="commentResultMap">
+        SELECT c.id            AS comment_id,
+               c.user_id       AS comment_user_id,
+               c.content       AS comment_content,
+               c.created_date  AS comment_created_date,
+               c.parent_id     AS comment_parent_id,
+               c.created_date  AS comment_created_date,
+               c.modified_date AS comment_modified_date,
+               c.modified_by   AS comment_modified_by,
+               u.fullname      AS user_fullname,
+               u.avatar        AS user_avatar
+        FROM COMMENT_FEELING_OF_BOOK c
+                 INNER JOIN USER u ON c.user_id = u.id
+        WHERE c.parent_id = #{id}
+    </select>
 
     <insert id="createFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         INSERT
@@ -51,14 +150,25 @@
     <delete id="deleteFeelingOfBook" parameterType="String">
         DELETE
         FROM FEELING_OF_BOOK
-        WHERE USER_ID = #{userId} AND BOOK_ID = #{bookId}
+        WHERE USER_ID = #{userId}
+          AND BOOK_ID = #{bookId}
     </delete>
 
-    <select id="findAllByBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook" resultMap="feelingOfBookResultMap">
-        SELECT *
-        FROM FEELING_OF_BOOK f
-                 INNER JOIN USER u ON f.USER_ID = u.ID
-                 INNER JOIN BOOK b ON f.BOOK_ID = b.ID
-        WHERE b.ID = #{id}
+    <select id="findFeelingByUser" parameterType="String" resultMap="feelingOfBookDetailResultMap">
+        SELECT fb.*
+        FROM FEELING_OF_BOOK AS fb
+        where fb.book_id = #{bookId}
+          and fb.user_id = #{userId};
     </select>
+
+    <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+        <id property="id" column="id"/>
+        <result property="feeling" column="FEELING"/>
+        <result property="quote" column="QUOTE"/>
+        <result property="lesson" column="LESSON"/>
+        <result property="action" column="ACTION"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+                     resultMap="userResultMap"></association>
+    </resultMap>
 </mapper>

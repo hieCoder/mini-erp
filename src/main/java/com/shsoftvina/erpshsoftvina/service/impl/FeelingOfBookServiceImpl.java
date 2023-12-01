@@ -27,6 +27,13 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     private FeelingOfBookConverter feelingOfBookConverter;
 
     @Override
+    public List<FeelingOfBookResponse> findAllByBook(String bookId) {
+        List<FeelingOfBook> test = feelingOfBookMapper.findAllByBook(bookId);
+
+        return feelingOfBookConverter.toListResponse(test);
+    }
+
+    @Override
     public FeelingOfBookResponse createFeelingOfBook(FeelingOfBookCreateRequest feelingOfBookCreateRequest) {
 
         if (feelingOfBookCreateRequest.getBookId() == null)
