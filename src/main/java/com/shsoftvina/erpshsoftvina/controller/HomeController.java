@@ -18,8 +18,7 @@ public class HomeController {
     @GetMapping({"/","/home","/dashboard"})
     public ModelAndView getHomePage() {
         ModelAndView modelAndView = new ModelAndView("common/frontpage");
-        LocalDate date = LocalDate.now();
-        List<User> userResponse= userService.findUserBirthdayToday(date);
+        List<User> userResponse= userService.findUserBirthdayToday();
         modelAndView.addObject("list",userResponse);
         return modelAndView;
     }

@@ -1,4 +1,4 @@
-package com.shsoftvina.erpshsoftvina.model.request.managementtime;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
