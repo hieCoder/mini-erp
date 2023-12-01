@@ -23,6 +23,7 @@
     <include file="db/changelog/allowance-insurance-changelog-create.xml"/>
     <include file="db/changelog/monthly-management-time-day-changelog-create.xml" />
     <include file="db/changelog/changelog-add-constraint.xml" />
+    <include file="db/changelog/comment_feeling-of-book-changelog-create.xml" />
 
     <include file="db/changelog/add-data-changelog-create.xml" />
 
