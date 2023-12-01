@@ -180,4 +180,21 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_MONTHLY_MANAGEMENT_TIME_DAY_USER"/>
     </changeSet>
+
+    <changeSet id="22" author="team2">
+        <addForeignKeyConstraint baseTableName="COMMENT_FEELING_OF_BOOK"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_COMMENT_FEELING_OF_BOOK_USER"/>
+    </changeSet>
+
+    <changeSet id="23" author="team2">
+        <addForeignKeyConstraint baseTableName="COMMENT_FEELING_OF_BOOK"
+                                 baseColumnNames="FEELING_OF_BOOK_ID"
+                                 referencedTableName="FEELING_OF_BOOK"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_COMMENT_FEELING_OF_BOOK_FEELING_OF_BOOK"
+                                 onDelete="CASCADE"/>
+    </changeSet>
 </databaseChangeLog>

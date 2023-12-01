@@ -42,71 +42,54 @@
                     <div class="row">
                         <div class="col-md-12">
                             <form class="feeling" id="feelingBook">
-                                <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary"
-                                     id="accordionWithicon">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#feeling" aria-expanded="false"
-                                                    aria-controls="feeling">
-                                                <i class="ri-message-2-line me-2 fs-4"></i> Feel about the book?
-                                            </button>
-                                        </h2>
-                                        <div id="feeling" class="accordion-collapse collapse"
-                                             aria-labelledby="feelingBook"
-                                             data-bs-parent="#accordionWithicon">
-                                            <textarea class="form-control data" name="feeling"
-                                                      id="feelingArea" placeholder="Enter here..."></textarea>
+                                <div class="form-group">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto pe-0">
+                                            <i class="ri-message-2-line fs-4"></i>
+                                        </div>
+                                        <div class="col ps-2 fs-5">
+                                            Feel about the book?
                                         </div>
                                     </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="lessonBook">
-                                            <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#lesson" aria-expanded="false"
-                                                    aria-controls="lesson">
-                                                <i class="ri-pencil-ruler-line me-2 fs-4"></i> Lessons Learned ?
-                                            </button>
-                                        </h2>
-                                        <div id="lesson" class="accordion-collapse collapse"
-                                             aria-labelledby="lessonBook"
-                                             data-bs-parent="#accordionWithicon">
-                                            <textarea class="form-control data" name="lesson"
-                                                      id="lessonArea" placeholder="Enter here..."></textarea>
+                                    <textarea class="form-control data" name="feeling"
+                                              id="feelingArea" placeholder="Enter here..."></textarea>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto pe-0">
+                                            <i class="ri-pencil-ruler-line fs-4"> </i>
+                                        </div>
+                                        <div class="col ps-2 fs-5">
+                                            Lessons Learned ?
                                         </div>
                                     </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="quoteBook">
-                                            <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#quotes" aria-expanded="false"
-                                                    aria-controls="quotes">
-                                                <i class="ri-double-quotes-l me-2 fs-4"></i> Quotes?
-                                            </button>
-                                        </h2>
-                                        <div id="quotes" class="accordion-collapse collapse"
-                                             aria-labelledby="quoteBook"
-                                             data-bs-parent="#accordionWithicon">
-                                            <textarea class="form-control data" name="quote" id="quoteArea" placeholder="Enter here..."></textarea>
+                                    <textarea class="form-control data" name="lesson"
+                                              id="lessonArea" placeholder="Enter here..."></textarea>
+
+                                </div>
+                                <div class="form-group mt-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto pe-0">
+                                            <i class="ri-double-quotes-l fs-4"></i>
+                                        </div>
+                                        <div class="col ps-2 fs-5">
+                                            Quotes?
                                         </div>
                                     </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="actionBook">
-                                            <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#action" aria-expanded="false"
-                                                    aria-controls="action">
-                                                <i class="ri-user-location-line me-2 fs-4"></i> Action?
-                                            </button>
-                                        </h2>
-                                        <div id="action" class="accordion-collapse collapse"
-                                             aria-labelledby="actionBook"
-                                             data-bs-parent="#accordionWithicon">
-                                            <textarea class="form-control data" name="action"
-                                                      id="actionArea" placeholder="Enter here..."></textarea>
+                                    <textarea class="form-control data" name="quote" id="quoteArea"
+                                              placeholder="Enter here..."></textarea>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto pe-0">
+                                            <i class="ri-user-location-line fs-4"></i>
+                                        </div>
+                                        <div class="col ps-2 fs-5">
+                                            Action?
                                         </div>
                                     </div>
+                                    <textarea class="form-control data" name="action"
+                                              id="actionArea" placeholder="Enter here..."></textarea>
                                 </div>
                                 <div class="form-group mb-2 mt-2">
                                     <button type="submit" class="btn btn-primary" id="submit" disabled>
@@ -125,7 +108,6 @@
                                     </a>
                                 </div>
                             </form>
-
                         </div>
                         <h3 class="mt-2 font-weight-bold">Feelings Of Others</h3>
                         <div class="text-center loading-feeling">
@@ -136,87 +118,48 @@
                         <div class="col-md-12 d-none" id="othersSession">
                             <div data-simplebar style="max-height: 350px">
                                 <c:forEach var="feeling" items="${bookDetail.feelingOfBooks}" varStatus="loopStatus">
-                                            <div class="card mt-2 border">
-                                                <div class="card-header align-items-center d-flex p-0">
-                                                    <div class="flex-grow-1 oveflow-hidden m-2">
-                                                        <div class="d-flex mb-2 align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="${feeling.avatarUser}" alt=""
-                                                                     class="avatar-sm rounded-circle"/>
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-3">
-                                                                <h5 class="list-title fs-15 mb-1">${feeling.fullnameUser}</h5>
-                                                                <p class="list-text mb-0 fs-12">${feeling.createdDate}</p>
-                                                            </div>
-                                                        </div>
+                                    <div class="card mt-2 border">
+                                        <div class="card-header align-items-center d-flex p-0">
+                                            <div class="flex-grow-1 oveflow-hidden m-2">
+                                                <div class="d-flex mb-2 align-items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="${feeling.avatarUser}" alt=""
+                                                             class="avatar-sm rounded-circle"/>
                                                     </div>
-                                                    <div class="flex-shrink-0 ms-2">
-                                                        <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0 me-0"
-                                                            role="tablist">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link active d-flex align-items-center"
-                                                                   data-bs-toggle="tab"
-                                                                   href="#feeling-${loopStatus.index}" role="tab">
-                                                                    Feeling<i
-                                                                        class="ri-message-2-line me-2 fs-5 ms-2"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link d-flex align-items-center"
-                                                                   data-bs-toggle="tab"
-                                                                   href="#lesson-${loopStatus.index}" role="tab">
-                                                                    Lesson<i
-                                                                        class="ri-pencil-ruler-line me-2 fs-5 ms-2"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link d-flex align-items-center"
-                                                                   data-bs-toggle="tab"
-                                                                   href="#quote-${loopStatus.index}" role="tab">
-                                                                    Quotes<i
-                                                                        class="ri-double-quotes-l me-2 fs-5 ms-2"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link d-flex align-items-center"
-                                                                   data-bs-toggle="tab"
-                                                                   href="#action-${loopStatus.index}" role="tab">
-                                                                    Action<i
-                                                                        class="ri-user-location-line me-2 fs-5 ms-2"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="tab-content">
-                                                        <div class="tab-pane active" id="feeling-${loopStatus.index}"
-                                                             role="tabpanel">
-                                                            <p class="ms-3 mb-0">
-                                                                    ${feeling.feeling}
-                                                            </p>
-                                                        </div>
-                                                        <div class="tab-pane" id="lesson-${loopStatus.index}"
-                                                             role="tabpanel">
-                                                            <p class="ms-3 mb-0">
-                                                                    ${feeling.lesson}
-                                                            </p>
-                                                        </div>
-                                                        <div class="tab-pane" id="quote-${loopStatus.index}"
-                                                             role="tabpanel">
-                                                            <p class="ms-3 mb-0">
-                                                                    ${feeling.quote}
-                                                            </p>
-                                                        </div>
-                                                        <div class="tab-pane" id="action-${loopStatus.index}"
-                                                             role="tabpanel">
-                                                            <p class="ms-3 mb-0">
-                                                                    ${feeling.action}
-                                                            </p>
-                                                        </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h5 class="list-title fs-15 mb-1">${feeling.fullnameUser}</h5>
+                                                        <p class="list-text mb-0 fs-12">${feeling.createdDate}</p>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h5 >
+                                                        - Feel about the book: ${feeling.feeling}
+                                                    </h5>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5>
+                                                        - Lesson: ${feeling.lesson}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h5>
+                                                        - Quotes: ${feeling.quote}
+                                                    </h5>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5>
+                                                        - Action: ${feeling.action}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </c:forEach>
                             </div>
                         </div>
