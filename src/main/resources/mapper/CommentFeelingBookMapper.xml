@@ -1,0 +1,81 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentFeelingBookMapper">
+
+    <insert id="createCommentFeeling" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        INSERT INTO COMMENT_FEELING_OF_BOOK (ID, CONTENT, CREATED_DATE, FEELING_OF_BOOK_ID, USER_ID, PARENT_ID)
+        VALUES (#{id}, #{content}, #{createdDate}, #{feelingOfBook.id}, #{user.id}, #{parentComment.id});
+    </insert>
+
+    <update id="updateCommentFeeling" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        UPDATE COMMENT_FEELING_OF_BOOK
+        SET
+            CONTENT = #{content},
+            MODIFIED_BY = #{modifiedBy},
+            MODIFIED_DATE = NOW()
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        DELETE FROM COMMENT_FEELING_OF_BOOK WHERE ID = #{id}
+    </delete>
+
+    <select id="findById" resultMap="commentFeelingResultMap">
+        SELECT
+            c.ID AS comment_id,
+            c.CONTENT AS comment_content,
+            c.CREATED_DATE AS comment_created_date,
+            c.USER_ID AS comment_user_id,
+            c.PARENT_ID AS comment_parent_id,
+            c.MODIFIED_DATE AS comment_modified_date,
+            c.MODIFIED_BY AS comment_modified_by,
+            u.FULLNAME AS user_fullname,
+            u.AVATAR AS user_avatar
+        FROM COMMENT_FEELING_OF_BOOK c LEFT JOIN USER u ON c.USER_ID = u.ID OR c.PARENT_ID IS NOT NULL
+        WHERE c.ID = #{id}
+    </select>
+
+    <resultMap id="commentFeelingResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        <id property="id" column="comment_id" />
+        <result property="content" column="comment_content" />
+        <result property="createdDate" column="comment_created_date" />
+        <result property="modifiedDate" column="comment_modified_date" />
+        <result property="modifiedBy" column="comment_modified_by" />
+        <association property="parentComment" column="comment_parent_id" javaType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getParentComment"/>
+        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getChildComments" />
+    </resultMap>
+
+    <select id="getParentComment" resultMap="parentCommentResultMap">
+        SELECT ID AS comment_parent_id
+        FROM COMMENT_FEELING_OF_BOOK
+        WHERE ID = #{id}
+    </select>
+
+    <resultMap id="parentCommentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        <id property="id" column="comment_parent_id" />
+        <result property="id" column="PARENT_ID" />
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="comment_user_id" />
+        <result property="fullname" column="user_fullname" />
+        <result property="avatar" column="user_avatar" />
+    </resultMap>
+
+    <select id="getChildComments" resultMap="commentFeelingResultMap">
+        SELECT c.id AS comment_id,
+               c.user_id AS comment_user_id,
+               c.content AS comment_content,
+               c.created_date AS comment_created_date,
+               c.parent_id AS comment_parent_id,
+               c.modified_date AS comment_modified_date,
+               c.modified_by AS comment_modified_by,
+               u.fullname AS user_fullname,
+               u.avatar AS user_avatar
+        FROM COMMENT_FEELING_OF_BOOK c
+                 INNER JOIN USER u ON c.USER_ID = u.id
+        WHERE c.PARENT_ID = #{id}
+    </select>
+</mapper>

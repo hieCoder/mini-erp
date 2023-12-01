@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
+import com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook;
 import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
@@ -30,6 +31,12 @@ public class FeelingOfBookConverter {
     @Autowired
     private FeelingOfBookMapper feelingOfBookMapper;
 
+    @Autowired
+    private UserConverter userConverter;
+
+    @Autowired
+    private CommentFeelingBookConverter commentFeelingBookConverter;
+
     public FeelingOfBookResponse toResponse(FeelingOfBook feelingOfBook) {
         if(feelingOfBook == null) return null;
         return FeelingOfBookResponse.builder()
@@ -39,9 +46,8 @@ public class FeelingOfBookConverter {
                 .lesson(feelingOfBook.getLesson())
                 .action(feelingOfBook.getAction())
                 .createdDate(DateUtils.formatDateTime(feelingOfBook.getCreatedDate()))
-                .idUser(feelingOfBook.getUser().getId())
-                .fullnameUser(feelingOfBook.getUser().getFullname())
-                .avatarUser(FileUtils.getPathUpload(User.class,feelingOfBook.getUser().getAvatar()))
+                .user(userConverter.toFullnameAndAvatarResponse(feelingOfBook.getUser()))
+                .comments(commentFeelingBookConverter.toListResponse(feelingOfBook.getComments()))
                 .build();
     }
 
@@ -63,7 +69,7 @@ public class FeelingOfBookConverter {
 
     public FeelingOfBook toEntity(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest){
 
-        FeelingOfBook feelingOfBook = feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId());
+        FeelingOfBook feelingOfBook = feelingOfBookMapper.findByUserAndBook(feelingOfBookUpdateRequest.getUserId(), feelingOfBookUpdateRequest.getBookId());
         feelingOfBook.setFeeling(feelingOfBookUpdateRequest.getFeeling());
         feelingOfBook.setQuote(feelingOfBookUpdateRequest.getQuote());
         feelingOfBook.setLesson(feelingOfBookUpdateRequest.getLesson());

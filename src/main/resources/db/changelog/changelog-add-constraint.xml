@@ -197,4 +197,16 @@
                                  constraintName="FK_COMMENT_FEELING_OF_BOOK_FEELING_OF_BOOK"
                                  onDelete="CASCADE"/>
     </changeSet>
+
+    <changeSet id="24" author="team2">
+        <addForeignKeyConstraint
+                baseTableName="COMMENT_FEELING_OF_BOOK"
+                baseColumnNames="PARENT_ID"
+                constraintName="FK_COMMENT_FEELING_OF_BOOK_PARENT"
+                referencedTableName="COMMENT_FEELING_OF_BOOK"
+                referencedColumnNames="ID"
+                onUpdate="CASCADE"
+                onDelete="CASCADE"
+        />
+    </changeSet>
 </databaseChangeLog>

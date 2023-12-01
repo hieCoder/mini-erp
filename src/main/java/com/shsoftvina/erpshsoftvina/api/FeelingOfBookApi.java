@@ -17,8 +17,8 @@ public class FeelingOfBookApi {
     private FeelingOfBookService feelingOfBookService;
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(feelingOfBookService.findAll());
+    public ResponseEntity<?> findAllByBook(@RequestParam String bookId) {
+        return ResponseEntity.ok(feelingOfBookService.findAllByBook(bookId));
     }
 
     @GetMapping("/{id}")
@@ -27,9 +27,9 @@ public class FeelingOfBookApi {
     }
 
     @GetMapping("/{bookId}/{userId}")
-    public ResponseEntity<?> findByUser(@PathVariable("bookId") String bookId,
+    public ResponseEntity<?> findByUserAndBook(@PathVariable("bookId") String bookId,
                                         @PathVariable("userId") String userId) {
-        return ResponseEntity.ok(feelingOfBookService.findFeelingByUser(bookId,userId));
+        return ResponseEntity.ok(feelingOfBookService.findByUserAndBook(bookId,userId));
     }
 
     @PostMapping

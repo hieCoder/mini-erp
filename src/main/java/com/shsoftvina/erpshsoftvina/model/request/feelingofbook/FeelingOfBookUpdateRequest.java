@@ -14,7 +14,9 @@ import javax.validation.constraints.NotBlank;
 public class FeelingOfBookUpdateRequest {
 
     @NotBlank(message = "Field id is not filled")
-    private String id;
+    private String userId;
+    @NotBlank(message = "Field bookId is not filled")
+    private String bookId;
 
     private String feeling;
     private String quote;

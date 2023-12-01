@@ -9,13 +9,14 @@ import java.util.List;
 
 @Mapper
 public interface FeelingOfBookMapper {
-    List<FeelingOfBook> findAll();
     int createFeelingOfBook(FeelingOfBook feelingOfBook);
     FeelingOfBook findById(String id);
+    FeelingOfBook findByUserAndBook(String userId, String bookId);
     int updateFeelingOfBook(FeelingOfBook feelingOfBook);
     int deleteFeelingOfBook(String bookId,
                             String userId);
-    List<FeelingOfBook> findAllByBook(String id);
+
+    List<FeelingOfBook> findAllByBook(String bookId);
     FeelingOfBook findFeelingByUser(String bookId,
                                     String userId);
 }
