@@ -45,6 +45,7 @@
             padding: 5px;
             white-space: nowrap;
             text-align: center;
+            min-width: 100px;
             border: 1px solid #000;
             font-family: Poppins, sans-serif;
             height: 32.5px;
@@ -72,6 +73,16 @@
             border: 1px solid #000;
             font-family: Poppins, sans-serif;
             height: 32.5px;
+        }
+
+        .categoryColor th {
+            max-width: 20px;
+            text-wrap: normal;
+        }
+
+        .categoryColor td {
+            max-width: 20px;
+            text-wrap: normal;
         }
     </style>
 </head>
@@ -135,7 +146,9 @@
                                                 0%
                                             </c:when>
                                             <c:otherwise>
-                                                <fmt:formatNumber value="${((dailyRoutine.performance / dailyRoutine.target) * 100)}" pattern="#.##"/>%
+                                                <fmt:formatNumber
+                                                        value="${((dailyRoutine.performance / dailyRoutine.target) * 100)}"
+                                                        pattern="#.##"/>%
                                             </c:otherwise>
                                         </c:choose>
                                     </c:if>
@@ -195,38 +208,92 @@
                         </thead>
                         <tbody>
                         <c:set var="theSingleMostImportantThing"
-                               value="${weekly.weeklys.weeklyContents.theSingleMostImportantThing}"/>
+                               value="${weekly.weeklys.weeklys[0]}"/>
                         <tr>
-                            <td class="text-start">Single Most Important Thing</td>
+                            <td class="text-start weekTitle"
+                                contenteditable="true">${theSingleMostImportantThing.title}</td>
                             <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"
-                                       value="${theSingleMostImportantThing}">
+                                       value="${theSingleMostImportantThing.content}">
                             </td>
                         </tr>
-                        <c:set var="lecture" value="${weekly.weeklys.weeklyContents.lecture}"/>
+                        <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
                         <tr>
-                            <td class="text-start">Lecture</td>
-                            <td><input class="form-control weekTarget" name="lecture" type="text" value="${lecture}">
+                            <td class="text-start weekTitle" contenteditable="true">${lecture.title}</td>
+                            <td><input class="form-control weekTarget" name="lecture" type="text"
+                                       value="${lecture.content}">
                             </td>
                         </tr>
-                        <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklyContents.dailyEvaluation}"/>
+                        <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
                         <tr>
-                            <td class="text-start">Daily Evaluation</td>
+                            <td class="text-start weekTitle" contenteditable="true">${dailyEvaluation.title}</td>
                             <td><input class="form-control weekTarget" name="dailyEvaluation" type="text"
-                                       value="${dailyEvaluation}"></td>
+                                       value="${dailyEvaluation.content}"></td>
                         </tr>
-                        <c:set var="work" value="${weekly.weeklys.weeklyContents.work}"/>
+                        <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
                         <tr>
-                            <td class="text-start">Work</td>
-                            <td><input class="form-control weekTarget" name="work" type="text" value="${work}"></td>
+                            <td class="text-start weekTitle" contenteditable="true">${work.title}</td>
+                            <td><input class="form-control weekTarget" name="work" type="text" value="${work.content}">
+                            </td>
                             </td>
                         </tr>
-                        <c:set var="reading" value="${weekly.weeklys.weeklyContents.reading}"/>
+                        <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
                         <tr>
-                            <td class="text-start">Reading</td>
-                            <td><input class="form-control weekTarget" name="reading" type="text" value="${reading}">
+                            <td class="text-start weekTitle" contenteditable="true">${reading.title}</td>
+                            <td><input class="form-control weekTarget" name="reading" type="text"
+                                       value="${reading.content}">
                             </td>
                             </td>
                         </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="fw-bolder">Category Color</h4>
+                    <table class="table table-bordered border-primary categoryColor text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th scope="col" contenteditable="true" class="panel">
+                                Growth
+                                <div class="pickr"></div>
+                                <p hidden="hidden" class="pickedColor"></p>
+                            </th>
+                            <th scope="col" contenteditable="true" class="panel">
+                                Work
+                                <div class="pickr"></div>
+                                <p hidden="hidden" class="pickedColor"></p>
+                            </th>
+                            <th scope="col" contenteditable="true" class="panel">
+                                Health
+                                <div class="pickr"></div>
+                                <p hidden="hidden" class="pickedColor"></p>
+                            </th>
+                            <th scope="col" contenteditable="true" class="panel">
+                                Love
+                                <div class="pickr"></div>
+                                <p hidden="hidden" class="pickedColor"></p>
+                            </th>
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td contenteditable="true">Reading</td>
+                            <td contenteditable="true">Review</td>
+                            <td contenteditable="true">Sleep</td>
+                            <td contenteditable="true">Family gathering</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Lecture</td>
+                            <td contenteditable="true">Search</td>
+                            <td contenteditable="true">Meal</td>
+                            <td contenteditable="true">Game</td>
+                        </tr>
+                        <c:forEach begin="1" end="11" var="item">
+                            <tr>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -247,19 +314,19 @@
                                 <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething
                                     calendar
                                 </td>
-                                <td>The single most important thing</td>
+                                <td>${weekly.weeklys.weeklys[0].title}</td>
                             </tr>
                             <tr class="lecture">
-                                <td>Lecture</td>
+                                <td>${weekly.weeklys.weeklys[1].title}</td>
                             </tr>
                             <tr class="dailyEvaluation">
-                                <td>Daily evaluation</td>
+                                <td>${weekly.weeklys.weeklys[2].title}</td>
                             </tr>
                             <tr class="work">
-                                <td>Work</td>
+                                <td>${weekly.weeklys.weeklys[3].title}</td>
                             </tr>
                             <tr class="reading">
-                                <td>Reading</td>
+                                <td>${weekly.weeklys.weeklys[4].title}</td>
                             </tr>
                             <tr>
                                 <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do
@@ -298,11 +365,18 @@
                                 <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">
                                     Timeline
                                 </td>
-                                <td>0:00</td>
+                                <td class="fw-bolder">0:00</td>
                             </tr>
                             <c:forEach var="time" begin="1" end="23">
                                 <tr>
-                                    <td>${time}:00</td>
+                                    <c:choose>
+                                        <c:when test="${time % 6 == 0}">
+                                            <td class="fw-bolder">${time}:00</td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td>${time}:00</td>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -321,7 +395,7 @@
                             <tbody>
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <td class="fw-bolder w-100" colspan="3">Target</td>
+                                    <td class="fw-bolder" colspan="3">Target</td>
                                     <td class="fw-bolder">Performance</td>
                                 </c:forEach>
                             </tr>
@@ -329,7 +403,7 @@
                             <tr class="theSingleMostImportantThing">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
-                                           value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
+                                           value="${day.data.oneThingCalendar[0]}"/>
                                     <td class="editable-cell" colspan="3" contenteditable="true"
                                         data-name="theSingleMostImportantThing"
                                         data-day="${day.day}">${theSingleMostImportantThing.target}</td>
@@ -340,7 +414,7 @@
                             </tr>
                             <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
+                                    <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
                                     <td class="editable-cell" colspan="3" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
                                     <td><input class="form-check-input"
@@ -349,8 +423,9 @@
                             </tr>
                             <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
-                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="dailyEvaluation"
+                                    <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
+                                    <td class="editable-cell" colspan="3" contenteditable="true"
+                                        data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
@@ -358,7 +433,7 @@
                             </tr>
                             <tr class="work">
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
+                                    <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
                                     <td class="editable-cell" colspan="3" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
                                     <td><input class="form-check-input"
@@ -367,7 +442,7 @@
                             </tr>
                             <tr class="reading">
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
+                                    <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
                                     <td class="editable-cell" colspan="3" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
                                     <td><input class="form-check-input"
@@ -499,9 +574,8 @@
                             </tr>
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <td class="fw-bolder" colspan="2">Expected per 30 mins</td>
-                                    <td class="fw-bolder">Actual</td>
-                                    <td class="fw-bolder">Performance</td>
+                                    <td class="fw-bolder" colspan="2">Plan</td>
+                                    <td class="fw-bolder" colspan="2">Actual</td>
                                 </c:forEach>
                             </tr>
                             <%--Timeline--%>
@@ -515,9 +589,8 @@
                                             data-name="timeLine">${data}</td>
                                         <td contenteditable="true" data-day="${day.day}"
                                             data-name="timeLine">${data}</td>
-                                        <td><input class="form-check-input dailyRoutine"
-                                                   type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
-                                                   data-day="${day.day}"></td>
+                                        <td contenteditable="true" data-day="${day.day}"
+                                            data-name="timeLine">${data}</td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -583,7 +656,7 @@
     }
 </style>
 <script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
-<script src="/assets/js/pages/form-pickers.init.js"></script>
+<script src="/assets/custom/js/management-time/management-time.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
@@ -620,17 +693,14 @@
     }
 
     $("#updateButton").click(function () {
-        $(this).prop('disabled',true);
+        $(this).prop('disabled', true);
         $("div.containerLoading").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
         const currentYearMonth = getCurrentYearMonth();
         const data = {
             userId: '${user.id}',
             days: [],
-            weekly: {
-                startDay: getPreviousSunday(currentYearMonth.currentDayParam),
-                content: {}
-            },
+            weekly: {},
             monthly: {}
         }
 
@@ -638,6 +708,10 @@
             month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
             content: [],
             dailyRoutine: []
+        };
+        const weekly = {
+            startDay: getPreviousSunday(currentYearMonth.currentDayParam),
+            weeklys: []
         };
         $('.monthTarget').each(function () {
             monthly.content.push($(this).val())
@@ -652,10 +726,13 @@
         data.monthly = monthly;
 
         $("input.form-control.weekTarget").each(function () {
-            let inputName = $(this).attr("name");
-            data.weekly.content[inputName] = $(this).val();
+            let obj = {
+                title: $(this).closest('tr').find('.weekTitle').text(),
+                content: $(this).val()
+            }
+            weekly.weeklys.push(obj)
         })
-
+        data.weekly = weekly
         const days = [];
         $('textarea').each(function () {
             const day = $(this).data('day');
@@ -668,7 +745,7 @@
                         dayObj = {
                             day: day,
                             data: {
-                                oneThingCalendar: {},
+                                oneThingCalendar: [],
                                 gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
                                 complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
                                 todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
@@ -698,7 +775,7 @@
                         dayObj = {
                             day: day,
                             data: {
-                                oneThingCalendar: {},
+                                oneThingCalendar: [],
                                 gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
                                 complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
                                 todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
@@ -730,7 +807,7 @@
                         dayObj = {
                             day: day,
                             data: {
-                                oneThingCalendar: {},
+                                oneThingCalendar: [],
                                 gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
                                 complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
                                 todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
@@ -757,10 +834,10 @@
                         performance: isChecked
                     });
                 } else {
-                    dayObj.data.oneThingCalendar[name] = {
+                    dayObj.data.oneThingCalendar.push({
                         target: value,
                         performance: isChecked
-                    };
+                    });
                 }
             }
         })
