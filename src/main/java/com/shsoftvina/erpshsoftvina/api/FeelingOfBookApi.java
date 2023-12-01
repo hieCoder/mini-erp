@@ -16,7 +16,6 @@ public class FeelingOfBookApi {
     @Autowired
     private FeelingOfBookService feelingOfBookService;
 
-
     @GetMapping
     public ResponseEntity<?> findAllByBook(@RequestParam String bookId) {
         return ResponseEntity.ok(feelingOfBookService.findAllByBook(bookId));

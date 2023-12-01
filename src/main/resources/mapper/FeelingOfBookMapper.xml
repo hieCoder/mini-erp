@@ -66,9 +66,29 @@
     </select>
 
     <select id="findByUserAndBook" resultMap="feelingOfBookResultMap">
-        SELECT *
-        FROM FEELING_OF_BOOK f INNER JOIN USER u ON f.USER_ID = u.ID
-        WHERE f.USER_ID = #{userId} AND f.BOOK_ID = #{bookId}
+        SELECT fb.ID           AS fb_id,
+               fb.FEELING      AS fb_feeling,
+               fb.QUOTE        AS fb_quote,
+               fb.LESSON       AS fb_lesson,
+               fb.ACTION       AS fb_action,
+               fb.CREATED_DATE AS fb_created_date,
+               fb.USER_ID      AS fb_user_id,
+               fb.BOOK_ID      AS fb_book_id,
+               u.ID            AS user_id,
+               u.FULLNAME      AS user_fullname,
+               u.AVATAR        AS user_avatar,
+               c.ID            AS comment_id,
+               c.USER_ID       AS comment_user_id,
+               c.CONTENT       AS comment_content,
+               c.PARENT_ID     AS comment_parent_id,
+               c.CREATED_DATE  AS comment_created_date,
+               c.MODIFIED_DATE AS comment_modified_date,
+               c.MODIFIED_BY   AS comment_modified_by
+        FROM FEELING_OF_BOOK fb
+                 LEFT JOIN COMMENT_FEELING_OF_BOOK c ON fb.ID = c.FEELING_OF_BOOK_ID AND c.PARENT_ID IS NULL
+                 LEFT JOIN USER u ON fb.USER_ID = u.ID
+                 LEFT JOIN BOOK b ON fb.BOOK_ID = b.id
+        WHERE fb.USER_ID = #{userId} AND fb.BOOK_ID = #{bookId}
     </select>
 
     <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
