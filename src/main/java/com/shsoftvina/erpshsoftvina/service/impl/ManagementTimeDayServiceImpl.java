@@ -6,34 +6,29 @@ import com.shsoftvina.erpshsoftvina.converter.WeeklyManagementTimeDayConverter;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.DailyRoutineRequest;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DailyRoutineRequest;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.CalendarContent;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.MonthlyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.MonthlyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarMonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarResponse;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarWeeklyContent;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.*;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -174,7 +169,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Override
     public int updateCalendar(CalendarUpdateRequest req) {
         String userId = req.getUserId();
-        MonthlyRequest monthlyReq = req.getMonthly();
+        CalendarMonthlyRequest monthlyReq = req.getMonthly();
         String monthlyCode = monthlyReq.getMonth();
         List<WeeklyRequest> weeklys = req.getWeeklys();
         List<CalendarDayRequest> days = req.getDays();
@@ -190,13 +185,11 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 for(CalendarDayRequest d: days){
                     ManagementTimeDay dayEntity = getManagementTimeDays(managementTimeDays, d.getDay());
                     if(dayEntity !=null){
-                        OneThingCalendarDto o = OneThingCalendarDto.builder()
-                                .theSingleMostImportantThing(new ItemDto(d.getContent().getTheSingleMostImportantThing(), false))
-                                .lecture(new ItemDto(d.getContent().getLecture(), false))
-                                .dailyEvaluation(new ItemDto(d.getContent().getDailyEvaluation(), false))
-                                .work(new ItemDto(d.getContent().getWork(), false))
-                                .reading(new ItemDto(d.getContent().getReading(), false)).build();
-                        dayEntity.setOneThingCalendar(JsonUtils.objectToJson(o));
+                        ItemDto[] oneThingCalendar = JsonUtils.jsonToObject(dayEntity.getOneThingCalendar(), ItemDto[].class);
+                        for(int i =0; i<oneThingCalendar.length; i++){
+                            oneThingCalendar[i].setTarget(d.getContent()[i]);
+                        }
+                        dayEntity.setOneThingCalendar(JsonUtils.objectToJson(oneThingCalendar));
                         editListDay.add(dayEntity);
                     } else{
                         dayEntity = managementTimeDayConvert.toEntity(userId, d);
@@ -236,7 +229,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 for(WeeklyRequest w: weeklys){
                     WeeklyManagementTimeDay weeklyEntity = getWeeklyManagementTimeDays(weeklyManagementTimeDays, w.getStartDay());
                     if(weeklyEntity !=null){
-                        weeklyEntity.setContent(JsonUtils.objectToJson(w.getContent()));
+                        weeklyEntity.setContent(JsonUtils.objectToJson(w.getWeeklys()));
                         editListWeekly.add(weeklyEntity);
                     } else{
                         weeklyEntity = weeklyManagementTimeDayConverter.toEntity(userId, w);
@@ -389,7 +382,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             return WeeklyManagementTimeDayResponse.builder()
                     .weeklyId(weeklyManagementTimeDay != null ? weeklyManagementTimeDay.getId() : null)
                     .startDate(weeklyManagementTimeDay != null ? weeklyManagementTimeDay.getCode() : null)
-                    .weeklyContents(weeklyManagementTimeDay != null ? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), CalendarWeeklyContent.class) : null)
+                    .weeklys(weeklyManagementTimeDay != null ? JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), WeeklyDto[].class) : null)
                     .build();
         });
 
@@ -444,16 +437,16 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         CompletableFuture<Void> asyncTaskWeek = CompletableFuture.runAsync(()->{
             WeeklyRequest weeklyRequest = daysUpdateRequest.getWeekly();
             String weeklyCode = DateUtils.formatDate(weeklyRequest.getStartDay());
-            CalendarContent weeklyContent = weeklyRequest.getContent();
+            WeeklyDto[] weeklys = weeklyRequest.getWeeklys();
             WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
             if(weeklyEntity == null){
-                WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklyContent));
+                WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklys));
                 CompletableFuture<Void> createWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyE);
                 });
                 asyncTasks.add(createWeeklyManagementTimeDayAsync);
             } else{
-                weeklyEntity.setContent(JsonUtils.objectToJson(weeklyContent));
+                weeklyEntity.setContent(JsonUtils.objectToJson(weeklys));
                 CompletableFuture<Void> updateWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
                 });
@@ -502,5 +495,4 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         return 1;
     }
-
 }
