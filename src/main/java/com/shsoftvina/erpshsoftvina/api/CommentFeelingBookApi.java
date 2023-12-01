@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/comment-feeling-Book")
+@RequestMapping("/api/v1/comment-feeling-book")
 public class CommentFeelingBookApi {
 
     @Autowired

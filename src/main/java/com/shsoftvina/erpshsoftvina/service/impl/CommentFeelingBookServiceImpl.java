@@ -23,7 +23,6 @@ public class CommentFeelingBookServiceImpl implements CommentFeelingBookService 
     public CommentFeelingBookResponse createCommentFeeling(CreateCommentFeelingBookRequest createCommentFeelingBookRequest) {
         try {
             CommentFeelingBook commentFeelingBook = commentFeelingBookConverter.toEntity(createCommentFeelingBookRequest);
-            System.out.println(commentFeelingBook);
             commentFeelingBookMapper.createCommentFeeling(commentFeelingBook);
             return commentFeelingBookConverter.toResponse(commentFeelingBook);
         } catch (Exception e) {

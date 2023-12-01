@@ -293,7 +293,32 @@
         });
     });
 
+    $(document).on('click', '.btn-create-comment', function (e) {
+        var closestForm = $(this).closest('form');
+        var inputE = closestForm.find('.content-create-comment');
+        var inputVal = inputE.val();
+        if(inputVal == ''){
+            var errorE = closestForm.find('.message-validate-create-cmt');
+            errorE.text('This fill is empty');
+            errorE.css('color', 'red');
+        } else{
+            var id = $(this).data('id');
 
+            var object = {
+                content: inputVal,
+                feelingBookId: id,
+                parentId: null,
+                userId: userCurrent.id
+            }
+            callAjaxByJsonWithData('/api/v1/comment-feeling-book', 'POST', object, function (rs) {
+                var newComment = createComment(rs);
+                var commentListE = $('.comment-list[data-id="'+ id + '"]');
+                commentListE.prepend(newComment);
+
+                resetFormComment(closestForm);
+            });
+        }
+    });
 </script>
 </body>
 </html>

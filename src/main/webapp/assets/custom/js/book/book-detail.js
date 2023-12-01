@@ -81,19 +81,25 @@ function createFeeling(feeling) {
                                     </div>
                                     <div class="card-footer">
                                         <div class="create-comment">
-                                            <form>
+                                            <form data-id="`+feeling.id +`">
                                                 <div class="form-group d-flex">
-                                                    <input type="text" name="title" class="title-post-comment form-control" placeholder="Your comment">
-                                                    <button type="submit" class="btn btn-success btn-load ms-1">
+                                                    <input type="text" name="content" class="content-create-comment form-control" placeholder="Your comment" required>
+                                                    <button data-id="`+feeling.id +`" type="button" class="btn-create-comment btn btn-success btn-load ms-1">
                                                         <span class="d-flex align-items-center">
                                                             <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
                                                             <span class="flex-grow-1">Comment</span>
                                                         </span>
                                                     </button>
                                                 </div>
+                                                <div class="ms-1 pt-1 message-validate-create-cmt"></div>
                                             </form>
                                         </div>
-                                        <div class="comment-list">`+ comments +`</div>
+                                        <div class="comment-list" data-id="`+feeling.id+`">`+ comments +`</div>
                                     </div>
                                 </div>`;
+}
+
+function resetFormComment(formElememt) {
+    $(formElememt).find('.content-create-comment').val('');
+    $(formElememt).find('.message-validate-create-cmt').text('');
 }
