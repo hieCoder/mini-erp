@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
     session.setAttribute("pathMain", "/todo/");
 %>
@@ -15,6 +16,9 @@
 <head>
     <title>Detail of Day</title>
     <link rel="stylesheet" href="../../../../assets/custom/css/management-time/style.css">
+    <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/classic.min.css"/>
+    <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/monolith.min.css"/>
+    <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <style>
         .table-container {
             overflow-x: auto;
@@ -131,7 +135,7 @@
                                                 0%
                                             </c:when>
                                             <c:otherwise>
-                                                ${((dailyRoutine.performance / dailyRoutine.target) * 100)}%
+                                                <fmt:formatNumber value="${((dailyRoutine.performance / dailyRoutine.target) * 100)}" pattern="#.##"/>%
                                             </c:otherwise>
                                         </c:choose>
                                     </c:if>
@@ -287,6 +291,10 @@
                                     improvements</h5></td>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td class="fw-bolder">Process</td>
+                            </tr>
+                            <tr>
                                 <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">
                                     Timeline
                                 </td>
@@ -306,14 +314,14 @@
                             <thead>
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <th colspan="2" class="fw-bolder"><h5>${day.day}</h5></th>
+                                    <th colspan="4" class="fw-bolder"><h5>${day.day}</h5></th>
                                 </c:forEach>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
-                                    <td class="fw-bolder w-75">Target</td>
+                                    <td class="fw-bolder w-100" colspan="3">Target</td>
                                     <td class="fw-bolder">Performance</td>
                                 </c:forEach>
                             </tr>
@@ -322,7 +330,7 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar.theSingleMostImportantThing}"/>
-                                    <td class="editable-cell " contenteditable="true"
+                                    <td class="editable-cell" colspan="3" contenteditable="true"
                                         data-name="theSingleMostImportantThing"
                                         data-day="${day.day}">${theSingleMostImportantThing.target}</td>
                                     <td><input class="form-check-input"
@@ -333,7 +341,7 @@
                             <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar.lecture}"/>
-                                    <td class="editable-cell" contenteditable="true" data-name="lecture"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
@@ -342,7 +350,7 @@
                             <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar.dailyEvaluation}"/>
-                                    <td class="editable-cell" contenteditable="true" data-name="dailyEvaluation"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
@@ -351,7 +359,7 @@
                             <tr class="work">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar.work}"/>
-                                    <td class="editable-cell" contenteditable="true" data-name="work"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
@@ -360,7 +368,7 @@
                             <tr class="reading">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar.reading}"/>
-                                    <td class="editable-cell" contenteditable="true" data-name="reading"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
@@ -371,7 +379,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[0]}" var="sixToTwelvePm"/>
-                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelvePm.performance ? 'checked' : ''}></td>
@@ -380,7 +388,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelvePm[1]}" var="sixToTwelvePm"/>
-                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelvePm">${sixToTwelvePm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelvePm.performance ? 'checked' : ''}></td>
@@ -389,7 +397,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[0]}" var="twelveToSixPm"/>
-                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-day="${day.day}"
                                         data-name="twelveToSixPm">${twelveToSixPm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${twelveToSixPm.performance ? 'checked' : ''}></td>
@@ -398,7 +406,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.twelveToSixPm[1]}" var="twelveToSixPm"/>
-                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-day="${day.day}"
                                         data-name="twelveToSixPm">${twelveToSixPm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${twelveToSixPm.performance ? 'checked' : ''}></td>
@@ -407,7 +415,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[0]}" var="sixToTwelveAm"/>
-                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelveAm.performance ? 'checked' : ''}></td>
@@ -416,7 +424,7 @@
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set value="${day.data.toDoList.sixToTwelveAm[1]}" var="sixToTwelveAm"/>
-                                    <td class="editable-cell" contenteditable="true" data-day="${day.day}"
+                                    <td class="editable-cell" colspan="3" contenteditable="true" data-day="${day.day}"
                                         data-name="sixToTwelveAm">${sixToTwelveAm.target}</td>
                                     <td><input class="form-check-input"
                                                type="checkbox" ${sixToTwelveAm.performance ? 'checked' : ''}></td>
@@ -438,7 +446,7 @@
                                                        value="${weekly.monthlys[1].dailyRoutine[loop.index]}"/>
                                             </c:otherwise>
                                         </c:choose>
-                                        <td class="editable-cell">${dailyRoutine.title}</td>
+                                        <td class="editable-cell" colspan="3">${dailyRoutine.title}</td>
                                         <td><input class="form-check-input dailyRoutine"
                                                    type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
                                                    data-day="${day.day}"></td>
@@ -451,7 +459,7 @@
                                 <tr name="gratitudeDiary">
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="gratitudeDiary" value="${day.data.gratitudeDiary[loop.index]}"/>
-                                        <td colspan="2"><textarea
+                                        <td colspan="4"><textarea
                                                 class="form-control" data-name="gratitudeDiary"
                                                 data-day="${day.day}">${gratitudeDiary}</textarea></td>
                                     </c:forEach>
@@ -462,7 +470,7 @@
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="affirmation" value="${day.data.affirmation}"/>
-                                    <td colspan="2">
+                                    <td colspan="4">
                                         <textarea class="form-control" data-name="affirmation"
                                                   data-day="${day.day}">${affirmation}</textarea>
                                     </td>
@@ -472,7 +480,7 @@
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="complimentForMeToday" value="${day.data.complimentForMeToday}"/>
-                                    <td colspan="2">
+                                    <td colspan="4">
                                         <textarea class="form-control" data-name="complimentForMeToday"
                                                   data-day="${day.day}">${complimentForMeToday}</textarea>
                                     </td>
@@ -483,10 +491,17 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="todaysReflectionsAndImprovements"
                                            value="${day.data.todaysReflectionsAndImprovements}"/>
-                                    <td colspan="2">
+                                    <td colspan="4">
                                         <textarea class="form-control" data-name="todaysReflectionsAndImprovements"
                                                   data-day="${day.day}">${todaysReflectionsAndImprovements}</textarea>
                                     </td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach var="day" items="${weekly.days}">
+                                    <td class="fw-bolder" colspan="2">Expected per 30 mins</td>
+                                    <td class="fw-bolder">Actual</td>
+                                    <td class="fw-bolder">Performance</td>
                                 </c:forEach>
                             </tr>
                             <%--Timeline--%>
@@ -494,8 +509,15 @@
                                 <tr name="timeLine">
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
-                                        <td colspan="2" contenteditable="true" data-day="${day.day}"
+                                        <td contenteditable="true" data-day="${day.day}"
                                             data-name="timeLine">${data}</td>
+                                        <td contenteditable="true" data-day="${day.day}"
+                                            data-name="timeLine">${data}</td>
+                                        <td contenteditable="true" data-day="${day.day}"
+                                            data-name="timeLine">${data}</td>
+                                        <td><input class="form-check-input dailyRoutine"
+                                                   type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
+                                                   data-day="${day.day}"></td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -532,7 +554,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
                 </table>
             </div>
@@ -561,6 +582,8 @@
         margin: 0;
     }
 </style>
+<script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
+<script src="/assets/js/pages/form-pickers.init.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
