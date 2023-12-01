@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShowBookResponse {
+public class BookResponse {
 
     private String id;
     private String title;

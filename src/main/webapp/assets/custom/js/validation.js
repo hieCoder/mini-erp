@@ -7,7 +7,7 @@ function Validator(options){
         var rules=selectorRules[rule.selector];
         for(var i = 0;i<rules.length;i++){
             // <input>
-            if(inputElement.nodeName === 'INPUT') {
+            if(inputElement.nodeName === 'INPUT' || inputElement.nodeName === 'TEXTAREA') {
                 errorMessage = rules[i](inputElement.value);
             }
             // ckeditor

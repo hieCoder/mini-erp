@@ -7,10 +7,9 @@ import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookRe
 import java.util.List;
 
 public interface FeelingOfBookService {
-    List<FeelingOfBookResponse> findAll();
     FeelingOfBookResponse createFeelingOfBook(FeelingOfBookCreateRequest feelingOfBookCreateRequest);
     FeelingOfBookResponse findById(String id);
     FeelingOfBookResponse updateFeelingOfBook(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest);
-    FeelingOfBookResponse findFeelingByUser(String bookId, String userId);
+    FeelingOfBookResponse findByUserAndBook(String bookId, String userId);
     int deleteFeelingOfBook(String bookId, String userId);
 }

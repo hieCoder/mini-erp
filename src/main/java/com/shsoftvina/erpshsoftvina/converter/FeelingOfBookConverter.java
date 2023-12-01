@@ -63,7 +63,7 @@ public class FeelingOfBookConverter {
 
     public FeelingOfBook toEntity(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest){
 
-        FeelingOfBook feelingOfBook = feelingOfBookMapper.findById(feelingOfBookUpdateRequest.getId());
+        FeelingOfBook feelingOfBook = feelingOfBookMapper.findByUserAndBook(feelingOfBookUpdateRequest.getUserId(), feelingOfBookUpdateRequest.getBookId());
         feelingOfBook.setFeeling(feelingOfBookUpdateRequest.getFeeling());
         feelingOfBook.setQuote(feelingOfBookUpdateRequest.getQuote());
         feelingOfBook.setLesson(feelingOfBookUpdateRequest.getLesson());

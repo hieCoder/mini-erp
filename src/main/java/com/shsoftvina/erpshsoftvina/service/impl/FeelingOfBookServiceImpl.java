@@ -27,11 +27,6 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     private FeelingOfBookConverter feelingOfBookConverter;
 
     @Override
-    public List<FeelingOfBookResponse> findAll() {
-        return feelingOfBookMapper.findAll().stream().map(f -> feelingOfBookConverter.toResponse(f)).collect(Collectors.toList());
-    }
-
-    @Override
     public FeelingOfBookResponse createFeelingOfBook(FeelingOfBookCreateRequest feelingOfBookCreateRequest) {
 
         if (feelingOfBookCreateRequest.getBookId() == null)
@@ -56,8 +51,10 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     @Override
     public FeelingOfBookResponse updateFeelingOfBook(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest) {
 
-        if (feelingOfBookUpdateRequest.getId() == null)
-            throw new NotFoundException(MessageErrorUtils.notFound("id"));
+        if (feelingOfBookUpdateRequest.getBookId() == null)
+            throw new NotFoundException(MessageErrorUtils.notFound("bookId"));
+        else if (feelingOfBookUpdateRequest.getUserId() == null)
+            throw new NotFoundException(MessageErrorUtils.notFound("userId"));
 
         FeelingOfBook feelingOfBook = feelingOfBookConverter.toEntity(feelingOfBookUpdateRequest);
         try {
@@ -69,8 +66,8 @@ public class FeelingOfBookServiceImpl implements FeelingOfBookService {
     }
 
     @Override
-    public FeelingOfBookResponse findFeelingByUser(String bookId, String userId) {
-        return feelingOfBookConverter.toResponse(feelingOfBookMapper.findFeelingByUser(bookId, userId));
+    public FeelingOfBookResponse findByUserAndBook(String bookId, String userId) {
+        return feelingOfBookConverter.toResponse(feelingOfBookMapper.findByUserAndBook(userId, bookId));
     }
 
     @Override

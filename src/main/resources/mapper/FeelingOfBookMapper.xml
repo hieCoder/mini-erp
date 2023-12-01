@@ -3,13 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper">
 
-    <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook" resultMap="feelingOfBookResultMap">
-        SELECT *
-        FROM FEELING_OF_BOOK f
-        INNER JOIN USER u ON f.USER_ID = u.ID
-        INNER JOIN BOOK b ON f.BOOK_ID = b.ID
-    </select>
-
     <update id="updateFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         UPDATE FEELING_OF_BOOK
         SET
@@ -24,6 +17,12 @@
         SELECT *
         FROM FEELING_OF_BOOK f INNER JOIN USER u ON f.USER_ID = u.ID
         WHERE f.ID = #{id}
+    </select>
+
+    <select id="findByUserAndBook" resultMap="feelingOfBookResultMap">
+        SELECT *
+        FROM FEELING_OF_BOOK f INNER JOIN USER u ON f.USER_ID = u.ID
+        WHERE f.USER_ID = #{userId} AND f.BOOK_ID = #{bookId}
     </select>
 
     <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
@@ -55,28 +54,11 @@
         WHERE USER_ID = #{userId} AND BOOK_ID = #{bookId}
     </delete>
 
-    <select id="findAllByBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook" resultMap="feelingOfBookDetailResultMap">
+    <select id="findAllByBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook" resultMap="feelingOfBookResultMap">
         SELECT *
         FROM FEELING_OF_BOOK f
                  INNER JOIN USER u ON f.USER_ID = u.ID
                  INNER JOIN BOOK b ON f.BOOK_ID = b.ID
         WHERE b.ID = #{id}
     </select>
-
-    <select id="findFeelingByUser" parameterType="String" resultMap="feelingOfBookDetailResultMap">
-        SELECT fb.*
-        FROM FEELING_OF_BOOK AS fb
-        where fb.book_id = #{bookId}
-        and fb.user_id = #{userId};
-    </select>
-
-    <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
-        <id property="id" column="id"/>
-        <result property="feeling" column="FEELING"/>
-        <result property="quote" column="QUOTE"/>
-        <result property="lesson" column="LESSON"/>
-        <result property="action" column="ACTION"/>
-        <result property="createdDate" column="CREATED_DATE"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"></association>
-    </resultMap>
 </mapper>

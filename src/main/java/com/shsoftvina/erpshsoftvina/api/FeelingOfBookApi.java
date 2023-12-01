@@ -16,20 +16,15 @@ public class FeelingOfBookApi {
     @Autowired
     private FeelingOfBookService feelingOfBookService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(feelingOfBookService.findAll());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id) {
         return ResponseEntity.ok(feelingOfBookService.findById(id));
     }
 
     @GetMapping("/{bookId}/{userId}")
-    public ResponseEntity<?> findByUser(@PathVariable("bookId") String bookId,
+    public ResponseEntity<?> findByUserAndBook(@PathVariable("bookId") String bookId,
                                         @PathVariable("userId") String userId) {
-        return ResponseEntity.ok(feelingOfBookService.findFeelingByUser(bookId,userId));
+        return ResponseEntity.ok(feelingOfBookService.findByUserAndBook(bookId,userId));
     }
 
     @PostMapping
