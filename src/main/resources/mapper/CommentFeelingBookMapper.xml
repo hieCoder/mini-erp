@@ -4,7 +4,7 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentFeelingBookMapper">
 
     <insert id="createCommentFeeling" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
-        INSERT INTO comment_feeling_of_book (ID, CONTENT, CREATED_DATE, FEELING_OF_BOOK_ID, USER_ID, PARENT_ID)
+        INSERT INTO COMMENT_FEELING_OF_BOOK (ID, CONTENT, CREATED_DATE, FEELING_OF_BOOK_ID, USER_ID, PARENT_ID)
         VALUES (#{id}, #{content}, #{createdDate}, #{feelingOfBook.id}, #{user.id}, #{parentComment.id});
     </insert>
 
@@ -49,7 +49,7 @@
 
     <select id="getParentComment" resultMap="parentCommentResultMap">
         SELECT ID AS comment_parent_id
-        FROM COMMENT_TASK
+        FROM COMMENT_FEELING_OF_BOOK
         WHERE ID = #{id}
     </select>
 

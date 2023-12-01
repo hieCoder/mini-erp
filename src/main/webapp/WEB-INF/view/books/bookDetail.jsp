@@ -211,6 +211,30 @@
 </div>
 <!--end delete modal -->
 
+<div class="modal fade flip" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 text-center">
+                    <h4>You are sure ?</h4>
+                    <p class="text-muted fs-14 mb-4">Delete this comment?</p>
+                    <div class="hstack gap-2 justify-content-center remove">
+                        <button class="btn btn-danger btn-load" id="delete-comment" data-id="">
+                            <span class="d-flex align-items-center">
+                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                <span class="flex-grow-1">Yes, Delete It</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end delete modal -->
+
 <script src="/assets/custom/js/book/book-detail.js"></script>
 <script>
     var bookId = '${bookId}';
@@ -295,10 +319,10 @@
 
     $(document).on('click', '.btn-create-comment', function (e) {
         var closestForm = $(this).closest('form');
-        var inputE = closestForm.find('.content-create-comment');
+        var inputE = closestForm.find('.content-comment');
         var inputVal = inputE.val();
         if(inputVal == ''){
-            var errorE = closestForm.find('.message-validate-create-cmt');
+            var errorE = closestForm.find('.message-validate-cmt');
             errorE.text('This fill is empty');
             errorE.css('color', 'red');
         } else{
@@ -310,14 +334,78 @@
                 parentId: null,
                 userId: userCurrent.id
             }
+
+            $(closestForm).find('.spinner-border').removeClass('d-none');
             callAjaxByJsonWithData('/api/v1/comment-feeling-book', 'POST', object, function (rs) {
                 var newComment = createComment(rs);
                 var commentListE = $('.comment-list[data-id="'+ id + '"]');
                 commentListE.prepend(newComment);
 
                 resetFormComment(closestForm);
+                $(closestForm).find('.spinner-border').addClass('d-none');
             });
         }
+    });
+
+    $(document).on('click', '.remove-comment-btn', function (e) {
+        var id = $(this).data('id');
+        console.log(id);
+        $('#delete-comment').attr('data-id', id);
+    });
+
+    $(document).on('click', '#delete-comment', function (e) {
+        var id = $(this).attr('data-id');
+        $('#deleteCommentModal .spinner-border').removeClass('d-none');
+        callAjaxByJsonWithData("/api/v1/comment-feeling-book/" + id, "DELETE", null, function (rs) {
+            $('#deleteCommentModal .spinner-border').addClass('d-none');
+            $('#deleteCommentModal').modal('hide');
+            $('.comment-container[data-id="' + id + '"]').remove();
+        });
+    });
+
+    $(document).on('click', '.btn-edit', function (e) {
+        var id = $(this).attr('data-id');
+        var formE = $('.form-edit[data-id="' + id + '"]');
+        if(formE.html() == ''){
+            var swal = showAlertLoading();
+            callAjaxByJsonWithData('/api/v1/comment-feeling-book/'+id, 'GET', null, function (rs){
+                var formEdit = showFormEditComment(rs);
+                formE.html(formEdit);
+                swal.close();
+            });
+        }
+    });
+
+    $(document).on('click', '.btn-edit-comment', function (e) {
+        var closestForm = $(this).closest('form');
+        var inputE = closestForm.find('.content-comment');
+        var inputVal = inputE.val();
+        if(inputVal == ''){
+            var errorE = closestForm.find('.message-validate-cmt');
+            errorE.text('This fill is empty');
+            errorE.css('color', 'red');
+        } else{
+            var id = $(this).data('id');
+
+            var object = {
+                content: inputVal,
+                id: id
+            }
+
+            $(closestForm).find('.spinner-border').removeClass('d-none');
+            callAjaxByJsonWithData('/api/v1/comment-feeling-book', 'PUT', object, function (rs) {
+
+                $('.content-comment[data-id="' + id + '"]').text(rs.content);
+                $(closestForm).remove();
+
+                resetFormComment(closestForm);
+            });
+        }
+    });
+
+    $(document).on('click', '.btn-cancel', function (e) {
+        var id = $(this).attr('data-id');
+        $('.form-edit[data-id="' + id + '"]').html('');
     });
 </script>
 </body>

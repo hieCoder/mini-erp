@@ -3,18 +3,18 @@ function resetFormFeeling(idForm){
 }
 
 function createComment(comment) {
-    return `<div class="d-flex mt-3 comment-container" data-id="">
+    return `<div class="d-flex mt-3 comment-container" data-id="`+comment.id+`">
                                             <div class="flex-shrink-0">
                                                 <img src="`+comment.user.avatar+`" alt="" class="avatar-xs rounded-circle">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h5 class="fs-13"><a>`+comment.user.fullname+`</a> <small class="text-muted">`+comment.createdDate+`</small></h5>
-                                                <p class="mb-2">`+comment.content+`</p>
-                                                <a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="" style="margin-right: 3px; font-size: 10px;"><i class="mdi mdi-reply"></i> Reply</a>
-                                                <a style="font-size: 11px;" href="javascript: void(0);" data-id="" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
-                                                <a style="font-size: 11px;" href="#deleteCommentModal" data-bs-toggle="modal" data-id="" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>
-                                                <div class="form-reply mt-3" data-id=""></div>
-                                                <div class="form-edit mt-3" data-id=""></div>
+                                                <p class="mb-2 content-comment" data-id="`+comment.id+`">`+comment.content+`</p>
+<!--                                                <a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="" style="margin-right: 3px; font-size: 10px;"><i class="mdi mdi-reply"></i> Reply</a>-->
+                                                <a style="font-size: 11px;" href="javascript: void(0);" data-id="`+comment.id+`" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
+                                                <a style="font-size: 11px;" href="#deleteCommentModal" data-bs-toggle="modal" data-id="`+comment.id+`" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>
+<!--                                                <div class="form-reply mt-3" data-id=""></div>-->
+                                                <div class="form-edit mt-3" data-id="`+comment.id+`"></div>
                                             </div>
                                         </div>`;
 }
@@ -83,7 +83,7 @@ function createFeeling(feeling) {
                                         <div class="create-comment">
                                             <form data-id="`+feeling.id +`">
                                                 <div class="form-group d-flex">
-                                                    <input type="text" name="content" class="content-create-comment form-control" placeholder="Your comment" required>
+                                                    <input type="text" name="content" class="content-comment form-control" placeholder="Your comment" required>
                                                     <button data-id="`+feeling.id +`" type="button" class="btn-create-comment btn btn-success btn-load ms-1">
                                                         <span class="d-flex align-items-center">
                                                             <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
@@ -91,7 +91,7 @@ function createFeeling(feeling) {
                                                         </span>
                                                     </button>
                                                 </div>
-                                                <div class="ms-1 pt-1 message-validate-create-cmt"></div>
+                                                <div class="ms-1 pt-1 message-validate-cmt"></div>
                                             </form>
                                         </div>
                                         <div class="comment-list" data-id="`+feeling.id+`">`+ comments +`</div>
@@ -100,6 +100,22 @@ function createFeeling(feeling) {
 }
 
 function resetFormComment(formElememt) {
-    $(formElememt).find('.content-create-comment').val('');
-    $(formElememt).find('.message-validate-create-cmt').text('');
+    $(formElememt).find('.content-comment').val('');
+    $(formElememt).find('.message-validate-cmt').text('');
+}
+
+function showFormEditComment(comment) {
+    return `<form class="edit-comment-form" data-id="` + comment.id +`">
+                                                        <div class="form-group d-flex">
+                                                            <input type="text" name="content" value="`+comment.content+`" class="content-comment form-control" placeholder="Your comment" required>
+                                                            <button data-id="` + comment.id +`" type="button" class="btn-edit-comment btn btn-success btn-load ms-1">
+                                                                <span class="d-flex align-items-center">
+                                                                    <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+                                                                    <span class="flex-grow-1">Edit</span>
+                                                                </span>
+                                                            </button>
+                                                            <button data-id="` + comment.id +`" class="ms-1 btn btn-light btn-cancel">Cancel</button>
+                                                        </div>
+                                                        <div class="ms-1 pt-1 message-validate-cmt"></div>
+                                                    </form>`;
 }
