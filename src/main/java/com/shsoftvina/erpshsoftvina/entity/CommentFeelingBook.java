@@ -12,15 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FeelingOfBook {
-
+public class CommentFeelingBook {
     private String id;
+    private String content;
+    private FeelingOfBook feelingOfBook;
     private User user;
-    private String feeling;
-    private String quote;
-    private String lesson;
-    private String action;
+    private CommentFeelingBook parentComment;
+    private String modifiedBy;
     private Date createdDate;
-    private Book book;
-    private List<CommentFeelingBook> comments;
+    private Date modifiedDate;
+    private List<CommentFeelingBook> childComments;
 }

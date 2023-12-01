@@ -1,0 +1,10 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentFeelingBookMapper">
+
+    <insert id="createCommentFeeling" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+        INSERT INTO comment_feeling_of_book (ID, CONTENT, CREATED_DATE, FEELING_OF_BOOK_ID, USER_ID, PARENT_ID)
+        VALUES (#{id}, #{content}, #{createdDate}, #{feelingOfBookId.id}, #{user.id}, #{parentCommentId.id});
+    </insert>
+</mapper>
