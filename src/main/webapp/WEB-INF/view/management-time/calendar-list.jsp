@@ -83,7 +83,7 @@
         <table class="table table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
-                <th scope="col"></th>
+                <th scope="col" class="text-warning">Categories</th>
                 <th scope="col" class="text-danger">Sun</th>
                 <th scope="col">Mon</th>
                 <th scope="col">Tue</th>
@@ -200,15 +200,15 @@
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e) => {
                             if (e === "") {
-                                xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
+                                xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
                             } else {
-                                xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
+                                xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
                             }
                         })
                         monthlyTarget.innerHTML = xhtml;
                     } else {
-                        for (let i =0;i<3;i++) {
-                            xhtml +=  '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
+                        for (let i = 0; i < 3; i++) {
+                            xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
                         }
                         monthlyTarget.innerHTML = xhtml;
                     }
@@ -283,32 +283,6 @@
                                     <%--    }--%>
                                     <%--} else --%>
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
-                                        <%--let found = false;--%>
-                                        <%--if (responseData != null && responseData.length > 0) {--%>
-                                        <%--    responseData.forEach((e) => {--%>
-                                        <%--        e.listDayOfWeek.forEach((week) => {--%>
-                                        <%--            const dateInResponse = new Date(week.day);--%>
-                                        <%--            if (--%>
-                                        <%--                currentDate.getFullYear() === dateInResponse.getFullYear() &&--%>
-                                        <%--                currentDate.getMonth() === dateInResponse.getMonth() &&--%>
-                                        <%--                dayNumber === dateInResponse.getDate()--%>
-                                        <%--            ) {--%>
-                                        <%--                const link = document.createElement('a');--%>
-                                        <%--                link.classList.add("p-2");--%>
-                                        <%--                link.classList.add("fs-6");--%>
-                                        <%--                link.textContent = dayNumber;--%>
-                                        <%--                link.href = "${user.id}" + '/day/?id=' + week.id;--%>
-                                        <%--                if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {--%>
-                                        <%--                    link.classList.add("badge", "badge-soft-danger", "rounded-pill");--%>
-                                        <%--                }--%>
-                                        <%--                cell.appendChild(link);--%>
-                                        <%--                found = true;--%>
-                                        <%--            }--%>
-                                        <%--        })--%>
-                                        <%--    });--%>
-                                        <%--}--%>
-
-                                        // if (!found) {
                                         const link = document.createElement('a');
                                         link.textContent = dayNumber;
                                         link.classList.add("p-2");
@@ -320,49 +294,64 @@
                                         const currentMonth = currentDate.getMonth() + 1;
                                         link.href = "weekly-detail/" + "${user.id}" + "?currentDay=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                         cell.appendChild(link);
-                                        // }
                                     }
                                     cell.classList.add("fw-bold")
                                     cell.classList.add("fst-italic")
                                 }
-                                // else {
-                                //     if (responseData != null && responseData.length > 0) {
-                                //         responseData.forEach((e) => {
-                                //             const startDate = new Date(e.startDate);
-                                //             const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-                                //             const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
-                                //             var weekNumber;
-                                //             if (e.startDate === formattedFirstSunday) {
-                                //                 weekNumber = 1;
-                                //             } else {
-                                //                 weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
-                                //             }
-                                //             if (weekNumber === ((i / 6) + 1)) {
-                                //                 const link = document.createElement("button");
-                                //                 link.textContent = "Edit";
-                                //                 link.classList.add("btn");
-                                //                 link.classList.add("btn-primary");
-                                //                 link.classList.add("showWeeklyUpdate");
-                                //                 link.setAttribute("data-id", e.weeklyId);
-                                //                 cell.appendChild(link);
-                                //             }
-                                //         })
-                                //         cell.classList.add("fw-bold")
-                                //         cell.classList.add("fst-italic")
-                                //     }
-                                // }
                             } else {
                                 if (j === 0) {
-                                    const dayNames = ['The Single Most Important Thing', 'Lecture', 'Daily Evaluation', 'Work', 'Reading'];
+                                    const dayTodo = (i % 6) - 1;
+                                    const dayNumber = countLine * 7 + 3;
+                                    const year = currentDate.getFullYear();
+                                    const currentMonth = currentDate.getMonth() + 1;
+                                    let currentColDay;
+                                    if (dayNumber > daysInMonth) {
+                                        currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + daysInMonth;
+                                    } else {
+                                        currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
+                                    }
+                                    if (weekData != null && weekData.length > 0) {
+                                        weekData.forEach((e) => {
+                                            if (e.weeklys === null) {
+                                                return;
+                                            }
+                                            const startDate = new Date(e.startDate);
+                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
+                                            var weekNumber;
+                                            if (e.startDate === formattedFirstSunday) {
+                                                weekNumber = 1;
+                                            } else {
+                                                weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
+                                            }
+                                            if ((dayNumber - 7) === daysInMonth) {
+                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay, true));
+                                            } else {
+                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
+                                            }
+                                            if (weekNumber === (Math.floor((i / 6) + 1))) {
+                                                cell.textContent = e.weeklys[dayTodo].title;
+                                            }
+                                            cell.setAttribute('data-array', dayTodo);
+                                        });
+                                    } else {
+                                        cell.setAttribute('data-array', dayTodo);
+                                        if ((dayNumber - 7) === daysInMonth) {
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay, true));
+                                        } else {
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
+                                        }
+                                    }
                                     row.classList.add(dayCodeTrTag[(i % 6) - 1])
-                                    cell.textContent = dayNames[(i % 6) - 1];
+                                    cell.classList.add("title");
                                     cell.classList.add("text-wrap")
                                     cell.classList.add("fw-bold")
                                     cell.classList.add("fst-italic")
+                                    cell.setAttribute('contenteditable', 'true');
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
-                                        const dayTodo = dayCodeTrTag[(i % 6) - 1];
+                                        const dayTodo = (i % 6) - 1;
                                         const year = currentDate.getFullYear();
                                         const currentMonth = currentDate.getMonth() + 1;
                                         const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
@@ -370,28 +359,25 @@
                                             cell.classList.add("fst-italic")
                                             cell.classList.add("text-wrap")
                                             dayData.forEach((day) => {
-                                                    const dateInResponse = new Date(day.day);
-                                                    const currentDay = countLine * 7 + j - startDay;
-                                                    if (
-                                                        currentDate.getMonth() === dateInResponse.getMonth() &&
-                                                        currentDay === dateInResponse.getDate()
-                                                    ) {
-                                                        const targetTodo = day.data.oneThingCalendar[dayTodo];
-                                                        if (targetTodo != null) {
-                                                            cell.textContent = targetTodo.target;
-                                                        }
+                                                const dateInResponse = new Date(day.day);
+                                                const currentDay = countLine * 7 + j - startDay;
+                                                if (
+                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                    currentDay === dateInResponse.getDate()
+                                                ) {
+                                                    const targetTodo = day.data[dayTodo];
+                                                    if (targetTodo != null) {
+                                                        cell.textContent = targetTodo.target;
                                                     }
+                                                }
                                             })
-                                        } else {
-                                            cell.setAttribute('data-name', dayTodo);
-                                            cell.setAttribute('data-day', currentColDay);
                                         }
-                                        cell.setAttribute('data-name', dayTodo);
+                                        cell.setAttribute('data-array', dayTodo);
                                         cell.setAttribute('data-day', currentColDay);
                                         cell.setAttribute('contenteditable', 'true');
                                     }
                                 } else {
-                                    const dayTodo = dayCodeTrTag[(i % 6) - 1];
+                                    const dayTodo = (i % 6) - 1;
                                     const dayNumber = countLine * 7 + j - startDay;
                                     const year = currentDate.getFullYear();
                                     const currentMonth = currentDate.getMonth() + 1;
@@ -406,7 +392,7 @@
                                         cell.classList.add("fst-italic")
                                         cell.classList.add("text-wrap")
                                         weekData.forEach((e) => {
-                                            if (e.weeklyContents === null) {
+                                            if (e.weeklys === null) {
                                                 return;
                                             }
                                             const startDate = new Date(e.startDate);
@@ -418,24 +404,25 @@
                                             } else {
                                                 weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
                                             }
-                                            if (weekNumber === (Math.floor((i / 6) + 1))) {
-                                                cell.textContent = e.weeklyContents[dayTodo];
-                                            }
                                             if ((dayNumber - 7) === daysInMonth) {
-                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay,true));
+                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay, true));
                                             } else {
-                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay,false));
+                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
                                             }
-                                            cell.setAttribute('data-name', dayTodo);
+                                            if (weekNumber === (Math.floor((i / 6) + 1))) {
+                                                cell.textContent = e.weeklys[dayTodo].content;
+                                            }
+                                            cell.setAttribute('data-array', dayTodo);
                                         });
                                     } else {
-                                        cell.setAttribute('data-name', dayTodo);
+                                        cell.setAttribute('data-array', dayTodo);
                                         if ((dayNumber - 7) === daysInMonth) {
-                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay,true));
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay, true));
                                         } else {
-                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay,false));
+                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
                                         }
                                     }
+                                    cell.classList.add("content");
                                     cell.setAttribute('contenteditable', 'true');
                                 }
                             }
@@ -449,8 +436,7 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
-                }
-                else {
+                } else {
                     window.location.href = "/management-time/";
                 }
             }
@@ -521,12 +507,13 @@
             userId: '${user.id}',
             days: [],
             weeklys: [],
-            monthly : {}
+            monthly: {}
         }
         const days = [];
         const weeklys = [];
+        console.log(currentDate)
         const monthly = {
-            month : currentDate.getFullYear()  + '-' + ((currentDate.getMonth() <10) ? '0' + currentDate.getMonth() : currentDate.getMonth() + 1),
+            month: currentDate.getFullYear() + '-' + ((currentDate.getMonth() + 1 < 10) ? '0' + (currentDate.getMonth() + 1) : currentDate.getMonth() + 1),
             content: []
         };
         $('.editable').each(function () {
@@ -538,33 +525,48 @@
                 monthly.content.push(content);
             }
         })
+
         $('td[contenteditable="true"]').each(function () {
             const day = $(this).data('day');
-            const name = $(this).data('name');
+            const index = $(this).data('array');
+            const hasTitleClass = $(this).hasClass('title');
+            const hasContentClass = $(this).hasClass('content');
             const value = $(this).text().trim();
             const week = $(this).data('week');
-            if(value !== "") {
+            if (value !== "") {
                 if (day != null) {
                     let dayObj = days.find(d => d.day === day);
                     if (!dayObj) {
                         dayObj = {
                             day: day,
-                            content: {}
+                            content: ["","","","",""]
                         };
                         days.push(dayObj);
                     }
-                    dayObj.content[name] = value;
+                    dayObj.content[index] = value;
                 }
-                if (week != null) {
+                if (week != null && index != null) {
                     let weekObj = weeklys.find(w => w.startDay === week);
+
                     if (!weekObj) {
                         weekObj = {
                             startDay: week,
-                            content: {}
+                            weeklys: [{}, {}, {}, {}, {}]
                         };
                         weeklys.push(weekObj);
                     }
-                    weekObj.content[name] = value;
+                    const currentWeekly = weekObj.weeklys[index];
+                    if (hasTitleClass) {
+                        currentWeekly.title = value;
+                        if (!currentWeekly.hasOwnProperty('content')) {
+                            currentWeekly.content = '';
+                        }
+                    } else if (hasContentClass) {
+                        if (!currentWeekly.hasOwnProperty('title')) {
+                            currentWeekly.title = '';
+                        }
+                        currentWeekly.content = value;
+                    }
                 }
             }
         })
@@ -577,13 +579,13 @@
             $("button.createCalendar").removeClass("d-none")
             populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
             rsSuccess("Add");
-        },function (error) {
+        }, function (error) {
             rsUnSuccess();
             console.log(error);
         })
     })
 
-    function getPreviousSunday(currentDate,isLastSunday) {
+    function getPreviousSunday(currentDate, isLastSunday) {
         const dateObject = new Date(currentDate);
 
         let currentDayOfWeek = dateObject.getDay();
@@ -599,9 +601,9 @@
         return sundayDate.toISOString().split('T')[0];
     }
 
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         var editableElements = document.querySelectorAll('.editing');
-        editableElements.forEach(function(element) {
+        editableElements.forEach(function (element) {
             if (!element.contains(event.target)) {
                 toggleEdit(element);
             }
@@ -614,15 +616,19 @@
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value;
-            paragraphElement.classList.add('editable','m-0');
-            paragraphElement.ondblclick = function() { toggleEdit(paragraphElement); };
+            paragraphElement.classList.add('editable', 'm-0');
+            paragraphElement.ondblclick = function () {
+                toggleEdit(paragraphElement);
+            };
 
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
             inputElement.value = element.innerText;
-            inputElement.classList.add('editable', 'editing','m-0','w-100');
-            inputElement.ondblclick = function() { toggleEdit(inputElement); };
+            inputElement.classList.add('editable', 'editing', 'm-0', 'w-100');
+            inputElement.ondblclick = function () {
+                toggleEdit(inputElement);
+            };
 
             element.replaceWith(inputElement);
 
