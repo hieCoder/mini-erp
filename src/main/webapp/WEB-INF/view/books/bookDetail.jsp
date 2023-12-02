@@ -325,10 +325,14 @@
 
     $(document).on('click', '#delete-feeling-confirm', function (e){
         var id = $(this).data('id');
+
+        $('#deleteFeelingModal .spinner-border').removeClass('d-none');
         callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userCurrent.id + "&bookId=" + bookId, "DELETE", null, function (rs) {
             $('#update-feeling').addClass('d-none');
             $('#delete-feeling').addClass('d-none');
             $('#submit-feeling').removeClass('d-none');
+
+            $('#deleteFeelingModal .spinner-border').addClass('d-none');
             $("#deleteFeelingModal").modal("hide");
             resetFormFeeling('feelingBookForm');
             alertSuccess("Delete success");
