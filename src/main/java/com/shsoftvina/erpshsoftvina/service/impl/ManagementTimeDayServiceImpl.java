@@ -465,34 +465,36 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CompletableFuture<Void> asyncTaskDay = CompletableFuture.runAsync(() ->{
             DayRequest[] days = daysUpdateRequest.getDays();
-            List<ManagementTimeDay> managementTimeDaysReq = managementTimeDayConvert.toListEntity(userId, days);
-            List<String> dayList = Stream.of(days).map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
-            List<ManagementTimeDay> managementTimeDaysDB = managementTimeDayMapper.findByListDay(userId, dayList);
+            if(days.length!=0){
+                List<ManagementTimeDay> managementTimeDaysReq = managementTimeDayConvert.toListEntity(userId, days);
+                List<String> dayList = Stream.of(days).map(d -> DateUtils.formatDate(d.getDay())).collect(Collectors.toList());
+                List<ManagementTimeDay> managementTimeDaysDB = managementTimeDayMapper.findByListDay(userId, dayList);
 
-            List<ManagementTimeDay> insertListDay = new ArrayList<>();
-            List<ManagementTimeDay> editListDay = new ArrayList<>();
+                List<ManagementTimeDay> insertListDay = new ArrayList<>();
+                List<ManagementTimeDay> editListDay = new ArrayList<>();
 
-            for(ManagementTimeDay mReq: managementTimeDaysReq){
-                ManagementTimeDay m = getManagementTimeDays(managementTimeDaysDB, mReq.getDay());
-                if(m == null){
-                    insertListDay.add(mReq);
-                }else{
-                    mReq.setId(m.getId());
-                    editListDay.add(mReq);
+                for(ManagementTimeDay mReq: managementTimeDaysReq){
+                    ManagementTimeDay m = getManagementTimeDays(managementTimeDaysDB, mReq.getDay());
+                    if(m == null){
+                        insertListDay.add(mReq);
+                    }else{
+                        mReq.setId(m.getId());
+                        editListDay.add(mReq);
+                    }
                 }
-            }
 
-            if(!insertListDay.isEmpty()) {
-                CompletableFuture<Void> createListDayDetailAsync = CompletableFuture.runAsync(() -> {
-                    managementTimeDayMapper.createListDayDetail(insertListDay);
-                });
-                asyncTasks.add(createListDayDetailAsync);
-            }
-            if(!editListDay.isEmpty()) {
-                CompletableFuture<Void> editListDayDetailAsync = CompletableFuture.runAsync(() -> {
-                    managementTimeDayMapper.editListDayDetail(editListDay);
-                });
-                asyncTasks.add(editListDayDetailAsync);
+                if(!insertListDay.isEmpty()) {
+                    CompletableFuture<Void> createListDayDetailAsync = CompletableFuture.runAsync(() -> {
+                        managementTimeDayMapper.createListDayDetail(insertListDay);
+                    });
+                    asyncTasks.add(createListDayDetailAsync);
+                }
+                if(!editListDay.isEmpty()) {
+                    CompletableFuture<Void> editListDayDetailAsync = CompletableFuture.runAsync(() -> {
+                        managementTimeDayMapper.editListDayDetail(editListDay);
+                    });
+                    asyncTasks.add(editListDayDetailAsync);
+                }
             }
         });
 
