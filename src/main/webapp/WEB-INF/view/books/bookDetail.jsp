@@ -256,8 +256,8 @@
 
             $('#submit-feeling').addClass('d-none');
             $('#update-feeling').removeClass('d-none');
+            $('#delete-feeling').attr('data-id', rs.id);
             $('#delete-feeling').removeClass('d-none');
-
         }, function (rs) {
             $('#submit-feeling').removeClass('d-none');
             $('#update-feeling').addClass('d-none');
@@ -280,10 +280,17 @@
                 $('.btn').attr('disabled', true);
 
                 callAjaxByJsonWithData('/api/v1/feeling-of-book/' + bookId + '/' + userCurrent.id, 'GET', null, function (rs) {
+                    var id = rs.id;
                     callAjaxByJsonWithDataForm('/api/v1/feeling-of-book', 'PUT', formData, function (rs) {
                         $('#feelingBookForm .spinner-border').addClass('d-none');
                         $('.btn').attr('disabled', false);
                         alertSuccess("Update success");
+
+                        var feelingItemE = $('.feeling-item[data-id="' + id + '"]');
+                        feelingItemE.find('.feeling-content').text(rs.feeling);
+                        feelingItemE.find('.lesson-content').text(rs.lesson);
+                        feelingItemE.find('.quote-content').text(rs.quote);
+                        feelingItemE.find('.action-content').text(rs.action);
                     });
                 }, function (rs) {
                     callAjaxByJsonWithDataForm('/api/v1/feeling-of-book', 'POST', formData, function (rs) {
@@ -293,7 +300,12 @@
 
                         $('#submit-feeling').addClass('d-none');
                         $('#update-feeling').removeClass('d-none');
+                        $('#delete-feeling').attr('data-id', rs.id);
                         $('#delete-feeling').removeClass('d-none');
+
+                        var newFeeling = createFeeling(rs);
+                        var feelingListE = $('.list-feeling');
+                        feelingListE.prepend(newFeeling);
                     });
                 });
             }
@@ -306,7 +318,13 @@
         });
     });
 
+    $(document).on('click', '#delete-feeling', function (e) {
+        var id = $(this).data('id');
+        $('#delete-feeling-confirm').attr('data-id', id);
+    });
+
     $(document).on('click', '#delete-feeling-confirm', function (e){
+        var id = $(this).data('id');
         callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userCurrent.id + "&bookId=" + bookId, "DELETE", null, function (rs) {
             $('#update-feeling').addClass('d-none');
             $('#delete-feeling').addClass('d-none');
@@ -314,6 +332,8 @@
             $("#deleteFeelingModal").modal("hide");
             resetFormFeeling('feelingBookForm');
             alertSuccess("Delete success");
+
+            $('.feeling-item[data-id="' + id + '"]').remove();
         });
     });
 
@@ -349,7 +369,6 @@
 
     $(document).on('click', '.remove-comment-btn', function (e) {
         var id = $(this).data('id');
-        console.log(id);
         $('#delete-comment').attr('data-id', id);
     });
 
