@@ -10,6 +10,7 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.Calend
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.ColorRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarDayResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.ColorResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
@@ -45,5 +46,18 @@ public class ColorManagementTimeDayConvert {
             list.add(toEntity(userId, colorManagementTimeDay));
         }
         return list;
+    }
+
+    public ColorResponse toResponse(ColorManagementTimeDay colorManagementTimeDay){
+        return ColorResponse.builder()
+                .id(colorManagementTimeDay.getId())
+                .category(colorManagementTimeDay.getCategory())
+                .color(colorManagementTimeDay.getColor())
+                .values(JsonUtils.jsonToObject(colorManagementTimeDay.getValues(), String[].class))
+                .build();
+    }
+
+    public List<ColorResponse> toListResponse(List<ColorManagementTimeDay> colorManagementTimeDays){
+        return colorManagementTimeDays.stream().map(this::toResponse).collect(Collectors.toList());
     }
 }

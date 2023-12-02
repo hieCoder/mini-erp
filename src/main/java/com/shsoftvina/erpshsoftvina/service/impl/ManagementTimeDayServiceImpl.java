@@ -397,13 +397,18 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             return managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode);
         });
 
+        CompletableFuture<List<ColorResponse>> colorsFuture = CompletableFuture.supplyAsync(() -> {
+            return colorManagementTimeDayConvert.toListResponse(colorManagementTimeDayMapper.findAllByUserId(userId));
+        });
+
         CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture);
         allOf.join();
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = DaysOfWeeklyResponse.builder()
                 .monthlys(monthlysFuture.join())
                 .weeklys(weeklyFuture.join())
-                .days(daysFuture.join()).build();
+                .days(daysFuture.join())
+                .colors(colorsFuture.join()).build();
 
         return daysOfWeeklyResponse;
     }

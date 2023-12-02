@@ -9,4 +9,5 @@ import java.util.List;
 public interface ColorManagementTimeDayMapper {
     int deleteAllByUserId(String userId);
     int createColors(List<ColorManagementTimeDay> colors);
+    List<ColorManagementTimeDay> findAllByUserId(String userId);
 }
