@@ -209,4 +209,12 @@
                 onDelete="CASCADE"
         />
     </changeSet>
+
+    <changeSet id="25" author="team2">
+        <addForeignKeyConstraint baseTableName="COLOR_MANAGEMENT_TIME_DAY"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_COLOR_MANAGEMENT_TIME_DAY_USER"/>
+    </changeSet>
 </databaseChangeLog>

@@ -15,4 +15,5 @@ public class DaysUpdateRequest {
     private MonthlyRequest monthly;
     private WeeklyRequest weekly;
     private DayRequest[] days;
+    private ColorRequest[] colors;
 }

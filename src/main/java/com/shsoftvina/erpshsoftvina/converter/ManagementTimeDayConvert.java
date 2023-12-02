@@ -69,7 +69,7 @@ public class ManagementTimeDayConvert {
         data.setAffirmation(day.getAffirmation());
         data.setComplimentForMeToday(day.getComplimentForMeToday());
         data.setTodaysReflectionsAndImprovements(day.getTodaysReflectionsAndImprovements());
-        data.setToDoDetail(JsonUtils.jsonToObject(day.getToDoDetail(), String[].class));
+        data.setToDoDetail(JsonUtils.jsonToObject(day.getToDoDetail(), String[][].class));
         data.setDailyRoutine(JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class));
 
         return DayResponse.builder()

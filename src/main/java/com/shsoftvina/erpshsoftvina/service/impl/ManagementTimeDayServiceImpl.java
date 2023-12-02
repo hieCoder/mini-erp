@@ -1,24 +1,24 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.shsoftvina.erpshsoftvina.converter.ColorManagementTimeDayConvert;
 import com.shsoftvina.erpshsoftvina.converter.ManagementTimeDayConvert;
 import com.shsoftvina.erpshsoftvina.converter.MonthlyManagementTimeDayConverter;
 import com.shsoftvina.erpshsoftvina.converter.WeeklyManagementTimeDayConverter;
+import com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.mapper.ColorManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DailyRoutineRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.*;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.MonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarMonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.*;
@@ -58,6 +58,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
     @Autowired
     private MonthlyManagementTimeDayConverter monthlyManagementTimeDayConverter;
+
+    @Autowired
+    private ColorManagementTimeDayMapper colorManagementTimeDayMapper;
+
+    @Autowired
+    private ColorManagementTimeDayConvert colorManagementTimeDayConvert;
 
     private List<String> getSundaysOfTheMonth(String yyyyMMDD) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -406,8 +412,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     public int updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest) {
         String userId = daysUpdateRequest.getUserId();
 
-        applicationUtils.checkUserAllow(userId);
-
         List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
 
         CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(()->{
@@ -487,7 +491,17 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         });
 
-        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay);
+        CompletableFuture<Void> asyncTaskColor = CompletableFuture.runAsync(() ->{
+            colorManagementTimeDayMapper.deleteAllByUserId(userId);
+            ColorRequest[] colorRequests = daysUpdateRequest.getColors();
+            List<ColorManagementTimeDay> colorManagementTimeDays = colorManagementTimeDayConvert.toListEntity(userId, colorRequests);
+            CompletableFuture<Void> createColorsAsync = CompletableFuture.runAsync(() -> {
+                colorManagementTimeDayMapper.createColors(colorManagementTimeDays);
+            });
+            asyncTasks.add(createColorsAsync);
+        });
+
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();
