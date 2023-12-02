@@ -250,36 +250,28 @@
                     <table class="table table-bordered border-primary categoryColor text-center align-middle">
                         <thead>
                         <tr>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Growth
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Work
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Health
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Love
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
+                            <c:forEach items="${weekly.colors}" var="color" begin="0" end="3">
+                                <th scope="col" contenteditable="true" class="panel colorPicker" style="background-color: ${color.color}">
+                                    ${color.category}
+                                    <div class="pickr"></div>
+                                    <p hidden="hidden" class="pickedColor">${color.color ? color.color : "#FFFFFF"}</p>
+                                </th>
+                            </c:forEach>
                         </tr>
 
                         </thead>
                         <tbody>
-                        <tr>
-                            <td contenteditable="true">Reading</td>
-                            <td contenteditable="true">Review</td>
-                            <td contenteditable="true">Sleep</td>
-                            <td contenteditable="true">Family gathering</td>
-                        </tr>
+                        <c:forEach begin="1" end="13" var="item">
+                            <tr>
+                                <c:forEach items="${weekly.colors.}">
+
+                                </c:forEach>
+                                <td contenteditable="true">Reading</td>
+                                <td contenteditable="true">Review</td>
+                                <td contenteditable="true">Sleep</td>
+                                <td contenteditable="true">Family gathering</td>
+                            </tr>
+                        </c:forEach>
                         <tr>
                             <td contenteditable="true">Lecture</td>
                             <td contenteditable="true">Search</td>
@@ -297,8 +289,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-8 d-inline-flex">
-                    <div class="table-detail col-md-4">
+                <div class="col-md-8 d-flex">
+                    <div class="table-detail">
                         <table>
                             <thead>
                             <tr>
@@ -383,7 +375,7 @@
                         </table>
                     </div>
 
-                    <div class="table-container col-md-8">
+                    <div class="table-container">
                         <table>
                             <thead>
                             <tr>
@@ -701,9 +693,31 @@
             userId: '${user.id}',
             days: [],
             weekly: {},
-            monthly: {}
+            monthly: {},
+            colors: []
         }
 
+        const colors = [];
+        $('th.colorPicker').each(function () {
+            const category = $(this).contents().filter(function() {
+                return this.nodeType === 3;
+            }).first().text().trim();
+            const color = $(this).find('.pickedColor').text().trim();
+            const values = [];
+            const columnIndex = $(this).index();
+            $('table.categoryColor tbody tr').each(function () {
+                const value = $(this).find('td:eq(' + columnIndex + ')').text().trim();
+                if (value !== '') {
+                    values.push(value);
+                }
+            })
+            colors.push({
+                category : category,
+                color : color,
+                values : values
+            })
+        })
+        data.colors = colors;
         const monthly = {
             month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
             content: [],
