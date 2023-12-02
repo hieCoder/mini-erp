@@ -250,40 +250,39 @@
                     <table class="table table-bordered border-primary categoryColor text-center align-middle">
                         <thead>
                         <tr>
-                            <c:forEach items="${weekly.colors}" var="color" begin="0" end="3">
-                                <th scope="col" contenteditable="true" class="panel colorPicker" style="background-color: ${color.color}">
-                                    ${color.category}
+                            <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
+                                <th scope="col" contenteditable="true" class="panel colorPicker"
+                                    style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
+                                        ${color.category}
                                     <div class="pickr"></div>
-                                    <p hidden="hidden" class="pickedColor">${color.color ? color.color : "#FFFFFF"}</p>
+                                    <p hidden="hidden"
+                                       class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
                                 </th>
                             </c:forEach>
+                            <c:if test="${weekly.colors.size() < 4}">
+                                <c:forEach begin="${weekly.colors.size()}" end="3">
+                                    <th scope="col" contenteditable="true" class="panel colorPicker"
+                                        style="background-color: #FFFFFF;">
+                                        Default Category
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor">#FFFFFF</p>
+                                    </th>
+                                </c:forEach>
+                            </c:if>
                         </tr>
 
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="13" var="item">
+                        <c:forEach begin="0" end="12" var="item" varStatus="loop">
                             <tr>
-                                <c:forEach items="${weekly.colors.}">
-
+                                <c:forEach items="${weekly.colors}" var="color">
+                                    <td contenteditable="true">${color.values[loop.index]}</td>
                                 </c:forEach>
-                                <td contenteditable="true">Reading</td>
-                                <td contenteditable="true">Review</td>
-                                <td contenteditable="true">Sleep</td>
-                                <td contenteditable="true">Family gathering</td>
-                            </tr>
-                        </c:forEach>
-                        <tr>
-                            <td contenteditable="true">Lecture</td>
-                            <td contenteditable="true">Search</td>
-                            <td contenteditable="true">Meal</td>
-                            <td contenteditable="true">Game</td>
-                        </tr>
-                        <c:forEach begin="1" end="11" var="item">
-                            <tr>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
+                                <c:if test="${weekly.colors.size() < 4}">
+                                    <c:forEach begin="${weekly.colors.size()}" end="3">
+                                        <td contenteditable="true"></td>
+                                    </c:forEach>
+                                </c:if>
                             </tr>
                         </c:forEach>
                         </tbody>
