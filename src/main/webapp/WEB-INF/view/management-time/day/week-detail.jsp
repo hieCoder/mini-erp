@@ -701,7 +701,7 @@
     const inputString = '${weekly.colors}';
     const valuesRegex = /\bvalues=\[(.*?)\]/g;
     const matches = inputString.match(valuesRegex);
-    const allValues = matches ? matches.map(match => {
+    let allValues = matches ? matches.map(match => {
         const innerValues = match.replace('values=[', '').replace(']', '');
         return innerValues.split(',').map(value => value.trim());
     }).flat() : [];
@@ -711,8 +711,15 @@
         if (allValues.includes(target)) {
             $(this).text('');
             validateFail("Keyword should not be same");
-            return false;
         }
+        allValues = [];
+        $('td.inputColor').each(function () {
+            const target = $(this).text().trim();
+            if (target !== '') {
+                allValues.push(target);
+            }
+        });
+        console.log(allValues);
     });
 
     $(document).ready(function () {
