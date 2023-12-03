@@ -358,8 +358,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                                 .collect(Collectors.toList());
                         int[] countDailyRoutines = mergeAndCountDailyRoutine(listDailyRoutine);
 
-                        for (int i = 0; i < dailyRoutineResponses.length; i++) {
-                            dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                        if(countDailyRoutines.length>0) {
+                            for (int i = 0; i < dailyRoutineResponses.length; i++) {
+                                dailyRoutineResponses[i].setPerformance(countDailyRoutines[i]);
+                            }
                         }
 
                         monthResponse.setDailyRoutine(dailyRoutineResponses);
@@ -401,7 +403,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             return colorManagementTimeDayConvert.toListResponse(colorManagementTimeDayMapper.findAllByUserId(userId));
         });
 
-        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture);
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture, colorsFuture);
         allOf.join();
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = DaysOfWeeklyResponse.builder()
