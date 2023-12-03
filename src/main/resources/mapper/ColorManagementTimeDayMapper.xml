@@ -1,0 +1,30 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ColorManagementTimeDayMapper">
+
+    <delete id="deleteAllByUserId" parameterType="String">
+        DELETE FROM COLOR_MANAGEMENT_TIME_DAY WHERE USER_ID = #{userId}
+    </delete>
+
+    <insert id="createColors" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO COLOR_MANAGEMENT_TIME_DAY (ID, CATEGORY, COLOR, `VALUES`, USER_ID)
+        VALUES
+        <foreach collection="colors" item="color" separator=",">
+            (UUID(), #{color.category}, #{color.color}, #{color.values}, #{color.user.id})
+        </foreach>
+    </insert>
+
+    <select id="findAllByUserId" resultMap="colorResultMap">
+        SELECT *
+        FROM COLOR_MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <resultMap id="colorResultMap" type="com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay">
+        <id property="id" column="ID"/>
+        <result property="category" column="CATEGORY"/>
+        <result property="color" column="COLOR"/>
+        <result property="values" column="VALUES"/>
+    </resultMap>
+</mapper>

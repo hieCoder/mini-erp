@@ -65,7 +65,7 @@ function createFeeling(feeling) {
                                                         <div class="col-auto pe-0"><i class="ri-pencil-ruler-line fs-4"> </i></div>
                                                         <div class="col ps-2 fs-5">Lessons Learned:</div>
                                                     </div>
-                                                    <div class="p-2 lession-content">`+feeling.lesson+`</div>
+                                                    <div class="p-2 lesson-content">`+feeling.lesson+`</div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
