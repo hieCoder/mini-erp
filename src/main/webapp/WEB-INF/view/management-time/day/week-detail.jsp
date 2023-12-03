@@ -575,13 +575,13 @@
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
                                         <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
+                                            data-name="timeLine">${data[0]}</td>
                                         <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
+                                            data-name="timeLine">${data[1]}</td>
                                         <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
+                                            data-name="timeLine">${data[2]}</td>
                                         <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
+                                            data-name="timeLine">${data[3]}</td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -839,14 +839,12 @@
                 }
             }
             if (dayObj) {
-                if (name === 'timeLine') {
-                    dayObj.data.toDoDetail.push(value);
-                } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
+                if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
                     dayObj.data.toDoList[name].push({
                         target: value,
                         performance: isChecked
                     });
-                } else {
+                } else if (name !== 'timeLine') {
                     dayObj.data.oneThingCalendar.push({
                         target: value,
                         performance: isChecked
@@ -855,6 +853,46 @@
             }
         })
 
+        $('tr[name="timeLine"]').each(function () {
+            let weeklyData = [];
+            $(this).find('td[data-name="timeLine"]').each(function (index) {
+                const day = $(this).data('day');
+                var value = $(this).text().trim();
+                let dayObj = days.find(d => d.day === day);
+                if (value !== "") {
+                    if (day != null) {
+                        if (!dayObj) {
+                            dayObj = {
+                                day: day,
+                                data: {
+                                    oneThingCalendar: [],
+                                    gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                    complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                    todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                    affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                    toDoDetail: [],
+                                    dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                    toDoList: {
+                                        sixToTwelvePm: [],
+                                        twelveToSixPm: [],
+                                        sixToTwelveAm: []
+                                    }
+                                }
+                            };
+                            days.push(dayObj);
+                        }
+                    }
+                }
+                if (dayObj) {
+                    weeklyData.push(value);
+                    if ((index + 1) % 4 === 0) {
+                        console.log(weeklyData);
+                        dayObj.data.toDoDetail.push(weeklyData);
+                        weeklyData = [];
+                    }
+                }
+            })
+        })
         data.days.push(...days);
         console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
