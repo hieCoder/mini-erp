@@ -901,7 +901,7 @@ const validateFail = (error) => {
         customClass: {
             cancelButton: 'btn btn-primary w-xs mb-1'
         },
-        cancelButtonText: "Dismiss",
+        cancelButtonText: "Got it",
         buttonsStyling: false,
         showCloseButton: true
     })

@@ -276,11 +276,11 @@
                         <c:forEach begin="0" end="12" var="item" varStatus="loop">
                             <tr>
                                 <c:forEach items="${weekly.colors}" var="color">
-                                    <td contenteditable="true">${color.values[loop.index]}</td>
+                                    <td contenteditable="true" class="inputColor">${color.values[loop.index]}</td>
                                 </c:forEach>
                                 <c:if test="${weekly.colors.size() < 4}">
                                     <c:forEach begin="${weekly.colors.size()}" end="3">
-                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true" class="inputColor"></td>
                                     </c:forEach>
                                 </c:if>
                             </tr>
@@ -574,13 +574,48 @@
                                 <tr name="timeLine">
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
-                                        <td contenteditable="true" data-day="${day.day}"
+                                        <c:set var="backgroundColor0" value=""/>
+                                        <c:set var="backgroundColor1" value=""/>
+                                        <c:set var="backgroundColor2" value=""/>
+                                        <c:set var="backgroundColor3" value=""/>
+                                        <c:set var="exitLoop0" value="false"/>
+                                        <c:set var="exitLoop1" value="false"/>
+                                        <c:set var="exitLoop2" value="false"/>
+                                        <c:set var="exitLoop3" value="false"/>
+                                        <c:forEach var="color" items="${weekly.colors}">
+                                            <c:forEach var="value" items="${color.values}">
+                                                <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                    <c:if test="${data[0] ne '' && value eq data[0]}">
+                                                        <c:set var="backgroundColor0" value="${color.color}"/>
+                                                        <c:set var="exitLoop0" value="true"/>
+                                                    </c:if>
+                                                    <c:if test="${data[1] ne '' && value eq data[1]}">
+                                                        <c:set var="backgroundColor1" value="${color.color}"/>
+                                                        <c:set var="exitLoop1" value="true"/>
+                                                    </c:if>
+                                                    <c:if test="${data[2] ne '' && value eq data[2]}">
+                                                        <c:set var="backgroundColor2" value="${color.color}"/>
+                                                        <c:set var="exitLoop2" value="true"/>
+                                                    </c:if>
+                                                    <c:if test="${data[3] ne '' && value eq data[3]}">
+                                                        <c:set var="backgroundColor3" value="${color.color}"/>
+                                                        <c:set var="exitLoop3" value="true"/>
+                                                    </c:if>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:forEach>
+
+                                        <td style="background-color: ${backgroundColor0}" contenteditable="true"
+                                            data-day="${day.day}"
                                             data-name="timeLine">${data[0]}</td>
-                                        <td contenteditable="true" data-day="${day.day}"
+                                        <td style="background-color: ${backgroundColor1}" contenteditable="true"
+                                            data-day="${day.day}"
                                             data-name="timeLine">${data[1]}</td>
-                                        <td contenteditable="true" data-day="${day.day}"
+                                        <td style="background-color: ${backgroundColor2}" contenteditable="true"
+                                            data-day="${day.day}"
                                             data-name="timeLine">${data[2]}</td>
-                                        <td contenteditable="true" data-day="${day.day}"
+                                        <td style="background-color: ${backgroundColor3}" contenteditable="true"
+                                            data-day="${day.day}"
                                             data-name="timeLine">${data[3]}</td>
                                     </c:forEach>
                                 </tr>
@@ -659,6 +694,23 @@
         if (target > 31 || target < 0) {
             $(this).text('0');
             validateFail("Daily target shouldn't exceed 30 or below 0");
+            return false;
+        }
+    });
+
+    const inputString = '${weekly.colors}';
+    const valuesRegex = /\bvalues=\[(.*?)\]/g;
+    const matches = inputString.match(valuesRegex);
+    const allValues = matches ? matches.map(match => {
+        const innerValues = match.replace('values=[', '').replace(']', '');
+        return innerValues.split(',').map(value => value.trim());
+    }).flat() : [];
+
+    $('td.inputColor').on('blur', function () {
+        const target = $(this).text();
+        if (allValues.includes(target)) {
+            $(this).text('');
+            validateFail("Keyword should not be same");
             return false;
         }
     });
