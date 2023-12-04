@@ -708,7 +708,7 @@
 
     $('td.inputColor').on('blur', function () {
         const target = $(this).text();
-        if (allValues.includes(target)) {
+        if (allValues.length !== 0 && allValues.includes(target)) {
             $(this).text('');
             validateFail("Keyword should not be same");
         }
