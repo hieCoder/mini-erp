@@ -539,6 +539,8 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
+        const dateTimeString = '${account.payDate}';
+        document.getElementById('editPayDate').value = convertInputDateValue(dateTimeString);
         let fileNameArr = [];
         <c:if test="${account.bill != null}">
         <c:forEach items="${account.bill}" var="value" varStatus="loop">
@@ -547,6 +549,15 @@
         loadFilesName(fileNameArr);
         </c:if>
     });
+
+    function convertInputDateValue(dateTimeString) {
+        const dateTime = new Date(dateTimeString);
+        const year = dateTime.getFullYear();
+        const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+        const day = String(dateTime.getDate()).padStart(2, '0');
+        return  formattedDate = year + '-' + month + '-' + day;
+
+    }
 
     $(document).on("click", "button.downFileBtn", function () {
         let dataUrl = $(this).children().attr("data-url")
@@ -661,6 +672,7 @@
         let accountId = $("#editModal").attr("data-id")
         let title = $("#editTitle").val()
         let payDate = $("#editPayDate").val()
+        console.log(payDate)
         let note = $("#editNote").val()
         let transaction = $("#transactionType").val()
         let input = document.getElementById("amount").value;
