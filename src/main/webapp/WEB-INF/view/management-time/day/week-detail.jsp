@@ -689,6 +689,11 @@
         $("div.calendar-container").removeClass("d-none")
     })
 
+    window.addEventListener('beforeunload', function (event) {
+        $(".containerLoading").removeClass("d-none");
+        $("div.calendar-container").addClass("d-none")
+    });
+
     $('td.dailyRoutineTarget').on('blur', function () {
         const target = $(this).text();
         if (target > 31 || target < 0) {
