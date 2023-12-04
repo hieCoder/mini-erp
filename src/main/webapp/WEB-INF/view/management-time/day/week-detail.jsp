@@ -250,55 +250,46 @@
                     <table class="table table-bordered border-primary categoryColor text-center align-middle">
                         <thead>
                         <tr>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Growth
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Work
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Health
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
-                            <th scope="col" contenteditable="true" class="panel">
-                                Love
-                                <div class="pickr"></div>
-                                <p hidden="hidden" class="pickedColor"></p>
-                            </th>
+                            <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
+                                <th scope="col" contenteditable="true" class="panel colorPicker"
+                                    style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
+                                        ${color.category}
+                                    <div class="pickr"></div>
+                                    <p hidden="hidden"
+                                       class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
+                                </th>
+                            </c:forEach>
+                            <c:if test="${weekly.colors.size() < 4}">
+                                <c:forEach begin="${weekly.colors.size()}" end="3">
+                                    <th scope="col" contenteditable="true" class="panel colorPicker"
+                                        style="background-color: #FFFFFF;">
+                                        Default Category
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor">#FFFFFF</p>
+                                    </th>
+                                </c:forEach>
+                            </c:if>
                         </tr>
 
                         </thead>
                         <tbody>
-                        <tr>
-                            <td contenteditable="true">Reading</td>
-                            <td contenteditable="true">Review</td>
-                            <td contenteditable="true">Sleep</td>
-                            <td contenteditable="true">Family gathering</td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true">Lecture</td>
-                            <td contenteditable="true">Search</td>
-                            <td contenteditable="true">Meal</td>
-                            <td contenteditable="true">Game</td>
-                        </tr>
-                        <c:forEach begin="1" end="11" var="item">
+                        <c:forEach begin="0" end="12" var="item" varStatus="loop">
                             <tr>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
+                                <c:forEach items="${weekly.colors}" var="color">
+                                    <td contenteditable="true" class="inputColor">${color.values[loop.index]}</td>
+                                </c:forEach>
+                                <c:if test="${weekly.colors.size() < 4}">
+                                    <c:forEach begin="${weekly.colors.size()}" end="3">
+                                        <td contenteditable="true" class="inputColor"></td>
+                                    </c:forEach>
+                                </c:if>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-8 d-inline-flex">
-                    <div class="table-detail col-md-4">
+                <div class="col-md-8 d-flex">
+                    <div class="table-detail">
                         <table>
                             <thead>
                             <tr>
@@ -383,7 +374,7 @@
                         </table>
                     </div>
 
-                    <div class="table-container col-md-8">
+                    <div class="table-container">
                         <table>
                             <thead>
                             <tr>
@@ -583,14 +574,49 @@
                                 <tr name="timeLine">
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
-                                        <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
-                                        <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
-                                        <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
-                                        <td contenteditable="true" data-day="${day.day}"
-                                            data-name="timeLine">${data}</td>
+                                        <c:set var="backgroundColor0" value=""/>
+                                        <c:set var="backgroundColor1" value=""/>
+                                        <c:set var="backgroundColor2" value=""/>
+                                        <c:set var="backgroundColor3" value=""/>
+                                        <c:set var="exitLoop0" value="false"/>
+                                        <c:set var="exitLoop1" value="false"/>
+                                        <c:set var="exitLoop2" value="false"/>
+                                        <c:set var="exitLoop3" value="false"/>
+                                        <c:forEach var="color" items="${weekly.colors}">
+                                            <c:forEach var="value" items="${color.values}">
+                                                <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                    <c:if test="${data[0] ne '' && value eq data[0]}">
+                                                        <c:set var="backgroundColor0" value="${color.color}"/>
+                                                        <c:set var="exitLoop0" value="true"/>
+                                                    </c:if>
+                                                    <c:if test="${data[1] ne '' && value eq data[1]}">
+                                                        <c:set var="backgroundColor1" value="${color.color}"/>
+                                                        <c:set var="exitLoop1" value="true"/>
+                                                    </c:if>
+                                                    <c:if test="${data[2] ne '' && value eq data[2]}">
+                                                        <c:set var="backgroundColor2" value="${color.color}"/>
+                                                        <c:set var="exitLoop2" value="true"/>
+                                                    </c:if>
+                                                    <c:if test="${data[3] ne '' && value eq data[3]}">
+                                                        <c:set var="backgroundColor3" value="${color.color}"/>
+                                                        <c:set var="exitLoop3" value="true"/>
+                                                    </c:if>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:forEach>
+
+                                        <td style="background-color: ${backgroundColor0}" contenteditable="true"
+                                            data-day="${day.day}"
+                                            data-name="timeLine">${data[0]}</td>
+                                        <td style="background-color: ${backgroundColor1}" contenteditable="true"
+                                            data-day="${day.day}"
+                                            data-name="timeLine">${data[1]}</td>
+                                        <td style="background-color: ${backgroundColor2}" contenteditable="true"
+                                            data-day="${day.day}"
+                                            data-name="timeLine">${data[2]}</td>
+                                        <td style="background-color: ${backgroundColor3}" contenteditable="true"
+                                            data-day="${day.day}"
+                                            data-name="timeLine">${data[3]}</td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -672,6 +698,30 @@
         }
     });
 
+    const inputString = '${weekly.colors}';
+    const valuesRegex = /\bvalues=\[(.*?)\]/g;
+    const matches = inputString.match(valuesRegex);
+    let allValues = matches ? matches.map(match => {
+        const innerValues = match.replace('values=[', '').replace(']', '');
+        return innerValues.split(',').map(value => value.trim());
+    }).flat() : [];
+
+    $('td.inputColor').on('blur', function () {
+        const target = $(this).text();
+        if (allValues.includes(target)) {
+            $(this).text('');
+            validateFail("Keyword should not be same");
+        }
+        allValues = [];
+        $('td.inputColor').each(function () {
+            const target = $(this).text().trim();
+            if (target !== '') {
+                allValues.push(target);
+            }
+        });
+        console.log(allValues);
+    });
+
     $(document).ready(function () {
         checkInitialValue();
 
@@ -701,9 +751,31 @@
             userId: '${user.id}',
             days: [],
             weekly: {},
-            monthly: {}
+            monthly: {},
+            colors: []
         }
 
+        const colors = [];
+        $('th.colorPicker').each(function () {
+            const category = $(this).contents().filter(function() {
+                return this.nodeType === 3;
+            }).first().text().trim();
+            const color = $(this).find('.pickedColor').text().trim();
+            const values = [];
+            const columnIndex = $(this).index();
+            $('table.categoryColor tbody tr').each(function () {
+                const value = $(this).find('td:eq(' + columnIndex + ')').text().trim();
+                if (value !== '') {
+                    values.push(value);
+                }
+            })
+            colors.push({
+                category : category,
+                color : color,
+                values : values
+            })
+        })
+        data.colors = colors;
         const monthly = {
             month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
             content: [],
@@ -826,14 +898,12 @@
                 }
             }
             if (dayObj) {
-                if (name === 'timeLine') {
-                    dayObj.data.toDoDetail.push(value);
-                } else if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
+                if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
                     dayObj.data.toDoList[name].push({
                         target: value,
                         performance: isChecked
                     });
-                } else {
+                } else if (name !== 'timeLine') {
                     dayObj.data.oneThingCalendar.push({
                         target: value,
                         performance: isChecked
@@ -842,6 +912,46 @@
             }
         })
 
+        $('tr[name="timeLine"]').each(function () {
+            let weeklyData = [];
+            $(this).find('td[data-name="timeLine"]').each(function (index) {
+                const day = $(this).data('day');
+                var value = $(this).text().trim();
+                let dayObj = days.find(d => d.day === day);
+                if (value !== "") {
+                    if (day != null) {
+                        if (!dayObj) {
+                            dayObj = {
+                                day: day,
+                                data: {
+                                    oneThingCalendar: [],
+                                    gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                    complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                    todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                    affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                    toDoDetail: [],
+                                    dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                    toDoList: {
+                                        sixToTwelvePm: [],
+                                        twelveToSixPm: [],
+                                        sixToTwelveAm: []
+                                    }
+                                }
+                            };
+                            days.push(dayObj);
+                        }
+                    }
+                }
+                if (dayObj) {
+                    weeklyData.push(value);
+                    if ((index + 1) % 4 === 0) {
+                        console.log(weeklyData);
+                        dayObj.data.toDoDetail.push(weeklyData);
+                        weeklyData = [];
+                    }
+                }
+            })
+        })
         data.days.push(...days);
         console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

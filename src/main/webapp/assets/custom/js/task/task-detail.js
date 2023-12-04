@@ -104,7 +104,7 @@ async function createCommentForm(comment) {
                                             <img src="` + avatarUser + `" alt="" class="avatar-xs rounded-circle" />
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5 class="fs-13"><a href="pages-profile.html">` + fullnameUser + `</a> <small class="text-muted">` + createdDate + `</small></h5>
+                                            <h5 class="fs-13"><a>` + fullnameUser + `</a> <small class="text-muted">` + createdDate + `</small></h5>
                                             <p class="mb-2">` + title + `</p>
                                             <div class="text-muted mb-1">` + getContentViewOfEditorSnow(content) + `</div>`
             + `<div class="row mb-1">` + files + `</div>`

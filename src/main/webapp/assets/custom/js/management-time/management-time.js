@@ -7,7 +7,6 @@ panels.forEach((panel, index) => {
         el: pickrContainer,
         default: '#42445A',
         theme: 'classic',
-
         swatches: [
             'rgba(244, 67, 54, 1)',
             'rgba(233, 30, 99, 0.95)',
@@ -42,12 +41,9 @@ panels.forEach((panel, index) => {
         pickrContainer.value = pickr.getSelectedColor().toRGBA().toString(0);
     }).on('save', color => {
         pickedColor.textContent = color.toRGBA().toString(0);
-        console.log(pickedColor)
         pickr.hide();
     }).on('change', color => {
         pickedColor.textContent = color.toRGBA().toString(0);
         panel.style.backgroundColor = color.toRGBA().toString(0);
-        console.log(pickedColor)
-    })
-})
-
+    });
+});

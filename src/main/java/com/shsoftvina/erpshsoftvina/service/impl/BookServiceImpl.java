@@ -8,8 +8,7 @@ import com.shsoftvina.erpshsoftvina.exception.NotFoundException;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
+import com.shsoftvina.erpshsoftvina.model.response.book.BookResponse;
 import com.shsoftvina.erpshsoftvina.service.BookService;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
@@ -35,11 +34,11 @@ public class BookServiceImpl implements BookService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public List<ShowBookResponse> findAll(String searchTerm, int start, int pageSize) {
+    public List<BookResponse> findAll(String searchTerm, int start, int pageSize) {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
         List<Book> books = bookMapper.findAll(searchTerm, rowBounds);
-        return bookConverter.toListShowBookResponse(books);
+        return bookConverter.toListResponse(books);
     }
 
     @Override
@@ -79,8 +78,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDetailResponse findById(String id) {
-        return bookConverter.toDetailResponse(bookMapper.findById(id));
+    public BookResponse findById(String id) {
+        return bookConverter.toResponse(bookMapper.findById(id));
     }
 
     @Override

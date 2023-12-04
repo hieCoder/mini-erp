@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PageBookListRespone {
-    List<ShowBookResponse> books;
+    List<BookResponse> books;
     long pageNumber;
     long totalPages;
     long pageSize;

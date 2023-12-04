@@ -1,15 +1,12 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.Book;
-import com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookCreateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.book.BookUpdateRequest;
-import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
-import com.shsoftvina.erpshsoftvina.model.response.book.ShowBookResponse;
+import com.shsoftvina.erpshsoftvina.model.response.book.BookResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -19,14 +16,8 @@ import java.util.stream.Collectors;
 @Component
 public class BookConverter {
 
-    @Autowired
-    private FeelingOfBookConverter feelingOfBookConverter;
-
-    @Autowired
-    private FeelingOfBookMapper feelingOfBookMapper;
-
-    public ShowBookResponse toShowBookResponse(Book book) {
-        return ShowBookResponse.builder()
+    public BookResponse toResponse(Book book) {
+        return BookResponse.builder()
                 .id(book.getId())
                 .title(book.getTitle())
                 .author(book.getAuthor())
@@ -37,14 +28,8 @@ public class BookConverter {
                 .build();
     }
 
-    public List<ShowBookResponse> toListShowBookResponse(List<Book> books) {
-        return books.stream().map(this::toShowBookResponse).collect(Collectors.toList());
-    }
-
-    public BookDetailResponse toDetailResponse(Book book) {
-        return BookDetailResponse.builder()
-                .book(toShowBookResponse(book))
-                .feelingOfBooks(feelingOfBookConverter.toListResponse(feelingOfBookMapper.findAllByBook(book.getId()))).build();
+    public List<BookResponse> toListResponse(List<Book> books) {
+        return books.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     public Book toEntity(BookCreateRequest bookCreateRequest, String bookImageFileName){

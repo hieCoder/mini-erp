@@ -1,6 +1,5 @@
 package com.shsoftvina.erpshsoftvina.controller;
 
-import com.shsoftvina.erpshsoftvina.model.response.book.BookDetailResponse;
 import com.shsoftvina.erpshsoftvina.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +24,7 @@ public class BooksController {
     @GetMapping("/{id}")
     public ModelAndView bookDetail(@PathVariable("id") String id) {
         ModelAndView view = new ModelAndView("/books/bookDetail");
-        BookDetailResponse bookDetail = bookService.findById(id);
-        view.addObject("bookDetail", bookDetail);
+        view.addObject("bookId", id);
         return view;
     }
 }
