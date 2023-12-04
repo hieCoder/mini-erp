@@ -3,7 +3,6 @@ const panels = document.querySelectorAll('.panel');
 panels.forEach((panel, index) => {
     const pickrContainer = panel.querySelector('.pickr');
     const pickedColor = panel.querySelector('.pickedColor');
-
     const pickr = new Pickr({
         el: pickrContainer,
         default: '#42445A',
