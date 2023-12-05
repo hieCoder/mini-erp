@@ -874,10 +874,6 @@ const rsSuccessLoad = (text) => {
         cancelButtonText: "Back",
         buttonsStyling: false,
         showCloseButton: true
-    }).then((result) => {
-        if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.close) {
-            window.location.reload();
-        }
     })
 }
 const rsUnSuccess = () => {
