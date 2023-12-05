@@ -873,7 +873,9 @@ const rsSuccessLoad = (text) => {
         },
         cancelButtonText: "Back",
         buttonsStyling: false,
-        showCloseButton: true
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
     })
 }
 const rsUnSuccess = () => {

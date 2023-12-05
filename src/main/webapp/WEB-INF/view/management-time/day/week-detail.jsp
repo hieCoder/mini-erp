@@ -153,7 +153,7 @@
                                         </c:choose>
                                     </c:if>
                                 </td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true">
+                                <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
                                     <c:choose>
                                         <c:when test="${dailyRoutine.target == null}">
                                             0
@@ -703,7 +703,6 @@
     $('td.dailyRoutineTarget').on('blur', function () {
         const target = $(this).text();
         if (target > 31 || target < 0) {
-            $(this).text('0');
             validateFail("Daily target shouldn't exceed 30 or below 0");
             return false;
         }
@@ -745,6 +744,15 @@
                 checkbox.prop('disabled', false);
             }
         });
+    }
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            evt.preventDefault();
+            return false;
+        }
+        return true;
     }
 
     $("#updateButton").click(function () {
