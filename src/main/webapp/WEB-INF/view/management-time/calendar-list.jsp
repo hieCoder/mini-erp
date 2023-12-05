@@ -32,6 +32,10 @@
         input {
             display: none;
         }
+        .dropdown-toggle::after {
+            font-size: 25px !important;
+            margin-left: 0 !important;
+        }
     </style>
     <title>Calendars</title>
     <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
@@ -75,7 +79,34 @@
                     </div>
                 </div>
             </div>
-            <h1 class="text-center" id="currentMonthYear"></h1>
+            <div class="d-flex flex-column align-items-center" style="margin-top: 25px" id="currentCalendar">
+                <div class="d-flex align-items-center">
+                    <h1 class="text-center">Calendar of</h1>
+                    <div class="btn-group ms-2">
+                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currentMonth"></h1>
+                        <div class="dropdown-menu dropdownmenu-secondary" data-simplebar style="max-height: 300px">
+                            <a class="dropdown-item" href="#" onclick="updateMonth('January')">January</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('February')">February</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('March')">March</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('April')">April</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('May')">May</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('June')">June</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('July')">July</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('August')">August</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('September')">September</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('October')">October</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('November')">November</a>
+                            <a class="dropdown-item" href="#" onclick="updateMonth('December')">December</a>
+                        </div>
+                    </div>
+                    <div class="btn-group ms-2">
+                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currentYear"></h1>
+                        <div class="dropdown-menu dropdownmenu-secondary dropdown-year" data-simplebar style="max-height: 300px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div style="width: 345px" class="m-3 p-1 position-relative">
                 <button class="btn btn-primary bottom-left createCalendar" type="button">Save</button>
             </div>
@@ -160,9 +191,29 @@
     </div>
 </div>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var dropdownMenu = document.querySelector('.dropdown-year');
+
+        var startYear = 1996;
+        var endYear = new Date().getFullYear() + 50;
+
+        for (var year = endYear; year >= startYear; year--) {
+            var dropdownItem = document.createElement('a');
+            dropdownItem.innerHTML = '<a href="#" class="dropdown-item" onclick="updateYear(\'' + year + '\')">' + year + '</a>';
+            dropdownMenu.appendChild(dropdownItem);
+        }
+
+        var fullName = "${requestScope.user.fullname}";
+        var span = document.createElement("span");
+        span.textContent = "Username: " + fullName;
+        span.style.fontSize = "20px";
+        document.getElementById('currentCalendar').appendChild(span);
+    })
     const numberOfRowsPerWeek = 6;
     const table = document.getElementById('todoTable');
-    const currentMonthYear = document.getElementById('currentMonthYear');
+    // const currentMonthYear = document.getElementById('currentMonthYear');
+    const currentMonth = document.getElementById('currentMonth');
+    const currentYear = document.getElementById('currentYear');
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
     const dayCodeTrTag = ['theSingleMostImportantThing', 'lecture', 'dailyEvaluation', 'work', 'reading'];
@@ -193,6 +244,8 @@
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
                     let dayData = parseData.days;
+                    console.log(parseData)
+                    console.log(dayData)
                     let weekData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
@@ -216,17 +269,12 @@
 
                     let startDateOfCurrentDate = new Date(year, month, 1);
 
-                    const options = {year: 'numeric', month: 'long'};
+                    const optionsMonth = {month: 'long'};
+                    const optionsYear= {year: 'numeric'};
                     const targetOptions = {month: 'long'};
-                    currentMonthYear.textContent = "Calendar of " + startDateOfCurrentDate.toLocaleDateString('en-US', options);
+                    currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
+                    currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
                     monthTarget.textContent = 'Target of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
-                    currentMonthYear.classList.add('fst-italic', 'p-3');
-                    var fullName = "${requestScope.user.fullname}";
-                    var span = document.createElement("span");
-                    span.textContent = "Username: " + fullName;
-                    span.style.fontSize = "20px";
-                    currentMonthYear.appendChild(document.createElement("br"));
-                    currentMonthYear.appendChild(span);
 
                     const startDay = startDateOfCurrentDate.getDay();
 
@@ -249,49 +297,16 @@
                                     cell.textContent = '';
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
-                                    <%--if (dayNumber < 1) {--%>
-                                    <%--    let found = false;--%>
-                                    <%--    if (responseData != null && responseData.length > 0) {--%>
-                                    <%--        responseData.forEach((e) => {--%>
-                                    <%--            e.listDayOfWeek.forEach((week) => {--%>
-                                    <%--                const dateInResponse = new Date(week.day);--%>
-                                    <%--                if (--%>
-                                    <%--                    currentDate.getFullYear() === dateInResponse.getFullYear() &&--%>
-                                    <%--                    (lastDayOfPreviousMonth - startDay + j) === dateInResponse.getDate()--%>
-                                    <%--                ) {--%>
-                                    <%--                    const link = document.createElement('a');--%>
-                                    <%--                    link.textContent = lastDayOfPreviousMonth - startDay + j;--%>
-                                    <%--                    link.href = "${user.id}" + '/day/?id=' + week.id;--%>
-                                    <%--                    cell.appendChild(link);--%>
-                                    <%--                    found = true;--%>
-                                    <%--                }--%>
-                                    <%--            })--%>
-                                    <%--        });--%>
-                                    <%--    }--%>
-
-                                    <%--    if (!found) {--%>
-                                    <%--        const link = document.createElement('a');--%>
-                                    <%--        link.textContent = lastDayOfPreviousMonth - startDay + j;--%>
-                                    <%--        const year = currentDate.getFullYear();--%>
-                                    <%--        const month = currentDate.getMonth() + 1;--%>
-
-                                    <%--        var day = lastDayOfPreviousMonth - startDay + j;--%>
-                                    <%--        var dayData = day < 10 ? "0" + day : day;--%>
-                                    <%--        var monthData = (month - 1) < 10 ? '0' + (month - 1) : (month - 1);--%>
-                                    <%--        link.href = "${user.id}" + "/day/?day=" + year + "-" + monthData + "-" + dayData;--%>
-                                    <%--        cell.appendChild(link);--%>
-                                    <%--    }--%>
-                                    <%--} else --%>
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
                                         const link = document.createElement('a');
                                         link.textContent = dayNumber;
                                         link.classList.add("p-2");
                                         link.classList.add("fs-6");
-                                        if (dayNumber === currentDate.getDate() && month === new Date().getMonth()) {
+                                        if (dayNumber === currentDate.getDate() && month === currentDate.getMonth()) {
                                             link.classList.add("badge", "badge-soft-danger", "rounded-pill");
                                         }
-                                        const year = currentDate.getFullYear();
-                                        const currentMonth = currentDate.getMonth() + 1;
+                                        const year = getCurentYear(document.getElementById('currentYear').textContent);
+                                        const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent) + 1;
                                         link.href = "weekly-detail/" + "${user.id}" + "?currentDay=" + year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + (dayNumber < 10 ? '0' + dayNumber : dayNumber);
                                         cell.appendChild(link);
                                     }
@@ -302,8 +317,8 @@
                                 if (j === 0) {
                                     const dayTodo = (i % 6) - 1;
                                     const dayNumber = countLine * 7 + 3;
-                                    const year = currentDate.getFullYear();
-                                    const currentMonth = currentDate.getMonth() + 1;
+                                    const year = getCurentYear(document.getElementById('currentYear').textContent);
+                                    const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent) + 1;
                                     let currentColDay;
                                     if (dayNumber > daysInMonth) {
                                         currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + daysInMonth;
@@ -352,8 +367,8 @@
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
                                         const dayTodo = (i % 6) - 1;
-                                        const year = currentDate.getFullYear();
-                                        const currentMonth = currentDate.getMonth() + 1;
+                                        const year = getCurentYear(document.getElementById('currentYear').textContent);
+                                        const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent) + 1;
                                         const currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
                                         if (dayData != null && dayData.length > 0) {
                                             cell.classList.add("fst-italic")
@@ -362,7 +377,7 @@
                                                 const dateInResponse = new Date(day.day);
                                                 const currentDay = countLine * 7 + j - startDay;
                                                 if (
-                                                    currentDate.getMonth() === dateInResponse.getMonth() &&
+                                                    currentMonth === dateInResponse.getMonth() + 1 &&
                                                     currentDay === dateInResponse.getDate()
                                                 ) {
                                                     const targetTodo = day.data[dayTodo];
@@ -379,8 +394,8 @@
                                 } else {
                                     const dayTodo = (i % 6) - 1;
                                     const dayNumber = countLine * 7 + j - startDay;
-                                    const year = currentDate.getFullYear();
-                                    const currentMonth = currentDate.getMonth() + 1;
+                                    const year = getCurentYear(document.getElementById('currentYear').textContent);
+                                    const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent) + 1;
                                     let currentColDay;
                                     if (dayNumber > daysInMonth) {
                                         currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + daysInMonth;
@@ -443,25 +458,54 @@
         }
         xhr.send();
     }
-
     populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    function updateMonth(month) {
+        document.getElementById('currentMonth').textContent = month;
+        const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent);
+        const currentYear = getCurentYear(document.getElementById('currentYear').textContent);
+        populateCalendar(currentYear, currentMonth);
+    }
+    function updateYear(year) {
+        document.getElementById('currentYear').textContent = year;
+        const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent);
+        const currentYear = getCurentYear(document.getElementById('currentYear').textContent);
+        populateCalendar(currentYear, currentMonth);
+    }
+
 
     prevMonthBtn.addEventListener('click', () => {
         $(".containerLoading ").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
         var button = $("#prevMonth")
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);
+        const month = getCurentMonth(document.getElementById('currentMonth').textContent);
+        const year = getCurentYear(document.getElementById('currentYear').textContent);
+        populateCalendar(year, month - 1, button);
     });
 
     nextMonthBtn.addEventListener('click', () => {
         $(".containerLoading ").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
         var button = $("#nextMonth")
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        populateCalendar(currentDate.getFullYear(), currentDate.getMonth(), button);
+        const month = getCurentMonth(document.getElementById('currentMonth').textContent);
+        const year = getCurentYear(document.getElementById('currentYear').textContent);
+        populateCalendar(year, month + 1, button);
     });
 
+    function getCurentMonth(month) {
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var getCurrentMonth = months.indexOf(month);
+
+
+        if (getCurrentMonth < 0) {
+            getCurrentMonth = 11;
+        }
+        return getCurrentMonth;
+    }
+
+    function getCurentYear(year) {
+        var currentYear = parseInt(year);
+        return currentYear;
+    }
 
     function getLastDayOfPreviousMonth(year, month) {
         if (month === 0) {
@@ -503,6 +547,8 @@
     $(document).on("click", "button.createCalendar", function () {
         $(".containerLoading ").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
+        var month = getCurentMonth(document.getElementById('currentMonth').textContent);
+        var year = getCurentYear(document.getElementById('currentYear').textContent);
         const data = {
             userId: '${user.id}',
             days: [],
@@ -513,7 +559,7 @@
         const weeklys = [];
         console.log(currentDate)
         const monthly = {
-            month: currentDate.getFullYear() + '-' + ((currentDate.getMonth() + 1 < 10) ? '0' + (currentDate.getMonth() + 1) : currentDate.getMonth() + 1),
+            month: year + '-' + ((month + 1 < 10) ? '0' + (month+ 1) : month + 1),
             content: []
         };
         $('.editable').each(function () {
@@ -573,11 +619,12 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
-        console.log(data);
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             BtnLoadRemove()
             $("button.createCalendar").removeClass("d-none")
-            populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            const month = getCurentMonth(document.getElementById('currentMonth').textContent);
+            const year = getCurentYear(document.getElementById('currentYear').textContent);
+            populateCalendar(year, month);
             rsSuccess("Add");
         }, function (error) {
             rsUnSuccess();

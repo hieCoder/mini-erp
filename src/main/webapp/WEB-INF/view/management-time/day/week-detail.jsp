@@ -153,7 +153,7 @@
                                         </c:choose>
                                     </c:if>
                                 </td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true">
+                                <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
                                     <c:choose>
                                         <c:when test="${dailyRoutine.target == null}">
                                             0
@@ -251,9 +251,9 @@
                         <thead>
                         <tr>
                             <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
-                                <th scope="col" contenteditable="true" class="panel colorPicker"
+                                <th scope="col" class="panel colorPicker"
                                     style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
-                                        ${color.category}
+                                        <p class="m-0" contenteditable="true">${color.category}</p>
                                     <div class="pickr"></div>
                                     <p hidden="hidden"
                                        class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
@@ -261,9 +261,9 @@
                             </c:forEach>
                             <c:if test="${weekly.colors.size() < 4}">
                                 <c:forEach begin="${weekly.colors.size()}" end="3">
-                                    <th scope="col" contenteditable="true" class="panel colorPicker"
+                                    <th scope="col" class="panel colorPicker"
                                         style="background-color: #FFFFFF;">
-                                        Default Category
+                                       <p class="m-0" contenteditable="true">Default Category</p>
                                         <div class="pickr"></div>
                                         <p hidden="hidden" class="pickedColor">#FFFFFF</p>
                                     </th>
@@ -687,6 +687,12 @@
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
+
+        const result = localStorage.getItem('result');
+        if (result == 'addSuccess') {
+            rsSuccessLoad("Add");
+            localStorage.clear();
+        }
     })
 
     window.addEventListener('beforeunload', function (event) {
@@ -697,7 +703,6 @@
     $('td.dailyRoutineTarget').on('blur', function () {
         const target = $(this).text();
         if (target > 31 || target < 0) {
-            $(this).text('0');
             validateFail("Daily target shouldn't exceed 30 or below 0");
             return false;
         }
@@ -712,11 +717,6 @@
     }).flat() : [];
 
     $('td.inputColor').on('blur', function () {
-        const target = $(this).text();
-        if (allValues.length !== 0 && allValues.includes(target)) {
-            $(this).text('');
-            validateFail("Keyword should not be same");
-        }
         allValues = [];
         $('td.inputColor').each(function () {
             const target = $(this).text().trim();
@@ -724,7 +724,6 @@
                 allValues.push(target);
             }
         });
-        console.log(allValues);
     });
 
     $(document).ready(function () {
@@ -747,181 +746,147 @@
         });
     }
 
-    $("#updateButton").click(function () {
-        $(this).prop('disabled', true);
-        $("div.containerLoading").removeClass("d-none")
-        $("div.calendar-container").addClass("d-none")
-        const currentYearMonth = getCurrentYearMonth();
-        const data = {
-            userId: '${user.id}',
-            days: [],
-            weekly: {},
-            monthly: {},
-            colors: []
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            evt.preventDefault();
+            return false;
         }
+        return true;
+    }
 
-        const colors = [];
-        $('th.colorPicker').each(function () {
-            const category = $(this).contents().filter(function() {
-                return this.nodeType === 3;
-            }).first().text().trim();
-            const color = $(this).find('.pickedColor').text().trim();
-            const values = [];
-            const columnIndex = $(this).index();
-            $('table.categoryColor tbody tr').each(function () {
-                const value = $(this).find('td:eq(' + columnIndex + ')').text().trim();
-                if (value !== '') {
-                    values.push(value);
-                }
+    $("#updateButton").click(function () {
+        if (hasDuplicates(allValues)) {
+            validateFail("Keyword should not be same");
+        } else {
+            $(this).prop('disabled', true);
+            $("div.containerLoading").removeClass("d-none")
+            $("div.calendar-container").addClass("d-none")
+            const currentYearMonth = getCurrentYearMonth();
+            const data = {
+                userId: '${user.id}',
+                days: [],
+                weekly: {},
+                monthly: {},
+                colors: []
+            }
+
+            const colors = [];
+            $('th.colorPicker').each(function () {
+                const category = $(this).find('p:first').text().trim();
+                const color = $(this).find('.pickedColor').text().trim();
+                const values = [];
+                const columnIndex = $(this).index();
+                $('table.categoryColor tbody tr').each(function () {
+                    const value = $(this).find('td:eq(' + columnIndex + ')').text().trim();
+                    if (value !== '') {
+                        values.push(value);
+                    }
+                })
+                colors.push({
+                    category : category,
+                    color : color,
+                    values : values
+                })
             })
-            colors.push({
-                category : category,
-                color : color,
-                values : values
+            data.colors = colors;
+            console.log(colors)
+            const monthly = {
+                month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
+                content: [],
+                dailyRoutine: []
+            };
+            const weekly = {
+                startDay: getPreviousSunday(currentYearMonth.currentDayParam),
+                weeklys: []
+            };
+            $('.monthTarget').each(function () {
+                monthly.content.push($(this).val())
+            });
+            $('input.dailyRoutineInput').each(function () {
+                let obj = {
+                    title: $(this).val(),
+                    target: $(this).closest('tr').find('.dailyRoutineTarget').text()
+                }
+                monthly.dailyRoutine.push(obj)
             })
-        })
-        data.colors = colors;
-        const monthly = {
-            month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
-            content: [],
-            dailyRoutine: []
-        };
-        const weekly = {
-            startDay: getPreviousSunday(currentYearMonth.currentDayParam),
-            weeklys: []
-        };
-        $('.monthTarget').each(function () {
-            monthly.content.push($(this).val())
-        });
-        $('input.dailyRoutineInput').each(function () {
-            let obj = {
-                title: $(this).val(),
-                target: $(this).closest('tr').find('.dailyRoutineTarget').text()
-            }
-            monthly.dailyRoutine.push(obj)
-        })
-        data.monthly = monthly;
+            data.monthly = monthly;
 
-        $("input.form-control.weekTarget").each(function () {
-            let obj = {
-                title: $(this).closest('tr').find('.weekTitle').text(),
-                content: $(this).val()
-            }
-            weekly.weeklys.push(obj)
-        })
-        data.weekly = weekly
-        const days = [];
-        $('textarea').each(function () {
-            const day = $(this).data('day');
-            const value = $(this).val();
-
-            let dayObj = days.find(d => d.day === day);
-            if (value !== "") {
-                if (day != null) {
-                    if (!dayObj) {
-                        dayObj = {
-                            day: day,
-                            data: {
-                                oneThingCalendar: [],
-                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
-                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
-                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
-                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
-                                toDoDetail: [],
-                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
-                                toDoList: {
-                                    sixToTwelvePm: [],
-                                    twelveToSixPm: [],
-                                    sixToTwelveAm: []
-                                }
-                            }
-                        };
-                        days.push(dayObj);
-                    }
+            $("input.form-control.weekTarget").each(function () {
+                let obj = {
+                    title: $(this).closest('tr').find('.weekTitle').text(),
+                    content: $(this).val()
                 }
-            }
-        })
-        $('input[type="checkbox"].dailyRoutine').each(function () {
-            const day = $(this).data('day');
-            const isChecked = $(this).prop('checked');
-
-            let dayObj = days.find(d => d.day === day);
-            if (isChecked !== false) {
-                if (day != null) {
-                    if (!dayObj) {
-                        dayObj = {
-                            day: day,
-                            data: {
-                                oneThingCalendar: [],
-                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
-                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
-                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
-                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
-                                toDoDetail: [],
-                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
-                                toDoList: {
-                                    sixToTwelvePm: [],
-                                    twelveToSixPm: [],
-                                    sixToTwelveAm: []
-                                }
-                            }
-                        };
-                        days.push(dayObj);
-                    }
-                }
-            }
-        })
-        $('td[contenteditable="true"]').each(function () {
-            const day = $(this).data('day');
-            const name = $(this).data('name');
-            const value = $(this).text().trim();
-            const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
-
-            let dayObj = days.find(d => d.day === day);
-            if (value !== "") {
-                if (day != null) {
-                    if (!dayObj) {
-                        dayObj = {
-                            day: day,
-                            data: {
-                                oneThingCalendar: [],
-                                gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
-                                complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
-                                todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
-                                affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
-                                toDoDetail: [],
-                                dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
-                                toDoList: {
-                                    sixToTwelvePm: [],
-                                    twelveToSixPm: [],
-                                    sixToTwelveAm: []
-                                }
-                            }
-                        };
-                        days.push(dayObj);
-                    }
-                }
-            }
-            if (dayObj) {
-                if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
-                    dayObj.data.toDoList[name].push({
-                        target: value,
-                        performance: isChecked
-                    });
-                } else if (name !== 'timeLine') {
-                    dayObj.data.oneThingCalendar.push({
-                        target: value,
-                        performance: isChecked
-                    });
-                }
-            }
-        })
-
-        $('tr[name="timeLine"]').each(function () {
-            let weeklyData = [];
-            $(this).find('td[data-name="timeLine"]').each(function (index) {
+                weekly.weeklys.push(obj)
+            })
+            data.weekly = weekly
+            const days = [];
+            $('textarea').each(function () {
                 const day = $(this).data('day');
-                var value = $(this).text().trim();
+                const value = $(this).val();
+
+                let dayObj = days.find(d => d.day === day);
+                if (value !== "") {
+                    if (day != null) {
+                        if (!dayObj) {
+                            dayObj = {
+                                day: day,
+                                data: {
+                                    oneThingCalendar: [],
+                                    gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                    complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                    todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                    affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                    toDoDetail: [],
+                                    dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                    toDoList: {
+                                        sixToTwelvePm: [],
+                                        twelveToSixPm: [],
+                                        sixToTwelveAm: []
+                                    }
+                                }
+                            };
+                            days.push(dayObj);
+                        }
+                    }
+                }
+            })
+            $('input[type="checkbox"].dailyRoutine').each(function () {
+                const day = $(this).data('day');
+                const isChecked = $(this).prop('checked');
+
+                let dayObj = days.find(d => d.day === day);
+                if (isChecked !== false) {
+                    if (day != null) {
+                        if (!dayObj) {
+                            dayObj = {
+                                day: day,
+                                data: {
+                                    oneThingCalendar: [],
+                                    gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                    complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                    todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                    affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                    toDoDetail: [],
+                                    dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                    toDoList: {
+                                        sixToTwelvePm: [],
+                                        twelveToSixPm: [],
+                                        sixToTwelveAm: []
+                                    }
+                                }
+                            };
+                            days.push(dayObj);
+                        }
+                    }
+                }
+            })
+            $('td[contenteditable="true"]').each(function () {
+                const day = $(this).data('day');
+                const name = $(this).data('name');
+                const value = $(this).text().trim();
+                const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
+
                 let dayObj = days.find(d => d.day === day);
                 if (value !== "") {
                     if (day != null) {
@@ -948,28 +913,74 @@
                     }
                 }
                 if (dayObj) {
-                    weeklyData.push(value);
-                    if ((index + 1) % 4 === 0) {
-                        console.log(weeklyData);
-                        dayObj.data.toDoDetail.push(weeklyData);
-                        weeklyData = [];
+                    if (name === 'sixToTwelvePm' || name === 'twelveToSixPm' || name === 'sixToTwelveAm') {
+                        dayObj.data.toDoList[name].push({
+                            target: value,
+                            performance: isChecked
+                        });
+                    } else if (name !== 'timeLine') {
+                        dayObj.data.oneThingCalendar.push({
+                            target: value,
+                            performance: isChecked
+                        });
                     }
                 }
             })
-        })
-        data.days.push(...days);
-        console.log(data);
-        callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-            if (rs) {
-                rsSuccessLoad("Add");
-                $("div.containerLoading").addClass("d-none")
-                $("div.calendar-container").removeClass("d-none")
-            } else {
-                rsUnSuccess();
-                $("div.containerLoading").addClass("d-none")
-                $("div.calendar-container").removeClass("d-none")
-            }
-        })
+
+            $('tr[name="timeLine"]').each(function () {
+                let weeklyData = [];
+                $(this).find('td[data-name="timeLine"]').each(function (index) {
+                    const day = $(this).data('day');
+                    var value = $(this).text().trim();
+                    let dayObj = days.find(d => d.day === day);
+                    if (value !== "") {
+                        if (day != null) {
+                            if (!dayObj) {
+                                dayObj = {
+                                    day: day,
+                                    data: {
+                                        oneThingCalendar: [],
+                                        gratitudeDiary: getTextAreaValuesByDayAndClass(day, 'gratitudeDiary'),
+                                        complimentForMeToday: getTextAreaValuesByDayAndClass(day, 'complimentForMeToday'),
+                                        todaysReflectionsAndImprovements: getTextAreaValuesByDayAndClass(day, 'todaysReflectionsAndImprovements'),
+                                        affirmation: getTextAreaValuesByDayAndClass(day, 'affirmation'),
+                                        toDoDetail: [],
+                                        dailyRoutine: getDailyRoutineList(day, 'dailyRoutine'),
+                                        toDoList: {
+                                            sixToTwelvePm: [],
+                                            twelveToSixPm: [],
+                                            sixToTwelveAm: []
+                                        }
+                                    }
+                                };
+                                days.push(dayObj);
+                            }
+                        }
+                    }
+                    if (dayObj) {
+                        weeklyData.push(value);
+                        if ((index + 1) % 4 === 0) {
+                            console.log(weeklyData);
+                            dayObj.data.toDoDetail.push(weeklyData);
+                            weeklyData = [];
+                        }
+                    }
+                })
+            })
+            data.days.push(...days);
+            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+                if (rs) {
+                    $("div.containerLoading").addClass("d-none")
+                    $("div.calendar-container").removeClass("d-none")
+                    localStorage.setItem('result', 'addSuccess');
+                    window.location.reload();
+                } else {
+                    rsUnSuccess();
+                    $("div.containerLoading").addClass("d-none")
+                    $("div.calendar-container").removeClass("d-none")
+                }
+            })
+        }
     })
 
     $(document).ready(function () {
@@ -1069,6 +1080,19 @@
         sundayDate.setDate(dateObject.getDate() - daysToSubtract);
 
         return sundayDate.toISOString().split('T')[0];
+    }
+
+    function hasDuplicates(array) {
+        const obj = {};
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] !== '') {
+                if (obj[array[i]]) {
+                    return true;
+                }
+                obj[array[i]] = true;
+            }
+        }
+        return false;
     }
 </script>
 </body>
