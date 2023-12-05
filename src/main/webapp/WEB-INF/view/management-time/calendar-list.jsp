@@ -195,7 +195,7 @@
         var dropdownMenu = document.querySelector('.dropdown-year');
 
         var startYear = 1996;
-        var endYear = new Date().getFullYear() + 50;
+        var endYear = new Date().getFullYear() + 5;
 
         for (var year = endYear; year >= startYear; year--) {
             var dropdownItem = document.createElement('a');
