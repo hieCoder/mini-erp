@@ -43,6 +43,7 @@
 
         .table-container td {
             padding: 5px;
+            position: relative;
             white-space: nowrap;
             text-align: center;
             min-width: 100px;
@@ -83,6 +84,20 @@
         .categoryColor td {
             max-width: 20px;
             text-wrap: normal;
+        }
+        .note {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            width: 160px;
+            cursor: pointer;
+            padding: 5px;
+            left: 60%;
+            top: 15px;
+            z-index: 1;
+        }
+        .note:hover {
+            background: #cfd1d4;
         }
     </style>
 </head>
@@ -605,12 +620,20 @@
                                             </c:forEach>
                                         </c:forEach>
 
-                                        <td style="background-color: ${backgroundColor0}" contenteditable="true"
+                                        <td style="background-color: ${backgroundColor0}" contenteditable="true" class="setting"
                                             data-day="${day.day}"
-                                            data-name="timeLine">${data[0]}</td>
-                                        <td style="background-color: ${backgroundColor1}" contenteditable="true"
+                                            data-name="timeLine">${data[0]}
+                                            <div class="d-flex d-none note rounded-pill btn-light align-items-center" contenteditable="false" onclick="showModal(this)">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png" width="24" height="24" class="me-1">Allow notifications
+                                            </div>
+                                        </td>
+                                        <td style="background-color: ${backgroundColor1}" contenteditable="true" class="setting"
                                             data-day="${day.day}"
-                                            data-name="timeLine">${data[1]}</td>
+                                            data-name="timeLine">${data[1]}
+                                            <div class="d-flex d-none note rounded-pill btn-light align-items-center" contenteditable="false" onclick="showModal(this)">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png" width="24" height="24" class="me-1">Allow notifications
+                                            </div>
+                                        </td>
                                         <td style="background-color: ${backgroundColor2}" contenteditable="true"
                                             data-day="${day.day}"
                                             data-name="timeLine">${data[2]}</td>
@@ -633,6 +656,25 @@
             </div>
         </div>
     </div> <!-- end row-->
+</div>
+
+<!-- Modal Content Allowed Notification -->
+<div class="modal fade" id="contentNoti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <h5 >Content Notification:</h5>
+                <textarea class="form-control" id="message-text"></textarea>
+
+                <div class="mt-4">
+                    <div class="hstack gap-2 justify-content-center">
+                        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                        <a href="javascript:void(0);" class="btn btn-success">Save</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
@@ -684,6 +726,64 @@
 <script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var plant = document.querySelectorAll('.setting');
+        plant.forEach(function (elementPlant) {
+
+            elementPlant.addEventListener('contextmenu', function(event) {
+                if(elementPlant.innerText != '') {
+                    $('.note').addClass('d-none');
+
+                    const note = elementPlant.querySelector('.note');
+                    const imgNoti = note.querySelector('img');
+                    const isAllowed = note.innerText.trim();
+                    if (note) {
+                        $(note).removeClass('d-none');
+                        if ( isAllowed == 'Allow notifications') {
+                            note.addEventListener('click', function (e) {
+                                $(note).addClass('d-none');
+                                const iconNoti = document.createElement('img');
+                                iconNoti.src = 'https://cdn-icons-png.flaticon.com/512/4764/4764539.png';
+                                iconNoti.className = 'float-end';
+                                iconNoti.width = 15;
+                                iconNoti.height = 15;
+                                elementPlant.appendChild(iconNoti);
+
+                                note.innerHTML = '';
+                                note.appendChild(imgNoti);
+                                note.appendChild(document.createTextNode('Remove Allowed'));
+                            })
+                        } else if (isAllowed == 'Remove Allowed'){
+                            note.addEventListener('click', function (e) {
+                                const imgList = elementPlant.querySelectorAll('img');
+                                imgList.forEach(function (img) {
+                                    img.remove();
+                                });
+                                note.innerHTML = '';
+                                note.appendChild(imgNoti);
+                                note.appendChild(document.createTextNode('Allow notifications'));
+                            })
+                        }
+                    }
+
+                    event.preventDefault();
+                    document.addEventListener('click', function hideNoteOnClickOutside(e) {
+                        if (!note.contains(e.target) && e.target !== note) {
+                            $(note).addClass('d-none');
+
+                            document.removeEventListener('click', hideNoteOnClickOutside);
+                        }
+                    });
+                } else event.preventDefault();
+            });
+        })
+    })
+
+    function showModal(element) {
+        const isAllowedNoti = element.innerText;
+        if (isAllowedNoti == 'Allow notifications') $('#contentNoti').modal('show');
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
@@ -748,11 +848,13 @@
 
     function isNumberKey(evt) {
         var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+
+        if ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105)) {
+            return true;
+        } else {
             evt.preventDefault();
             return false;
         }
-        return true;
     }
 
     $("#updateButton").click(function () {
@@ -790,7 +892,6 @@
                 })
             })
             data.colors = colors;
-            console.log(colors)
             const monthly = {
                 month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
                 content: [],
@@ -931,7 +1032,9 @@
                 let weeklyData = [];
                 $(this).find('td[data-name="timeLine"]').each(function (index) {
                     const day = $(this).data('day');
-                    var value = $(this).text().trim();
+                    var value = $(this).contents().filter(function() {
+                        return this.nodeType === 3; // Lọc ra các node là văn bản (text node)
+                    }).text().trim();
                     let dayObj = days.find(d => d.day === day);
                     if (value !== "") {
                         if (day != null) {
@@ -960,7 +1063,6 @@
                     if (dayObj) {
                         weeklyData.push(value);
                         if ((index + 1) % 4 === 0) {
-                            console.log(weeklyData);
                             dayObj.data.toDoDetail.push(weeklyData);
                             weeklyData = [];
                         }

@@ -756,7 +756,6 @@
                     var newUrl = currentUrl.replace(regex, "$1search=" + encodeURIComponent(keyword));
                     window.location.href = newUrl;
                 } else {
-                    console.log(2)
                     var newUrl = currentUrl + "&search=" + encodeURIComponent(keyword);
                     window.location.href = newUrl;
                 }

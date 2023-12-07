@@ -194,8 +194,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         var dropdownMenu = document.querySelector('.dropdown-year');
 
-        var startYear = 1996;
-        var endYear = new Date().getFullYear() + 5;
+        var startYear = 2023;
+        var endYear = new Date().getFullYear() + 20;
 
         for (var year = endYear; year >= startYear; year--) {
             var dropdownItem = document.createElement('a');
