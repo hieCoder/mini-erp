@@ -19,6 +19,6 @@ public class DataOfDayDto {
     private String complimentForMeToday;
     private String todaysReflectionsAndImprovements;
     private String affirmation;
-    private String[][] toDoDetail;
+    private List<List<TodoDetailDto>> toDoDetail;
     private Boolean[] dailyRoutine;
 }

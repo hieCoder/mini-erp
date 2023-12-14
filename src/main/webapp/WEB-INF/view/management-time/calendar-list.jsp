@@ -244,8 +244,6 @@
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
                     let dayData = parseData.days;
-                    console.log(parseData)
-                    console.log(dayData)
                     let weekData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
