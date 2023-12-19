@@ -16,4 +16,6 @@ public class DaysUpdateRequest {
     private WeeklyRequest weekly;
     private DayRequest[] days;
     private ColorRequest[] colors;
+    private String[] quotes;
+    private YearRequest yearRequest;
 }

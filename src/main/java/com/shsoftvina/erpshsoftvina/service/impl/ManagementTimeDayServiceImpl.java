@@ -1,17 +1,8 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
-import com.shsoftvina.erpshsoftvina.converter.ColorManagementTimeDayConvert;
-import com.shsoftvina.erpshsoftvina.converter.ManagementTimeDayConvert;
-import com.shsoftvina.erpshsoftvina.converter.MonthlyManagementTimeDayConverter;
-import com.shsoftvina.erpshsoftvina.converter.WeeklyManagementTimeDayConverter;
-import com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.mapper.ColorManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.mapper.ManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
+import com.shsoftvina.erpshsoftvina.converter.*;
+import com.shsoftvina.erpshsoftvina.entity.*;
+import com.shsoftvina.erpshsoftvina.mapper.*;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.*;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
@@ -64,6 +55,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
     @Autowired
     private ColorManagementTimeDayConvert colorManagementTimeDayConvert;
+
+    @Autowired
+    private QuoteManagementTimeDayMapper quoteManagementTimeDayMapper;
+
+    @Autowired
+    private QuoteMangementTimeDayConvert quoteMangementTimeDayConvert;
+
 
     private List<String> getSundaysOfTheMonth(String yyyyMMDD) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -170,6 +168,24 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         return getSundaysOfTheMonth(monthCode + "-01").stream()
                 .filter(sunday -> !weeklyCodes.contains(sunday))
                 .collect(Collectors.toList());
+    }
+
+    private CostsRequest[][] filterCostsByType(CostsRequest[] costs) {
+        Map<String, List<CostsRequest>> groupedByType = new HashMap<>();
+
+        for (CostsRequest cost : costs) {
+            groupedByType.computeIfAbsent(cost.getType(), k -> new ArrayList<>())
+                    .add(cost);
+        }
+
+        CostsRequest[][] result = new CostsRequest[groupedByType.size()][];
+        int index = 0;
+
+        for (List<CostsRequest> list : groupedByType.values()) {
+            result[index++] = list.toArray(new CostsRequest[0]);
+        }
+
+        return result;
     }
 
     @Override
@@ -403,14 +419,20 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             return colorManagementTimeDayConvert.toListResponse(colorManagementTimeDayMapper.findAllByUserId(userId));
         });
 
-        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture, colorsFuture);
+        CompletableFuture<QuoteResponse> quoteFuture = CompletableFuture.supplyAsync(() -> {
+            return quoteMangementTimeDayConvert.toResponse(quoteManagementTimeDayMapper.findByUserId(userId));
+        });
+
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture, colorsFuture, quoteFuture);
         allOf.join();
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = DaysOfWeeklyResponse.builder()
                 .monthlys(monthlysFuture.join())
                 .weeklys(weeklyFuture.join())
                 .days(daysFuture.join())
-                .colors(colorsFuture.join()).build();
+                .colors(colorsFuture.join())
+                .quotes(quoteFuture.join())
+                .build();
 
         return daysOfWeeklyResponse;
     }
@@ -423,14 +445,19 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(()->{
             MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
+            YearRequest yearRequest = daysUpdateRequest.getYearRequest();
             String monthlyCode = monthlyRequest.getMonth();
             String[] monthlyContent = monthlyRequest.getContent();
             DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();
+            CostsRequest[] costsRequests = monthlyRequest.getCosts();
             MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
             if(monthlyEntity == null){
                 MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
                         JsonUtils.objectToJson(monthlyContent),
-                        JsonUtils.objectToJson(dailyRoutine));
+                        JsonUtils.objectToJson(dailyRoutine),
+                        JsonUtils.objectToJson(filterCostsByType(costsRequests)[0]),
+                        JsonUtils.objectToJson(filterCostsByType(costsRequests)[1]),
+                        JsonUtils.objectToJson(filterCostsByType(costsRequests)[2]));
                 CompletableFuture<Void> createMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyE);
                 });
@@ -510,7 +537,25 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             asyncTasks.add(createColorsAsync);
         });
 
-        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor);
+        CompletableFuture<Void> asyncTaskQuote = CompletableFuture.runAsync(()->{
+            String[] quotes = daysUpdateRequest.getQuotes();
+            QuoteManagementTimeDay quote = quoteManagementTimeDayMapper.findByUserId(userId);
+            if(quote == null){
+                QuoteManagementTimeDay quoteE = quoteMangementTimeDayConvert.toEntity(userId, quotes);
+                CompletableFuture<Void> createQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    quoteManagementTimeDayMapper.createQuote(quoteE);
+                });
+                asyncTasks.add(createQuoteManagementTimeDayAsync);
+            } else{
+                quote.setContent(JsonUtils.objectToJson(quotes));
+                CompletableFuture<Void> updateQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    quoteManagementTimeDayMapper.editQuote(quote);
+                });
+                asyncTasks.add(updateQuoteManagementTimeDayAsync);
+            }
+        });
+
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor, asyncTaskQuote);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();

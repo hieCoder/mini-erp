@@ -266,41 +266,41 @@
                         </tbody>
                     </table>
 
-                    <h4 class="fw-bolder">CUM TU</h4>
+                    <h4 class="fw-bolder">A quote I shouldn't forget</h4>
                     <button type="button" class="btn btn-info d-none" id="btn-alarm" data-bs-toggle="modal"
                             data-bs-target=".bs-example-modal-xl">Extra large Modal
                     </button>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
                         <tr>
-                            <th>Target</th>
+                            <th>Quotes</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"
-                                       value="">
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[0]}">
                             </td>
                         </tr>
                         <tr>
-                            <td><input class="form-control weekTarget" name="lecture" type="text"
-                                       value="">
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[1]}">
                             </td>
                         </tr>
                         <tr>
-                            <td><input class="form-control weekTarget" name="lecture" type="text"
-                                       value="">
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[2]}">
                             </td>
                         </tr>
 
                         <tr>
-                            <td><input class="form-control weekTarget" name="lecture" type="text"
-                                       value="">
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[3]}">
                             </td>
                         </tr>
                         <tr>
-                            <td><input class="form-control weekTarget" name="lecture" type="text"
-                                       value="">
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[4]}">
                             </td>
                         </tr>
                         </tbody>
@@ -704,6 +704,105 @@
                         </table>
                     </div>
                 </div>
+                <div class="col-md-4 text-center align-middle mt-3">
+                    <h3>Income this month</h3>
+                    <!-- Tables Border Colors -->
+                    <table class="table table-bordered border-secondary table-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">ITEM</th>
+                            <th scope="col">AMT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td contenteditable="true">Implement new UX</td>
+                            <td contenteditable="true">$4,521</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Design syntax</td>
+                            <td contenteditable="true">$7,546</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Configurable resources</td>
+                            <td contenteditable="true">$1,350</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Implement extensions</td>
+                            <td contenteditable="true">$4,521</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Total: $4,521</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 text-center align-middle mt-3">
+                    <h3>Fixed costs</h3>
+                    <!-- Tables Border Colors -->
+                    <table class="table table-bordered border-secondary table-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">ITEM</th>
+                            <th scope="col">AMT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td contenteditable="true">Implement new UX</td>
+                            <td contenteditable="true">$4,521</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Design syntax</td>
+                            <td contenteditable="true">$7,546</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Configurable resources</td>
+                            <td contenteditable="true">$1,350</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Implement extensions</td>
+                            <td contenteditable="true">$4,521</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" >Total: $4,521</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 text-center align-middle mt-3">
+                    <h3>Fluctuating costs</h3>
+                    <!-- Tables Border Colors -->
+                    <table class="table table-bordered border-secondary table-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">ITEM</th>
+                            <th scope="col">AMT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td contenteditable="true">Implement new UX</td>
+                            <td contenteditable="true">$4,521</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Design syntax</td>
+                            <td contenteditable="true">$7,546</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Configurable resources</td>
+                            <td>$1,350</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Implement extensions</td>
+                            <td>$4,521</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Total: $4,521</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="col-md-12 text-center align-middle mt-3">
                     <button class="btn btn-primary mr-2" id="backButton" onclick="history.back()">
                         Back
@@ -767,7 +866,7 @@
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: block;" aria-hidden="true">
+<div class="modal fade bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -793,44 +892,44 @@
                     </div>
                 </div>
                 <h6 class="fs-16 my-3">Quotes You shouldn't forget</h6>
-                <div class="d-flex mt-2">
+                <div class="d-flex mt-2 notiQuote">
                     <div class="flex-shrink-0">
                         <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
                     </div>
-                    <div class="flex-grow-1 ms-2 ">
-                        <p class="text-muted mb-0">Opposites attract, and that’s a fact. It’s in our nature to be interested in the unusual, and that’s why using contrasting colors in Graphic Design is a must. It’s eye-catching, it makes a statement, it’s impressive graphic design. Increase or decrease the letter spacing depending.</p>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[0]}</p>
                     </div>
                 </div>
-                <div class="d-flex mt-2">
+                <div class="d-flex mt-2 notiQuote">
                     <div class="flex-shrink-0">
                         <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
                     </div>
-                    <div class="flex-grow-1 ms-2 ">
-                        <p class="text-muted mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[1]}</p>
                     </div>
                 </div>
-                <div class="d-flex mt-2">
+                <div class="d-flex mt-2 notiQuote">
                     <div class="flex-shrink-0">
                         <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
                     </div>
-                    <div class="flex-grow-1 ms-2 ">
-                        <p class="text-muted mb-0">Just like in the image where we talked about using multiple fonts, you can see that the background in this graphic design is blurred. Whenever you put text on top of an image, it’s important that your viewers can understand.</p>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[2]}</p>
                     </div>
                 </div>
-                <div class="d-flex mt-2">
+                <div class="d-flex mt-2 notiQuote">
                     <div class="flex-shrink-0">
                         <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
                     </div>
-                    <div class="flex-grow-1 ms-2 ">
-                        <p class="text-muted mb-0">Keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[3]}</p>
                     </div>
                 </div>
-                <div class="d-flex mt-2">
+                <div class="d-flex mt-2 notiQuote">
                     <div class="flex-shrink-0">
                         <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
                     </div>
-                    <div class="flex-grow-1 ms-2 ">
-                        <p class="text-muted mb-0">Keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[4]}</p>
                     </div>
                 </div>
             </div>
@@ -900,6 +999,11 @@
             if (noti2 != '') document.getElementById('noti2').innerText = 'Notice at ' + hoursValue + ':30' + ' you have an activity: ' + '"' + noti2 + '"';
             else document.getElementById('noti2').innerText =  'At ' + hoursValue + ':30 you have no notifications.';
         }
+
+        if ((noti1 != '' && noti1 != null ) || (noti2 != '' && noti2 != null)) {
+
+            document.getElementById('btn-alarm').click();
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -909,10 +1013,12 @@
         });
     });
 
-
     document.addEventListener("DOMContentLoaded", function () {
-         document.getElementById('btn-alarm').click();
-    })
+        var quotes = document.querySelectorAll('.notiQuote');
+        quotes.forEach(function (quote) {
+            if (quote.querySelector('p').textContent == '') $(quote).remove();
+        });
+    });
 
     function setWithExpiry(key, value, ttl) {
         const now = new Date();
@@ -1107,7 +1213,8 @@
                 days: [],
                 weekly: {},
                 monthly: {},
-                colors: []
+                colors: [],
+                quotes: []
             }
 
             const colors = [];
@@ -1272,7 +1379,6 @@
                         return this.nodeType === 3;
                     }).text().trim();
                     var contentPlan = $(this).find('div').first().data('value');
-                    console.log(contentPlan)
                     let dayObj = days.find(d => d.day === day);
                     if (value !== "") {
                         if (day != null) {
@@ -1316,20 +1422,25 @@
                 });
             });
 
+            const quotes = [];
+            document.querySelectorAll('.quotes').forEach(function (quote) {
+                quotes.push(quote.value);
+            });
             data.days.push(...days);
+            data.quotes.push(...quotes);
             console.log(data)
-            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-                if (rs) {
-                    $("div.containerLoading").addClass("d-none")
-                    $("div.calendar-container").removeClass("d-none")
-                    localStorage.setItem('result', 'addSuccess');
-                    window.location.reload();
-                } else {
-                    rsUnSuccess();
-                    $("div.containerLoading").addClass("d-none")
-                    $("div.calendar-container").removeClass("d-none")
-                }
-            })
+            // callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+            //     if (rs) {
+            //         $("div.containerLoading").addClass("d-none")
+            //         $("div.calendar-container").removeClass("d-none")
+            //         localStorage.setItem('result', 'addSuccess');
+            //         window.location.reload();
+            //     } else {
+            //         rsUnSuccess();
+            //         $("div.containerLoading").addClass("d-none")
+            //         $("div.calendar-container").removeClass("d-none")
+            //     }
+            // })
         }
     })
 
