@@ -1024,14 +1024,17 @@
             totalFluctuating += fluctuatingValue;
         })
         document.getElementById('totalFluctuating').textContent = 'Total: $' + totalFluctuating;
-        const economic = totalIncome - (totalFixed + totalFluctuating);
+        const economic = (totalIncome - (totalFixed + totalFluctuating)).toFixed(2);
         document.getElementById('econmic').textContent = 'Economic situation: $' + economic;
     });
 
     function validateNumberInput(event) {
         var inputText = event.target.textContent;
-
-        var numericValue = inputText.replace(/[^\d]/g, '');
+        var numericValue = inputText.replace(/[^\d.]/g, '');
+        var decimalCount = (numericValue.match(/\./g) || []).length;
+        if (decimalCount > 1) {
+            numericValue = numericValue.substring(0, numericValue.lastIndexOf('.'));
+        }
 
         event.target.textContent = numericValue;
         placeCaretAtEnd(event.target);
