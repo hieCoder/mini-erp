@@ -26,6 +26,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.shsoftvina.erpshsoftvina.constant.ManagementTimeConstant.*;
+
 @Service
 public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
@@ -61,6 +63,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
     @Autowired
     private QuoteMangementTimeDayConvert quoteMangementTimeDayConvert;
+
+    @Autowired
+    private YearManagementTimeDayMapper yearManagementTimeDayMapper;
+
+    @Autowired
+    private YearManagementTimeDayConverter yearManagementTimeDayConverter;
 
 
     private List<String> getSundaysOfTheMonth(String yyyyMMDD) {
@@ -170,7 +178,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 .collect(Collectors.toList());
     }
 
-    private CostsRequest[][] filterCostsByType(CostsRequest[] costs) {
+    public Map<String, List<CostsRequest>> filterCostsByType(CostsRequest[] costs) {
         Map<String, List<CostsRequest>> groupedByType = new HashMap<>();
 
         for (CostsRequest cost : costs) {
@@ -178,14 +186,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     .add(cost);
         }
 
-        CostsRequest[][] result = new CostsRequest[groupedByType.size()][];
-        int index = 0;
-
-        for (List<CostsRequest> list : groupedByType.values()) {
-            result[index++] = list.toArray(new CostsRequest[0]);
-        }
-
-        return result;
+        return groupedByType;
     }
 
     @Override
@@ -383,6 +384,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                         monthResponse.setDailyRoutine(dailyRoutineResponses);
                     }
 
+                    monthResponse.setIncomes(JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class));
+                    monthResponse.setFixeds(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class));
+                    monthResponse.setFluctuatings(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class));
+
                     monthlys.add(monthResponse);
                 } else{
                     MonthResponse monthResponse = MonthResponse.builder()
@@ -445,19 +450,21 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(()->{
             MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
-//            YearRequest yearRequest = daysUpdateRequest.getYearRequest();
             String monthlyCode = monthlyRequest.getMonth();
             String[] monthlyContent = monthlyRequest.getContent();
             DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();
             CostsRequest[] costsRequests = monthlyRequest.getCosts();
+            List<CostsRequest> incomeType = filterCostsByType(costsRequests).get(MONTH_INCOME_TYPE);
+            List<CostsRequest> fixedType = filterCostsByType(costsRequests).get(MONTH_FIXED_TYPE);
+            List<CostsRequest> fluctuatingType = filterCostsByType(costsRequests).get(MONTH_FLUCTUATING_TYPE);
             MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
             if(monthlyEntity == null){
                 MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
                         JsonUtils.objectToJson(monthlyContent),
                         JsonUtils.objectToJson(dailyRoutine),
-                        JsonUtils.objectToJson(filterCostsByType(costsRequests)[0]),
-                        JsonUtils.objectToJson(filterCostsByType(costsRequests)[1]),
-                        JsonUtils.objectToJson(filterCostsByType(costsRequests)[2]));
+                        JsonUtils.objectToJson(incomeType),
+                        JsonUtils.objectToJson(fixedType),
+                        JsonUtils.objectToJson(fluctuatingType));
                 CompletableFuture<Void> createMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyE);
                 });
@@ -465,6 +472,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             } else{
                 monthlyEntity.setContent(JsonUtils.objectToJson(monthlyContent));
                 monthlyEntity.setDailyRoutine(JsonUtils.objectToJson(dailyRoutine));
+                monthlyEntity.setIncomeThisMonth(JsonUtils.objectToJson(incomeType));
+                monthlyEntity.setFixedCosts(JsonUtils.objectToJson(fixedType));
+                monthlyEntity.setFluctuatingCosts(JsonUtils.objectToJson(fluctuatingType));
                 CompletableFuture<Void> updateMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
                 });
@@ -554,6 +564,26 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 asyncTasks.add(updateQuoteManagementTimeDayAsync);
             }
         });
+
+//        CompletableFuture<Void> asyncTaskYear = CompletableFuture.runAsync(()->{
+//            YearRequest yearRequest = daysUpdateRequest.getYearRequest();
+//            String yearCode = yearRequest.getYear();
+//            String[] target = yearRequest.getTarget();
+//            YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
+//            if(yearE == null){
+//                YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
+//                CompletableFuture<Void> createYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+//                    yearManagementTimeDayMapper.createYearManagementTimeDay(yearManagementTimeDay);
+//                });
+//                asyncTasks.add(createYearManagementTimeDayAsync);
+//            } else{
+//                yearE.setTarget(JsonUtils.objectToJson(target));
+//                CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+//                    yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);
+//                });
+//                asyncTasks.add(updateYearManagementTimeDayAsync);
+//            }
+//        });
 
         CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor, asyncTaskQuote);
         allAsyncTasks.thenRun(() -> {

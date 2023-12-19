@@ -44,7 +44,10 @@
     <update id="updateMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
         UPDATE MONTHLY_MANAGEMENT_TIME_DAY
         SET CONTENT = #{content},
-            DAILY_ROUTINE = #{dailyRoutine}
+            DAILY_ROUTINE = #{dailyRoutine},
+            INCOME_THIS_MONTH = #{incomeThisMonth},
+            FIXED_COSTS = #{fixedCosts},
+            FLUCTUATING_COSTS = #{fluctuatingCosts}
         WHERE ID = #{id};
     </update>
 </mapper>

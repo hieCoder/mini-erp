@@ -1,62 +1,35 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.YearManagementTimeDayMapper">
 
-<!--    <select id="findByListCode" resultMap="monthlyManagementTimeDayResultMap">-->
-<!--        SELECT *-->
-<!--        FROM MONTHLY_MANAGEMENT_TIME_DAY m-->
-<!--        INNER JOIN USER u ON m.USER_ID = u.ID-->
-<!--        WHERE m.USER_ID = #{userId} AND m.CODE IN-->
-<!--        <foreach item="code" collection="codes" open="(" separator="," close=")">-->
-<!--            #{code}-->
-<!--        </foreach>-->
-<!--    </select>-->
+    <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID)
+        VALUES (UUID(), #{code}, #{target}, #{user.id})
+    </insert>
 
-<!--    <select id="findByCode" resultMap="monthlyManagementTimeDayResultMap">-->
-<!--        SELECT *-->
-<!--        FROM MONTHLY_MANAGEMENT_TIME_DAY m-->
-<!--                 INNER JOIN USER u ON m.USER_ID = u.ID-->
-<!--        WHERE m.USER_ID = #{userId} AND m.CODE = #{code}-->
-<!--    </select>-->
+    <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
+        SELECT *
+        FROM YEAR_MANAGEMENT_TIME_DAY y
+                 INNER JOIN USER u ON y.USER_ID = u.ID
+        WHERE y.USER_ID = #{userId} AND y.CODE = #{code}
+    </select>
 
-<!--    <resultMap id="monthlyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">-->
-<!--        <id property="id" column="ID"/>-->
-<!--        <result property="code" column="CODE"/>-->
-<!--        <result property="content" column="CONTENT"/>-->
-<!--        <result property="dailyRoutine" column="DAILY_ROUTINE"/>-->
-<!--        <result property="incomeThisMonth" column="INCOME_THIS_MONTH"/>-->
-<!--        <result property="fixedCosts" column="FIXED_COSTS"/>-->
-<!--        <result property="fluctuatingCosts" column="FLUCTUATING_COSTS"/>-->
-<!--        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>-->
-<!--    </resultMap>-->
+    <resultMap id="yearManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+        <id property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="target" column="TARGET"/>
+        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+    </resultMap>
 
-<!--    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">-->
-<!--        <id property="id" column="USER_ID"/>-->
-<!--        <result property="fullname" column="FULLNAME"/>-->
-<!--    </resultMap>-->
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="USER_ID"/>
+        <result property="fullname" column="FULLNAME"/>
+    </resultMap>
 
-<!--    <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">-->
-<!--        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID)-->
-<!--        VALUES (UUID(), #{code}, #{target}, #{user.id})-->
-<!--    </insert>-->
-
-<!--    <select id="findByCode" resultMap="yearManagementTimeDayResultMap">-->
-<!--        SELECT *-->
-<!--        FROM MONTHLY_MANAGEMENT_TIME_DAY m-->
-<!--                 INNER JOIN USER u ON m.USER_ID = u.ID-->
-<!--        WHERE m.USER_ID = #{userId} AND m.CODE = #{code}-->
-<!--    </select>-->
-
-<!--    <resultMap id="yearManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">-->
-<!--        <id property="id" column="ID"/>-->
-<!--        <result property="code" column="CODE"/>-->
-<!--        <result property="target" column="CONTENT"/>-->
-<!--        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>-->
-<!--    </resultMap>-->
-
-<!--    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">-->
-<!--        <id property="id" column="USER_ID"/>-->
-<!--        <result property="fullname" column="FULLNAME"/>-->
-<!--    </resultMap>-->
+    <update id="updateMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+        UPDATE YEAR_MANAGEMENT_TIME_DAY
+        SET TARGET = #{target}
+        WHERE ID = #{id};
+    </update>
 </mapper>

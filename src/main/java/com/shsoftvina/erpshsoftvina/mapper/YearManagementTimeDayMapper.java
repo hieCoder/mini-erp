@@ -5,5 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface YearManagementTimeDayMapper {
-    int createYearManagementTimeDay(YearManagementTimeDay yearManagementTimeDay);
+   int createYearManagementTimeDay(YearManagementTimeDay yearManagementTimeDay);
+    YearManagementTimeDay findByCode(String userId, String code);
+    YearManagementTimeDay updateYearManagementTimeDay(YearManagementTimeDay yearManagementTimeDay);
 }

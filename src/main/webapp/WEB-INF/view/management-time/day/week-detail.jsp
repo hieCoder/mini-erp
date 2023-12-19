@@ -1584,18 +1584,18 @@
             data.days.push(...days);
             data.quotes.push(...quotes);
             console.log(data)
-            // callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-            //     if (rs) {
-            //         $("div.containerLoading").addClass("d-none")
-            //         $("div.calendar-container").removeClass("d-none")
-            //         localStorage.setItem('result', 'addSuccess');
-            //         window.location.reload();
-            //     } else {
-            //         rsUnSuccess();
-            //         $("div.containerLoading").addClass("d-none")
-            //         $("div.calendar-container").removeClass("d-none")
-            //     }
-            // })
+            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+                if (rs) {
+                    $("div.containerLoading").addClass("d-none")
+                    $("div.calendar-container").removeClass("d-none")
+                    localStorage.setItem('result', 'addSuccess');
+                    window.location.reload();
+                } else {
+                    rsUnSuccess();
+                    $("div.containerLoading").addClass("d-none")
+                    $("div.calendar-container").removeClass("d-none")
+                }
+            })
         }
     })
 
