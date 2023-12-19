@@ -197,16 +197,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-start" rowspan="3">Main target</td>
-                            <td><input class="form-control yearTarget" type="text"></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-control yearTarget" type="text"></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-control yearTarget" type="text"></td>
-                        </tr>
+                        <c:forEach var="year" varStatus="loop" items="${weekly.year.target}">
+                            <tr>
+                                <c:if test="${loop.index == 0}">
+                                    <td class="text-start" rowspan="3">Main target</td>
+                                </c:if>
+                                <td><input class="form-control yearTarget" type="text" value="${year}"></td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
 
