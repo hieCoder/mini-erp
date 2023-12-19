@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.QuoteManagementTimeDayMapper">
+
+    <insert id="createQuote" parameterType="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
+        INSERT INTO QUOTE_MANAGEMENT_TIME_DAY (ID, CONTENT, USER_ID)
+        VALUES (#{id}, #{content}, #{user.id})
+    </insert>
+
+    <select id="findByUserId" resultMap="quoteResultMap">
+        SELECT *
+        FROM QUOTE_MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <update id="editQuote" parameterType="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
+            UPDATE QUOTE_MANAGEMENT_TIME_DAY
+            SET CONTENT = #{content}
+            WHERE ID = #{id}
+    </update>
+
+    <resultMap id="quoteResultMap" type="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
+        <id property="id" column="ID"/>
+        <result property="content" column="CONTENT"/>
+    </resultMap>
+</mapper>

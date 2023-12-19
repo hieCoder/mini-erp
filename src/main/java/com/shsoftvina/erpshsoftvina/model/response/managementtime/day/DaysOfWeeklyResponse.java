@@ -17,4 +17,6 @@ public class DaysOfWeeklyResponse {
     private WeeklyManagementTimeDayResponse weeklys;
     private List<DayResponse> days;
     private List<ColorResponse> colors;
+    private QuoteResponse quotes;
+    private YearResponse year;
 }

@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class MonthlyRequest {
-    private String month;
-    private String[] content;
-    private DailyRoutineRequest[] dailyRoutine;
-    private CostsRequest[] costs;
+public class CostsRequest {
+    private String item;
+    private String amt;
+    private String type;
 }

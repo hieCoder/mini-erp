@@ -32,6 +32,7 @@
         input {
             display: none;
         }
+
         .dropdown-toggle::after {
             font-size: 25px !important;
             margin-left: 0 !important;
@@ -67,8 +68,21 @@
         </div>
     </div>
     <div class="bg-white calendar-container d-none">
-        <div class="d-flex justify-content-between">
-            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem">
+        <div class="d-flex ">
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2"
+                 style="width: 16rem; margin-right: 20px">
+                <div class="card-body text-muted">
+                    <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
+                        <span class="trending-ribbon-text">Focus</span> <i
+                            class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
+                    </div>
+                    <h5 class="fs-14 text-end mb-3" id="yearCurrent"></h5>
+                    <div class="m-0" id="yearTarget">
+                    </div>
+                </div>
+            </div>
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2"
+                 style="width: 16rem; margin-right: 100px">
                 <div class="card-body text-muted">
                     <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                         <span class="trending-ribbon-text">Focus</span> <i
@@ -79,11 +93,13 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-column align-items-center" style="margin-top: 25px" id="currentCalendar">
+            <div class="d-flex flex-column align-items-center" style="margin-top: 25px; margin-right: 80px"
+                 id="currentCalendar">
                 <div class="d-flex align-items-center">
                     <h1 class="text-center">Calendar of</h1>
                     <div class="btn-group ms-2">
-                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currentMonth"></h1>
+                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            id="currentMonth"></h1>
                         <div class="dropdown-menu dropdownmenu-secondary" data-simplebar style="max-height: 300px">
                             <a class="dropdown-item" href="#" onclick="updateMonth('January')">January</a>
                             <a class="dropdown-item" href="#" onclick="updateMonth('February')">February</a>
@@ -100,8 +116,10 @@
                         </div>
                     </div>
                     <div class="btn-group ms-2">
-                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currentYear"></h1>
-                        <div class="dropdown-menu dropdownmenu-secondary dropdown-year" data-simplebar style="max-height: 300px">
+                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            id="currentYear"></h1>
+                        <div class="dropdown-menu dropdownmenu-secondary dropdown-year" data-simplebar
+                             style="max-height: 300px">
 
                         </div>
                     </div>
@@ -194,8 +212,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         var dropdownMenu = document.querySelector('.dropdown-year');
 
-        var startYear = 1996;
-        var endYear = new Date().getFullYear() + 5;
+        var startYear = 2023;
+        var endYear = new Date().getFullYear() + 20;
 
         for (var year = endYear; year >= startYear; year--) {
             var dropdownItem = document.createElement('a');
@@ -243,12 +261,14 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    // console.log(parseData)
                     let dayData = parseData.days;
-                    console.log(parseData)
-                    console.log(dayData)
                     let weekData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
+                    let yearCurrent = document.getElementById('yearCurrent');
+                    let yearTarget = document.getElementById('yearTarget');
+
                     let xhtml = '';
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e) => {
@@ -265,16 +285,35 @@
                         }
                         monthlyTarget.innerHTML = xhtml;
                     }
+
+                    let yearHtml = '';
+                    if (parseData.year != null) {
+                        parseData.year.target.forEach((e) => {
+                            if (e === "") {
+                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
+                            } else {
+                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">' + e + '</p>'
+                            }
+                        })
+                        yearTarget.innerHTML = yearHtml;
+                    } else {
+                        for (let i = 0; i < 3; i++) {
+                            yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
+                        }
+                        yearTarget.innerHTML = yearHtml;
+                    }
                     table.querySelector('tbody').innerHTML = '';
 
                     let startDateOfCurrentDate = new Date(year, month, 1);
 
                     const optionsMonth = {month: 'long'};
-                    const optionsYear= {year: 'numeric'};
+                    const optionsYear = {year: 'numeric'};
                     const targetOptions = {month: 'long'};
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
                     monthTarget.textContent = 'Target of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
+                    const targetOfYear = parseData.year == null ? currentYear.textContent : parseData.year.year;
+                    yearCurrent.textContent = 'Target of ' + targetOfYear;
 
                     const startDay = startDateOfCurrentDate.getDay();
 
@@ -458,13 +497,16 @@
         }
         xhr.send();
     }
+
     populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+
     function updateMonth(month) {
         document.getElementById('currentMonth').textContent = month;
         const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent);
         const currentYear = getCurentYear(document.getElementById('currentYear').textContent);
         populateCalendar(currentYear, currentMonth);
     }
+
     function updateYear(year) {
         document.getElementById('currentYear').textContent = year;
         const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent);
@@ -553,13 +595,13 @@
             userId: '${user.id}',
             days: [],
             weeklys: [],
-            monthly: {}
+            monthly: {},
+            year: {}
         }
         const days = [];
         const weeklys = [];
-        console.log(currentDate)
         const monthly = {
-            month: year + '-' + ((month + 1 < 10) ? '0' + (month+ 1) : month + 1),
+            month: year + '-' + ((month + 1 < 10) ? '0' + (month + 1) : month + 1),
             content: []
         };
         $('.editable').each(function () {
@@ -585,7 +627,7 @@
                     if (!dayObj) {
                         dayObj = {
                             day: day,
-                            content: ["","","","",""]
+                            content: ["", "", "", "", ""]
                         };
                         days.push(dayObj);
                     }
@@ -616,9 +658,21 @@
                 }
             }
         })
+
+        data.year = {
+            year: currentYear.textContent,
+            target: []
+        };
+
+        var yearTargetValue = document.querySelectorAll('.yearTarget');
+        yearTargetValue.forEach(function (target) {
+            data.year.target.push(target.textContent);
+        })
+
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
+        console.log(data)
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             BtnLoadRemove()
             $("button.createCalendar").removeClass("d-none")
@@ -655,6 +709,12 @@
                 toggleEdit(element);
             }
         });
+        var editableElements = document.querySelectorAll('.editingYear');
+        editableElements.forEach(function (element) {
+            if (!element.contains(event.target)) {
+                toggleEditYear(element);
+            }
+        });
     });
 
     function toggleEdit(element) {
@@ -675,6 +735,33 @@
             inputElement.classList.add('editable', 'editing', 'm-0', 'w-100');
             inputElement.ondblclick = function () {
                 toggleEdit(inputElement);
+            };
+
+            element.replaceWith(inputElement);
+
+            inputElement.style.display = 'block';
+
+            inputElement.focus();
+        }
+    }
+    function toggleEditYear(element) {
+        var isEditing = element.classList.contains('editingYear');
+
+        if (isEditing) {
+            var paragraphElement = document.createElement('p');
+            paragraphElement.innerText = element.value;
+            paragraphElement.classList.add('editableYear', 'm-0', 'yearTarget');
+            paragraphElement.ondblclick = function () {
+                toggleEditYear(paragraphElement);
+            };
+
+            element.replaceWith(paragraphElement);
+        } else {
+            var inputElement = document.createElement('input');
+            inputElement.value = element.innerText;
+            inputElement.classList.add('editableYear', 'editingYear', 'm-0', 'w-100');
+            inputElement.ondblclick = function () {
+                toggleEditYear(inputElement);
             };
 
             element.replaceWith(inputElement);

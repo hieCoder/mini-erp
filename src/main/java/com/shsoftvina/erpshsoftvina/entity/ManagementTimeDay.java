@@ -24,4 +24,6 @@ public class ManagementTimeDay {
     private Date day;
     private User user;
     private String weeklyCode;
+    private boolean isAllowedNoti;
+    private String contentNoti;
 }

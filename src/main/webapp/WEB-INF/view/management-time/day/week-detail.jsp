@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/classic.min.css"/>
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/monolith.min.css"/>
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
         .table-container {
             overflow-x: auto;
@@ -43,6 +44,7 @@
 
         .table-container td {
             padding: 5px;
+            position: relative;
             white-space: nowrap;
             text-align: center;
             min-width: 100px;
@@ -83,6 +85,22 @@
         .categoryColor td {
             max-width: 20px;
             text-wrap: normal;
+        }
+
+        .note {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            width: 160px;
+            cursor: pointer;
+            padding: 5px;
+            left: 60%;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .note:hover {
+            background: #cfd1d4;
         }
     </style>
 </head>
@@ -153,7 +171,8 @@
                                         </c:choose>
                                     </c:if>
                                 </td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
+                                <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                    onkeydown="return isNumberKey(event)">
                                     <c:choose>
                                         <c:when test="${dailyRoutine.target == null}">
                                             0
@@ -168,6 +187,37 @@
                         </c:forEach>
                         </tbody>
                     </table>
+
+                    <h4 class="fw-bolder">Year Target</h4>
+                    <table class="table table-bordered oneThingCalendar text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th class="w-25">Objective</th>
+                            <th>Key Results</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="year" varStatus="loop" items="${weekly.year.target}">
+                            <tr>
+                                <c:if test="${loop.index == 0}">
+                                    <td class="text-start" rowspan="3">Main target</td>
+                                </c:if>
+                                <td><input class="form-control yearTarget" type="text" value="${year}"></td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${weekly.year.target == null}">
+                            <c:forEach begin="1" end="${3}" varStatus="loop">
+                                <tr>
+                                    <c:if test="${loop.index == 1}">
+                                        <td class="text-start" rowspan="3">Main target</td>
+                                    </c:if>
+                                    <td><input class="form-control yearTarget" type="text"></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                        </tbody>
+                    </table>
+
                     <h4 class="fw-bolder">Month Target</h4>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
@@ -246,6 +296,47 @@
                         </tr>
                         </tbody>
                     </table>
+
+                    <h4 class="fw-bolder">A quote I shouldn't forget</h4>
+                    <button type="button" class="btn btn-info d-none" id="btn-alarm" data-bs-toggle="modal"
+                            data-bs-target=".bs-example-modal-xl">Extra large Modal
+                    </button>
+                    <table class="table table-bordered oneThingCalendar text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th>Quotes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[0]}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[1]}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[2]}">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[3]}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[4]}">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                     <h4 class="fw-bolder">Category Color</h4>
                     <table class="table table-bordered border-primary categoryColor text-center align-middle">
                         <thead>
@@ -253,7 +344,7 @@
                             <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
                                 <th scope="col" class="panel colorPicker"
                                     style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
-                                        <p class="m-0" contenteditable="true">${color.category}</p>
+                                    <p class="m-0" contenteditable="true">${color.category}</p>
                                     <div class="pickr"></div>
                                     <p hidden="hidden"
                                        class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
@@ -263,7 +354,7 @@
                                 <c:forEach begin="${weekly.colors.size()}" end="3">
                                     <th scope="col" class="panel colorPicker"
                                         style="background-color: #FFFFFF;">
-                                       <p class="m-0" contenteditable="true">Default Category</p>
+                                        <p class="m-0" contenteditable="true">Default Category</p>
                                         <div class="pickr"></div>
                                         <p hidden="hidden" class="pickedColor">#FFFFFF</p>
                                     </th>
@@ -273,7 +364,7 @@
 
                         </thead>
                         <tbody>
-                        <c:forEach begin="0" end="12" var="item" varStatus="loop">
+                        <c:forEach begin="0" end="8" var="item" varStatus="loop">
                             <tr>
                                 <c:forEach items="${weekly.colors}" var="color">
                                     <td contenteditable="true" class="inputColor">${color.values[loop.index]}</td>
@@ -374,7 +465,7 @@
                         </table>
                     </div>
 
-                    <div class="table-container">
+                    <div class="table-container" style="max-height: 1870px">
                         <table>
                             <thead>
                             <tr>
@@ -571,7 +662,7 @@
                             </tr>
                             <%--Timeline--%>
                             <c:forEach var="time" varStatus="loop" begin="0" end="23">
-                                <tr name="timeLine">
+                                <tr name="timeLine" data-value="${time}">
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
                                         <c:set var="backgroundColor0" value=""/>
@@ -585,19 +676,19 @@
                                         <c:forEach var="color" items="${weekly.colors}">
                                             <c:forEach var="value" items="${color.values}">
                                                 <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
-                                                    <c:if test="${data[0] ne '' && value eq data[0]}">
+                                                    <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
                                                         <c:set var="backgroundColor0" value="${color.color}"/>
                                                         <c:set var="exitLoop0" value="true"/>
                                                     </c:if>
-                                                    <c:if test="${data[1] ne '' && value eq data[1]}">
+                                                    <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">
                                                         <c:set var="backgroundColor1" value="${color.color}"/>
                                                         <c:set var="exitLoop1" value="true"/>
                                                     </c:if>
-                                                    <c:if test="${data[2] ne '' && value eq data[2]}">
+                                                    <c:if test="${data[0].actual ne '' && value eq data[0].actual}">
                                                         <c:set var="backgroundColor2" value="${color.color}"/>
                                                         <c:set var="exitLoop2" value="true"/>
                                                     </c:if>
-                                                    <c:if test="${data[3] ne '' && value eq data[3]}">
+                                                    <c:if test="${data[1].actual ne '' && value eq data[1].actual}">
                                                         <c:set var="backgroundColor3" value="${color.color}"/>
                                                         <c:set var="exitLoop3" value="true"/>
                                                     </c:if>
@@ -606,23 +697,147 @@
                                         </c:forEach>
 
                                         <td style="background-color: ${backgroundColor0}" contenteditable="true"
+                                            class="setting"
                                             data-day="${day.day}"
-                                            data-name="timeLine">${data[0]}</td>
+                                            data-name="timeLine">${data[0].contentPlan}
+                                            <div class="d-flex d-none note rounded-pill btn-light align-items-center"
+                                                 data-value="${data[0].contentNotiPlan}" data-day="${day.day}"
+                                                 contenteditable="false"
+                                                 onclick="showModal(this)">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
+                                                     width="24" height="24" class="me-1">Allow notifications
+                                            </div>
+                                            <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
+                                                 class="float-end d-none" width="15" height="15">
+                                        </td>
                                         <td style="background-color: ${backgroundColor1}" contenteditable="true"
+                                            class="setting"
                                             data-day="${day.day}"
-                                            data-name="timeLine">${data[1]}</td>
+                                            data-name="timeLine">${data[1].contentPlan}
+                                            <div class="d-flex d-none note rounded-pill btn-light align-items-center"
+                                                 data-value="${data[1].contentNotiPlan}" data-day="${day.day}"
+                                                 contenteditable="false"
+                                                 onclick="showModal(this)">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
+                                                     width="24" height="24" class="me-1">Allow notifications
+                                            </div>
+                                            <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
+                                                 class="float-end d-none" width="15" height="15">
+                                        </td>
                                         <td style="background-color: ${backgroundColor2}" contenteditable="true"
                                             data-day="${day.day}"
-                                            data-name="timeLine">${data[2]}</td>
+                                            data-name="timeLine">${data[0].actual}</td>
                                         <td style="background-color: ${backgroundColor3}" contenteditable="true"
                                             data-day="${day.day}"
-                                            data-name="timeLine">${data[3]}</td>
+                                            data-name="timeLine">${data[1].actual}</td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="col-md-4 text-center align-middle mt-3">
+                    <h3>Income this month</h3>
+                    <!-- Tables Border Colors -->
+                    <table class="table table-bordered border-secondary table-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">ITEM</th>
+                            <th scope="col">AMT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="cost" items="${weekly.monthlys[0].incomes}" varStatus="loop">
+                                <tr>
+                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="amt" data-name="INCOME"
+                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${weekly.monthlys[0].incomes.size() < 8}">
+                                <c:forEach begin="${weekly.monthlys[0].incomes.size()}" end="7">
+                                    <tr>
+                                        <td contenteditable="true" class="item"></td>
+                                        <td contenteditable="true" class="amt" data-name="INCOME"
+                                            oninput="validateNumberInput(event)"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                        <tr>
+                            <td colspan="2" id="totalIncome"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 text-center align-middle mt-3">
+                    <h3>Fixed costs</h3>
+                    <!-- Tables Border Colors -->
+                    <table class="table table-bordered border-secondary table-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">ITEM</th>
+                            <th scope="col">AMT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="cost" items="${weekly.monthlys[0].fixeds}" varStatus="loop">
+                                <tr>
+                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="amt" data-name="FIXED"
+                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${weekly.monthlys[0].fixeds.size() < 8}">
+                                <c:forEach begin="${weekly.monthlys[0].fixeds.size()}" end="7">
+                                    <tr>
+                                        <td contenteditable="true" class="item"></td>
+                                        <td contenteditable="true" class="amt" data-name="FIXED"
+                                            oninput="validateNumberInput(event)"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                        <tr>
+                            <td colspan="2" id="totalFixed"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 text-center align-middle mt-3">
+                    <h3>Fluctuating costs</h3>
+                    <!-- Tables Border Colors -->
+                    <table class="table table-bordered border-secondary table-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">ITEM</th>
+                            <th scope="col">AMT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="cost" items="${weekly.monthlys[0].fluctuatings}" varStatus="loop">
+                                <tr>
+                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${weekly.monthlys[0].fluctuatings.size() < 8}">
+                                <c:forEach begin="${weekly.monthlys[0].fluctuatings.size()}" end="7">
+                                    <tr>
+                                        <td contenteditable="true" class="item"></td>
+                                        <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                            oninput="validateNumberInput(event)"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                        <tr>
+                            <td colspan="2" id="totalFluctuating"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 align-middle mt-1">
+                   <h3 class="border-secondary text-danger" id="econmic">Economic situation: </h3>
                 </div>
                 <div class="col-md-12 text-center align-middle mt-3">
                     <button class="btn btn-primary mr-2" id="backButton" onclick="history.back()">
@@ -633,6 +848,28 @@
             </div>
         </div>
     </div> <!-- end row-->
+</div>
+
+<!-- Modal Content Allowed Notification -->
+<div class="modal fade" id="contentNoti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <h5>Content Notification:</h5>
+                <textarea class="form-control" id="contentNotiPlan" placeholder="Enter here..."></textarea>
+
+                <div class="mt-4">
+                    <div class="hstack gap-2 justify-content-center">
+                        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
+                           data-bs-dismiss="modal" id="cancelSaveNoti"><i class="ri-close-line me-1 align-middle"></i>
+                            Close</a>
+                        <a href="javascript:void(0);" class="btn btn-success" id="saveNoti">Save</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
@@ -664,6 +901,86 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel"
+     style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-danger" id="myExtraLargeModalLabel">Important warning</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fs-16 my-3">Schedules</h6>
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-clock-edit-outline text-warning fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0" id="noti1"></p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-clock-edit-outline text-warning fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0" id="noti2"></p>
+                    </div>
+                </div>
+                <h6 class="fs-16 my-3">Quotes You shouldn't forget</h6>
+                <div class="d-flex mt-2 notiQuote">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[0]}</p>
+                    </div>
+                </div>
+                <div class="d-flex mt-2 notiQuote">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[1]}</p>
+                    </div>
+                </div>
+                <div class="d-flex mt-2 notiQuote">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[2]}</p>
+                    </div>
+                </div>
+                <div class="d-flex mt-2 notiQuote">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[3]}</p>
+                    </div>
+                </div>
+                <div class="d-flex mt-2 notiQuote">
+                    <div class="flex-shrink-0">
+                        <i class="mdi mdi-comment-quote-outline text-primary fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">${weekly.quotes.content[4]}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer ms-2">
+                <div class="ml-auto">
+                    <a href="javascript:void(0);" class="btn w-sm btn-primary fw-medium" data-bs-dismiss="modal">
+                        OK
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .container-fluid .form-check-input {
         font-size: 1.2rem;
@@ -683,7 +1000,218 @@
 </style>
 <script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
 <script src="/assets/custom/js/management-time/management-time.js"></script>
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var totalIncome = 0;
+        var totalFixed = 0;
+        var totalFluctuating = 0;
+
+        document.querySelectorAll('[data-name="INCOME"]').forEach(function (el) {
+            var incomeValue = parseFloat(el.textContent) || 0;
+            totalIncome += incomeValue;
+        })
+        document.getElementById('totalIncome').textContent = 'Total: $' + totalIncome;
+
+        document.querySelectorAll('[data-name="FIXED"]').forEach(function (el) {
+            var fixedValue = parseFloat(el.textContent) || 0;
+            totalFixed += fixedValue;
+        })
+        document.getElementById('totalFixed').textContent = 'Total: $' + totalFixed;
+
+        document.querySelectorAll('[data-name="FLUCTUATING"]').forEach(function (el) {
+            var fluctuatingValue = parseFloat(el.textContent) || 0;
+            totalFluctuating += fluctuatingValue;
+        })
+        document.getElementById('totalFluctuating').textContent = 'Total: $' + totalFluctuating;
+        const economic = (totalIncome - (totalFixed + totalFluctuating)).toFixed(2);
+        document.getElementById('econmic').textContent = 'Economic situation: $' + economic;
+    });
+
+    function validateNumberInput(event) {
+        var inputText = event.target.textContent;
+        var numericValue = inputText.replace(/[^\d.]/g, '');
+        var decimalCount = (numericValue.match(/\./g) || []).length;
+        if (decimalCount > 1) {
+            numericValue = numericValue.substring(0, numericValue.lastIndexOf('.'));
+        }
+
+        event.target.textContent = numericValue;
+        placeCaretAtEnd(event.target);
+    }
+
+    function placeCaretAtEnd(el) {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        el.focus();
+    }
+
+    function checkRow(row) {
+        var date = new Date();
+        var day = row.querySelectorAll('td[data-name="timeLine"] .note');
+        var dateSystem = date.toISOString().split('T')[0];
+        var hoursSystem = date.getHours();
+        var hoursValue = row.getAttribute('data-value');
+
+        var noti1 = null;
+        var noti2 = null;
+
+        day.forEach(function (div) {
+            var dataDay = div.getAttribute('data-day');
+            if (dataDay == dateSystem) {
+                if (hoursValue == hoursSystem) {
+                    var divValue = div.getAttribute('data-value');
+
+                    if (noti1 === null) {
+                        noti1 = divValue;
+                    } else if (noti2 === null) {
+                        noti2 = divValue;
+                    }
+                }
+            }
+        });
+
+        if (noti1 !== null) {
+            if (noti1 != '') document.getElementById('noti1').innerText = 'Notice at ' + hoursValue + ':00' + ' you have an activity: ' + '"' + noti1 + '"';
+            else document.getElementById('noti1').innerText = 'At ' + hoursValue + ':00 you have no notifications.';
+        }
+
+        if (noti2 !== null) {
+            if (noti2 != '') document.getElementById('noti2').innerText = 'Notice at ' + hoursValue + ':30' + ' you have an activity: ' + '"' + noti2 + '"';
+            else document.getElementById('noti2').innerText = 'At ' + hoursValue + ':30 you have no notifications.';
+        }
+
+        if ((noti1 != '' && noti1 != null) || (noti2 != '' && noti2 != null)) {
+
+            document.getElementById('btn-alarm').click();
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var rows = document.querySelectorAll('tr[name="timeLine"]');
+        rows.forEach(function (row) {
+            checkRow(row);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var quotes = document.querySelectorAll('.notiQuote');
+        quotes.forEach(function (quote) {
+            if (quote.querySelector('p').textContent == '') $(quote).remove();
+        });
+    });
+
+    function setWithExpiry(key, value, ttl) {
+        const now = new Date();
+        const item = {
+            value: value,
+            expiry: now.getTime() + ttl,
+        };
+        localStorage.setItem(key, JSON.stringify(item));
+    }
+
+    function getWithExpiry(key) {
+        const itemString = localStorage.getItem(key);
+        if (!itemString) {
+            return null;
+        }
+        const item = JSON.parse(itemString);
+        const now = new Date();
+        if (now.getTime() > item.expiry) {
+            localStorage.removeItem(key);
+            return null;
+        }
+        return item.value;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var plant = document.querySelectorAll('.setting');
+        plant.forEach(function (elementPlant) {
+            const note = elementPlant.querySelector('.note');
+            const imgNoti = note.querySelector('img');
+            elementPlant.addEventListener('contextmenu', function (event) {
+                if (elementPlant.innerText != '') {
+                    const contentNotiPlan = note.getAttribute('data-value');
+                    if (contentNotiPlan != '') {
+                        const imgHTML = imgNoti.outerHTML;
+                        note.innerHTML = imgHTML + 'Remove Allowed';
+                    }
+                    const isAllowed = note.innerText.trim();
+                    if (note) {
+                        $(note).removeClass('d-none');
+                        if (isAllowed == 'Allow notifications') {
+                            note.addEventListener('click', function (e) {
+                                $(note).addClass('d-none');
+                                elementPlant.querySelectorAll('img')[1].classList.remove('d-none');
+                                note.innerHTML = '';
+                                note.appendChild(imgNoti);
+                                note.appendChild(document.createTextNode('Remove Allowed'));
+                            })
+                        } else if (isAllowed == 'Remove Allowed') {
+                            note.addEventListener('click', function (e) {
+                                const imgIconPlan = elementPlant.querySelectorAll('img')[1];
+                                imgIconPlan.classList.add('d-none');
+                                note.innerHTML = '';
+                                note.appendChild(imgNoti);
+                                note.appendChild(document.createTextNode('Allow notifications'));
+                                note.setAttribute('data-value', '');
+                                $(note).addClass('d-none');
+                            })
+                        }
+                    }
+
+                    event.preventDefault();
+                    document.addEventListener('click', function hideNoteOnClickOutside(e) {
+                        if (!note.contains(e.target) && e.target !== note) {
+                            $(note).addClass('d-none');
+                            document.removeEventListener('click', hideNoteOnClickOutside);
+                        }
+                    });
+                } else event.preventDefault();
+            });
+        })
+    })
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var plant = document.querySelectorAll('.setting');
+        plant.forEach(function (elementPlant) {
+            const note = elementPlant.querySelector('.note');
+            const contentNotiPlan = note.getAttribute('data-value');
+            if (contentNotiPlan == '' || contentNotiPlan == null) elementPlant.querySelectorAll('img')[1].classList.add('d-none');
+            else elementPlant.querySelectorAll('img')[1].classList.remove('d-none');
+        })
+    })
+
+    function showModal(element) {
+        const isAllowedNoti = element.innerText;
+
+        function saveNotiHandler() {
+            var contentNotiPlant = document.getElementById('contentNotiPlan').value;
+            element.setAttribute('data-value', contentNotiPlant);
+            console.log(contentNotiPlant);
+            $('#contentNoti').modal('hide');
+            document.getElementById('contentNotiPlan').value = '';
+            document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
+        }
+
+        if (isAllowedNoti == 'Allow notifications') {
+            $('#contentNoti').modal('show');
+            document.getElementById('cancelSaveNoti').addEventListener('click', function () {
+                const imgNoti = element.querySelector('img').outerHTML;
+                element.innerHTML = imgNoti + 'Allow notifications';
+                element.nextElementSibling.classList.add('d-none');
+            });
+            document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
+            document.getElementById('saveNoti').addEventListener('click', saveNotiHandler);
+        }
+
+
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
@@ -748,11 +1276,13 @@
 
     function isNumberKey(evt) {
         var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+
+        if ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105)) {
+            return true;
+        } else {
             evt.preventDefault();
             return false;
         }
-        return true;
     }
 
     $("#updateButton").click(function () {
@@ -768,7 +1298,9 @@
                 days: [],
                 weekly: {},
                 monthly: {},
-                colors: []
+                colors: [],
+                quotes: [],
+                year: {}
             }
 
             const colors = [];
@@ -784,17 +1316,17 @@
                     }
                 })
                 colors.push({
-                    category : category,
-                    color : color,
-                    values : values
+                    category: category,
+                    color: color,
+                    values: values
                 })
             })
             data.colors = colors;
-            console.log(colors)
             const monthly = {
                 month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
                 content: [],
-                dailyRoutine: []
+                dailyRoutine: [],
+                costs: []
             };
             const weekly = {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
@@ -928,10 +1460,12 @@
             })
 
             $('tr[name="timeLine"]').each(function () {
-                let weeklyData = [];
                 $(this).find('td[data-name="timeLine"]').each(function (index) {
                     const day = $(this).data('day');
-                    var value = $(this).text().trim();
+                    var value = $(this).contents().filter(function () {
+                        return this.nodeType === 3;
+                    }).text().trim();
+                    var contentPlan = $(this).find('div').first().data('value');
                     let dayObj = days.find(d => d.day === day);
                     if (value !== "") {
                         if (day != null) {
@@ -958,16 +1492,59 @@
                         }
                     }
                     if (dayObj) {
-                        weeklyData.push(value);
-                        if ((index + 1) % 4 === 0) {
-                            console.log(weeklyData);
-                            dayObj.data.toDoDetail.push(weeklyData);
-                            weeklyData = [];
+                        if ((index + 1) % 4 === 1) {
+                            dayObj.data.toDoDetail.push([
+                                {contentPlan: value, contentNotiPlan: contentPlan, actual: ''},
+                                {contentPlan: '', contentNotiPlan: '', actual: ''}
+                            ]);
+                        } else if ((index + 1) % 4 === 2) {
+                            dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][1].contentPlan = value;
+                            dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][1].contentNotiPlan = contentPlan;
+                        } else if ((index + 1) % 4 === 3) {
+                            dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][0].actual = value;
+                        } else if ((index + 1) % 4 === 0) {
+                            dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][1].actual = value;
                         }
                     }
-                })
+                });
+            });
+
+            const quotes = [];
+            document.querySelectorAll('.quotes').forEach(function (quote) {
+                quotes.push(quote.value);
+            });
+
+            var items = document.querySelectorAll('.item');
+            var amts = document.querySelectorAll('.amt');
+            items.forEach(function (item, index) {
+                var objConsts = {
+                    item: item.textContent,
+                    amt: amts[index].textContent,
+                    type: amts[index].getAttribute('data-name')
+                }
+                if (objConsts.item != '' && objConsts.amt != '') {
+                    data.monthly.costs.push(objConsts);
+                }
             })
+
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var currentDayParam = urlParams.get('currentDay');
+            var currentDate = new Date(currentDayParam);
+            var year = currentDate.getFullYear().toString();
+
+            data.year = {
+                year: year,
+                target: []
+            };
+
+            var yearTarget = document.querySelectorAll('.yearTarget');
+            yearTarget.forEach(function (target) {
+                data.year.target.push(target.value);
+            })
+
             data.days.push(...days);
+            data.quotes.push(...quotes);
             callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
                 if (rs) {
                     $("div.containerLoading").addClass("d-none")

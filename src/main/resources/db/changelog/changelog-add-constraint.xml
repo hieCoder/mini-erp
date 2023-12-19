@@ -217,4 +217,20 @@
                                  referencedColumnNames="ID"
                                  constraintName="FK_COLOR_MANAGEMENT_TIME_DAY_USER"/>
     </changeSet>
+
+    <changeSet id="26" author="team2">
+        <addForeignKeyConstraint baseTableName="QUOTE_MANAGEMENT_TIME_DAY"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_QUOTE_MANAGEMENT_TIME_DAY_USER"/>
+    </changeSet>
+
+    <changeSet id="27" author="team2">
+        <addForeignKeyConstraint baseTableName="YEAR_MANAGEMENT_TIME_DAY"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_YEAR_MANAGEMENT_TIME_DAY_USER"/>
+    </changeSet>
 </databaseChangeLog>

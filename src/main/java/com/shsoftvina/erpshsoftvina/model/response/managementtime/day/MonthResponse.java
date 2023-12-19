@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,4 +15,7 @@ public class MonthResponse {
     private String month;
     private String[] monthlyContents;
     private DailyRoutineResponse[] dailyRoutine;
+    private List<CostResponse> incomes;
+    private List<CostResponse> fixeds;
+    private List<CostResponse> fluctuatings;
 }

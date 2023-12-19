@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.YearManagementTimeDayMapper">
+
+    <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID)
+        VALUES (UUID(), #{code}, #{target}, #{user.id})
+    </insert>
+
+    <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
+        SELECT *
+        FROM YEAR_MANAGEMENT_TIME_DAY y
+                 INNER JOIN USER u ON y.USER_ID = u.ID
+        WHERE y.USER_ID = #{userId} AND y.CODE = #{code}
+    </select>
+
+    <resultMap id="yearManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+        <id property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="target" column="TARGET"/>
+        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+        <id property="id" column="USER_ID"/>
+        <result property="fullname" column="FULLNAME"/>
+    </resultMap>
+
+    <update id="updateYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+        UPDATE YEAR_MANAGEMENT_TIME_DAY
+        SET TARGET = #{target}
+        WHERE ID = #{id};
+    </update>
+</mapper>

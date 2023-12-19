@@ -28,11 +28,14 @@ public class MonthlyManagementTimeDayConverter {
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine){
+    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String incomeCosts, String fixedCost, String fluctuatingCost){
         return MonthlyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
                 .dailyRoutine(dailyRoutine)
+                .incomeThisMonth(incomeCosts)
+                .fixedCosts(fixedCost)
+                .fluctuatingCosts(fluctuatingCost)
                 .user(userMapper.findById(userId)).build();
     }
 }

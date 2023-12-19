@@ -9,13 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MonthlyManagementTimeDay {
+public class YearManagementTimeDay {
     private String id;
     private String code;
-    private String content;
+    private String target;
     private User user;
-    private String dailyRoutine;
-    private String incomeThisMonth;
-    private String fixedCosts;
-    private String fluctuatingCosts;
 }
