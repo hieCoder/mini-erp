@@ -740,46 +740,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="INCOME"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
+                            <c:forEach var="cost" items="${weekly.monthlys[0].incomes}" varStatus="loop">
+                                <tr>
+                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="amt" data-name="INCOME"
+                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${weekly.monthlys[0].incomes.size() < 8}">
+                                <c:forEach begin="${weekly.monthlys[0].incomes.size()}" end="7">
+                                    <tr>
+                                        <td contenteditable="true" class="item"></td>
+                                        <td contenteditable="true" class="amt" data-name="INCOME"
+                                            oninput="validateNumberInput(event)"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
                         </tr>
@@ -797,46 +773,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FIXED"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
+                            <c:forEach var="cost" items="${weekly.monthlys[0].fixeds}" varStatus="loop">
+                                <tr>
+                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="amt" data-name="FIXED"
+                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${weekly.monthlys[0].fixeds.size() < 8}">
+                                <c:forEach begin="${weekly.monthlys[0].fixeds.size()}" end="7">
+                                    <tr>
+                                        <td contenteditable="true" class="item"></td>
+                                        <td contenteditable="true" class="amt" data-name="FIXED"
+                                            oninput="validateNumberInput(event)"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
                         </tr>
@@ -854,46 +806,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true" class="item"></td>
-                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                oninput="validateNumberInput(event)"></td>
-                        </tr>
+                            <c:forEach var="cost" items="${weekly.monthlys[0].fluctuatings}" varStatus="loop">
+                                <tr>
+                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${weekly.monthlys[0].fluctuatings.size() < 8}">
+                                <c:forEach begin="${weekly.monthlys[0].fluctuatings.size()}" end="7">
+                                    <tr>
+                                        <td contenteditable="true" class="item"></td>
+                                        <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                            oninput="validateNumberInput(event)"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
                         </tr>
