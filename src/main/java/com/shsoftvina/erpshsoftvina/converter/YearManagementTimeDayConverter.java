@@ -2,7 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.YearRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.YearResponse;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.stereotype.Component;

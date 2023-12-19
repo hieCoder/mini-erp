@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.converter.*;
 import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.mapper.*;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.*;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
@@ -22,7 +23,6 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -200,6 +200,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         String monthlyCode = monthlyReq.getMonth();
         List<WeeklyRequest> weeklys = req.getWeeklys();
         List<CalendarDayRequest> days = req.getDays();
+        YearRequest yearRequest = req.getYear();
+        String yearCode = yearRequest.getYear();
 
         List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
 
@@ -304,7 +306,24 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         });
 
-        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskDay, asyncTaskWeekly, asyncTaskMonth);
+        CompletableFuture<Void> asyncTaskYear = CompletableFuture.runAsync(() -> {
+            YearManagementTimeDay yearEntity = yearManagementTimeDayMapper.findByCode(userId, yearCode);
+            if (yearEntity == null) {
+                YearManagementTimeDay yearE = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
+                CompletableFuture<Void> createYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    yearManagementTimeDayMapper.createYearManagementTimeDay(yearE);
+                });
+                asyncTasks.add(createYearManagementTimeDayAsync);
+            } else {
+                yearEntity.setTarget(JsonUtils.objectToJson(yearRequest.getTarget()));
+                CompletableFuture<Void> updateMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    yearManagementTimeDayMapper.updateYearManagementTimeDay(yearEntity);
+                });
+                asyncTasks.add(updateMonthlyManagementTimeDayAsync);
+            }
+        });
+
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskDay, asyncTaskWeekly, asyncTaskMonth, asyncTaskYear);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();
@@ -317,8 +336,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         applicationUtils.checkUserAllow(userId);
 
-        CalendarResponse calendarResponse = new CalendarResponse();
-
         CompletableFuture<MonthlyManagementTimeDay> monthlyFuture = CompletableFuture.supplyAsync(() ->
                 monthlyManagementTimeDayMapper.findByCode(userId, startDate.substring(0, 7))
         );
@@ -330,26 +347,23 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         CompletableFuture<List<ManagementTimeDay>> daysFuture = CompletableFuture.supplyAsync(() ->
                 managementTimeDayMapper.findByListCode(userId, weeklyCode)
         );
-
-        CompletableFuture<CalendarResponse> combinedFuture = monthlyFuture.thenCompose(monthly ->
-                weeklysFuture.thenCombine(daysFuture, (weeklys, days) -> {
-                    if (monthly != null) {
-                        String[] monthlyContent = JsonUtils.jsonToObject(monthly.getContent(), String[].class);
-                        calendarResponse.setMonthlyContents(monthlyContent);
-                    }
-                    calendarResponse.setDays(managementTimeDayConvert.toListCalendarResponse(days));
-                    calendarResponse.setWeeklys(weeklyManagementTimeDayConverter.toListResponse(weeklys));
-                    return calendarResponse;
-                })
+        CompletableFuture<YearManagementTimeDay> yearFuture = CompletableFuture.supplyAsync(() ->
+                yearManagementTimeDayMapper.findByCode(userId, getYear(startDate))
         );
 
-        try {
-            CalendarResponse result = combinedFuture.get();
-            return result;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        }
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlyFuture, weeklysFuture, daysFuture, yearFuture);
+        allOf.join();
+
+        String[] monthlyContents = monthlyFuture.thenApply(monthly ->
+                (monthly != null) ? JsonUtils.jsonToObject(monthly.getContent(), String[].class) : null
+        ).join();
+
+        return CalendarResponse.builder()
+                .monthlyContents(monthlyContents)
+                .days(managementTimeDayConvert.toListCalendarResponse(daysFuture.join()))
+                .weeklys(weeklyManagementTimeDayConverter.toListResponse(weeklysFuture.join()))
+                .year(yearManagementTimeDayConverter.toResponse(yearFuture.join()))
+                .build();
     }
 
     @Override

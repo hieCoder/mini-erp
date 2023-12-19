@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
