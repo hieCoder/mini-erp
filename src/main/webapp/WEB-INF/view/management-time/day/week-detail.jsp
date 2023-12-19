@@ -197,24 +197,16 @@
                         </tr>
                         </thead>
                         <tbody>
-<%--                        <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlys[0].monthlyContents}">--%>
-<%--                            <tr>--%>
-<%--                                <c:if test="${loop.index == 0}">--%>
-<%--                                    <td class="text-start" rowspan="3">Main target</td>--%>
-<%--                                </c:if>--%>
-<%--                                <td><input class="form-control monthTarget" type="text" value="${monthly}"></td>--%>
-<%--                            </tr>--%>
-<%--                        </c:forEach>--%>
-<%--                        <c:if test="${weekly.monthlys[0].monthlyContents == null}">--%>
-<%--                            <c:forEach begin="1" end="${3}" varStatus="loop">--%>
-<%--                                <tr>--%>
-<%--                                    <c:if test="${loop.index == 1}">--%>
-<%--                                        <td class="text-start" rowspan="3">Main target</td>--%>
-<%--                                    </c:if>--%>
-<%--                                    <td><input class="form-control monthTarget" type="text"></td>--%>
-<%--                                </tr>--%>
-<%--                            </c:forEach>--%>
-<%--                        </c:if>--%>
+                        <tr>
+                            <td class="text-start" rowspan="3">Main target</td>
+                            <td><input class="form-control yearTarget" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-control yearTarget" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-control yearTarget" type="text"></td>
+                        </tr>
                         </tbody>
                     </table>
 
@@ -701,7 +693,8 @@
                                             data-day="${day.day}"
                                             data-name="timeLine">${data[0].contentPlan}
                                             <div class="d-flex d-none note rounded-pill btn-light align-items-center"
-                                                 data-value="${data[0].contentNotiPlan}" data-day="${day.day}" contenteditable="false"
+                                                 data-value="${data[0].contentNotiPlan}" data-day="${day.day}"
+                                                 contenteditable="false"
                                                  onclick="showModal(this)">
                                                 <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
                                                      width="24" height="24" class="me-1">Allow notifications
@@ -714,7 +707,8 @@
                                             data-day="${day.day}"
                                             data-name="timeLine">${data[1].contentPlan}
                                             <div class="d-flex d-none note rounded-pill btn-light align-items-center"
-                                                 data-value="${data[1].contentNotiPlan}" data-day="${day.day}" contenteditable="false"
+                                                 data-value="${data[1].contentNotiPlan}" data-day="${day.day}"
+                                                 contenteditable="false"
                                                  onclick="showModal(this)">
                                                 <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
                                                      width="24" height="24" class="me-1">Allow notifications
@@ -747,36 +741,44 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="INCOME"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="INCOME"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
@@ -796,36 +798,44 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FIXED"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FIXED"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
@@ -845,36 +855,44 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
-                            <td contenteditable="true" class="amt"></td>
+                            <td contenteditable="true" class="item"></td>
+                            <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                oninput="validateNumberInput(event)"></td>
                         </tr>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
@@ -945,7 +963,8 @@
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade bs-example-modal-xl" tabindex="-1" aria-labelledby="myExtraLargeModalLabel"
+     style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -1015,7 +1034,7 @@
             <div class="modal-footer ms-2">
                 <div class="ml-auto">
                     <a href="javascript:void(0);" class="btn w-sm btn-primary fw-medium" data-bs-dismiss="modal">
-                         OK
+                        OK
                     </a>
                 </div>
             </div>
@@ -1044,6 +1063,25 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+    function validateNumberInput(event) {
+        var inputText = event.target.textContent;
+
+        var numericValue = inputText.replace(/[^\d]/g, '');
+
+        event.target.textContent = numericValue;
+        placeCaretAtEnd(event.target);
+    }
+
+    function placeCaretAtEnd(el) {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        el.focus();
+    }
+
     function checkRow(row) {
         var date = new Date();
         var day = row.querySelectorAll('td[data-name="timeLine"] .note');
@@ -1070,16 +1108,16 @@
         });
 
         if (noti1 !== null) {
-            if (noti1 != '') document.getElementById('noti1').innerText =  'Notice at ' + hoursValue + ':00' + ' you have an activity: ' + '"' + noti1 + '"';
-            else document.getElementById('noti1').innerText =  'At ' + hoursValue + ':00 you have no notifications.';
+            if (noti1 != '') document.getElementById('noti1').innerText = 'Notice at ' + hoursValue + ':00' + ' you have an activity: ' + '"' + noti1 + '"';
+            else document.getElementById('noti1').innerText = 'At ' + hoursValue + ':00 you have no notifications.';
         }
 
         if (noti2 !== null) {
             if (noti2 != '') document.getElementById('noti2').innerText = 'Notice at ' + hoursValue + ':30' + ' you have an activity: ' + '"' + noti2 + '"';
-            else document.getElementById('noti2').innerText =  'At ' + hoursValue + ':30 you have no notifications.';
+            else document.getElementById('noti2').innerText = 'At ' + hoursValue + ':30 you have no notifications.';
         }
 
-        if ((noti1 != '' && noti1 != null ) || (noti2 != '' && noti2 != null)) {
+        if ((noti1 != '' && noti1 != null) || (noti2 != '' && noti2 != null)) {
 
             document.getElementById('btn-alarm').click();
         }
@@ -1293,7 +1331,8 @@
                 weekly: {},
                 monthly: {},
                 colors: [],
-                quotes: []
+                quotes: [],
+                year: {}
             }
 
             const colors = [];
@@ -1513,13 +1552,28 @@
                 var objConsts = {
                     item: item.textContent,
                     amt: amts[index].textContent,
-                    type: item.getAttribute('data-name')
+                    type: amts[index].getAttribute('data-name')
                 }
                 if (objConsts.item != '' && objConsts.amt != '') {
                     data.monthly.costs.push(objConsts);
                 }
             })
 
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var currentDayParam = urlParams.get('currentDay');
+            var currentDate = new Date(currentDayParam);
+            var year = currentDate.getFullYear().toString();
+
+            data.year = {
+                year: year,
+                target: []
+            };
+
+            var yearTarget = document.querySelectorAll('.yearTarget');
+            yearTarget.forEach(function (target) {
+                data.year.target.push(target.value);
+            })
 
             data.days.push(...days);
             data.quotes.push(...quotes);
