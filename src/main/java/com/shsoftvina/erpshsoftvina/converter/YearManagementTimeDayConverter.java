@@ -18,6 +18,7 @@ public class YearManagementTimeDayConverter {
     }
 
     public YearResponse toResponse(YearManagementTimeDay yearManagementTimeDay){
+        if (yearManagementTimeDay == null) return null;
         return YearResponse.builder()
                 .year(yearManagementTimeDay.getCode())
                 .target(JsonUtils.jsonToObject(yearManagementTimeDay.getTarget(), String[].class)).build();

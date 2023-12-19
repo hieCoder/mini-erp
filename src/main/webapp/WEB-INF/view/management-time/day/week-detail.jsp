@@ -205,6 +205,16 @@
                                 <td><input class="form-control yearTarget" type="text" value="${year}"></td>
                             </tr>
                         </c:forEach>
+                        <c:if test="${weekly.year.target == null}">
+                            <c:forEach begin="1" end="${3}" varStatus="loop">
+                                <tr>
+                                    <c:if test="${loop.index == 1}">
+                                        <td class="text-start" rowspan="3">Main target</td>
+                                    </c:if>
+                                    <td><input class="form-control yearTarget" type="text"></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
                         </tbody>
                     </table>
 

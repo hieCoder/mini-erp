@@ -32,6 +32,7 @@
         input {
             display: none;
         }
+
         .dropdown-toggle::after {
             font-size: 25px !important;
             margin-left: 0 !important;
@@ -67,8 +68,24 @@
         </div>
     </div>
     <div class="bg-white calendar-container d-none">
-        <div class="d-flex justify-content-between">
-            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem">
+        <div class="d-flex ">
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2"
+                 style="width: 16rem; margin-right: 20px">
+                <div class="card-body text-muted">
+                    <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
+                        <span class="trending-ribbon-text">Focus</span> <i
+                            class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
+                    </div>
+                    <h5 class="fs-14 text-end mb-3" id="yearCurrent">Target of 2023</h5>
+                    <div class="m-0" id="yearTarget">
+                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>
+                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>
+                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2"
+                 style="width: 16rem; margin-right: 100px">
                 <div class="card-body text-muted">
                     <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                         <span class="trending-ribbon-text">Focus</span> <i
@@ -79,11 +96,13 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-column align-items-center" style="margin-top: 25px" id="currentCalendar">
+            <div class="d-flex flex-column align-items-center" style="margin-top: 25px; margin-right: 80px"
+                 id="currentCalendar">
                 <div class="d-flex align-items-center">
                     <h1 class="text-center">Calendar of</h1>
                     <div class="btn-group ms-2">
-                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currentMonth"></h1>
+                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            id="currentMonth"></h1>
                         <div class="dropdown-menu dropdownmenu-secondary" data-simplebar style="max-height: 300px">
                             <a class="dropdown-item" href="#" onclick="updateMonth('January')">January</a>
                             <a class="dropdown-item" href="#" onclick="updateMonth('February')">February</a>
@@ -100,8 +119,10 @@
                         </div>
                     </div>
                     <div class="btn-group ms-2">
-                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currentYear"></h1>
-                        <div class="dropdown-menu dropdownmenu-secondary dropdown-year" data-simplebar style="max-height: 300px">
+                        <h1 class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            id="currentYear"></h1>
+                        <div class="dropdown-menu dropdownmenu-secondary dropdown-year" data-simplebar
+                             style="max-height: 300px">
 
                         </div>
                     </div>
@@ -268,7 +289,7 @@
                     let startDateOfCurrentDate = new Date(year, month, 1);
 
                     const optionsMonth = {month: 'long'};
-                    const optionsYear= {year: 'numeric'};
+                    const optionsYear = {year: 'numeric'};
                     const targetOptions = {month: 'long'};
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
@@ -456,13 +477,16 @@
         }
         xhr.send();
     }
+
     populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+
     function updateMonth(month) {
         document.getElementById('currentMonth').textContent = month;
         const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent);
         const currentYear = getCurentYear(document.getElementById('currentYear').textContent);
         populateCalendar(currentYear, currentMonth);
     }
+
     function updateYear(year) {
         document.getElementById('currentYear').textContent = year;
         const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent);
@@ -557,7 +581,7 @@
         const weeklys = [];
         console.log(currentDate)
         const monthly = {
-            month: year + '-' + ((month + 1 < 10) ? '0' + (month+ 1) : month + 1),
+            month: year + '-' + ((month + 1 < 10) ? '0' + (month + 1) : month + 1),
             content: []
         };
         $('.editable').each(function () {
@@ -583,7 +607,7 @@
                     if (!dayObj) {
                         dayObj = {
                             day: day,
-                            content: ["","","","",""]
+                            content: ["", "", "", "", ""]
                         };
                         days.push(dayObj);
                     }
