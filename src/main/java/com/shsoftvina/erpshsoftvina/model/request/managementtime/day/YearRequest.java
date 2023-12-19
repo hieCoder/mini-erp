@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class YearRequest {
     private String year;
-    private String[] content;
+    private String[] target;
 }
