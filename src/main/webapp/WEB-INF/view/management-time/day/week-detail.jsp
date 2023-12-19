@@ -757,7 +757,7 @@
                                 </c:forEach>
                             </c:if>
                         <tr>
-                            <td colspan="2">Total: $4,521</td>
+                            <td colspan="2" id="totalIncome"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -790,7 +790,7 @@
                                 </c:forEach>
                             </c:if>
                         <tr>
-                            <td colspan="2">Total: $4,521</td>
+                            <td colspan="2" id="totalFixed"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -823,10 +823,13 @@
                                 </c:forEach>
                             </c:if>
                         <tr>
-                            <td colspan="2">Total: $4,521</td>
+                            <td colspan="2" id="totalFluctuating"></td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="col-md-12 align-middle mt-1">
+                   <h3 class="border-secondary text-danger" id="econmic">Economic situation: </h3>
                 </div>
                 <div class="col-md-12 text-center align-middle mt-3">
                     <button class="btn btn-primary mr-2" id="backButton" onclick="history.back()">
@@ -991,11 +994,31 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
-    function totalIncome() {
-        document.querySelectorAll('[data-name="INCOME"]').forEach(function (el) {
+    document.addEventListener("DOMContentLoaded", function () {
+        var totalIncome = 0;
+        var totalFixed = 0;
+        var totalFluctuating = 0;
 
+        document.querySelectorAll('[data-name="INCOME"]').forEach(function (el) {
+            var incomeValue = parseFloat(el.textContent) || 0;
+            totalIncome += incomeValue;
         })
-    }
+        document.getElementById('totalIncome').textContent = 'Total: $' + totalIncome;
+
+        document.querySelectorAll('[data-name="FIXED"]').forEach(function (el) {
+            var fixedValue = parseFloat(el.textContent) || 0;
+            totalFixed += fixedValue;
+        })
+        document.getElementById('totalFixed').textContent = 'Total: $' + totalFixed;
+
+        document.querySelectorAll('[data-name="FLUCTUATING"]').forEach(function (el) {
+            var fluctuatingValue = parseFloat(el.textContent) || 0;
+            totalFluctuating += fluctuatingValue;
+        })
+        document.getElementById('totalFluctuating').textContent = 'Total: $' + totalFluctuating;
+        const economic = totalIncome - (totalFixed + totalFluctuating);
+        document.getElementById('econmic').textContent = 'Economic situation: $' + economic;
+    });
 
     function validateNumberInput(event) {
         var inputText = event.target.textContent;
