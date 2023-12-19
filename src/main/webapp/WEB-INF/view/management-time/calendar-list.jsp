@@ -76,11 +76,8 @@
                         <span class="trending-ribbon-text">Focus</span> <i
                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                     </div>
-                    <h5 class="fs-14 text-end mb-3" id="yearCurrent">Target of 2023</h5>
+                    <h5 class="fs-14 text-end mb-3" id="yearCurrent"></h5>
                     <div class="m-0" id="yearTarget">
-                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>
-                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>
-                        <p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>
                     </div>
                 </div>
             </div>
@@ -264,10 +261,14 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    // console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
+                    let yearCurrent = document.getElementById('yearCurrent');
+                    let yearTarget = document.getElementById('yearTarget');
+
                     let xhtml = '';
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e) => {
@@ -284,6 +285,23 @@
                         }
                         monthlyTarget.innerHTML = xhtml;
                     }
+
+                    let yearHtml = '';
+                    if (parseData.year != null) {
+                        parseData.year.target.forEach((e) => {
+                            if (e === "") {
+                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
+                            } else {
+                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">' + e + '</p>'
+                            }
+                        })
+                        yearTarget.innerHTML = yearHtml;
+                    } else {
+                        for (let i = 0; i < 3; i++) {
+                            yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
+                        }
+                        yearTarget.innerHTML = yearHtml;
+                    }
                     table.querySelector('tbody').innerHTML = '';
 
                     let startDateOfCurrentDate = new Date(year, month, 1);
@@ -294,6 +312,8 @@
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
                     monthTarget.textContent = 'Target of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
+                    const targetOfYear = parseData.year == null ? currentYear.textContent : parseData.year.year;
+                    yearCurrent.textContent = 'Target of ' + targetOfYear;
 
                     const startDay = startDateOfCurrentDate.getDay();
 
@@ -575,11 +595,11 @@
             userId: '${user.id}',
             days: [],
             weeklys: [],
-            monthly: {}
+            monthly: {},
+            year: {}
         }
         const days = [];
         const weeklys = [];
-        console.log(currentDate)
         const monthly = {
             month: year + '-' + ((month + 1 < 10) ? '0' + (month + 1) : month + 1),
             content: []
@@ -638,9 +658,21 @@
                 }
             }
         })
+
+        data.year = {
+            year: currentYear.textContent,
+            target: []
+        };
+
+        var yearTargetValue = document.querySelectorAll('.yearTarget');
+        yearTargetValue.forEach(function (target) {
+            data.year.target.push(target.textContent);
+        })
+
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
+        console.log(data)
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             BtnLoadRemove()
             $("button.createCalendar").removeClass("d-none")
@@ -677,6 +709,12 @@
                 toggleEdit(element);
             }
         });
+        var editableElements = document.querySelectorAll('.editingYear');
+        editableElements.forEach(function (element) {
+            if (!element.contains(event.target)) {
+                toggleEditYear(element);
+            }
+        });
     });
 
     function toggleEdit(element) {
@@ -697,6 +735,33 @@
             inputElement.classList.add('editable', 'editing', 'm-0', 'w-100');
             inputElement.ondblclick = function () {
                 toggleEdit(inputElement);
+            };
+
+            element.replaceWith(inputElement);
+
+            inputElement.style.display = 'block';
+
+            inputElement.focus();
+        }
+    }
+    function toggleEditYear(element) {
+        var isEditing = element.classList.contains('editingYear');
+
+        if (isEditing) {
+            var paragraphElement = document.createElement('p');
+            paragraphElement.innerText = element.value;
+            paragraphElement.classList.add('editableYear', 'm-0', 'yearTarget');
+            paragraphElement.ondblclick = function () {
+                toggleEditYear(paragraphElement);
+            };
+
+            element.replaceWith(paragraphElement);
+        } else {
+            var inputElement = document.createElement('input');
+            inputElement.value = element.innerText;
+            inputElement.classList.add('editableYear', 'editingYear', 'm-0', 'w-100');
+            inputElement.ondblclick = function () {
+                toggleEditYear(inputElement);
             };
 
             element.replaceWith(inputElement);
