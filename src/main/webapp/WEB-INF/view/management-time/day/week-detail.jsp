@@ -1063,6 +1063,12 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+    function totalIncome() {
+        document.querySelectorAll('[data-name="INCOME"]').forEach(function (el) {
+
+        })
+    }
+
     function validateNumberInput(event) {
         var inputText = event.target.textContent;
 
