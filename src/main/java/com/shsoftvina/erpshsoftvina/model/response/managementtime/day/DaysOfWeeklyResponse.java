@@ -18,4 +18,5 @@ public class DaysOfWeeklyResponse {
     private List<DayResponse> days;
     private List<ColorResponse> colors;
     private QuoteResponse quotes;
+    private YearResponse year;
 }

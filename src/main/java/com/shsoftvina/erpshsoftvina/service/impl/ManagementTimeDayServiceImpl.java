@@ -178,7 +178,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, List<CostsRequest>> filterCostsByType(CostsRequest[] costs) {
+    private Map<String, List<CostsRequest>> filterCostsByType(CostsRequest[] costs) {
         Map<String, List<CostsRequest>> groupedByType = new HashMap<>();
 
         for (CostsRequest cost : costs) {
@@ -187,6 +187,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         }
 
         return groupedByType;
+    }
+
+    private String getYear(String day) {
+        return day.substring(0, 4);
     }
 
     @Override
@@ -428,7 +432,11 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             return quoteMangementTimeDayConvert.toResponse(quoteManagementTimeDayMapper.findByUserId(userId));
         });
 
-        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture, colorsFuture, quoteFuture);
+        CompletableFuture<YearResponse> yearFuture = CompletableFuture.supplyAsync(() -> {
+            return yearManagementTimeDayConverter.toResponse(yearManagementTimeDayMapper.findByCode(userId, getYear(currentDay)));
+        });
+
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(monthlysFuture, weeklyFuture, daysFuture, colorsFuture, quoteFuture, yearFuture);
         allOf.join();
 
         DaysOfWeeklyResponse daysOfWeeklyResponse = DaysOfWeeklyResponse.builder()
@@ -437,6 +445,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 .days(daysFuture.join())
                 .colors(colorsFuture.join())
                 .quotes(quoteFuture.join())
+                .year(yearFuture.join())
                 .build();
 
         return daysOfWeeklyResponse;
