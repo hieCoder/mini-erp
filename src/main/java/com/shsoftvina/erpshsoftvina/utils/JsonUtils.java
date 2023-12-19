@@ -22,6 +22,7 @@ public class JsonUtils {
 
     public static String objectToJson(Object object) {
         try {
+            if(object == null) return null;
             return objectMapper.writeValueAsString(object);
         } catch (Exception e) {
             e.printStackTrace();

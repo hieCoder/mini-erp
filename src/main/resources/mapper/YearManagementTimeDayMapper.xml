@@ -11,7 +11,7 @@
     <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
         SELECT *
         FROM YEAR_MANAGEMENT_TIME_DAY y
-        INNER JOIN USER u ON y.USER_ID = u.ID
+                 INNER JOIN USER u ON y.USER_ID = u.ID
         WHERE y.USER_ID = #{userId} AND y.CODE = #{code}
     </select>
 

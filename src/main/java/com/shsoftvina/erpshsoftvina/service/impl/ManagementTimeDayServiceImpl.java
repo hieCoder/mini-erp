@@ -384,6 +384,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                         monthResponse.setDailyRoutine(dailyRoutineResponses);
                     }
 
+                    monthResponse.setIncomes(JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class));
+                    monthResponse.setFixeds(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class));
+                    monthResponse.setFluctuatings(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class));
+
                     monthlys.add(monthResponse);
                 } else{
                     MonthResponse monthResponse = MonthResponse.builder()
@@ -451,8 +455,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();
             CostsRequest[] costsRequests = monthlyRequest.getCosts();
             List<CostsRequest> incomeType = filterCostsByType(costsRequests).get(MONTH_INCOME_TYPE);
-            List<CostsRequest> fixedType = filterCostsByType(costsRequests).get(MONTH_INCOME_TYPE);
-            List<CostsRequest> fluctuatingType = filterCostsByType(costsRequests).get(MONTH_INCOME_TYPE);
+            List<CostsRequest> fixedType = filterCostsByType(costsRequests).get(MONTH_FIXED_TYPE);
+            List<CostsRequest> fluctuatingType = filterCostsByType(costsRequests).get(MONTH_FLUCTUATING_TYPE);
             MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
             if(monthlyEntity == null){
                 MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
