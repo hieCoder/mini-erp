@@ -36,27 +36,27 @@
 <!--        <result property="fullname" column="FULLNAME"/>-->
 <!--    </resultMap>-->
 
-    <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
-        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID)
-        VALUES (UUID(), #{code}, #{target}, #{user.id})
-    </insert>
+<!--    <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">-->
+<!--        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID)-->
+<!--        VALUES (UUID(), #{code}, #{target}, #{user.id})-->
+<!--    </insert>-->
 
-    <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
-        SELECT *
-        FROM MONTHLY_MANAGEMENT_TIME_DAY m
-                 INNER JOIN USER u ON m.USER_ID = u.ID
-        WHERE m.USER_ID = #{userId} AND m.CODE = #{code}
-    </select>
+<!--    <select id="findByCode" resultMap="yearManagementTimeDayResultMap">-->
+<!--        SELECT *-->
+<!--        FROM MONTHLY_MANAGEMENT_TIME_DAY m-->
+<!--                 INNER JOIN USER u ON m.USER_ID = u.ID-->
+<!--        WHERE m.USER_ID = #{userId} AND m.CODE = #{code}-->
+<!--    </select>-->
 
-    <resultMap id="yearManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
-        <id property="id" column="ID"/>
-        <result property="code" column="CODE"/>
-        <result property="target" column="CONTENT"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-    </resultMap>
+<!--    <resultMap id="yearManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">-->
+<!--        <id property="id" column="ID"/>-->
+<!--        <result property="code" column="CODE"/>-->
+<!--        <result property="target" column="CONTENT"/>-->
+<!--        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>-->
+<!--    </resultMap>-->
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
-        <id property="id" column="USER_ID"/>
-        <result property="fullname" column="FULLNAME"/>
-    </resultMap>
+<!--    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">-->
+<!--        <id property="id" column="USER_ID"/>-->
+<!--        <result property="fullname" column="FULLNAME"/>-->
+<!--    </resultMap>-->
 </mapper>

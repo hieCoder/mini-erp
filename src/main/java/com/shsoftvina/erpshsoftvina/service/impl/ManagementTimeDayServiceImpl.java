@@ -445,7 +445,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(()->{
             MonthlyRequest monthlyRequest = daysUpdateRequest.getMonthly();
-            YearRequest yearRequest = daysUpdateRequest.getYearRequest();
+//            YearRequest yearRequest = daysUpdateRequest.getYearRequest();
             String monthlyCode = monthlyRequest.getMonth();
             String[] monthlyContent = monthlyRequest.getContent();
             DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();

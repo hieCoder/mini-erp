@@ -17,5 +17,5 @@ public class DaysUpdateRequest {
     private DayRequest[] days;
     private ColorRequest[] colors;
     private String[] quotes;
-    private YearRequest yearRequest;
+    private YearRequest year;
 }

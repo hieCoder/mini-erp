@@ -187,6 +187,37 @@
                         </c:forEach>
                         </tbody>
                     </table>
+
+                    <h4 class="fw-bolder">Year Target</h4>
+                    <table class="table table-bordered oneThingCalendar text-center align-middle">
+                        <thead>
+                        <tr>
+                            <th class="w-25">Objective</th>
+                            <th>Key Results</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+<%--                        <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlys[0].monthlyContents}">--%>
+<%--                            <tr>--%>
+<%--                                <c:if test="${loop.index == 0}">--%>
+<%--                                    <td class="text-start" rowspan="3">Main target</td>--%>
+<%--                                </c:if>--%>
+<%--                                <td><input class="form-control monthTarget" type="text" value="${monthly}"></td>--%>
+<%--                            </tr>--%>
+<%--                        </c:forEach>--%>
+<%--                        <c:if test="${weekly.monthlys[0].monthlyContents == null}">--%>
+<%--                            <c:forEach begin="1" end="${3}" varStatus="loop">--%>
+<%--                                <tr>--%>
+<%--                                    <c:if test="${loop.index == 1}">--%>
+<%--                                        <td class="text-start" rowspan="3">Main target</td>--%>
+<%--                                    </c:if>--%>
+<%--                                    <td><input class="form-control monthTarget" type="text"></td>--%>
+<%--                                </tr>--%>
+<%--                            </c:forEach>--%>
+<%--                        </c:if>--%>
+                        </tbody>
+                    </table>
+
                     <h4 class="fw-bolder">Month Target</h4>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
@@ -434,7 +465,7 @@
                         </table>
                     </div>
 
-                    <div class="table-container">
+                    <div class="table-container" style="max-height: 1870px">
                         <table>
                             <thead>
                             <tr>
@@ -716,20 +747,36 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td contenteditable="true">Implement new UX</td>
-                            <td contenteditable="true">$4,521</td>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Design syntax</td>
-                            <td contenteditable="true">$7,546</td>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Configurable resources</td>
-                            <td contenteditable="true">$1,350</td>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Implement extensions</td>
-                            <td contenteditable="true">$4,521</td>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="INCOME"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
@@ -749,23 +796,39 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td contenteditable="true">Implement new UX</td>
-                            <td contenteditable="true">$4,521</td>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Design syntax</td>
-                            <td contenteditable="true">$7,546</td>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Configurable resources</td>
-                            <td contenteditable="true">$1,350</td>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Implement extensions</td>
-                            <td contenteditable="true">$4,521</td>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td colspan="2" >Total: $4,521</td>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FIXED"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Total: $4,521</td>
                         </tr>
                         </tbody>
                     </table>
@@ -782,20 +845,36 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td contenteditable="true">Implement new UX</td>
-                            <td contenteditable="true">$4,521</td>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Design syntax</td>
-                            <td contenteditable="true">$7,546</td>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Configurable resources</td>
-                            <td>$1,350</td>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
-                            <td contenteditable="true">Implement extensions</td>
-                            <td>$4,521</td>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true" class="item" data-name="FLUCTUATING"></td>
+                            <td contenteditable="true" class="amt"></td>
                         </tr>
                         <tr>
                             <td colspan="2">Total: $4,521</td>
@@ -1239,7 +1318,8 @@
             const monthly = {
                 month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
                 content: [],
-                dailyRoutine: []
+                dailyRoutine: [],
+                costs: []
             };
             const weekly = {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
@@ -1426,6 +1506,21 @@
             document.querySelectorAll('.quotes').forEach(function (quote) {
                 quotes.push(quote.value);
             });
+
+            var items = document.querySelectorAll('.item');
+            var amts = document.querySelectorAll('.amt');
+            items.forEach(function (item, index) {
+                var objConsts = {
+                    item: item.textContent,
+                    amt: amts[index].textContent,
+                    type: item.getAttribute('data-name')
+                }
+                if (objConsts.item != '' && objConsts.amt != '') {
+                    data.monthly.costs.push(objConsts);
+                }
+            })
+
+
             data.days.push(...days);
             data.quotes.push(...quotes);
             console.log(data)
