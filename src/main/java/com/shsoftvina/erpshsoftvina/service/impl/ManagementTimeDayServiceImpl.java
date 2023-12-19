@@ -410,6 +410,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 } else{
                     MonthResponse monthResponse = MonthResponse.builder()
                             .month(month)
+                            .incomes(new ArrayList<>())
+                            .fixeds(new ArrayList<>())
+                            .fluctuatings(new ArrayList<>())
                             .build();
                     monthlys.add(monthResponse);
                 }
