@@ -384,9 +384,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                         monthResponse.setDailyRoutine(dailyRoutineResponses);
                     }
 
-                    monthResponse.setIncomes(JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class));
-                    monthResponse.setFixeds(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class));
-                    monthResponse.setFluctuatings(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class));
+                    monthResponse.setIncomes(JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class) == null ? new ArrayList<>(): JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class));
+                    monthResponse.setFixeds(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class) == null ? new ArrayList<>():JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class));
+                    monthResponse.setFluctuatings(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class) == null ? new ArrayList<>():JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class));
 
                     monthlys.add(monthResponse);
                 } else{
@@ -565,27 +565,27 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         });
 
-//        CompletableFuture<Void> asyncTaskYear = CompletableFuture.runAsync(()->{
-//            YearRequest yearRequest = daysUpdateRequest.getYearRequest();
-//            String yearCode = yearRequest.getYear();
-//            String[] target = yearRequest.getTarget();
-//            YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
-//            if(yearE == null){
-//                YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
-//                CompletableFuture<Void> createYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
-//                    yearManagementTimeDayMapper.createYearManagementTimeDay(yearManagementTimeDay);
-//                });
-//                asyncTasks.add(createYearManagementTimeDayAsync);
-//            } else{
-//                yearE.setTarget(JsonUtils.objectToJson(target));
-//                CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
-//                    yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);
-//                });
-//                asyncTasks.add(updateYearManagementTimeDayAsync);
-//            }
-//        });
+        CompletableFuture<Void> asyncTaskYear = CompletableFuture.runAsync(()->{
+            YearRequest yearRequest = daysUpdateRequest.getYear();
+            String yearCode = yearRequest.getYear();
+            String[] target = yearRequest.getTarget();
+            YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
+            if(yearE == null){
+                YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
+                CompletableFuture<Void> createYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    yearManagementTimeDayMapper.createYearManagementTimeDay(yearManagementTimeDay);
+                });
+                asyncTasks.add(createYearManagementTimeDayAsync);
+            } else{
+                yearE.setTarget(JsonUtils.objectToJson(target));
+                CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);
+                });
+                asyncTasks.add(updateYearManagementTimeDayAsync);
+            }
+        });
 
-        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor, asyncTaskQuote);
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor, asyncTaskQuote, asyncTaskYear);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();

@@ -27,7 +27,7 @@
         <result property="fullname" column="FULLNAME"/>
     </resultMap>
 
-    <update id="updateMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+    <update id="updateYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
         UPDATE YEAR_MANAGEMENT_TIME_DAY
         SET TARGET = #{target}
         WHERE ID = #{id};
