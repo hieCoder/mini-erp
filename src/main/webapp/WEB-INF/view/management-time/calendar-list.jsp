@@ -126,7 +126,7 @@
                 </div>
             </div>
             <div style="width: 345px" class="m-3 p-1 position-relative">
-                <button class="btn btn-primary bottom-left createCalendar" type="button">Save</button>
+                <button class="btn btn-primary bottom-left createCalendar" id="save-calendar" type="button">Save</button>
             </div>
         </div>
         <table class="table table-bordered" id="todoTable">
@@ -586,9 +586,21 @@
         return year + '-' + month + '-' + day;
     }
 
-    $(document).on("click", "button.createCalendar", function () {
+    $(document).on("click", "button.createCalendar", function (event) {
         $(".containerLoading ").removeClass("d-none")
         $("div.calendar-container").addClass("d-none")
+        var editableElements = document.querySelectorAll('.editing');
+        editableElements.forEach(function (element) {
+            if (!element.contains(event.target)) {
+                toggleEdit(element);
+            }
+        });
+        var editableElements = document.querySelectorAll('.editingYear');
+        editableElements.forEach(function (element) {
+            if (!element.contains(event.target)) {
+                toggleEditYear(element);
+            }
+        });
         var month = getCurentMonth(document.getElementById('currentMonth').textContent);
         var year = getCurentYear(document.getElementById('currentYear').textContent);
         const data = {
@@ -672,7 +684,7 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
-        console.log(data)
+
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             BtnLoadRemove()
             $("button.createCalendar").removeClass("d-none")
