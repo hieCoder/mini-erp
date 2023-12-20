@@ -1136,6 +1136,7 @@
             elementPlant.addEventListener('contextmenu', function (event) {
                 if (elementPlant.innerText != '') {
                     const contentNotiPlan = note.getAttribute('data-value');
+
                     if (contentNotiPlan != '') {
                         const imgHTML = imgNoti.outerHTML;
                         note.innerHTML = imgHTML + 'Remove Allowed';
