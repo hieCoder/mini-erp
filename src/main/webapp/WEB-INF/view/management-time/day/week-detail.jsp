@@ -148,43 +148,53 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="month" varStatus="loop" begin="0" end="4">
-                            <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[loop.index]}"/>
+                        <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
                             <tr name="theSingleMostImportantThing">
-                                <c:if test="${loop.index == 0}">
-                                    <td class="text-start" rowspan="5">Repeat consistently every day</td>
-                                </c:if>
-                                <td><input class="form-control dailyRoutineInput" type="text"
-                                           value="${dailyRoutine.title}">
-                                </td>
+                                    <td class="text-start" rowspan="6">Repeat consistently every day</td>
+                                <td><input class="form-control dailyRoutineInput checkDaily" type="text" value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }"></td>
                                 <td class="text-center">
-                                    <c:if test="${not empty dailyRoutine.target and not empty dailyRoutine.performance}">
-                                        <c:choose>
-                                            <c:when test="${dailyRoutine.target == 0}">
-                                                0%
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber
-                                                        value="${((dailyRoutine.performance / dailyRoutine.target) * 100)}"
-                                                        pattern="#.##"/>%
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:if>
+                                    <script>
+                                        var performance = ${dailyRoutine != null ? dailyRoutine.performance : 0};
+                                        var target = ${dailyRoutine.target != 0 && dailyRoutine != null ? dailyRoutine.target : 0};
+                                        var result = target !== 0 ? (performance / target) * 100 : 0;
+                                        var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                        document.write(roundedResult);
+                                    </script>
                                 </td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true"
-                                    onkeydown="return isNumberKey(event)">
-                                    <c:choose>
-                                        <c:when test="${dailyRoutine.target == null}">
-                                            0
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${dailyRoutine.target}
-                                        </c:otherwise>
-                                    </c:choose>
+                                <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
+                                        ${dailyRoutine.target != 0 && dailyRoutine != null ? dailyRoutine.target : 0}
                                 </td>
-                                <td class="text-center">${dailyRoutine.performance}</td>
+                                <td class="text-center">${dailyRoutine != null ? dailyRoutine.performance : 0}</td>
                             </tr>
+
+                        <c:forEach var="index" begin="1" end="10">
+                            <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>
+                            <c:if test="${not empty dailyRoutine.title}">
+                                <tr name="theSingleMostImportantThing">
+                                    <td><input class="form-control dailyRoutineInput checkDaily" type="text" value="${dailyRoutine.title}"></td>
+                                    <td class="text-center">
+                                        <script>
+                                            var performance = ${dailyRoutine.performance};
+                                            var target = ${dailyRoutine.target != 0 ? dailyRoutine.target : 0};
+                                            var result = target !== 0 ? (performance / target) * 100 : 0;
+                                            var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                            document.write(roundedResult);
+                                        </script>
+                                    </td>
+                                    <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
+                                            ${dailyRoutine.target != 0 ? dailyRoutine.target : 0}
+                                    </td>
+                                    <td class="text-center">${dailyRoutine.performance}</td>
+                                </tr>
+                            </c:if>
                         </c:forEach>
+
+                        <tr id="dailySession">
+                            <td colspan="4">
+                                <button type="button" class="btn btn-success waves-effect waves-light w-100" id="addDaily">ADD</button>
+                            </td>
+                        </tr>
+
                         </tbody>
                     </table>
 
@@ -315,23 +325,33 @@
                         </tr>
                         <tr>
                             <td>
-                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[1]}">
+                                <input class="form-control quotes checkQuote" type="text"
+                                       value="${weekly.quotes.content[1]}">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[2]}">
+                                <input class="form-control quotes checkQuote" type="text"
+                                       value="${weekly.quotes.content[2]}">
                             </td>
                         </tr>
 
                         <tr>
                             <td>
-                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[3]}">
+                                <input class="form-control quotes checkQuote" type="text"
+                                       value="${weekly.quotes.content[3]}">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input class="form-control quotes" type="text" value="${weekly.quotes.content[4]}">
+                                <input class="form-control quotes checkQuote" type="text"
+                                       value="${weekly.quotes.content[4]}">
+                            </td>
+                        </tr>
+                        <tr id="quoteSession">
+                            <td>
+                                <button type="button" class="btn btn-success waves-effect waves-light w-100"
+                                        id="addQuote">ADD</button>
                             </td>
                         </tr>
                         </tbody>
@@ -748,22 +768,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="cost" items="${weekly.monthlys[0].incomes}" varStatus="loop">
+                        <c:forEach var="cost" items="${weekly.monthlys[0].incomes}" varStatus="loop">
+                            <tr>
+                                <td contenteditable="true" class="item">${cost.item}</td>
+                                <td contenteditable="true" class="amt" data-name="INCOME"
+                                    oninput="validateNumberInput(event)">${cost.amt}</td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${weekly.monthlys[0].incomes.size() < 8}">
+                            <c:forEach begin="${weekly.monthlys[0].incomes.size()}" end="7">
                                 <tr>
-                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="item"></td>
                                     <td contenteditable="true" class="amt" data-name="INCOME"
-                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                        oninput="validateNumberInput(event)"></td>
                                 </tr>
                             </c:forEach>
-                            <c:if test="${weekly.monthlys[0].incomes.size() < 8}">
-                                <c:forEach begin="${weekly.monthlys[0].incomes.size()}" end="7">
-                                    <tr>
-                                        <td contenteditable="true" class="item"></td>
-                                        <td contenteditable="true" class="amt" data-name="INCOME"
-                                            oninput="validateNumberInput(event)"></td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
+                        </c:if>
                         <tr>
                             <td colspan="2" id="totalIncome"></td>
                         </tr>
@@ -781,22 +801,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="cost" items="${weekly.monthlys[0].fixeds}" varStatus="loop">
+                        <c:forEach var="cost" items="${weekly.monthlys[0].fixeds}" varStatus="loop">
+                            <tr>
+                                <td contenteditable="true" class="item">${cost.item}</td>
+                                <td contenteditable="true" class="amt" data-name="FIXED"
+                                    oninput="validateNumberInput(event)">${cost.amt}</td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${weekly.monthlys[0].fixeds.size() < 8}">
+                            <c:forEach begin="${weekly.monthlys[0].fixeds.size()}" end="7">
                                 <tr>
-                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="item"></td>
                                     <td contenteditable="true" class="amt" data-name="FIXED"
-                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                        oninput="validateNumberInput(event)"></td>
                                 </tr>
                             </c:forEach>
-                            <c:if test="${weekly.monthlys[0].fixeds.size() < 8}">
-                                <c:forEach begin="${weekly.monthlys[0].fixeds.size()}" end="7">
-                                    <tr>
-                                        <td contenteditable="true" class="item"></td>
-                                        <td contenteditable="true" class="amt" data-name="FIXED"
-                                            oninput="validateNumberInput(event)"></td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
+                        </c:if>
                         <tr>
                             <td colspan="2" id="totalFixed"></td>
                         </tr>
@@ -814,22 +834,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="cost" items="${weekly.monthlys[0].fluctuatings}" varStatus="loop">
+                        <c:forEach var="cost" items="${weekly.monthlys[0].fluctuatings}" varStatus="loop">
+                            <tr>
+                                <td contenteditable="true" class="item">${cost.item}</td>
+                                <td contenteditable="true" class="amt" data-name="FLUCTUATING"
+                                    oninput="validateNumberInput(event)">${cost.amt}</td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${weekly.monthlys[0].fluctuatings.size() < 8}">
+                            <c:forEach begin="${weekly.monthlys[0].fluctuatings.size()}" end="7">
                                 <tr>
-                                    <td contenteditable="true" class="item">${cost.item}</td>
+                                    <td contenteditable="true" class="item"></td>
                                     <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                        oninput="validateNumberInput(event)">${cost.amt}</td>
+                                        oninput="validateNumberInput(event)"></td>
                                 </tr>
                             </c:forEach>
-                            <c:if test="${weekly.monthlys[0].fluctuatings.size() < 8}">
-                                <c:forEach begin="${weekly.monthlys[0].fluctuatings.size()}" end="7">
-                                    <tr>
-                                        <td contenteditable="true" class="item"></td>
-                                        <td contenteditable="true" class="amt" data-name="FLUCTUATING"
-                                            oninput="validateNumberInput(event)"></td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
+                        </c:if>
                         <tr>
                             <td colspan="2" id="totalFluctuating"></td>
                         </tr>
@@ -837,7 +857,7 @@
                     </table>
                 </div>
                 <div class="col-md-12 align-middle mt-1">
-                   <h3 class="border-secondary text-danger" id="econmic">Economic situation: </h3>
+                    <h3 class="border-secondary text-danger" id="econmic">Economic situation: </h3>
                 </div>
                 <div class="col-md-12 text-center align-middle mt-3">
                     <button class="btn btn-primary mr-2" id="backButton" onclick="history.back()">
@@ -847,7 +867,7 @@
                 </div>
             </div>
         </div>
-    </div> <!-- end row-->
+    </div>
 </div>
 
 <!-- Modal Content Allowed Notification -->
@@ -1002,6 +1022,85 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkDaily = document.querySelectorAll('.checkDaily');
+        var countValue = 0;
+        checkDaily.forEach(function (e) {
+            if (e.getAttribute('value') == '') {
+                const trElment = e.parentNode;
+                trElment.remove();
+            } else if (e.getAttribute('value') != '') countValue ++;
+        })
+        const btnAddDaily = document.getElementById('addDaily');
+        if (countValue == 5) {
+            btnAddDaily.textContent = 'Remove';
+            $('#addDaily').removeClass('btn-success');
+            $('#addDaily').addClass('btn-danger');
+        }
+        btnAddDaily.addEventListener('click', function () {
+            if (btnAddDaily.textContent == 'ADD') {
+                const newDaily = '<tr name="theSingleMostImportantThing"> <td><input class="form-control dailyRoutineInput" type="text"></td> <td class="text-center">0% </td> <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)" onclick="checkDaily()"> 0 </td> <td class="text-center">0</td> </tr>';
+                $(newDaily).insertBefore('#dailySession');
+                countValue++;
+
+                if (countValue == 5) {
+                    btnAddDaily.textContent = 'Remove';
+                    $('#addDaily').removeClass('btn-success');
+                    $('#addDaily').addClass('btn-danger');
+                }
+            } else if (btnAddDaily.textContent == 'Remove') {
+                var pToDelete = $("#dailySession").prev("tr");
+                if (pToDelete.length > 0) pToDelete.remove();
+                countValue--;
+                if (countValue == 1) {
+                    btnAddDaily.textContent = 'ADD';
+                    $('#addDaily').removeClass('btn-danger');
+                    $('#addDaily').addClass('btn-success');
+                }
+            }
+        })
+    })
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkQuote = document.querySelectorAll('.checkQuote');
+        var countValue = 0;
+        checkQuote.forEach(function (e) {
+            if (e.getAttribute('value') == '') {
+                const trElment = e.parentNode;
+                trElment.remove();
+            } else if (e.getAttribute('value') != '') countValue ++;
+        })
+        const btnAddQuote = document.getElementById('addQuote');
+        if (countValue == 4) {
+            btnAddQuote.textContent = 'Remove';
+            $('#addQuote').removeClass('btn-success');
+            $('#addQuote').addClass('btn-danger');
+        }
+        btnAddQuote.addEventListener('click', function () {
+            if (btnAddQuote.textContent == 'ADD') {
+                const newQuote = '<tr><td><input class="form-control quotes" type="text"></td></tr>';
+                $(newQuote).insertBefore('#quoteSession');
+                countValue++;
+
+                if (countValue == 4) {
+                    btnAddQuote.textContent = 'Remove';
+                    $('#addQuote').removeClass('btn-success');
+                    $('#addQuote').addClass('btn-danger');
+                }
+            } else if (btnAddQuote.textContent == 'Remove') {
+                var pToDelete = $("#quoteSession").prev("tr");
+                if (pToDelete.length > 0) pToDelete.remove();
+                countValue--;
+                if (countValue == 0) {
+                    btnAddQuote.textContent = 'ADD';
+                    $('#addQuote').removeClass('btn-danger');
+                    $('#addQuote').addClass('btn-success');
+                }
+            }
+        })
+    })
+
+
     document.addEventListener("DOMContentLoaded", function () {
         var totalIncome = 0;
         var totalFixed = 0;
@@ -1209,8 +1308,6 @@
             document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
             document.getElementById('saveNoti').addEventListener('click', saveNotiHandler);
         }
-
-
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -1229,14 +1326,16 @@
         $("div.calendar-container").addClass("d-none")
     });
 
-    $('td.dailyRoutineTarget').on('blur', function () {
-        const target = $(this).text();
-        if (target > 31 || target < 0) {
-            validateFail("Daily target shouldn't exceed 30 or below 0");
-            return false;
-        }
-    });
-
+    function checkDaily() {
+        $('td.dailyRoutineTarget').on('blur', function () {
+            const target = $(this).text();
+            if (target > 31 || target < 0) {
+                validateFail("Daily target shouldn't exceed 30 or below 0");
+                return false;
+            }
+        });
+    }
+    checkDaily();
     const inputString = '${weekly.colors}';
     const valuesRegex = /\bvalues=\[(.*?)\]/g;
     const matches = inputString.match(valuesRegex);
@@ -1278,6 +1377,9 @@
     function isNumberKey(evt) {
         var charCode = (evt.which) ? evt.which : evt.keyCode;
 
+        if (charCode === 8) {
+            return true;
+        }
         if ((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105)) {
             return true;
         } else {
