@@ -102,6 +102,18 @@
         .note:hover {
             background: #cfd1d4;
         }
+        #lectureCategory {
+            background-color: #fcecec;
+        }
+        #dailyCategory {
+            background-color: #e6f0e2;
+        }
+        #workCategory {
+            background-color: #fff9e6;
+        }
+        #readingCategory {
+            background-color: #e9e4f5;
+        }
     </style>
 </head>
 <body>
@@ -149,49 +161,55 @@
                         </thead>
                         <tbody>
                         <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
-                            <tr name="theSingleMostImportantThing">
-                                    <td class="text-start" rowspan="6">Repeat consistently every day</td>
-                                <td><input class="form-control dailyRoutineInput checkDaily" type="text" value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }"></td>
-                                <td class="text-center">
-                                    <script>
-                                        var performance = ${dailyRoutine != null ? dailyRoutine.performance : 0};
-                                        var target = ${dailyRoutine.target != 0 && dailyRoutine != null ? dailyRoutine.target : 0};
-                                        var result = target !== 0 ? (performance / target) * 100 : 0;
-                                        var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
-                                        document.write(roundedResult);
-                                    </script>
-                                </td>
-                                <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
-                                        ${dailyRoutine.target != 0 && dailyRoutine != null ? dailyRoutine.target : 0}
-                                </td>
-                                <td class="text-center">${dailyRoutine != null ? dailyRoutine.performance : 0}</td>
-                            </tr>
+                        <tr name="theSingleMostImportantThing">
+                            <td class="text-start" rowspan="6">Repeat consistently every day</td>
+                            <td><input class="form-control dailyRoutineInput checkDaily" type="text"
+                                       value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">
+                            </td>
+                            <td class="text-center">
+                                <script>
+                                    var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};
+                                    var target = ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0};
+                                    var result = target !== 0 ? (performance / target) * 100 : 0;
+                                    var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                    document.write(roundedResult);
+                                </script>
+                            </td>
+                            <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                onkeydown="return isNumberKey(event)">
+                                ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0}
+                            </td>
+                            <td class="text-center">${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>
+                        </tr>
 
                         <c:forEach var="index" begin="1" end="10">
                             <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>
                             <c:if test="${not empty dailyRoutine.title}">
                                 <tr name="theSingleMostImportantThing">
-                                    <td><input class="form-control dailyRoutineInput checkDaily" type="text" value="${dailyRoutine.title}"></td>
+                                    <td><input class="form-control dailyRoutineInput checkDaily" type="text"
+                                               value="${dailyRoutine.title}"></td>
                                     <td class="text-center">
                                         <script>
-                                            var performance = ${dailyRoutine.performance};
-                                            var target = ${dailyRoutine.target != 0 ? dailyRoutine.target : 0};
+                                            var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};
+                                            var target = ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0};
                                             var result = target !== 0 ? (performance / target) * 100 : 0;
                                             var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
                                             document.write(roundedResult);
                                         </script>
                                     </td>
-                                    <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)">
-                                            ${dailyRoutine.target != 0 ? dailyRoutine.target : 0}
+                                    <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                        onkeydown="return isNumberKey(event)">
+                                            ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0}
                                     </td>
-                                    <td class="text-center">${dailyRoutine.performance}</td>
+                                    <td class="text-center">${dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>
                                 </tr>
                             </c:if>
                         </c:forEach>
 
                         <tr id="dailySession">
                             <td colspan="4">
-                                <button type="button" class="btn btn-success waves-effect waves-light w-100" id="addDaily">ADD</button>
+                                <button type="button" class="btn btn-success waves-effect waves-light w-100"
+                                        id="addDaily">ADD</button>
                             </td>
                         </tr>
 
@@ -269,7 +287,7 @@
                         <tbody>
                         <c:set var="theSingleMostImportantThing"
                                value="${weekly.weeklys.weeklys[0]}"/>
-                        <tr>
+                        <tr id="theSingCategory">
                             <td class="text-start weekTitle"
                                 contenteditable="true">${theSingleMostImportantThing.title}</td>
                             <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"
@@ -277,27 +295,27 @@
                             </td>
                         </tr>
                         <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
-                        <tr>
+                        <tr id="lectureCategory">
                             <td class="text-start weekTitle" contenteditable="true">${lecture.title}</td>
                             <td><input class="form-control weekTarget" name="lecture" type="text"
                                        value="${lecture.content}">
                             </td>
                         </tr>
                         <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
-                        <tr>
+                        <tr id="dailyCategory">
                             <td class="text-start weekTitle" contenteditable="true">${dailyEvaluation.title}</td>
                             <td><input class="form-control weekTarget" name="dailyEvaluation" type="text"
                                        value="${dailyEvaluation.content}"></td>
                         </tr>
                         <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
-                        <tr>
+                        <tr id="workCategory">
                             <td class="text-start weekTitle" contenteditable="true">${work.title}</td>
                             <td><input class="form-control weekTarget" name="work" type="text" value="${work.content}">
                             </td>
                             </td>
                         </tr>
                         <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
-                        <tr>
+                        <tr id="readingCategory">
                             <td class="text-start weekTitle" contenteditable="true">${reading.title}</td>
                             <td><input class="form-control weekTarget" name="reading" type="text"
                                        value="${reading.content}">
@@ -351,7 +369,8 @@
                         <tr id="quoteSession">
                             <td>
                                 <button type="button" class="btn btn-success waves-effect waves-light w-100"
-                                        id="addQuote">ADD</button>
+                                        id="addQuote">ADD
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -416,19 +435,54 @@
                                 <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething
                                     calendar
                                 </td>
-                                <td>${weekly.weeklys.weeklys[0].title}</td>
+                                <td class="d-flex align-items-center justify-content-between text-center"
+                                style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.weeklys.weeklys[0].color}">
+                                    <span class="mx-auto">${weekly.weeklys.weeklys[0].title}</span>
+                                    <div scope="col" class="panel colorPicker btn-change-color">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                                    </div>
+                                </td>
                             </tr>
                             <tr class="lecture">
-                                <td>${weekly.weeklys.weeklys[1].title}</td>
+                                <td class="d-flex align-items-center justify-content-between text-center"
+                                    style="border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.weeklys.weeklys[1].color}">
+                                    <span class="mx-auto">${weekly.weeklys.weeklys[1].title}</span>
+                                    <div scope="col" class="panel colorPicker btn-change-color">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                                    </div>
+                                </td>
                             </tr>
                             <tr class="dailyEvaluation">
-                                <td>${weekly.weeklys.weeklys[2].title}</td>
+                                <td class="d-flex align-items-center justify-content-between text-center"
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.weeklys.weeklys[2].color}">
+                                    <span class="mx-auto">${weekly.weeklys.weeklys[2].title}</span>
+                                    <div scope="col" class="panel colorPicker btn-change-color">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                                    </div>
+                                </td>
                             </tr>
                             <tr class="work">
-                                <td>${weekly.weeklys.weeklys[3].title}</td>
+                                <td class="d-flex align-items-center justify-content-between text-center"
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.weeklys.weeklys[3].color}">
+                                    <span class="mx-auto">${weekly.weeklys.weeklys[3].title}</span>
+                                    <div scope="col" class="panel colorPicker btn-change-color">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                                    </div>
+                                </td>
                             </tr>
                             <tr class="reading">
-                                <td>${weekly.weeklys.weeklys[4].title}</td>
+                                <td class="d-flex align-items-center justify-content-between text-center"
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.weeklys.weeklys[4].color}">
+                                    <span class="mx-auto">${weekly.weeklys.weeklys[4].title}</span>
+                                    <div scope="col" class="panel colorPicker btn-change-color">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do
@@ -443,7 +497,8 @@
                                 <td style="height: 65px">Six to Twelve AM</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="height: 162.5px"><h5 class="fw-bolder">Daily Routine</h5></td>
+                                <td colspan="2" style="height: 162.5px" id="daily-routine"><h5 class="fw-bolder">Daily
+                                    Routine</h5></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="height: 213px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
@@ -506,10 +561,10 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar[0]}"/>
-                                    <td class="editable-cell" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-theSingle" colspan="3" contenteditable="true"
                                         data-name="theSingleMostImportantThing"
                                         data-day="${day.day}">${theSingleMostImportantThing.target}</td>
-                                    <td><input class="form-check-input"
+                                    <td class="performance-color-theSingle"><input class="form-check-input"
                                                type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
                                 </c:forEach>
@@ -517,37 +572,37 @@
                             <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
-                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="lecture"
+                                    <td class="editable-cell target-color-lecture" colspan="3" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
-                                    <td><input class="form-check-input"
+                                    <td class="performance-color-lecture"><input class="form-check-input"
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
-                                    <td class="editable-cell" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-dailyEvaluation" colspan="3" contenteditable="true"
                                         data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
-                                    <td><input class="form-check-input"
+                                    <td class="performance-color-dailyEvaluation"><input class="form-check-input"
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="work">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
-                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="work"
+                                    <td class="editable-cell target-color-work" colspan="3" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
-                                    <td><input class="form-check-input"
+                                    <td class="performance-color-work"><input class="form-check-input"
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="reading">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
-                                    <td class="editable-cell" colspan="3" contenteditable="true" data-name="reading"
+                                    <td class="editable-cell target-color-reading" colspan="3" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
-                                    <td><input class="form-check-input"
+                                    <td class="performance-color-reading"><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
@@ -610,7 +665,7 @@
 
                             <%--daily routine--%>
                             <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
-                                <tr name="daily">
+                                <tr name="daily" class="checkDailyRoutine">
                                     <c:forEach var="day" items="${weekly.days}">
                                         <c:set var="dayMonth" value="${fn:substring(day.day, 0, 7)}"/>
                                         <c:choose>
@@ -623,7 +678,7 @@
                                                        value="${weekly.monthlys[1].dailyRoutine[loop.index]}"/>
                                             </c:otherwise>
                                         </c:choose>
-                                        <td class="editable-cell" colspan="3">${dailyRoutine.title}</td>
+                                        <td class="editable-cell " colspan="3">${dailyRoutine.title}</td>
                                         <td><input class="form-check-input dailyRoutine"
                                                    type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
                                                    data-day="${day.day}"></td>
@@ -1022,6 +1077,122 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
+            const tr = e.parentNode;
+            const newColor = tr.style.backgroundColor
+            changeColor(newColor, index);
+        })
+    })
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
+            var divBtnChangeColor = e;
+            var observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.attributeName === 'style') {
+                        handleBackgroundColorChange(getBackgroundColor(divBtnChangeColor));
+                    }
+                });
+            });
+
+            var config = { attributes: true };
+            observer.observe(divBtnChangeColor, config);
+            function handleBackgroundColorChange(newColor) {
+                var parentTd = e.parentNode;
+                parentTd.style.backgroundColor = newColor;
+                changeColor(newColor, index)
+            }
+
+            function getBackgroundColor(element) {
+                var style = window.getComputedStyle(element);
+                return style.backgroundColor;
+            }
+        });
+    });
+    function changeColor(newColor, index) {
+        if (index == 0) {
+            const targetColorTheSingle = document.querySelectorAll('.target-color-theSingle');
+            const performanceColorTheSingle = document.querySelectorAll('.performance-color-theSingle');
+            const theSingCategory = document.getElementById('theSingCategory')
+            theSingCategory.setAttribute('data-value', newColor);
+            theSingCategory.style.backgroundColor = newColor
+            targetColorTheSingle.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+            performanceColorTheSingle.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+        } else if (index == 1) {
+            const targetColorLecture = document.querySelectorAll('.target-color-lecture');
+            const performanceColorLecture = document.querySelectorAll('.performance-color-lecture');
+            const lectureCategory = document.getElementById('lectureCategory')
+            lectureCategory.setAttribute('data-value', newColor);
+            lectureCategory.style.backgroundColor = newColor;
+            targetColorLecture.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+            performanceColorLecture.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+        } else if (index == 2) {
+            const targetColorDailyEvaluation = document.querySelectorAll('.target-color-dailyEvaluation');
+            const performanceColorDailyEvaluation = document.querySelectorAll('.performance-color-dailyEvaluation');
+            const dailyCategory = document.getElementById('dailyCategory')
+            dailyCategory.setAttribute('data-value', newColor);
+            dailyCategory.style.backgroundColor = newColor;
+            targetColorDailyEvaluation.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+            performanceColorDailyEvaluation.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+        } else if (index == 3) {
+            const targetColorWork = document.querySelectorAll('.target-color-work');
+            const performanceColorWork = document.querySelectorAll('.performance-color-work');
+            const workCategory = document.getElementById('workCategory')
+            workCategory.setAttribute('data-value', newColor);
+            workCategory.style.backgroundColor = newColor;
+            targetColorWork.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+            performanceColorWork.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+        } else if (index == 4) {
+            const targetColorReading = document.querySelectorAll('.target-color-reading');
+            const performanceColorReading = document.querySelectorAll('.performance-color-reading');
+            const readingCategory = document.getElementById('readingCategory')
+            readingCategory.setAttribute('data-value', newColor);
+            readingCategory.style.backgroundColor = newColor;
+            targetColorReading.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+            performanceColorReading.forEach(function (e) {
+                e.style.backgroundColor = newColor;
+            })
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        const dailySession = document.getElementById('daily-routine');
+        var heightDaily = parseFloat(dailySession.style.height);
+        var count = 0;
+        document.querySelectorAll('.checkDailyRoutine').forEach(function (e) {
+            var tdDaily = e.getElementsByTagName('td');
+            var lastElement = tdDaily[tdDaily.length - 2];
+            if (lastElement.textContent == '') {
+                count++;
+                if (count != 5) {
+                    $(e).addClass('d-none');
+                    heightDaily = heightDaily - 32.5;
+                }
+            }
+        });
+        if (count == 4 || count == 5) $(dailySession).addClass('p-0');
+        dailySession.style.height = heightDaily + 'px';
+    })
+
     document.addEventListener("DOMContentLoaded", function () {
         const checkDaily = document.querySelectorAll('.checkDaily');
         var countValue = 0;
@@ -1029,7 +1200,7 @@
             if (e.getAttribute('value') == '') {
                 const trElment = e.parentNode;
                 trElment.remove();
-            } else if (e.getAttribute('value') != '') countValue ++;
+            } else if (e.getAttribute('value') != '') countValue++;
         })
         const btnAddDaily = document.getElementById('addDaily');
         if (countValue == 5) {
@@ -1068,7 +1239,7 @@
             if (e.getAttribute('value') == '') {
                 const trElment = e.parentNode;
                 trElment.remove();
-            } else if (e.getAttribute('value') != '') countValue ++;
+            } else if (e.getAttribute('value') != '') countValue++;
         })
         const btnAddQuote = document.getElementById('addQuote');
         if (countValue == 4) {
@@ -1292,7 +1463,6 @@
         function saveNotiHandler() {
             var contentNotiPlant = document.getElementById('contentNotiPlan').value;
             element.setAttribute('data-value', contentNotiPlant);
-            console.log(contentNotiPlant);
             $('#contentNoti').modal('hide');
             document.getElementById('contentNotiPlan').value = '';
             document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
@@ -1335,6 +1505,7 @@
             }
         });
     }
+
     checkDaily();
     const inputString = '${weekly.colors}';
     const valuesRegex = /\bvalues=\[(.*?)\]/g;
@@ -1448,11 +1619,16 @@
             data.monthly = monthly;
 
             $("input.form-control.weekTarget").each(function () {
+                let colorValue = $(this).closest('tr').data('value');
+                if (colorValue === undefined) colorValue = '';
                 let obj = {
                     title: $(this).closest('tr').find('.weekTitle').text(),
-                    content: $(this).val()
+                    content: $(this).val(),
+                    color: colorValue
                 }
-                weekly.weeklys.push(obj)
+
+                weekly.weeklys.push(obj);
+                console.log(obj);
             })
             data.weekly = weekly
             const days = [];

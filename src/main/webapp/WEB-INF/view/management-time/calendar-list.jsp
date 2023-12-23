@@ -264,6 +264,7 @@
                     // console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
+                    console.log(weekData)
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
