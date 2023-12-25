@@ -369,8 +369,7 @@
                         <tr id="quoteSession">
                             <td>
                                 <button type="button" class="btn btn-success waves-effect waves-light w-100"
-                                        id="addQuote">ADD
-                                </button>
+                                        id="addQuote">ADD</button>
                             </td>
                         </tr>
                         </tbody>
