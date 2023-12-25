@@ -261,10 +261,8 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    // console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
-                    console.log(weekData)
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
@@ -685,7 +683,7 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
-
+        console.log(data)
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             BtnLoadRemove()
             $("button.createCalendar").removeClass("d-none")
