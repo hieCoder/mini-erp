@@ -561,7 +561,7 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar[0]}"/>
-                                    <td class="editable-cell target-color-theSingle" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="3" contenteditable="true"
                                         data-name="theSingleMostImportantThing"
                                         data-day="${day.day}">${theSingleMostImportantThing.target}</td>
                                     <td class="performance-color-theSingle"><input class="form-check-input"
@@ -572,7 +572,7 @@
                             <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
-                                    <td class="editable-cell target-color-lecture" colspan="3" contenteditable="true" data-name="lecture"
+                                    <td class="editable-cell target-color-lecture isModifyLecture" colspan="3" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
                                     <td class="performance-color-lecture"><input class="form-check-input"
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
@@ -581,7 +581,7 @@
                             <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
-                                    <td class="editable-cell target-color-dailyEvaluation" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="3" contenteditable="true"
                                         data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
                                     <td class="performance-color-dailyEvaluation"><input class="form-check-input"
@@ -591,7 +591,7 @@
                             <tr class="work">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
-                                    <td class="editable-cell target-color-work" colspan="3" contenteditable="true" data-name="work"
+                                    <td class="editable-cell target-color-work isModifyWork" colspan="3" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
                                     <td class="performance-color-work"><input class="form-check-input"
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
@@ -600,7 +600,7 @@
                             <tr class="reading">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
-                                    <td class="editable-cell target-color-reading" colspan="3" contenteditable="true" data-name="reading"
+                                    <td class="editable-cell target-color-reading isModifyReading" colspan="3" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
                                     <td class="performance-color-reading"><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
@@ -1077,7 +1077,6 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
-
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
             const tr = e.parentNode;
@@ -1111,6 +1110,7 @@
             }
         });
     });
+
     function changeColor(newColor, index) {
         if (index == 0) {
             const targetColorTheSingle = document.querySelectorAll('.target-color-theSingle');
@@ -1174,6 +1174,7 @@
             })
         }
     }
+
     document.addEventListener("DOMContentLoaded", function () {
         const dailySession = document.getElementById('daily-routine');
         var heightDaily = parseFloat(dailySession.style.height);
@@ -1270,7 +1271,6 @@
             }
         })
     })
-
 
     document.addEventListener("DOMContentLoaded", function () {
         var totalIncome = 0;
@@ -1457,6 +1457,36 @@
         })
     })
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const theSingle = document.querySelector('.theSingleMostImportantThing');
+        const elementTdTheSingle = document.querySelectorAll('.isModifyTheSing');
+        isModify(theSingle, elementTdTheSingle);
+        const lecture = document.querySelector('.lecture');
+        const elementTdLecture = document.querySelectorAll('.isModifyLecture');
+        isModify(lecture, elementTdLecture);
+        const dailyEvaluation = document.querySelector('.dailyEvaluation');
+        const elementTdDaily = document.querySelectorAll('.isModifyDaily');
+        isModify(dailyEvaluation, elementTdDaily);
+        const work = document.querySelector('.work');
+        const elementTdWork = document.querySelectorAll('.isModifyWork');
+        isModify(work, elementTdWork);
+        const reading = document.querySelector('.reading');
+        const elementTdReading = document.querySelectorAll('.isModifyReading');
+        isModify(reading, elementTdReading);
+    })
+
+    function isModify(category, elementModify) {
+        if (category) {
+            const content = category.querySelector('span').textContent;
+            if (content == null || content == '') {
+                elementModify.forEach(function (eTd) {
+                    eTd.contentEditable  = false;
+                    category.querySelector('button').classList.add('d-none')
+                })
+            }
+        }
+    }
+
     function showModal(element) {
         const isAllowedNoti = element.innerText;
 
@@ -1628,7 +1658,6 @@
                 }
 
                 weekly.weeklys.push(obj);
-                console.log(obj);
             })
             data.weekly = weekly
             const days = [];
