@@ -26,4 +26,5 @@ public class ManagementTimeDay {
     private String weeklyCode;
     private boolean isAllowedNoti;
     private String contentNoti;
+    private Float spending;
 }

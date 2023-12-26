@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.service.impl;
 import com.shsoftvina.erpshsoftvina.converter.*;
 import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.mapper.*;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.SpendingMonthItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.*;
@@ -612,6 +613,41 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         });
 
         CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskColor, asyncTaskQuote, asyncTaskYear);
+        allAsyncTasks.thenRun(() -> {
+            CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
+            allOfAsyncTasks.join();
+        }).join();
+
+        return 1;
+    }
+
+    @Override
+    public int updateSpendingMonth(SpendingMonthRequest req) {
+        String userId = req.getUserId();
+        String monthlyCode = req.getMonth();
+        Float spendingGoals = req.getSpendingGoals();
+        String spending = JsonUtils.objectToJson(req.getSpendingGoals());
+
+        List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
+
+        CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(()->{
+            MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
+            if(monthlyEntity == null){
+                MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(req);
+                CompletableFuture<Void> createSpendingMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    monthlyManagementTimeDayMapper.createSpendingMonthlyManagementTimeDay(monthlyE);
+                });
+                asyncTasks.add(createSpendingMonthlyManagementTimeDayAsync);
+            } else{
+                monthlyEntity.setSpendingGoals(spendingGoals);
+                CompletableFuture<Void> updateSpendingMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    monthlyManagementTimeDayMapper.updateSpendingMonthlyManagementTimeDay(monthlyEntity);
+                });
+                asyncTasks.add(updateSpendingMonthlyManagementTimeDayAsync);
+            }
+        });
+
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();

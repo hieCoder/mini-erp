@@ -50,4 +50,15 @@
             FLUCTUATING_COSTS = #{fluctuatingCosts}
         WHERE ID = #{id};
     </update>
+
+    <insert id="createSpendingMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+        INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, USER_ID, SPENDING_GOALS)
+        VALUES (UUID(), #{code}, #{user.id}, #{spendingGoals})
+    </insert>
+
+    <update id="updateSpendingMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+        UPDATE MONTHLY_MANAGEMENT_TIME_DAY
+        SET SPENDING_GOALS = #{spendingGoals}
+        WHERE ID = #{id};
+    </update>
 </mapper>
