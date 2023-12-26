@@ -147,10 +147,14 @@
         <div class="card">
             <div class="row card-body">
                 <div class="col-md-4">
-                    <h4 class="fw-bolder">One Thing Calendar</h4>
-                    <h5 class="fst-italic">Daily Important</h5>
-                    <!-- Default Modals -->
-                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal">Standard Modal</button>
+                    <div class="d-flex align-items-center justify-content-between">
+                       <di>
+                           <h4 class="fw-bolder">One Thing Calendar</h4>
+                           <h5 class="fst-italic">Daily Important</h5>
+                       </di>
+                        <!-- Default Modals -->
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#myModal">Expense management</button>
+                    </div>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
                         <tr>
@@ -330,9 +334,27 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="fw-bolder">A quote I shouldn't forget</h4>
 
-                        <button type="button" class="btn btn-info mb-2"  data-bs-toggle="modal"
-                                data-bs-target=".bs-example-modal-xl">Add quote like image
+                        <button type="button" class="btn btn-info mb-2"  data-bs-toggle="modal" data-bs-target="#exampleModalgrid">Add quote like image
                         </button>
+
+                        <div class="modal fade" id="exampleModalgrid" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalgridLabel">Choose image</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <input class="form-control" type="file" id="quoteImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage()">
+                                        <div id="imagePreview" class="border mt-2 d-none"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button type="button" class="btn btn-info d-none" id="btn-alarm" data-bs-toggle="modal"
                             data-bs-target=".bs-example-modal-xl">Extra large Modal
@@ -1127,6 +1149,30 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+    function previewImage() {
+        var input = document.getElementById('quoteImage');
+        var preview = document.getElementById('imagePreview');
+
+        if (input.files && input.files[0]) {
+            $(preview).removeClass('d-none');
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var image = document.createElement('img');
+                image.src = e.target.result;
+                image.style.maxWidth = '100%';
+                image.style.maxHeight = '200px';
+
+                preview.innerHTML = '';
+                preview.appendChild(image);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else  {
+            $(preview).addClass('d-none');
+            $(preview).find('img').remove();
+        }
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
         var currentUrl = window.location.href;
@@ -1156,7 +1202,7 @@
             allDaysInMonth.forEach(function (day) {
                 const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
                 const spending = '<td class="fw-bolder">Spending</td><td class="fw-bolder">Daily Budget</td>';
-                const valueSpending = '<td class="valueSpending" contenteditable="true">0</td><td class="dailyBudget">0</td>';
+                const valueSpending = '<td class="valueSpending" contenteditable="true" oninput="validateNumberInput(event)">0</td><td class="dailyBudget bg-light">0</td>';
                 $('#days').append(newDay);
                 $('#spending').append(spending);
                 $('#valueSpending').append(valueSpending);
