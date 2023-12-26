@@ -700,7 +700,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CompletableFuture<Float> spendingGoals = CompletableFuture.supplyAsync(() -> {
             MonthlyManagementTimeDay monthly = monthlyManagementTimeDayMapper.findByCode(userId, monthCode);
-            return monthly.getSpendingGoals();
+            return monthly!=null?monthly.getSpendingGoals():null;
         });
 
         CompletableFuture<SpendingMonthItemDto[]> getSpendingMonthResponse = CompletableFuture.supplyAsync(() -> {

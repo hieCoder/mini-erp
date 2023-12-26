@@ -153,7 +153,7 @@
                            <h5 class="fst-italic">Daily Important</h5>
                        </di>
                         <!-- Default Modals -->
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#myModal">Expense management</button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal" id="expenseManagement">Expense management</button>
                     </div>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
@@ -1103,7 +1103,7 @@
                     <tbody>
                         <tr>
                             <td class="bg-light" id="totalSpending">0</td>
-                            <td contenteditable="true" oninput="validateNumberInput(event)" id="spendingGoals">300</td>
+                            <td contenteditable="true" oninput="validateNumberInput(event)" id="spendingGoals">0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1174,58 +1174,75 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var currentUrl = window.location.href;
+    document.getElementById('expenseManagement').addEventListener('click', function (e) {
+            var currentUrl = window.location.href;
 
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
-        var currentDayParam = getParameterByName('currentDay', currentUrl);
-        if (currentDayParam) {
-            var currentDate = new Date(currentDayParam);
-            var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-            var year = currentDate.getFullYear();
-            var firstDayOfMonth = new Date(year, month - 1, 1);
-            var lastDayOfMonth = new Date(year, month + 1, 0);
-            var allDaysInMonth = [];
-            for (var day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
-                var formattedDay = year + '-' + month + '-' + day.toString().padStart(2, '0');
-                allDaysInMonth.push(formattedDay);
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
             }
-            allDaysInMonth.forEach(function (day) {
-                const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
-                const spending = '<td class="fw-bolder">Spending</td><td class="fw-bolder">Daily Budget</td>';
-                const valueSpending = '<td class="valueSpending" contenteditable="true" oninput="validateNumberInput(event)">0</td><td class="dailyBudget bg-light">0</td>';
-                $('#days').append(newDay);
-                $('#spending').append(spending);
-                $('#valueSpending').append(valueSpending);
-            })
-            document.getElementById('saveSpending').setAttribute('data-month', year + '-' + month)
-        }
-        const elTotalSpending = document.getElementById('totalSpending');
-        const elSpendingGoals = document.getElementById('spendingGoals');
-        var totalSpending = parseFloat(elTotalSpending.textContent);
-        var spendingGoals = parseFloat(elSpendingGoals.textContent);
-        var dailyBudget = document.querySelectorAll('.dailyBudget');
-        document.querySelectorAll('.valueSpending').forEach(function (e, index) {
-            if (e.textContent != null && e.textContent != '') {
-                totalSpending += parseFloat(e.textContent);
-                spendingGoals -= parseFloat(e.textContent);
-                dailyBudget[index].textContent = spendingGoals;
+
+            var currentDayParam = getParameterByName('currentDay', currentUrl);
+            if (currentDayParam) {
+                var currentDate = new Date(currentDayParam);
+                var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                var year = currentDate.getFullYear();
+                var firstDayOfMonth = new Date(year, month - 1, 1);
+                var lastDayOfMonth = new Date(year, month + 1, 0);
+                var allDaysInMonth = [];
+                for (var day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
+                    var formattedDay = year + '-' + month + '-' + day.toString().padStart(2, '0');
+                    allDaysInMonth.push(formattedDay);
+                }
+                callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending/' + '${user.id}' + '?monthCode=' + year + '-' + month, 'GET', null, function (rs) {
+                    const data = rs;
+                    console.log(data)
+                    var spendingGoals = data.spendingGoals;
+                    if (spendingGoals == '' || spendingGoals == null) spendingGoals = '0'
+                    document.getElementById('spendingGoals').textContent = spendingGoals;
+                    allDaysInMonth.forEach(function (day) {
+                        const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
+                        const spending = '<td class="fw-bolder">Spending</td><td class="fw-bolder">Daily Budget</td>';
+                        const valueSpending = '<td data-day="' + day + '" class="valueSpending" contenteditable="true" oninput="validateNumberInput(event)">0</td><td class="dailyBudget bg-light">0</td>';
+                        $('#days').append(newDay);
+                        $('#spending').append(spending);
+                        $('#valueSpending').append(valueSpending);
+                    })
+                    document.getElementById('saveSpending').setAttribute('data-month', year + '-' + month);
+
+                    data.spending.forEach(function (e, i) {
+                        var element = $('.valueSpending[data-day="'+e.day+'"]');
+                        element.text(element.sending);
+                    });
+                    const elTotalSpending = document.getElementById('totalSpending');
+                    const elSpendingGoals = document.getElementById('spendingGoals');
+                    var totalSpending = parseFloat(elTotalSpending.textContent);
+                    var spendingGoals = parseFloat(elSpendingGoals.textContent);
+                    var dailyBudget = document.querySelectorAll('.dailyBudget');
+                    document.querySelectorAll('.valueSpending').forEach(function (e, index) {
+                        if (e.textContent != null && e.textContent != '') {
+                            totalSpending += parseFloat(e.textContent);
+                            spendingGoals -= parseFloat(e.textContent);
+                            dailyBudget[index].textContent = spendingGoals;
+                        }
+                    })
+                    elTotalSpending.textContent = totalSpending;
+                })
             }
         })
-        elTotalSpending.textContent = totalSpending;
-
-    })
 
     document.addEventListener("DOMContentLoaded", function () {
+        const result = localStorage.getItem('result');
+        if (result == 'saveExpenseSuccess') {
+            document.getElementById('expenseManagement').click();
+            localStorage.clear();
+        }
+
         document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
             const tr = e.parentNode;
             const newColor = tr.style.backgroundColor
@@ -2005,23 +2022,24 @@
 
             data.days.push(...days);
             data.quotes.push(...quotes);
-            console.log(data)
-            // callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-            //     if (rs) {
-            //         $("div.containerLoading").addClass("d-none")
-            //         $("div.calendar-container").removeClass("d-none")
-            //         localStorage.setItem('result', 'addSuccess');
-            //         window.location.reload();
-            //     } else {
-            //         rsUnSuccess();
-            //         $("div.containerLoading").addClass("d-none")
-            //         $("div.calendar-container").removeClass("d-none")
-            //     }
-            // })
+            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+                if (rs) {
+                    $("div.containerLoading").addClass("d-none")
+                    $("div.calendar-container").removeClass("d-none")
+                    localStorage.setItem('result', 'addSuccess');
+                    window.location.reload();
+                } else {
+                    rsUnSuccess();
+                    $("div.containerLoading").addClass("d-none")
+                    $("div.calendar-container").removeClass("d-none")
+                }
+            })
         }
     })
 
     document.getElementById('saveSpending').addEventListener('click', function () {
+        $("div.containerLoading").removeClass("d-none");
+        document.getElementById('myModal').style.display = 'none';
         const monthSpending = {};
         monthSpending.spendingGoals = parseFloat(document.getElementById('spendingGoals').textContent)
 
@@ -2039,9 +2057,9 @@
         monthSpending.days = daysArray;
         monthSpending.month = this.getAttribute('data-month');
         monthSpending.userId = '${user.id}';
-        console.log(monthSpending)
         callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending', 'POST', monthSpending, function () {
-            console.log(1)
+            // localStorage.setItem('result', 'saveExpenseSuccess');
+            // location.reload();
         })
     })
     $(document).ready(function () {
