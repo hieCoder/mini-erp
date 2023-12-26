@@ -384,6 +384,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].title;
+                                                cell.style.backgroundColor = e.weeklys[dayTodo].color;
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -464,6 +465,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].content;
+                                                cell.style.backgroundColor = e.weeklys[dayTodo].color;
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -479,9 +481,11 @@
                                     cell.setAttribute('contenteditable', 'true');
                                 }
                             }
+                            row.classList.add('color');
                             row.appendChild(cell);
                         }
                         tbody.appendChild(row);
+                        changColor();
                         $('div.custom-spinner').parent().remove()
                         if (button) {
                             button.prop("disabled", false)
@@ -495,6 +499,12 @@
             }
         }
         xhr.send();
+    }
+
+    function changColor() {
+        document.querySelectorAll('.color').forEach(function (e) {
+            e.style.backgroundColor = e.querySelector('td').style.backgroundColor
+        })
     }
 
     populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
@@ -632,6 +642,7 @@
             const hasContentClass = $(this).hasClass('content');
             const value = $(this).text().trim();
             const week = $(this).data('week');
+            const color = $(this).css('background-color');
             if (value !== "") {
                 if (day != null) {
                     let dayObj = days.find(d => d.day === day);
@@ -649,7 +660,7 @@
 
                     if (!weekObj) {
                         weekObj = {
-                            startDay: week,
+                            startDay: week == undefined ? '' : week,
                             weeklys: [{}, {}, {}, {}, {}]
                         };
                         weeklys.push(weekObj);
@@ -660,11 +671,13 @@
                         if (!currentWeekly.hasOwnProperty('content')) {
                             currentWeekly.content = '';
                         }
+                        currentWeekly.color = color
                     } else if (hasContentClass) {
                         if (!currentWeekly.hasOwnProperty('title')) {
                             currentWeekly.title = '';
                         }
                         currentWeekly.content = value;
+                        currentWeekly.color = color
                     }
                 }
             }
@@ -683,7 +696,6 @@
         data.days.push(...days);
         data.weeklys.push(...weeklys);
         data.monthly = monthly;
-        console.log(data)
         callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
             BtnLoadRemove()
             $("button.createCalendar").removeClass("d-none")

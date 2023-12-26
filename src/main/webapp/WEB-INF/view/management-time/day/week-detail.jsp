@@ -149,6 +149,8 @@
                 <div class="col-md-4">
                     <h4 class="fw-bolder">One Thing Calendar</h4>
                     <h5 class="fst-italic">Daily Important</h5>
+                    <!-- Default Modals -->
+                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal">Standard Modal</button>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
                         <tr>
@@ -325,7 +327,13 @@
                         </tbody>
                     </table>
 
-                    <h4 class="fw-bolder">A quote I shouldn't forget</h4>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h4 class="fw-bolder">A quote I shouldn't forget</h4>
+
+                        <button type="button" class="btn btn-info mb-2"  data-bs-toggle="modal"
+                                data-bs-target=".bs-example-modal-xl">Add quote like image
+                        </button>
+                    </div>
                     <button type="button" class="btn btn-info d-none" id="btn-alarm" data-bs-toggle="modal"
                             data-bs-target=".bs-example-modal-xl">Extra large Modal
                     </button>
@@ -369,8 +377,7 @@
                         <tr id="quoteSession">
                             <td>
                                 <button type="button" class="btn btn-success waves-effect waves-light w-100"
-                                        id="addQuote">ADD
-                                </button>
+                                        id="addQuote">ADD</button>
                             </td>
                         </tr>
                         </tbody>
@@ -561,10 +568,10 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar[0]}"/>
-                                    <td class="editable-cell target-color-theSingle" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="3" contenteditable="true"
                                         data-name="theSingleMostImportantThing"
                                         data-day="${day.day}">${theSingleMostImportantThing.target}</td>
-                                    <td class="performance-color-theSingle"><input class="form-check-input"
+                                    <td class="performance-color-theSingle isModifyTheSing"><input class="form-check-input"
                                                type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
                                 </c:forEach>
@@ -572,37 +579,37 @@
                             <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
-                                    <td class="editable-cell target-color-lecture" colspan="3" contenteditable="true" data-name="lecture"
+                                    <td class="editable-cell target-color-lecture isModifyLecture" colspan="3" contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
-                                    <td class="performance-color-lecture"><input class="form-check-input"
+                                    <td class="performance-color-lecture isModifyLecture"><input class="form-check-input"
                                                type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
-                                    <td class="editable-cell target-color-dailyEvaluation" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="3" contenteditable="true"
                                         data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
-                                    <td class="performance-color-dailyEvaluation"><input class="form-check-input"
+                                    <td class="performance-color-dailyEvaluation isModifyDaily"><input class="form-check-input"
                                                type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="work">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
-                                    <td class="editable-cell target-color-work" colspan="3" contenteditable="true" data-name="work"
+                                    <td class="editable-cell target-color-work isModifyWork" colspan="3" contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
-                                    <td class="performance-color-work"><input class="form-check-input"
+                                    <td class="performance-color-work isModifyWork"><input class="form-check-input"
                                                type="checkbox" ${work.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="reading">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
-                                    <td class="editable-cell target-color-reading" colspan="3" contenteditable="true" data-name="reading"
+                                    <td class="editable-cell target-color-reading isModifyReading" colspan="3" contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
-                                    <td class="performance-color-reading"><input class="form-check-input"
+                                    <td class="performance-color-reading isModifyReading"><input class="form-check-input"
                                                type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
@@ -1056,6 +1063,49 @@
     </div>
 </div>
 
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Expense management</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered border-secondary table-nowrap" style="width: 400px;">
+                    <thead>
+                    <tr>
+                        <th scope="col">Total spending</th>
+                        <th scope="col">Spending goals</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bg-light" id="totalSpending">0</td>
+                            <td contenteditable="true" oninput="validateNumberInput(event)" id="spendingGoals">300</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+               <div class="table-responsive">
+                   <table class="table table-bordered border-secondary  text-center">
+                       <thead>
+                       <tr id="days"></tr>
+                       </thead>
+                       <tbody>
+                       <tr id="spending"></tr>
+                       <tr id="valueSpending"></tr>
+                       </tbody>
+                   </table>
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveSpending">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .container-fluid .form-check-input {
         font-size: 1.2rem;
@@ -1077,6 +1127,56 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentUrl = window.location.href;
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var currentDayParam = getParameterByName('currentDay', currentUrl);
+        if (currentDayParam) {
+            var currentDate = new Date(currentDayParam);
+            var month = currentDate.getMonth() + 1;
+            var year = currentDate.getFullYear();
+            var firstDayOfMonth = new Date(year, month - 1, 1);
+            var lastDayOfMonth = new Date(year, month + 1, 0);
+            var allDaysInMonth = [];
+            for (var day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
+                allDaysInMonth.push(year + '-' + month + '-' + day);
+            }
+            allDaysInMonth.forEach(function (day) {
+                const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
+                const spending = '<td class="fw-bolder">Spending</td><td class="fw-bolder">Daily Budget</td>';
+                const valueSpending = '<td class="valueSpending" contenteditable="true">0</td><td class="dailyBudget">0</td>';
+                $('#days').append(newDay);
+                $('#spending').append(spending);
+                $('#valueSpending').append(valueSpending);
+            })
+            document.getElementById('saveSpending').setAttribute('data-month', year + '-' + month)
+        }
+        const elTotalSpending = document.getElementById('totalSpending');
+        const elSpendingGoals = document.getElementById('spendingGoals');
+        var totalSpending = parseFloat(elTotalSpending.textContent);
+        var spendingGoals = parseFloat(elSpendingGoals.textContent);
+        var dailyBudget = document.querySelectorAll('.dailyBudget');
+        document.querySelectorAll('.valueSpending').forEach(function (e, index) {
+            if (e.textContent != null && e.textContent != '') {
+                totalSpending += parseFloat(e.textContent);
+                spendingGoals -= parseFloat(e.textContent);
+                dailyBudget[index].textContent = spendingGoals;
+            }
+        })
+        elTotalSpending.textContent = totalSpending;
+
+    })
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
@@ -1111,6 +1211,7 @@
             }
         });
     });
+
     function changeColor(newColor, index) {
         if (index == 0) {
             const targetColorTheSingle = document.querySelectorAll('.target-color-theSingle');
@@ -1174,6 +1275,7 @@
             })
         }
     }
+
     document.addEventListener("DOMContentLoaded", function () {
         const dailySession = document.getElementById('daily-routine');
         var heightDaily = parseFloat(dailySession.style.height);
@@ -1270,7 +1372,6 @@
             }
         })
     })
-
 
     document.addEventListener("DOMContentLoaded", function () {
         var totalIncome = 0;
@@ -1457,6 +1558,40 @@
         })
     })
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const theSingle = document.querySelector('.theSingleMostImportantThing');
+        const elementTdTheSingle = document.querySelectorAll('.isModifyTheSing');
+        isModify(theSingle, elementTdTheSingle);
+        const lecture = document.querySelector('.lecture');
+        const elementTdLecture = document.querySelectorAll('.isModifyLecture');
+        isModify(lecture, elementTdLecture);
+        const dailyEvaluation = document.querySelector('.dailyEvaluation');
+        const elementTdDaily = document.querySelectorAll('.isModifyDaily');
+        isModify(dailyEvaluation, elementTdDaily);
+        const work = document.querySelector('.work');
+        const elementTdWork = document.querySelectorAll('.isModifyWork');
+        isModify(work, elementTdWork);
+        const reading = document.querySelector('.reading');
+        const elementTdReading = document.querySelectorAll('.isModifyReading');
+        isModify(reading, elementTdReading);
+    })
+
+    function isModify(category, elementModify) {
+        if (category) {
+            const content = category.querySelector('span').textContent.trim();
+            if (content == null || content == '') {
+                elementModify.forEach(function (eTd, index) {
+                    eTd.contentEditable  = false;
+                    category.querySelector('button').classList.add('d-none');
+                    eTd.style.opacity = 0.5;
+                    var lengthTd = category.querySelectorAll('td').length;
+                    if (lengthTd == 2) category.querySelectorAll('td')[1].style.opacity = 0.5;
+                    else category.querySelectorAll('td')[0].style.opacity = 0.5;
+                })
+            }
+        }
+    }
+
     function showModal(element) {
         const isAllowedNoti = element.innerText;
 
@@ -1628,7 +1763,6 @@
                 }
 
                 weekly.weeklys.push(obj);
-                console.log(obj);
             })
             data.weekly = weekly
             const days = [];
@@ -1824,21 +1958,45 @@
 
             data.days.push(...days);
             data.quotes.push(...quotes);
-            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-                if (rs) {
-                    $("div.containerLoading").addClass("d-none")
-                    $("div.calendar-container").removeClass("d-none")
-                    localStorage.setItem('result', 'addSuccess');
-                    window.location.reload();
-                } else {
-                    rsUnSuccess();
-                    $("div.containerLoading").addClass("d-none")
-                    $("div.calendar-container").removeClass("d-none")
-                }
-            })
+            console.log(data)
+            // callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+            //     if (rs) {
+            //         $("div.containerLoading").addClass("d-none")
+            //         $("div.calendar-container").removeClass("d-none")
+            //         localStorage.setItem('result', 'addSuccess');
+            //         window.location.reload();
+            //     } else {
+            //         rsUnSuccess();
+            //         $("div.containerLoading").addClass("d-none")
+            //         $("div.calendar-container").removeClass("d-none")
+            //     }
+            // })
         }
     })
 
+    document.getElementById('saveSpending').addEventListener('click', function () {
+        const monthSpending = {};
+        monthSpending.spendingGoals = parseFloat(document.getElementById('spendingGoals').textContent)
+
+        const spendingDays = document.querySelectorAll('.spendingDays');
+        const daysArray = [];
+        document.querySelectorAll('.valueSpending').forEach(function (e, index) {
+            if (e.textContent != null && e.textContent != '' && e.textContent != '0') {
+                const obj = {
+                    day: spendingDays[index].getAttribute('data-day'),
+                    spending: parseFloat(e.textContent)
+                };
+                daysArray.push(obj);
+            }
+        })
+        monthSpending.days = daysArray;
+        monthSpending.month = this.getAttribute('data-month');
+        monthSpending.userId = '${user.id}';
+        console.log(monthSpending)
+        // callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending', 'POST', monthSpending, function () {
+        //     console.log(1)
+        // })
+    })
     $(document).ready(function () {
         let isMouseDown = false;
         let startX;
