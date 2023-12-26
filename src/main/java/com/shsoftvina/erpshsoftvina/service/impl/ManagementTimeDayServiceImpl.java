@@ -624,13 +624,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Override
     public int updateSpendingMonth(SpendingMonthRequest req) {
         String userId = req.getUserId();
-        String monthlyCode = req.getMonth();
-        Float spendingGoals = req.getSpendingGoals();
-        String spending = JsonUtils.objectToJson(req.getSpendingGoals());
 
         List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
 
         CompletableFuture<Void> asyncTaskMonth = CompletableFuture.runAsync(()->{
+            String monthlyCode = req.getMonth();
+            Float spendingGoals = req.getSpendingGoals();
             MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
             if(monthlyEntity == null){
                 MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(req);
@@ -647,12 +646,76 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         });
 
-        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth);
+        CompletableFuture<Void> asyncTaskDay = CompletableFuture.runAsync(() ->{
+            SpendingMonthItemDto[] spendingDays= req.getDays();
+
+            if(spendingDays.length>0){
+                List<String> dayList = Arrays.stream(spendingDays)
+                        .map(SpendingMonthItemDto::getDay)
+                        .collect(Collectors.toList());
+                List<ManagementTimeDay> managementTimeDaysDB = managementTimeDayMapper.findByListDay(userId, dayList);
+
+                List<ManagementTimeDay> insertListDay = new ArrayList<>();
+                List<ManagementTimeDay> editListDay = new ArrayList<>();
+
+                for(SpendingMonthItemDto spendingDay: spendingDays){
+                    Date day = DateUtils.parseDate(spendingDay.getDay());
+                    Float spending = spendingDay.getSpending();
+                    ManagementTimeDay m = getManagementTimeDays(managementTimeDaysDB, day);
+                    if(m == null){
+                        ManagementTimeDay newDay = managementTimeDayConvert.toEntity(userId, day, spending);
+                        insertListDay.add(newDay);
+                    }else{
+                        m.setSpending(spending);
+                        editListDay.add(m);
+                    }
+                }
+
+                if(!insertListDay.isEmpty()) {
+                    CompletableFuture<Void> createListDayDetailAsync = CompletableFuture.runAsync(() -> {
+                        managementTimeDayMapper.createListDayDetail(insertListDay);
+                    });
+                    asyncTasks.add(createListDayDetailAsync);
+                }
+                if(!editListDay.isEmpty()) {
+                    CompletableFuture<Void> editListDayDetailAsync = CompletableFuture.runAsync(() -> {
+                        managementTimeDayMapper.editListDayDetail(editListDay);
+                    });
+                    asyncTasks.add(editListDayDetailAsync);
+                }
+            }
+        });
+
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskDay);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();
         }).join();
 
         return 1;
+    }
+
+    @Override
+    public SpendingMonthResponse showSpendingMonth(String userId, String monthCode) {
+
+        CompletableFuture<Float> spendingGoals = CompletableFuture.supplyAsync(() -> {
+            MonthlyManagementTimeDay monthly = monthlyManagementTimeDayMapper.findByCode(userId, monthCode);
+            return monthly.getSpendingGoals();
+        });
+
+        CompletableFuture<SpendingMonthItemDto[]> getSpendingMonthResponse = CompletableFuture.supplyAsync(() -> {
+            List<ManagementTimeDay> days = managementTimeDayMapper.findSpendingByMonthCode(userId, monthCode);
+            return managementTimeDayConvert.toArraySpendingResponse(days);
+        });
+
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(spendingGoals, getSpendingMonthResponse);
+        allOf.join();
+
+        SpendingMonthResponse spendingMonthResponse = SpendingMonthResponse.builder()
+                .spendingGoals(spendingGoals.join())
+                .spending(getSpendingMonthResponse.join())
+                .build();
+
+        return spendingMonthResponse;
     }
 }

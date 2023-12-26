@@ -28,6 +28,7 @@
         <result property="incomeThisMonth" column="INCOME_THIS_MONTH"/>
         <result property="fixedCosts" column="FIXED_COSTS"/>
         <result property="fluctuatingCosts" column="FLUCTUATING_COSTS"/>
+        <result property="spendingGoals" column="SPENDING_GOALS"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 

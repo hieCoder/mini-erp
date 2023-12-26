@@ -1144,13 +1144,14 @@
         var currentDayParam = getParameterByName('currentDay', currentUrl);
         if (currentDayParam) {
             var currentDate = new Date(currentDayParam);
-            var month = currentDate.getMonth() + 1;
+            var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
             var year = currentDate.getFullYear();
             var firstDayOfMonth = new Date(year, month - 1, 1);
             var lastDayOfMonth = new Date(year, month + 1, 0);
             var allDaysInMonth = [];
             for (var day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
-                allDaysInMonth.push(year + '-' + month + '-' + day);
+                var formattedDay = year + '-' + month + '-' + day.toString().padStart(2, '0');
+                allDaysInMonth.push(formattedDay);
             }
             allDaysInMonth.forEach(function (day) {
                 const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
@@ -1993,9 +1994,9 @@
         monthSpending.month = this.getAttribute('data-month');
         monthSpending.userId = '${user.id}';
         console.log(monthSpending)
-        // callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending', 'POST', monthSpending, function () {
-        //     console.log(1)
-        // })
+        callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending', 'POST', monthSpending, function () {
+            console.log(1)
+        })
     })
     $(document).ready(function () {
         let isMouseDown = false;
