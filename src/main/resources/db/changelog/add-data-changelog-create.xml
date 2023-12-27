@@ -92,15 +92,5 @@
             <column name="FILE_LIMIT" value="3"/>
             <column name="FILE_SIZE" value="100"/>
         </insert>
-
-        <insert tableName="SETTING">
-            <column name="ID" value="9"/>
-            <column name="CODE" value="QUOTE"/>
-            <column name="IMAGE_TYPE" value="jpg,jpeg,png,svg"/>
-            <column name="FILE_TYPE" value="pdf,csv,xlsx,doc,xls,pptx"/>
-            <column name="FILE_LIMIT" value="3"/>
-            <column name="FILE_SIZE" value="100"/>
-        </insert>
     </changeSet>
-
 </databaseChangeLog>
