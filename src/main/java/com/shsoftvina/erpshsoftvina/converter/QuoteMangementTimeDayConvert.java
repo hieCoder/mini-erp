@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
+import com.shsoftvina.erpshsoftvina.entity.Book;
 import com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.QuoteDto;
@@ -26,6 +27,7 @@ public class QuoteMangementTimeDayConvert {
         return QuoteResponse.builder()
                 .id(quoteManagementTimeDay.getId())
                 .content(JsonUtils.jsonToObject(quoteManagementTimeDay.getContent(), String[].class))
+                .image(FileUtils.getPathUpload(QuoteManagementTimeDay.class, quoteManagementTimeDay.getImage()))
                 .build();
     }
 

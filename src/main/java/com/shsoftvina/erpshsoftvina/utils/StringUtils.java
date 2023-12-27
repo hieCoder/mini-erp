@@ -1,16 +1,5 @@
 package com.shsoftvina.erpshsoftvina.utils;
 
-import com.shsoftvina.erpshsoftvina.constant.AccountingConstant;
-import com.shsoftvina.erpshsoftvina.constant.CommentTaskConstant;
-import com.shsoftvina.erpshsoftvina.constant.UserConstant;
-import com.shsoftvina.erpshsoftvina.entity.Accounting;
-import com.shsoftvina.erpshsoftvina.entity.CommentTask;
-import com.shsoftvina.erpshsoftvina.entity.User;
-
-import java.text.SimpleDateFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class StringUtils {
 
     public static boolean isBlank(String s){

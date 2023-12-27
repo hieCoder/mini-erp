@@ -14,5 +14,5 @@ import java.util.List;
 @Builder
 public class QuoteDto {
     private String[] quotes;
-    private MultipartFile image;
+    private String image;
 }

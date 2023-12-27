@@ -24,5 +24,6 @@
     <resultMap id="quoteResultMap" type="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="content" column="CONTENT"/>
+        <result property="image" column="IMAGE"/>
     </resultMap>
 </mapper>

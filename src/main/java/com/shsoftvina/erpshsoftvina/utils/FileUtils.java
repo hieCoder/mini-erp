@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -167,6 +166,9 @@ public class FileUtils {
             }
             else if(c == CommentTask.class){
                 return CommentTaskConstant.PATH_FILE + fileName;
+            }
+            else if(c == QuoteManagementTimeDay.class){
+                return QuoteConstant.PATH_FILE + fileName;
             }
         }
         return null;

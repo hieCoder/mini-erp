@@ -34,7 +34,7 @@ public class ManagementTimeDayApi {
     }
 
     @PostMapping("/weekly-detail")
-    public ResponseEntity<?> updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest) {
+    public ResponseEntity<?> updateListDayOfWeek(@RequestBody DaysUpdateRequest daysUpdateRequest) {
         return ResponseEntity.ok(managementTimeDayService.updateListDayOfWeek(daysUpdateRequest));
     }
 

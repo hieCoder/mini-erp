@@ -588,31 +588,23 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         CompletableFuture<Void> asyncTaskQuote = CompletableFuture.runAsync(()->{
             QuoteDto quotes = daysUpdateRequest.getQuotes();
-            MultipartFile imageQuoteReq = daysUpdateRequest.getQuotes().getImage();
-            String quoteImageName = null;
-            boolean isSaveImageSuccess = true;
-            if (imageQuoteReq != null) {
-                applicationUtils.checkValidateImage(QuoteManagementTimeDay.class, imageQuoteReq);
-                quoteImageName = FileUtils.formatNameImage(imageQuoteReq);
-                isSaveImageSuccess = FileUtils.saveImageToServer(QuoteConstant.UPLOAD_FILE_DIR, imageQuoteReq, quoteImageName);
-            }
+            String[] quoteContent = quotes.getQuotes();
+            String quoteImage = quotes.getImage();
 
-            if(isSaveImageSuccess){
-                QuoteManagementTimeDay quote = quoteManagementTimeDayMapper.findByUserId(userId);
-                if(quote == null){
-                    QuoteManagementTimeDay quoteE = quoteMangementTimeDayConvert.toEntity(userId, quotes.getQuotes(), quoteImageName);
-                    CompletableFuture<Void> createQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
-                        quoteManagementTimeDayMapper.createQuote(quoteE);
-                    });
-                    asyncTasks.add(createQuoteManagementTimeDayAsync);
-                } else{
-                    quote.setContent(JsonUtils.objectToJson(quotes));
-                    if (imageQuoteReq != null) quote.setImage(quoteImageName);
-                    CompletableFuture<Void> updateQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
-                        quoteManagementTimeDayMapper.editQuote(quote);
-                    });
-                    asyncTasks.add(updateQuoteManagementTimeDayAsync);
-                }
+            QuoteManagementTimeDay quote = quoteManagementTimeDayMapper.findByUserId(userId);
+            if(quote == null){
+                QuoteManagementTimeDay quoteE = quoteMangementTimeDayConvert.toEntity(userId, quoteContent, quoteImage);
+                CompletableFuture<Void> createQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    quoteManagementTimeDayMapper.createQuote(quoteE);
+                });
+                asyncTasks.add(createQuoteManagementTimeDayAsync);
+            } else{
+                quote.setContent(JsonUtils.objectToJson(quotes.getQuotes()));
+                if (StringUtils.isBlank(quoteImage)) quote.setImage(quoteImage);
+                CompletableFuture<Void> updateQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                    quoteManagementTimeDayMapper.editQuote(quote);
+                });
+                asyncTasks.add(updateQuoteManagementTimeDayAsync);
             }
         });
 

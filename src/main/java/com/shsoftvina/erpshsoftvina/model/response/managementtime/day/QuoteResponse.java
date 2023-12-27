@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class QuoteResponse {
     private String id;
     private String[] content;
+    private String image;
 }

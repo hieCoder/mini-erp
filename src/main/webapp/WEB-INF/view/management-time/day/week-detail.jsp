@@ -1149,6 +1149,11 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+    })
+
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
@@ -1462,6 +1467,30 @@
         const economic = (totalIncome - (totalFixed + totalFluctuating)).toFixed(2);
         document.getElementById('econmic').textContent = 'Economic situation: $' + economic;
     });
+
+    function convertToFormData(obj) {
+        const formData = new FormData();
+
+        function appendFormData(data, keyPrefix) {
+            if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+                Object.keys(data).forEach(key => {
+                    appendFormData(data[key], keyPrefix ? `${keyPrefix}[${key}]` : key);
+                });
+            } else {
+                formData.append(keyPrefix, data);
+            }
+        }
+
+        appendFormData(obj);
+
+        return formData;
+    }
+
+    // Helper function to check if a value is an object
+    function isObject(value) {
+        return value === Object(value) && !Array.isArray(value) && !(value instanceof Date);
+    }
+
 
     function validateNumberInput(event) {
         var inputText = event.target.textContent;
@@ -2025,19 +2054,29 @@
             })
 
             data.days.push(...days);
-            console.log(data)
-            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-                if (rs) {
-                    $("div.containerLoading").addClass("d-none")
-                    $("div.calendar-container").removeClass("d-none")
-                    localStorage.setItem('result', 'addSuccess');
-                    window.location.reload();
-                } else {
-                    rsUnSuccess();
-                    $("div.containerLoading").addClass("d-none")
-                    $("div.calendar-container").removeClass("d-none")
-                }
+
+            // goi api hinh => ten hinh
+            // ten hinh -> data -> call api chinh
+            const imageQuote = document.getElementById('quoteImage').files[0];
+            const formData = new FormData();
+            formData.append('files', imageQuote);
+            callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
+                data.quotes.image = rs[0];
+                callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+                    if (rs) {
+                        $("div.containerLoading").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
+                        localStorage.setItem('result', 'addSuccess');
+                        window.location.reload();
+                    } else {
+                        rsUnSuccess();
+                        $("div.containerLoading").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
+                    }
+                })
             })
+            console.log(data)
+
         }
     })
 
