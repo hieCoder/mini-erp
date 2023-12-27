@@ -21,12 +21,6 @@ import java.util.List;
 @RequestMapping("/api/v1/upload")
 public class UploadApi {
 
-    @Autowired
-    private ApplicationUtils applicationUtils;
-
-    @Autowired
-    private SettingMapper settingMapper;
-
     @PostMapping
     public ResponseEntity<?> uploadFile(MultipartFile[] files, @RequestParam String typeFile) {
         List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(getDir(typeFile), files);

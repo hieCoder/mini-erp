@@ -10,5 +10,4 @@ public class SettingConstant {
     public static final String TASK_CODE = "TASK";
     public static final String TASK_COMMENT_CODE = "TASK_COMMENT";
     public static final String BOOK = "BOOK";
-    public static final String QUOTE = "QUOTE";
 }
