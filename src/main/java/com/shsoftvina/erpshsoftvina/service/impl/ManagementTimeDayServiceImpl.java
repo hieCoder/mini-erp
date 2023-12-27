@@ -74,7 +74,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Autowired
     private YearManagementTimeDayConverter yearManagementTimeDayConverter;
 
-
     private List<String> getSundaysOfTheMonth(String yyyyMMDD) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(yyyyMMDD, formatter);
@@ -600,7 +599,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 asyncTasks.add(createQuoteManagementTimeDayAsync);
             } else{
                 quote.setContent(JsonUtils.objectToJson(quotes.getQuotes()));
-                if (StringUtils.isBlank(quoteImage)) quote.setImage(quoteImage);
+                if (!StringUtils.isBlank(quoteImage)) {
+                    FileUtils.deleteImageFromServer(QuoteConstant.UPLOAD_FILE_DIR, quote.getImage());
+                    quote.setImage(quoteImage);
+                }
                 CompletableFuture<Void> updateQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     quoteManagementTimeDayMapper.editQuote(quote);
                 });

@@ -29,8 +29,7 @@ public class UploadApi {
 
     @PostMapping
     public ResponseEntity<?> uploadFile(MultipartFile[] files, @RequestParam String typeFile) {
-        List<String> listFileNameSaveFileSuccess = null;
-        listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(getDir(typeFile), files);
+        List<String> listFileNameSaveFileSuccess = FileUtils.saveMultipleFilesToServer(getDir(typeFile), files);
         return ResponseEntity.ok(listFileNameSaveFileSuccess);
     }
 
