@@ -1993,9 +1993,7 @@
             document.querySelectorAll('.quotes').forEach(function (quote) {
                 quotes.push(quote.value);
             });
-            var imageQuote = document.getElementById('quoteImage').value;
             data.quotes.quotes = quotes;
-            data.quotes.image = imageQuote;
 
             var items = document.querySelectorAll('.item');
             var amts = document.querySelectorAll('.amt');
@@ -2027,27 +2025,8 @@
             })
 
             data.days.push(...days);
-            var formData = new FormData();
-
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    if (Array.isArray(data[key])) {
-                        for (var i = 0; i < data[key].length; i++) {
-                            formData.append(key + '[' + i + ']', data[key][i]);
-                        }
-                    } else if (typeof data[key] === 'object' && data[key] !== null) {
-                        for (var subKey in data[key]) {
-                            if (data[key].hasOwnProperty(subKey)) {
-                                formData.append(key + '[' + subKey + ']', data[key][subKey]);
-                            }
-                        }
-                    } else {
-                        formData.append(key, data[key]);
-                    }
-                }
-            }
-            console.log(formData)
-            callAjaxByDataFormWithDataForm("/api/v1/management-time/weekly-detail", "POST", formData, function (rs) {
+            console.log(data)
+            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
                 if (rs) {
                     $("div.containerLoading").addClass("d-none")
                     $("div.calendar-container").removeClass("d-none")
