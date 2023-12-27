@@ -2067,8 +2067,6 @@
 
             data.days.push(...days);
 
-            // goi api hinh => ten hinh
-            // ten hinh -> data -> call api chinh
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
