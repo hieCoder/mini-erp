@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.QuoteDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,6 @@ public class DaysUpdateRequest {
     private WeeklyRequest weekly;
     private DayRequest[] days;
     private ColorRequest[] colors;
-    private String[] quotes;
+    private QuoteDto quotes;
     private YearRequest year;
 }

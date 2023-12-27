@@ -1,8 +1,10 @@
 package com.shsoftvina.erpshsoftvina.service.impl;
 
+import com.shsoftvina.erpshsoftvina.constant.QuoteConstant;
 import com.shsoftvina.erpshsoftvina.converter.*;
 import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.mapper.*;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.QuoteDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.SpendingMonthItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
@@ -19,6 +21,7 @@ import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -216,8 +219,17 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     ManagementTimeDay dayEntity = getManagementTimeDays(managementTimeDays, d.getDay());
                     if(dayEntity !=null){
                         ItemDto[] oneThingCalendar = JsonUtils.jsonToObject(dayEntity.getOneThingCalendar(), ItemDto[].class);
-                        for(int i =0; i<oneThingCalendar.length; i++){
-                            oneThingCalendar[i].setTarget(d.getContent()[i]);
+                        if(oneThingCalendar == null){
+                            oneThingCalendar = new ItemDto[d.getContent().length];
+                            for(int i =0; i<d.getContent().length; i++){
+                                oneThingCalendar[i] = new ItemDto();
+                                oneThingCalendar[i].setTarget(d.getContent()[i]);
+                                oneThingCalendar[i].setPerformance(false);
+                            }
+                        } else{
+                            for(int i =0; i<oneThingCalendar.length; i++){
+                                oneThingCalendar[i].setTarget(d.getContent()[i]);
+                            }
                         }
                         dayEntity.setOneThingCalendar(JsonUtils.objectToJson(oneThingCalendar));
                         editListDay.add(dayEntity);
@@ -575,20 +587,32 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         });
 
         CompletableFuture<Void> asyncTaskQuote = CompletableFuture.runAsync(()->{
-            String[] quotes = daysUpdateRequest.getQuotes();
-            QuoteManagementTimeDay quote = quoteManagementTimeDayMapper.findByUserId(userId);
-            if(quote == null){
-                QuoteManagementTimeDay quoteE = quoteMangementTimeDayConvert.toEntity(userId, quotes);
-                CompletableFuture<Void> createQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
-                    quoteManagementTimeDayMapper.createQuote(quoteE);
-                });
-                asyncTasks.add(createQuoteManagementTimeDayAsync);
-            } else{
-                quote.setContent(JsonUtils.objectToJson(quotes));
-                CompletableFuture<Void> updateQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
-                    quoteManagementTimeDayMapper.editQuote(quote);
-                });
-                asyncTasks.add(updateQuoteManagementTimeDayAsync);
+            QuoteDto quotes = daysUpdateRequest.getQuotes();
+            MultipartFile imageQuoteReq = daysUpdateRequest.getQuotes().getImage();
+            String quoteImageName = null;
+            boolean isSaveImageSuccess = true;
+            if (imageQuoteReq != null) {
+                applicationUtils.checkValidateImage(QuoteManagementTimeDay.class, imageQuoteReq);
+                quoteImageName = FileUtils.formatNameImage(imageQuoteReq);
+                isSaveImageSuccess = FileUtils.saveImageToServer(QuoteConstant.UPLOAD_FILE_DIR, imageQuoteReq, quoteImageName);
+            }
+
+            if(isSaveImageSuccess){
+                QuoteManagementTimeDay quote = quoteManagementTimeDayMapper.findByUserId(userId);
+                if(quote == null){
+                    QuoteManagementTimeDay quoteE = quoteMangementTimeDayConvert.toEntity(userId, quotes.getQuotes(), quoteImageName);
+                    CompletableFuture<Void> createQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                        quoteManagementTimeDayMapper.createQuote(quoteE);
+                    });
+                    asyncTasks.add(createQuoteManagementTimeDayAsync);
+                } else{
+                    quote.setContent(JsonUtils.objectToJson(quotes));
+                    if (imageQuoteReq != null) quote.setImage(quoteImageName);
+                    CompletableFuture<Void> updateQuoteManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
+                        quoteManagementTimeDayMapper.editQuote(quote);
+                    });
+                    asyncTasks.add(updateQuoteManagementTimeDayAsync);
+                }
             }
         });
 

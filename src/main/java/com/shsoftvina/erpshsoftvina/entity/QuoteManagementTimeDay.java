@@ -13,4 +13,5 @@ public class QuoteManagementTimeDay {
     private String id;
     private String content;
     private User user;
+    private String image;
 }

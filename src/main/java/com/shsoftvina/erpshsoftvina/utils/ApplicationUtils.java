@@ -130,6 +130,8 @@ public class ApplicationUtils {
             setting = settingMapper.findByCode(SettingConstant.TASK_COMMENT_CODE);
         } else if(c == Book.class){
             setting = settingMapper.findByCode(SettingConstant.BOOK);
+        } else if(c == QuoteManagementTimeDay.class){
+            setting = settingMapper.findByCode(SettingConstant.QUOTE);
         }
         return setting;
     }

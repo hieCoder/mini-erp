@@ -15,5 +15,11 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="team2">
+        <addColumn tableName="QUOTE_MANAGEMENT_TIME_DAY">
+            <column name="IMAGE" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
 

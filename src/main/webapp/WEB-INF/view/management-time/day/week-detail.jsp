@@ -350,7 +350,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save Changes</button>
+                                        <button type="button" class="btn btn-primary" id="saveImageQuote">Save Changes</button>
                                     </div>
                                 </div>
                             </div>
@@ -1201,7 +1201,6 @@
                 }
                 callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending/' + '${user.id}' + '?monthCode=' + year + '-' + month, 'GET', null, function (rs) {
                     const data = rs;
-                    console.log(data)
                     var spendingGoals = data.spendingGoals;
                     if (spendingGoals == '' || spendingGoals == null) spendingGoals = '0'
                     document.getElementById('spendingGoals').textContent = spendingGoals;
@@ -1217,8 +1216,9 @@
 
                     data.spending.forEach(function (e, i) {
                         var element = $('.valueSpending[data-day="'+e.day+'"]');
-                        element.text(element.sending);
+                        element.text(e.spending);
                     });
+
                     const elTotalSpending = document.getElementById('totalSpending');
                     const elSpendingGoals = document.getElementById('spendingGoals');
                     var totalSpending = parseFloat(elTotalSpending.textContent);
@@ -1758,6 +1758,9 @@
         }
     }
 
+    document.getElementById('saveImageQuote').addEventListener('click', function () {
+        document.getElementById('updateButton').click();
+    })
     $("#updateButton").click(function () {
         if (hasDuplicates(allValues)) {
             validateFail("Keyword should not be same");
@@ -1772,7 +1775,7 @@
                 weekly: {},
                 monthly: {},
                 colors: [],
-                quotes: [],
+                quotes: {},
                 year: {}
             }
 
@@ -1990,6 +1993,9 @@
             document.querySelectorAll('.quotes').forEach(function (quote) {
                 quotes.push(quote.value);
             });
+            var imageQuote = document.getElementById('quoteImage').value;
+            data.quotes.quotes = quotes;
+            data.quotes.image = imageQuote;
 
             var items = document.querySelectorAll('.item');
             var amts = document.querySelectorAll('.amt');
@@ -2021,8 +2027,27 @@
             })
 
             data.days.push(...days);
-            data.quotes.push(...quotes);
-            callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+            var formData = new FormData();
+
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    if (Array.isArray(data[key])) {
+                        for (var i = 0; i < data[key].length; i++) {
+                            formData.append(key + '[' + i + ']', data[key][i]);
+                        }
+                    } else if (typeof data[key] === 'object' && data[key] !== null) {
+                        for (var subKey in data[key]) {
+                            if (data[key].hasOwnProperty(subKey)) {
+                                formData.append(key + '[' + subKey + ']', data[key][subKey]);
+                            }
+                        }
+                    } else {
+                        formData.append(key, data[key]);
+                    }
+                }
+            }
+            console.log(formData)
+            callAjaxByDataFormWithDataForm("/api/v1/management-time/weekly-detail", "POST", formData, function (rs) {
                 if (rs) {
                     $("div.containerLoading").addClass("d-none")
                     $("div.calendar-container").removeClass("d-none")
@@ -2058,8 +2083,8 @@
         monthSpending.month = this.getAttribute('data-month');
         monthSpending.userId = '${user.id}';
         callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending', 'POST', monthSpending, function () {
-            // localStorage.setItem('result', 'saveExpenseSuccess');
-            // location.reload();
+            localStorage.setItem('result', 'saveExpenseSuccess');
+            location.reload();
         })
     })
     $(document).ready(function () {
