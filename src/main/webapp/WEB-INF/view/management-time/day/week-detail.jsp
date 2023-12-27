@@ -1086,7 +1086,7 @@
 </div>
 
 <!-- Default Modals -->
-<%--<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote" id="showImageQuoteBtn">Standard Modal</button>--%>
+<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote" id="showImageQuoteBtn">Standard Modal</button>
 <div id="imageQuote" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1167,11 +1167,6 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-        $('#imageQuote').modal('show');
-    })
-
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
@@ -1260,6 +1255,8 @@
         })
 
     document.addEventListener("DOMContentLoaded", function () {
+        if (document.getElementById('srcImageQuote').getAttribute('src') != '')  document.getElementById('showImageQuoteBtn').click()
+
         const result = localStorage.getItem('result');
         if (result == 'saveExpenseSuccess') {
             document.getElementById('expenseManagement').click();
