@@ -350,7 +350,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" id="saveImageQuote">Save Changes</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
                                     </div>
                                 </div>
                             </div>
@@ -1085,6 +1085,24 @@
     </div>
 </div>
 
+<!-- Default Modals -->
+<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote" id="showImageQuoteBtn">Standard Modal</button>
+<div id="imageQuote" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body text-center border mt-2">
+                <img src='${weekly.quotes.image}' alt="Modal Image" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1151,7 +1169,7 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-
+       document.getElementById('showImageQuoteBtn').click()
     })
 
     function previewImage() {
@@ -1787,9 +1805,6 @@
         }
     }
 
-    document.getElementById('saveImageQuote').addEventListener('click', function () {
-        document.getElementById('updateButton').click();
-    })
     $("#updateButton").click(function () {
         if (hasDuplicates(allValues)) {
             validateFail("Keyword should not be same");
