@@ -1086,7 +1086,7 @@
 </div>
 
 <!-- Default Modals -->
-<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote" id="showImageQuoteBtn">Standard Modal</button>
+<%--<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote" id="showImageQuoteBtn">Standard Modal</button>--%>
 <div id="imageQuote" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1094,7 +1094,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body text-center border mt-2">
-                <img src='${weekly.quotes.image}' alt="Modal Image" style="max-width: 100%; height: auto;">
+                <img src='${weekly.quotes.image}' alt="Modal Image" id="srcImageQuote" style="max-width: 100%; height: auto;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -1169,7 +1169,7 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-       document.getElementById('showImageQuoteBtn').click()
+        $('#imageQuote').modal('show');
     })
 
     function previewImage() {
