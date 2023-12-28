@@ -1941,7 +1941,8 @@
                 const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
 
                 let dayObj = days.find(d => d.day === day);
-                if (value !== "") {
+                console.log("onethingcalendar:" + value)
+                if (value !== "" && value != 'Allow notifications') {
                     if (day != null) {
                         if (!dayObj) {
                             dayObj = {
@@ -2069,6 +2070,7 @@
 
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
+            console.log(data)
             formData.append('files', imageQuote);
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
@@ -2085,8 +2087,6 @@
                     }
                 })
             })
-            console.log(data)
-
         }
     })
 
