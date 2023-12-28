@@ -147,6 +147,81 @@
         <div class="card">
             <div class="row card-body">
                 <div class="col-md-4">
+<%--                    <div class="d-flex align-items-center justify-content-between">--%>
+<%--                        <di>--%>
+<%--                            <h4 class="fw-bolder">One Thing Calendar</h4>--%>
+<%--                            <h5 class="fst-italic">Categories</h5>--%>
+<%--                        </di>--%>
+<%--                        <!-- Default Modals -->--%>
+<%--                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal" id="expenseManagement">Expense management</button>--%>
+<%--                    </div>--%>
+<%--                    <table class="table table-bordered oneThingCalendar text-center align-middle">--%>
+<%--                        <thead>--%>
+<%--                        <tr>--%>
+<%--                            <th class="w-25">Objective</th>--%>
+<%--                            <th>Key Results</th>--%>
+<%--                            <th>Rate</th>--%>
+<%--                            <th>Target</th>--%>
+<%--                            <th class="text-wrap">Performance</th>--%>
+<%--                        </tr>--%>
+<%--                        </thead>--%>
+<%--                        <tbody>--%>
+<%--                        <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>--%>
+<%--                        <tr name="theSingleMostImportantThing">--%>
+<%--                            <td class="text-start" rowspan="6">Repeat consistently every day</td>--%>
+<%--                            <td><input class="form-control dailyRoutineInput checkDaily" type="text"--%>
+<%--                                       value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">--%>
+<%--                            </td>--%>
+<%--                            <td class="text-center">--%>
+<%--                                <script>--%>
+<%--                                    var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};--%>
+<%--                                    var target = ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0};--%>
+<%--                                    var result = target !== 0 ? (performance / target) * 100 : 0;--%>
+<%--                                    var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';--%>
+<%--                                    document.write(roundedResult);--%>
+<%--                                </script>--%>
+<%--                            </td>--%>
+<%--                            <td class="text-center dailyRoutineTarget" contenteditable="true"--%>
+<%--                                onkeydown="return isNumberKey(event)">--%>
+<%--                                a--%>
+<%--                            </td>--%>
+<%--                            <td class="text-center">a</td>--%>
+<%--                        </tr>--%>
+
+<%--                        <c:forEach var="index" begin="1" end="10">--%>
+<%--                            <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>--%>
+<%--                            <c:if test="${not empty dailyRoutine.title}">--%>
+<%--                                <tr name="theSingleMostImportantThing">--%>
+<%--                                    <td><input class="form-control dailyRoutineInput checkDaily" type="text"--%>
+<%--                                               value="${dailyRoutine.title}"></td>--%>
+<%--                                    <td class="text-center">--%>
+<%--                                        <script>--%>
+<%--                                            var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};--%>
+<%--                                            var target = ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0};--%>
+<%--                                            var result = target !== 0 ? (performance / target) * 100 : 0;--%>
+<%--                                            var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';--%>
+<%--                                            document.write(roundedResult);--%>
+<%--                                        </script>--%>
+<%--                                    </td>--%>
+<%--                                    <td class="text-center dailyRoutineTarget" contenteditable="true"--%>
+<%--                                        onkeydown="return isNumberKey(event)">--%>
+<%--                                            ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0}--%>
+<%--                                    </td>--%>
+<%--                                    <td class="text-center">${dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>--%>
+<%--                                </tr>--%>
+<%--                            </c:if>--%>
+<%--                        </c:forEach>--%>
+
+<%--                        <tr id="dailySession">--%>
+<%--                            <td colspan="4">--%>
+<%--                                <button type="button" class="btn btn-success waves-effect waves-light w-100"--%>
+<%--                                >ADD</button>--%>
+<%--                            </td>--%>
+<%--                        </tr>--%>
+
+<%--                        </tbody>--%>
+<%--                    </table>--%>
+<%--                    --%>
                     <div class="d-flex align-items-center justify-content-between">
                        <di>
                            <h4 class="fw-bolder">One Thing Calendar</h4>
@@ -296,36 +371,103 @@
                         <tr id="theSingCategory">
                             <td class="text-start weekTitle"
                                 contenteditable="true">${theSingleMostImportantThing.title}</td>
-                            <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"
-                                       value="${theSingleMostImportantThing.content}">
+<%--                            <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"--%>
+<%--                                       value="${theSingleMostImportantThing.content}">--%>
+<%--                            </td>--%>
+                            <td>
+                                <div class="input-group">
+                                    <input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"
+                                           value="${theSingleMostImportantThing.content}">
+                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
                         <tr id="lectureCategory">
                             <td class="text-start weekTitle" contenteditable="true">${lecture.title}</td>
-                            <td><input class="form-control weekTarget" name="lecture" type="text"
-                                       value="${lecture.content}">
+<%--                            <td><input class="form-control weekTarget" name="lecture" type="text"--%>
+<%--                                       value="${lecture.content}">--%>
+<%--                            </td>--%>
+                            <td>
+                                <div class="input-group">
+                                    <input class="form-control weekTarget" name="lecture" type="text"
+                                           value="${lecture.content}">
+                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
                         <tr id="dailyCategory">
                             <td class="text-start weekTitle" contenteditable="true">${dailyEvaluation.title}</td>
-                            <td><input class="form-control weekTarget" name="dailyEvaluation" type="text"
-                                       value="${dailyEvaluation.content}"></td>
+<%--                            <td><input class="form-control weekTarget" name="dailyEvaluation" type="text"--%>
+<%--                                       value="${dailyEvaluation.content}"></td>--%>
+                            <td>
+                                <div class="input-group">
+                                    <input class="form-control weekTarget" name="dailyEvaluation" type="text"
+                                           value="${dailyEvaluation.content}">
+                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
                         <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
                         <tr id="workCategory">
                             <td class="text-start weekTitle" contenteditable="true">${work.title}</td>
-                            <td><input class="form-control weekTarget" name="work" type="text" value="${work.content}">
-                            </td>
+<%--                            <td><input class="form-control weekTarget" name="work" type="text" value="${work.content}">--%>
+<%--                            </td>--%>
+                            <td>
+                                <div class="input-group">
+                                    <input class="form-control weekTarget" name="work" type="text" value="${work.content}">
+                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
                         <tr id="readingCategory">
                             <td class="text-start weekTitle" contenteditable="true">${reading.title}</td>
-                            <td><input class="form-control weekTarget" name="reading" type="text"
-                                       value="${reading.content}">
-                            </td>
+<%--                            <td><input class="form-control weekTarget" name="reading" type="text"--%>
+<%--                                       value="${reading.content}">--%>
+<%--                            </td>--%>
+<%--                            <td><input class="form-control" type="checkbox"></td>--%>
+                            <td>
+                                <div class="input-group">
+                                    <input class="form-control weekTarget" name="reading" type="text" value="${reading.content}">
+                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
@@ -334,7 +476,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="fw-bolder">A quote I shouldn't forget</h4>
 
-                        <button type="button" class="btn btn-info mb-2"  data-bs-toggle="modal" data-bs-target="#exampleModalgrid">Add quote like image
+                        <button type="button" class="btn btn-info mb-2"  data-bs-toggle="modal" data-bs-target="#exampleModalgrid">Dreamboard
                         </button>
 
                         <div class="modal fade" id="exampleModalgrid" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
@@ -1085,23 +1227,6 @@
     </div>
 </div>
 
-<!-- Default Modals -->
-<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote" id="showImageQuoteBtn">Standard Modal</button>
-<div id="imageQuote" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-            </div>
-            <div class="modal-body text-center border mt-2">
-                <img src='${weekly.quotes.image}' alt="Modal Image" id="srcImageQuote" style="max-width: 100%; height: auto;">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
@@ -1255,7 +1380,6 @@
         })
 
     document.addEventListener("DOMContentLoaded", function () {
-        if (document.getElementById('srcImageQuote').getAttribute('src') != '')  document.getElementById('showImageQuoteBtn').click()
 
         const result = localStorage.getItem('result');
         if (result == 'saveExpenseSuccess') {
@@ -1728,8 +1852,20 @@
         $("div.calendar-container").removeClass("d-none")
 
         const result = localStorage.getItem('result');
+        const image = '${weekly.quotes.image}'
         if (result == 'addSuccess') {
-            rsSuccessLoad("Add");
+            // rsSuccessLoad("Add");
+                Swal.fire(
+                    {
+                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>'  +
+                            '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
+                        imageAlt: 'A tall image',
+                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                        buttonsStyling: false,
+                        showCloseButton: true,
+                        width: 800
+                    }
+                )
             localStorage.clear();
         }
     })
