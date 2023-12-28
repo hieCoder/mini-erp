@@ -55,11 +55,11 @@
 
     <insert id="createListDayDetail" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
-        COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE)
+        COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE, SPENDING)
         VALUES
         <foreach collection="days" item="day" separator=",">
             (UUID(), #{day.oneThingCalendar}, #{day.toDoList}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
-            #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail}, #{day.dailyRoutine})
+            #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail}, #{day.dailyRoutine}, #{day.spending})
         </foreach>
     </insert>
 
@@ -73,7 +73,8 @@
             COMPLIMENT_FOR_ME_TODAY = #{day.complimentForMeToday},
             TODAYS_REFLECTIONS_AND_IMPROVEMENTS = #{day.todaysReflectionsAndImprovements},
             TODO_DETAIL = #{day.toDoDetail},
-            DAILY_ROUTINE = #{day.dailyRoutine}
+            DAILY_ROUTINE = #{day.dailyRoutine},
+            SPENDING = #{day.spending}
             WHERE ID = #{day.id}
         </foreach>
     </update>
@@ -90,6 +91,7 @@
         <result property="dailyRoutine" column="DAILY_ROUTINE"/>
         <result property="day" column="DAY"/>
         <result property="weeklyCode" column="WEEKLY_CODE"/>
+        <result property="spending" column="SPENDING"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
         </association>
     </resultMap>
@@ -107,5 +109,10 @@
         <foreach item="code" collection="codes" open="(" separator="," close=")">
             #{code}
         </foreach>
+    </select>
+
+    <select id="findSpendingByMonthCode" resultMap="dayResultMap">
+        SELECT * FROM MANAGEMENT_TIME_DAY
+        WHERE USER_ID = #{userId} AND CONCAT(YEAR(DAY), '-', LPAD(MONTH(DAY), 2, '0')) = #{monthCode} AND SPENDING IS NOT NULL
     </select>
 </mapper>

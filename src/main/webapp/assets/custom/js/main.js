@@ -12,6 +12,8 @@ const INVALID_FILE_LIMIT = 'INVALID_FILE_LIMIT';
 const INVALID_FILE_FILESIZE = 'INVALID_FILE_FILESIZE';
 const INVALID_FILE_FILETYPE = 'INVALID_FILE_FILETYPE';
 
+const M_QUOTE = 'QUOTE';
+
 // editor
 const DEFAULT_VALUE_SNOW_EDITOR = [
     `<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>`,

@@ -5,14 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WeeklyDto {
-    private String title;
-    private String content;
-    private String color;
+public class SpendingMonthItemDto {
+    private String day;
+    private Float spending;
 }

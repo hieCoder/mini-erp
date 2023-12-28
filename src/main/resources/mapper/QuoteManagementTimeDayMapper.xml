@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.QuoteManagementTimeDayMapper">
 
     <insert id="createQuote" parameterType="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
-        INSERT INTO QUOTE_MANAGEMENT_TIME_DAY (ID, CONTENT, USER_ID)
-        VALUES (#{id}, #{content}, #{user.id})
+        INSERT INTO QUOTE_MANAGEMENT_TIME_DAY (ID, CONTENT, USER_ID, IMAGE)
+        VALUES (#{id}, #{content}, #{user.id}, #{image})
     </insert>
 
     <select id="findByUserId" resultMap="quoteResultMap">
@@ -16,12 +16,14 @@
 
     <update id="editQuote" parameterType="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
             UPDATE QUOTE_MANAGEMENT_TIME_DAY
-            SET CONTENT = #{content}
+            SET CONTENT = #{content},
+                IMAGE = #{image}
             WHERE ID = #{id}
     </update>
 
     <resultMap id="quoteResultMap" type="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="content" column="CONTENT"/>
+        <result property="image" column="IMAGE"/>
     </resultMap>
 </mapper>

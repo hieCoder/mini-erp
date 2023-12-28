@@ -93,5 +93,4 @@
             <column name="FILE_SIZE" value="100"/>
         </insert>
     </changeSet>
-
 </databaseChangeLog>

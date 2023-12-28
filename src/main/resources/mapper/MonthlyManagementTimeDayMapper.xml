@@ -28,6 +28,7 @@
         <result property="incomeThisMonth" column="INCOME_THIS_MONTH"/>
         <result property="fixedCosts" column="FIXED_COSTS"/>
         <result property="fluctuatingCosts" column="FLUCTUATING_COSTS"/>
+        <result property="spendingGoals" column="SPENDING_GOALS"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -48,6 +49,17 @@
             INCOME_THIS_MONTH = #{incomeThisMonth},
             FIXED_COSTS = #{fixedCosts},
             FLUCTUATING_COSTS = #{fluctuatingCosts}
+        WHERE ID = #{id};
+    </update>
+
+    <insert id="createSpendingMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+        INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, USER_ID, SPENDING_GOALS)
+        VALUES (UUID(), #{code}, #{user.id}, #{spendingGoals})
+    </insert>
+
+    <update id="updateSpendingMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+        UPDATE MONTHLY_MANAGEMENT_TIME_DAY
+        SET SPENDING_GOALS = #{spendingGoals}
         WHERE ID = #{id};
     </update>
 </mapper>

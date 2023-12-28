@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.api;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.SpendingMonthRequest;
 import com.shsoftvina.erpshsoftvina.service.ManagementTimeDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,15 @@ public class ManagementTimeDayApi {
     @PostMapping("/weekly-detail")
     public ResponseEntity<?> updateListDayOfWeek(@RequestBody DaysUpdateRequest daysUpdateRequest) {
         return ResponseEntity.ok(managementTimeDayService.updateListDayOfWeek(daysUpdateRequest));
+    }
+
+    @PostMapping("/weekly-detail/spending")
+    public ResponseEntity<?> handleSpendingMonth(@RequestBody SpendingMonthRequest req) {
+        return ResponseEntity.ok(managementTimeDayService.updateSpendingMonth(req));
+    }
+
+    @GetMapping("/weekly-detail/spending/{userId}")
+    public ResponseEntity<?> getSpendingMonth(@PathVariable String userId, @RequestParam String monthCode) {
+        return ResponseEntity.ok(managementTimeDayService.showSpendingMonth(userId, monthCode));
     }
 }

@@ -4,10 +4,7 @@ import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.OneThingCalendarDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.*;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarDayResponse;
@@ -143,5 +140,22 @@ public class ManagementTimeDayConvert {
 
     public List<ManagementTimeDay> toListEntity(String userId, DayRequest[] dayRequests) {
         return Arrays.stream(dayRequests).map(e -> this.toEntity(userId, e)).collect(Collectors.toList());
+    }
+
+    public ManagementTimeDay toEntity(String userId, Date day, Float spending){
+
+        return ManagementTimeDay.builder()
+                .user(User.builder().id(userId).build())
+                .day(day)
+                .spending(spending).build();
+    }
+
+    public SpendingMonthItemDto[] toArraySpendingResponse(List<ManagementTimeDay> days) {
+        return days.stream()
+                .map(day -> SpendingMonthItemDto.builder()
+                        .day(DateUtils.formatDate(day.getDay()))
+                        .spending(day.getSpending())
+                        .build())
+                .toArray(SpendingMonthItemDto[]::new);
     }
 }
