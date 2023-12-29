@@ -21,6 +21,18 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
+
+        #addDaily {
+            position: absolute;
+            top: 0;
+            left: 51%;
+            transform: translate(-50%, -50%);
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+        }
+
         .table-container {
             overflow-x: auto;
             cursor: grab;
@@ -102,15 +114,19 @@
         .note:hover {
             background: #cfd1d4;
         }
+
         #lectureCategory {
             background-color: #fcecec;
         }
+
         #dailyCategory {
             background-color: #e6f0e2;
         }
+
         #workCategory {
             background-color: #fff9e6;
         }
+
         #readingCategory {
             background-color: #e9e4f5;
         }
@@ -147,88 +163,15 @@
         <div class="card">
             <div class="row card-body">
                 <div class="col-md-4">
-<%--                    <div class="d-flex align-items-center justify-content-between">--%>
-<%--                        <di>--%>
-<%--                            <h4 class="fw-bolder">One Thing Calendar</h4>--%>
-<%--                            <h5 class="fst-italic">Categories</h5>--%>
-<%--                        </di>--%>
-<%--                        <!-- Default Modals -->--%>
-<%--                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal" id="expenseManagement">Expense management</button>--%>
-<%--                    </div>--%>
-<%--                    <table class="table table-bordered oneThingCalendar text-center align-middle">--%>
-<%--                        <thead>--%>
-<%--                        <tr>--%>
-<%--                            <th class="w-25">Objective</th>--%>
-<%--                            <th>Key Results</th>--%>
-<%--                            <th>Rate</th>--%>
-<%--                            <th>Target</th>--%>
-<%--                            <th class="text-wrap">Performance</th>--%>
-<%--                        </tr>--%>
-<%--                        </thead>--%>
-<%--                        <tbody>--%>
-<%--                        <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>--%>
-<%--                        <tr name="theSingleMostImportantThing">--%>
-<%--                            <td class="text-start" rowspan="6">Repeat consistently every day</td>--%>
-<%--                            <td><input class="form-control dailyRoutineInput checkDaily" type="text"--%>
-<%--                                       value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">--%>
-<%--                            </td>--%>
-<%--                            <td class="text-center">--%>
-<%--                                <script>--%>
-<%--                                    var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};--%>
-<%--                                    var target = ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0};--%>
-<%--                                    var result = target !== 0 ? (performance / target) * 100 : 0;--%>
-<%--                                    var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';--%>
-<%--                                    document.write(roundedResult);--%>
-<%--                                </script>--%>
-<%--                            </td>--%>
-<%--                            <td class="text-center dailyRoutineTarget" contenteditable="true"--%>
-<%--                                onkeydown="return isNumberKey(event)">--%>
-<%--                                a--%>
-<%--                            </td>--%>
-<%--                            <td class="text-center">a</td>--%>
-<%--                        </tr>--%>
-
-<%--                        <c:forEach var="index" begin="1" end="10">--%>
-<%--                            <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>--%>
-<%--                            <c:if test="${not empty dailyRoutine.title}">--%>
-<%--                                <tr name="theSingleMostImportantThing">--%>
-<%--                                    <td><input class="form-control dailyRoutineInput checkDaily" type="text"--%>
-<%--                                               value="${dailyRoutine.title}"></td>--%>
-<%--                                    <td class="text-center">--%>
-<%--                                        <script>--%>
-<%--                                            var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};--%>
-<%--                                            var target = ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0};--%>
-<%--                                            var result = target !== 0 ? (performance / target) * 100 : 0;--%>
-<%--                                            var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';--%>
-<%--                                            document.write(roundedResult);--%>
-<%--                                        </script>--%>
-<%--                                    </td>--%>
-<%--                                    <td class="text-center dailyRoutineTarget" contenteditable="true"--%>
-<%--                                        onkeydown="return isNumberKey(event)">--%>
-<%--                                            ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0}--%>
-<%--                                    </td>--%>
-<%--                                    <td class="text-center">${dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>--%>
-<%--                                </tr>--%>
-<%--                            </c:if>--%>
-<%--                        </c:forEach>--%>
-
-<%--                        <tr id="dailySession">--%>
-<%--                            <td colspan="4">--%>
-<%--                                <button type="button" class="btn btn-success waves-effect waves-light w-100"--%>
-<%--                                >ADD</button>--%>
-<%--                            </td>--%>
-<%--                        </tr>--%>
-
-<%--                        </tbody>--%>
-<%--                    </table>--%>
-<%--                    --%>
                     <div class="d-flex align-items-center justify-content-between">
-                       <di>
-                           <h4 class="fw-bolder">One Thing Calendar</h4>
-                           <h5 class="fst-italic">Daily Important</h5>
-                       </di>
+                        <di>
+                            <h4 class="fw-bolder">One Thing Calendar</h4>
+                            <h5 class="fst-italic">Daily Important</h5>
+                        </di>
                         <!-- Default Modals -->
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal" id="expenseManagement">Expense management</button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal"
+                                id="expenseManagement">Expense management
+                        </button>
                     </div>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
@@ -288,9 +231,9 @@
                         </c:forEach>
 
                         <tr id="dailySession">
-                            <td colspan="4">
-                                <button type="button" class="btn btn-success waves-effect waves-light w-100"
-                                        id="addDaily">ADD</button>
+                            <td colspan="4" style="position: relative">
+                                <button type="button" class="btn btn-success waves-effect waves-light"
+                                        id="addDaily"><i class="bx bx-plus"></i></button>
                             </td>
                         </tr>
 
@@ -371,20 +314,33 @@
                         <tr id="theSingCategory">
                             <td class="text-start weekTitle"
                                 contenteditable="true">${theSingleMostImportantThing.title}</td>
-<%--                            <td><input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"--%>
-<%--                                       value="${theSingleMostImportantThing.content}">--%>
-<%--                            </td>--%>
                             <td>
                                 <div class="input-group">
-                                    <input class="form-control weekTarget" name="theSingleMostImportantThing" type="text"
+                                    <input class="form-control weekTarget" name="theSingleMostImportantThing"
+                                           type="text"
                                            value="${theSingleMostImportantThing.content}">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    <button class="btn btn-info dropdown-toggle btn-status" data-value="${theSingleMostImportantThing.status}" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">Setting
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i
+                                                    class="ri-arrow-right-line"></i> Pending</button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -392,20 +348,32 @@
                         <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
                         <tr id="lectureCategory">
                             <td class="text-start weekTitle" contenteditable="true">${lecture.title}</td>
-<%--                            <td><input class="form-control weekTarget" name="lecture" type="text"--%>
-<%--                                       value="${lecture.content}">--%>
-<%--                            </td>--%>
                             <td>
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="lecture" type="text"
                                            value="${lecture.content}">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    <button class="btn btn-info dropdown-toggle btn-status" data-value="${lecture.status}" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">Setting
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i
+                                                    class="ri-arrow-right-line"></i> Pending</button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -413,19 +381,32 @@
                         <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
                         <tr id="dailyCategory">
                             <td class="text-start weekTitle" contenteditable="true">${dailyEvaluation.title}</td>
-<%--                            <td><input class="form-control weekTarget" name="dailyEvaluation" type="text"--%>
-<%--                                       value="${dailyEvaluation.content}"></td>--%>
                             <td>
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="dailyEvaluation" type="text"
                                            value="${dailyEvaluation.content}">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    <button class="btn btn-info dropdown-toggle btn-status" data-value="${dailyEvaluation.status}" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">Setting
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i
+                                                    class="ri-arrow-right-line"></i> Pending</button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -433,18 +414,32 @@
                         <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
                         <tr id="workCategory">
                             <td class="text-start weekTitle" contenteditable="true">${work.title}</td>
-<%--                            <td><input class="form-control weekTarget" name="work" type="text" value="${work.content}">--%>
-<%--                            </td>--%>
                             <td>
                                 <div class="input-group">
-                                    <input class="form-control weekTarget" name="work" type="text" value="${work.content}">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    <input class="form-control weekTarget" name="work" type="text"
+                                           value="${work.content}">
+                                    <button class="btn btn-info dropdown-toggle btn-status" data-value="${work.status}" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">Setting
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i
+                                                    class="ri-arrow-right-line"></i> Pending</button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -452,20 +447,32 @@
                         <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
                         <tr id="readingCategory">
                             <td class="text-start weekTitle" contenteditable="true">${reading.title}</td>
-<%--                            <td><input class="form-control weekTarget" name="reading" type="text"--%>
-<%--                                       value="${reading.content}">--%>
-<%--                            </td>--%>
-<%--                            <td><input class="form-control" type="checkbox"></td>--%>
                             <td>
                                 <div class="input-group">
-                                    <input class="form-control weekTarget" name="reading" type="text" value="${reading.content}">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Setting</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    <input class="form-control weekTarget" name="reading" type="text"
+                                           value="${reading.content}">
+                                    <button class="btn btn-info dropdown-toggle btn-status" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-value="${reading.status}">Setting
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i
+                                                    class="ri-arrow-right-line"></i> Pending</button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -475,24 +482,28 @@
 
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="fw-bolder">A quote I shouldn't forget</h4>
-
-                        <button type="button" class="btn btn-info mb-2"  data-bs-toggle="modal" data-bs-target="#exampleModalgrid">Dreamboard
+                        <button type="button" class="btn btn-info mb-2" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalgrid">Dreamboard
                         </button>
-
-                        <div class="modal fade" id="exampleModalgrid" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+                        <div class="modal fade" id="exampleModalgrid" tabindex="-1"
+                             aria-labelledby="exampleModalgridLabel" aria-modal="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalgridLabel">Choose image</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body text-center">
-                                        <input class="form-control" type="file" id="quoteImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage()">
+                                        <input class="form-control" type="file" id="quoteImage"
+                                               accept="image/jpeg, image/png, image/gif" onchange="previewImage()">
                                         <div id="imagePreview" class="border mt-2 d-none"></div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
+                                        </button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -607,7 +618,7 @@
                                     calendar
                                 </td>
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.weeklys.weeklys[0].color}">
+                                    style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.weeklys.weeklys[0].color}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[0].title}</span>
                                     <div scope="col" class="panel colorPicker btn-change-color">
                                         <div class="pickr"></div>
@@ -732,49 +743,59 @@
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="theSingleMostImportantThing"
                                            value="${day.data.oneThingCalendar[0]}"/>
-                                    <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="3"
+                                        contenteditable="true"
                                         data-name="theSingleMostImportantThing"
                                         data-day="${day.day}">${theSingleMostImportantThing.target}</td>
-                                    <td class="performance-color-theSingle isModifyTheSing"><input class="form-check-input"
-                                               type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
+                                    <td class="performance-color-theSingle isModifyTheSing"><input
+                                            class="form-check-input"
+                                            type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <tr class="lecture">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
-                                    <td class="editable-cell target-color-lecture isModifyLecture" colspan="3" contenteditable="true" data-name="lecture"
+                                    <td class="editable-cell target-color-lecture isModifyLecture" colspan="3"
+                                        contenteditable="true" data-name="lecture"
                                         data-day="${day.day}">${lecture.target}</td>
-                                    <td class="performance-color-lecture isModifyLecture"><input class="form-check-input"
-                                               type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
+                                    <td class="performance-color-lecture isModifyLecture"><input
+                                            class="form-check-input"
+                                            type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="dailyEvaluation">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
-                                    <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="3" contenteditable="true"
+                                    <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="3"
+                                        contenteditable="true"
                                         data-name="dailyEvaluation"
                                         data-day="${day.day}">${dailyEvaluation.target}</td>
-                                    <td class="performance-color-dailyEvaluation isModifyDaily"><input class="form-check-input"
-                                               type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
+                                    <td class="performance-color-dailyEvaluation isModifyDaily"><input
+                                            class="form-check-input"
+                                            type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
                             <tr class="work">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
-                                    <td class="editable-cell target-color-work isModifyWork" colspan="3" contenteditable="true" data-name="work"
+                                    <td class="editable-cell target-color-work isModifyWork" colspan="3"
+                                        contenteditable="true" data-name="work"
                                         data-day="${day.day}">${work.target}</td>
                                     <td class="performance-color-work isModifyWork"><input class="form-check-input"
-                                               type="checkbox" ${work.performance ? 'checked' : ''}></td>
+                                                                                           type="checkbox" ${work.performance ? 'checked' : ''}>
+                                    </td>
                                 </c:forEach>
                             </tr>
                             <tr class="reading">
                                 <c:forEach var="day" items="${weekly.days}">
                                     <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
-                                    <td class="editable-cell target-color-reading isModifyReading" colspan="3" contenteditable="true" data-name="reading"
+                                    <td class="editable-cell target-color-reading isModifyReading" colspan="3"
+                                        contenteditable="true" data-name="reading"
                                         data-day="${day.day}">${reading.target}</td>
-                                    <td class="performance-color-reading isModifyReading"><input class="form-check-input"
-                                               type="checkbox" ${reading.performance ? 'checked' : ''}></td>
+                                    <td class="performance-color-reading isModifyReading"><input
+                                            class="form-check-input"
+                                            type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
                             </tr>
 
@@ -1227,13 +1248,13 @@
     </div>
 </div>
 
-
-<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none;">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="myModalLabel">Expense management</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered border-secondary table-nowrap" style="width: 400px;">
@@ -1244,28 +1265,50 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="bg-light" id="totalSpending">0</td>
-                            <td contenteditable="true" oninput="validateNumberInput(event)" id="spendingGoals">0</td>
-                        </tr>
+                    <tr>
+                        <td class="bg-light" id="totalSpending">0</td>
+                        <td contenteditable="true" oninput="validateNumberInput(event)" id="spendingGoals">0</td>
+                    </tr>
                     </tbody>
                 </table>
 
-               <div class="table-responsive">
-                   <table class="table table-bordered border-secondary  text-center">
-                       <thead>
-                       <tr id="days"></tr>
-                       </thead>
-                       <tbody>
-                       <tr id="spending"></tr>
-                       <tr id="valueSpending"></tr>
-                       </tbody>
-                   </table>
-               </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered border-secondary  text-center">
+                        <thead>
+                        <tr id="days"></tr>
+                        </thead>
+                        <tbody>
+                        <tr id="spending"></tr>
+                        <tr id="valueSpending"></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveSpending">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Default Modals -->
+<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#imageQuote"
+        id="showImageQuoteBtn">Standard Modal
+</button>
+<div id="imageQuote" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none; z-index: 9999">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center border mt-2">
+                <img src='${weekly.quotes.image}' alt="Modal Image" id="srcImageQuote"
+                     style="max-width: 700px; max-height: 700px;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -1292,6 +1335,58 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+
+    function addStatus(btn, value) {
+        switch (value) {
+            case 'pending':
+                $(btn).removeClass('btn-info btn-danger btn-success');
+                $(btn).addClass('btn-warning');
+                btn.setAttribute('data-value', 'pending');
+                $(btn).text('');
+                $(btn).append(`<i class="ri-arrow-right-line"></i>`);
+                break;
+            case 'close':
+                $(btn).removeClass('btn-info btn-warning btn-success');
+                $(btn).addClass('btn-danger');
+                $(btn).text('');
+                btn.setAttribute('data-value', 'close');
+                $(btn).append(`<i class="ri-close-line"></i>`);
+                break;
+            case 'complete':
+                $(btn).removeClass('btn-info btn-warning btn-danger');
+                $(btn).addClass('btn-success');
+                btn.setAttribute('data-value', 'complete');
+                $(btn).text('');
+                $(btn).append(`<i class="ri-check-line">`);
+                break;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.btn-status').forEach(function (e) {
+            const statusValue = e.getAttribute('data-value');
+            addStatus(e, statusValue);
+        })
+        document.querySelectorAll('.pendingWeekly').forEach(function (e) {
+            e.addEventListener('click', function () {
+                const btnPending = e.parentNode.parentNode.previousElementSibling;
+                addStatus(btnPending, 'pending');
+            })
+        })
+        document.querySelectorAll('.closeWeekly').forEach(function (e) {
+            e.addEventListener('click', function () {
+                const btnClose = e.parentNode.parentNode.previousElementSibling;
+                addStatus(btnClose, 'close');
+            })
+        })
+        document.querySelectorAll('.completeWeekly').forEach(function (e) {
+            e.addEventListener('click', function () {
+                const btnComplete = e.parentNode.parentNode.previousElementSibling;
+                addStatus(btnComplete, 'complete');
+            })
+        })
+    })
+
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
@@ -1311,76 +1406,75 @@
             };
 
             reader.readAsDataURL(input.files[0]);
-        } else  {
+        } else {
             $(preview).addClass('d-none');
             $(preview).find('img').remove();
         }
     }
 
     document.getElementById('expenseManagement').addEventListener('click', function (e) {
-            var currentUrl = window.location.href;
+        var currentUrl = window.location.href;
 
-            function getParameterByName(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[\]]/g, "\\$&");
-                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                    results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, " "));
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var currentDayParam = getParameterByName('currentDay', currentUrl);
+        if (currentDayParam) {
+            var currentDate = new Date(currentDayParam);
+            var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            var year = currentDate.getFullYear();
+            var firstDayOfMonth = new Date(year, month - 1, 1);
+            var lastDayOfMonth = new Date(year, month + 1, 0);
+            var allDaysInMonth = [];
+            for (var day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
+                var formattedDay = year + '-' + month + '-' + day.toString().padStart(2, '0');
+                allDaysInMonth.push(formattedDay);
             }
-
-            var currentDayParam = getParameterByName('currentDay', currentUrl);
-            if (currentDayParam) {
-                var currentDate = new Date(currentDayParam);
-                var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-                var year = currentDate.getFullYear();
-                var firstDayOfMonth = new Date(year, month - 1, 1);
-                var lastDayOfMonth = new Date(year, month + 1, 0);
-                var allDaysInMonth = [];
-                for (var day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
-                    var formattedDay = year + '-' + month + '-' + day.toString().padStart(2, '0');
-                    allDaysInMonth.push(formattedDay);
-                }
-                callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending/' + '${user.id}' + '?monthCode=' + year + '-' + month, 'GET', null, function (rs) {
-                    const data = rs;
-                    var spendingGoals = data.spendingGoals;
-                    if (spendingGoals == '' || spendingGoals == null) spendingGoals = '0'
-                    document.getElementById('spendingGoals').textContent = spendingGoals;
-                    allDaysInMonth.forEach(function (day) {
-                        const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
-                        const spending = '<td class="fw-bolder">Spending</td><td class="fw-bolder">Daily Budget</td>';
-                        const valueSpending = '<td data-day="' + day + '" class="valueSpending" contenteditable="true" oninput="validateNumberInput(event)">0</td><td class="dailyBudget bg-light">0</td>';
-                        $('#days').append(newDay);
-                        $('#spending').append(spending);
-                        $('#valueSpending').append(valueSpending);
-                    })
-                    document.getElementById('saveSpending').setAttribute('data-month', year + '-' + month);
-
-                    data.spending.forEach(function (e, i) {
-                        var element = $('.valueSpending[data-day="'+e.day+'"]');
-                        element.text(e.spending);
-                    });
-
-                    const elTotalSpending = document.getElementById('totalSpending');
-                    const elSpendingGoals = document.getElementById('spendingGoals');
-                    var totalSpending = parseFloat(elTotalSpending.textContent);
-                    var spendingGoals = parseFloat(elSpendingGoals.textContent);
-                    var dailyBudget = document.querySelectorAll('.dailyBudget');
-                    document.querySelectorAll('.valueSpending').forEach(function (e, index) {
-                        if (e.textContent != null && e.textContent != '') {
-                            totalSpending += parseFloat(e.textContent);
-                            spendingGoals -= parseFloat(e.textContent);
-                            dailyBudget[index].textContent = spendingGoals;
-                        }
-                    })
-                    elTotalSpending.textContent = totalSpending;
+            callAjaxByJsonWithData('/api/v1/management-time/weekly-detail/spending/' + '${user.id}' + '?monthCode=' + year + '-' + month, 'GET', null, function (rs) {
+                const data = rs;
+                var spendingGoals = data.spendingGoals;
+                if (spendingGoals == '' || spendingGoals == null) spendingGoals = '0'
+                document.getElementById('spendingGoals').textContent = spendingGoals;
+                allDaysInMonth.forEach(function (day) {
+                    const newDay = '<th scope="col" colspan="2" class="spendingDays" data-day="' + day + '">' + day + '</th>';
+                    const spending = '<td class="fw-bolder">Spending</td><td class="fw-bolder">Daily Budget</td>';
+                    const valueSpending = '<td data-day="' + day + '" class="valueSpending" contenteditable="true" oninput="validateNumberInput(event)">0</td><td class="dailyBudget bg-light">0</td>';
+                    $('#days').append(newDay);
+                    $('#spending').append(spending);
+                    $('#valueSpending').append(valueSpending);
                 })
-            }
-        })
+                document.getElementById('saveSpending').setAttribute('data-month', year + '-' + month);
+
+                data.spending.forEach(function (e, i) {
+                    var element = $('.valueSpending[data-day="' + e.day + '"]');
+                    element.text(e.spending);
+                });
+
+                const elTotalSpending = document.getElementById('totalSpending');
+                const elSpendingGoals = document.getElementById('spendingGoals');
+                var totalSpending = parseFloat(elTotalSpending.textContent);
+                var spendingGoals = parseFloat(elSpendingGoals.textContent);
+                var dailyBudget = document.querySelectorAll('.dailyBudget');
+                document.querySelectorAll('.valueSpending').forEach(function (e, index) {
+                    if (e.textContent != null && e.textContent != '') {
+                        totalSpending += parseFloat(e.textContent);
+                        spendingGoals -= parseFloat(e.textContent);
+                        dailyBudget[index].textContent = spendingGoals;
+                    }
+                })
+                elTotalSpending.textContent = totalSpending;
+            })
+        }
+    })
 
     document.addEventListener("DOMContentLoaded", function () {
-
         const result = localStorage.getItem('result');
         if (result == 'saveExpenseSuccess') {
             document.getElementById('expenseManagement').click();
@@ -1405,8 +1499,9 @@
                 });
             });
 
-            var config = { attributes: true };
+            var config = {attributes: true};
             observer.observe(divBtnChangeColor, config);
+
             function handleBackgroundColorChange(newColor) {
                 var parentTd = e.parentNode;
                 parentTd.style.backgroundColor = newColor;
@@ -1502,7 +1597,7 @@
         if (count == 4 || count == 5) $(dailySession).addClass('p-0');
         dailySession.style.height = heightDaily + 'px';
     })
-
+    
     document.addEventListener("DOMContentLoaded", function () {
         const checkDaily = document.querySelectorAll('.checkDaily');
         var countValue = 0;
@@ -1512,29 +1607,30 @@
                 trElment.remove();
             } else if (e.getAttribute('value') != '') countValue++;
         })
+
         const btnAddDaily = document.getElementById('addDaily');
         if (countValue == 5) {
-            btnAddDaily.textContent = 'Remove';
+            btnAddDaily.innerHTML = `<i class="bx bx-minus"></i>`
             $('#addDaily').removeClass('btn-success');
             $('#addDaily').addClass('btn-danger');
         }
         btnAddDaily.addEventListener('click', function () {
-            if (btnAddDaily.textContent == 'ADD') {
+            if (btnAddDaily.classList.contains('btn-success')) {
                 const newDaily = '<tr name="theSingleMostImportantThing"> <td><input class="form-control dailyRoutineInput" type="text"></td> <td class="text-center">0% </td> <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)" onclick="checkDaily()"> 0 </td> <td class="text-center">0</td> </tr>';
                 $(newDaily).insertBefore('#dailySession');
                 countValue++;
 
                 if (countValue == 5) {
-                    btnAddDaily.textContent = 'Remove';
+                    btnAddDaily.innerHTML = `<i class="bx bx-minus"></i>`
                     $('#addDaily').removeClass('btn-success');
                     $('#addDaily').addClass('btn-danger');
                 }
-            } else if (btnAddDaily.textContent == 'Remove') {
+            } else if (btnAddDaily.classList.contains('btn-danger')) {
                 var pToDelete = $("#dailySession").prev("tr");
                 if (pToDelete.length > 0) pToDelete.remove();
                 countValue--;
                 if (countValue == 1) {
-                    btnAddDaily.textContent = 'ADD';
+                    btnAddDaily.innerHTML = `<i class="bx bx-plus"></i>`
                     $('#addDaily').removeClass('btn-danger');
                     $('#addDaily').addClass('btn-success');
                 }
@@ -1629,7 +1725,6 @@
     function isObject(value) {
         return value === Object(value) && !Array.isArray(value) && !(value instanceof Date);
     }
-
 
     function validateNumberInput(event) {
         var inputText = event.target.textContent;
@@ -1813,7 +1908,7 @@
             const content = category.querySelector('span').textContent.trim();
             if (content == null || content == '') {
                 elementModify.forEach(function (eTd, index) {
-                    eTd.contentEditable  = false;
+                    eTd.contentEditable = false;
                     category.querySelector('button').classList.add('d-none');
                     eTd.style.opacity = 0.5;
                     var lengthTd = category.querySelectorAll('td').length;
@@ -1852,12 +1947,12 @@
         $("div.calendar-container").removeClass("d-none")
 
         const result = localStorage.getItem('result');
-        const image = '${weekly.quotes.image}'
-        if (result == 'addSuccess') {
-            // rsSuccessLoad("Add");
+        const image = '${weekly.quotes.image}';
+        switch (true) {
+            case (result == 'addSuccess'):
                 Swal.fire(
                     {
-                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>'  +
+                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
                             '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
                         imageAlt: 'A tall image',
                         confirmButtonClass: 'btn btn-primary w-xs mt-2',
@@ -1866,7 +1961,15 @@
                         width: 800
                     }
                 )
-            localStorage.clear();
+                if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
+                document.getElementById('imageQuote').style.display = 'none';
+                localStorage.clear();
+                break;
+            case !(result == 'addSuccess'):
+                if (document.getElementById('srcImageQuote').getAttribute('src') != '') document.getElementById('showImageQuoteBtn').click();
+                break;
+            default:
+                break;
         }
     })
 
@@ -1999,11 +2102,15 @@
 
             $("input.form-control.weekTarget").each(function () {
                 let colorValue = $(this).closest('tr').data('value');
+                const statusWeekly = $(this).closest('div').find('button');
+                var valueStatus = statusWeekly.data('value');
+                if (valueStatus == null || valueStatus == undefined) valueStatus = '';
                 if (colorValue === undefined) colorValue = '';
                 let obj = {
                     title: $(this).closest('tr').find('.weekTitle').text(),
                     content: $(this).val(),
-                    color: colorValue
+                    color: colorValue,
+                    status: valueStatus
                 }
 
                 weekly.weeklys.push(obj);
@@ -2077,7 +2184,6 @@
                 const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
 
                 let dayObj = days.find(d => d.day === day);
-                console.log("onethingcalendar:" + value)
                 if (value !== "" && value != 'Allow notifications') {
                     if (day != null) {
                         if (!dayObj) {
@@ -2206,8 +2312,8 @@
 
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
-            console.log(data)
             formData.append('files', imageQuote);
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

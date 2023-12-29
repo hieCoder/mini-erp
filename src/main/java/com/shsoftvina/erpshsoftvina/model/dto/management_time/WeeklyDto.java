@@ -15,4 +15,5 @@ public class WeeklyDto {
     private String title;
     private String content;
     private String color;
+    private String status;
 }
