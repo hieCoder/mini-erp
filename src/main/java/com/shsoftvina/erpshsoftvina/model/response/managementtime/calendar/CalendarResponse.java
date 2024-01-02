@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar;
 
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyContentDto;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.YearResponse;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class CalendarResponse {
-    private String[] monthlyContents;
+    private MonthlyContentDto[] monthlyContents;
     private List<CalendarDayResponse> days;
     private List<WeeklyManagementTimeDayResponse> weeklys;
     private YearResponse year;

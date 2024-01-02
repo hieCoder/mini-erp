@@ -284,7 +284,34 @@
                                 <c:if test="${loop.index == 0}">
                                     <td class="text-start" rowspan="3">Main target</td>
                                 </c:if>
-                                <td><input class="form-control monthTarget" type="text" value="${monthly}"></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control monthTarget" type="text" value="${monthly.content}">
+                                        <button class="btn btn-info dropdown-toggle btn-status" data-value="${monthly.status}" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">Setting
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-warning waves-effect waves-light pending"
+                                                        style="margin: 0 5px; width: 102px;"><i
+                                                        class="ri-arrow-right-line"></i> Pending</button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
                         </c:forEach>
                         <c:if test="${weekly.monthlys[0].monthlyContents == null}">
@@ -325,19 +352,19 @@
                                     <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    class="btn btn-outline-warning waves-effect waves-light pending"
                                                     style="margin: 0 5px; width: 102px;"><i
                                                     class="ri-arrow-right-line"></i> Pending</button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 close"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 complete"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
                                             </button>
                                         </li>
@@ -358,19 +385,19 @@
                                     <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    class="btn btn-outline-warning waves-effect waves-light pending"
                                                     style="margin: 0 5px; width: 102px;"><i
                                                     class="ri-arrow-right-line"></i> Pending</button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 close"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 complete"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
                                             </button>
                                         </li>
@@ -391,19 +418,19 @@
                                     <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    class="btn btn-outline-warning waves-effect waves-light pending"
                                                     style="margin: 0 5px; width: 102px;"><i
                                                     class="ri-arrow-right-line"></i> Pending</button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 close"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 complete"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
                                             </button>
                                         </li>
@@ -424,19 +451,19 @@
                                     <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    class="btn btn-outline-warning waves-effect waves-light pending"
                                                     style="margin: 0 5px; width: 102px;"><i
                                                     class="ri-arrow-right-line"></i> Pending</button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 close"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 complete"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
                                             </button>
                                         </li>
@@ -457,19 +484,19 @@
                                     <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-warning waves-effect waves-light pendingWeekly"
+                                                    class="btn btn-outline-warning waves-effect waves-light pending"
                                                     style="margin: 0 5px; width: 102px;"><i
                                                     class="ri-arrow-right-line"></i> Pending</button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 closeWeekly"
+                                                    class="btn btn-outline-danger waves-effect waves-light mt-2 close"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="btn btn-outline-success waves-effect waves-light mt-2 completeWeekly"
+                                                    class="btn btn-outline-success waves-effect waves-light mt-2 complete"
                                                     style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
                                             </button>
                                         </li>
@@ -483,8 +510,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="fw-bolder">A quote I shouldn't forget</h4>
                         <button type="button" class="btn btn-info mb-2" data-bs-toggle="modal"
-                                data-bs-target="#exampleModalgrid">Dreamboard
-                        </button>
+                                data-bs-target="#exampleModalgrid">Dream Board</button>
                         <div class="modal fade" id="exampleModalgrid" tabindex="-1"
                              aria-labelledby="exampleModalgridLabel" aria-modal="true">
                             <div class="modal-dialog">
@@ -618,52 +644,32 @@
                                     calendar
                                 </td>
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.weeklys.weeklys[0].color}">
+                                    style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px;">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[0].title}</span>
-                                    <div scope="col" class="panel colorPicker btn-change-color">
-                                        <div class="pickr"></div>
-                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                                    </div>
                                 </td>
                             </tr>
                             <tr class="lecture">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.weeklys.weeklys[1].color}">
+                                    style="border-left: 0; border-bottom: 0; height: 32px;">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[1].title}</span>
-                                    <div scope="col" class="panel colorPicker btn-change-color">
-                                        <div class="pickr"></div>
-                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                                    </div>
                                 </td>
                             </tr>
                             <tr class="dailyEvaluation">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.weeklys.weeklys[2].color}">
+                                    style="border-left: 0; border-bottom: 0;">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[2].title}</span>
-                                    <div scope="col" class="panel colorPicker btn-change-color">
-                                        <div class="pickr"></div>
-                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                                    </div>
                                 </td>
                             </tr>
                             <tr class="work">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.weeklys.weeklys[3].color}">
+                                    style="border-left: 0; border-bottom: 0;">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[3].title}</span>
-                                    <div scope="col" class="panel colorPicker btn-change-color">
-                                        <div class="pickr"></div>
-                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                                    </div>
                                 </td>
                             </tr>
                             <tr class="reading">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.weeklys.weeklys[4].color}">
+                                    style="border-left: 0; border-bottom: 0;">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[4].title}</span>
-                                    <div scope="col" class="panel colorPicker btn-change-color">
-                                        <div class="pickr"></div>
-                                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -1338,24 +1344,24 @@
 
     function addStatus(btn, value) {
         switch (value) {
-            case 'pending':
+            case 'PENDING':
                 $(btn).removeClass('btn-info btn-danger btn-success');
                 $(btn).addClass('btn-warning');
-                btn.setAttribute('data-value', 'pending');
+                btn.setAttribute('data-value', 'PENDING');
                 $(btn).text('');
                 $(btn).append(`<i class="ri-arrow-right-line"></i>`);
                 break;
-            case 'close':
+            case 'CLOSE':
                 $(btn).removeClass('btn-info btn-warning btn-success');
                 $(btn).addClass('btn-danger');
                 $(btn).text('');
-                btn.setAttribute('data-value', 'close');
+                btn.setAttribute('data-value', 'CLOSE');
                 $(btn).append(`<i class="ri-close-line"></i>`);
                 break;
-            case 'complete':
+            case 'COMPLETE':
                 $(btn).removeClass('btn-info btn-warning btn-danger');
                 $(btn).addClass('btn-success');
-                btn.setAttribute('data-value', 'complete');
+                btn.setAttribute('data-value', 'COMPLETE');
                 $(btn).text('');
                 $(btn).append(`<i class="ri-check-line">`);
                 break;
@@ -1367,22 +1373,22 @@
             const statusValue = e.getAttribute('data-value');
             addStatus(e, statusValue);
         })
-        document.querySelectorAll('.pendingWeekly').forEach(function (e) {
+        document.querySelectorAll('.pending').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnPending = e.parentNode.parentNode.previousElementSibling;
-                addStatus(btnPending, 'pending');
+                addStatus(btnPending, 'PENDING');
             })
         })
-        document.querySelectorAll('.closeWeekly').forEach(function (e) {
+        document.querySelectorAll('.close').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnClose = e.parentNode.parentNode.previousElementSibling;
-                addStatus(btnClose, 'close');
+                addStatus(btnClose, 'CLOSE');
             })
         })
-        document.querySelectorAll('.completeWeekly').forEach(function (e) {
+        document.querySelectorAll('.complete').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnComplete = e.parentNode.parentNode.previousElementSibling;
-                addStatus(btnComplete, 'complete');
+                addStatus(btnComplete, 'COMPLETE');
             })
         })
     })
@@ -1480,104 +1486,7 @@
             document.getElementById('expenseManagement').click();
             localStorage.clear();
         }
-
-        document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
-            const tr = e.parentNode;
-            const newColor = tr.style.backgroundColor
-            changeColor(newColor, index);
-        })
     })
-
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
-            var divBtnChangeColor = e;
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    if (mutation.attributeName === 'style') {
-                        handleBackgroundColorChange(getBackgroundColor(divBtnChangeColor));
-                    }
-                });
-            });
-
-            var config = {attributes: true};
-            observer.observe(divBtnChangeColor, config);
-
-            function handleBackgroundColorChange(newColor) {
-                var parentTd = e.parentNode;
-                parentTd.style.backgroundColor = newColor;
-                changeColor(newColor, index)
-            }
-
-            function getBackgroundColor(element) {
-                var style = window.getComputedStyle(element);
-                return style.backgroundColor;
-            }
-        });
-    });
-
-    function changeColor(newColor, index) {
-        if (index == 0) {
-            const targetColorTheSingle = document.querySelectorAll('.target-color-theSingle');
-            const performanceColorTheSingle = document.querySelectorAll('.performance-color-theSingle');
-            const theSingCategory = document.getElementById('theSingCategory')
-            theSingCategory.setAttribute('data-value', newColor);
-            theSingCategory.style.backgroundColor = newColor
-            targetColorTheSingle.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-            performanceColorTheSingle.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-        } else if (index == 1) {
-            const targetColorLecture = document.querySelectorAll('.target-color-lecture');
-            const performanceColorLecture = document.querySelectorAll('.performance-color-lecture');
-            const lectureCategory = document.getElementById('lectureCategory')
-            lectureCategory.setAttribute('data-value', newColor);
-            lectureCategory.style.backgroundColor = newColor;
-            targetColorLecture.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-            performanceColorLecture.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-        } else if (index == 2) {
-            const targetColorDailyEvaluation = document.querySelectorAll('.target-color-dailyEvaluation');
-            const performanceColorDailyEvaluation = document.querySelectorAll('.performance-color-dailyEvaluation');
-            const dailyCategory = document.getElementById('dailyCategory')
-            dailyCategory.setAttribute('data-value', newColor);
-            dailyCategory.style.backgroundColor = newColor;
-            targetColorDailyEvaluation.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-            performanceColorDailyEvaluation.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-        } else if (index == 3) {
-            const targetColorWork = document.querySelectorAll('.target-color-work');
-            const performanceColorWork = document.querySelectorAll('.performance-color-work');
-            const workCategory = document.getElementById('workCategory')
-            workCategory.setAttribute('data-value', newColor);
-            workCategory.style.backgroundColor = newColor;
-            targetColorWork.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-            performanceColorWork.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-        } else if (index == 4) {
-            const targetColorReading = document.querySelectorAll('.target-color-reading');
-            const performanceColorReading = document.querySelectorAll('.performance-color-reading');
-            const readingCategory = document.getElementById('readingCategory')
-            readingCategory.setAttribute('data-value', newColor);
-            readingCategory.style.backgroundColor = newColor;
-            targetColorReading.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-            performanceColorReading.forEach(function (e) {
-                e.style.backgroundColor = newColor;
-            })
-        }
-    }
 
     document.addEventListener("DOMContentLoaded", function () {
         const dailySession = document.getElementById('daily-routine');
@@ -1597,7 +1506,7 @@
         if (count == 4 || count == 5) $(dailySession).addClass('p-0');
         dailySession.style.height = heightDaily + 'px';
     })
-    
+
     document.addEventListener("DOMContentLoaded", function () {
         const checkDaily = document.querySelectorAll('.checkDaily');
         var countValue = 0;
@@ -1721,7 +1630,6 @@
         return formData;
     }
 
-    // Helper function to check if a value is an object
     function isObject(value) {
         return value === Object(value) && !Array.isArray(value) && !(value instanceof Date);
     }
@@ -2089,7 +1997,14 @@
                 weeklys: []
             };
             $('.monthTarget').each(function () {
-                monthly.content.push($(this).val())
+                const statusMonth = $(this).closest('div').find('button');
+                var valueStatus = statusMonth.data('value');
+                if (valueStatus == undefined) valueStatus = '';
+                let obj = {
+                    content: $(this).val(),
+                    status: valueStatus
+                }
+                monthly.content.push(obj);
             });
             $('input.dailyRoutineInput').each(function () {
                 let obj = {
@@ -2101,18 +2016,14 @@
             data.monthly = monthly;
 
             $("input.form-control.weekTarget").each(function () {
-                let colorValue = $(this).closest('tr').data('value');
                 const statusWeekly = $(this).closest('div').find('button');
                 var valueStatus = statusWeekly.data('value');
                 if (valueStatus == null || valueStatus == undefined) valueStatus = '';
-                if (colorValue === undefined) colorValue = '';
                 let obj = {
                     title: $(this).closest('tr').find('.weekTitle').text(),
                     content: $(this).val(),
-                    color: colorValue,
                     status: valueStatus
                 }
-
                 weekly.weeklys.push(obj);
             })
             data.weekly = weekly
@@ -2357,6 +2268,7 @@
             location.reload();
         })
     })
+
     $(document).ready(function () {
         let isMouseDown = false;
         let startX;
