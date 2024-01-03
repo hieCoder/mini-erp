@@ -5,6 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="../../../../assets/custom/css/management-time/style.css">
+    <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/classic.min.css"/>
+    <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/monolith.min.css"/>
+    <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
         td {
             max-width: 40px;
@@ -27,6 +32,12 @@
             position: absolute;
             bottom: 0;
             left: 0;
+        }
+
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 150px;
         }
 
         input {
@@ -82,7 +93,7 @@
                 </div>
             </div>
             <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2"
-                 style="width: 16rem; margin-right: 100px">
+                 style="width: 16rem; margin-right: 80px">
                 <div class="card-body text-muted">
                     <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                         <span class="trending-ribbon-text">Focus</span> <i
@@ -125,8 +136,33 @@
                     </div>
                 </div>
             </div>
-            <div style="width: 345px" class="m-3 p-1 position-relative">
+            <div style="width: 345px" class="m-3 position-relative">
+                <span class="d-flex align-items-center border p-2">
+                    <h4 class="m-0 me-2">Color Category: </h4>
+                    <div scope="col" class="panel colorPicker btn-change-color me-1">
+                        <div class="pickr"></div>
+                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                    </div>
+                    <div scope="col" class="panel colorPicker btn-change-color me-1">
+                        <div class="pickr"></div>
+                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                    </div>
+                    <div scope="col" class="panel colorPicker btn-change-color me-1">
+                        <div class="pickr"></div>
+                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                    </div>
+                    <div scope="col" class="panel colorPicker btn-change-color me-1">
+                        <div class="pickr"></div>
+                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                    </div>
+                    <div scope="col" class="panel colorPicker btn-change-color me-1">
+                        <div class="pickr"></div>
+                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
+                    </div>
+                </span>
                 <button class="btn btn-primary bottom-left createCalendar" id="save-calendar" type="button">Save</button>
+                <button type="button" class="btn btn-info bottom-right" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalgrid">Dream Board</button>
             </div>
         </div>
         <table class="table table-bordered" id="todoTable">
@@ -208,7 +244,90 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModalgrid" tabindex="-1"
+     aria-labelledby="exampleModalgridLabel" aria-modal="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalgridLabel">Choose image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <input class="form-control" type="file" id="quoteImage"
+                       accept="image/jpeg, image/png, image/gif" onchange="previewImage()">
+                <div id="imagePreview" class="border mt-2 d-none"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
+<script src="/assets/custom/js/management-time/management-time.js"></script>
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
+            var divBtnChangeColor = e;
+            var observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.attributeName === 'style') {
+                        handleBackgroundColorChange(divBtnChangeColor);
+                    }
+                });
+            });
+
+            var config = {attributes: true};
+            observer.observe(divBtnChangeColor, config);
+
+            function handleBackgroundColorChange(divBtnChangeColor) {
+                var style = window.getComputedStyle(divBtnChangeColor);
+                var newColor = style.backgroundColor;
+                changeColor(newColor, index)
+            }
+        });
+    });
+
+    function changeColor(newColor, index) {
+        if (index == 0) $('.theSingleMostImportantThing').css('background-color', newColor)
+        else if (index == 1) $('.lecture').css('background-color', newColor)
+        else if (index == 2) $('.dailyEvaluation').css('background-color', newColor)
+        else if (index == 3) $('.work').css('background-color', newColor)
+        else if (index == 4) $('.reading').css('background-color', newColor);
+    }
+
+    function previewImage() {
+        var input = document.getElementById('quoteImage');
+        var preview = document.getElementById('imagePreview');
+
+        if (input.files && input.files[0]) {
+            $(preview).removeClass('d-none');
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var image = document.createElement('img');
+                image.src = e.target.result;
+                image.style.maxWidth = '100%';
+                image.style.maxHeight = '200px';
+
+                preview.innerHTML = '';
+                preview.appendChild(image);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $(preview).addClass('d-none');
+            $(preview).find('img').remove();
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         var dropdownMenu = document.querySelector('.dropdown-year');
 
@@ -229,7 +348,6 @@
     })
     const numberOfRowsPerWeek = 6;
     const table = document.getElementById('todoTable');
-    // const currentMonthYear = document.getElementById('currentMonthYear');
     const currentMonth = document.getElementById('currentMonth');
     const currentYear = document.getElementById('currentYear');
     const prevMonthBtn = document.getElementById('prevMonth');
@@ -261,8 +379,10 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
+                    let colors = parseData.color;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
@@ -271,10 +391,10 @@
                     let xhtml = '';
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e) => {
-                            if (e === "") {
+                            if (e.content === "") {
                                 xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
                             } else {
-                                xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">' + e + '</p>'
+                                xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)" data-value="' + e.status + '">' + e.content + '</p>'
                             }
                         })
                         monthlyTarget.innerHTML = xhtml;
@@ -384,7 +504,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].title;
-                                                cell.style.backgroundColor = e.weeklys[dayTodo].color;
+                                                cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -465,7 +585,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].content;
-                                                cell.style.backgroundColor = e.weeklys[dayTodo].color;
+                                                cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -485,7 +605,7 @@
                             row.appendChild(cell);
                         }
                         tbody.appendChild(row);
-                        changColor();
+                        changeTrColor();
                         $('div.custom-spinner').parent().remove()
                         if (button) {
                             button.prop("disabled", false)
@@ -493,6 +613,27 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
+                    $.each(colors, function (index, value) {
+                        switch (index) {
+                            case 0:
+                                $('.theSingleMostImportantThing').css('background-color', colors[index]);
+                                break;
+                            case 1:
+                                $('.lecture').css('background-color', colors[index]);
+                                break;
+                            case 2:
+                                $('.dailyEvaluation').css('background-color', colors[index]);
+                                break;
+                            case 3:
+                                $('.work').css('background-color', colors[index]);
+                                break;
+                            case 4:
+                                $('.reading').css('background-color', colors[index]);
+                                break;
+                            default:
+                                break;
+                        }
+                    })
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -501,9 +642,9 @@
         xhr.send();
     }
 
-    function changColor() {
+    function changeTrColor() {
         document.querySelectorAll('.color').forEach(function (e) {
-            e.style.backgroundColor = e.querySelector('td').style.backgroundColor
+            e.style.backgroundColor = e.querySelector('td').style.backgroundColor;
         })
     }
 
@@ -522,7 +663,6 @@
         const currentYear = getCurentYear(document.getElementById('currentYear').textContent);
         populateCalendar(currentYear, currentMonth);
     }
-
 
     prevMonthBtn.addEventListener('click', () => {
         $(".containerLoading ").removeClass("d-none")
@@ -595,119 +735,152 @@
         return year + '-' + month + '-' + day;
     }
 
-    $(document).on("click", "button.createCalendar", function (event) {
-        $(".containerLoading ").removeClass("d-none")
-        $("div.calendar-container").addClass("d-none")
-        var editableElements = document.querySelectorAll('.editing');
-        editableElements.forEach(function (element) {
-            if (!element.contains(event.target)) {
-                toggleEdit(element);
-            }
-        });
-        var editableElements = document.querySelectorAll('.editingYear');
-        editableElements.forEach(function (element) {
-            if (!element.contains(event.target)) {
-                toggleEditYear(element);
-            }
-        });
-        var month = getCurentMonth(document.getElementById('currentMonth').textContent);
-        var year = getCurentYear(document.getElementById('currentYear').textContent);
-        const data = {
-            userId: '${user.id}',
-            days: [],
-            weeklys: [],
-            monthly: {},
-            year: {}
-        }
-        const days = [];
-        const weeklys = [];
-        const monthly = {
-            month: year + '-' + ((month + 1 < 10) ? '0' + (month + 1) : month + 1),
-            content: []
-        };
-        $('.editable').each(function () {
-            if ($(this).hasClass('editing')) {
-                const content = $(this).val();
-                monthly.content.push(content);
-            } else {
-                const content = $(this).text();
-                monthly.content.push(content);
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusMonthly = [];
+        document.getElementById('monthlyTarget').querySelectorAll('p').forEach( function (e) {
+            statusMonthly.push(e.getAttribute('data-value'));
         })
-
-        $('td[contenteditable="true"]').each(function () {
-            const day = $(this).data('day');
-            const index = $(this).data('array');
-            const hasTitleClass = $(this).hasClass('title');
-            const hasContentClass = $(this).hasClass('content');
-            const value = $(this).text().trim();
-            const week = $(this).data('week');
-            const color = $(this).css('background-color');
-            if (value !== "") {
-                if (day != null) {
-                    let dayObj = days.find(d => d.day === day);
-                    if (!dayObj) {
-                        dayObj = {
-                            day: day,
-                            content: ["", "", "", "", ""]
-                        };
-                        days.push(dayObj);
-                    }
-                    dayObj.content[index] = value;
+        $(document).on("click", "button.createCalendar", function (event) {
+            $(".containerLoading ").removeClass("d-none")
+            $("div.calendar-container").addClass("d-none")
+            var editableElements = document.querySelectorAll('.editing');
+            editableElements.forEach(function (element) {
+                if (!element.contains(event.target)) {
+                    toggleEdit(element);
                 }
-                if (week != null && index != null) {
-                    let weekObj = weeklys.find(w => w.startDay === week);
+            });
+            var editableElements = document.querySelectorAll('.editingYear');
+            editableElements.forEach(function (element) {
+                if (!element.contains(event.target)) {
+                    toggleEditYear(element);
+                }
+            });
+            var month = getCurentMonth(document.getElementById('currentMonth').textContent);
+            var year = getCurentYear(document.getElementById('currentYear').textContent);
+            const data = {
+                userId: '${user.id}',
+                days: [],
+                weeklys: [],
+                monthly: {},
+                quotes: {},
+                year: {}
+            }
+            const days = [];
+            const weeklys = [];
+            const monthly = {
+                month: year + '-' + ((month + 1 < 10) ? '0' + (month + 1) : month + 1),
+                content: [],
+                color: []
+            };
 
-                    if (!weekObj) {
-                        weekObj = {
-                            startDay: week == undefined ? '' : week,
-                            weeklys: [{}, {}, {}, {}, {}]
-                        };
-                        weeklys.push(weekObj);
-                    }
-                    const currentWeekly = weekObj.weeklys[index];
-                    if (hasTitleClass) {
-                        currentWeekly.title = value;
-                        if (!currentWeekly.hasOwnProperty('content')) {
-                            currentWeekly.content = '';
-                        }
-                        currentWeekly.color = color
-                    } else if (hasContentClass) {
-                        if (!currentWeekly.hasOwnProperty('title')) {
-                            currentWeekly.title = '';
-                        }
-                        currentWeekly.content = value;
-                        currentWeekly.color = color
+            $('.editable').each(function (index) {
+                let obj = {};
+                if ($(this).hasClass('editing')) {
+                    const content = $(this).val();
+                    obj.content = content;
+                    obj.status = statusMonthly[index];
+                    monthly.content.push(obj);
+                } else {
+                    const content = $(this).text();
+                    obj.content = content;
+                    obj.status = statusMonthly[index];
+                    monthly.content.push(obj);
+                }
+            })
+
+            var count = 5;
+            $('.color').each(function (index) {
+                if (index != 0) {
+                    if (count != 0) {
+                        const colorMonthLy = $(this).css('background-color');
+                        monthly.color.push(colorMonthLy)
+                        count--;
                     }
                 }
-            }
-        })
+            })
 
-        data.year = {
-            year: currentYear.textContent,
-            target: []
-        };
+            $('td[contenteditable="true"]').each(function () {
+                const day = $(this).data('day');
+                const index = $(this).data('array');
+                const hasTitleClass = $(this).hasClass('title');
+                const hasContentClass = $(this).hasClass('content');
+                const value = $(this).text().trim();
+                const week = $(this).data('week');
+                if (value !== "") {
+                    if (day != null) {
+                        let dayObj = days.find(d => d.day === day);
+                        if (!dayObj) {
+                            dayObj = {
+                                day: day,
+                                content: ["", "", "", "", ""]
+                            };
+                            days.push(dayObj);
+                        }
+                        dayObj.content[index] = value;
+                    }
+                    if (week != null && index != null) {
+                        let weekObj = weeklys.find(w => w.startDay === week);
 
-        var yearTargetValue = document.querySelectorAll('.yearTarget');
-        yearTargetValue.forEach(function (target) {
-            data.year.target.push(target.textContent);
-        })
+                        if (!weekObj) {
+                            weekObj = {
+                                startDay: week == undefined ? '' : week,
+                                weeklys: [{}, {}, {}, {}, {}]
+                            };
+                            weeklys.push(weekObj);
+                        }
+                        const currentWeekly = weekObj.weeklys[index];
+                        if (hasTitleClass) {
+                            currentWeekly.title = value;
+                            if (!currentWeekly.hasOwnProperty('content')) {
+                                currentWeekly.content = '';
+                            }
+                            currentWeekly.status = $(this).data('status')
+                        } else if (hasContentClass) {
+                            if (!currentWeekly.hasOwnProperty('title')) {
+                                currentWeekly.title = '';
+                            }
+                            currentWeekly.content = value;
+                            currentWeekly.status = $(this).data('status')
+                        }
+                    }
+                }
+            })
 
-        data.days.push(...days);
-        data.weeklys.push(...weeklys);
-        data.monthly = monthly;
-        callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
-            BtnLoadRemove()
-            $("button.createCalendar").removeClass("d-none")
-            const month = getCurentMonth(document.getElementById('currentMonth').textContent);
-            const year = getCurentYear(document.getElementById('currentYear').textContent);
-            populateCalendar(year, month);
-            rsSuccess("Add");
-        }, function (error) {
-            rsUnSuccess();
-            console.log(error);
+            data.year = {
+                year: currentYear.textContent,
+                target: []
+            };
+
+            var yearTargetValue = document.querySelectorAll('.yearTarget');
+            yearTargetValue.forEach(function (target) {
+                data.year.target.push(target.textContent);
+            })
+
+            data.days.push(...days);
+            data.weeklys.push(...weeklys);
+            data.monthly = monthly;
+
+            const imageQuote = document.getElementById('quoteImage').files[0];
+            const formData = new FormData();
+            formData.append('files', imageQuote);
+            callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
+                data.quotes.quotes = [];
+                data.quotes.image = rs[0];
+                callAjaxByJsonWithData("/api/v1/management-time/calendar", "POST", data, function (rs) {
+                    BtnLoadRemove()
+                    $("button.createCalendar").removeClass("d-none")
+                    const month = getCurentMonth(document.getElementById('currentMonth').textContent);
+                    const year = getCurentYear(document.getElementById('currentYear').textContent);
+                    populateCalendar(year, month);
+                    rsSuccess("Add");
+                }, function (error) {
+                    rsUnSuccess();
+                    console.log(error);
+                })
+            });
         })
     })
+
 
     function getPreviousSunday(currentDate, isLastSunday) {
         const dateObject = new Date(currentDate);
@@ -767,6 +940,7 @@
             inputElement.focus();
         }
     }
+
     function toggleEditYear(element) {
         var isEditing = element.classList.contains('editingYear');
 
@@ -794,6 +968,8 @@
             inputElement.focus();
         }
     }
+
+
 </script>
 </body>
 </html>

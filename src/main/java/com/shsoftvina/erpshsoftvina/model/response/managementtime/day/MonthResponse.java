@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.response.managementtime.day;
 
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyContentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +14,10 @@ import java.util.List;
 @Builder
 public class MonthResponse {
     private String month;
-    private String[] monthlyContents;
+    private MonthlyContentDto[] monthlyContents;
     private DailyRoutineResponse[] dailyRoutine;
     private List<CostResponse> incomes;
     private List<CostResponse> fixeds;
     private List<CostResponse> fluctuatings;
+    private String[] color;
 }

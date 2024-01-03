@@ -20,6 +20,7 @@ public class MonthlyManagementTimeDayConverter {
         return MonthlyManagementTimeDay.builder()
                 .code(monthlyRequest.getMonth())
                 .content(JsonUtils.objectToJson(monthlyRequest.getContent()))
+                .color(JsonUtils.objectToJson(monthlyRequest.getColor()))
                 .user(userMapper.findById(userId)).build();
     }
 

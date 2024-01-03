@@ -29,4 +29,10 @@
             <column name="SPENDING_GOALS" type="FLOAT"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="4" author="team2">
+        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
+            <column name="COLOR" type="VARCHAR(1000)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

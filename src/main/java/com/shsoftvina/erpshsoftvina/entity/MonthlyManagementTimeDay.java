@@ -19,4 +19,5 @@ public class MonthlyManagementTimeDay {
     private String fixedCosts;
     private String fluctuatingCosts;
     private Float spendingGoals;
+    private String color;
 }

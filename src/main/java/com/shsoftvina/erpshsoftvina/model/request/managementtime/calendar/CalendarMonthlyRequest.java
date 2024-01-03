@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar;
 
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyContentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CalendarMonthlyRequest {
     private String month;
-    private String[] content;
+    private MonthlyContentDto[] content;
+    private String[] color;
 }
