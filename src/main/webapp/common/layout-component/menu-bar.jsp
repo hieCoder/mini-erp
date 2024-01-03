@@ -100,13 +100,21 @@
                     <div class="collapse menu-dropdown" id="sidebarTime">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link management-time-day-login">Management time</a>
+                                <a class="nav-link management-time">Time of year</a>
                             </li>
                             <li class="nav-item">
-                                <a href="/books" class="nav-link">Book</a>
+                                <a class="nav-link management-time">Time of the month</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link management-time">Time of the week</a>
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a href="/books" class="nav-link menu-link">
+                        <i class="ri-book-line"></i> <span>Book</span>
+                    </a>
                 </li>
 
                 <li class="menu-title d-none manager-menu"><i class="ri-more-fill"></i> <span>Setting system</span></li>

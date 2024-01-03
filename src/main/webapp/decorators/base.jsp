@@ -864,7 +864,7 @@
     }
 
     $('.schedule-item-menu').attr('href', scheduleLink);
-    $('.management-time-day-login').attr('href', managementTime);
+    $('.management-time').attr('href', managementTime);
 </script>
 </body>
 </html>
