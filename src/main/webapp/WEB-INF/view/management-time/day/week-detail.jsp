@@ -1793,40 +1793,6 @@
         })
     })
 
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const theSingle = document.querySelector('.theSingleMostImportantThing');
-    //     const elementTdTheSingle = document.querySelectorAll('.isModifyTheSing');
-    //     isModify(theSingle, elementTdTheSingle);
-    //     const lecture = document.querySelector('.lecture');
-    //     const elementTdLecture = document.querySelectorAll('.isModifyLecture');
-    //     isModify(lecture, elementTdLecture);
-    //     const dailyEvaluation = document.querySelector('.dailyEvaluation');
-    //     const elementTdDaily = document.querySelectorAll('.isModifyDaily');
-    //     isModify(dailyEvaluation, elementTdDaily);
-    //     const work = document.querySelector('.work');
-    //     const elementTdWork = document.querySelectorAll('.isModifyWork');
-    //     isModify(work, elementTdWork);
-    //     const reading = document.querySelector('.reading');
-    //     const elementTdReading = document.querySelectorAll('.isModifyReading');
-    //     isModify(reading, elementTdReading);
-    // })
-    //
-    // function isModify(category, elementModify) {
-    //     if (category) {
-    //         const content = category.querySelector('span').textContent.trim();
-    //         if (content == null || content == '') {
-    //             elementModify.forEach(function (eTd, index) {
-    //                 eTd.contentEditable = false;
-    //                 category.querySelector('button').classList.add('d-none');
-    //                 eTd.style.opacity = 0.5;
-    //                 var lengthTd = category.querySelectorAll('td').length;
-    //                 if (lengthTd == 2) category.querySelectorAll('td')[1].style.opacity = 0.5;
-    //                 else category.querySelectorAll('td')[0].style.opacity = 0.5;
-    //             })
-    //         }
-    //     }
-    // }
-
     function showModal(element) {
         const isAllowedNoti = element.innerText;
 
