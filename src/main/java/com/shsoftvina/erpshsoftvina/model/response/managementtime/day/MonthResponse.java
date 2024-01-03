@@ -19,4 +19,5 @@ public class MonthResponse {
     private List<CostResponse> incomes;
     private List<CostResponse> fixeds;
     private List<CostResponse> fluctuatings;
+    private String[] color;
 }

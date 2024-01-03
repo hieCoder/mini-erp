@@ -340,8 +340,8 @@
                                value="${weekly.weeklys.weeklys[0]}"/>
                         <tr id="theSingCategory">
                             <td class="text-start weekTitle"
-                                contenteditable="true">${theSingleMostImportantThing.title}</td>
-                            <td>
+                                contenteditable="true" style="background-color: ${weekly.monthlys[0].color[0]}">${theSingleMostImportantThing.title}</td>
+                            <td style="background-color: ${weekly.monthlys[0].color[0]}">
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="theSingleMostImportantThing"
                                            type="text"
@@ -374,8 +374,8 @@
                         </tr>
                         <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
                         <tr id="lectureCategory">
-                            <td class="text-start weekTitle" contenteditable="true">${lecture.title}</td>
-                            <td>
+                            <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[1]}">${lecture.title}</td>
+                            <td style="background-color: ${weekly.monthlys[0].color[1]}">
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="lecture" type="text"
                                            value="${lecture.content}">
@@ -407,8 +407,8 @@
                         </tr>
                         <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
                         <tr id="dailyCategory">
-                            <td class="text-start weekTitle" contenteditable="true">${dailyEvaluation.title}</td>
-                            <td>
+                            <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[2]}">${dailyEvaluation.title}</td>
+                            <td style="background-color: ${weekly.monthlys[0].color[2]}">
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="dailyEvaluation" type="text"
                                            value="${dailyEvaluation.content}">
@@ -440,8 +440,8 @@
                         </tr>
                         <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
                         <tr id="workCategory">
-                            <td class="text-start weekTitle" contenteditable="true">${work.title}</td>
-                            <td>
+                            <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[3]}">${work.title}</td>
+                            <td style="background-color: ${weekly.monthlys[0].color[3]}">
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="work" type="text"
                                            value="${work.content}">
@@ -473,8 +473,8 @@
                         </tr>
                         <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
                         <tr id="readingCategory">
-                            <td class="text-start weekTitle" contenteditable="true">${reading.title}</td>
-                            <td>
+                            <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[4]}">${reading.title}</td>
+                            <td style="background-color: ${weekly.monthlys[0].color[4]}">
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="reading" type="text"
                                            value="${reading.content}">
@@ -644,31 +644,31 @@
                                     calendar
                                 </td>
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px;">
+                                    style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.monthlys[0].color[0]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[0].title}</span>
                                 </td>
                             </tr>
                             <tr class="lecture">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0; height: 32px;">
+                                    style="border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.monthlys[0].color[1]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[1].title}</span>
                                 </td>
                             </tr>
                             <tr class="dailyEvaluation">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0;">
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[2]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[2].title}</span>
                                 </td>
                             </tr>
                             <tr class="work">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0;">
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[3]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[3].title}</span>
                                 </td>
                             </tr>
                             <tr class="reading">
                                 <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0;">
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[4]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[4].title}</span>
                                 </td>
                             </tr>
@@ -752,8 +752,8 @@
                                     <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="3"
                                         contenteditable="true"
                                         data-name="theSingleMostImportantThing"
-                                        data-day="${day.day}">${theSingleMostImportantThing.target}</td>
-                                    <td class="performance-color-theSingle isModifyTheSing"><input
+                                        data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[0]}">${theSingleMostImportantThing.target}</td>
+                                    <td class="performance-color-theSingle isModifyTheSing" style="background-color: ${weekly.monthlys[0].color[0]}"><input
                                             class="form-check-input"
                                             type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                     </td>
@@ -764,8 +764,8 @@
                                     <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
                                     <td class="editable-cell target-color-lecture isModifyLecture" colspan="3"
                                         contenteditable="true" data-name="lecture"
-                                        data-day="${day.day}">${lecture.target}</td>
-                                    <td class="performance-color-lecture isModifyLecture"><input
+                                        data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[1]}">${lecture.target}</td>
+                                    <td class="performance-color-lecture isModifyLecture" style="background-color: ${weekly.monthlys[0].color[1]}"><input
                                             class="form-check-input"
                                             type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -776,8 +776,8 @@
                                     <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="3"
                                         contenteditable="true"
                                         data-name="dailyEvaluation"
-                                        data-day="${day.day}">${dailyEvaluation.target}</td>
-                                    <td class="performance-color-dailyEvaluation isModifyDaily"><input
+                                        data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[2]}">${dailyEvaluation.target}</td>
+                                    <td class="performance-color-dailyEvaluation isModifyDaily" style="background-color: ${weekly.monthlys[0].color[2]}"><input
                                             class="form-check-input"
                                             type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -787,8 +787,8 @@
                                     <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
                                     <td class="editable-cell target-color-work isModifyWork" colspan="3"
                                         contenteditable="true" data-name="work"
-                                        data-day="${day.day}">${work.target}</td>
-                                    <td class="performance-color-work isModifyWork"><input class="form-check-input"
+                                        data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[3]}">${work.target}</td>
+                                    <td class="performance-color-work isModifyWork" style="background-color: ${weekly.monthlys[0].color[3]}"><input class="form-check-input"
                                                                                            type="checkbox" ${work.performance ? 'checked' : ''}>
                                     </td>
                                 </c:forEach>
@@ -798,8 +798,8 @@
                                     <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
                                     <td class="editable-cell target-color-reading isModifyReading" colspan="3"
                                         contenteditable="true" data-name="reading"
-                                        data-day="${day.day}">${reading.target}</td>
-                                    <td class="performance-color-reading isModifyReading"><input
+                                        data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[4]}">${reading.target}</td>
+                                    <td class="performance-color-reading isModifyReading" style="background-color: ${weekly.monthlys[0].color[4]}"><input
                                             class="form-check-input"
                                             type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                 </c:forEach>
@@ -1793,39 +1793,39 @@
         })
     })
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const theSingle = document.querySelector('.theSingleMostImportantThing');
-        const elementTdTheSingle = document.querySelectorAll('.isModifyTheSing');
-        isModify(theSingle, elementTdTheSingle);
-        const lecture = document.querySelector('.lecture');
-        const elementTdLecture = document.querySelectorAll('.isModifyLecture');
-        isModify(lecture, elementTdLecture);
-        const dailyEvaluation = document.querySelector('.dailyEvaluation');
-        const elementTdDaily = document.querySelectorAll('.isModifyDaily');
-        isModify(dailyEvaluation, elementTdDaily);
-        const work = document.querySelector('.work');
-        const elementTdWork = document.querySelectorAll('.isModifyWork');
-        isModify(work, elementTdWork);
-        const reading = document.querySelector('.reading');
-        const elementTdReading = document.querySelectorAll('.isModifyReading');
-        isModify(reading, elementTdReading);
-    })
-
-    function isModify(category, elementModify) {
-        if (category) {
-            const content = category.querySelector('span').textContent.trim();
-            if (content == null || content == '') {
-                elementModify.forEach(function (eTd, index) {
-                    eTd.contentEditable = false;
-                    category.querySelector('button').classList.add('d-none');
-                    eTd.style.opacity = 0.5;
-                    var lengthTd = category.querySelectorAll('td').length;
-                    if (lengthTd == 2) category.querySelectorAll('td')[1].style.opacity = 0.5;
-                    else category.querySelectorAll('td')[0].style.opacity = 0.5;
-                })
-            }
-        }
-    }
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const theSingle = document.querySelector('.theSingleMostImportantThing');
+    //     const elementTdTheSingle = document.querySelectorAll('.isModifyTheSing');
+    //     isModify(theSingle, elementTdTheSingle);
+    //     const lecture = document.querySelector('.lecture');
+    //     const elementTdLecture = document.querySelectorAll('.isModifyLecture');
+    //     isModify(lecture, elementTdLecture);
+    //     const dailyEvaluation = document.querySelector('.dailyEvaluation');
+    //     const elementTdDaily = document.querySelectorAll('.isModifyDaily');
+    //     isModify(dailyEvaluation, elementTdDaily);
+    //     const work = document.querySelector('.work');
+    //     const elementTdWork = document.querySelectorAll('.isModifyWork');
+    //     isModify(work, elementTdWork);
+    //     const reading = document.querySelector('.reading');
+    //     const elementTdReading = document.querySelectorAll('.isModifyReading');
+    //     isModify(reading, elementTdReading);
+    // })
+    //
+    // function isModify(category, elementModify) {
+    //     if (category) {
+    //         const content = category.querySelector('span').textContent.trim();
+    //         if (content == null || content == '') {
+    //             elementModify.forEach(function (eTd, index) {
+    //                 eTd.contentEditable = false;
+    //                 category.querySelector('button').classList.add('d-none');
+    //                 eTd.style.opacity = 0.5;
+    //                 var lengthTd = category.querySelectorAll('td').length;
+    //                 if (lengthTd == 2) category.querySelectorAll('td')[1].style.opacity = 0.5;
+    //                 else category.querySelectorAll('td')[0].style.opacity = 0.5;
+    //             })
+    //         }
+    //     }
+    // }
 
     function showModal(element) {
         const isAllowedNoti = element.innerText;
@@ -2224,7 +2224,6 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

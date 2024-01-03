@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 public class CalendarResponse {
     private MonthlyContentDto[] monthlyContents;
+    private String[] color;
     private List<CalendarDayResponse> days;
     private List<WeeklyManagementTimeDayResponse> weeklys;
     private YearResponse year;

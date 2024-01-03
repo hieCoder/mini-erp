@@ -382,6 +382,7 @@
                     console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
+                    let colors = parseData.color;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
@@ -503,7 +504,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].title;
-                                                cell.style.backgroundColor = e.weeklys[dayTodo].color;
+                                                cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -584,7 +585,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].content;
-                                                cell.style.backgroundColor = e.weeklys[dayTodo].color;
+                                                cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -604,7 +605,7 @@
                             row.appendChild(cell);
                         }
                         tbody.appendChild(row);
-                        changColor();
+                        changeTrColor();
                         $('div.custom-spinner').parent().remove()
                         if (button) {
                             button.prop("disabled", false)
@@ -612,6 +613,27 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
+                    $.each(colors, function (index, value) {
+                        switch (index) {
+                            case 0:
+                                $('.theSingleMostImportantThing').css('background-color', colors[index]);
+                                break;
+                            case 1:
+                                $('.lecture').css('background-color', colors[index]);
+                                break;
+                            case 2:
+                                $('.dailyEvaluation').css('background-color', colors[index]);
+                                break;
+                            case 3:
+                                $('.work').css('background-color', colors[index]);
+                                break;
+                            case 4:
+                                $('.reading').css('background-color', colors[index]);
+                                break;
+                            default:
+                                break;
+                        }
+                    })
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -620,7 +642,7 @@
         xhr.send();
     }
 
-    function changColor() {
+    function changeTrColor() {
         document.querySelectorAll('.color').forEach(function (e) {
             e.style.backgroundColor = e.querySelector('td').style.backgroundColor;
         })
@@ -784,7 +806,6 @@
                 const hasContentClass = $(this).hasClass('content');
                 const value = $(this).text().trim();
                 const week = $(this).data('week');
-                const color = $(this).css('background-color');
                 if (value !== "") {
                     if (day != null) {
                         let dayObj = days.find(d => d.day === day);
@@ -813,13 +834,13 @@
                             if (!currentWeekly.hasOwnProperty('content')) {
                                 currentWeekly.content = '';
                             }
-                            currentWeekly.color = color
+                            currentWeekly.status = $(this).data('status')
                         } else if (hasContentClass) {
                             if (!currentWeekly.hasOwnProperty('title')) {
                                 currentWeekly.title = '';
                             }
                             currentWeekly.content = value;
-                            currentWeekly.color = color
+                            currentWeekly.status = $(this).data('status')
                         }
                     }
                 }
@@ -842,7 +863,6 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.quotes = [];
                 data.quotes.image = rs[0];

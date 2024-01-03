@@ -393,11 +393,16 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 (monthly != null) ? JsonUtils.jsonToObject(monthly.getContent(), MonthlyContentDto[].class) : null
         ).join();
 
+        String color = monthlyFuture.thenApply(monthly ->
+                (monthly != null) ? monthly.getColor() : null
+        ).join();
+
         return CalendarResponse.builder()
                 .monthlyContents(monthlyContents)
                 .days(managementTimeDayConvert.toListCalendarResponse(daysFuture.join()))
                 .weeklys(weeklyManagementTimeDayConverter.toListResponse(weeklysFuture.join()))
                 .year(yearManagementTimeDayConverter.toResponse(yearFuture.join()))
+                .color(JsonUtils.jsonToObject(color, String[].class))
                 .build();
     }
 
@@ -440,6 +445,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     monthResponse.setIncomes(JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class) == null ? new ArrayList<>(): JsonUtils.jsonToObject(monthlyManagementTimeDay.getIncomeThisMonth(), List.class));
                     monthResponse.setFixeds(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class) == null ? new ArrayList<>():JsonUtils.jsonToObject(monthlyManagementTimeDay.getFixedCosts(), List.class));
                     monthResponse.setFluctuatings(JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class) == null ? new ArrayList<>():JsonUtils.jsonToObject(monthlyManagementTimeDay.getFluctuatingCosts(), List.class));
+
+                    monthResponse.setColor(JsonUtils.jsonToObject(monthlyManagementTimeDay.getColor(), String[].class));
 
                     monthlys.add(monthResponse);
                 } else{
