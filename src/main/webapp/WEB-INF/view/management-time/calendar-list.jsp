@@ -648,7 +648,13 @@
         })
     }
 
-    populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    document.addEventListener("DOMContentLoaded", function () {
+        const currentUrl = new URL(window.location.href);
+        const year = currentUrl.searchParams.get("year");
+        const month = currentUrl.searchParams.get("month");
+        if (year && month) populateCalendar(year, month - 1);
+        else populateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    })
 
     function updateMonth(month) {
         document.getElementById('currentMonth').textContent = month;
@@ -881,7 +887,6 @@
         })
     })
 
-
     function getPreviousSunday(currentDate, isLastSunday) {
         const dateObject = new Date(currentDate);
 
@@ -968,7 +973,6 @@
             inputElement.focus();
         }
     }
-
 
 </script>
 </body>

@@ -36,6 +36,12 @@ public class ManagementTimeDayController {
         return view;
     }
 
+    @GetMapping("/years")
+    public ModelAndView calendarOfYears() {
+        ModelAndView view = new ModelAndView("management-time/calendar-years");
+        return view;
+    }
+
     @GetMapping("/weekly-detail/{userId}")
     public ModelAndView getDetailDay(@PathVariable String userId, @RequestParam(name = "currentDay", required = false, defaultValue = "") String currentDay) {
         ModelAndView mav = new ModelAndView("management-time/day/week-detail");

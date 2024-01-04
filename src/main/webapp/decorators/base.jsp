@@ -849,22 +849,31 @@
 
     $('.header-profile-user').attr('src', userCurrent.avatar);
 
-    var scheduleLink = '', managementTime = '';
+    var scheduleLink = '', managementTimeYear = '', managementTimeMonth = '', managementTimeWeek = '';
+    const dateCalendar = new Date();
+    const yearCalendar = dateCalendar.getFullYear();
+    const monthCalendar = (dateCalendar.getMonth() + 1).toString().padStart(2, '0');
+    const dayCalendar = dateCalendar.getDate().toString().padStart(2, '0');
+    const formattedDateCalendar = yearCalendar + '-' + monthCalendar + '-' + dayCalendar;
     if (isDeleveloper()) {
         $('.manager-menu').remove();
 
         scheduleLink = '/schedules/detail/' + userCurrent.id;
-        managementTime = '/management-time/' + userCurrent.id;
-
+        managementTimeYear = '/management-time/years?year=' + dateCalendar.getFullYear() + '&id=' + userCurrent.id;
+        managementTimeMonth = '/management-time/' + userCurrent.id;
+        managementTimeWeek = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + formattedDateCalendar;
     } else {
         $('.manager-menu').removeClass('d-none');
-
         scheduleLink = '/schedules';
-        managementTime = '/management-time';
+        managementTimeYear = '/management-time?year=' + dateCalendar.getFullYear();
+        managementTimeMonth = '/management-time';
+        managementTimeWeek = '/management-time?currentDay=' + formattedDateCalendar;
     }
 
     $('.schedule-item-menu').attr('href', scheduleLink);
-    $('.management-time').attr('href', managementTime);
+    $('.management-time-year').attr('href', managementTimeYear);
+    $('.management-time-month').attr('href', managementTimeMonth);
+    $('.management-time-week').attr('href', managementTimeWeek);
 </script>
 </body>
 </html>
