@@ -25,7 +25,7 @@
     <div class="card shadow">
         <div class="card-header">
             <h4 class="card-title mb-0">Management Time User List</h4>
-        </div><!-- end card header -->
+        </div>
 
         <div class="card-body">
             <p class="text-muted">Use data attributes and other custom attributes as keys</p>
@@ -58,11 +58,19 @@
                                                 <li class="list-group-item" data-id="${user.id}">
                                                     <div class="d-flex">
                                                         <div class="flex-grow-1">
-                                                            <h5 class="fs-13 mb-1"><a
-                                                                    href="/management-time/${user.id}"
-                                                                    class="link name text-dark">
-                                                                    ${user.fullname}
-                                                            </a></h5>
+                                                            <h5 class="fs-13 mb-1">
+                                                                <script>
+                                                                   var currentUrl = window.location.href;
+                                                                   var urlSearchParams = new URLSearchParams(currentUrl);
+                                                                   var newHref = '/management-time/' + ${user.id};
+                                                                   urlSearchParams.forEach(function(value, key) {
+                                                                       if (key.includes('year')) newHref = '/management-time/years?year=' + value + '&id=' + ${user.id};
+                                                                       else if (key.includes('currentDay')) newHref = '/management-time/weekly-detail/' + ${user.id} + '?currentDay=' + value;
+                                                                   });
+
+                                                                   document.write('<a href="' + newHref + '" class="link name text-dark">' + '${user.fullname}' + '</a>');
+                                                                </script>
+                                                            </h5>
                                                             <p class="born timestamp text-muted mb-0"
                                                                data-timestamp="12345">${user.position}</p>
                                                         </div>
