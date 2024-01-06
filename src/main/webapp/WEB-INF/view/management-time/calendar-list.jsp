@@ -379,7 +379,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
@@ -634,6 +633,7 @@
                                 break;
                         }
                     })
+                    saveCalendar();
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -741,7 +741,7 @@
         return year + '-' + month + '-' + day;
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function saveCalendar() {
         const statusMonthly = [];
         document.getElementById('monthlyTarget').querySelectorAll('p').forEach( function (e) {
             statusMonthly.push(e.getAttribute('data-value'));
@@ -778,7 +778,6 @@
                 content: [],
                 color: []
             };
-
             $('.editable').each(function (index) {
                 let obj = {};
                 if ($(this).hasClass('editing')) {
@@ -885,8 +884,7 @@
                 })
             });
         })
-    })
-
+    }
     function getPreviousSunday(currentDate, isLastSunday) {
         const dateObject = new Date(currentDate);
 
