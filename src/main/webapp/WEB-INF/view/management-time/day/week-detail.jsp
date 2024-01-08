@@ -21,8 +21,7 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
-
-        #addDaily {
+        #addDaily{
             position: absolute;
             top: 0;
             left: 51%;
@@ -31,6 +30,14 @@
             border-radius: 50%;
             display: flex;
             align-items: center;
+        }
+
+        .w-100px {
+            width: 100px;
+        }
+
+        .target-onething {
+            max-width: 110px;
         }
 
         .table-container {
@@ -166,7 +173,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <di>
                             <h4 class="fw-bolder">One Thing Calendar</h4>
-                            <h5 class="fst-italic">Daily Important</h5>
+                            <h5 class="fst-italic">Performance Overview</h5>
                         </di>
                         <!-- Default Modals -->
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal"
@@ -184,9 +191,48 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <%-- OneThing Calendar Session --%>
+                        <c:set var="theSingleMostImportantThing" value="${weekly.weeklys.weeklys[0]}"/>
+                        <tr style="background-color: ${weekly.monthlys[0].color[0]}" class="text-center">
+                            <td class="text-start" rowspan="5" style="background-color: #ffffff !important;">Onething calendar</td>
+                            <td><input class="form-control text-danger fw-bolder" type="text" value="Important matter" disabled></td>
+                            <td class="text-center rate-onething"></td>
+                            <td class="text-center target-onething">${theSingleMostImportantThing.content}</td>
+                            <td class="text-center performance-onething"></td>
+                        </tr>
+                        <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
+                        <tr style="background-color: ${weekly.monthlys[0].color[1] == null ? '#fcecec' : weekly.monthlys[0].color[1]}">
+                            <td><input class="form-control" type="text" value="${lecture.title}" disabled></td>
+                            <td class="text-center rate-onething"></td>
+                            <td class="text-center target-onething">${lecture.content}</td>
+                            <td class="text-center performance-onething"></td>
+                        </tr>
+                        <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
+                        <tr style="background-color:  ${weekly.monthlys[0].color[2] == null ? '#e6f0e2' : weekly.monthlys[0].color[2]}">
+                            <td><input class="form-control" type="text" value="${dailyEvaluation.title}" disabled></td>
+                            <td class="text-center rate-onething"></td>
+                            <td class="text-center target-onething">${dailyEvaluation.content}</td>
+                            <td class="text-center performance-onething"></td>
+                        </tr>
+                        <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
+                        <tr style="background-color: ${weekly.monthlys[0].color[3] == null ? '#fff9e6' : weekly.monthlys[0].color[3]}">
+                            <td><input class="form-control" type="text" value="${work.title}" disabled></td>
+                            <td class="text-center rate-onething"></td>
+                            <td class="text-center target-onething">${work.content}</td>
+                            <td class="text-center performance-onething"></td>
+                        </tr>
+                        <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
+                        <tr style="background-color: ${weekly.monthlys[0].color[4] == null ? '#e9e4f5' : weekly.monthlys[0].color[4]}">
+                            <td><input class="form-control" type="text" value="${reading.title}" disabled></td>
+                            <td class="text-center rate-onething"></td>
+                            <td class="text-center target-onething">${reading.content}</td>
+                            <td class="text-center performance-onething"></td>
+                        </tr>
+
+                        <%-- Daily Session --%>
                         <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
                         <tr name="theSingleMostImportantThing">
-                            <td class="text-start" rowspan="6">Repeat consistently every day</td>
+                            <td class="text-start" rowspan="1" id="daily-objective">Daily Routine</td>
                             <td><input class="form-control dailyRoutineInput checkDaily" type="text"
                                        value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">
                             </td>
@@ -205,7 +251,6 @@
                             </td>
                             <td class="text-center">${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>
                         </tr>
-
                         <c:forEach var="index" begin="1" end="10">
                             <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>
                             <c:if test="${not empty dailyRoutine.title}">
@@ -229,14 +274,12 @@
                                 </tr>
                             </c:if>
                         </c:forEach>
-
                         <tr id="dailySession">
                             <td colspan="4" style="position: relative">
                                 <button type="button" class="btn btn-success waves-effect waves-light"
                                         id="addDaily"><i class="bx bx-plus"></i></button>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
 
@@ -269,7 +312,6 @@
                         </c:if>
                         </tbody>
                     </table>
-
                     <h4 class="fw-bolder">Month Target</h4>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
@@ -326,7 +368,6 @@
                         </c:if>
                         </tbody>
                     </table>
-
                     <h4 class="fw-bolder">Weekly Todolist</h4>
                     <table class="table table-bordered oneThingCalendar text-center align-middle">
                         <thead>
@@ -339,8 +380,7 @@
                         <c:set var="theSingleMostImportantThing"
                                value="${weekly.weeklys.weeklys[0]}"/>
                         <tr id="theSingCategory">
-                            <td class="text-start weekTitle"
-                                contenteditable="true" style="background-color: ${weekly.monthlys[0].color[0]}">${theSingleMostImportantThing.title}</td>
+                            <td class="text-start weekTitle text-danger fw-bolder" style="background-color: ${weekly.monthlys[0].color[0]};">Important matter</td>
                             <td style="background-color: ${weekly.monthlys[0].color[0]}">
                                 <div class="input-group">
                                     <input class="form-control weekTarget" name="theSingleMostImportantThing"
@@ -591,7 +631,7 @@
                             <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
                                 <th scope="col" class="panel colorPicker"
                                     style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
-                                    <p class="m-0" contenteditable="true">${color.category}</p>
+                                    <p class="m-0 color-category">${color.category}</p>
                                     <div class="pickr"></div>
                                     <p hidden="hidden"
                                        class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
@@ -601,7 +641,7 @@
                                 <c:forEach begin="${weekly.colors.size()}" end="3">
                                     <th scope="col" class="panel colorPicker"
                                         style="background-color: #FFFFFF;">
-                                        <p class="m-0" contenteditable="true">Default Category</p>
+                                        <p class="m-0 color-category">Default Category</p>
                                         <div class="pickr"></div>
                                         <p hidden="hidden" class="pickedColor">#FFFFFF</p>
                                     </th>
@@ -612,13 +652,13 @@
                         </thead>
                         <tbody>
                         <c:forEach begin="0" end="8" var="item" varStatus="loop">
-                            <tr>
+                            <tr class="tr-color-category">
                                 <c:forEach items="${weekly.colors}" var="color">
-                                    <td contenteditable="true" class="inputColor">${color.values[loop.index]}</td>
+                                    <td contenteditable="true" class="key-color">${color.values[loop.index]}</td>
                                 </c:forEach>
                                 <c:if test="${weekly.colors.size() < 4}">
                                     <c:forEach begin="${weekly.colors.size()}" end="3">
-                                        <td contenteditable="true" class="inputColor"></td>
+                                        <td contenteditable="true" class="key-color"></td>
                                     </c:forEach>
                                 </c:if>
                             </tr>
@@ -631,104 +671,120 @@
                         <table>
                             <thead>
                             <tr>
-                                <th colspan="2" class="fw-bolder"><h5>Detail</h5></th>
+                                <th colspan="3" class="fw-bolder"><h5>Detail</h5></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td></td>
-                                <td class="fw-bolder">Categories</td>
+                                <td colspan="2" class="fw-bolder">Categories</td>
                             </tr>
                             <tr class="theSingleMostImportantThing">
                                 <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething
                                     calendar
                                 </td>
-                                <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-top: 0; border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.monthlys[0].color[0]}">
-                                    <span class="mx-auto">${weekly.weeklys.weeklys[0].title}</span>
+                                <td colspan="2"
+                                    style="border-top: 0; border-left: 0; border-bottom: 0;  background-color: ${weekly.monthlys[0].color[0]}">
+                                    <span class="mx-auto fw-bolder text-danger">Important matter</span>
                                 </td>
                             </tr>
                             <tr class="lecture">
-                                <td class="d-flex align-items-center justify-content-between text-center"
-                                    style="border-left: 0; border-bottom: 0; height: 32px; background-color: ${weekly.monthlys[0].color[1]}">
+                                <td colspan="2"
+                                    style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[1]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[1].title}</span>
                                 </td>
                             </tr>
                             <tr class="dailyEvaluation">
-                                <td class="d-flex align-items-center justify-content-between text-center"
+                                <td colspan="2"
                                     style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[2]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[2].title}</span>
                                 </td>
                             </tr>
                             <tr class="work">
-                                <td class="d-flex align-items-center justify-content-between text-center"
+                                <td colspan="2"
                                     style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[3]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[3].title}</span>
                                 </td>
                             </tr>
                             <tr class="reading">
-                                <td class="d-flex align-items-center justify-content-between text-center"
+                                <td colspan="2"
                                     style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[4]}">
                                     <span class="mx-auto">${weekly.weeklys.weeklys[4].title}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do
-                                    List
-                                </td>
-                                <td style="height: 65px">Six to Twelve PM</td>
-                            </tr>
-                            <tr>
-                                <td style="height: 65px">Twelve to Six PM</td>
-                            </tr>
-                            <tr>
-                                <td style="height: 65px">Six to Twelve AM</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="height: 162.5px" id="daily-routine"><h5 class="fw-bolder">Daily
+                                <td colspan="3" style="height: 162.5px" id="daily-routine"><h5 class="fw-bolder">Daily
                                     Routine</h5></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="height: 213px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
+                                <td rowspan="3" style="max-width: 5rem;white-space: normal" class="fw-bolder">To-Do
+                                    List
+                                </td>
+                                <td colspan="3" style="height: 65px">Six to Twelve PM</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Affirmation</h5></td>
+                                <td colspan="2" style="height: 65px">Twelve to Six PM</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Compliment for me today</h5>
+                                <td  colspan="2" style="height: 65px">Six to Twelve AM</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height: 213px"><h5 class="fw-bolder">Gratitude Diary</h5></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height: 71px"><h5 class="fw-bolder">Affirmation</h5></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height: 71px"><h5 class="fw-bolder">Compliment for me today</h5>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="height: 71px"><h5 class="fw-bolder">Today’s reflections and
+                                <td colspan="3" style="height: 71px"><h5 class="fw-bolder">Today’s reflections and
                                     improvements</h5></td>
                             </tr>
                             <tr>
                                 <td></td>
-                                <td class="fw-bolder">Process</td>
+                                <td colspan="2" class="fw-bolder">Process</td>
                             </tr>
                             <tr>
                                 <td rowspan="24" style="max-width: 5rem;white-space: normal" class="fw-bolder">
                                     Timeline
                                 </td>
-                                <td class="fw-bolder">0:00</td>
+                                <td colspan="2" class="fw-bolder">0:00</td>
                             </tr>
                             <c:forEach var="time" begin="1" end="23">
                                 <tr>
                                     <c:choose>
                                         <c:when test="${time % 6 == 0}">
-                                            <td class="fw-bolder">${time}:00</td>
+                                            <td colspan="2" class="fw-bolder">${time}:00</td>
                                         </c:when>
                                         <c:otherwise>
-                                            <td>${time}:00</td>
+                                            <td colspan="2">${time}:00</td>
                                         </c:otherwise>
                                     </c:choose>
                                 </tr>
                             </c:forEach>
+                            <tr>
+                                <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
+                                <td class="title-report-category"></td>
+                                <td class="w-100px total-category text-lg-start"></td>
+                            </tr>
+                            <tr>
+                                <td class="title-report-category"></td>
+                                <td class="w-100px total-category text-lg-start"></td>
+                            </tr>
+                            <tr>
+                                <td class="title-report-category"></td>
+                                <td class="w-100px total-category text-lg-start"></td>
+                            </tr>
+                            <tr>
+                                <td class="title-report-category"></td>
+                                <td class="w-100px total-category text-lg-start"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="table-container" style="max-height: 1870px">
+                    <div class="table-container" style="max-height: 3000px">
                         <table>
                             <thead>
                             <tr>
@@ -744,6 +800,7 @@
                                     <td class="fw-bolder">Performance</td>
                                 </c:forEach>
                             </tr>
+
                             <%--one-thing--%>
                             <tr class="theSingleMostImportantThing">
                                 <c:forEach var="day" items="${weekly.days}">
@@ -805,6 +862,29 @@
                                 </c:forEach>
                             </tr>
 
+                            <%--daily routine--%>
+                            <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
+                                <tr name="daily" class="checkDailyRoutine">
+                                    <c:forEach var="day" items="${weekly.days}">
+                                        <c:set var="dayMonth" value="${fn:substring(day.day, 0, 7)}"/>
+                                        <c:choose>
+                                            <c:when test="${dayMonth eq weekly.monthlys[0].month}">
+                                                <c:set var="dailyRoutine"
+                                                       value="${weekly.monthlys[0].dailyRoutine[loop.index]}"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:set var="dailyRoutine"
+                                                       value="${weekly.monthlys[1].dailyRoutine[loop.index]}"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <td class="editable-cell " colspan="3">${dailyRoutine.title}</td>
+                                        <td><input class="form-check-input dailyRoutine"
+                                                   type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
+                                                   data-day="${day.day}"></td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+
                             <%--to-do--%>
                             <tr name="daily">
                                 <c:forEach var="day" items="${weekly.days}">
@@ -861,29 +941,6 @@
                                 </c:forEach>
                             </tr>
 
-                            <%--daily routine--%>
-                            <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
-                                <tr name="daily" class="checkDailyRoutine">
-                                    <c:forEach var="day" items="${weekly.days}">
-                                        <c:set var="dayMonth" value="${fn:substring(day.day, 0, 7)}"/>
-                                        <c:choose>
-                                            <c:when test="${dayMonth eq weekly.monthlys[0].month}">
-                                                <c:set var="dailyRoutine"
-                                                       value="${weekly.monthlys[0].dailyRoutine[loop.index]}"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:set var="dailyRoutine"
-                                                       value="${weekly.monthlys[1].dailyRoutine[loop.index]}"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <td class="editable-cell " colspan="3">${dailyRoutine.title}</td>
-                                        <td><input class="form-check-input dailyRoutine"
-                                                   type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
-                                                   data-day="${day.day}"></td>
-                                    </c:forEach>
-                                </tr>
-                            </c:forEach>
-
                             <%--Gratitude Diary--%>
                             <c:forEach begin="0" end="2" var="entry" varStatus="loop">
                                 <tr name="gratitudeDiary">
@@ -906,6 +963,7 @@
                                     </td>
                                 </c:forEach>
                             </tr>
+
                             <%--Compliment--%>
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
@@ -916,6 +974,7 @@
                                     </td>
                                 </c:forEach>
                             </tr>
+
                             <%--Reflection--%>
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
@@ -927,6 +986,7 @@
                                     </td>
                                 </c:forEach>
                             </tr>
+
                             <tr>
                                 <c:forEach var="day" items="${weekly.days}">
                                     <td class="fw-bolder" colspan="2">Plan</td>
@@ -997,12 +1057,21 @@
                                             <img src="https://cdn-icons-png.flaticon.com/512/4764/4764539.png"
                                                  class="float-end d-none" width="15" height="15">
                                         </td>
-                                        <td style="background-color: ${backgroundColor2}" contenteditable="true"
+                                        <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
                                             data-day="${day.day}"
                                             data-name="timeLine">${data[0].actual}</td>
-                                        <td style="background-color: ${backgroundColor3}" contenteditable="true"
+                                        <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
                                             data-day="${day.day}"
                                             data-name="timeLine">${data[1].actual}</td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+
+                            <%--Time Usage Report--%>
+                            <c:forEach begin="0" end="3" varStatus="loop">
+                                <tr class="tr-timeReport">
+                                    <c:forEach var="day" items="${weekly.days}">
+                                        <td class="total-time-day" colspan="4" data-day="${day.day}"></td>
                                     </c:forEach>
                                 </tr>
                             </c:forEach>
@@ -1177,7 +1246,7 @@
                 </table>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered border-secondary  text-center">
+                    <table class="table table-bordered border-secondary text-center">
                         <thead>
                         <tr id="days"></tr>
                         </thead>
@@ -1240,6 +1309,137 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
 
+    // Handle change content Category Color
+    document.addEventListener("DOMContentLoaded", function () {
+        const trColorCategory = document.querySelectorAll('.tr-color-category');
+        const columColor1 = [], columColor2 = [], columColor3 = [], columColor4 = [];
+        trColorCategory.forEach(function (e) {
+            columColor1.push(e.querySelectorAll('td')[0].textContent);
+            columColor2.push(e.querySelectorAll('td')[1].textContent);
+            columColor3.push(e.querySelectorAll('td')[2].textContent);
+            columColor4.push(e.querySelectorAll('td')[3].textContent);
+        })
+
+        document.querySelectorAll('.total-time-day').forEach(function (eTotal, index) {
+            var count1 = 0, count2 = 0, count3 = 0, count4 = 0;
+            document.querySelectorAll('.actual-timeLine').forEach(function (e) {
+                for (var i = 0; i < 7; i++) {
+                    if (index == i) {
+                        if (e.getAttribute('data-day') == eTotal.getAttribute('data-day')) {
+                            if (columColor1.includes(e.textContent) && e.textContent != '') {
+                                count1++;
+                            }
+                        }
+                        eTotal.textContent = count1 * 0.5 + ' hours';
+                    }
+                }
+                for (var i = 7; i < 14; i++) {
+                    if (index == i) {
+                        if (e.getAttribute('data-day') == eTotal.getAttribute('data-day')) {
+                            if (columColor2.includes(e.textContent) && e.textContent != '') {
+                                count2++;
+                            }
+                        }
+                        eTotal.textContent = count2 * 0.5 + ' hours';
+                    }
+                }
+                for (var i = 14; i < 21; i++) {
+                    if (index == i) {
+                        if (e.getAttribute('data-day') == eTotal.getAttribute('data-day')) {
+                            if (columColor3.includes(e.textContent) && e.textContent != '') {
+                                count3++;
+                            }
+                        }
+                        eTotal.textContent = count3 * 0.5 + ' hours';
+                    }
+                }
+                for (var i = 21; i < 28; i++) {
+                    if (index == i) {
+                        if (e.getAttribute('data-day') == eTotal.getAttribute('data-day')) {
+                            if (columColor4.includes(e.textContent) && e.textContent != '') {
+                                count4++;
+                            }
+                        }
+                        eTotal.textContent = count4 * 0.5 + ' hours';
+                    }
+                }
+            })
+        })
+
+        const totalTimeCategory = document.querySelectorAll('.total-category');
+        document.querySelectorAll('.tr-timeReport').forEach(function (eTr, index) {
+            var total = 0;
+            eTr.querySelectorAll('td').forEach(function (eTd) {
+                total += parseFloat(eTd.textContent);
+            })
+            totalTimeCategory[index].innerHTML = 'Total time: ' + '<span class="text-danger fw-bolder">' + total + '</span>' +' hours';
+        })
+    })
+
+    // Handle change content Category Color
+    document.addEventListener("DOMContentLoaded", function () {
+        const elColorCategory = document.querySelectorAll('.color-category');
+        const titleReportCategory = document.querySelectorAll('.title-report-category');
+        const weeklyTitle = document.querySelectorAll('.weekTitle');
+
+        document.querySelectorAll('.weekTitle').forEach(function (e, index) {
+            if (index != 0) {
+                if (e.textContent != '') {
+                    elColorCategory[index - 1].textContent = e.textContent;
+                    titleReportCategory[index - 1].textContent = e.textContent;
+                    titleReportCategory[index - 1].style.backgroundColor = weeklyTitle[index].style.backgroundColor;
+                }
+            }
+        })
+    })
+
+    // Handle performance onething calendar
+    document.addEventListener("DOMContentLoaded", function () {
+        var countPerformanceTheSing = 0;
+        var countPerformanceLecture = 0;
+        var countPerformanceDaily = 0;
+        var countPerformanceWorl = 0;
+        var countPerformanceReading = 0;
+        const performanceTheSing = document.querySelectorAll('.performance-color-theSingle');
+        const performanceLecture = document.querySelectorAll('.performance-color-lecture');
+        const performanceDaily = document.querySelectorAll('.performance-color-dailyEvaluation');
+        const performanceWork = document.querySelectorAll('.performance-color-work');
+        const performanceReading = document.querySelectorAll('.performance-color-reading');
+        const rateOnething = document.querySelectorAll('.rate-onething');
+
+        performanceTheSing.forEach( function (e, index) {
+            if (e.querySelector('input').checked) countPerformanceTheSing++;
+            if (performanceLecture[index].querySelector('input').checked) countPerformanceLecture++;
+            if (performanceDaily[index].querySelector('input').checked) countPerformanceDaily++;
+            if (performanceWork[index].querySelector('input').checked) countPerformanceWorl++;
+            if (performanceReading[index].querySelector('input').checked) countPerformanceReading++;
+        })
+
+        document.querySelectorAll('.performance-onething').forEach( function (e, index) {
+            if (index == 0) {
+                e.textContent = countPerformanceTheSing + '/7';
+                rateOnething[index].textContent = ((countPerformanceTheSing * 100) / 7).toFixed(2) + '%';
+            }
+            if (index == 1) {
+                e.textContent = countPerformanceLecture + '/7';
+                rateOnething[index].textContent = ((countPerformanceLecture * 100) / 7).toFixed(2) + '%';
+            }
+            if (index == 2) {
+                e.textContent = countPerformanceDaily + '/7';
+                rateOnething[index].textContent = ((countPerformanceDaily * 100) / 7).toFixed(2) + '%';
+            }
+            if (index == 3) {
+                e.textContent = countPerformanceWorl + '/7';
+                rateOnething[index].textContent = ((countPerformanceWorl * 100) / 7).toFixed(2) + '%';
+            }
+            if (index == 4) {
+                e.textContent = countPerformanceReading + '/7';
+                rateOnething[index].textContent = ((countPerformanceReading * 100) / 7).toFixed(2) + '%';
+            }
+        })
+    })
+
+    // Function change color and content Status
     function addStatus(btn, value) {
         switch (value) {
             case 'PENDING':
@@ -1266,6 +1466,7 @@
         }
     }
 
+    // Handle Change status by button setting
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.btn-status').forEach(function (e) {
             const statusValue = e.getAttribute('data-value');
@@ -1291,6 +1492,7 @@
         })
     })
 
+    // Function show Dream Board when user shoose image
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
@@ -1316,6 +1518,7 @@
         }
     }
 
+    // Handle expenseManagement when user click button Expense management
     document.getElementById('expenseManagement').addEventListener('click', function (e) {
         var currentUrl = window.location.href;
 
@@ -1378,6 +1581,7 @@
         }
     })
 
+    // Show modal expenseManagement when user save expenseManagement success
     document.addEventListener("DOMContentLoaded", function () {
         const result = localStorage.getItem('result');
         if (result == 'saveExpenseSuccess') {
@@ -1386,6 +1590,7 @@
         }
     })
 
+    // Handle height px of Daily Routine
     document.addEventListener("DOMContentLoaded", function () {
         const dailySession = document.getElementById('daily-routine');
         var heightDaily = parseFloat(dailySession.style.height);
@@ -1405,8 +1610,10 @@
         dailySession.style.height = heightDaily + 'px';
     })
 
+    // Handle when user click add more Daily Routine
     document.addEventListener("DOMContentLoaded", function () {
         const checkDaily = document.querySelectorAll('.checkDaily');
+        const dailyObjective = document.getElementById('daily-objective');
         var countValue = 0;
         checkDaily.forEach(function (e) {
             if (e.getAttribute('value') == '') {
@@ -1414,7 +1621,7 @@
                 trElment.remove();
             } else if (e.getAttribute('value') != '') countValue++;
         })
-
+        dailyObjective.setAttribute('rowspan', countValue + 1);
         const btnAddDaily = document.getElementById('addDaily');
         if (countValue == 5) {
             btnAddDaily.innerHTML = `<i class="bx bx-minus"></i>`
@@ -1422,8 +1629,10 @@
             $('#addDaily').addClass('btn-danger');
         }
         btnAddDaily.addEventListener('click', function () {
+            const rowspanDaily = parseInt(dailyObjective.getAttribute('rowspan'))
             if (btnAddDaily.classList.contains('btn-success')) {
                 const newDaily = '<tr name="theSingleMostImportantThing"> <td><input class="form-control dailyRoutineInput" type="text"></td> <td class="text-center">0% </td> <td class="text-center dailyRoutineTarget" contenteditable="true" onkeydown="return isNumberKey(event)" onclick="checkDaily()"> 0 </td> <td class="text-center">0</td> </tr>';
+                dailyObjective.setAttribute('rowspan', rowspanDaily + 1);
                 $(newDaily).insertBefore('#dailySession');
                 countValue++;
 
@@ -1435,6 +1644,7 @@
             } else if (btnAddDaily.classList.contains('btn-danger')) {
                 var pToDelete = $("#dailySession").prev("tr");
                 if (pToDelete.length > 0) pToDelete.remove();
+                dailyObjective.setAttribute('rowspan', rowspanDaily - 1);
                 countValue--;
                 if (countValue == 1) {
                     btnAddDaily.innerHTML = `<i class="bx bx-plus"></i>`
@@ -1445,6 +1655,7 @@
         })
     })
 
+    // Handle when user click add more Quote
     document.addEventListener("DOMContentLoaded", function () {
         const checkQuote = document.querySelectorAll('.checkQuote');
         var countValue = 0;
@@ -1484,28 +1695,7 @@
         })
     })
 
-    function convertToFormData(obj) {
-        const formData = new FormData();
-
-        function appendFormData(data, keyPrefix) {
-            if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-                Object.keys(data).forEach(key => {
-                    appendFormData(data[key], keyPrefix ? `${keyPrefix}[${key}]` : key);
-                });
-            } else {
-                formData.append(keyPrefix, data);
-            }
-        }
-
-        appendFormData(obj);
-
-        return formData;
-    }
-
-    function isObject(value) {
-        return value === Object(value) && !Array.isArray(value) && !(value instanceof Date);
-    }
-
+    // Function only allows users to enter numbers
     function validateNumberInput(event) {
         var inputText = event.target.textContent;
         var numericValue = inputText.replace(/[^\d.]/g, '');
@@ -1518,6 +1708,7 @@
         placeCaretAtEnd(event.target);
     }
 
+    // Function move the cursor to the end of the input cell after deleting the literal character
     function placeCaretAtEnd(el) {
         var range = document.createRange();
         var sel = window.getSelection();
@@ -1528,6 +1719,7 @@
         el.focus();
     }
 
+    // Function Check if there is notification content and display the notification
     function checkRow(row) {
         var date = new Date();
         var day = row.querySelectorAll('td[data-name="timeLine"] .note');
@@ -1564,11 +1756,11 @@
         }
 
         if ((noti1 != '' && noti1 != null) || (noti2 != '' && noti2 != null)) {
-
             document.getElementById('btn-alarm').click();
         }
     }
 
+    // Check notification content
     document.addEventListener("DOMContentLoaded", function () {
         var rows = document.querySelectorAll('tr[name="timeLine"]');
         rows.forEach(function (row) {
@@ -1576,6 +1768,7 @@
         });
     });
 
+    // Delete input quote if there is no content
     document.addEventListener("DOMContentLoaded", function () {
         var quotes = document.querySelectorAll('.notiQuote');
         quotes.forEach(function (quote) {
@@ -1583,29 +1776,7 @@
         });
     });
 
-    function setWithExpiry(key, value, ttl) {
-        const now = new Date();
-        const item = {
-            value: value,
-            expiry: now.getTime() + ttl,
-        };
-        localStorage.setItem(key, JSON.stringify(item));
-    }
-
-    function getWithExpiry(key) {
-        const itemString = localStorage.getItem(key);
-        if (!itemString) {
-            return null;
-        }
-        const item = JSON.parse(itemString);
-        const now = new Date();
-        if (now.getTime() > item.expiry) {
-            localStorage.removeItem(key);
-            return null;
-        }
-        return item.value;
-    }
-
+    // Handle add content and icon notification when user right click
     document.addEventListener("DOMContentLoaded", function () {
         var plant = document.querySelectorAll('.setting');
         plant.forEach(function (elementPlant) {
@@ -1655,6 +1826,7 @@
         })
     })
 
+    // Handle when content notification is null -> hide icon
     document.addEventListener("DOMContentLoaded", function () {
         var plant = document.querySelectorAll('.setting');
         plant.forEach(function (elementPlant) {
@@ -1665,6 +1837,7 @@
         })
     })
 
+    // Show modal notification
     function showModal(element) {
         const isAllowedNoti = element.innerText;
 
@@ -1688,6 +1861,7 @@
         }
     }
 
+    // Handle show image quote + message success when user save all success
     document.addEventListener("DOMContentLoaded", function () {
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
@@ -1719,11 +1893,13 @@
         }
     })
 
+    // Loading when wait api load done
     window.addEventListener('beforeunload', function (event) {
         $(".containerLoading").removeClass("d-none");
         $("div.calendar-container").addClass("d-none")
     });
 
+    // Only daily routines <= 30
     function checkDaily() {
         $('td.dailyRoutineTarget').on('blur', function () {
             const target = $(this).text();
@@ -1743,9 +1919,9 @@
         return innerValues.split(',').map(value => value.trim());
     }).flat() : [];
 
-    $('td.inputColor').on('blur', function () {
+    $('td.key-color').on('blur', function () {
         allValues = [];
-        $('td.inputColor').each(function () {
+        $('td.key-color').each(function () {
             const target = $(this).text().trim();
             if (target !== '') {
                 allValues.push(target);
@@ -1753,6 +1929,8 @@
         });
     });
 
+
+    // Handle when user click check box Performance
     $(document).ready(function () {
         checkInitialValue();
 
@@ -1761,6 +1939,7 @@
         });
     });
 
+    // Function check box Performance
     function checkInitialValue() {
         $('.editable-cell').each(function () {
             var cellValue = $(this).text().trim();
@@ -1787,6 +1966,7 @@
         }
     }
 
+    // Handle user click save all
     $("#updateButton").click(function () {
         if (hasDuplicates(allValues)) {
             validateFail("Keyword should not be same");
@@ -2080,6 +2260,7 @@
         }
     })
 
+    // Handle user click save Expense management
     document.getElementById('saveSpending').addEventListener('click', function () {
         $("div.containerLoading").removeClass("d-none");
         document.getElementById('myModal').style.display = 'none';
@@ -2106,6 +2287,7 @@
         })
     })
 
+    // Handle scrollbars through days of the week
     $(document).ready(function () {
         let isMouseDown = false;
         let startX;

@@ -84,7 +84,8 @@
             var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             for (var i = 0; i < 7; i++) {
                 var dayOfWeekCell = row.insertCell(i);
-                dayOfWeekCell.className = (i === 0) ? 'text-danger' : '';
+                dayOfWeekCell.className = (i === 0) ? 'text-danger fw-bolder' : '';
+                dayOfWeekCell.classList.add('text-center');
                 dayOfWeekCell.innerHTML = daysOfWeek[i];
             }
 

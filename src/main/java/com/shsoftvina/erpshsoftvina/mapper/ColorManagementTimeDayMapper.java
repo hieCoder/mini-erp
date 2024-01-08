@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface ColorManagementTimeDayMapper {
-    int deleteAllByUserId(String userId);
+    int deleteAllByWeeklyId(String weeklyId);
     int createColors(List<ColorManagementTimeDay> colors);
-    List<ColorManagementTimeDay> findAllByUserId(String userId);
+    List<ColorManagementTimeDay> findAllByWeeklyId(String weeklyId);
 }

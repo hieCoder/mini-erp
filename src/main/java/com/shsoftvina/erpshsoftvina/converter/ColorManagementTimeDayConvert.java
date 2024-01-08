@@ -3,6 +3,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 import com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.User;
+import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
@@ -30,20 +31,20 @@ import java.util.stream.Collectors;
 @Component
 public class ColorManagementTimeDayConvert {
 
-    public ColorManagementTimeDay toEntity(String userId, ColorRequest colorRequest){
+    public ColorManagementTimeDay toEntity(WeeklyManagementTimeDay weekly, ColorRequest colorRequest){
         return ColorManagementTimeDay.builder()
                 .id(ApplicationUtils.generateId())
                 .category(colorRequest.getCategory())
                 .color(colorRequest.getColor())
                 .values(JsonUtils.objectToJson(colorRequest.getValues()))
-                .user(User.builder().id(userId).build())
+                .weekly(weekly)
                 .build();
     }
 
-    public List<ColorManagementTimeDay> toListEntity(String userId, ColorRequest[] colorRequests){
+    public List<ColorManagementTimeDay> toListEntity(WeeklyManagementTimeDay weekly, ColorRequest[] colorRequests){
         List<ColorManagementTimeDay> list = new ArrayList<>();
         for(ColorRequest colorManagementTimeDay: colorRequests){
-            list.add(toEntity(userId, colorManagementTimeDay));
+            list.add(toEntity(weekly, colorManagementTimeDay));
         }
         return list;
     }
