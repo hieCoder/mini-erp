@@ -3,22 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ColorManagementTimeDayMapper">
 
-    <delete id="deleteAllByUserId" parameterType="String">
-        DELETE FROM COLOR_MANAGEMENT_TIME_DAY WHERE USER_ID = #{userId}
+    <delete id="deleteAllByWeeklyId" parameterType="String">
+        DELETE FROM COLOR_MANAGEMENT_TIME_DAY WHERE WEEKLY_ID = #{weeklyId}
     </delete>
 
     <insert id="createColors" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO COLOR_MANAGEMENT_TIME_DAY (ID, CATEGORY, COLOR, `VALUES`, USER_ID)
+        INSERT INTO COLOR_MANAGEMENT_TIME_DAY (ID, CATEGORY, COLOR, `VALUES`, WEEKLY_ID)
         VALUES
         <foreach collection="colors" item="color" separator=",">
-            (UUID(), #{color.category}, #{color.color}, #{color.values}, #{color.user.id})
+            (UUID(), #{color.category}, #{color.color}, #{color.values}, #{color.weekly.id})
         </foreach>
     </insert>
 
-    <select id="findAllByUserId" resultMap="colorResultMap">
+    <select id="findAllByWeeklyId" resultMap="colorResultMap">
         SELECT *
         FROM COLOR_MANAGEMENT_TIME_DAY
-        WHERE USER_ID = #{userId}
+        WHERE WEEKLY_ID = #{weeklyId}
     </select>
 
     <resultMap id="colorResultMap" type="com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay">
