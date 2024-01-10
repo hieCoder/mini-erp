@@ -511,13 +511,12 @@
         var id = $(this).data('id');
         var swal = showAlertLoading();
         callAjaxByJsonWithData("/api/v1/books/" + id, "GET", null, function (rs) {
-            var book = rs.book;
-            $('#title-edit').val(book.title);
-            $('#author-edit').val(book.author);
-            $('#link-edit').val(book.link);
+            $('#title-edit').val(rs.title);
+            $('#author-edit').val(rs.author);
+            $('#link-edit').val(rs.link);
             $('#image-edit').val('');
             var imagepreview = $('#image-preview-edit');
-            imagepreview.attr('src', book.image);
+            imagepreview.attr('src', rs.image);
             imagepreview.removeClass('d-none');
 
             swal.close();

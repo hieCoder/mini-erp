@@ -1113,80 +1113,76 @@
             </div>
         </div>
         <div class="tab-pane" id="check-book" role="tabpanel" style="min-height: 700px">
-            <div class="row calendar-container d-none" data-date="${day}" data-id="${dayResponse.id}">
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="d-flex align-items-center">
-                                <h5 class="card-title mb-0 flex-grow-1">All books</h5>
-                            </div>
+            <div class="row calendar-container d-none">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 flex-grow-1">All books</h5>
                         </div>
-                        <div class="card-body border border-dashed border-end-0 border-start-0">
-                            <div class="row g-3">
-                                <div class="col-xxl-9 col-sm-12">
-                                    <div class="search-box">
-                                        <input id="search-input" type="text" class="form-control search bg-light border-light"
-                                               placeholder="Search by title, username">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
+                    </div>
+                    <div class="card-body border border-dashed border-end-0 border-start-0">
+                        <div class="row g-3">
+                            <div class="col-xxl-9 col-sm-12">
+                                <div class="search-box">
+                                    <input id="search-input" type="text" class="form-control search bg-light border-light"
+                                           placeholder="Search by title, username">
+                                    <i class="ri-search-line search-icon"></i>
                                 </div>
-                                <!--end col-->
-                                <div class="col-xxl-1 col-sm-4">
-                                    <button id="filter-btn" type="button" class="btn btn-primary btn-load">
+                            </div>
+                            <!--end col-->
+                            <div class="col-xxl-1 col-sm-4">
+                                <button id="filter-btn" type="button" class="btn btn-primary btn-load">
                                 <span class="d-flex align-items-center">
                                     <span class="spinner-border flex-shrink-0 d-none"></span>
                                     <span class="flex-grow-1 ms-2">
                                         <i class="ri-equalizer-fill me-1 align-bottom"></i>Filters
                                     </span>
                                 </span>
-                                    </button>
-                                </div>
-                                <!--end col-->
-                                <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
-                                    <div style="margin-right: 5px;">Show entries:</div>
-                                    <div class="page-count-item-container d-flex align-items-center align-items-center">
-                                        <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
-                                            <option value="10">10</option>
-                                            <option value="15">15</option>
-                                            <option value="20">20</option>
-                                        </select>
-                                        <span class="btn-load ml-10">
+                                </button>
+                            </div>
+                            <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
+                                <div style="margin-right: 5px;">Show entries:</div>
+                                <div class="page-count-item-container d-flex align-items-center align-items-center">
+                                    <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                    <span class="btn-load ml-10">
                                     <span class="spinner-border flex-shrink-0 d-none"></span>
                                 </span>
-                                    </div>
-                                </div>
-                                <!--end col-->
-                            </div>
-                            <!--end row-->
-                        </div>
-                        <!--end card-body-->
-                        <div class="card-body">
-                            <div class="table-responsive table-card">
-                                <table id="datatable-book" class="table align-middle table-nowrap mb-0 w-100"
-                                       style="margin: 0px!important;">
-                                    <thead>
-                                    <tr>
-                                        <th>Book</th>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>Created by</th>
-                                        <th>Created date</th>
-                                        <th>Time Spent Reading <span class="text-danger">(Hour)</span></th>
-                                        <th>Note</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="pagination-wrap hstack gap-2">
-                                    <ul id="pagination" class="pagination mb-0"></ul>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive table-card">
+                            <table id="datatable-book" class="table align-middle table-nowrap mb-0 w-100"
+                                   style="margin: 0px!important;">
+                                <thead>
+                                <tr>
+                                    <th>Book</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Created by</th>
+                                    <th>Created date</th>
+                                    <th>Time Spent Reading <span class="text-danger">(Hour)</span></th>
+                                    <th>Note</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="pagination-wrap hstack gap-2">
+                                <ul id="pagination" class="pagination mb-0"></ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="tab-pane" id="nav-border-justified-messages" role="tabpanel" style="min-height: 700px">
-            <div class="row calendar-container d-none" data-date="${day}" data-id="${dayResponse.id}">
+            <div class="row calendar-container d-none">
                 <div class="card">
                     <div class="row card-body">
                         <div class="col-md-4">
@@ -1424,10 +1420,12 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
 
+    // Url api get all book
     function getUrlApiBooks(search, page, pageSize) {
         return '/api/v1/books?search=' + search + '&page=' + page + '&pageSize=' + pageSize;
     }
 
+    // Url pi get book by paramater
     function getCountListApiUrl(search) {
         return '/api/v1/books/count?search=' + search;
     }
@@ -1440,6 +1438,7 @@
 
     var table = null;
 
+    // Render data for datatable
     $(document).ready(function () {
         if (isDeleveloper()) {
             $('#add-book-btn').remove();
@@ -1491,6 +1490,7 @@
         });
     });
 
+    // Handle user use function search
     $(document).on('click', '#filter-btn', function () {
         objPaging.search = $('#search-input').val();
         objPaging.page = 1;
@@ -1504,6 +1504,7 @@
         });
     });
 
+    // Handle user change page count
     $(document).on('change', '#page-count-select', function () {
         var selectedValue = $(this).val();
         objPaging.page = 1;
@@ -1517,12 +1518,14 @@
         });
     });
 
+    // Remove table if it exsit
     function removePagingIfExsit() {
         if (window.pagObj) {
             window.pagObj.twbsPagination('destroy');
         }
     }
 
+    // Function when user next page list book
     function loadPaging() {
         callAjaxByJsonWithData(getCountListApiUrl(objPaging.search), 'GET', null, function (totalItem) {
 
