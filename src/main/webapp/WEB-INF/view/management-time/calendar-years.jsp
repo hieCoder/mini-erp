@@ -61,6 +61,18 @@
         });
 
         observer.observe(calendarYear, { childList: true });
+        const date = new Date();
+        const dayNow = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate();
+        document.querySelectorAll('a.p-2.fs-6').forEach(function (e) {
+            const hrefValue = e.getAttribute('href');
+            var regex = /currentDay=(\d{4}-\d{2}-\d{2})/;
+            var match = hrefValue.match(regex);
+
+            if (match && match[1]) {
+                var currentDayValue = match[1];
+                if (currentDayValue == dayNow) e.classList.add('badge-soft-danger', 'rounded-pill')
+            }
+        })
     })
 
     function generateCalendar(year) {
@@ -84,7 +96,8 @@
             var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             for (var i = 0; i < 7; i++) {
                 var dayOfWeekCell = row.insertCell(i);
-                dayOfWeekCell.className = (i === 0) ? 'text-danger fw-bolder' : '';
+                dayOfWeekCell.className = (i == 0) ? 'text-danger fw-bolder' : '';
+                if (i == 6) dayOfWeekCell.classList.add('text-primary', 'fw-bolder')
                 dayOfWeekCell.classList.add('text-center');
                 dayOfWeekCell.innerHTML = daysOfWeek[i];
             }
@@ -130,6 +143,12 @@
 
             calendarContainer.appendChild(tableContainer);
         }
+    }
+
+    function currentDayHref(element) {
+        var hrefValue = element.getAttribute('href');
+        var matchResult = hrefValue.match(/currentDay=([\d-]+)/);
+        return matchResult;
     }
 
     function getMonthName(month) {
