@@ -21,6 +21,8 @@ public class FeelingOfBookResponse {
     private String lesson;
     private String action;
     private String createdDate;
+    private Double timeSpentReading;
+    private String note;
     private FullnameAndAvatarResponse user;
     private List<CommentFeelingBookResponse> comments;
 }

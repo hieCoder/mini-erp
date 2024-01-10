@@ -15,7 +15,6 @@ public interface FeelingOfBookMapper {
     int updateFeelingOfBook(FeelingOfBook feelingOfBook);
     int deleteFeelingOfBook(String bookId,
                             String userId);
-
     List<FeelingOfBook> findAllByBook(String bookId);
     FeelingOfBook findFeelingByUser(String bookId,
                                     String userId);

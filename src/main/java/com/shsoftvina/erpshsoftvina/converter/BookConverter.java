@@ -7,6 +7,7 @@ import com.shsoftvina.erpshsoftvina.model.response.book.BookResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,6 +26,8 @@ public class BookConverter {
                 .createdBy(book.getCreatedBy())
                 .link(book.getLink())
                 .image(FileUtils.getPathUpload(Book.class, book.getImage()))
+                .timeSpentReading(book.getFeelingOfBook() == null ? 0 : book.getFeelingOfBook().getTimeSpentReading())
+                .note(book.getFeelingOfBook() == null ? "" : book.getFeelingOfBook().getNote())
                 .build();
     }
 

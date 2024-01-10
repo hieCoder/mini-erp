@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class FeelingOfBook {
-
     private String id;
     private User user;
     private String feeling;
@@ -21,6 +20,8 @@ public class FeelingOfBook {
     private String lesson;
     private String action;
     private Date createdDate;
+    private Double timeSpentReading;
+    private String note;
     private Book book;
     private List<CommentFeelingBook> comments;
 }

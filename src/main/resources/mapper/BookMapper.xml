@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.BookMapper">
 
     <select id="findAll" parameterType="org.apache.ibatis.session.RowBounds" resultMap="bookResultMap">
-        SELECT *
-        FROM BOOK b
+        SELECT b.*, fb.ID AS fb_id, fb.TIME_SPENT_READING AS fb_time_spent_reading, fb.NOTE AS fb_note
+        FROM BOOK b LEFT join FEELING_OF_BOOK  fb on b.id = fb.book_id
         WHERE b.TITLE LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(b.CREATED_BY, ' ', -1) LIKE '%' #{searchTerm} '%'
         ORDER BY b.ID DESC
     </select>
@@ -33,6 +33,15 @@
         <result property="createdDate" column="CREATED_DATE"/>
         <result property="createdBy" column="CREATED_BY"/>
         <result property="image" column="IMAGE"/>
+        <association property="feelingOfBook" column="fb_id" javaType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook"
+                     resultMap="feelingResultMap"></association>
+    </resultMap>
+
+
+    <resultMap id="feelingResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+        <id property="id" column="fb_id"/>
+        <result property="timeSpentReading" column="fb_time_spent_reading"/>
+        <result property="note" column="fb_note"/>
     </resultMap>
 
     <insert id="createBook" parameterType="com.shsoftvina.erpshsoftvina.entity.Book">

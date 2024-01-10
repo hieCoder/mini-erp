@@ -20,4 +20,6 @@ public class BookResponse {
     private String createdBy;
     private String link;
     private String image;
+    private Double timeSpentReading;
+    private String note;
 }

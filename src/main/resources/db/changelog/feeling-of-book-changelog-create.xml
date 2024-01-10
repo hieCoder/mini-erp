@@ -26,4 +26,11 @@
                 constraintName="unique_user_book"
         />
     </changeSet>
+
+    <changeSet id="3" author="team2">
+        <addColumn tableName="FEELING_OF_BOOK">
+            <column name="TIME_SPENT_READING" type="DOUBLE"/>
+            <column name="NOTE" type="NVARCHAR(1000)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
