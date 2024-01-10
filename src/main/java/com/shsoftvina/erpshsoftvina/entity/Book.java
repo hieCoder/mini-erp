@@ -21,5 +21,5 @@ public class Book {
     private Date createdDate;
     private String createdBy;
     private String image;
-    private List<FeelingOfBook> feelingOfBooks;
+    private FeelingOfBook feelingOfBook;
 }

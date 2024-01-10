@@ -8,7 +8,9 @@
         SET FEELING = #{feeling},
             QUOTE   = #{quote},
             LESSON  = #{lesson},
-            ACTION  = #{action}
+            ACTION  = #{action},
+            TIME_SPENT_READING = #{timeSpentReading},
+            NOTE = #{note}
         WHERE ID = #{id}
     </update>
 
@@ -19,6 +21,8 @@
                fb.LESSON       AS fb_lesson,
                fb.ACTION       AS fb_action,
                fb.CREATED_DATE AS fb_created_date,
+               fb.TIME_SPENT_READING       AS fb_time_spent_reading,
+               fb.NOTE         AS fb_NOTE,
                fb.USER_ID      AS fb_user_id,
                fb.BOOK_ID      AS fb_book_id,
                u.ID            AS user_id,
@@ -46,6 +50,8 @@
                fb.LESSON       AS fb_lesson,
                fb.ACTION       AS fb_action,
                fb.CREATED_DATE AS fb_created_date,
+               fb.TIME_SPENT_READING       AS fb_time_spent_reading,
+               fb.NOTE         AS fb_NOTE,
                fb.USER_ID      AS fb_user_id,
                fb.BOOK_ID      AS fb_book_id,
                u.ID            AS user_id,
@@ -72,6 +78,8 @@
                fb.LESSON       AS fb_lesson,
                fb.ACTION       AS fb_action,
                fb.CREATED_DATE AS fb_created_date,
+               fb.TIME_SPENT_READING       AS fb_time_spent_reading,
+               fb.NOTE         AS fb_NOTE,
                fb.USER_ID      AS fb_user_id,
                fb.BOOK_ID      AS fb_book_id,
                u.ID            AS user_id,
@@ -98,6 +106,8 @@
         <result property="lesson" column="fb_lesson"/>
         <result property="action" column="fb_action"/>
         <result property="createdDate" column="fb_created_date"/>
+        <result property="timeSpentReading" column="fb_time_spent_reading"/>
+        <result property="note" column="fb_note"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap"></association>
         <collection property="comments" column="comment_id"
@@ -163,8 +173,8 @@
 
     <insert id="createFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         INSERT
-        INTO FEELING_OF_BOOK (ID, USER_ID, FEELING, QUOTE, LESSON, ACTION, CREATED_DATE, BOOK_ID)
-        VALUES (#{id}, #{user.id}, #{feeling}, #{quote}, #{lesson}, #{action}, #{createdDate}, #{book.id})
+        INTO FEELING_OF_BOOK (ID, USER_ID, FEELING, QUOTE, LESSON, ACTION, CREATED_DATE, TIME_SPENT_READING, NOTE, BOOK_ID)
+        VALUES (#{id}, #{user.id}, #{feeling}, #{quote}, #{lesson}, #{action}, #{createdDate}, #{timeSpentReading}, #{note}, #{book.id})
     </insert>
 
     <delete id="deleteFeelingOfBook" parameterType="String">
@@ -188,6 +198,8 @@
         <result property="lesson" column="LESSON"/>
         <result property="action" column="ACTION"/>
         <result property="createdDate" column="CREATED_DATE"/>
+        <result property="timeSpentReading" column="TIME_SPENT_READING"/>
+        <result property="note" column="NOTE"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap"></association>
     </resultMap>

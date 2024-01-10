@@ -20,6 +20,8 @@ public class FeelingOfBookCreateRequest {
     private String quote;
     private String lesson;
     private String action;
+    private Double timeSpentReading;
+    private String note;
 
     @NotBlank(message = "Field bookId is not filled")
     private String bookId;

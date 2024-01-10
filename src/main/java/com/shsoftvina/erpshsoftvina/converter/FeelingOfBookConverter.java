@@ -46,6 +46,8 @@ public class FeelingOfBookConverter {
                 .lesson(feelingOfBook.getLesson())
                 .action(feelingOfBook.getAction())
                 .createdDate(DateUtils.formatDateTime(feelingOfBook.getCreatedDate()))
+                .timeSpentReading(feelingOfBook.getTimeSpentReading())
+                .note(feelingOfBook.getNote())
                 .user(userConverter.toFullnameAndAvatarResponse(feelingOfBook.getUser()))
                 .comments(commentFeelingBookConverter.toListResponse(feelingOfBook.getComments()))
                 .build();
@@ -64,6 +66,8 @@ public class FeelingOfBookConverter {
                 .lesson(feelingOfBookCreateRequest.getLesson())
                 .action(feelingOfBookCreateRequest.getAction())
                 .createdDate(new Date())
+                .timeSpentReading(feelingOfBookCreateRequest.getTimeSpentReading())
+                .note(feelingOfBookCreateRequest.getNote())
                 .book(bookMapper.findById(feelingOfBookCreateRequest.getBookId())).build();
     }
 
@@ -74,6 +78,8 @@ public class FeelingOfBookConverter {
         feelingOfBook.setQuote(feelingOfBookUpdateRequest.getQuote());
         feelingOfBook.setLesson(feelingOfBookUpdateRequest.getLesson());
         feelingOfBook.setAction(feelingOfBookUpdateRequest.getAction());
+        feelingOfBook.setTimeSpentReading(feelingOfBookUpdateRequest.getTimeSpentReading());
+        feelingOfBook.setNote(feelingOfBookUpdateRequest.getNote());
         return feelingOfBook;
     }
 }

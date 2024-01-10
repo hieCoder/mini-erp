@@ -22,4 +22,6 @@ public class FeelingOfBookUpdateRequest {
     private String quote;
     private String lesson;
     private String action;
+    private Double timeSpentReading;
+    private String note;
 }
