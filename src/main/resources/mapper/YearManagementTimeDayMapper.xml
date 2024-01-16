@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.YearManagementTimeDayMapper">
 
     <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
-        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID)
-        VALUES (UUID(), #{code}, #{target}, #{user.id})
+        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID, CATEGORY)
+        VALUES (UUID(), #{code}, #{target}, #{user.id}, #{category})
     </insert>
 
     <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
@@ -19,6 +19,7 @@
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="target" column="TARGET"/>
+        <result property="category" column="CATEGORY"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -29,7 +30,8 @@
 
     <update id="updateYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
         UPDATE YEAR_MANAGEMENT_TIME_DAY
-        SET TARGET = #{target}
+        SET TARGET = #{target},
+            CATEGORY = #{category}
         WHERE ID = #{id};
     </update>
 </mapper>

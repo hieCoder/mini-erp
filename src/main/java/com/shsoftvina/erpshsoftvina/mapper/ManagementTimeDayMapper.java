@@ -23,4 +23,5 @@ public interface ManagementTimeDayMapper {
     int editListDayDetail(List<ManagementTimeDay> days);
     List<ManagementTimeDay> findByListCode(String userId, List<String> codes);
     List<ManagementTimeDay> findSpendingByMonthCode(String userId, String monthCode);
+    List<ManagementTimeDay> getPerformance(String weeklyCode);
 }

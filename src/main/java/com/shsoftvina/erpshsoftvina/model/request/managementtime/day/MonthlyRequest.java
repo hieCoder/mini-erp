@@ -1,6 +1,7 @@
 package com.shsoftvina.erpshsoftvina.model.request.managementtime.day;
 
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyContentDto;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyTagetCategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,5 @@ public class MonthlyRequest {
     private String month;
     private MonthlyContentDto[] content;
     private DailyRoutineRequest[] dailyRoutine;
-    private CostsRequest[] costs;
+    private MonthlyTagetCategoryDto[] targetCategory;
 }

@@ -111,6 +111,12 @@
         </foreach>
     </select>
 
+    <select id="getPerformance" parameterType="String" resultMap="dayResultMap">
+        SELECT *
+        FROM MANAGEMENT_TIME_DAY
+        WHERE WEEKLY_CODE LIKE CONCAT(#{weeklyCode}, '%');
+    </select>
+
     <select id="findSpendingByMonthCode" resultMap="dayResultMap">
         SELECT * FROM MANAGEMENT_TIME_DAY
         WHERE USER_ID = #{userId} AND CONCAT(YEAR(DAY), '-', LPAD(MONTH(DAY), 2, '0')) = #{monthCode} AND SPENDING IS NOT NULL

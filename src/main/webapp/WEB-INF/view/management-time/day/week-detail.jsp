@@ -180,7 +180,7 @@
                    </a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" data-bs-toggle="tab" href="#nav-border-justified-messages" role="tab" aria-selected="false">
+                   <a class="nav-link" id="session-review" data-bs-toggle="tab" href="#review" role="tab" aria-selected="false">
                        <i class="ri-calendar-check-line align-middle me-1"></i>Review
                    </a>
                </li>
@@ -219,37 +219,92 @@
                                 <tr style="background-color: ${weekly.monthlys[0].color[0]}" class="text-center">
                                     <td class="text-start" rowspan="5" style="background-color: #ffffff !important;">Onething calendar</td>
                                     <td><input class="form-control text-danger fw-bolder" type="text" value="Important matter" disabled></td>
-                                    <td class="text-center rate-onething"></td>
-                                    <td class="text-center target-onething">${theSingleMostImportantThing.content}</td>
-                                    <td class="text-center performance-onething"></td>
+                                    <td class="text-center rate-onething" style="width: 75px;"></td>
+                                    <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
+                                        ${weekly.monthlys[0].targetCategory[0] == null ? 0 : weekly.monthlys[0].targetCategory[0].target}
+                                    </td>
+                                    <td class="text-center performance-onething">
+                                        <c:set var="sum" value="0" />
+                                        <c:forEach var="item" items="${weekly.getPerformace}">
+                                            <c:set var="target" value="${item.data[0].performance}" />
+                                            <c:if test="${target eq true}">
+                                                <c:set var="sum" value="${sum + 1}" />
+                                            </c:if>
+                                        </c:forEach>
+                                        ${sum}
+                                    </td>
                                 </tr>
                                 <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
                                 <tr style="background-color: ${weekly.monthlys[0].color[1] == null ? '#fcecec' : weekly.monthlys[0].color[1]}">
-                                    <td><input class="form-control" type="text" value="${lecture.title}" disabled></td>
-                                    <td class="text-center rate-onething"></td>
-                                    <td class="text-center target-onething">${lecture.content}</td>
-                                    <td class="text-center performance-onething"></td>
+                                    <td><input class="form-control" type="text" value="${weekly.year.category[1]}" disabled></td>
+                                    <td class="text-center rate-onething" style="width: 75px;"></td>
+                                    <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
+                                        ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
+                                    </td>
+                                    <td class="text-center performance-onething">
+                                        <c:set var="sum" value="0" />
+                                        <c:forEach var="item" items="${weekly.getPerformace}">
+                                            <c:set var="target" value="${item.data[1].performance}" />
+                                            <c:if test="${target eq true}">
+                                                <c:set var="sum" value="${sum + 1}" />
+                                            </c:if>
+                                        </c:forEach>
+                                        ${sum}
+                                    </td>
                                 </tr>
                                 <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
                                 <tr style="background-color:  ${weekly.monthlys[0].color[2] == null ? '#e6f0e2' : weekly.monthlys[0].color[2]}">
-                                    <td><input class="form-control" type="text" value="${dailyEvaluation.title}" disabled></td>
-                                    <td class="text-center rate-onething"></td>
-                                    <td class="text-center target-onething">${dailyEvaluation.content}</td>
-                                    <td class="text-center performance-onething"></td>
+                                    <td><input class="form-control" type="text" value="${weekly.year.category[2]}" disabled></td>
+                                    <td class="text-center rate-onething" style="width: 75px;"></td></td>
+                                    <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
+                                        ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
+                                    </td>
+                                    <td class="text-center performance-onething">
+                                        <c:set var="sum" value="0" />
+                                        <c:forEach var="item" items="${weekly.getPerformace}">
+                                            <c:set var="target" value="${item.data[2].performance}" />
+                                            <c:if test="${target eq true}">
+                                                <c:set var="sum" value="${sum + 1}" />
+                                            </c:if>
+                                        </c:forEach>
+                                        ${sum}
+                                    </td>
                                 </tr>
                                 <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
                                 <tr style="background-color: ${weekly.monthlys[0].color[3] == null ? '#fff9e6' : weekly.monthlys[0].color[3]}">
-                                    <td><input class="form-control" type="text" value="${work.title}" disabled></td>
-                                    <td class="text-center rate-onething"></td>
-                                    <td class="text-center target-onething">${work.content}</td>
-                                    <td class="text-center performance-onething"></td>
+                                    <td><input class="form-control" type="text" value="${weekly.year.category[3]}" disabled></td>
+                                    <td class="text-center rate-onething" style="width: 75px;"></td></td>
+                                    <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
+                                        ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
+                                    </td>
+                                    <td class="text-center performance-onething">
+                                        <c:set var="sum" value="0" />
+                                        <c:forEach var="item" items="${weekly.getPerformace}">
+                                            <c:set var="target" value="${item.data[3].performance}" />
+                                            <c:if test="${target eq true}">
+                                                <c:set var="sum" value="${sum + 1}" />
+                                            </c:if>
+                                        </c:forEach>
+                                        ${sum}
+                                    </td>
                                 </tr>
                                 <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
                                 <tr style="background-color: ${weekly.monthlys[0].color[4] == null ? '#e9e4f5' : weekly.monthlys[0].color[4]}">
-                                    <td><input class="form-control" type="text" value="${reading.title}" disabled></td>
-                                    <td class="text-center rate-onething"></td>
-                                    <td class="text-center target-onething">${reading.content}</td>
-                                    <td class="text-center performance-onething"></td>
+                                    <td><input class="form-control" type="text" value="${weekly.year.category[4]}" disabled></td>
+                                    <td class="text-center rate-onething" style="width: 75px;"></td></td>
+                                    <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
+                                        ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
+                                    </td>
+                                    <td class="text-center performance-onething">
+                                        <c:set var="sum" value="0" />
+                                        <c:forEach var="item" items="${weekly.getPerformace}">
+                                            <c:set var="target" value="${item.data[4].performance}" />
+                                            <c:if test="${target eq true}">
+                                                <c:set var="sum" value="${sum + 1}" />
+                                            </c:if>
+                                        </c:forEach>
+                                        ${sum}
+                                    </td>
                                 </tr>
 
                                 <%-- Daily Session --%>
@@ -365,7 +420,7 @@
                                                     <li>
                                                         <button type="button"
                                                                 class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
                                                         </button>
                                                     </li>
                                                     <li>
@@ -403,7 +458,7 @@
                                 <c:set var="theSingleMostImportantThing"
                                        value="${weekly.weeklys.weeklys[0]}"/>
                                 <tr id="theSingCategory">
-                                    <td class="text-start weekTitle text-danger fw-bolder" style="background-color: ${weekly.monthlys[0].color[0]};">Important matter</td>
+                                    <td class="text-start yearTitle text-danger fw-bolder" style="background-color: ${weekly.monthlys[0].color[0]};">Important matter</td>
                                     <td style="background-color: ${weekly.monthlys[0].color[0]}">
                                         <div class="input-group">
                                             <input class="form-control weekTarget" name="theSingleMostImportantThing"
@@ -422,7 +477,7 @@
                                                 <li>
                                                     <button type="button"
                                                             class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
                                                     </button>
                                                 </li>
                                                 <li>
@@ -437,7 +492,7 @@
                                 </tr>
                                 <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
                                 <tr id="lectureCategory">
-                                    <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[1]}">${lecture.title}</td>
+                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[1]}">${weekly.year.category[1]}</td>
                                     <td style="background-color: ${weekly.monthlys[0].color[1]}">
                                         <div class="input-group">
                                             <input class="form-control weekTarget" name="lecture" type="text"
@@ -455,7 +510,7 @@
                                                 <li>
                                                     <button type="button"
                                                             class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
                                                     </button>
                                                 </li>
                                                 <li>
@@ -470,7 +525,7 @@
                                 </tr>
                                 <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
                                 <tr id="dailyCategory">
-                                    <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[2]}">${dailyEvaluation.title}</td>
+                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[2]}">${weekly.year.category[2]}</td>
                                     <td style="background-color: ${weekly.monthlys[0].color[2]}">
                                         <div class="input-group">
                                             <input class="form-control weekTarget" name="dailyEvaluation" type="text"
@@ -488,7 +543,7 @@
                                                 <li>
                                                     <button type="button"
                                                             class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
                                                     </button>
                                                 </li>
                                                 <li>
@@ -503,7 +558,7 @@
                                 </tr>
                                 <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
                                 <tr id="workCategory">
-                                    <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[3]}">${work.title}</td>
+                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[3]}">${weekly.year.category[3]}</td>
                                     <td style="background-color: ${weekly.monthlys[0].color[3]}">
                                         <div class="input-group">
                                             <input class="form-control weekTarget" name="work" type="text"
@@ -521,7 +576,7 @@
                                                 <li>
                                                     <button type="button"
                                                             class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
                                                     </button>
                                                 </li>
                                                 <li>
@@ -536,7 +591,7 @@
                                 </tr>
                                 <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
                                 <tr id="readingCategory">
-                                    <td class="text-start weekTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[4]}">${reading.title}</td>
+                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[4]}">${weekly.year.category[4]}</td>
                                     <td style="background-color: ${weekly.monthlys[0].color[4]}">
                                         <div class="input-group">
                                             <input class="form-control weekTarget" name="reading" type="text"
@@ -554,7 +609,7 @@
                                                 <li>
                                                     <button type="button"
                                                             class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Close</i>
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
                                                     </button>
                                                 </li>
                                                 <li>
@@ -625,7 +680,6 @@
                                                value="${weekly.quotes.content[2]}">
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <input class="form-control quotes checkQuote" type="text"
@@ -714,25 +768,25 @@
                                     <tr class="lecture">
                                         <td colspan="2"
                                             style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[1]}">
-                                            <span class="mx-auto">${weekly.weeklys.weeklys[1].title}</span>
+                                            <span class="mx-auto">${weekly.year.category[1]}</span>
                                         </td>
                                     </tr>
                                     <tr class="dailyEvaluation">
                                         <td colspan="2"
                                             style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[2]}">
-                                            <span class="mx-auto">${weekly.weeklys.weeklys[2].title}</span>
+                                            <span class="mx-auto">${weekly.year.category[2]}</span>
                                         </td>
                                     </tr>
                                     <tr class="work">
                                         <td colspan="2"
                                             style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[3]}">
-                                            <span class="mx-auto">${weekly.weeklys.weeklys[3].title}</span>
+                                            <span class="mx-auto">${weekly.year.category[3]}</span>
                                         </td>
                                     </tr>
                                     <tr class="reading">
                                         <td colspan="2"
                                             style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[4]}">
-                                            <span class="mx-auto">${weekly.weeklys.weeklys[4].title}</span>
+                                            <span class="mx-auto">${weekly.year.category[4]}</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1181,18 +1235,241 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="nav-border-justified-messages" role="tabpanel" style="min-height: 700px">
+        <div class="tab-pane" id="review" role="tabpanel" style="min-height: 700px">
             <div class="row calendar-container d-none">
                 <div class="card">
                     <div class="row card-body">
-                        <div class="col-md-4">
-
+                        <div class="d-flex border p-0" style="background-color: rgba(233, 30, 105, 0.81); margin: 0 12px">
+                            <div class="col-2 ms-2">
+                                <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem; margin-right: 80px">
+                                    <div class="card-body text-muted">
+                                        <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
+                                            <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
+                                        </div>
+                                        <h5 class="fs-14 text-end mb-3">Target of <span id="monthTarget">${weekly.monthlys[0].month}</span></h5>
+                                        <div class="m-0" id="monthlyTarget">
+                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[0].content}</p>
+                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[1].content}</p>
+                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[2].content}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="col-10 mt-4">
+                               <div class="d-flex flex-column align-items-center">
+                                   <div class="d-flex align-items-center">
+                                       <h1 class="text-center text-white month-current"></h1>
+                                   </div>
+                               </div>
+                           </div>
                         </div>
-                        <div class="col-md-8 d-flex">
+                        <div class="col-md-12 d-flex mt-2">
+                            <div class="table-detail" style="width: unset;">
+                                <table>
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr  style="background-color: #FFEAA7">
+                                        <td style="height: 356px" colspan="2">
+                                            <h5 class="fw-bolder text-white" >Daily Onething <br>&<br> Daily routine</h5>
+                                        </td>
+                                    </tr>
+                                    <tr style="background-color: #FFBB64">
+                                        <td rowspan="5">
+                                            <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
+                                        </td>
+                                        <td class="review-weekly-goals"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="review-weekly-goals"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="review-weekly-goals"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="review-weekly-goals"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="review-weekly-goals"></td>
+                                    </tr>
+                                    <tr style="background-color: #E6A4B4">
+                                        <td>
+                                            <h5 class="fw-bolder text-white">Amount of <br>time</h5>
+                                        </td>
+                                    </tr>
+                                    <tr style="background-color: #FF9BD2">
+                                        <td style="height: 213px">
+                                            <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                    <tr style="height: 44px">
+                                        <c:forEach begin="0" end="3" varStatus="loop">
+                                            <th class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
+                                        </c:forEach>
+                                        <th class="fw-bolder" colspan="7">EXTRA DAYS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
+                                    </tr>
+                                    <c:forEach begin="0" end="5" varStatus="loop">
+                                        <tr style="height: 44.5px">
+                                            <c:forEach begin="0" end="30" varStatus="loop">
+                                                <td class="fw-bolder"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                        <tr class="view-weekly">
+                                            <c:forEach begin="0" end="4" varStatus="loop">
+                                                <td colspan="7"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="3" style="border: 1px solid black" class="month-current text-danger fw-bolder text-uppercase"></th>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid black">Rate</th>
+                                        <th style="border: 1px solid black">Target</th>
+                                        <th class="text-wrap" style="border: 1px solid black">Performance</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <%-- OneThing Calendar Session --%>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                           0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
 
-                        </div>
-                        <div class="col-md-12 text-center align-middle mt-3">
+                                    <%-- Daily Session --%>
+                                    <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
+                                    <tr name="theSingleMostImportantThing">
+                                        <td class="text-center">
+                                            <script>
+                                                var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};
+                                                var target = ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0};
+                                                var result = target !== 0 ? (performance / target) * 100 : 0;
+                                                var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                                document.write(roundedResult);
+                                            </script>
+                                        </td>
+                                        <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                            onkeydown="return isNumberKey(event)">
+                                            ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0}
+                                        </td>
+                                        <td class="text-center">${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>
+                                    </tr>
+                                    <c:forEach var="index" begin="1" end="10">
+                                        <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>
+                                        <c:if test="${not empty dailyRoutine.title}">
+                                            <tr name="theSingleMostImportantThing">
+                                                <td class="text-center">
+                                                    <script>
+                                                        var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};
+                                                        var target = ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0};
+                                                        var result = target !== 0 ? (performance / target) * 100 : 0;
+                                                        var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                                        document.write(roundedResult);
+                                                    </script>
+                                                </td>
+                                                <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                                    onkeydown="return isNumberKey(event)">
+                                                        ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0}
+                                                </td>
+                                                <td class="text-center">${dailyRoutine.title != '' ? dailyRoutine.performance : 0}</td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <%-- OneThing Calendar Session --%>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="text-center" style="width: 75px;">0 %</td>
+                                        <td class="text-center">0</td>
+                                        <td class="text-center">
+                                            0
+                                        </td>
+                                    </tr>
 
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1420,6 +1697,69 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
 
+    document.getElementById('session-review').addEventListener('click',function (e) {
+        const daysOfMonth = document.getElementById('days-of-month');
+        const month = daysOfMonth.getAttribute('data-value');
+        const monthDate = new Date(month);
+        const numberOfDays = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+
+        for (var i = 0 ; i < numberOfDays ; i++) {
+            const td = document.createElement('td');
+            td.classList.add('fw-bolder')
+            td.textContent = i + 1;
+            daysOfMonth.appendChild(td);
+        }
+
+        const result = getFirstSundayLastSaturday(monthDate.getFullYear(), monthDate.getMonth());
+        const formattedFirstDay = formatDate(result.firstSunday);
+        const formattedLastDay = formatDate(result.lastDay);
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstDay + "&endDate=" + formattedLastDay, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const parseData = JSON.parse(xhr.responseText);
+                    console.log(parseData);
+                    let weekData = parseData.weeklys;
+                    console.log(weekData)
+                    document.querySelectorAll('.view-weekly').forEach(function (e) {
+
+                    })
+                } else {
+                    window.location.href = "/management-time/";
+                }
+            }
+        }
+        xhr.send();
+    })
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return year + '-' + month + '-' + day;
+    }
+
+    function getFirstSundayLastSaturday(year, month) {
+        const firstSunday = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+
+        return {
+            firstSunday,
+            lastDay
+        };
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const monthTarget = document.getElementById('monthTarget');
+        const date = new Date(monthTarget.textContent + "-01");
+        const monthName = date.toLocaleString('en-US', { month: 'long' });
+        monthTarget.textContent = monthName;
+        document.querySelectorAll('.month-current').forEach(function (e) {
+             e.textContent = monthName;
+        })
+    })
+
     // Url api get all book
     function getUrlApiBooks(search, page, pageSize) {
         return '/api/v1/books?search=' + search + '&page=' + page + '&pageSize=' + pageSize;
@@ -1625,62 +1965,32 @@
     document.addEventListener("DOMContentLoaded", function () {
         const elColorCategory = document.querySelectorAll('.color-category');
         const titleReportCategory = document.querySelectorAll('.title-report-category');
-        const weeklyTitle = document.querySelectorAll('.weekTitle');
+        const revieWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
+        const yearTitle = document.querySelectorAll('.yearTitle');
 
-        document.querySelectorAll('.weekTitle').forEach(function (e, index) {
+        yearTitle.forEach(function (e, index) {
             if (index != 0) {
                 if (e.textContent != '') {
                     elColorCategory[index - 1].textContent = e.textContent;
                     titleReportCategory[index - 1].textContent = e.textContent;
-                    titleReportCategory[index - 1].style.backgroundColor = weeklyTitle[index].style.backgroundColor;
+                    titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
                 }
             }
+            revieWeeklyGoals[0].classList.add('text-danger', 'fw-bolder')
+            revieWeeklyGoals[index].textContent = e.textContent;
+            revieWeeklyGoals[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
         })
     })
 
     // Handle performance onething calendar
     document.addEventListener("DOMContentLoaded", function () {
-        var countPerformanceTheSing = 0;
-        var countPerformanceLecture = 0;
-        var countPerformanceDaily = 0;
-        var countPerformanceWorl = 0;
-        var countPerformanceReading = 0;
-        const performanceTheSing = document.querySelectorAll('.performance-color-theSingle');
-        const performanceLecture = document.querySelectorAll('.performance-color-lecture');
-        const performanceDaily = document.querySelectorAll('.performance-color-dailyEvaluation');
-        const performanceWork = document.querySelectorAll('.performance-color-work');
-        const performanceReading = document.querySelectorAll('.performance-color-reading');
+        const tartgetOnething = document.querySelectorAll('.target-onething');
         const rateOnething = document.querySelectorAll('.rate-onething');
 
-        performanceTheSing.forEach( function (e, index) {
-            if (e.querySelector('input').checked) countPerformanceTheSing++;
-            if (performanceLecture[index].querySelector('input').checked) countPerformanceLecture++;
-            if (performanceDaily[index].querySelector('input').checked) countPerformanceDaily++;
-            if (performanceWork[index].querySelector('input').checked) countPerformanceWorl++;
-            if (performanceReading[index].querySelector('input').checked) countPerformanceReading++;
-        })
-
-        document.querySelectorAll('.performance-onething').forEach( function (e, index) {
-            if (index == 0) {
-                e.textContent = countPerformanceTheSing + '/7';
-                rateOnething[index].textContent = ((countPerformanceTheSing * 100) / 7).toFixed(2) + '%';
-            }
-            if (index == 1) {
-                e.textContent = countPerformanceLecture + '/7';
-                rateOnething[index].textContent = ((countPerformanceLecture * 100) / 7).toFixed(2) + '%';
-            }
-            if (index == 2) {
-                e.textContent = countPerformanceDaily + '/7';
-                rateOnething[index].textContent = ((countPerformanceDaily * 100) / 7).toFixed(2) + '%';
-            }
-            if (index == 3) {
-                e.textContent = countPerformanceWorl + '/7';
-                rateOnething[index].textContent = ((countPerformanceWorl * 100) / 7).toFixed(2) + '%';
-            }
-            if (index == 4) {
-                e.textContent = countPerformanceReading + '/7';
-                rateOnething[index].textContent = ((countPerformanceReading * 100) / 7).toFixed(2) + '%';
-            }
+        document.querySelectorAll('.performance-onething').forEach(function (e, index) {
+            if (tartgetOnething[index].textContent != 0) {
+                rateOnething[index].textContent = parseFloat((parseInt(e.textContent.trim()) * 100) / parseInt(tartgetOnething[index].textContent.trim())).toFixed(2) + ' %';
+            } else  rateOnething[index].textContent = '0 %'
         })
     })
 
@@ -1694,11 +2004,11 @@
                 $(btn).text('');
                 $(btn).append(`<i class="ri-arrow-right-line"></i>`);
                 break;
-            case 'CLOSE':
+            case 'CANCEL':
                 $(btn).removeClass('btn-info btn-warning btn-success');
                 $(btn).addClass('btn-danger');
                 $(btn).text('');
-                btn.setAttribute('data-value', 'CLOSE');
+                btn.setAttribute('data-value', 'CANCEL');
                 $(btn).append(`<i class="ri-close-line"></i>`);
                 break;
             case 'COMPLETE':
@@ -1726,7 +2036,7 @@
         document.querySelectorAll('.close').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnClose = e.parentNode.parentNode.previousElementSibling;
-                addStatus(btnClose, 'CLOSE');
+                addStatus(btnClose, 'CANCEL');
             })
         })
         document.querySelectorAll('.complete').forEach(function (e) {
@@ -2175,7 +2485,6 @@
         });
     });
 
-
     // Handle when user click check box Performance
     $(document).ready(function () {
         checkInitialValue();
@@ -2254,7 +2563,7 @@
                 month: currentYearMonth.year + '-' + (currentYearMonth.month < 10 ? '0' + currentYearMonth.month : currentYearMonth.month),
                 content: [],
                 dailyRoutine: [],
-                costs: []
+                targetCategory: []
             };
             const weekly = {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
@@ -2277,6 +2586,15 @@
                 }
                 monthly.dailyRoutine.push(obj)
             })
+            const targetOnething = document.querySelectorAll('.target-onething');
+            const performanceOnthing = document.querySelectorAll('.performance-onething');
+            targetOnething.forEach(function (e, index) {
+                let obj = {
+                    target: e.textContent.trim() == '' ? '0' : e.textContent.trim(),
+                    performance: performanceOnthing[index].textContent.trim() == '' ? '0' : performanceOnthing[index].textContent.trim()
+                }
+                monthly.targetCategory.push(obj);
+            })
             data.monthly = monthly;
 
             $("input.form-control.weekTarget").each(function () {
@@ -2284,7 +2602,6 @@
                 var valueStatus = statusWeekly.data('value');
                 if (valueStatus == null || valueStatus == undefined) valueStatus = '';
                 let obj = {
-                    title: $(this).closest('tr').find('.weekTitle').text(),
                     content: $(this).val(),
                     status: valueStatus
                 }
@@ -2454,19 +2771,6 @@
             });
             data.quotes.quotes = quotes;
 
-            var items = document.querySelectorAll('.item');
-            var amts = document.querySelectorAll('.amt');
-            items.forEach(function (item, index) {
-                var objConsts = {
-                    item: item.textContent,
-                    amt: amts[index].textContent,
-                    type: amts[index].getAttribute('data-name')
-                }
-                if (objConsts.item != '' && objConsts.amt != '') {
-                    data.monthly.costs.push(objConsts);
-                }
-            })
-
             var queryString = window.location.search;
             var urlParams = new URLSearchParams(queryString);
             var currentDayParam = urlParams.get('currentDay');
@@ -2475,14 +2779,17 @@
 
             data.year = {
                 year: year,
-                target: []
+                target: [],
+                category: []
             };
 
             var yearTarget = document.querySelectorAll('.yearTarget');
             yearTarget.forEach(function (target) {
                 data.year.target.push(target.value);
             })
-
+            document.querySelectorAll('.yearTitle').forEach(function (e) {
+                data.year.category.push(e.textContent);
+            })
             data.days.push(...days);
 
             const imageQuote = document.getElementById('quoteImage').files[0];

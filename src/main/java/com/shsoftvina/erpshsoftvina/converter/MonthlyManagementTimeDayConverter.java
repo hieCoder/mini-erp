@@ -28,17 +28,16 @@ public class MonthlyManagementTimeDayConverter {
         return MonthlyManagementTimeDay.builder()
                 .code(monthlyRequest.getMonth())
                 .content(JsonUtils.objectToJson(monthlyRequest.getContent()))
+                .targetCategory(JsonUtils.objectToJson(monthlyRequest.getTargetCategory()))
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String incomeCosts, String fixedCost, String fluctuatingCost){
+    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String targetCategory){
         return MonthlyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
                 .dailyRoutine(dailyRoutine)
-                .incomeThisMonth(incomeCosts)
-                .fixedCosts(fixedCost)
-                .fluctuatingCosts(fluctuatingCost)
+                .targetCategory(targetCategory)
                 .user(userMapper.findById(userId)).build();
     }
 

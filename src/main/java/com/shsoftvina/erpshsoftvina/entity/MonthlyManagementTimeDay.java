@@ -15,9 +15,7 @@ public class MonthlyManagementTimeDay {
     private String content;
     private User user;
     private String dailyRoutine;
-    private String incomeThisMonth;
-    private String fixedCosts;
-    private String fluctuatingCosts;
     private Float spendingGoals;
+    private String targetCategory;
     private String color;
 }
