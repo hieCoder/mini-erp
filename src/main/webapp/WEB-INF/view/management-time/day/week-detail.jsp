@@ -1274,31 +1274,44 @@
                                             <h5 class="fw-bolder text-white" >Daily Onething <br>&<br> Daily routine</h5>
                                         </td>
                                     </tr>
-                                    <tr style="background-color: #FFBB64">
-                                        <td rowspan="5">
+                                    <tr style="height: 45px">
+                                        <td rowspan="5" style="background-color: #FFBB64;">
                                             <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
                                         </td>
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr>
+                                    <tr style="height: 45px">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr>
+                                    <tr style="height: 45px">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr>
+                                    <tr style="height: 45px">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr>
+                                    <tr style="height: 45px">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="background-color: #E6A4B4">
-                                        <td>
+                                    <tr style="height: 45px">
+                                        <td rowspan="5" style="background-color: #E6A4B4; ">
                                             <h5 class="fw-bolder text-white">Amount of <br>time</h5>
                                         </td>
+                                        <td class="review-weekly-amount-time"></td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time"></td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time"></td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time"></td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time"></td>
                                     </tr>
                                     <tr style="background-color: #FF9BD2">
-                                        <td style="height: 213px">
+                                        <td style="height: 375px" colspan="2">
                                             <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
                                         </td>
                                     </tr>
@@ -1326,7 +1339,22 @@
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="4" varStatus="loop">
-                                        <tr class="view-weekly">
+                                        <tr class="view-weekly" style="height: 45px">
+                                            <c:forEach begin="0" end="4" varStatus="loop">
+                                                <td colspan="7"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                        <tr class="view-weekly" style="height: 45px">
+                                            <c:forEach begin="0" end="4" varStatus="loop">
+                                                <td colspan="7"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+
+                                    <c:forEach begin="0" end="2" varStatus="loop">
+                                        <tr class="view-weekly" style="height: 125px">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="7"></td>
                                             </c:forEach>
@@ -1432,41 +1460,58 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
-                                            0
-                                        </td>
+                                        <td class="text-center" style="width: 75px;">blank</td>
                                     </tr>
                                     <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
-                                            0
-                                        </td>
+                                        <td class="text-center" style="width: 75px;">blank</td>
+                                    </tr>
+                                    <tr class="text-center" style="height: 45px">
+                                        <td class="text-center" style="width: 75px;">blank</td>
+                                    </tr>
+                                    <tr class="text-center" style="height: 45px">
+                                        <td class="text-center" style="width: 75px;">blank</td>
                                     </tr>
                                     <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
-                                            0
-                                        </td>
+                                        <td class="text-center" style="width: 75px;">blank</td>
                                     </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <%-- OneThing Calendar Session --%>
                                     <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
-                                            0
-                                        </td>
+                                        <td class="text-center" style="width: 75px;">blank</td>
                                     </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
-                                            0
-                                        </td>
+                                    <tr class="text-center" style="height: 45px">
+                                        <td class="text-center" style="width: 75px;">blank</td>
                                     </tr>
-
+                                    <tr class="text-center" style="height: 45px">
+                                        <td class="text-center" style="width: 75px;">blank</td>
+                                    </tr>
+                                    <tr class="text-center" style="height: 45px">
+                                        <td class="text-center" style="width: 75px;">blank</td>
+                                    </tr>
+                                    <tr class="text-center" style="height: 45px">
+                                        <td class="text-center" style="width: 75px;">blank</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <%-- OneThing Calendar Session --%>
+                                    <tr class="text-center" style="height: 124px">
+                                        <td class="text-center">blank</td>
+                                    </tr>
+                                    <tr class="text-center" style="height: 125px">
+                                        <td class="text-center">blank</td>
+                                    </tr>
+                                    <tr class="text-center" style="height: 124px">
+                                        <td class="text-center">blank</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -1965,7 +2010,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         const elColorCategory = document.querySelectorAll('.color-category');
         const titleReportCategory = document.querySelectorAll('.title-report-category');
-        const revieWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
+        const reviewWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
+        const reivewWeeklyAmountTime = document.querySelectorAll('.review-weekly-amount-time');
         const yearTitle = document.querySelectorAll('.yearTitle');
 
         yearTitle.forEach(function (e, index) {
@@ -1976,9 +2022,12 @@
                     titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
                 }
             }
-            revieWeeklyGoals[0].classList.add('text-danger', 'fw-bolder')
-            revieWeeklyGoals[index].textContent = e.textContent;
-            revieWeeklyGoals[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
+            reviewWeeklyGoals[0].classList.add('text-danger', 'fw-bolder')
+            reviewWeeklyGoals[index].textContent = e.textContent;
+            reviewWeeklyGoals[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
+            reivewWeeklyAmountTime[0].classList.add('text-danger', 'fw-bolder')
+            reivewWeeklyAmountTime[index].textContent = e.textContent;
+            reivewWeeklyAmountTime[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
         })
     })
 
