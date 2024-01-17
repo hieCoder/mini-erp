@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class YearResponse {
     private String year;
     private String[] target;
+    private String[] category;
 }

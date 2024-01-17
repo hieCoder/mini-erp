@@ -14,6 +14,7 @@ public class YearManagementTimeDayConverter {
         return YearManagementTimeDay.builder()
                 .code(yearRequest.getYear())
                 .target(JsonUtils.objectToJson(yearRequest.getTarget()))
+                .category(JsonUtils.objectToJson(yearRequest.getCategory()))
                 .user(User.builder().id(userId).build()).build();
     }
 
@@ -21,6 +22,8 @@ public class YearManagementTimeDayConverter {
         if (yearManagementTimeDay == null) return null;
         return YearResponse.builder()
                 .year(yearManagementTimeDay.getCode())
-                .target(JsonUtils.jsonToObject(yearManagementTimeDay.getTarget(), String[].class)).build();
+                .target(JsonUtils.jsonToObject(yearManagementTimeDay.getTarget(), String[].class))
+                .category(JsonUtils.jsonToObject(yearManagementTimeDay.getCategory(), String[].class))
+                .build();
     }
 }

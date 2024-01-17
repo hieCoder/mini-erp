@@ -379,9 +379,11 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
+                    let category = parseData.year == null ? null : parseData.year.category  ;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
@@ -502,7 +504,6 @@
                                                 cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
-                                                cell.textContent = e.weeklys[dayTodo].title;
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
@@ -517,10 +518,10 @@
                                     }
                                     row.classList.add(dayCodeTrTag[(i % 6) - 1])
                                     cell.classList.add("title");
-                                    cell.classList.add("text-wrap")
-                                    cell.classList.add("fw-bold")
-                                    cell.classList.add("fst-italic")
-                                    cell.setAttribute('contenteditable', 'true');
+                                    cell.classList.add("text-wrap");
+                                    cell.classList.add("fw-bold");
+                                    cell.classList.add("fst-italic");
+                                    cell.classList.add("year-category");
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
@@ -631,6 +632,13 @@
                                 break;
                             default:
                                 break;
+                        }
+                    })
+                    document.querySelectorAll('.year-category').forEach(function (e, index) {
+                        if (category != null) {
+                            const arrayIndex = index % category.length;
+                            e.textContent = category[arrayIndex];
+                            if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                         }
                     })
                     saveCalendar();
@@ -835,15 +843,11 @@
                         }
                         const currentWeekly = weekObj.weeklys[index];
                         if (hasTitleClass) {
-                            currentWeekly.title = value;
                             if (!currentWeekly.hasOwnProperty('content')) {
                                 currentWeekly.content = '';
                             }
                             currentWeekly.status = $(this).data('status')
                         } else if (hasContentClass) {
-                            if (!currentWeekly.hasOwnProperty('title')) {
-                                currentWeekly.title = '';
-                            }
                             currentWeekly.content = value;
                             currentWeekly.status = $(this).data('status')
                         }
@@ -853,12 +857,15 @@
 
             data.year = {
                 year: currentYear.textContent,
-                target: []
+                target: [],
+                category: []
             };
 
-            var yearTargetValue = document.querySelectorAll('.yearTarget');
-            yearTargetValue.forEach(function (target) {
+            document.querySelectorAll('.yearTarget').forEach(function (target) {
                 data.year.target.push(target.textContent);
+            })
+            document.querySelectorAll('.title').forEach(function (e, index) {
+               if (index < 5) data.year.category.push(e.textContent)
             })
 
             data.days.push(...days);

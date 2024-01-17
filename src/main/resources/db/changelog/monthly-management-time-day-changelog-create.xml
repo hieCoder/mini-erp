@@ -18,21 +18,20 @@
 
     <changeSet id="2" author="team2">
         <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
-            <column name="INCOME_THIS_MONTH" type="VARCHAR(1000)"/>
-            <column name="FIXED_COSTS" type="VARCHAR(1000)"/>
-            <column name="FLUCTUATING_COSTS" type="VARCHAR(1000)"/>
+            <column name="SPENDING_GOALS" type="FLOAT"/>
         </addColumn>
     </changeSet>
 
     <changeSet id="3" author="team2">
         <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
-            <column name="SPENDING_GOALS" type="FLOAT"/>
+            <column name="COLOR" type="VARCHAR(1000)"/>
         </addColumn>
     </changeSet>
 
     <changeSet id="4" author="team2">
         <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
-            <column name="COLOR" type="VARCHAR(1000)"/>
+            <column name="TARGET_CATEGORY" type="VARCHAR(1000)"/>
         </addColumn>
     </changeSet>
+
 </databaseChangeLog>
