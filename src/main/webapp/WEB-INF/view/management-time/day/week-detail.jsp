@@ -847,15 +847,15 @@
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category"></td>
+                                        <td class="title-report-category" style="background-color: #e6f0e2"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category"></td>
+                                        <td class="title-report-category" style="background-color: #fff9e6"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category"></td>
+                                        <td class="title-report-category" style="background-color: #e9e4f5"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
@@ -1271,7 +1271,7 @@
                                     <tbody>
                                     <tr  style="background-color: #FFEAA7">
                                         <td style="height: 356px" colspan="2">
-                                            <h5 class="fw-bolder text-white" >Daily Onething <br>&<br> Daily routine</h5>
+                                            <h5 class="fw-bolder text-white">Daily Onething <br>&<br> Daily routine</h5>
                                         </td>
                                     </tr>
                                     <tr style="height: 45px">
@@ -1280,16 +1280,16 @@
                                         </td>
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #fcecec">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #e6f0e2">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #fff9e6">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #e9e4f5">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
                                     <tr style="height: 45px">
@@ -1298,22 +1298,31 @@
                                         </td>
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #fcecec">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #e6f0e2">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #fff9e6">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 45px; background-color: #e9e4f5">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
                                     <tr style="background-color: #FF9BD2">
-                                        <td style="height: 375px" colspan="2">
+                                        <td rowspan="4" style="height: 375px">
                                             <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
                                         </td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Thank you</td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Compliment</td>
+                                    </tr>
+                                    <tr style="height: 45px">
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Reflection/Improvement</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -1321,7 +1330,7 @@
                             <div class="table-container">
                                 <table>
                                     <thead>
-                                    <tr style="height: 44px">
+                                    <tr style="height: 45px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
                                             <th class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
@@ -1329,7 +1338,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
+                                    <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="5" varStatus="loop">
                                         <tr style="height: 44.5px">
@@ -1459,20 +1468,20 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">blank</td>
+                                    <tr class="text-center" style="height: 44px">
+                                        <td class="text-center">blank</td>
                                     </tr>
                                     <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">blank</td>
+                                        <td class="text-center">blank</td>
                                     </tr>
                                     <tr class="text-center" style="height: 45px">
-                                        <td class="text-center" style="width: 75px;">blank</td>
+                                        <td class="text-center">blank</td>
                                     </tr>
                                     <tr class="text-center" style="height: 45px">
-                                        <td class="text-center" style="width: 75px;">blank</td>
+                                        <td class="text-center">blank</td>
                                     </tr>
                                     <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">blank</td>
+                                        <td class="text-center">blank</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -1742,42 +1751,6 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
 
-    document.getElementById('session-review').addEventListener('click',function (e) {
-        const daysOfMonth = document.getElementById('days-of-month');
-        const month = daysOfMonth.getAttribute('data-value');
-        const monthDate = new Date(month);
-        const numberOfDays = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
-
-        for (var i = 0 ; i < numberOfDays ; i++) {
-            const td = document.createElement('td');
-            td.classList.add('fw-bolder')
-            td.textContent = i + 1;
-            daysOfMonth.appendChild(td);
-        }
-
-        const result = getFirstSundayLastSaturday(monthDate.getFullYear(), monthDate.getMonth());
-        const formattedFirstDay = formatDate(result.firstSunday);
-        const formattedLastDay = formatDate(result.lastDay);
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstDay + "&endDate=" + formattedLastDay, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    const parseData = JSON.parse(xhr.responseText);
-                    console.log(parseData);
-                    let weekData = parseData.weeklys;
-                    console.log(weekData)
-                    document.querySelectorAll('.view-weekly').forEach(function (e) {
-
-                    })
-                } else {
-                    window.location.href = "/management-time/";
-                }
-            }
-        }
-        xhr.send();
-    })
-
     function formatDate(date) {
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -1802,6 +1775,42 @@
         monthTarget.textContent = monthName;
         document.querySelectorAll('.month-current').forEach(function (e) {
              e.textContent = monthName;
+        })
+
+        const daysOfMonth = document.getElementById('days-of-month');
+        const month = daysOfMonth.getAttribute('data-value');
+        const monthDate = new Date(month);
+        const numberOfDays = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+
+        for (var i = 0 ; i < numberOfDays ; i++) {
+            const td = document.createElement('td');
+            td.classList.add('fw-bolder')
+            td.textContent = i + 1;
+            daysOfMonth.appendChild(td);
+        }
+
+        document.getElementById('session-review').addEventListener('click',function (e) {
+            const result = getFirstSundayLastSaturday(monthDate.getFullYear(), monthDate.getMonth());
+            const formattedFirstDay = formatDate(result.firstSunday);
+            const formattedLastDay = formatDate(result.lastDay);
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstDay + "&endDate=" + formattedLastDay, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const parseData = JSON.parse(xhr.responseText);
+                        console.log(parseData);
+                        let weekData = parseData.weeklys;
+                        console.log(weekData)
+                        document.querySelectorAll('.view-weekly').forEach(function (e) {
+
+                        })
+                    } else {
+                        window.location.href = "/management-time/";
+                    }
+                }
+            }
+            xhr.send();
         })
     })
 
