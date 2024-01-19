@@ -173,6 +173,20 @@
                    <a class="nav-link active" data-bs-toggle="tab" href="#calendar" role="tab" aria-selected="false">
                        <i class=" ri-calendar-todo-line align-middle me-1"></i>My Diary
                    </a>
+                   <select class="form-select text-center" aria-label="Default select example">
+                           <option selected>TABS</option>
+                           <option value="1">2024 Goals</option>
+                           <option value="2">2024 Calendar</option>
+                           <option value="3">Monthly</option>
+                           <option value="1">Weekly</option>
+                           <option value="2">Daily Schedule</option>
+                           <option value="3">W&V Report</option>
+                           <option value="3">2024 Report</option>
+                       <optgroup label="Book">
+                       </optgroup>
+                       <optgroup label="Financial Ledger">
+                       </optgroup>
+                   </select>
 
                </li>
                <li class="nav-item">
