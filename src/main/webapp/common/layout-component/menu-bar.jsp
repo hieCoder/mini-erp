@@ -95,18 +95,30 @@
                 <li class="menu-title"><i class="ri-more-fill"></i> <span>Time management</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTime" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForms">
-                        <i class="ri-time-line"></i> <span>Time management</span>
+                        <i class="ri-time-line"></i> <span>Planner</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarTime">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link management-time-year">Time of year</a>
+                                <a class="nav-link">2024 Goals</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link management-time-month">Time of the month</a>
+                                <a class="nav-link management-time-year">2024 Calendar</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link management-time-week">Time of the week</a>
+                                <a class="nav-link management-time-month">Monthly</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link management-time-week">Weekly</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">Daily Schedule</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">W&V Report</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">2024 Report</a>
                             </li>
                         </ul>
                     </div>
@@ -116,7 +128,11 @@
                         <i class="ri-book-line"></i> <span>Book</span>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="#" class="nav-link menu-link">
+                        <i class="ri-coins-line"></i> <span>Financial Ledger</span>
+                    </a>
+                </li>
                 <li class="menu-title d-none manager-menu"><i class="ri-more-fill"></i> <span>Setting system</span></li>
                 <li class="nav-item d-none manager-menu">
                     <a class="nav-link menu-link" href="#sidebarSetting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForms">

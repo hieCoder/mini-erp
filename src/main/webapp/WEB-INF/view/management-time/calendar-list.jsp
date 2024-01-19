@@ -379,7 +379,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
@@ -884,7 +883,8 @@
                     const month = getCurentMonth(document.getElementById('currentMonth').textContent);
                     const year = getCurentYear(document.getElementById('currentYear').textContent);
                     populateCalendar(year, month);
-                    rsSuccess("Add");
+                    localStorage.setItem('result', 'saveSuccess');
+                    location.reload();
                 }, function (error) {
                     rsUnSuccess();
                     console.log(error);
@@ -978,6 +978,14 @@
             inputElement.focus();
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var result = localStorage.getItem('result');
+        if (result == 'saveSuccess') {
+            rsSuccess("Add");
+            localStorage.clear();
+        }
+    })
 
 </script>
 </body>

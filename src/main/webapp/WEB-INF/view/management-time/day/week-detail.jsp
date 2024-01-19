@@ -166,13 +166,14 @@
             </div>
         </div>
     </div>
-    <div class="col-12 p-0">
+    <div class="col-12 p-0" id="tab-session">
        <div class="col-6">
            <ul class="nav nav-tabs nav-tabs-custom nav-primary nav-justified bg-white fs-5" role="tablist">
                <li class="nav-item">
                    <a class="nav-link active" data-bs-toggle="tab" href="#calendar" role="tab" aria-selected="false">
-                       <i class=" ri-calendar-todo-line align-middle me-1"></i>Calendar
+                       <i class=" ri-calendar-todo-line align-middle me-1"></i>My Diary
                    </a>
+
                </li>
                <li class="nav-item">
                    <a class="nav-link" id="session-checkBook" data-bs-toggle="tab" href="#check-book" role="tab" aria-selected="false">
@@ -1269,11 +1270,42 @@
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr  style="background-color: #FFEAA7">
-                                        <td style="height: 356px" colspan="2">
+                                    <tr style="height: 65px">
+                                        <td id="daily-onething-routine" rowspan="6" style="height: 311px; background-color: #FFEAA7">
                                             <h5 class="fw-bolder text-white">Daily Onething <br>&<br> Daily routine</h5>
                                         </td>
+                                        <td></td>
                                     </tr>
+                                    <tr>
+                                        <td class="reivew-daily-onething"></td>
+                                    </tr>
+                                    <tr style="background-color: #fcecec">
+                                        <td class="reivew-daily-onething"></td>
+                                    </tr>
+                                    <tr style="background-color: #e6f0e2">
+                                        <td class="reivew-daily-onething"></td>
+                                    </tr>
+                                    <tr style="background-color: #fff9e6">
+                                        <td class="reivew-daily-onething"></td>
+                                    </tr>
+                                    <tr style="background-color: #e9e4f5">
+                                        <td class="reivew-daily-onething"></td>
+                                    </tr>
+                                    <c:choose>
+                                        <c:when test="${empty weekly.monthlys[0].dailyRoutine}">
+                                            <tr class="review-dailyRoutine">
+                                                <td></td>
+                                            </tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${weekly.monthlys[0].dailyRoutine}" var="dailyRoutine" varStatus="loop">
+                                                <tr class="review-dailyRoutine">
+                                                    <td>${dailyRoutine.title}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                     <tr style="height: 45px">
                                         <td rowspan="5" style="background-color: #FFBB64;">
                                             <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
@@ -1316,7 +1348,7 @@
                                         </td>
                                     </tr>
                                     <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Thank you</td>
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Gratitude Diary</td>
                                     </tr>
                                     <tr style="height: 45px">
                                         <td class="review-weekly-amount-time fw-bolder text-uppercase">Compliment</td>
@@ -1330,7 +1362,7 @@
                             <div class="table-container">
                                 <table>
                                     <thead>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 44px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
                                             <th class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
@@ -1338,34 +1370,48 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
+                                    <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
-                                    <c:forEach begin="0" end="5" varStatus="loop">
-                                        <tr style="height: 44.5px">
-                                            <c:forEach begin="0" end="30" varStatus="loop">
-                                                <td class="fw-bolder"></td>
-                                            </c:forEach>
-                                        </tr>
-                                    </c:forEach>
-                                    <c:forEach begin="0" end="4" varStatus="loop">
-                                        <tr class="view-weekly" style="height: 45px">
-                                            <c:forEach begin="0" end="4" varStatus="loop">
-                                                <td colspan="7"></td>
-                                            </c:forEach>
-                                        </tr>
-                                    </c:forEach>
-                                    <c:forEach begin="0" end="4" varStatus="loop">
-                                        <tr class="view-weekly" style="height: 45px">
-                                            <c:forEach begin="0" end="4" varStatus="loop">
-                                                <td colspan="7"></td>
-                                            </c:forEach>
-                                        </tr>
-                                    </c:forEach>
 
-                                    <c:forEach begin="0" end="2" varStatus="loop">
-                                        <tr class="view-weekly" style="height: 125px">
+                                    <c:choose>
+                                        <c:when test="${empty weekly.monthlys[0].dailyRoutine}">
+                                            <c:forEach begin="0" end="5" varStatus="loopOuter">
+                                                <tr style="height: 44.5px" class="day-in-row">
+                                                    <c:forEach begin="1" end="31" varStatus="loopInner">
+                                                        <td class="fw-bolder only-day"></td>
+                                                    </c:forEach>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach begin="0" end="${5 + fn:length(weekly.monthlys[0].dailyRoutine) - 1}" varStatus="loopOuter">
+                                                <tr style="height: 44.5px" class="day-in-row">
+                                                    <c:forEach begin="1" end="31" varStatus="loopInner">
+                                                        <c:set var="fullDate" value="${weekly.monthlys[0].month}" />
+                                                        <td class="fw-bolder only-day" data-day="${fullDate}-<fmt:formatNumber type='number' pattern='00' value='${loopInner.index}'/>"></td>
+                                                    </c:forEach>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                        <tr class="tr-review-weekly" style="height: 45px">
+                                            <c:forEach begin="0" end="4" varStatus="loop">
+                                                <td colspan="7" class="weekly-goals fw-bolder"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                        <tr  style="height: 45px">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="7"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="2" varStatus="loop">
+                                        <tr style="height: 125px" class="tr-weekly-sentence">
+                                            <c:forEach begin="0" end="4" varStatus="loop">
+                                                <td colspan="7" class="weekly-sentence text-wrap"></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
@@ -1373,7 +1419,7 @@
                                 </table>
                             </div>
                             <div>
-                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black">
+                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black; width: 240px">
                                     <thead>
                                     <tr>
                                         <th colspan="3" style="border: 1px solid black" class="month-current text-danger fw-bolder text-uppercase"></th>
@@ -1385,44 +1431,54 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
-                                           0
+                                    <%-- Review OneThing Calendar Session --%>
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[0]}">
+                                        <td class="text-center review-rate-ongthing">0%</td>
+                                        <td class="text-center review-target-ongthing">
+                                            ${weekly.monthlys[0].targetCategory[0] == null ? 0 : weekly.monthlys[0].targetCategory[0].target}
                                         </td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
+                                        <td class="text-center review-performance-onething">
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#fcecec' : weekly.monthlys[0].color[1]}">
+                                        <td class="text-center review-rate-ongthing">0%</td>
+                                        <td class="text-center review-target-ongthing">
+                                            ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
+                                        </td>
+                                        <td class="text-center review-performance-onething">
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#e6f0e2' : weekly.monthlys[0].color[2]}">
+                                        <td class="text-center review-rate-ongthing">0%</td>
+                                        <td class="text-center review-target-ongthing">
+                                            ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
+                                        </td>
+                                        <td class="text-center review-performance-onething">
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center" style="width: 75px;">0 %</td>
-                                        <td class="text-center">0</td>
-                                        <td class="text-center">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#fff9e6' : weekly.monthlys[0].color[3]}">
+                                        <td class="text-center review-rate-ongthing">0%</td>
+                                        <td class="text-center review-target-ongthing">
+                                            ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
+                                        </td>
+                                        <td class="text-center review-performance-onething">
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#e9e4f5' : weekly.monthlys[0].color[4]}">
+                                        <td class="text-center review-rate-ongthing">0%</td>
+                                        <td class="text-center review-target-ongthing">
+                                            ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
+                                        </td>
+                                        <td class="text-center review-performance-onething">
                                             0
                                         </td>
                                     </tr>
 
-                                    <%-- Daily Session --%>
+                                    <%-- Review Daily Session --%>
                                     <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
                                     <tr name="theSingleMostImportantThing">
                                         <td class="text-center">
@@ -1434,7 +1490,7 @@
                                                 document.write(roundedResult);
                                             </script>
                                         </td>
-                                        <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                        <td class="text-center dailyRoutineTarget"
                                             onkeydown="return isNumberKey(event)">
                                             ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0}
                                         </td>
@@ -1453,7 +1509,7 @@
                                                         document.write(roundedResult);
                                                     </script>
                                                 </td>
-                                                <td class="text-center dailyRoutineTarget" contenteditable="true"
+                                                <td class="text-center dailyRoutineTarget"
                                                     onkeydown="return isNumberKey(event)">
                                                         ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0}
                                                 </td>
@@ -1468,20 +1524,14 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center" style="height: 44px">
-                                        <td class="text-center">blank</td>
+                                    <tr class="text-center" style="height: 72px">
+                                        <td class="text-center fw-bolder monthly-goals">${weekly.monthlys[0].monthlyContents[0].status}</td>
                                     </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center">blank</td>
+                                    <tr class="text-center" style="height: 78px">
+                                        <td class="text-center fw-bolder monthly-goals">${weekly.monthlys[0].monthlyContents[1].status}</td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
-                                        <td class="text-center">blank</td>
-                                    </tr>
-                                    <tr class="text-center" style="height: 45px">
-                                        <td class="text-center">blank</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td class="text-center">blank</td>
+                                    <tr class="text-center" style="height: 73px">
+                                        <td class="text-center fw-bolder monthly-goals">${weekly.monthlys[0].monthlyContents[2].status}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -1512,14 +1562,14 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center" style="height: 124px">
-                                        <td class="text-center">blank</td>
+                                    <tr class="text-center" data-simplebar style="height: 124px; max-height: 124px">
+                                        <td class="text-center month-sentence text-wrap" style="max-width: 230px"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 125px">
-                                        <td class="text-center">blank</td>
+                                    <tr class="text-center" data-simplebar style="height: 124px; max-height: 124px">
+                                        <td class="text-center month-sentence text-wrap" style="max-width: 230px"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 124px">
-                                        <td class="text-center">blank</td>
+                                    <tr class="text-center" data-simplebar style="height: 124px; max-height: 124px">
+                                        <td class="text-center month-sentence text-wrap" style="max-width: 230px"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -1768,6 +1818,29 @@
         };
     }
 
+    function getAllSundays(year, month) {
+        var sundays = [];
+        var date = new Date(year, month, 1);
+        date.setDate(1);
+
+        while (date.getDay() !== 0) {
+            date.setDate(date.getDate() - 1);
+        }
+
+        do {
+            sundays.push(new Date(date));
+            date.setDate(date.getDate() + 7);
+        } while (date.getMonth() === month);
+
+        sundays = sundays.map(function (sunday) {
+            sunday.setDate(sunday.getDate() + 1);
+            return sunday.toISOString().split('T')[0];
+        });
+
+        return sundays;
+    }
+
+    // Handle Tab reivew
     document.addEventListener("DOMContentLoaded", function () {
         const monthTarget = document.getElementById('monthTarget');
         const date = new Date(monthTarget.textContent + "-01");
@@ -1789,6 +1862,25 @@
             daysOfMonth.appendChild(td);
         }
 
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        var currentDayParam = urlParams.get('currentDay');
+        var currentDate = new Date(currentDayParam);
+        var sundaysInMonth = getAllSundays(currentDate.getFullYear(), currentDate.getMonth());
+        const weekGoals = document.querySelectorAll('.weekly-goals');
+        const weeklySentence = document.querySelectorAll('.weekly-sentence');
+
+        weekGoals.forEach(function (e, index) {
+            const weekIndex = index % sundaysInMonth.length;
+            e.setAttribute('data-week', sundaysInMonth[weekIndex]);
+        });
+
+        weeklySentence.forEach(function (e, index) {
+            const weekIndex = index % sundaysInMonth.length;
+            e.setAttribute('data-week', sundaysInMonth[weekIndex]);
+        });
+
+        // Handle use click tab review need call api
         document.getElementById('session-review').addEventListener('click',function (e) {
             const result = getFirstSundayLastSaturday(monthDate.getFullYear(), monthDate.getMonth());
             const formattedFirstDay = formatDate(result.firstSunday);
@@ -1799,11 +1891,141 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
-                        console.log(parseData);
-                        let weekData = parseData.weeklys;
-                        console.log(weekData)
-                        document.querySelectorAll('.view-weekly').forEach(function (e) {
+                        console.log(parseData)
+                        const days = parseData.days;
+                        const weeklys = parseData.weeklys;
 
+                        const dayInRow = document.querySelectorAll('.day-in-row');
+                        dayInRow.forEach(function (dayRow, index) {
+                            if (index < 5) {
+                                dayRow.querySelectorAll('td').forEach(function (onlyDay) {
+                                    const dataDay = onlyDay.getAttribute('data-day');
+                                    days.forEach(day => {
+                                        const dayDate = day.day;
+                                        const dayData = day.data;
+                                        if (dataDay ==  dayDate) {
+                                            if (dayData[index].performance == true) onlyDay.textContent = 'X';
+                                        }
+                                    });
+                                })
+                            } else if (index >= 5) {
+                                dayRow.querySelectorAll('td').forEach(function (onlyDay) {
+                                    const dataDay = onlyDay.getAttribute('data-day');
+                                    days.forEach(day => {
+                                        const dayDate = day.day;
+                                        const dataDailyRoutine = day.dailyRoutine;
+                                        if (dataDay ==  dayDate) {
+                                            if (dataDailyRoutine != null) {
+                                                if (dataDailyRoutine[Math.abs(5 - index)] == true) onlyDay.textContent = 'X';
+                                            }
+                                        }
+                                    });
+                                })
+                            }
+                        })
+
+                        const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
+                        weeklyGoalsRow.forEach(function (weekRow, index) {
+                            weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                                const startDate = onlyWeek.getAttribute('data-week');
+                                weeklys.forEach(week => {
+                                    const startDateDB = week.startDate;
+                                    if (startDate == startDateDB) {
+                                        const statusWeek = week.weeklys[index].status;
+                                        onlyWeek.textContent =  statusWeek == null || statusWeek == '' ? '' : statusWeek;
+                                    }
+                                });
+                            })
+                        })
+
+                        const weeklySentenceRow = document.querySelectorAll('.tr-weekly-sentence');
+                        weeklySentenceRow.forEach(function (e, index) {
+                            if (index == 0) {
+                                e.querySelectorAll('td').forEach(function (e2) {
+                                    var gratitudeDiaryToString = '';
+                                    const startDate = e2.getAttribute('data-week');
+                                    days.forEach(day => {
+                                        const weeklyCode = day.weeklyCode;
+                                        if (startDate == weeklyCode) {
+                                            var gratitudeDiarys = day.gratitudeDiary;
+                                           if (gratitudeDiarys != null) {
+                                               gratitudeDiarys.forEach(gratitudeDiary => {
+                                                  if (gratitudeDiary != '') {
+                                                      if (gratitudeDiary !== '') {
+                                                          gratitudeDiary += ', ';
+                                                      }
+                                                      gratitudeDiaryToString += gratitudeDiary;
+                                                  }
+                                               });
+                                           }
+                                        }
+                                    });
+                                    e2.textContent = gratitudeDiaryToString;
+                                })
+                            } else if (index == 1) {
+                                e.querySelectorAll('td').forEach(function (e2) {
+                                    var compliment = '';
+                                    const startDate = e2.getAttribute('data-week');
+                                    days.forEach(day => {
+                                        const weeklyCode = day.weeklyCode;
+                                        if (startDate == weeklyCode) {
+                                            var complimentForMeToday = day.complimentForMeToday;
+                                            if (complimentForMeToday != null && complimentForMeToday != '') {
+                                                if (compliment !== '') {
+                                                    compliment += ', ';
+                                                }
+                                                compliment += complimentForMeToday;
+                                            }
+                                        }
+                                    });
+                                    e2.textContent = compliment;
+                                })
+                            } else if (index == 2) {
+                                e.querySelectorAll('td').forEach(function (e2) {
+                                    var reflectImpro = '';
+                                    const startDate = e2.getAttribute('data-week');
+                                    days.forEach(day => {
+                                        const weeklyCode = day.weeklyCode;
+                                        if (startDate == weeklyCode) {
+                                            var todaysReflectionsAndImprovements = day.todaysReflectionsAndImprovements;
+                                            if (todaysReflectionsAndImprovements != null && todaysReflectionsAndImprovements != '') {
+                                                if (reflectImpro !== '') {
+                                                    reflectImpro += ', ';
+                                                }
+                                                reflectImpro += todaysReflectionsAndImprovements;
+                                            }
+                                        }
+                                    });
+                                    e2.textContent = reflectImpro;
+                                })
+                            }
+                        })
+
+                        const monthSentence = document.querySelectorAll('.month-sentence');
+                        weeklySentenceRow.forEach(function (weeklyElement, index) {
+                            var totalSentence = '';
+
+                            weeklyElement.querySelectorAll('td').forEach(function (cell) {
+                                if (cell.textContent.trim() != '') {
+                                    if (totalSentence !== '') {
+                                        totalSentence += ', ';
+                                    }
+                                    totalSentence += cell.textContent;
+                                }
+                            });
+                            monthSentence[index].textContent = totalSentence;
+                        });
+
+                        document.querySelectorAll('.weekly-goals').forEach(function (e) {
+                            if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
+                            else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
+                            else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
+                        })
+
+                        document.querySelectorAll('.monthly-goals').forEach(function (e) {
+                            if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
+                            else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
+                            else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
                         })
                     } else {
                         window.location.href = "/management-time/";
@@ -1811,7 +2033,13 @@
                 }
             }
             xhr.send();
-        })
+        });
+
+        const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
+        document.querySelectorAll('.review-dailyRoutine').forEach(function () {
+            dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
+            dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
+        });
     })
 
     // Url api get all book
@@ -2021,6 +2249,7 @@
         const titleReportCategory = document.querySelectorAll('.title-report-category');
         const reviewWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
         const reivewWeeklyAmountTime = document.querySelectorAll('.review-weekly-amount-time');
+        const reivewDailyOnething = document.querySelectorAll('.reivew-daily-onething');
         const yearTitle = document.querySelectorAll('.yearTitle');
 
         yearTitle.forEach(function (e, index) {
@@ -2031,6 +2260,9 @@
                     titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
                 }
             }
+            reivewDailyOnething[0].classList.add('text-danger', 'fw-bolder')
+            reivewDailyOnething[index].textContent = e.textContent;
+            reivewDailyOnething[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
             reviewWeeklyGoals[0].classList.add('text-danger', 'fw-bolder')
             reviewWeeklyGoals[index].textContent = e.textContent;
             reviewWeeklyGoals[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
@@ -2044,12 +2276,17 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tartgetOnething = document.querySelectorAll('.target-onething');
         const rateOnething = document.querySelectorAll('.rate-onething');
+        const reviewRateOnthing = document.querySelectorAll('.review-rate-ongthing');
+        const reviewPerformanceOnthing = document.querySelectorAll('.review-performance-onething');
 
         document.querySelectorAll('.performance-onething').forEach(function (e, index) {
+            reviewPerformanceOnthing[index].textContent = e.textContent;
             if (tartgetOnething[index].textContent != 0) {
                 rateOnething[index].textContent = parseFloat((parseInt(e.textContent.trim()) * 100) / parseInt(tartgetOnething[index].textContent.trim())).toFixed(2) + ' %';
+                reviewRateOnthing[index].textContent = rateOnething[index].textContent;
             } else  rateOnething[index].textContent = '0 %'
         })
+
     })
 
     // Function change color and content Status
@@ -2585,6 +2822,7 @@
             validateFail("Keyword should not be same");
         } else {
             $(this).prop('disabled', true);
+            $('#tab-session').addClass('d-none');
             $("div.containerLoading").removeClass("d-none")
             $("div.calendar-container").addClass("d-none")
             const currentYearMonth = getCurrentYearMonth();

@@ -83,7 +83,12 @@ public class ManagementTimeDayConvert {
         return CalendarDayResponse.builder()
                 .id(day.getId())
                 .day(DateUtils.formatDate(day.getDay()))
+                .dailyRoutine(JsonUtils.jsonToObject(day.getDailyRoutine(), Boolean[].class))
                 .data(data)
+                .gratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), String[].class))
+                .complimentForMeToday(day.getComplimentForMeToday())
+                .todaysReflectionsAndImprovements(day.getTodaysReflectionsAndImprovements())
+                .weeklyCode(day.getWeeklyCode())
                 .build();
     }
 
