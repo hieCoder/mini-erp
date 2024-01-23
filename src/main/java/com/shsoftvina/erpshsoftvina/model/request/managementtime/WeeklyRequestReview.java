@@ -1,22 +1,20 @@
-package com.shsoftvina.erpshsoftvina.entity;
+package com.shsoftvina.erpshsoftvina.model.request.managementtime;
 
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class WeeklyManagementTimeDay {
-    private String id;
-    private String code;
-    private String content;
+public class WeeklyRequestReview {
+    private Date startDay;
     private String gratitudeDiary;
     private String compliment;
     private String reflectionAndImprovement;
-    private User user;
 }

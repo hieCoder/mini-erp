@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequestReview;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -24,6 +25,15 @@ public class WeeklyManagementTimeDayConverter {
         return WeeklyManagementTimeDay.builder()
                 .code(DateUtils.formatDate(weeklyRequest.getStartDay()))
                 .content(JsonUtils.objectToJson(weeklyRequest.getWeeklys()))
+                .user(userMapper.findById(userId)).build();
+    }
+
+    public WeeklyManagementTimeDay toEntityReview(String userId, WeeklyRequestReview weeklyRequestReview){
+        return WeeklyManagementTimeDay.builder()
+                .code(DateUtils.formatDate(weeklyRequestReview.getStartDay()))
+                .gratitudeDiary(weeklyRequestReview.getGratitudeDiary())
+                .compliment(weeklyRequestReview.getCompliment())
+                .reflectionAndImprovement(weeklyRequestReview.getReflectionAndImprovement())
                 .user(userMapper.findById(userId)).build();
     }
 

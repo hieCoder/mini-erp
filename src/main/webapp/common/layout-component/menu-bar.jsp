@@ -115,7 +115,7 @@
                                 <a class="nav-link">Daily Schedule</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link">W&V Report</a>
+                                <a class="nav-link">W&M Report</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link">2024 Report</a>

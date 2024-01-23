@@ -15,4 +15,11 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2" author="team2">
+        <addColumn tableName="WEEKLY_MANAGEMENT_TIME_DAY">
+            <column name="GRATITUDE_DIARY" type="TEXT"/>
+            <column name="COMPLIMENT" type="TEXT"/>
+            <column name="REFLECTIONS_AND_IMPROVEMENTS" type="TEXT"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

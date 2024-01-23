@@ -32,12 +32,15 @@ public class MonthlyManagementTimeDayConverter {
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String targetCategory){
+    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String targetCategory, String gratitudeDiary, String compliment, String reflectionAndImprovement){
         return MonthlyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
                 .dailyRoutine(dailyRoutine)
                 .targetCategory(targetCategory)
+                .gratitudeDiary(gratitudeDiary)
+                .compliment(compliment)
+                .reflectionAndImprovement(reflectionAndImprovement)
                 .user(userMapper.findById(userId)).build();
     }
 

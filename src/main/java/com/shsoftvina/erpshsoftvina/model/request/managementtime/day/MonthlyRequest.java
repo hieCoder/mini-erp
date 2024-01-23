@@ -16,4 +16,7 @@ public class MonthlyRequest {
     private MonthlyContentDto[] content;
     private DailyRoutineRequest[] dailyRoutine;
     private MonthlyTagetCategoryDto[] targetCategory;
+    private String gratitudeDiary;
+    private String compliment;
+    private String reflectionAndImprovement;
 }
