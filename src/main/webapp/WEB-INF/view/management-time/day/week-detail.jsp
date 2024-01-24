@@ -1283,13 +1283,47 @@
                                     </div>
                                 </div>
                             </div>
-                           <div class="col-10 mt-4">
+                            <div class="col-8 mt-4">
                                <div class="d-flex flex-column align-items-center">
                                    <div class="d-flex align-items-center">
                                        <h1 class="text-center text-white month-current"></h1>
                                    </div>
                                </div>
                            </div>
+                            <div class="col-2 ms-2 d-flex align-items-center">
+                                <button type="button" id="btn-chart-time-used" class="btn btn-info btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
+                                    <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Time Usage: 4C
+                                </button>
+                                <div id="modalChart" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category</h4>
+                                                <div class="flex-shrink-0">
+                                                    <div class="dropdown card-header-dropdown">
+                                                        <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-16"><i class="mdi mdi-dots-vertical align-middle"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Week</a>
+                                                            <a class="dropdown-item" href="#">Month</a>
+                                                            <a class="dropdown-item" href="#">Year</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="card-body">
+                                                    <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                                </div><!-- end card-body -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
@@ -1393,29 +1427,6 @@
                                     <tbody>
                                     <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
-
-<%--                                    <c:choose>--%>
-<%--                                        <c:when test="${empty weekly.monthlys[0].dailyRoutine}">--%>
-<%--                                            <c:forEach begin="0" end="5" varStatus="loopOuter">--%>
-<%--                                                <tr style="height: 44.5px" class="day-in-row">--%>
-<%--                                                    <c:forEach begin="1" end="31" varStatus="loopInner">--%>
-<%--                                                        <td class="fw-bolder only-day"></td>--%>
-<%--                                                    </c:forEach>--%>
-<%--                                                </tr>--%>
-<%--                                            </c:forEach>--%>
-<%--                                        </c:when>--%>
-<%--                                        <c:otherwise>--%>
-<%--                                            <c:forEach begin="0" end="${5 + fn:length(weekly.monthlys[0].dailyRoutine) - 1}" varStatus="loopOuter">--%>
-<%--                                                <tr style="height: 44.5px" class="day-in-row">--%>
-<%--                                                    <c:forEach begin="1" end="31" varStatus="loopInner">--%>
-<%--                                                        <c:set var="fullDate" value="${weekly.monthlys[0].month}" />--%>
-<%--                                                        <td class="fw-bolder only-day" data-day="${fullDate}-<fmt:formatNumber type='number' pattern='00' value='${loopInner.index}'/>"></td>--%>
-<%--                                                    </c:forEach>--%>
-<%--                                                </tr>--%>
-<%--                                            </c:forEach>--%>
-<%--                                        </c:otherwise>--%>
-<%--                                    </c:choose>--%>
-
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-review-weekly" style="height: 50.5px">
                                             <c:forEach begin="0" end="4" varStatus="loop">
@@ -1890,7 +1901,16 @@
 <script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<%--<script src="/assets/js/pages/apexcharts-pie.init.js"></script>--%>
+
 <script>
+    function getChartColorsArray(e) {
+        if (null !== document.getElementById(e)) return e = document.getElementById(e).getAttribute("data-colors"), (e = JSON.parse(e)).map(function (e) {
+            var t = e.replace(" ", "");
+            return -1 === t.indexOf(",") ? getComputedStyle(document.documentElement).getPropertyValue(t) || t : 2 == (e = e.split(",")).length ? "rgba(" + getComputedStyle(document.documentElement).getPropertyValue(e[0]) + "," + e[1] + ")" : t
+        })
+    }
 
     function formatDate(date) {
         const year = date.getFullYear();
@@ -2064,7 +2084,9 @@
                                         const dayDate = day.day;
                                         const dayData = day.data;
                                         if (dataDay ==  dayDate) {
-                                            if (dayData[index].performance == true && dayData[index].performance != null) onlyDay.textContent = 'X';
+                                           if (dayData[index] != null && dayData[index] != '') {
+                                               if (dayData[index].performance == true && dayData[index].performance != null) onlyDay.textContent = 'X';
+                                           }
                                         }
                                     });
                                 })
@@ -2200,6 +2222,7 @@
                         const hoursInMonth = lastDayOfMonth * 24;
                         const timeUsedMonthly = document.querySelectorAll('.time-used-monthly');
                         const performanceAmountTimeMonthly = document.querySelectorAll('.performance-amountTime-monthly');
+                        const arrayTimeUsedCategory = [];
                         document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e, index) {
                             var totalTimeUsedWeekly = 0;
                             e.querySelectorAll('span').forEach(function (eSpan) {
@@ -2207,7 +2230,34 @@
                             })
                             timeUsedMonthly[index].textContent = totalTimeUsedWeekly + '/' + hoursInMonth + ' hours';
                             performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
+                            arrayTimeUsedCategory.push(totalTimeUsedWeekly)
                         })
+                        const btnChart = document.getElementById('btn-chart-time-used');
+                        btnChart.addEventListener('click', function (e) {
+                            const arrCategory = [];
+                            document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
+                                arrCategory.push(e.textContent);
+                            })
+                            var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart"),
+                                chartDonutBasicColors = (chartPieBasicColors && (options = {
+                                    series: arrayTimeUsedCategory,
+                                    chart: {height: 300, type: "pie"},
+                                    labels: arrCategory,
+                                    legend: {position: "bottom"},
+                                    dataLabels: {dropShadow: {enabled: !1}},
+                                    colors: chartPieBasicColors
+                                }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart"), options)).render()), getChartColorsArray("simple_dount_chart")),
+                                chartDonutupdatingColors = (chartDonutBasicColors && (options = {
+                                    series: [44, 55, 41, 17, 15],
+                                    chart: {height: 300, type: "donut"},
+                                    legend: {position: "bottom"},
+                                    dataLabels: {dropShadow: {enabled: !1}},
+                                    colors: chartDonutBasicColors
+                                }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+                        })
+                        
+                       const checkExtraDay = document.getElementById('days-of-month').querySelector('td').textContent;
+                        console.log(checkExtraDay)
                     } else {
                         window.location.href = "/management-time/";
                     }
@@ -2225,8 +2275,9 @@
             dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
             dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
         });
-    })
 
+    })
+    
     // Url api get all book
     function getUrlApiBooks(search, page, pageSize) {
         return '/api/v1/books?search=' + search + '&page=' + page + '&pageSize=' + pageSize;

@@ -37,7 +37,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">All books</h5>
                     <div class="flex-shrink-0">
                         <button data-bs-toggle="modal" data-bs-target="#addBookModal" id="add-book-btn"
-                                class="btn btn-success d-none"><i class="ri-add-line align-bottom me-1"></i> Add book
+                                class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Add book
                         </button>
                     </div>
                 </div>
@@ -117,9 +117,8 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
-                <h5 class="modal-title" id="exampleModalLabel">Add book</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="close-modal"></button>
+                <h5 class="modal-title" >Add book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addBookForm">
                 <div class="modal-body">
@@ -168,7 +167,7 @@
                                 <span class="flex-grow-1">Add</span>
                             </span>
                         </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+                        <button type="button" class="btn btn-light"  data-bs-dismiss="modal">Close
                         </button>
                     </div>
                 </div>
@@ -185,7 +184,7 @@
             <div class="modal-header p-3 bg-soft-info">
                 <h5 class="modal-title" id="exampleModalLabel">Edit book</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="close-modal"></button>
+                        ></button>
             </div>
             <form id="editBookForm">
                 <div class="modal-body">
@@ -234,7 +233,7 @@
                                 <span class="flex-grow-1">Edit</span>
                             </span>
                         </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
                         </button>
                     </div>
                 </div>
@@ -293,13 +292,6 @@
 
     $(document).ready(function () {
 
-        if (isDeleveloper()) {
-            $('#add-book-btn').remove();
-            document.getElementById('isDeveloper').textContent = '';
-        } else {
-            $('#add-book-btn').removeClass('d-none');
-        }
-
         table = $('#datatable-book').DataTable({
             ajax: {
                 url: getUrlApiBooks(objPaging.search, 1, objPaging.pageSize),
@@ -334,9 +326,6 @@
                 {data: 'createdDate'},
                 {
                     render: function (data, type, row) {
-                        if (isDeleveloper()) {
-                            return '';
-                        } else {
                             return `<div class="d-flex gap-2">
                                     <div class="edit">
                                         <button data-id="` + row.id + `" class="btn btn-sm btn-success edit-book-btn">Edit</button>
@@ -345,7 +334,6 @@
                                         <button data-bs-toggle="modal" href="#deleteBookModal" data-id="` + row.id + `" class="btn btn-sm btn-danger remove-book-btn">Remove</button>
                                     </div>
                         </div>`;
-                        }
                     }
                 }
             ],
