@@ -533,10 +533,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             WeeklyRequest weeklyRequest = daysUpdateRequest.getWeekly();
             String weeklyCode = DateUtils.formatDate(weeklyRequest.getStartDay());
             WeeklyDto[] weeklys = weeklyRequest.getWeeklys();
+            String gratitudeDiary = weeklyRequest.getGratitudeDiary();
+            String compliment = weeklyRequest.getCompliment();
+            String reflectionAndImprovement = weeklyRequest.getReflectionAndImprovement();
             WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
             ColorRequest[] colorRequests = daysUpdateRequest.getColors();
             if (weeklyEntity == null) {
-                WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklys));
+                WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklys), gratitudeDiary, compliment, reflectionAndImprovement);
                 CompletableFuture<Void> createWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyE);
                     WeeklyManagementTimeDay weeklySaved = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
@@ -547,6 +550,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 asyncTasks.add(createWeeklyManagementTimeDayAsync);
             } else {
                 weeklyEntity.setContent(JsonUtils.objectToJson(weeklys));
+                weeklyEntity.setGratitudeDiary(gratitudeDiary);
+                weeklyEntity.setCompliment(compliment);
+                weeklyEntity.setReflectionAndImprovement(reflectionAndImprovement);
                 CompletableFuture<Void> updateWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
                     colorManagementTimeDayMapper.deleteAllByWeeklyId(weeklyEntity.getId());

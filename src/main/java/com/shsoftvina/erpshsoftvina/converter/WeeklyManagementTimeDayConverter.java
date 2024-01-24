@@ -45,10 +45,13 @@ public class WeeklyManagementTimeDayConverter {
         return list;
     }
 
-    public WeeklyManagementTimeDay toEntity(String userId, String code, String content){
+    public WeeklyManagementTimeDay toEntity(String userId, String code, String content, String gratitudeDiary, String compliment, String reflectionAndImprovement){
         return WeeklyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
+                .gratitudeDiary(gratitudeDiary)
+                .compliment(compliment)
+                .reflectionAndImprovement(reflectionAndImprovement)
                 .user(userMapper.findById(userId)).build();
     }
 
@@ -56,7 +59,12 @@ public class WeeklyManagementTimeDayConverter {
         return WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay.getId())
                 .startDate(weeklyManagementTimeDay.getCode())
-                .weeklys(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), WeeklyDto[].class)).build();
+                .weeklys(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), WeeklyDto[].class))
+                .gratitudeDiary(weeklyManagementTimeDay.getGratitudeDiary())
+                .compliment(weeklyManagementTimeDay.getCompliment())
+                .reflectionAndImprovement(weeklyManagementTimeDay.getReflectionAndImprovement())
+                .build();
+
     }
 
     public List<WeeklyManagementTimeDayResponse> toListResponse(List<WeeklyManagementTimeDay> weeklyManagementTimeDays){

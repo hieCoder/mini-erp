@@ -2039,21 +2039,23 @@
                                 weeklys.forEach(week => {
                                     const startDateDB = week.startDate;
                                     if (startDate == startDateDB) {
-                                        const weeklyTarget = week.weeklys[index].content;
-                                        const statusWeek = week.weeklys[index].status;
-                                        if (weeklyTarget != null && weeklyTarget != '') {
-                                            var btnStatus = ``;
-                                            if (statusWeek == 'COMPLETE') {
-                                                btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
-                                            } else if (statusWeek == 'PENDING') {
-                                                btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
-                                            } else if (statusWeek == 'CANCEL') {
-                                                btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
-                                            } else if (statusWeek == '') {
-                                                btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                        if (week.weeklys != null) {
+                                            const weeklyTarget = week.weeklys[index].content;
+                                            const statusWeek = week.weeklys[index].status;
+                                            if (weeklyTarget != null && weeklyTarget != '') {
+                                                var btnStatus = ``;
+                                                if (statusWeek == 'COMPLETE') {
+                                                    btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
+                                                } else if (statusWeek == 'PENDING') {
+                                                    btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
+                                                } else if (statusWeek == 'CANCEL') {
+                                                    btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
+                                                } else if (statusWeek == '') {
+                                                    btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                                }
+                                                const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                                                $(onlyWeek).append(html);
                                             }
-                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
-                                            $(onlyWeek).append(html);
                                         }
                                     }
                                 });
@@ -2067,91 +2069,55 @@
                                 weeklys.forEach(week => {
                                     const startDateDB = week.startDate;
                                     if (startDate == startDateDB) {
-                                        const timeusedWeekly = week.weeklys[index + 1].timeUsed;
-                                        if (timeusedWeekly != null && timeusedWeekly != '') {
-                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
-                                        }
+                                       if (week.weeklys != null) {
+                                           const timeusedWeekly = week.weeklys[index + 1].timeUsed;
+                                           if (timeusedWeekly != null && timeusedWeekly != '') {
+                                               onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
+                                           }
+                                       }
                                     }
                                 });
                             })
                         })
 
-                        // const weeklySentenceRow = document.querySelectorAll('.tr-weekly-sentence');
-                        // weeklySentenceRow.forEach(function (e, index) {
-                        //     if (index == 0) {
-                        //         e.querySelectorAll('td').forEach(function (e2) {
-                        //             var gratitudeDiaryToString = '';
-                        //             const startDate = e2.getAttribute('data-week');
-                        //             days.forEach(day => {
-                        //                 const weeklyCode = day.weeklyCode;
-                        //                 if (startDate == weeklyCode) {
-                        //                     var gratitudeDiarys = day.gratitudeDiary;
-                        //                     if (gratitudeDiarys != null) {
-                        //                         gratitudeDiarys.forEach(gratitudeDiary => {
-                        //                             if (gratitudeDiary != '') {
-                        //                                 if (gratitudeDiary !== '') {
-                        //                                     gratitudeDiary += ', ';
-                        //                                 }
-                        //                                 gratitudeDiaryToString += gratitudeDiary;
-                        //                             }
-                        //                         });
-                        //                     }
-                        //                 }
-                        //             });
-                        //             e2.textContent = gratitudeDiaryToString;
-                        //         })
-                        //     } else if (index == 1) {
-                        //         e.querySelectorAll('td').forEach(function (e2) {
-                        //             var compliment = '';
-                        //             const startDate = e2.getAttribute('data-week');
-                        //             days.forEach(day => {
-                        //                 const weeklyCode = day.weeklyCode;
-                        //                 if (startDate == weeklyCode) {
-                        //                     var complimentForMeToday = day.complimentForMeToday;
-                        //                     if (complimentForMeToday != null && complimentForMeToday != '') {
-                        //                         if (compliment !== '') {
-                        //                             compliment += ', ';
-                        //                         }
-                        //                         compliment += complimentForMeToday;
-                        //                     }
-                        //                 }
-                        //             });
-                        //             e2.textContent = compliment;
-                        //         })
-                        //     } else if (index == 2) {
-                        //         e.querySelectorAll('td').forEach(function (e2) {
-                        //             var reflectImpro = '';
-                        //             const startDate = e2.getAttribute('data-week');
-                        //             days.forEach(day => {
-                        //                 const weeklyCode = day.weeklyCode;
-                        //                 if (startDate == weeklyCode) {
-                        //                     var todaysReflectionsAndImprovements = day.todaysReflectionsAndImprovements;
-                        //                     if (todaysReflectionsAndImprovements != null && todaysReflectionsAndImprovements != '') {
-                        //                         if (reflectImpro !== '') {
-                        //                             reflectImpro += ', ';
-                        //                         }
-                        //                         reflectImpro += todaysReflectionsAndImprovements;
-                        //                     }
-                        //                 }
-                        //             });
-                        //             e2.textContent = reflectImpro;
-                        //         })
-                        //     }
-                        // })
-                        //
-                        // const monthSentence = document.querySelectorAll('.month-sentence');
-                        // weeklySentenceRow.forEach(function (weeklyElement, index) {
-                        //     var totalSentence = '';
-                        //     weeklyElement.querySelectorAll('td').forEach(function (cell) {
-                        //         if (cell.textContent.trim() != '') {
-                        //             if (totalSentence !== '') {
-                        //                 totalSentence += ', ';
-                        //             }
-                        //             totalSentence += cell.textContent;
-                        //         }
-                        //     });
-                        //     monthSentence[index].textContent = totalSentence;
-                        // });
+                        const gratitudeDiaryTr = document.querySelectorAll('.tr-weekly-sentence0');
+                        gratitudeDiaryTr.forEach(function (weekRow, index) {
+                            weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
+                                const startDate = onlyWeek.getAttribute('data-week');
+                                weeklys.forEach(week => {
+                                    const startDateDB = week.startDate;
+                                    if (startDate == startDateDB) {
+                                        onlyWeek.value = week.gratitudeDiary;
+                                    }
+                                });
+                            })
+                        })
+
+                        const complimentTr = document.querySelectorAll('.tr-weekly-sentence1');
+                        complimentTr.forEach(function (weekRow, index) {
+                            weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
+                                const startDate = onlyWeek.getAttribute('data-week');
+                                weeklys.forEach(week => {
+                                    const startDateDB = week.startDate;
+                                    if (startDate == startDateDB) {
+                                        onlyWeek.value = week.compliment;
+                                    }
+                                });
+                            })
+                        })
+
+                        const reflectionAndImproveTr = document.querySelectorAll('.tr-weekly-sentence2');
+                        reflectionAndImproveTr.forEach(function (weekRow, index) {
+                            weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
+                                const startDate = onlyWeek.getAttribute('data-week');
+                                weeklys.forEach(week => {
+                                    const startDateDB = week.startDate;
+                                    if (startDate == startDateDB) {
+                                        onlyWeek.value = week.reflectionAndImprovement;
+                                    }
+                                });
+                            })
+                        })
 
                         document.querySelectorAll('.weekly-goals').forEach(function (e) {
                             if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
@@ -3292,22 +3258,34 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
+            const weeklyData = data.weekly.startDay;
+            const weeklyReviewData = data.weeklysReview;
+            for (let i = 0; i < weeklyReviewData.length; i++) {
+                const currentItem = weeklyReviewData[i];
+                if (currentItem.startDay === weeklyData) {
+                    data.weekly.gratitudeDiary = currentItem.gratitudeDiary;
+                    data.weekly.compliment = currentItem.compliment;
+                    data.weekly.reflectionAndImprovement = currentItem.reflectionAndImprovement;
+                    data.weeklysReview.splice(i, 1);
+                    i--;
+                }
+            }
             console.log(data)
-            // callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
-            //     data.quotes.image = rs[0];
-            //     callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-            //         if (rs) {
-            //             $("div.containerLoading").addClass("d-none")
-            //             $("div.calendar-container").removeClass("d-none")
-            //             localStorage.setItem('result', 'addSuccess');
-            //             window.location.reload();
-            //         } else {
-            //             rsUnSuccess();
-            //             $("div.containerLoading").addClass("d-none")
-            //             $("div.calendar-container").removeClass("d-none")
-            //         }
-            //     })
-            // })
+            callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
+                data.quotes.image = rs[0];
+                callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+                    if (rs) {
+                        $("div.containerLoading").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
+                        localStorage.setItem('result', 'addSuccess');
+                        window.location.reload();
+                    } else {
+                        rsUnSuccess();
+                        $("div.containerLoading").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
+                    }
+                })
+            })
         }
     });
 

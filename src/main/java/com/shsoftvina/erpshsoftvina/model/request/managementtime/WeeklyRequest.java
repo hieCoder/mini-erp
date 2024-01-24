@@ -15,4 +15,7 @@ import java.util.Date;
 public class WeeklyRequest {
     private Date startDay;
     private WeeklyDto[] weeklys;
+    private String gratitudeDiary;
+    private String compliment;
+    private String reflectionAndImprovement;
 }
