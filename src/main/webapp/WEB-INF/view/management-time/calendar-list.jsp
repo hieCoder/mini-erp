@@ -430,9 +430,9 @@
                     const targetOptions = {month: 'long'};
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
-                    monthTarget.textContent = 'Target of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
+                    monthTarget.textContent = 'Goals of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
                     const targetOfYear = parseData.year == null ? currentYear.textContent : parseData.year.year;
-                    yearCurrent.textContent = 'Target of ' + targetOfYear;
+                    yearCurrent.textContent = 'Goals of ' + targetOfYear;
 
                     const startDay = startDateOfCurrentDate.getDay();
 

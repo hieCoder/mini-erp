@@ -14,16 +14,20 @@
     </select>
 
     <insert id="createListWeekly" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID)
+        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, GRATITUDE_DIARY, COMPLIMENT, REFLECTIONS_AND_IMPROVEMENTS, USER_ID)
         VALUES
         <foreach collection="weeklys" item="weekly" separator=",">
-            (UUID(), #{weekly.code}, #{weekly.content}, #{weekly.user.id})
+            (UUID(), #{weekly.code}, #{weekly.content}, #{weekly.gratitudeDiary}, #{weekly.compliment}, #{weekly.reflectionAndImprovement}, #{weekly.user.id})
         </foreach>
     </insert>
 
     <update id="editListWeekly" parameterType="java.util.List">
         <foreach collection="weeklys" item="w" separator=";">
-            UPDATE WEEKLY_MANAGEMENT_TIME_DAY SET CONTENT = #{w.content}
+            UPDATE WEEKLY_MANAGEMENT_TIME_DAY
+            SET CONTENT = #{w.content},
+                GRATITUDE_DIARY = #{w.gratitudeDiary},
+                COMPLIMENT = #{w.compliment},
+                REFLECTIONS_AND_IMPROVEMENTS = #{w.reflectionAndImprovement}
             WHERE ID = #{w.id}
         </foreach>
     </update>
@@ -49,6 +53,9 @@
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="content" column="CONTENT"/>
+        <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
+        <result property="compliment" column="COMPLIMENT"/>
+        <result property="reflectionAndImprovement" column="REFLECTIONS_AND_IMPROVEMENTS"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -58,12 +65,16 @@
     </resultMap>
 
     <insert id="createWeeklyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
-        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID)
-        VALUES (UUID(), #{code}, #{content}, #{user.id})
+        INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID, GRATITUDE_DIARY, COMPLIMENT, REFLECTIONS_AND_IMPROVEMENTS)
+        VALUES (UUID(), #{code}, #{content}, #{user.id}, #{gratitudeDiary}, #{compliment}, #{reflectionAndImprovement})
     </insert>
 
     <update id="updateWeeklyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
-        UPDATE WEEKLY_MANAGEMENT_TIME_DAY SET CONTENT = #{content}
+        UPDATE WEEKLY_MANAGEMENT_TIME_DAY
+        SET CONTENT = #{content},
+            GRATITUDE_DIARY = #{gratitudeDiary},
+            COMPLIMENT = #{compliment},
+            REFLECTIONS_AND_IMPROVEMENTS = #{reflectionAndImprovement}
         WHERE ID = #{id};
     </update>
 </mapper>

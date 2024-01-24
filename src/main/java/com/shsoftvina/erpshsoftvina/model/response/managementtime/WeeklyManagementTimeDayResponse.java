@@ -14,4 +14,7 @@ public class WeeklyManagementTimeDayResponse {
     private String weeklyId;
     private String startDate;
     private WeeklyDto[] weeklys;
+    private String gratitudeDiary;
+    private String compliment;
+    private String reflectionAndImprovement;
 }

@@ -19,4 +19,7 @@ public class MonthResponse {
     private DailyRoutineResponse[] dailyRoutine;
     private String[] color;
     private MonthlyTagetCategoryDto[] targetCategory;
+    private String gratitudeDiary;
+    private String compliment;
+    private String reflectionAndImprovement;
 }

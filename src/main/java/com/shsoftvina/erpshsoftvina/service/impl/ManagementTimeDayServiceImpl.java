@@ -5,6 +5,7 @@ import com.shsoftvina.erpshsoftvina.converter.*;
 import com.shsoftvina.erpshsoftvina.entity.*;
 import com.shsoftvina.erpshsoftvina.mapper.*;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.*;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequestReview;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.*;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
@@ -193,8 +194,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         List<CalendarDayRequest> days = req.getDays();
         YearRequest yearRequest = req.getYear();
         String yearCode = yearRequest.getYear();
-
-        List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
 
         CompletableFuture<Void> asyncTaskDay = CompletableFuture.runAsync(() -> {
             List<ManagementTimeDay> insertListDay = new ArrayList<>();
@@ -404,6 +403,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     monthResponse.setMonth(month);
                     monthResponse.setMonthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), MonthlyContentDto[].class));
                     monthResponse.setTargetCategory(JsonUtils.jsonToObject(monthlyManagementTimeDay.getTargetCategory(), MonthlyTagetCategoryDto[].class));
+                    monthResponse.setGratitudeDiary(monthlyManagementTimeDay.getGratitudeDiary());
+                    monthResponse.setCompliment(monthlyManagementTimeDay.getCompliment());
+                    monthResponse.setReflectionAndImprovement(monthlyManagementTimeDay.getReflectionAndImprovement());
 
                     String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
                     if (!StringUtils.isBlank(dailyRoutineJson)) {
@@ -487,6 +489,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
     @Override
     public int updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest) {
         String userId = daysUpdateRequest.getUserId();
+        List<WeeklyRequestReview> weeklysReview = daysUpdateRequest.getWeeklysReview();
 
         List<CompletableFuture<Void>> asyncTasks = new ArrayList<>();
 
@@ -496,12 +499,18 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             MonthlyContentDto[] monthlyContent = monthlyRequest.getContent();
             DailyRoutineRequest[] dailyRoutine = monthlyRequest.getDailyRoutine();
             MonthlyTagetCategoryDto[] targetCategory = monthlyRequest.getTargetCategory();
+            String monthlyGratitudeDiary = monthlyRequest.getGratitudeDiary();
+            String monthlyCompliment = monthlyRequest.getCompliment();
+            String monthlyReflectionAndImprovement = monthlyRequest.getReflectionAndImprovement();
             MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
             if (monthlyEntity == null) {
                 MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
                         JsonUtils.objectToJson(monthlyContent),
                         JsonUtils.objectToJson(dailyRoutine),
-                        JsonUtils.objectToJson(targetCategory));
+                        JsonUtils.objectToJson(targetCategory),
+                        monthlyGratitudeDiary,
+                        monthlyCompliment,
+                        monthlyReflectionAndImprovement);
                 CompletableFuture<Void> createMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyE);
                 });
@@ -510,6 +519,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 monthlyEntity.setContent(JsonUtils.objectToJson(monthlyContent));
                 monthlyEntity.setDailyRoutine(JsonUtils.objectToJson(dailyRoutine));
                 monthlyEntity.setTargetCategory(JsonUtils.objectToJson(targetCategory));
+                monthlyEntity.setGratitudeDiary(monthlyGratitudeDiary);
+                monthlyEntity.setCompliment(monthlyCompliment);
+                monthlyEntity.setReflectionAndImprovement(monthlyReflectionAndImprovement);
                 CompletableFuture<Void> updateMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
                 });
@@ -521,10 +533,13 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             WeeklyRequest weeklyRequest = daysUpdateRequest.getWeekly();
             String weeklyCode = DateUtils.formatDate(weeklyRequest.getStartDay());
             WeeklyDto[] weeklys = weeklyRequest.getWeeklys();
+            String gratitudeDiary = weeklyRequest.getGratitudeDiary();
+            String compliment = weeklyRequest.getCompliment();
+            String reflectionAndImprovement = weeklyRequest.getReflectionAndImprovement();
             WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
             ColorRequest[] colorRequests = daysUpdateRequest.getColors();
             if (weeklyEntity == null) {
-                WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklys));
+                WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklys), gratitudeDiary, compliment, reflectionAndImprovement);
                 CompletableFuture<Void> createWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyE);
                     WeeklyManagementTimeDay weeklySaved = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
@@ -535,6 +550,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 asyncTasks.add(createWeeklyManagementTimeDayAsync);
             } else {
                 weeklyEntity.setContent(JsonUtils.objectToJson(weeklys));
+                weeklyEntity.setGratitudeDiary(gratitudeDiary);
+                weeklyEntity.setCompliment(compliment);
+                weeklyEntity.setReflectionAndImprovement(reflectionAndImprovement);
                 CompletableFuture<Void> updateWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
                     colorManagementTimeDayMapper.deleteAllByWeeklyId(weeklyEntity.getId());
@@ -542,6 +560,37 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     colorManagementTimeDayMapper.createColors(colorManagementTimeDays);
                 });
                 asyncTasks.add(updateWeeklyManagementTimeDayAsync);
+            }
+        });
+
+        CompletableFuture<Void> asyncTaskWeeklyReview = CompletableFuture.runAsync(() -> {
+            List<WeeklyManagementTimeDay> insertListWeekly = new ArrayList<>();
+            List<WeeklyManagementTimeDay> editListWeekly = new ArrayList<>();
+            if (!weeklysReview.isEmpty()) {
+                List<String> startDayList = weeklysReview.stream().map(d -> DateUtils.formatDate(d.getStartDay())).collect(Collectors.toList());
+                List<WeeklyManagementTimeDay> weeklyManagementTimeDays = weeklyManagementTimeDayMapper.findByListCode(userId, startDayList);
+                for (WeeklyRequestReview w : weeklysReview) {
+                    WeeklyManagementTimeDay weeklyEntity = getWeeklyManagementTimeDays(weeklyManagementTimeDays, w.getStartDay());
+                    if (weeklyEntity != null) {
+                        weeklyEntity.setGratitudeDiary(w.getGratitudeDiary());
+                        weeklyEntity.setCompliment(w.getCompliment());
+                        weeklyEntity.setReflectionAndImprovement(w.getReflectionAndImprovement());
+                        editListWeekly.add(weeklyEntity);
+                    } else {
+                        weeklyEntity = weeklyManagementTimeDayConverter.toEntityReview(userId, w);
+                        insertListWeekly.add(weeklyEntity);
+                    }
+                }
+                if (!insertListWeekly.isEmpty()) {
+                    CompletableFuture.runAsync(() -> {
+                        weeklyManagementTimeDayMapper.createListWeekly(insertListWeekly);
+                    });
+                }
+                if (!editListWeekly.isEmpty()) {
+                    CompletableFuture.runAsync(() -> {
+                        weeklyManagementTimeDayMapper.editListWeekly(editListWeekly);
+                    });
+                }
             }
         });
 
@@ -627,7 +676,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             }
         });
 
-        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskDay, asyncTaskQuote, asyncTaskYear);
+        CompletableFuture<Void> allAsyncTasks = CompletableFuture.allOf(asyncTaskMonth, asyncTaskWeek, asyncTaskWeeklyReview, asyncTaskDay, asyncTaskQuote, asyncTaskYear);
         allAsyncTasks.thenRun(() -> {
             CompletableFuture<Void> allOfAsyncTasks = CompletableFuture.allOf(asyncTasks.toArray(new CompletableFuture[0]));
             allOfAsyncTasks.join();

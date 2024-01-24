@@ -14,4 +14,5 @@ import java.util.Date;
 public class WeeklyDto {
     private String content;
     private String status;
+    private String timeUsed;
 }

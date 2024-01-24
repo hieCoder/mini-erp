@@ -4,6 +4,7 @@ import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequest;
+import com.shsoftvina.erpshsoftvina.model.request.managementtime.WeeklyRequestReview;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.WeeklyManagementTimeDayResponse;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -27,6 +28,15 @@ public class WeeklyManagementTimeDayConverter {
                 .user(userMapper.findById(userId)).build();
     }
 
+    public WeeklyManagementTimeDay toEntityReview(String userId, WeeklyRequestReview weeklyRequestReview){
+        return WeeklyManagementTimeDay.builder()
+                .code(DateUtils.formatDate(weeklyRequestReview.getStartDay()))
+                .gratitudeDiary(weeklyRequestReview.getGratitudeDiary())
+                .compliment(weeklyRequestReview.getCompliment())
+                .reflectionAndImprovement(weeklyRequestReview.getReflectionAndImprovement())
+                .user(userMapper.findById(userId)).build();
+    }
+
     public List<WeeklyManagementTimeDay> toListEntity(String userId, List<WeeklyRequest> weeklyRequests){
         List<WeeklyManagementTimeDay> list = new ArrayList<>();
         for(WeeklyRequest w: weeklyRequests){
@@ -35,10 +45,13 @@ public class WeeklyManagementTimeDayConverter {
         return list;
     }
 
-    public WeeklyManagementTimeDay toEntity(String userId, String code, String content){
+    public WeeklyManagementTimeDay toEntity(String userId, String code, String content, String gratitudeDiary, String compliment, String reflectionAndImprovement){
         return WeeklyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
+                .gratitudeDiary(gratitudeDiary)
+                .compliment(compliment)
+                .reflectionAndImprovement(reflectionAndImprovement)
                 .user(userMapper.findById(userId)).build();
     }
 
@@ -46,7 +59,12 @@ public class WeeklyManagementTimeDayConverter {
         return WeeklyManagementTimeDayResponse.builder()
                 .weeklyId(weeklyManagementTimeDay.getId())
                 .startDate(weeklyManagementTimeDay.getCode())
-                .weeklys(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), WeeklyDto[].class)).build();
+                .weeklys(JsonUtils.jsonToObject(weeklyManagementTimeDay.getContent(), WeeklyDto[].class))
+                .gratitudeDiary(weeklyManagementTimeDay.getGratitudeDiary())
+                .compliment(weeklyManagementTimeDay.getCompliment())
+                .reflectionAndImprovement(weeklyManagementTimeDay.getReflectionAndImprovement())
+                .build();
+
     }
 
     public List<WeeklyManagementTimeDayResponse> toListResponse(List<WeeklyManagementTimeDay> weeklyManagementTimeDays){
