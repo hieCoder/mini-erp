@@ -173,20 +173,32 @@
                    <a class="nav-link active" data-bs-toggle="tab" href="#calendar" role="tab" aria-selected="false">
                        <i class=" ri-calendar-todo-line align-middle me-1"></i>Planner
                    </a>
-                   <select class="form-select text-center" aria-label="Default select example">
-                           <option selected>TABS</option>
-                           <option value="1">2024 Goals</option>
-                           <option value="2">2024 Calendar</option>
-                           <option value="3">Monthly</option>
-                           <option value="1">Weekly</option>
-                           <option value="2">Daily Schedule</option>
-                           <option value="3">W&M Report</option>
-                           <option value="3">2024 Report</option>
-                       <optgroup label="Book">
-                       </optgroup>
-                       <optgroup label="Financial Ledger">
-                       </optgroup>
-                   </select>
+                   <div class="btn-group w-100 mt-2">
+                       <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">TABS</button>
+                       <div class="dropdown-menu">
+                           <a class="dropdown-item nav-link" data-bs-toggle="tab"  role="tab" aria-selected="false">
+                               2024 Goals
+                           </a>
+                           <a class="dropdown-item nav-link management-time-year">
+                               2024 Calendar
+                           </a>
+                           <a class="dropdown-item nav-link management-time-month">
+                               Monthly
+                           </a>
+                           <a class="dropdown-item nav-link management-time-week">
+                               Weekly
+                           </a>
+                           <a class="dropdown-item nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">
+                               Daily Schedule
+                           </a>
+                           <a class="dropdown-item nav-link" id="session-review" data-bs-toggle="tab" href="#review" role="tab" aria-selected="false">
+                               W&M Report
+                           </a>
+                           <a class="dropdown-item nav-link" data-bs-toggle="tab"  role="tab" aria-selected="false">
+                               2024 Report
+                           </a>
+                       </div>
+                   </div>
 
                </li>
                <li class="nav-item">
@@ -195,8 +207,8 @@
                    </a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" id="session-review" data-bs-toggle="tab" href="#review" role="tab" aria-selected="false">
-                       <i class="ri-calendar-check-line align-middle me-1"></i>Review
+                   <a class="nav-link" id="session-financial" data-bs-toggle="tab" href="#financial" role="tab" aria-selected="false">
+                       <i class="ri-coins-line align-middle me-1"></i>Financial Ledger
                    </a>
                </li>
            </ul>
@@ -1321,13 +1333,13 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 51px; background-color: #fcecec">
+                                    <tr style="height: 50px; background-color: #fcecec">
                                         <td rowspan="4" style="background-color: #FFBB64;">
                                             <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
                                         </td>
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 50px; background-color: #e6f0e2">
+                                    <tr style="height: 51px; background-color: #e6f0e2">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
                                     <tr style="height: 50px; background-color: #fff9e6">
@@ -1369,9 +1381,9 @@
                                 </table>
                             </div>
                             <div class="table-container">
-                                <table>
+                                <table id="table-dailyOnethingRoutine">
                                     <thead>
-                                    <tr style="height: 45px">
+                                    <tr style="height: 44px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
                                             <th class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
@@ -1379,30 +1391,31 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
+                                    <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
 
-                                    <c:choose>
-                                        <c:when test="${empty weekly.monthlys[0].dailyRoutine}">
-                                            <c:forEach begin="0" end="5" varStatus="loopOuter">
-                                                <tr style="height: 44.5px" class="day-in-row">
-                                                    <c:forEach begin="1" end="31" varStatus="loopInner">
-                                                        <td class="fw-bolder only-day"></td>
-                                                    </c:forEach>
-                                                </tr>
-                                            </c:forEach>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:forEach begin="0" end="${5 + fn:length(weekly.monthlys[0].dailyRoutine) - 1}" varStatus="loopOuter">
-                                                <tr style="height: 44.5px" class="day-in-row">
-                                                    <c:forEach begin="1" end="31" varStatus="loopInner">
-                                                        <c:set var="fullDate" value="${weekly.monthlys[0].month}" />
-                                                        <td class="fw-bolder only-day" data-day="${fullDate}-<fmt:formatNumber type='number' pattern='00' value='${loopInner.index}'/>"></td>
-                                                    </c:forEach>
-                                                </tr>
-                                            </c:forEach>
-                                        </c:otherwise>
-                                    </c:choose>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${empty weekly.monthlys[0].dailyRoutine}">--%>
+<%--                                            <c:forEach begin="0" end="5" varStatus="loopOuter">--%>
+<%--                                                <tr style="height: 44.5px" class="day-in-row">--%>
+<%--                                                    <c:forEach begin="1" end="31" varStatus="loopInner">--%>
+<%--                                                        <td class="fw-bolder only-day"></td>--%>
+<%--                                                    </c:forEach>--%>
+<%--                                                </tr>--%>
+<%--                                            </c:forEach>--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            <c:forEach begin="0" end="${5 + fn:length(weekly.monthlys[0].dailyRoutine) - 1}" varStatus="loopOuter">--%>
+<%--                                                <tr style="height: 44.5px" class="day-in-row">--%>
+<%--                                                    <c:forEach begin="1" end="31" varStatus="loopInner">--%>
+<%--                                                        <c:set var="fullDate" value="${weekly.monthlys[0].month}" />--%>
+<%--                                                        <td class="fw-bolder only-day" data-day="${fullDate}-<fmt:formatNumber type='number' pattern='00' value='${loopInner.index}'/>"></td>--%>
+<%--                                                    </c:forEach>--%>
+<%--                                                </tr>--%>
+<%--                                            </c:forEach>--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
+
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-review-weekly" style="height: 50.5px">
                                             <c:forEach begin="0" end="4" varStatus="loop">
@@ -1939,17 +1952,24 @@
 
         for (let i = 1; i < firstDayOfWeek; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder', 'extra-day');
+            td.classList.add('fw-bolder');
             daysOfMonth.appendChild(td);
         }
 
         for (let i = 1; i <= numberOfDays; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder', 'normal-day');
-            td.textContent = i;
+            td.classList.add('fw-bolder');
+
+            const day = i < 10 ? '0' + i : i;
+            const monthString = (monthDate.getMonth() + 1) < 10 ? '0' + (monthDate.getMonth() + 1) : (monthDate.getMonth() + 1);
+            const dateString = monthDate.getFullYear() + '-' + monthString + '-' + day;
+
+            td.textContent = dateString;
             daysOfMonth.appendChild(td);
 
-            if (currentWeekDay  == 7) {
+            td.setAttribute('data-week', dateString);
+
+            if (currentWeekDay === 7) {
                 td.classList.add('text-danger');
                 currentWeekDay = 1;
             } else {
@@ -1957,10 +1977,43 @@
             }
         }
 
-        for (let i = lastDayOfWeek + 1; i < 7; i++) {
-            const td = document.createElement('td');
-            td.classList.add('fw-bolder', 'extra-day');
-            daysOfMonth.appendChild(td);
+        if (lastDayOfWeek < 6) {
+            const nextMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 1);
+            const remainingDays = 6 - lastDayOfWeek;
+
+            if (remainingDays < 6) {
+                for (let i = 1; i <= remainingDays; i++) {
+                    const td = document.createElement('td');
+                    td.classList.add('fw-bolder');
+
+                    const day = i < 10 ? '0' + i : i;
+                    const nextMonthString = (nextMonth.getMonth() + 1) < 10 ? '0' + (nextMonth.getMonth() + 1) : (nextMonth.getMonth() + 1);
+                    const nextMonthDateString = nextMonth.getFullYear() + '-' + nextMonthString + '-' + day;
+
+                    td.textContent = nextMonthDateString;
+                    td.setAttribute('data-week', nextMonthDateString);
+                    daysOfMonth.appendChild(td);
+                }
+            }
+        }
+
+        const totalDailyRoutine = document.querySelectorAll('.review-dailyRoutine').length;
+        const tableDailyOnethingRoutine = document.getElementById('table-dailyOnethingRoutine');
+        if (tableDailyOnethingRoutine) {
+            for (let i = 0; i < 5 + totalDailyRoutine; i++) {
+                const tr = document.createElement('tr');
+                tr.style.height = '44.5px';
+                tr.classList.add('category-review');
+                for (let j = 0; j < daysOfMonth.children.length; j++) {
+                    const td = document.createElement('td');
+                    td.classList.add('fw-bolder');
+
+                    const weekValue = daysOfMonth.children[j].getAttribute('data-week');
+                    td.setAttribute('data-week', weekValue);
+                    tr.appendChild(td);
+                }
+                daysOfMonth.insertAdjacentElement('afterend', tr);
+            }
         }
 
         var queryString = window.location.search;
@@ -2002,23 +2055,22 @@
                         const days = parseData.days;
                         const weeklys = parseData.weeklys;
 
-                        const dayInRow = document.querySelectorAll('.day-in-row');
+                        const dayInRow = document.querySelectorAll('.category-review');
                         dayInRow.forEach(function (dayRow, index) {
                             if (index < 5) {
                                 dayRow.querySelectorAll('td').forEach(function (onlyDay) {
-                                    const dataDay = onlyDay.getAttribute('data-day');
+                                    const dataDay = onlyDay.getAttribute('data-week');
                                     days.forEach(day => {
                                         const dayDate = day.day;
                                         const dayData = day.data;
-                                        // console.log(dayData)
-                                        // if (dataDay ==  dayDate) {
-                                        //     if (dayData[index].performance == true && dayData[index].performance != null) onlyDay.textContent = 'X';
-                                        // }
+                                        if (dataDay ==  dayDate) {
+                                            if (dayData[index].performance == true && dayData[index].performance != null) onlyDay.textContent = 'X';
+                                        }
                                     });
                                 })
                             } else if (index >= 5) {
                                 dayRow.querySelectorAll('td').forEach(function (onlyDay) {
-                                    const dataDay = onlyDay.getAttribute('data-day');
+                                    const dataDay = onlyDay.getAttribute('data-week');
                                     days.forEach(day => {
                                         const dayDate = day.day;
                                         const dataDailyRoutine = day.dailyRoutine;
