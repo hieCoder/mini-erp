@@ -1290,47 +1290,7 @@
                                    </div>
                                </div>
                            </div>
-                            <div class="col-2 ms-2 d-flex align-items-center">
-                                <button type="button" id="btn-chart-time-used" class="btn btn-info btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
-                                    <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Time Usage: 4C
-                                </button>
-                                <div id="modalChart" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category</h4>
-                                                <div class="flex-shrink-0">
-                                                    <div class="dropdown card-header-dropdown">
-                                                        <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span class="text-muted fs-16"><i class="mdi mdi-dots-vertical align-middle"></i></span>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" href="#">Week</a>
-                                                            <a class="dropdown-item" href="#">Month</a>
-                                                            <a class="dropdown-item" href="#">Year</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="card-body">
-                                                    <c:choose>
-                                                        <c:when test="${weekly.monthlys[0].color != null}">
-                                                            <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <div id="simple_pie_chart" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
@@ -1392,6 +1352,45 @@
                                     <tr style="height: 45px; background-color: #fcecec">
                                         <td rowspan="4" style="background-color: #E6A4B4;">
                                             <h5 class="fw-bolder text-white">Amount of <br>time</h5>
+                                            <button type="button" id="btn-chart-time-used" class="btn btn-primary btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
+                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Time Usage: 4C
+                                            </button>
+                                            <div id="modalChart" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category</h4>
+                                                            <div class="flex-shrink-0">
+                                                                <div class="dropdown card-header-dropdown">
+                                                                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <span class="text-muted fs-16"><i class="mdi mdi-dots-vertical align-middle"></i></span>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <a class="dropdown-item" href="#">Week</a>
+                                                                        <a class="dropdown-item" href="#">Month</a>
+                                                                        <a class="dropdown-item" href="#">Year</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="card-body">
+                                                                <c:choose>
+                                                                    <c:when test="${weekly.monthlys[0].color != null}">
+                                                                        <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div id="simple_pie_chart" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
