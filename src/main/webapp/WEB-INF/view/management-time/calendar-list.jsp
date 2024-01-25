@@ -379,6 +379,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
@@ -504,6 +505,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
+                                                cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -585,6 +587,7 @@
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].content;
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
+                                                cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -846,9 +849,11 @@
                                 currentWeekly.content = '';
                             }
                             currentWeekly.status = $(this).data('status')
+                            currentWeekly.timeUsed = $(this).data('timeused') == null ? null : $(this).data('timeused').toString()
                         } else if (hasContentClass) {
                             currentWeekly.content = value;
                             currentWeekly.status = $(this).data('status')
+                            currentWeekly.timeUsed = $(this).data('timeused') == null ? null : $(this).data('timeused').toString()
                         }
                     }
                 }
@@ -874,6 +879,7 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.quotes = [];
                 data.quotes.image = rs[0];
