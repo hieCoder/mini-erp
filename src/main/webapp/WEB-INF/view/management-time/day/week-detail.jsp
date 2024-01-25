@@ -1314,8 +1314,15 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="card-body">
-                                                    <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
-                                                </div><!-- end card-body -->
+                                                    <c:choose>
+                                                        <c:when test="${weekly.monthlys[0].color != null}">
+                                                            <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div id="simple_pie_chart" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
@@ -2257,7 +2264,6 @@
                         })
                         
                        const checkExtraDay = document.getElementById('days-of-month').querySelector('td').textContent;
-                        console.log(checkExtraDay)
                     } else {
                         window.location.href = "/management-time/";
                     }
@@ -3373,7 +3379,6 @@
                     i--;
                 }
             }
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

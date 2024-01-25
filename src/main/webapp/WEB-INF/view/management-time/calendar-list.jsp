@@ -379,6 +379,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
@@ -504,6 +505,7 @@
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
+                                                cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -585,6 +587,7 @@
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
                                                 cell.textContent = e.weeklys[dayTodo].content;
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
+                                                cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -640,6 +643,13 @@
                             if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                         }
                     })
+                    document.querySelectorAll('.theSingleMostImportantThing').forEach(function (e) {
+                        e.querySelector('td').classList.add('text-danger');
+                        e.querySelector('td').textContent = 'Important matter';
+                    })
+                    document.querySelectorAll('.title').forEach(function (e, index) {
+                        if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
+                    });
                     saveCalendar();
                 } else {
                     window.location.href = "/management-time/";
@@ -788,12 +798,12 @@
             $('.editable').each(function (index) {
                 let obj = {};
                 if ($(this).hasClass('editing')) {
-                    const content = $(this).val();
+                    const content = $(this).val() == 'Double click to edit' ? '' : $(this).val();
                     obj.content = content;
                     obj.status = statusMonthly[index];
                     monthly.content.push(obj);
                 } else {
-                    const content = $(this).text();
+                    const content = $(this).text() == 'Double click to edit' ? '' : $(this).text();
                     obj.content = content;
                     obj.status = statusMonthly[index];
                     monthly.content.push(obj);
@@ -846,9 +856,11 @@
                                 currentWeekly.content = '';
                             }
                             currentWeekly.status = $(this).data('status')
+                            currentWeekly.timeUsed = $(this).data('timeused') == null ? null : $(this).data('timeused').toString()
                         } else if (hasContentClass) {
                             currentWeekly.content = value;
                             currentWeekly.status = $(this).data('status')
+                            currentWeekly.timeUsed = $(this).data('timeused') == null ? null : $(this).data('timeused').toString()
                         }
                     }
                 }
@@ -861,7 +873,7 @@
             };
 
             document.querySelectorAll('.yearTarget').forEach(function (target) {
-                data.year.target.push(target.textContent);
+                data.year.target.push(target.textContent == 'Double click to edit' ? '' : target.textContent);
             })
             document.querySelectorAll('.title').forEach(function (e, index) {
                if (index < 5) data.year.category.push(e.textContent)
@@ -874,6 +886,7 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.quotes = [];
                 data.quotes.image = rs[0];
