@@ -643,6 +643,13 @@
                             if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                         }
                     })
+                    document.querySelectorAll('.theSingleMostImportantThing').forEach(function (e) {
+                        e.querySelector('td').classList.add('text-danger');
+                        e.querySelector('td').textContent = 'Important matter';
+                    })
+                    document.querySelectorAll('.title').forEach(function (e, index) {
+                        if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
+                    });
                     saveCalendar();
                 } else {
                     window.location.href = "/management-time/";
@@ -791,12 +798,12 @@
             $('.editable').each(function (index) {
                 let obj = {};
                 if ($(this).hasClass('editing')) {
-                    const content = $(this).val();
+                    const content = $(this).val() == 'Double click to edit' ? '' : $(this).val();
                     obj.content = content;
                     obj.status = statusMonthly[index];
                     monthly.content.push(obj);
                 } else {
-                    const content = $(this).text();
+                    const content = $(this).text() == 'Double click to edit' ? '' : $(this).text();
                     obj.content = content;
                     obj.status = statusMonthly[index];
                     monthly.content.push(obj);
@@ -866,7 +873,7 @@
             };
 
             document.querySelectorAll('.yearTarget').forEach(function (target) {
-                data.year.target.push(target.textContent);
+                data.year.target.push(target.textContent == 'Double click to edit' ? '' : target.textContent);
             })
             document.querySelectorAll('.title').forEach(function (e, index) {
                if (index < 5) data.year.category.push(e.textContent)

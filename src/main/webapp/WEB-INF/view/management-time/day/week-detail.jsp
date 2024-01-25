@@ -2152,7 +2152,6 @@
                                     if (startDate == startDateDB) {
                                        if (week.weeklys != null) {
                                            const timeusedWeekly = week.weeklys[index + 1].timeUsed;
-                                           console.log(timeusedWeekly)
                                            if (timeusedWeekly != null && timeusedWeekly != '') {
                                                onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
                                            }
