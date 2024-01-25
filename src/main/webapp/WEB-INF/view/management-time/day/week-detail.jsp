@@ -417,7 +417,7 @@
                                 </c:if>
                                 </tbody>
                             </table>
-                            <h4 class="fw-bolder">Monthly goal</h4>
+                            <h4 class="fw-bolder">Monthly goals</h4>
                             <table class="table table-bordered oneThingCalendar text-center align-middle">
                                 <thead>
                                 <tr>
