@@ -21,6 +21,12 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
+        .unset-table {
+            white-space: unset !important;
+            max-width: unset !important;
+            min-width: unset !important;
+        }
+
         #addDaily{
             position: absolute;
             top: 0;
@@ -1294,18 +1300,18 @@
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
-                                <table>
+                                <table id="table-title-review" class="table-sm">
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr style="height: 65px">
+                                    <tr>
                                         <td id="daily-onething-routine" rowspan="6" style="height: 311px; background-color: #FFEAA7">
                                             <h5 class="fw-bolder text-white">Daily Onething <br>&<br> Daily routine</h5>
                                         </td>
-                                        <td></td>
+                                        <td style="height: 65px"></td>
                                     </tr>
                                     <tr>
-                                        <td class="reivew-daily-onething"></td>
+                                        <td class="reivew-daily-onething text-nowrap"></td>
                                     </tr>
                                     <tr style="background-color: #fcecec">
                                         <td class="reivew-daily-onething"></td>
@@ -1408,30 +1414,30 @@
                                             <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
                                         </td>
                                     </tr>
-                                    <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Gratitude Diary</td>
+                                    <tr >
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Gratitude Diary</td>
                                     </tr>
-                                    <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Compliment</td>
+                                    <tr >
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Compliment</td>
                                     </tr>
-                                    <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Reflection/Improvement</td>
+                                    <tr >
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Reflection/<br>Improvement</td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-container">
-                                <table id="table-dailyOnethingRoutine">
+                            <div style="width: 100%">
+                                <table class="table table-sm text-center" id="table-dailyOnethingRoutine">
                                     <thead>
-                                    <tr style="height: 44px">
+                                    <tr style="height: 45px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
-                                            <th class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
+                                            <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
-                                        <th class="fw-bolder" colspan="7">EXTRA DAYS</th>
+                                        <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">EXTRA DAYS</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
+                                    <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-review-weekly" style="height: 50.5px">
@@ -1449,9 +1455,9 @@
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="2" varStatus="outerLoop">
-                                        <tr style="height: 126px" class="tr-weekly-sentence${outerLoop.index}">
+                                        <tr class="tr-weekly-sentence${outerLoop.index}">
                                             <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                                <td colspan="7">
+                                                <td colspan="7" style="height: 126px">
                                                     <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter here..."></textarea>
                                                 </td>
                                             </c:forEach>
@@ -1908,9 +1914,12 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
-<%--<script src="/assets/js/pages/apexcharts-pie.init.js"></script>--%>
-
 <script>
+
+    document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
+        e.classList.add('unset-table');
+    })
+
     function getChartColorsArray(e) {
         if (null !== document.getElementById(e)) return e = document.getElementById(e).getAttribute("data-colors"), (e = JSON.parse(e)).map(function (e) {
             var t = e.replace(" ", "");
@@ -1978,19 +1987,20 @@
 
         for (let i = 1; i < firstDayOfWeek; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder');
+            td.classList.add('fw-bolder', 'unset-table');
             daysOfMonth.appendChild(td);
         }
 
         for (let i = 1; i <= numberOfDays; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder');
+            td.classList.add('fw-bolder', 'unset-table');
 
             const day = i < 10 ? '0' + i : i;
             const monthString = (monthDate.getMonth() + 1) < 10 ? '0' + (monthDate.getMonth() + 1) : (monthDate.getMonth() + 1);
             const dateString = monthDate.getFullYear() + '-' + monthString + '-' + day;
 
-            td.textContent = dateString;
+
+            td.textContent = day;
             daysOfMonth.appendChild(td);
 
             td.setAttribute('data-week', dateString);
@@ -2010,13 +2020,13 @@
             if (remainingDays < 6) {
                 for (let i = 1; i <= remainingDays; i++) {
                     const td = document.createElement('td');
-                    td.classList.add('fw-bolder');
+                    td.classList.add('fw-bolder', 'unset-table');
 
                     const day = i < 10 ? '0' + i : i;
                     const nextMonthString = (nextMonth.getMonth() + 1) < 10 ? '0' + (nextMonth.getMonth() + 1) : (nextMonth.getMonth() + 1);
                     const nextMonthDateString = nextMonth.getFullYear() + '-' + nextMonthString + '-' + day;
 
-                    td.textContent = nextMonthDateString;
+                    td.textContent = day;
                     td.setAttribute('data-week', nextMonthDateString);
                     daysOfMonth.appendChild(td);
                 }
@@ -2032,7 +2042,7 @@
                 tr.classList.add('category-review');
                 for (let j = 0; j < daysOfMonth.children.length; j++) {
                     const td = document.createElement('td');
-                    td.classList.add('fw-bolder');
+                    td.classList.add('fw-bolder', 'unset-table');
 
                     const weekValue = daysOfMonth.children[j].getAttribute('data-week');
                     td.setAttribute('data-week', weekValue);
@@ -2041,6 +2051,10 @@
                 daysOfMonth.insertAdjacentElement('afterend', tr);
             }
         }
+        $('#table-dailyOnethingRoutine th').css('border', '1px solid #000');
+        $('#table-dailyOnethingRoutine tr').css('border', '1px solid #000');
+        $('#table-dailyOnethingRoutine td').css('border', '1px solid #000');
+
 
         var queryString = window.location.search;
         var urlParams = new URLSearchParams(queryString);
@@ -2077,7 +2091,6 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
-                        console.log(parseData)
                         const days = parseData.days;
                         const weeklys = parseData.weeklys;
 
@@ -2261,8 +2274,9 @@
                                     colors: chartDonutBasicColors
                                 }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
                         })
-                        
-                       const checkExtraDay = document.getElementById('days-of-month').querySelector('td').textContent;
+
+
+
                     } else {
                         window.location.href = "/management-time/";
                     }
