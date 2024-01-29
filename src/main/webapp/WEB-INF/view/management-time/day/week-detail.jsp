@@ -200,7 +200,7 @@
                            <a class="dropdown-item nav-link" id="session-review" data-bs-toggle="tab" href="#review" role="tab" aria-selected="false">
                                W&M Report
                            </a>
-                           <a class="dropdown-item nav-link" data-bs-toggle="tab"  role="tab" aria-selected="false">
+                           <a class="dropdown-item nav-link" id="session-year-report" data-bs-toggle="tab" href="#yearReport"  role="tab" aria-selected="false">
                                2024 Report
                            </a>
                        </div>
@@ -209,7 +209,7 @@
                </li>
                <li class="nav-item">
                    <a class="nav-link" id="session-checkBook" data-bs-toggle="tab" href="#check-book" role="tab" aria-selected="false">
-                       <i class="ri-book-mark-line me-1 align-middle"></i>Check Book
+                       <i class="ri-book-mark-line me-1 align-middle"></i>Book
                    </a>
                </li>
                <li class="nav-item">
@@ -1296,7 +1296,6 @@
                                    </div>
                                </div>
                            </div>
-
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
@@ -1689,6 +1688,111 @@
                             </button>
                             <button class="btn btn-success ml-2 btn-save">Save</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="yearReport" role="tabpanel" style="min-height: 700px">
+            <div class="row calendar-container d-none">
+                <div class="card">
+                    <div class="row card-body">
+                        <div class="d-flex border p-0" style="background-color: rgba(60, 127, 234, 0.7); margin: 0 12px">
+                            <div class="col-2 ms-2">
+                                <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem; margin-right: 80px">
+                                    <div class="card-body text-muted">
+                                        <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
+                                            <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
+                                        </div>
+                                        <h5 class="fs-14 text-end mb-3">Goals of <span >${weekly.year.year}</span></h5>
+                                        <div class="m-0" >
+                                            <p class="editable m-0">${weekly.year.target[0]}</p>
+                                            <p class="editable m-0">${weekly.year.target[1]}</p>
+                                            <p class="editable m-0">${weekly.year.target[2]}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8 mt-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <h1 class="text-center text-white">Myself in ${weekly.year.year}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex mt-2">
+                            <div class="table-detail" style="width: unset;">
+                                <table  class="table-sm">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    <tr style="height: 51px">
+                                        <td>
+                                            <h6 class="fw-bolder">Objective</h6>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 200px;">
+                                            <h5 class="fw-bolder">ONETHING</h5>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 50px;">
+                                        <td>
+                                            <h5 class="fw-bolder">DAILY <br> ROUTINE</h5>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 50px;">
+                                        <td>
+                                            <h5 class="fw-bolder">MONTHLY</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 378px">
+                                            <h5 class="fw-bolder">${weekly.year.year} GOAL</h5>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width: 100%">
+                                <table class="table table-sm table-bordered text-center">
+                                    <thead>
+                                    <tr style="height: 34px; max-width: 1500px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-left: 1px solid #FFFFFF" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                        </c:forEach>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="max-width: 1500px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <td style="width: 70px; max-width: 70px; max-height: 49px" data-simplebar>1222222222ddddddddddd2222222222222</td>
+                                            <td style="width: 39px;">100%</td>
+                                        </c:forEach>
+                                    </tr>
+
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr style="max-width: 1500px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <td style="width: 70px; max-width: 70px; max-height: 49px" data-simplebar>1222222222ddddddddddd2222222222222</td>
+                                                <td style="width: 39px;">100%</td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <tr style="max-width: 1500px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <td style="width: 70px; max-width: 70px; max-height: 49px" data-simplebar>1222222222ddddddddddd2222222222222</td>
+                                            <td style="width: 39px;">100%</td>
+                                        </c:forEach>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -2091,6 +2195,7 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
+                        console.log(parseData)
                         const days = parseData.days;
                         const weeklys = parseData.weeklys;
 
@@ -2133,8 +2238,8 @@
                                     const startDateDB = week.startDate;
                                     if (startDate == startDateDB) {
                                         if (week.weeklys != null) {
-                                            const weeklyTarget = week.weeklys[index].content;
-                                            const statusWeek = week.weeklys[index].status;
+                                            const weeklyTarget = week.weeklys[index + 1].content;
+                                            const statusWeek = week.weeklys[index + 1].status;
                                             if (weeklyTarget != null && weeklyTarget != '') {
                                                 var btnStatus = ``;
                                                 if (statusWeek == 'COMPLETE') {
@@ -2275,8 +2380,12 @@
                                 }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
                         })
 
-
-
+                        var lastDayOfExtra = $('#days-of-month td:last');
+                        if (lastDayOfExtra.text() != '31') {
+                            $('.tr-weekly-sentence0 textarea:last').prop('disabled', true);
+                            $('.tr-weekly-sentence1 textarea:last').prop('disabled', true);
+                            $('.tr-weekly-sentence2 textarea:last').prop('disabled', true);
+                        }
                     } else {
                         window.location.href = "/management-time/";
                     }
@@ -2324,6 +2433,7 @@
             $('#add-book-btn').removeClass('d-none');
         }
 
+        $('#datatable-book').DataTable().destroy();
         table = $('#datatable-book').DataTable({
             ajax: {
                 url: getUrlApiBooks(objPaging.search, 1, objPaging.pageSize),
@@ -3261,7 +3371,7 @@
                 const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
 
                 let dayObj = days.find(d => d.day === day);
-                if (value !== "" && value != 'Allow notifications') {
+                if (value != 'Allow notifications') {
                     if (day != null) {
                         if (!dayObj) {
                             dayObj = {
