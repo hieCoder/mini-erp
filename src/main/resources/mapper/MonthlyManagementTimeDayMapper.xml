@@ -20,6 +20,13 @@
         WHERE m.USER_ID = #{userId} AND m.CODE = #{code}
     </select>
 
+    <select id="findByYear" resultMap="monthlyManagementTimeDayResultMap">
+        SELECT *
+        FROM MONTHLY_MANAGEMENT_TIME_DAY m
+                 INNER JOIN USER u ON m.USER_ID = u.ID
+        WHERE m.USER_ID = #{userId} AND LEFT(m.CODE, 4) = LEFT(#{year}, 4)
+    </select>
+
     <resultMap id="monthlyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>

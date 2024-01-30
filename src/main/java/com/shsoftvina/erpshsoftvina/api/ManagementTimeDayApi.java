@@ -47,4 +47,9 @@ public class ManagementTimeDayApi {
     public ResponseEntity<?> getSpendingMonth(@PathVariable String userId, @RequestParam String monthCode) {
         return ResponseEntity.ok(managementTimeDayService.showSpendingMonth(userId, monthCode));
     }
+
+    @GetMapping("/weekly-detail/monthOfYear/{userId}")
+    public ResponseEntity<?> allMonthOfYear(@PathVariable String userId, @RequestParam String year) {
+        return ResponseEntity.ok(managementTimeDayService.monthOfYear(userId, year));
+    }
 }

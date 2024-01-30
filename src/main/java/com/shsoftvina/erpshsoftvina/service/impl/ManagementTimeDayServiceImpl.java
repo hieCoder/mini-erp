@@ -782,4 +782,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
         return spendingMonthResponse;
     }
+
+    @Override
+    public List<MonthResponse> monthOfYear(String userId, String year) {
+        List<MonthlyManagementTimeDay> monthlyManagementTimeDays = monthlyManagementTimeDayMapper.findByYear(userId, year);
+        return  monthlyManagementTimeDayConverter.toListEntity(monthlyManagementTimeDays);
+    }
 }

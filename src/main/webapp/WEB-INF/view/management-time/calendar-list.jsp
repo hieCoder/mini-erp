@@ -379,7 +379,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
@@ -650,7 +649,7 @@
                     document.querySelectorAll('.title').forEach(function (e, index) {
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                     });
-                    saveCalendar();
+
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -758,6 +757,7 @@
         return year + '-' + month + '-' + day;
     }
 
+    saveCalendar();
     function saveCalendar() {
         const statusMonthly = [];
         document.getElementById('monthlyTarget').querySelectorAll('p').forEach( function (e) {

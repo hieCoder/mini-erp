@@ -56,6 +56,14 @@
             line-height: 100%;
         }
 
+        #table-year-report th {
+            border: 1px solid #000;
+        }
+
+        #table-year-report td {
+            border: 1px solid #000;
+        }
+
         .table-container th {
             background-color: #f2f2f2;
             white-space: nowrap;
@@ -1694,9 +1702,9 @@
         </div>
         <div class="tab-pane" id="yearReport" role="tabpanel" style="min-height: 700px">
             <div class="row calendar-container d-none">
-                <div class="card">
+                <div class="card p-0">
                     <div class="row card-body">
-                        <div class="d-flex border p-0" style="background-color: rgba(60, 127, 234, 0.7); margin: 0 12px">
+                        <div class="d-flex border p-0 m-0" style="background-color: rgba(60, 127, 234, 0.7); margin: 0 12px">
                             <div class="col-2 ms-2">
                                 <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem; margin-right: 80px">
                                     <div class="card-body text-muted">
@@ -1720,37 +1728,48 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 d-flex mt-2">
+                        <div class="col-md-12 d-flex mt-2 p-0">
                             <div class="table-detail" style="width: unset;">
-                                <table  class="table-sm">
+                                <table class="text-center table-sm">
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td></td>
+                                    <tr style="height: 34px">
+                                        <td colspan="2"></td>
                                     </tr>
-                                    <tr style="height: 51px">
-                                        <td>
-                                            <h6 class="fw-bolder">Objective</h6>
+                                    <tr style="background-color: rgba(60, 127, 234, 0.7);">
+                                        <td colspan="2">
+                                            <h6 class="fw-bolder text-white">Objective</h6>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="height: 200px;">
+                                        <td style="height: 232px;" rowspan="4">
                                             <h5 class="fw-bolder">ONETHING</h5>
                                         </td>
+                                        <td>${weekly.year.category[1]}</td>
                                     </tr>
-                                    <tr style="height: 50px;">
-                                        <td>
+                                    <tr>
+                                        <td>${weekly.year.category[2]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>${weekly.year.category[3]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>${weekly.year.category[4]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 58px;" rowspan="1">
                                             <h5 class="fw-bolder">DAILY <br> ROUTINE</h5>
                                         </td>
+                                        <td>1</td>
                                     </tr>
-                                    <tr style="height: 50px;">
-                                        <td>
+                                    <tr style="height: 174px;">
+                                        <td colspan="2">
                                             <h5 class="fw-bolder">MONTHLY</h5>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td style="height: 378px">
+                                    <tr style="height: 120px">
+                                        <td colspan="2">
                                             <h5 class="fw-bolder">${weekly.year.year} GOAL</h5>
                                         </td>
                                     </tr>
@@ -1758,36 +1777,56 @@
                                 </table>
                             </div>
                             <div style="width: 100%">
-                                <table class="table table-sm table-bordered text-center">
+                                <table class="table table-sm table-bordered text-center" id="table-year-report">
                                     <thead>
                                     <tr style="height: 34px; max-width: 1500px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-left: 1px solid #FFFFFF" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
                                         </c:forEach>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr style="max-width: 1500px">
+                                    <tr style="max-width: 1500px; height: 34px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td style="width: 70px; max-width: 70px; max-height: 49px" data-simplebar>1222222222ddddddddddd2222222222222</td>
-                                            <td style="width: 39px;">100%</td>
+                                            <td data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);"></td>
+                                            <td style="width: 39px;">Perf</td>
                                         </c:forEach>
                                     </tr>
-
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr style="max-width: 1500px">
+                                        <tr class="onething-report" style="max-width: 1500px; height: 58px">
                                             <c:forEach begin="0" end="11" varStatus="loop">
-                                                <td style="width: 70px; max-width: 70px; max-height: 49px" data-simplebar>1222222222ddddddddddd2222222222222</td>
-                                                <td style="width: 39px;">100%</td>
+                                                <c:set var="month" value="${loop.index + 1}" />
+                                                <c:choose>
+                                                    <c:when test="${month lt 10}">
+                                                        <c:set var="formattedMonth" value="0${month}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="formattedMonth" value="${month}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td class="onething-category-report" data-day="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <td class="perf-onething-report" data-day="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0%</td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <tr style="max-width: 1500px">
+                                    <tr style="max-width: 1500px; max-height: 58px; height: 58px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td style="width: 70px; max-width: 70px; max-height: 49px" data-simplebar>1222222222ddddddddddd2222222222222</td>
+                                            <td style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
                                             <td style="width: 39px;">100%</td>
                                         </c:forEach>
                                     </tr>
+                                    <c:forEach begin="0" end="2" varStatus="loop">
+                                        <tr style="max-width: 1500px; max-height: 58px; height: 58px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <td colspan="2" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="2" varStatus="loop">
+                                        <tr style="max-width: 1500px; height: 40px" >
+                                            <td colspan="24" style="max-height: 57px" data-simplebar></td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -2405,7 +2444,64 @@
         });
 
     })
-    
+
+    // Handle Tab Year Report
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function handle Click tab report
+        function handleClickTabReport(e) {
+            var currentUrl = window.location.href;
+            var year = getParameterByName('currentDay', currentUrl);
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/v1/management-time/weekly-detail/monthOfYear/" + "${requestScope.user.id}" + "?year=" + year, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const parseData = JSON.parse(xhr.responseText);
+                        console.log(parseData)
+                        const rateOnething = document.querySelectorAll('.rate-onething');
+                        document.querySelectorAll('.onething-report').forEach(function (e, index) {
+                            const onethingReport = e.querySelectorAll('.onething-category-report');
+                            const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
+                            onethingReport.forEach(function (e, indexTd) {
+                               const dataDay = e.getAttribute('data-day');
+                               parseData.forEach(month => {
+                                    if (dataDay == month.month) {
+                                        if (month.targetCategory != null) {
+                                            const monthTarget = month.targetCategory[index + 1].target;
+                                            const performanceMonthtTarget = month.targetCategory[index + 1].performance
+                                            e.textContent = monthTarget;
+                                            const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                                            const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                                            perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
+                                            if (month.color != null) {
+                                                perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                                            }
+                                        }
+                                    }
+                                });
+                            })
+                            // perfOnethingReport.forEach(function (e) {
+                            //     const dataDay = e.getAttribute('data-day');
+                            //     parseData.forEach(month => {
+                            //         if (dataDay == month.month) {
+                            //
+                            //         }
+                            //     });
+                            // })
+                        })
+                    } else {
+                        window.location.href = "/management-time/";
+                    }
+                }
+            }
+            xhr.send();
+            document.getElementById('session-review').removeEventListener('click', handleClickTabReport);
+        }
+
+        // Call function handleClick
+        document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
+    })
+
     // Url api get all book
     function getUrlApiBooks(search, page, pageSize) {
         return '/api/v1/books?search=' + search + '&page=' + page + '&pageSize=' + pageSize;

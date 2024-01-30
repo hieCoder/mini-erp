@@ -11,6 +11,7 @@ import java.util.List;
 public interface MonthlyManagementTimeDayMapper {
     List<MonthlyManagementTimeDay> findByListCode(String userId, List<String> codes);
     MonthlyManagementTimeDay findByCode(String userId, String code);
+    List<MonthlyManagementTimeDay> findByYear(String userId, String year);
     int createMonthlyManagementTimeDay(MonthlyManagementTimeDay monthlyManagementTimeDay);
     int updateMonthlyManagementTimeDay(MonthlyManagementTimeDay monthlyManagementTimeDay);
     int createSpendingMonthlyManagementTimeDay(MonthlyManagementTimeDay monthlyManagementTimeDay);
