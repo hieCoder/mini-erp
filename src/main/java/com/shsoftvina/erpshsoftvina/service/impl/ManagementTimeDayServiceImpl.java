@@ -657,7 +657,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         CompletableFuture<Void> asyncTaskYear = CompletableFuture.runAsync(() -> {
             YearRequest yearRequest = daysUpdateRequest.getYear();
             String yearCode = yearRequest.getYear();
-            String[] target = yearRequest.getTarget();
+            YearTargetDto[] target = yearRequest.getTarget();
             String[] category = yearRequest.getCategory();
             YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
             if (yearE == null) {

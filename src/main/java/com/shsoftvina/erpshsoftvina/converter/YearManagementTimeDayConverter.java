@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.YearTargetDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.YearRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.YearResponse;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
@@ -22,7 +23,7 @@ public class YearManagementTimeDayConverter {
         if (yearManagementTimeDay == null) return null;
         return YearResponse.builder()
                 .year(yearManagementTimeDay.getCode())
-                .target(JsonUtils.jsonToObject(yearManagementTimeDay.getTarget(), String[].class))
+                .target(JsonUtils.jsonToObject(yearManagementTimeDay.getTarget(), YearTargetDto[].class))
                 .category(JsonUtils.jsonToObject(yearManagementTimeDay.getCategory(), String[].class))
                 .build();
     }

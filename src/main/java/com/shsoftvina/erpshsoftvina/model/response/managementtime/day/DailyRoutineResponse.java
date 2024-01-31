@@ -13,4 +13,5 @@ public class DailyRoutineResponse {
     private String title;
     private int target;
     private int performance;
+    private String rate;
 }

@@ -355,12 +355,15 @@
                                     <td><input class="form-control dailyRoutineInput checkDaily" type="text"
                                                value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center rate-dailyRoutine">
                                         <script>
                                             var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};
                                             var target = ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0};
                                             var result = target !== 0 ? (performance / target) * 100 : 0;
                                             var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                            var tdElement = document.currentScript.parentNode;
+
+                                            tdElement.setAttribute('data-rate', roundedResult);
                                             document.write(roundedResult);
                                         </script>
                                     </td>
@@ -376,12 +379,15 @@
                                         <tr name="theSingleMostImportantThing">
                                             <td><input class="form-control dailyRoutineInput checkDaily" type="text"
                                                        value="${dailyRoutine.title}"></td>
-                                            <td class="text-center">
+                                            <td class="text-center rate-dailyRoutine">
                                                 <script>
                                                     var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};
                                                     var target = ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0};
                                                     var result = target !== 0 ? (performance / target) * 100 : 0;
                                                     var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                                    var tdElement = document.currentScript.parentNode;
+
+                                                    tdElement.setAttribute('data-rate', roundedResult);
                                                     document.write(roundedResult);
                                                 </script>
                                             </td>
@@ -416,7 +422,34 @@
                                         <c:if test="${loop.index == 0}">
                                             <td class="text-start" rowspan="3">Main target</td>
                                         </c:if>
-                                        <td><input class="form-control yearTarget" type="text" value="${year}"></td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input class="form-control yearTarget" type="text" value="${year.target}">
+                                                <button class="btn btn-info dropdown-toggle btn-status" data-value="${year.status}" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">Setting
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning waves-effect waves-light pending"
+                                                                style="margin: 0 5px; width: 102px;"><i
+                                                                class="ri-arrow-right-line"></i> Pending</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 <c:if test="${weekly.year.target == null}">
@@ -1713,9 +1746,9 @@
                                         </div>
                                         <h5 class="fs-14 text-end mb-3">Goals of <span >${weekly.year.year}</span></h5>
                                         <div class="m-0" >
-                                            <p class="editable m-0">${weekly.year.target[0]}</p>
-                                            <p class="editable m-0">${weekly.year.target[1]}</p>
-                                            <p class="editable m-0">${weekly.year.target[2]}</p>
+                                            <p class="editable m-0">${weekly.year.target[0].target}</p>
+                                            <p class="editable m-0">${weekly.year.target[1].target}</p>
+                                            <p class="editable m-0">${weekly.year.target[2].target}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1737,14 +1770,14 @@
                                     <tr style="height: 34px">
                                         <td colspan="2"></td>
                                     </tr>
-                                    <tr style="background-color: rgba(60, 127, 234, 0.7);">
+                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7);">
                                         <td colspan="2">
-                                            <h6 class="fw-bolder text-white">Objective</h6>
+                                           Objective
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="height: 232px;" rowspan="4">
-                                            <h5 class="fw-bolder">ONETHING</h5>
+                                        <td class="fw-bolder" style="height: 233px;" rowspan="4">
+                                            ONETHING
                                         </td>
                                         <td>${weekly.year.category[1]}</td>
                                     </tr>
@@ -1757,20 +1790,19 @@
                                     <tr>
                                         <td>${weekly.year.category[4]}</td>
                                     </tr>
-                                    <tr>
-                                        <td style="height: 58px;" rowspan="1">
-                                            <h5 class="fw-bolder">DAILY <br> ROUTINE</h5>
-                                        </td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr style="height: 174px;">
-                                        <td colspan="2">
-                                            <h5 class="fw-bolder">MONTHLY</h5>
+                                    <tr style="height: 290px;">
+                                        <td colspan="2" class="fw-bolder">
+                                           DAILY <br> ROUTINE
                                         </td>
                                     </tr>
-                                    <tr style="height: 120px">
-                                        <td colspan="2">
-                                            <h5 class="fw-bolder">${weekly.year.year} GOAL</h5>
+                                    <tr style="height: 175px;">
+                                        <td class="fw-bolder" colspan="2">
+                                           MONTHLY
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 150px">
+                                        <td class="fw-bolder" colspan="2">
+                                            ${weekly.year.year} GOAL
                                         </td>
                                     </tr>
                                     </tbody>
@@ -1804,34 +1836,70 @@
                                                         <c:set var="formattedMonth" value="${month}" />
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-day="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
-                                                <td class="perf-onething-report" data-day="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0%</td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0%</td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <tr style="max-width: 1500px; max-height: 58px; height: 58px">
-                                        <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
-                                            <td style="width: 39px;">100%</td>
-                                        </c:forEach>
-                                    </tr>
-                                    <c:forEach begin="0" end="2" varStatus="loop">
-                                        <tr style="max-width: 1500px; max-height: 58px; height: 58px">
+                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                        <tr class="report-dailyRoutine" style="max-width: 1500px; max-height: 58px; height: 58px">
                                             <c:forEach begin="0" end="11" varStatus="loop">
-                                                <td colspan="2" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <c:set var="month" value="${loop.index + 1}" />
+                                                <c:choose>
+                                                    <c:when test="${month lt 10}">
+                                                        <c:set var="formattedMonth" value="0${month}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="formattedMonth" value="${month}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td class="title-dailyRoutine-report" style="width: 70px; max-width: 70px; max-height: 57px" data-month="${weekly.year.year}-${formattedMonth}" data-simplebar></td>
+                                                <td class="perf-dailyRoutine-report" style="width: 39px;">0%</td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="2">
+                                        <tr class="monthly-report" style="max-width: 1500px; max-height: 58px; height: 58px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <c:set var="month" value="${loop.index + 1}" />
+                                                <c:choose>
+                                                    <c:when test="${month lt 10}">
+                                                        <c:set var="formattedMonth" value="0${month}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="formattedMonth" value="${month}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td colspan="2" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="2" varStatus="loop">
-                                        <tr style="max-width: 1500px; height: 40px" >
-                                            <td colspan="24" style="max-height: 57px" data-simplebar></td>
+                                        <tr style="max-width: 1500px;" >
+                                            <td colspan="24" style="height: 50px">
+                                                <span class="d-inline-block">${weekly.year.target[loop.index].target}</span>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('COMPLETE')}">
+                                                    <button class="btn btn-success float-end" style="width: 53px">
+                                                        <i class="ri-check-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('PENDING')}">
+                                                    <button class="btn btn-warning float-end" style="width: 53px">
+                                                        <i class="ri-arrow-right-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('CANCEL')}">
+                                                    <button class="btn btn-danger float-end" style="width: 53px">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </c:if>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -2458,36 +2526,77 @@
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
                         console.log(parseData)
-                        const rateOnething = document.querySelectorAll('.rate-onething');
                         document.querySelectorAll('.onething-report').forEach(function (e, index) {
                             const onethingReport = e.querySelectorAll('.onething-category-report');
                             const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
                             onethingReport.forEach(function (e, indexTd) {
-                               const dataDay = e.getAttribute('data-day');
+                               const dataMonth = e.getAttribute('data-month');
                                parseData.forEach(month => {
-                                    if (dataDay == month.month) {
+                                    if (dataMonth == month.month) {
                                         if (month.targetCategory != null) {
                                             const monthTarget = month.targetCategory[index + 1].target;
                                             const performanceMonthtTarget = month.targetCategory[index + 1].performance
                                             e.textContent = monthTarget;
                                             const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                                            const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                                            perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
-                                            if (month.color != null) {
-                                                perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                                            if (!isNaN(performancePercentage)) {
+                                                const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                                                perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
+                                                if (month.color != null) {
+                                                    perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        })
+                        
+                        document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
+                            const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
+                            const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
+                            titleDailyReport.forEach(function (eTitle, indexTitle) {
+                                const dataMonth = eTitle.getAttribute('data-month');
+                                parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        const dailyDB = month.dailyRoutine[indexTr];
+                                        if (month.dailyRoutine != null && dailyDB != null) {
+                                            const titleDailyDB = dailyDB.title;
+                                            eTitle.textContent = titleDailyDB;
+                                            perfDailyReport[indexTitle].textContent = dailyDB.rate;
+                                        }
+                                    }
+                                });
+                            })
+                        })
+
+                        document.querySelectorAll('.monthly-report').forEach(function (eTr, indexTr) {
+                            const targetMonthReport = eTr.querySelectorAll('td');
+                            targetMonthReport.forEach(function (eTarget, indexTarget) {
+                                const dataMonth = eTarget.getAttribute('data-month');
+                                parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        const monthDB = month.monthlyContents[indexTr];
+                                        if (month.monthlyContents != null && monthDB != null) {
+                                            const content = monthDB.content;
+                                            const status = monthDB.status;
+                                            if (content != null && content != '') {
+                                                var btnStatus = ``;
+                                                if (status == 'COMPLETE') {
+                                                    btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
+                                                } else if (status == 'PENDING') {
+                                                    btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
+                                                } else if (status == 'CANCEL') {
+                                                    btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
+                                                } else if (status == '') {
+                                                    btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                                }
+                                                const html = `<span>` + content + `</span>`+ btnStatus;
+                                                $(eTarget).append(html);
                                             }
                                         }
                                     }
                                 });
                             })
-                            // perfOnethingReport.forEach(function (e) {
-                            //     const dataDay = e.getAttribute('data-day');
-                            //     parseData.forEach(month => {
-                            //         if (dataDay == month.month) {
-                            //
-                            //         }
-                            //     });
-                            // })
                         })
                     } else {
                         window.location.href = "/management-time/";
@@ -2495,7 +2604,7 @@
                 }
             }
             xhr.send();
-            document.getElementById('session-review').removeEventListener('click', handleClickTabReport);
+            document.getElementById('session-year-report').removeEventListener('click', handleClickTabReport);
         }
 
         // Call function handleClick
@@ -3349,13 +3458,15 @@
                 }
                 monthly.content.push(obj);
             });
-            $('input.dailyRoutineInput').each(function () {
+            const rateDailyRoutine = document.querySelectorAll('.rate-dailyRoutine');
+            $('input.dailyRoutineInput').each(function (index) {
                 let obj = {
                     title: $(this).val(),
-                    target: $(this).closest('tr').find('.dailyRoutineTarget').text()
-                }
-                monthly.dailyRoutine.push(obj)
-            })
+                    target: $(this).closest('tr').find('.dailyRoutineTarget').text(),
+                    rate: $(rateDailyRoutine[index]).attr('data-rate')
+                };
+                monthly.dailyRoutine.push(obj);
+            });
             const targetOnething = document.querySelectorAll('.target-onething');
             const performanceOnthing = document.querySelectorAll('.performance-onething');
             targetOnething.forEach(function (e, index) {
@@ -3574,10 +3685,16 @@
                 category: []
             };
 
-            var yearTarget = document.querySelectorAll('.yearTarget');
-            yearTarget.forEach(function (target) {
-                data.year.target.push(target.value);
-            })
+            $('.yearTarget').each(function () {
+                const statusYear = $(this).closest('div').find('button');
+                var valueStatus = statusYear.data('value');
+                if (valueStatus == undefined) valueStatus = '';
+                let obj = {
+                    target: $(this).val(),
+                    status: valueStatus
+                }
+                data.year.target.push(obj);
+            });
             document.querySelectorAll('.yearTitle').forEach(function (e) {
                 data.year.category.push(e.textContent);
             })
