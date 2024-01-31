@@ -657,7 +657,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         CompletableFuture<Void> asyncTaskYear = CompletableFuture.runAsync(() -> {
             YearRequest yearRequest = daysUpdateRequest.getYear();
             String yearCode = yearRequest.getYear();
-            String[] target = yearRequest.getTarget();
+            YearTargetDto[] target = yearRequest.getTarget();
             String[] category = yearRequest.getCategory();
             YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
             if (yearE == null) {
@@ -781,5 +781,11 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 .build();
 
         return spendingMonthResponse;
+    }
+
+    @Override
+    public List<MonthResponse> monthOfYear(String userId, String year) {
+        List<MonthlyManagementTimeDay> monthlyManagementTimeDays = monthlyManagementTimeDayMapper.findByYear(userId, year);
+        return  monthlyManagementTimeDayConverter.toListEntity(monthlyManagementTimeDays);
     }
 }

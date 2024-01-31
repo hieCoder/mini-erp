@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class DailyRoutineRequest {
     private String title;
     private int target;
+    private String rate;
 }

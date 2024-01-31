@@ -409,10 +409,10 @@
                     let yearHtml = '';
                     if (parseData.year != null) {
                         parseData.year.target.forEach((e) => {
-                            if (e === "") {
+                            if (e.target === "") {
                                 yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
                             } else {
-                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">' + e + '</p>'
+                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)" data-value="' + e.status + '">' + e.target + '</p>'
                             }
                         })
                         yearTarget.innerHTML = yearHtml;
@@ -650,7 +650,7 @@
                     document.querySelectorAll('.title').forEach(function (e, index) {
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                     });
-                    saveCalendar();
+
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -758,11 +758,16 @@
         return year + '-' + month + '-' + day;
     }
 
+    saveCalendar();
     function saveCalendar() {
         const statusMonthly = [];
+        const statusYear = [];
         document.getElementById('monthlyTarget').querySelectorAll('p').forEach( function (e) {
             statusMonthly.push(e.getAttribute('data-value'));
         })
+       document.querySelectorAll('.yearTarget').forEach(function (e) {
+           statusYear.push(e.getAttribute('data-value'))
+       })
         $(document).on("click", "button.createCalendar", function (event) {
             $(".containerLoading ").removeClass("d-none")
             $("div.calendar-container").addClass("d-none")
@@ -873,7 +878,11 @@
             };
 
             document.querySelectorAll('.yearTarget').forEach(function (target) {
-                data.year.target.push(target.textContent == 'Double click to edit' ? '' : target.textContent);
+                let obj = {
+                    target: target.textContent == 'Double click to edit' ? '' : target.textContent,
+                    status: target.getAttribute('data-value')
+                }
+                data.year.target.push(obj);
             })
             document.querySelectorAll('.title').forEach(function (e, index) {
                if (index < 5) data.year.category.push(e.textContent)

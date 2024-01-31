@@ -5,7 +5,10 @@ import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DaysUpdateR
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.SpendingMonthRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DaysOfWeeklyResponse;
+import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.MonthResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.SpendingMonthResponse;
+
+import java.util.List;
 
 public interface ManagementTimeDayService {
 
@@ -15,4 +18,5 @@ public interface ManagementTimeDayService {
     int updateListDayOfWeek(DaysUpdateRequest daysUpdateRequest);
     int updateSpendingMonth(SpendingMonthRequest spendingMonthRequest);
     SpendingMonthResponse showSpendingMonth(String userId, String monthCode);
+    List<MonthResponse> monthOfYear(String userId, String year);
 }

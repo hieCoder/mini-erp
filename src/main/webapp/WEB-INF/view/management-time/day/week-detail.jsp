@@ -21,6 +21,12 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
+        .unset-table {
+            white-space: unset !important;
+            max-width: unset !important;
+            min-width: unset !important;
+        }
+
         #addDaily{
             position: absolute;
             top: 0;
@@ -48,6 +54,14 @@
         .oneThingCalendar th {
             max-width: 70px;
             line-height: 100%;
+        }
+
+        #table-year-report th {
+            border: 1px solid #000;
+        }
+
+        #table-year-report td {
+            border: 1px solid #000;
         }
 
         .table-container th {
@@ -194,7 +208,7 @@
                            <a class="dropdown-item nav-link" id="session-review" data-bs-toggle="tab" href="#review" role="tab" aria-selected="false">
                                W&M Report
                            </a>
-                           <a class="dropdown-item nav-link" data-bs-toggle="tab"  role="tab" aria-selected="false">
+                           <a class="dropdown-item nav-link" id="session-year-report" data-bs-toggle="tab" href="#yearReport"  role="tab" aria-selected="false">
                                2024 Report
                            </a>
                        </div>
@@ -203,7 +217,7 @@
                </li>
                <li class="nav-item">
                    <a class="nav-link" id="session-checkBook" data-bs-toggle="tab" href="#check-book" role="tab" aria-selected="false">
-                       <i class="ri-book-mark-line me-1 align-middle"></i>Check Book
+                       <i class="ri-book-mark-line me-1 align-middle"></i>Book
                    </a>
                </li>
                <li class="nav-item">
@@ -341,12 +355,15 @@
                                     <td><input class="form-control dailyRoutineInput checkDaily" type="text"
                                                value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center rate-dailyRoutine">
                                         <script>
                                             var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};
                                             var target = ${dailyRoutine.target != 0 && dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.target : 0};
                                             var result = target !== 0 ? (performance / target) * 100 : 0;
                                             var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                            var tdElement = document.currentScript.parentNode;
+
+                                            tdElement.setAttribute('data-rate', roundedResult);
                                             document.write(roundedResult);
                                         </script>
                                     </td>
@@ -362,12 +379,15 @@
                                         <tr name="theSingleMostImportantThing">
                                             <td><input class="form-control dailyRoutineInput checkDaily" type="text"
                                                        value="${dailyRoutine.title}"></td>
-                                            <td class="text-center">
+                                            <td class="text-center rate-dailyRoutine">
                                                 <script>
                                                     var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};
                                                     var target = ${dailyRoutine.target != 0 && dailyRoutine.title != '' ? dailyRoutine.target : 0};
                                                     var result = target !== 0 ? (performance / target) * 100 : 0;
                                                     var roundedResult = result !== 0 ? result.toFixed(2) + '%' : 0 + '%';
+                                                    var tdElement = document.currentScript.parentNode;
+
+                                                    tdElement.setAttribute('data-rate', roundedResult);
                                                     document.write(roundedResult);
                                                 </script>
                                             </td>
@@ -402,7 +422,34 @@
                                         <c:if test="${loop.index == 0}">
                                             <td class="text-start" rowspan="3">Main target</td>
                                         </c:if>
-                                        <td><input class="form-control yearTarget" type="text" value="${year}"></td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input class="form-control yearTarget" type="text" value="${year.target}">
+                                                <button class="btn btn-info dropdown-toggle btn-status" data-value="${year.status}" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">Setting
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning waves-effect waves-light pending"
+                                                                style="margin: 0 5px; width: 102px;"><i
+                                                                class="ri-arrow-right-line"></i> Pending</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 <c:if test="${weekly.year.target == null}">
@@ -1290,22 +1337,21 @@
                                    </div>
                                </div>
                            </div>
-
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
-                                <table>
+                                <table id="table-title-review" class="table-sm">
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr style="height: 65px">
+                                    <tr>
                                         <td id="daily-onething-routine" rowspan="6" style="height: 311px; background-color: #FFEAA7">
                                             <h5 class="fw-bolder text-white">Daily Onething <br>&<br> Daily routine</h5>
                                         </td>
-                                        <td></td>
+                                        <td style="height: 65px"></td>
                                     </tr>
                                     <tr>
-                                        <td class="reivew-daily-onething"></td>
+                                        <td class="reivew-daily-onething text-nowrap"></td>
                                     </tr>
                                     <tr style="background-color: #fcecec">
                                         <td class="reivew-daily-onething"></td>
@@ -1408,30 +1454,30 @@
                                             <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
                                         </td>
                                     </tr>
-                                    <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Gratitude Diary</td>
+                                    <tr >
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Gratitude Diary</td>
                                     </tr>
-                                    <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Compliment</td>
+                                    <tr >
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Compliment</td>
                                     </tr>
-                                    <tr style="height: 45px">
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase">Reflection/Improvement</td>
+                                    <tr >
+                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Reflection/<br>Improvement</td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-container">
-                                <table id="table-dailyOnethingRoutine">
+                            <div style="width: 100%">
+                                <table class="table table-sm text-center" id="table-dailyOnethingRoutine">
                                     <thead>
-                                    <tr style="height: 44px">
+                                    <tr style="height: 45px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
-                                            <th class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
+                                            <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
-                                        <th class="fw-bolder" colspan="7">EXTRA DAYS</th>
+                                        <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">EXTRA DAYS</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="days-of-month" style="height: 45px" data-value="${weekly.monthlys[0].month}">
+                                    <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-review-weekly" style="height: 50.5px">
@@ -1449,9 +1495,9 @@
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="2" varStatus="outerLoop">
-                                        <tr style="height: 126px" class="tr-weekly-sentence${outerLoop.index}">
+                                        <tr class="tr-weekly-sentence${outerLoop.index}">
                                             <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                                <td colspan="7">
+                                                <td colspan="7" style="height: 126px">
                                                     <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter here..."></textarea>
                                                 </td>
                                             </c:forEach>
@@ -1687,6 +1733,177 @@
                 </div>
             </div>
         </div>
+        <div class="tab-pane" id="yearReport" role="tabpanel" style="min-height: 700px">
+            <div class="row calendar-container d-none">
+                <div class="card p-0">
+                    <div class="row card-body">
+                        <div class="d-flex border p-0 m-0" style="background-color: rgba(60, 127, 234, 0.7); margin: 0 12px">
+                            <div class="col-2 ms-2">
+                                <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem; margin-right: 80px">
+                                    <div class="card-body text-muted">
+                                        <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
+                                            <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
+                                        </div>
+                                        <h5 class="fs-14 text-end mb-3">Goals of <span >${weekly.year.year}</span></h5>
+                                        <div class="m-0" >
+                                            <p class="editable m-0">${weekly.year.target[0].target}</p>
+                                            <p class="editable m-0">${weekly.year.target[1].target}</p>
+                                            <p class="editable m-0">${weekly.year.target[2].target}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8 mt-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <h1 class="text-center text-white">Myself in ${weekly.year.year}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex mt-2 p-0">
+                            <div class="table-detail" style="width: unset;">
+                                <table class="text-center table-sm">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="height: 34px">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7);">
+                                        <td colspan="2">
+                                           Objective
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bolder" style="height: 233px;" rowspan="4">
+                                            ONETHING
+                                        </td>
+                                        <td>${weekly.year.category[1]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>${weekly.year.category[2]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>${weekly.year.category[3]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>${weekly.year.category[4]}</td>
+                                    </tr>
+                                    <tr style="height: 290px;">
+                                        <td colspan="2" class="fw-bolder">
+                                           DAILY <br> ROUTINE
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 175px;">
+                                        <td class="fw-bolder" colspan="2">
+                                           MONTHLY
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 150px">
+                                        <td class="fw-bolder" colspan="2">
+                                            ${weekly.year.year} GOAL
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width: 100%">
+                                <table class="table table-sm table-bordered text-center" id="table-year-report">
+                                    <thead>
+                                    <tr style="height: 34px; max-width: 1500px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                        </c:forEach>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="max-width: 1500px; height: 34px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <td data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);"></td>
+                                            <td style="width: 39px;">Perf</td>
+                                        </c:forEach>
+                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr class="onething-report" style="max-width: 1500px; height: 58px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <c:set var="month" value="${loop.index + 1}" />
+                                                <c:choose>
+                                                    <c:when test="${month lt 10}">
+                                                        <c:set var="formattedMonth" value="0${month}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="formattedMonth" value="${month}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0%</td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                        <tr class="report-dailyRoutine" style="max-width: 1500px; max-height: 58px; height: 58px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <c:set var="month" value="${loop.index + 1}" />
+                                                <c:choose>
+                                                    <c:when test="${month lt 10}">
+                                                        <c:set var="formattedMonth" value="0${month}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="formattedMonth" value="${month}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td class="title-dailyRoutine-report" style="width: 70px; max-width: 70px; max-height: 57px" data-month="${weekly.year.year}-${formattedMonth}" data-simplebar></td>
+                                                <td class="perf-dailyRoutine-report" style="width: 39px;">0%</td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="2">
+                                        <tr class="monthly-report" style="max-width: 1500px; max-height: 58px; height: 58px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <c:set var="month" value="${loop.index + 1}" />
+                                                <c:choose>
+                                                    <c:when test="${month lt 10}">
+                                                        <c:set var="formattedMonth" value="0${month}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="formattedMonth" value="${month}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td colspan="2" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:forEach begin="0" end="2" varStatus="loop">
+                                        <tr style="max-width: 1500px;" >
+                                            <td colspan="24" style="height: 50px">
+                                                <span class="d-inline-block">${weekly.year.target[loop.index].target}</span>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('COMPLETE')}">
+                                                    <button class="btn btn-success float-end" style="width: 53px">
+                                                        <i class="ri-check-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('PENDING')}">
+                                                    <button class="btn btn-warning float-end" style="width: 53px">
+                                                        <i class="ri-arrow-right-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('CANCEL')}">
+                                                    <button class="btn btn-danger float-end" style="width: 53px">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1908,9 +2125,12 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
-<%--<script src="/assets/js/pages/apexcharts-pie.init.js"></script>--%>
-
 <script>
+
+    document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
+        e.classList.add('unset-table');
+    })
+
     function getChartColorsArray(e) {
         if (null !== document.getElementById(e)) return e = document.getElementById(e).getAttribute("data-colors"), (e = JSON.parse(e)).map(function (e) {
             var t = e.replace(" ", "");
@@ -1978,19 +2198,20 @@
 
         for (let i = 1; i < firstDayOfWeek; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder');
+            td.classList.add('fw-bolder', 'unset-table');
             daysOfMonth.appendChild(td);
         }
 
         for (let i = 1; i <= numberOfDays; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder');
+            td.classList.add('fw-bolder', 'unset-table');
 
             const day = i < 10 ? '0' + i : i;
             const monthString = (monthDate.getMonth() + 1) < 10 ? '0' + (monthDate.getMonth() + 1) : (monthDate.getMonth() + 1);
             const dateString = monthDate.getFullYear() + '-' + monthString + '-' + day;
 
-            td.textContent = dateString;
+
+            td.textContent = day;
             daysOfMonth.appendChild(td);
 
             td.setAttribute('data-week', dateString);
@@ -2010,13 +2231,13 @@
             if (remainingDays < 6) {
                 for (let i = 1; i <= remainingDays; i++) {
                     const td = document.createElement('td');
-                    td.classList.add('fw-bolder');
+                    td.classList.add('fw-bolder', 'unset-table');
 
                     const day = i < 10 ? '0' + i : i;
                     const nextMonthString = (nextMonth.getMonth() + 1) < 10 ? '0' + (nextMonth.getMonth() + 1) : (nextMonth.getMonth() + 1);
                     const nextMonthDateString = nextMonth.getFullYear() + '-' + nextMonthString + '-' + day;
 
-                    td.textContent = nextMonthDateString;
+                    td.textContent = day;
                     td.setAttribute('data-week', nextMonthDateString);
                     daysOfMonth.appendChild(td);
                 }
@@ -2032,7 +2253,7 @@
                 tr.classList.add('category-review');
                 for (let j = 0; j < daysOfMonth.children.length; j++) {
                     const td = document.createElement('td');
-                    td.classList.add('fw-bolder');
+                    td.classList.add('fw-bolder', 'unset-table');
 
                     const weekValue = daysOfMonth.children[j].getAttribute('data-week');
                     td.setAttribute('data-week', weekValue);
@@ -2041,6 +2262,10 @@
                 daysOfMonth.insertAdjacentElement('afterend', tr);
             }
         }
+        $('#table-dailyOnethingRoutine th').css('border', '1px solid #000');
+        $('#table-dailyOnethingRoutine tr').css('border', '1px solid #000');
+        $('#table-dailyOnethingRoutine td').css('border', '1px solid #000');
+
 
         var queryString = window.location.search;
         var urlParams = new URLSearchParams(queryString);
@@ -2120,8 +2345,8 @@
                                     const startDateDB = week.startDate;
                                     if (startDate == startDateDB) {
                                         if (week.weeklys != null) {
-                                            const weeklyTarget = week.weeklys[index].content;
-                                            const statusWeek = week.weeklys[index].status;
+                                            const weeklyTarget = week.weeklys[index + 1].content;
+                                            const statusWeek = week.weeklys[index + 1].status;
                                             if (weeklyTarget != null && weeklyTarget != '') {
                                                 var btnStatus = ``;
                                                 if (statusWeek == 'COMPLETE') {
@@ -2261,8 +2486,13 @@
                                     colors: chartDonutBasicColors
                                 }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
                         })
-                        
-                       const checkExtraDay = document.getElementById('days-of-month').querySelector('td').textContent;
+
+                        var lastDayOfExtra = $('#days-of-month td:last');
+                        if (lastDayOfExtra.text() != '31') {
+                            $('.tr-weekly-sentence0 textarea:last').prop('disabled', true);
+                            $('.tr-weekly-sentence1 textarea:last').prop('disabled', true);
+                            $('.tr-weekly-sentence2 textarea:last').prop('disabled', true);
+                        }
                     } else {
                         window.location.href = "/management-time/";
                     }
@@ -2282,7 +2512,105 @@
         });
 
     })
-    
+
+    // Handle Tab Year Report
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function handle Click tab report
+        function handleClickTabReport(e) {
+            var currentUrl = window.location.href;
+            var year = getParameterByName('currentDay', currentUrl);
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/v1/management-time/weekly-detail/monthOfYear/" + "${requestScope.user.id}" + "?year=" + year, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const parseData = JSON.parse(xhr.responseText);
+                        console.log(parseData)
+                        document.querySelectorAll('.onething-report').forEach(function (e, index) {
+                            const onethingReport = e.querySelectorAll('.onething-category-report');
+                            const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
+                            onethingReport.forEach(function (e, indexTd) {
+                               const dataMonth = e.getAttribute('data-month');
+                               parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        if (month.targetCategory != null) {
+                                            const monthTarget = month.targetCategory[index + 1].target;
+                                            const performanceMonthtTarget = month.targetCategory[index + 1].performance
+                                            e.textContent = monthTarget;
+                                            const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                                            if (!isNaN(performancePercentage)) {
+                                                const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                                                perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
+                                                if (month.color != null) {
+                                                    perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        })
+                        
+                        document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
+                            const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
+                            const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
+                            titleDailyReport.forEach(function (eTitle, indexTitle) {
+                                const dataMonth = eTitle.getAttribute('data-month');
+                                parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        const dailyDB = month.dailyRoutine[indexTr];
+                                        if (month.dailyRoutine != null && dailyDB != null) {
+                                            const titleDailyDB = dailyDB.title;
+                                            eTitle.textContent = titleDailyDB;
+                                            perfDailyReport[indexTitle].textContent = dailyDB.rate;
+                                        }
+                                    }
+                                });
+                            })
+                        })
+
+                        document.querySelectorAll('.monthly-report').forEach(function (eTr, indexTr) {
+                            const targetMonthReport = eTr.querySelectorAll('td');
+                            targetMonthReport.forEach(function (eTarget, indexTarget) {
+                                const dataMonth = eTarget.getAttribute('data-month');
+                                parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        const monthDB = month.monthlyContents[indexTr];
+                                        if (month.monthlyContents != null && monthDB != null) {
+                                            const content = monthDB.content;
+                                            const status = monthDB.status;
+                                            if (content != null && content != '') {
+                                                var btnStatus = ``;
+                                                if (status == 'COMPLETE') {
+                                                    btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
+                                                } else if (status == 'PENDING') {
+                                                    btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
+                                                } else if (status == 'CANCEL') {
+                                                    btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
+                                                } else if (status == '') {
+                                                    btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                                }
+                                                const html = `<span>` + content + `</span>`+ btnStatus;
+                                                $(eTarget).append(html);
+                                            }
+                                        }
+                                    }
+                                });
+                            })
+                        })
+                    } else {
+                        window.location.href = "/management-time/";
+                    }
+                }
+            }
+            xhr.send();
+            document.getElementById('session-year-report').removeEventListener('click', handleClickTabReport);
+        }
+
+        // Call function handleClick
+        document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
+    })
+
     // Url api get all book
     function getUrlApiBooks(search, page, pageSize) {
         return '/api/v1/books?search=' + search + '&page=' + page + '&pageSize=' + pageSize;
@@ -2310,6 +2638,7 @@
             $('#add-book-btn').removeClass('d-none');
         }
 
+        $('#datatable-book').DataTable().destroy();
         table = $('#datatable-book').DataTable({
             ajax: {
                 url: getUrlApiBooks(objPaging.search, 1, objPaging.pageSize),
@@ -3129,13 +3458,15 @@
                 }
                 monthly.content.push(obj);
             });
-            $('input.dailyRoutineInput').each(function () {
+            const rateDailyRoutine = document.querySelectorAll('.rate-dailyRoutine');
+            $('input.dailyRoutineInput').each(function (index) {
                 let obj = {
                     title: $(this).val(),
-                    target: $(this).closest('tr').find('.dailyRoutineTarget').text()
-                }
-                monthly.dailyRoutine.push(obj)
-            })
+                    target: $(this).closest('tr').find('.dailyRoutineTarget').text(),
+                    rate: $(rateDailyRoutine[index]).attr('data-rate')
+                };
+                monthly.dailyRoutine.push(obj);
+            });
             const targetOnething = document.querySelectorAll('.target-onething');
             const performanceOnthing = document.querySelectorAll('.performance-onething');
             targetOnething.forEach(function (e, index) {
@@ -3247,7 +3578,7 @@
                 const isChecked = $(this).next().find('input[type="checkbox"]').prop('checked');
 
                 let dayObj = days.find(d => d.day === day);
-                if (value !== "" && value != 'Allow notifications') {
+                if (value != 'Allow notifications') {
                     if (day != null) {
                         if (!dayObj) {
                             dayObj = {
@@ -3354,10 +3685,16 @@
                 category: []
             };
 
-            var yearTarget = document.querySelectorAll('.yearTarget');
-            yearTarget.forEach(function (target) {
-                data.year.target.push(target.value);
-            })
+            $('.yearTarget').each(function () {
+                const statusYear = $(this).closest('div').find('button');
+                var valueStatus = statusYear.data('value');
+                if (valueStatus == undefined) valueStatus = '';
+                let obj = {
+                    target: $(this).val(),
+                    status: valueStatus
+                }
+                data.year.target.push(obj);
+            });
             document.querySelectorAll('.yearTitle').forEach(function (e) {
                 data.year.category.push(e.textContent);
             })
