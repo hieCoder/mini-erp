@@ -6,6 +6,7 @@ import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyContentDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyTagetCategoryDto;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.TimeUsedMonthlyDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.WeeklyDto;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.MonthlyRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarMonthlyRequest;
@@ -26,7 +27,7 @@ public class MonthlyManagementTimeDayConverter {
     @Autowired
     private UserMapper userMapper;
 
-    public MonthlyManagementTimeDay toEntity(String userId, CalendarMonthlyRequest monthlyRequest){
+    public MonthlyManagementTimeDay toEntity(String userId, CalendarMonthlyRequest monthlyRequest) {
         return MonthlyManagementTimeDay.builder()
                 .code(monthlyRequest.getMonth())
                 .content(JsonUtils.objectToJson(monthlyRequest.getContent()))
@@ -34,7 +35,7 @@ public class MonthlyManagementTimeDayConverter {
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(String userId, MonthlyRequest monthlyRequest){
+    public MonthlyManagementTimeDay toEntity(String userId, MonthlyRequest monthlyRequest) {
         return MonthlyManagementTimeDay.builder()
                 .code(monthlyRequest.getMonth())
                 .content(JsonUtils.objectToJson(monthlyRequest.getContent()))
@@ -42,7 +43,7 @@ public class MonthlyManagementTimeDayConverter {
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String targetCategory, String gratitudeDiary, String compliment, String reflectionAndImprovement){
+    public MonthlyManagementTimeDay toEntity(String userId, String code, String content, String dailyRoutine, String targetCategory, String gratitudeDiary, String compliment, String reflectionAndImprovement, String timeUsedMonthly) {
         return MonthlyManagementTimeDay.builder()
                 .code(code)
                 .content(content)
@@ -51,23 +52,25 @@ public class MonthlyManagementTimeDayConverter {
                 .gratitudeDiary(gratitudeDiary)
                 .compliment(compliment)
                 .reflectionAndImprovement(reflectionAndImprovement)
+                .timeUsedCategory(targetCategory)
                 .user(userMapper.findById(userId)).build();
     }
 
-    public MonthlyManagementTimeDay toEntity(SpendingMonthRequest spendingMonthRequest){
+    public MonthlyManagementTimeDay toEntity(SpendingMonthRequest spendingMonthRequest) {
         return MonthlyManagementTimeDay.builder()
                 .code(spendingMonthRequest.getMonth())
                 .spendingGoals(spendingMonthRequest.getSpendingGoals())
                 .user(User.builder().id(spendingMonthRequest.getUserId()).build()).build();
     }
 
-    public MonthResponse toResponse(MonthlyManagementTimeDay monthlyManagementTimeDay){
+    public MonthResponse toResponse(MonthlyManagementTimeDay monthlyManagementTimeDay) {
         return MonthResponse.builder()
                 .month(monthlyManagementTimeDay.getCode())
                 .dailyRoutine(JsonUtils.jsonToObject(monthlyManagementTimeDay.getDailyRoutine(), DailyRoutineResponse[].class))
                 .monthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), MonthlyContentDto[].class))
                 .color(JsonUtils.jsonToObject(monthlyManagementTimeDay.getColor(), String[].class))
                 .targetCategory(JsonUtils.jsonToObject(monthlyManagementTimeDay.getTargetCategory(), MonthlyTagetCategoryDto[].class))
+                .timeUsedMonthly(JsonUtils.jsonToObject(monthlyManagementTimeDay.getTimeUsedCategory(), TimeUsedMonthlyDto[].class))
                 .build();
     }
 

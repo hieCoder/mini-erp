@@ -1770,13 +1770,13 @@
                                     <tr style="height: 34px">
                                         <td colspan="2"></td>
                                     </tr>
-                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7);">
+                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7); height: 34px">
                                         <td colspan="2">
                                            Objective
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bolder" style="height: 233px;" rowspan="4">
+                                        <td class="fw-bolder" style="height: 232px;" rowspan="4">
                                             ONETHING
                                         </td>
                                         <td>${weekly.year.category[1]}</td>
@@ -1795,7 +1795,7 @@
                                            DAILY <br> ROUTINE
                                         </td>
                                     </tr>
-                                    <tr style="height: 175px;">
+                                    <tr style="height: 174px;">
                                         <td class="fw-bolder" colspan="2">
                                            MONTHLY
                                         </td>
@@ -1898,6 +1898,109 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex mt-2 p-0">
+                            <div class="table-detail" style="width: unset;">
+                                <table class="text-center table-sm">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="height: 34px">
+                                        <td></td>
+                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr class="fw-bolder">
+                                            <td class="text-wrap" style="max-width: 90px; width: 90px; height: 50px; max-height: 50px" data-simplebar>
+                                                ${weekly.year.category[loop.index + 1]}
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width: 100%">
+                                <table class="table table-sm text-center">
+                                    <thead>
+                                    <tr style="height: 34px; max-width: 1500px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                        </c:forEach>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr class="monthly-time-report" style="max-width: 1500px; height: 51px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                <c:forEach begin="0" end="11" varStatus="loop">
+                                                    <c:set var="month" value="${loop.index + 1}" />
+                                                    <c:choose>
+                                                        <c:when test="${month lt 10}">
+                                                            <c:set var="formattedMonth" value="0${month}" />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:set var="formattedMonth" value="${month}" />
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td class="category-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px;"></td>
+                                                    <td class="rate-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;"></td>
+                                                </c:forEach>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-4">
+                            <h1 class="font-weight-bold mb-4">Year in Review and Self-Inspiration</h1>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-hand-heart-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What are you most grateful for this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-grateful" placeholder="Enter here...">${weekly.year.grateful}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-heart-line fs-4"> </i></div>
+                                    <div class="col ps-2 fs-5">When did you feel happiest this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-happy" placeholder="Enter here...">${weekly.year.happy}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-user-heart-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What kind of person did you want to be this year, and are you close to that person now?</div>
+                                </div>
+                                <textarea class="form-control" id="year-whoUBecome" placeholder="Enter here...">${weekly.year.whoUBecome}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="mdi mdi-bullseye-arrow fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">Have you achieved this year's most important goal? If not, why haven't you achieved it yet?</div>
+                                </div>
+                                <textarea class="form-control" id="year-personalGoal" placeholder="Enter here...">${weekly.year.personalGoal}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-award-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What is your most commendable thing this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-commendable" placeholder="Enter here...">${weekly.year.commendable}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-key-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What are the 3 keywords that represent you this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-keywords3" placeholder="Enter here...">${weekly.year.keywords3}</textarea>
+                            </div>
+                            <div class="col-md-12 text-center align-middle mt-3">
+                                <button class="btn btn-primary mr-2" onclick="history.back()">
+                                    Back
+                                </button>
+                                <button class="btn btn-success ml-2 btn-save">Save</button>
                             </div>
                         </div>
                     </div>
@@ -2302,7 +2405,6 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
-                        console.log(parseData)
                         const days = parseData.days;
                         const weeklys = parseData.weeklys;
 
@@ -2459,7 +2561,7 @@
                             e.querySelectorAll('span').forEach(function (eSpan) {
                                 totalTimeUsedWeekly += parseFloat(eSpan.textContent);
                             })
-                            timeUsedMonthly[index].textContent = totalTimeUsedWeekly + '/' + hoursInMonth + ' hours';
+                            $( timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
                             performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
                             arrayTimeUsedCategory.push(totalTimeUsedWeekly)
                         })
@@ -2597,6 +2699,10 @@
                                     }
                                 });
                             })
+                        })
+
+                        document.querySelectorAll('.monthly-time-report').forEach(function (e, indexTr) {
+                            
                         })
                     } else {
                         window.location.href = "/management-time/";
@@ -3443,6 +3549,7 @@
                 content: [],
                 dailyRoutine: [],
                 targetCategory: [],
+                timeUsedMonthly: []
             };
             const weekly = {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
@@ -3475,6 +3582,16 @@
                     performance: performanceOnthing[index].textContent.trim() == '' ? '0' : performanceOnthing[index].textContent.trim()
                 }
                 monthly.targetCategory.push(obj);
+            })
+            const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
+            const yearTitle = document.querySelectorAll('.yearTitle');
+            timeUsedMonthly.forEach(function (e, index) {
+                let obj = {
+                    category: yearTitle[index + 1].textContent,
+                    timeUsedCategory: e.textContent
+                }
+                monthly.timeUsedMonthly.push(obj);
+                console.log(e.textContent)
             })
             monthly.gratitudeDiary = document.getElementById('monthly-gratitudeDiary').value;
             monthly.compliment = document.getElementById('monthly-compliment').value;
@@ -3698,6 +3815,12 @@
             document.querySelectorAll('.yearTitle').forEach(function (e) {
                 data.year.category.push(e.textContent);
             })
+            data.year.grateful = $('#year-grateful').val();
+            data.year.happy = $('#year-happy').val();
+            data.year.whoUBecome = $('#year-whoUBecome').val();
+            data.year.personalGoal = $('#year-personalGoal').val();
+            data.year.commendable = $('#year-commendable').val();
+            data.year.keywords3 = $('#year-keywords3').val();
             data.days.push(...days);
 
             const imageQuote = document.getElementById('quoteImage').files[0];
@@ -3715,6 +3838,7 @@
                     i--;
                 }
             }
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

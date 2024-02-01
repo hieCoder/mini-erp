@@ -42,4 +42,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="6" author="team2">
+        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
+            <column name="TIME_USED_CATEGORY" type="VARCHAR(1000)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

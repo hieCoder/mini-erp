@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.YearManagementTimeDayMapper">
 
     <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
-        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID, CATEGORY)
-        VALUES (UUID(), #{code}, #{target}, #{user.id}, #{category})
+        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID, CATEGORY, GRATEFUL, HAPPY, WHO_U_BECOME, PERSONAL_GOAL, COMMENDABLE, KEYWORDS_3)
+        VALUES (UUID(), #{code}, #{target}, #{user.id}, #{category}, #{grateful}, #{happy}, #{whoUBecome}, #{personalGoal}, #{commendable}, #{keywords3})
     </insert>
 
     <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
@@ -20,6 +20,12 @@
         <result property="code" column="CODE"/>
         <result property="target" column="TARGET"/>
         <result property="category" column="CATEGORY"/>
+        <result property="grateful" column="GRATEFUL"/>
+        <result property="happy" column="HAPPY"/>
+        <result property="whoUBecome" column="WHO_U_BECOME"/>
+        <result property="personalGoal" column="PERSONAL_GOAL"/>
+        <result property="commendable" column="COMMENDABLE"/>
+        <result property="keywords3" column="KEYWORDS_3"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -31,7 +37,13 @@
     <update id="updateYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
         UPDATE YEAR_MANAGEMENT_TIME_DAY
         SET TARGET = #{target},
-            CATEGORY = #{category}
+            CATEGORY = #{category},
+            GRATEFUL = #{grateful},
+            HAPPY = #{happy},
+            WHO_U_BECOME = #{whoUBecome},
+            PERSONAL_GOAL = #{personalGoal},
+            COMMENDABLE = #{commendable},
+            KEYWORDS_3 = #{keywords3}
         WHERE ID = #{id};
     </update>
 </mapper>
