@@ -52,7 +52,7 @@ public class MonthlyManagementTimeDayConverter {
                 .gratitudeDiary(gratitudeDiary)
                 .compliment(compliment)
                 .reflectionAndImprovement(reflectionAndImprovement)
-                .timeUsedCategory(targetCategory)
+                .timeUsedCategory(timeUsedMonthly)
                 .user(userMapper.findById(userId)).build();
     }
 
