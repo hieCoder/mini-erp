@@ -1405,19 +1405,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category</h4>
-                                                            <div class="flex-shrink-0">
-                                                                <div class="dropdown card-header-dropdown">
-                                                                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <span class="text-muted fs-16"><i class="mdi mdi-dots-vertical align-middle"></i></span>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a class="dropdown-item" href="#">Week</a>
-                                                                        <a class="dropdown-item" href="#">Month</a>
-                                                                        <a class="dropdown-item" href="#">Year</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category By Month</h4>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="card-body">
@@ -1770,13 +1758,13 @@
                                     <tr style="height: 34px">
                                         <td colspan="2"></td>
                                     </tr>
-                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7);">
+                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7); height: 34px">
                                         <td colspan="2">
                                            Objective
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bolder" style="height: 233px;" rowspan="4">
+                                        <td class="fw-bolder" style="height: 232px;" rowspan="4">
                                             ONETHING
                                         </td>
                                         <td>${weekly.year.category[1]}</td>
@@ -1795,7 +1783,7 @@
                                            DAILY <br> ROUTINE
                                         </td>
                                     </tr>
-                                    <tr style="height: 175px;">
+                                    <tr style="height: 174px;">
                                         <td class="fw-bolder" colspan="2">
                                            MONTHLY
                                         </td>
@@ -1898,6 +1886,135 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex mt-2 p-0">
+                            <div class="table-detail" style="width: unset;">
+                                <table class="text-center table-sm">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="height: 34px">
+                                        <td>
+                                            <button type="button" id="btn-chart-time-used-yearReport" class="btn btn-info btn-label waves-effect waves-light text-white"  data-bs-toggle="modal" data-bs-target="#modalChart-yearReport">
+                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Chart
+                                            </button>
+                                            <div id="modalChart-yearReport" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category By Year</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="card-body">
+                                                                <c:choose>
+                                                                    <c:when test="${weekly.monthlys[0].color != null}">
+                                                                        <div id="simple_pie_chart2" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div id="simple_pie_chart2" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr class="fw-bolder">
+                                            <td class="text-wrap" style="max-width: 90px; width: 90px; height: 50px; max-height: 50px" data-simplebar>
+                                                ${weekly.year.category[loop.index + 1]}
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width: 100%">
+                                <table class="table table-sm text-center">
+                                    <thead>
+                                    <tr style="height: 48px; max-width: 1500px">
+                                        <c:forEach begin="0" end="11" varStatus="loop">
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                        </c:forEach>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr class="monthly-time-report" style="max-width: 1500px; height: 51px">
+                                            <c:forEach begin="0" end="11" varStatus="loop">
+                                                    <c:set var="month" value="${loop.index + 1}" />
+                                                    <c:choose>
+                                                        <c:when test="${month lt 10}">
+                                                            <c:set var="formattedMonth" value="0${month}" />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:set var="formattedMonth" value="${month}" />
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td class="timeUsed-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; border: 1px solid black"></td>
+                                                    <td class="performance-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px; border: 1px solid black"></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-4">
+                            <h1 class="font-weight-bold mb-4">Year in Review and Self-Inspiration</h1>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-hand-heart-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What are you most grateful for this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-grateful" placeholder="Enter here...">${weekly.year.grateful}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-heart-line fs-4"> </i></div>
+                                    <div class="col ps-2 fs-5">When did you feel happiest this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-happy" placeholder="Enter here...">${weekly.year.happy}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-user-heart-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What kind of person did you want to be this year, and are you close to that person now?</div>
+                                </div>
+                                <textarea class="form-control" id="year-whoUBecome" placeholder="Enter here...">${weekly.year.whoUBecome}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="mdi mdi-bullseye-arrow fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">Have you achieved this year's most important goal? If not, why haven't you achieved it yet?</div>
+                                </div>
+                                <textarea class="form-control" id="year-personalGoal" placeholder="Enter here...">${weekly.year.personalGoal}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-award-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What is your most commendable thing this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-commendable" placeholder="Enter here...">${weekly.year.commendable}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pe-0"><i class="ri-key-line fs-4"></i></div>
+                                    <div class="col ps-2 fs-5">What are the 3 keywords that represent you this year?</div>
+                                </div>
+                                <textarea class="form-control" id="year-keywords3" placeholder="Enter here...">${weekly.year.keywords3}</textarea>
+                            </div>
+                            <div class="col-md-12 text-center align-middle mt-3">
+                                <button class="btn btn-primary mr-2" onclick="history.back()">
+                                    Back
+                                </button>
+                                <button class="btn btn-success ml-2 btn-save">Save</button>
                             </div>
                         </div>
                     </div>
@@ -2292,218 +2409,211 @@
         });
 
         // Function handle Click tab reivew
-        function handleClick(e) {
-            const result = getFirstSundayLastSaturday(monthDate.getFullYear(), monthDate.getMonth());
-            const formattedFirstDay = formatDate(result.firstSunday);
-            const formattedLastDay = formatDate(result.lastDay);
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstDay + "&endDate=" + formattedLastDay, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        const parseData = JSON.parse(xhr.responseText);
-                        console.log(parseData)
-                        const days = parseData.days;
-                        const weeklys = parseData.weeklys;
+        const result = getFirstSundayLastSaturday(monthDate.getFullYear(), monthDate.getMonth());
+        const formattedFirstDay = formatDate(result.firstSunday);
+        const formattedLastDay = formatDate(result.lastDay);
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/v1/management-time/calendar/" + "${requestScope.user.id}" + "?startDate=" + formattedFirstDay + "&endDate=" + formattedLastDay, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const parseData = JSON.parse(xhr.responseText);
+                    const days = parseData.days;
+                    const weeklys = parseData.weeklys;
 
-                        const dayInRow = document.querySelectorAll('.category-review');
-                        dayInRow.forEach(function (dayRow, index) {
-                            if (index < 5) {
-                                dayRow.querySelectorAll('td').forEach(function (onlyDay) {
-                                    const dataDay = onlyDay.getAttribute('data-week');
-                                    days.forEach(day => {
-                                        const dayDate = day.day;
-                                        const dayData = day.data;
-                                        if (dataDay ==  dayDate) {
-                                           if (dayData[index] != null && dayData[index] != '') {
-                                               if (dayData[index].performance == true && dayData[index].performance != null) onlyDay.textContent = 'X';
-                                           }
-                                        }
-                                    });
-                                })
-                            } else if (index >= 5) {
-                                dayRow.querySelectorAll('td').forEach(function (onlyDay) {
-                                    const dataDay = onlyDay.getAttribute('data-week');
-                                    days.forEach(day => {
-                                        const dayDate = day.day;
-                                        const dataDailyRoutine = day.dailyRoutine;
-                                        if (dataDay ==  dayDate) {
-                                            if (dataDailyRoutine != null) {
-                                                if (dataDailyRoutine[Math.abs(5 - index)] == true) onlyDay.textContent = 'X';
-                                            }
-                                        }
-                                    });
-                                })
-                            }
-                        })
-
-                        const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
-                        weeklyGoalsRow.forEach(function (weekRow, index) {
-                            weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                                const startDate = onlyWeek.getAttribute('data-week');
-                                weeklys.forEach(week => {
-                                    const startDateDB = week.startDate;
-                                    if (startDate == startDateDB) {
-                                        if (week.weeklys != null) {
-                                            const weeklyTarget = week.weeklys[index + 1].content;
-                                            const statusWeek = week.weeklys[index + 1].status;
-                                            if (weeklyTarget != null && weeklyTarget != '') {
-                                                var btnStatus = ``;
-                                                if (statusWeek == 'COMPLETE') {
-                                                    btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
-                                                } else if (statusWeek == 'PENDING') {
-                                                    btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
-                                                } else if (statusWeek == 'CANCEL') {
-                                                    btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
-                                                } else if (statusWeek == '') {
-                                                    btnStatus = `<button class="btn btn-info float-end">null</button>`
-                                                }
-                                                const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
-                                                $(onlyWeek).append(html);
-                                            }
+                    const dayInRow = document.querySelectorAll('.category-review');
+                    dayInRow.forEach(function (dayRow, index) {
+                        if (index < 5) {
+                            dayRow.querySelectorAll('td').forEach(function (onlyDay) {
+                                const dataDay = onlyDay.getAttribute('data-week');
+                                days.forEach(day => {
+                                    const dayDate = day.day;
+                                    const dayData = day.data;
+                                    if (dataDay ==  dayDate) {
+                                        if (dayData[index] != null && dayData[index] != '') {
+                                            if (dayData[index].performance == true && dayData[index].performance != null) onlyDay.textContent = 'X';
                                         }
                                     }
                                 });
                             })
-                        })
-
-                        const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
-                        weeklyAmountTime.forEach(function (weekRow, index) {
-                            weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                                const startDate = onlyWeek.getAttribute('data-week');
-                                weeklys.forEach(week => {
-                                    const startDateDB = week.startDate;
-                                    if (startDate == startDateDB) {
-                                       if (week.weeklys != null) {
-                                           const timeusedWeekly = week.weeklys[index + 1].timeUsed;
-                                           if (timeusedWeekly != null && timeusedWeekly != '') {
-                                               onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
-                                           }
-                                       }
+                        } else if (index >= 5) {
+                            dayRow.querySelectorAll('td').forEach(function (onlyDay) {
+                                const dataDay = onlyDay.getAttribute('data-week');
+                                days.forEach(day => {
+                                    const dayDate = day.day;
+                                    const dataDailyRoutine = day.dailyRoutine;
+                                    if (dataDay ==  dayDate) {
+                                        if (dataDailyRoutine != null) {
+                                            if (dataDailyRoutine[Math.abs(5 - index)] == true) onlyDay.textContent = 'X';
+                                        }
                                     }
                                 });
                             })
-                        })
-
-                        const gratitudeDiaryTr = document.querySelectorAll('.tr-weekly-sentence0');
-                        gratitudeDiaryTr.forEach(function (weekRow, index) {
-                            weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
-                                const startDate = onlyWeek.getAttribute('data-week');
-                                weeklys.forEach(week => {
-                                    const startDateDB = week.startDate;
-                                    if (startDate == startDateDB) {
-                                        onlyWeek.value = week.gratitudeDiary;
-                                    }
-                                });
-                            })
-                        })
-
-                        const complimentTr = document.querySelectorAll('.tr-weekly-sentence1');
-                        complimentTr.forEach(function (weekRow, index) {
-                            weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
-                                const startDate = onlyWeek.getAttribute('data-week');
-                                weeklys.forEach(week => {
-                                    const startDateDB = week.startDate;
-                                    if (startDate == startDateDB) {
-                                        onlyWeek.value = week.compliment;
-                                    }
-                                });
-                            })
-                        })
-
-                        const reflectionAndImproveTr = document.querySelectorAll('.tr-weekly-sentence2');
-                        reflectionAndImproveTr.forEach(function (weekRow, index) {
-                            weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
-                                const startDate = onlyWeek.getAttribute('data-week');
-                                weeklys.forEach(week => {
-                                    const startDateDB = week.startDate;
-                                    if (startDate == startDateDB) {
-                                        onlyWeek.value = week.reflectionAndImprovement;
-                                    }
-                                });
-                            })
-                        })
-
-                        document.querySelectorAll('.weekly-goals').forEach(function (e) {
-                            if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
-                            else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
-                            else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
-                        })
-
-                        document.querySelectorAll('.monthly-goals').forEach(function (e) {
-                            if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
-                            else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
-                            else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
-                        })
-
-                        const weeklyAmountTimeUsed = document.querySelectorAll('.weekly-amountTime');
-                        document.querySelectorAll('.performance-time-used-amountTime').forEach(function (e, index) {
-                            const elSpan = weeklyAmountTimeUsed[index].querySelector('span');
-                            if (elSpan != null) {
-                                const timeUsedWeekly = parseFloat(elSpan.textContent);
-                                e.textContent = (timeUsedWeekly * 100 / 168).toFixed(2) + '%';
-                            } else  e.textContent ='0%';
-                        })
-
-                        const currentUrl = window.location.href;
-                        const currentDayParam = getParameterByName('currentDay', currentUrl);
-                        const currentDate = new Date(currentDayParam);
-                        const currentMonth = currentDate.getMonth() + 1;
-                        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentMonth, 0).getDate();
-                        const hoursInMonth = lastDayOfMonth * 24;
-                        const timeUsedMonthly = document.querySelectorAll('.time-used-monthly');
-                        const performanceAmountTimeMonthly = document.querySelectorAll('.performance-amountTime-monthly');
-                        const arrayTimeUsedCategory = [];
-                        document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e, index) {
-                            var totalTimeUsedWeekly = 0;
-                            e.querySelectorAll('span').forEach(function (eSpan) {
-                                totalTimeUsedWeekly += parseFloat(eSpan.textContent);
-                            })
-                            timeUsedMonthly[index].textContent = totalTimeUsedWeekly + '/' + hoursInMonth + ' hours';
-                            performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
-                            arrayTimeUsedCategory.push(totalTimeUsedWeekly)
-                        })
-                        const btnChart = document.getElementById('btn-chart-time-used');
-                        btnChart.addEventListener('click', function (e) {
-                            const arrCategory = [];
-                            document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
-                                arrCategory.push(e.textContent);
-                            })
-                            var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart"),
-                                chartDonutBasicColors = (chartPieBasicColors && (options = {
-                                    series: arrayTimeUsedCategory,
-                                    chart: {height: 300, type: "pie"},
-                                    labels: arrCategory,
-                                    legend: {position: "bottom"},
-                                    dataLabels: {dropShadow: {enabled: !1}},
-                                    colors: chartPieBasicColors
-                                }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart"), options)).render()), getChartColorsArray("simple_dount_chart")),
-                                chartDonutupdatingColors = (chartDonutBasicColors && (options = {
-                                    series: [44, 55, 41, 17, 15],
-                                    chart: {height: 300, type: "donut"},
-                                    legend: {position: "bottom"},
-                                    dataLabels: {dropShadow: {enabled: !1}},
-                                    colors: chartDonutBasicColors
-                                }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
-                        })
-
-                        var lastDayOfExtra = $('#days-of-month td:last');
-                        if (lastDayOfExtra.text() != '31') {
-                            $('.tr-weekly-sentence0 textarea:last').prop('disabled', true);
-                            $('.tr-weekly-sentence1 textarea:last').prop('disabled', true);
-                            $('.tr-weekly-sentence2 textarea:last').prop('disabled', true);
                         }
-                    } else {
-                        window.location.href = "/management-time/";
+                    })
+
+                    const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
+                    weeklyGoalsRow.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    if (week.weeklys != null) {
+                                        const weeklyTarget = week.weeklys[index + 1].content;
+                                        const statusWeek = week.weeklys[index + 1].status;
+                                        if (weeklyTarget != null && weeklyTarget != '') {
+                                            var btnStatus = ``;
+                                            if (statusWeek == 'COMPLETE') {
+                                                btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
+                                            } else if (statusWeek == 'PENDING') {
+                                                btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
+                                            } else if (statusWeek == 'CANCEL') {
+                                                btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
+                                            } else if (statusWeek == '') {
+                                                btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                            }
+                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                                            $(onlyWeek).append(html);
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
+
+                    const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
+                    weeklyAmountTime.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    if (week.weeklys != null) {
+                                        const timeusedWeekly = week.weeklys[index + 1].timeUsed;
+                                        if (timeusedWeekly != null && timeusedWeekly != '') {
+                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
+
+                    const gratitudeDiaryTr = document.querySelectorAll('.tr-weekly-sentence0');
+                    gratitudeDiaryTr.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    onlyWeek.value = week.gratitudeDiary;
+                                }
+                            });
+                        })
+                    })
+
+                    const complimentTr = document.querySelectorAll('.tr-weekly-sentence1');
+                    complimentTr.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    onlyWeek.value = week.compliment;
+                                }
+                            });
+                        })
+                    })
+
+                    const reflectionAndImproveTr = document.querySelectorAll('.tr-weekly-sentence2');
+                    reflectionAndImproveTr.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('textarea').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    onlyWeek.value = week.reflectionAndImprovement;
+                                }
+                            });
+                        })
+                    })
+
+                    document.querySelectorAll('.weekly-goals').forEach(function (e) {
+                        if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
+                        else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
+                        else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
+                    })
+
+                    document.querySelectorAll('.monthly-goals').forEach(function (e) {
+                        if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
+                        else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
+                        else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
+                    })
+
+                    const weeklyAmountTimeUsed = document.querySelectorAll('.weekly-amountTime');
+                    document.querySelectorAll('.performance-time-used-amountTime').forEach(function (e, index) {
+                        const elSpan = weeklyAmountTimeUsed[index].querySelector('span');
+                        if (elSpan != null) {
+                            const timeUsedWeekly = parseFloat(elSpan.textContent);
+                            e.textContent = (timeUsedWeekly * 100 / 168).toFixed(2) + '%';
+                        } else  e.textContent ='0%';
+                    })
+
+                    const currentUrl = window.location.href;
+                    const currentDayParam = getParameterByName('currentDay', currentUrl);
+                    const currentDate = new Date(currentDayParam);
+                    const currentMonth = currentDate.getMonth() + 1;
+                    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentMonth, 0).getDate();
+                    const hoursInMonth = lastDayOfMonth * 24;
+                    const timeUsedMonthly = document.querySelectorAll('.time-used-monthly');
+                    const performanceAmountTimeMonthly = document.querySelectorAll('.performance-amountTime-monthly');
+                    const arrayTimeUsedCategory = [];
+                    document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e, index) {
+                        var totalTimeUsedWeekly = 0;
+                        e.querySelectorAll('span').forEach(function (eSpan) {
+                            totalTimeUsedWeekly += parseFloat(eSpan.textContent);
+                        })
+                        $( timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
+                        performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
+                        arrayTimeUsedCategory.push(totalTimeUsedWeekly)
+                    })
+                    const btnChart = document.getElementById('btn-chart-time-used');
+                    btnChart.addEventListener('click', function (e) {
+                        const arrCategory = [];
+                        document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
+                            arrCategory.push(e.textContent);
+                        })
+                        var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart"),
+                            chartDonutBasicColors = (chartPieBasicColors && (options = {
+                                series: arrayTimeUsedCategory,
+                                chart: {height: 300, type: "pie"},
+                                labels: arrCategory,
+                                legend: {position: "bottom"},
+                                dataLabels: {dropShadow: {enabled: !1}},
+                                colors: chartPieBasicColors
+                            }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart"), options)).render()), getChartColorsArray("simple_dount_chart")),
+                            chartDonutupdatingColors = (chartDonutBasicColors && (options = {
+                                series: [44, 55, 41, 17, 15],
+                                chart: {height: 300, type: "donut"},
+                                legend: {position: "bottom"},
+                                dataLabels: {dropShadow: {enabled: !1}},
+                                colors: chartDonutBasicColors
+                            }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+                    })
+
+                    var lastDayOfExtra = $('#days-of-month td:last');
+                    if (lastDayOfExtra.text() != '31') {
+                        $('.tr-weekly-sentence0 textarea:last').prop('disabled', true);
+                        $('.tr-weekly-sentence1 textarea:last').prop('disabled', true);
+                        $('.tr-weekly-sentence2 textarea:last').prop('disabled', true);
                     }
+                } else {
+                    window.location.href = "/management-time/";
                 }
             }
-            xhr.send();
-            document.getElementById('session-review').removeEventListener('click', handleClick);
         }
-
-        // Call function handleClick
-        document.getElementById('session-review').addEventListener('click', handleClick);
+        xhr.send();
 
         const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
         document.querySelectorAll('.review-dailyRoutine').forEach(function () {
@@ -2598,6 +2708,50 @@
                                 });
                             })
                         })
+
+                        const totalHoursOfYear = getNumberOfHoursInYear('${weekly.year.year}');
+                        const totalTimeUsedMonthlyArr = [];
+                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                            const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
+                            const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
+                            var totalTimeUsedMonthLy = 0;
+                            timeUsedMonthly.forEach(function (eTd, indexTd) {
+                                const dataMonth = eTd.getAttribute('data-month');
+                                parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
+                                        eTd.textContent = timeUsed + '/' + totalHoursOfYear + ' hours';
+                                        totalTimeUsedMonthLy += parseFloat(timeUsed);
+                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursOfYear)).toFixed(2) + '%'
+                                    }
+                                });
+                            })
+                            totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
+                        })
+
+                        const btnChart = document.getElementById('btn-chart-time-used-yearReport');
+                        btnChart.addEventListener('click', function (e) {
+                            const arrCategory = [];
+                            document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
+                                arrCategory.push(e.textContent);
+                            })
+                            var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
+                                chartDonutBasicColors = (chartPieBasicColors && (options = {
+                                    series: totalTimeUsedMonthlyArr,
+                                    chart: {height: 300, type: "pie"},
+                                    labels: arrCategory,
+                                    legend: {position: "bottom"},
+                                    dataLabels: {dropShadow: {enabled: !1}},
+                                    colors: chartPieBasicColors
+                                }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
+                                chartDonutupdatingColors = (chartDonutBasicColors && (options = {
+                                    series: [44, 55, 41, 17, 15],
+                                    chart: {height: 300, type: "donut"},
+                                    legend: {position: "bottom"},
+                                    dataLabels: {dropShadow: {enabled: !1}},
+                                    colors: chartDonutBasicColors
+                                }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+                        })
                     } else {
                         window.location.href = "/management-time/";
                     }
@@ -2610,6 +2764,16 @@
         // Call function handleClick
         document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
     })
+
+    // Get total hours of 1 year
+    function getNumberOfHoursInYear(year) {
+        var startDate = new Date(year, 0, 1);
+        var endDate = new Date(year, 11, 31, 23, 59, 59, 999);
+        var millisecondsInYear = endDate - startDate;
+        var hoursInYear = millisecondsInYear / (1000 * 60 * 60);
+
+        return Math.round(hoursInYear);
+    }
 
     // Url api get all book
     function getUrlApiBooks(search, page, pageSize) {
@@ -3443,6 +3607,7 @@
                 content: [],
                 dailyRoutine: [],
                 targetCategory: [],
+                timeUsedMonthly: []
             };
             const weekly = {
                 startDay: getPreviousSunday(currentYearMonth.currentDayParam),
@@ -3475,6 +3640,15 @@
                     performance: performanceOnthing[index].textContent.trim() == '' ? '0' : performanceOnthing[index].textContent.trim()
                 }
                 monthly.targetCategory.push(obj);
+            })
+            const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
+            const yearTitle = document.querySelectorAll('.yearTitle');
+            timeUsedMonthly.forEach(function (e, index) {
+                let obj = {
+                    category: yearTitle[index + 1].textContent,
+                    timeUsedCategory: e.textContent
+                }
+                monthly.timeUsedMonthly.push(obj);
             })
             monthly.gratitudeDiary = document.getElementById('monthly-gratitudeDiary').value;
             monthly.compliment = document.getElementById('monthly-compliment').value;
@@ -3698,6 +3872,12 @@
             document.querySelectorAll('.yearTitle').forEach(function (e) {
                 data.year.category.push(e.textContent);
             })
+            data.year.grateful = $('#year-grateful').val();
+            data.year.happy = $('#year-happy').val();
+            data.year.whoUBecome = $('#year-whoUBecome').val();
+            data.year.personalGoal = $('#year-personalGoal').val();
+            data.year.commendable = $('#year-commendable').val();
+            data.year.keywords3 = $('#year-keywords3').val();
             data.days.push(...days);
 
             const imageQuote = document.getElementById('quoteImage').files[0];
@@ -3715,6 +3895,7 @@
                     i--;
                 }
             }
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

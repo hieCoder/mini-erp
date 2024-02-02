@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.model.response.managementtime.day;
 
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyContentDto;
 import com.shsoftvina.erpshsoftvina.model.dto.management_time.MonthlyTagetCategoryDto;
+import com.shsoftvina.erpshsoftvina.model.dto.management_time.TimeUsedMonthlyDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +23,5 @@ public class MonthResponse {
     private String gratitudeDiary;
     private String compliment;
     private String reflectionAndImprovement;
+    private TimeUsedMonthlyDto[] timeUsedMonthly;
 }

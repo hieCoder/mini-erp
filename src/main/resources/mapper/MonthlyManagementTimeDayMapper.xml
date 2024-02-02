@@ -38,6 +38,7 @@
         <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
         <result property="compliment" column="COMPLIMENT"/>
         <result property="reflectionAndImprovement" column="REFLECTIONS_AND_IMPROVEMENTS"/>
+        <result property="timeUsedCategory" column="TIME_USED_CATEGORY"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -47,8 +48,8 @@
     </resultMap>
 
     <insert id="createMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
-        INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID, DAILY_ROUTINE, COLOR, TARGET_CATEGORY, GRATITUDE_DIARY, COMPLIMENT, REFLECTIONS_AND_IMPROVEMENTS)
-        VALUES (UUID(), #{code}, #{content}, #{user.id}, #{dailyRoutine}, #{color}, #{targetCategory}, #{gratitudeDiary}, #{compliment}, #{reflectionAndImprovement})
+        INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID, DAILY_ROUTINE, COLOR, TARGET_CATEGORY, GRATITUDE_DIARY, COMPLIMENT, REFLECTIONS_AND_IMPROVEMENTS, TIME_USED_CATEGORY)
+        VALUES (UUID(), #{code}, #{content}, #{user.id}, #{dailyRoutine}, #{color}, #{targetCategory}, #{gratitudeDiary}, #{compliment}, #{reflectionAndImprovement}, #{timeUsedCategory})
     </insert>
 
     <update id="updateMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
@@ -59,7 +60,8 @@
             TARGET_CATEGORY = #{targetCategory},
             GRATITUDE_DIARY = #{gratitudeDiary},
             COMPLIMENT = #{compliment},
-            REFLECTIONS_AND_IMPROVEMENTS = #{reflectionAndImprovement}
+            REFLECTIONS_AND_IMPROVEMENTS = #{reflectionAndImprovement},
+            TIME_USED_CATEGORY = #{timeUsedCategory}
         WHERE ID = #{id};
     </update>
 

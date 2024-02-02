@@ -20,4 +20,16 @@
             <column name="CATEGORY" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="3" author="team2">
+        <addColumn tableName="YEAR_MANAGEMENT_TIME_DAY">
+            <column name="GRATEFUL" type="VARCHAR(1500)"/>
+            <column name="HAPPY" type="VARCHAR(1500)"/>
+            <column name="WHO_U_BECOME" type="VARCHAR(1500)"/>
+            <column name="PERSONAL_GOAL" type="VARCHAR(1500)"/>
+            <column name="COMMENDABLE" type="VARCHAR(1500)"/>
+            <column name="KEYWORDS_3" type="VARCHAR(1500)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

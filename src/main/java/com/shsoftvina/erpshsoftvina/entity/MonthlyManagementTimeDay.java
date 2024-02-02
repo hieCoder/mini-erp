@@ -21,4 +21,5 @@ public class MonthlyManagementTimeDay {
     private String gratitudeDiary;
     private String compliment;
     private String reflectionAndImprovement;
+    private String timeUsedCategory;
 }

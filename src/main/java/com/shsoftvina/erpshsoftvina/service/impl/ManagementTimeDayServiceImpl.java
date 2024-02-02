@@ -406,7 +406,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     monthResponse.setGratitudeDiary(monthlyManagementTimeDay.getGratitudeDiary());
                     monthResponse.setCompliment(monthlyManagementTimeDay.getCompliment());
                     monthResponse.setReflectionAndImprovement(monthlyManagementTimeDay.getReflectionAndImprovement());
-
+                    monthResponse.setTimeUsedMonthly(JsonUtils.jsonToObject(monthlyManagementTimeDay.getTimeUsedCategory(), TimeUsedMonthlyDto[].class));
                     String dailyRoutineJson = monthlyManagementTimeDay.getDailyRoutine();
                     if (!StringUtils.isBlank(dailyRoutineJson)) {
                         DailyRoutineResponse[] dailyRoutineResponses = JsonUtils.jsonToObject(dailyRoutineJson, DailyRoutineResponse[].class);
@@ -502,6 +502,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             String monthlyGratitudeDiary = monthlyRequest.getGratitudeDiary();
             String monthlyCompliment = monthlyRequest.getCompliment();
             String monthlyReflectionAndImprovement = monthlyRequest.getReflectionAndImprovement();
+            TimeUsedMonthlyDto[] timeUsedMonthly = monthlyRequest.getTimeUsedMonthly();
             MonthlyManagementTimeDay monthlyEntity = monthlyManagementTimeDayMapper.findByCode(userId, monthlyCode);
             if (monthlyEntity == null) {
                 MonthlyManagementTimeDay monthlyE = monthlyManagementTimeDayConverter.toEntity(userId, monthlyCode,
@@ -510,7 +511,8 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                         JsonUtils.objectToJson(targetCategory),
                         monthlyGratitudeDiary,
                         monthlyCompliment,
-                        monthlyReflectionAndImprovement);
+                        monthlyReflectionAndImprovement,
+                        JsonUtils.objectToJson(timeUsedMonthly));
                 CompletableFuture<Void> createMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.createMonthlyManagementTimeDay(monthlyE);
                 });
@@ -522,6 +524,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 monthlyEntity.setGratitudeDiary(monthlyGratitudeDiary);
                 monthlyEntity.setCompliment(monthlyCompliment);
                 monthlyEntity.setReflectionAndImprovement(monthlyReflectionAndImprovement);
+                monthlyEntity.setTimeUsedCategory(JsonUtils.objectToJson(timeUsedMonthly));
                 CompletableFuture<Void> updateMonthlyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
                 });
@@ -659,6 +662,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             String yearCode = yearRequest.getYear();
             YearTargetDto[] target = yearRequest.getTarget();
             String[] category = yearRequest.getCategory();
+            String grateful = yearRequest.getGrateful();
+            String happy = yearRequest.getHappy();
+            String whoUBecome = yearRequest.getWhoUBecome();
+            String personalGoal = yearRequest.getPersonalGoal();
+            String commendable = yearRequest.getCommendable();
+            String keywords3 = yearRequest.getKeywords3();
             YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
             if (yearE == null) {
                 YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
@@ -669,6 +678,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             } else {
                 yearE.setTarget(JsonUtils.objectToJson(target));
                 yearE.setCategory(JsonUtils.objectToJson(category));
+                yearE.setGrateful(grateful);
+                yearE.setHappy(happy);
+                yearE.setWhoUBecome(whoUBecome);
+                yearE.setPersonalGoal(personalGoal);
+                yearE.setCommendable(commendable);
+                yearE.setKeywords3(keywords3);
                 CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);
                 });
