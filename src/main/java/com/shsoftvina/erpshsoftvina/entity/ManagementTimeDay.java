@@ -14,7 +14,6 @@ import java.util.Date;
 public class ManagementTimeDay {
     private String id;
     private String oneThingCalendar;
-    private String toDoList;
     private String gratitudeDiary;
     private String affirmation;
     private String complimentForMeToday;

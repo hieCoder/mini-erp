@@ -14,11 +14,10 @@ import java.util.Map;
 @Builder
 public class DataOfDayDto {
     private ItemDto[] oneThingCalendar;
-    private ToDoListDto toDoList;
     private String[] gratitudeDiary;
     private String complimentForMeToday;
     private String todaysReflectionsAndImprovements;
     private String affirmation;
-    private List<List<TodoDetailDto>> toDoDetail;
+    private List<TodoDetailDto> toDoDetail;
     private Boolean[] dailyRoutine;
 }

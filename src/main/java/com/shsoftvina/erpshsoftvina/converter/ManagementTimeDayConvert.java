@@ -61,7 +61,6 @@ public class ManagementTimeDayConvert {
         if(day == null) return null;
         DataOfDayDto data = new DataOfDayDto();
         data.setOneThingCalendar(JsonUtils.jsonToObject(day.getOneThingCalendar(), ItemDto[].class));
-        data.setToDoList(JsonUtils.jsonToObject(day.getToDoList(), ToDoListDto.class));
         data.setGratitudeDiary(JsonUtils.jsonToObject(day.getGratitudeDiary(), String[].class));
         data.setAffirmation(day.getAffirmation());
         data.setComplimentForMeToday(day.getComplimentForMeToday());
@@ -131,7 +130,6 @@ public class ManagementTimeDayConvert {
         return ManagementTimeDay.builder()
                 .day(dayRequest.getDay())
                 .oneThingCalendar(JsonUtils.objectToJson(dataRequest.getOneThingCalendar()))
-                .toDoList(JsonUtils.objectToJson(dataRequest.getToDoList()))
                 .gratitudeDiary(JsonUtils.objectToJson(dataRequest.getGratitudeDiary()))
                 .affirmation(dataRequest.getAffirmation())
                 .complimentForMeToday(dataRequest.getComplimentForMeToday())

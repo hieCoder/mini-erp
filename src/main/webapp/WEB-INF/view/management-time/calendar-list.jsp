@@ -168,15 +168,15 @@
         <table class="table table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
-                <th scope="col" class="text-warning">Categories</th>
-                <th scope="col" class="text-danger">Sun</th>
-                <th scope="col">Mon</th>
-                <th scope="col">Tue</th>
-                <th scope="col">Wed</th>
-                <th scope="col">Thu</th>
-                <th scope="col">Fri</th>
-                <th scope="col" class="text-primary">Sat</th>
-                <th scope="col" class="text-success">Weekly To-do List</th>
+                <th style="width: 150px;" scope="col" class="text-warning">Categories</th>
+                <th style="width: 150px;" scope="col" class="text-danger">Sun</th>
+                <th style="width: 150px;" scope="col">Mon</th>
+                <th style="width: 150px;" scope="col">Tue</th>
+                <th style="width: 150px;" scope="col">Wed</th>
+                <th style="width: 150px;" scope="col">Thu</th>
+                <th style="width: 150px;" scope="col">Fri</th>
+                <th style="width: 150px;" scope="col" class="text-primary">Sat</th>
+                <th style="width: 260px;" scope="col" class="text-success">Weekly Goals</th>
             </tr>
             </thead>
             <tbody>
@@ -192,7 +192,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Weekly To-do List</h4>
+                <h4 class="modal-title" id="myModalLabel">Weekly Goals</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -400,7 +400,7 @@
                         })
                         monthlyTarget.innerHTML = xhtml;
                     } else {
-                        for (let i = 0; i < 3; i++) {
+                        for (let i = 0; i < 4; i++) {
                             xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
                         }
                         monthlyTarget.innerHTML = xhtml;
@@ -417,7 +417,7 @@
                         })
                         yearTarget.innerHTML = yearHtml;
                     } else {
-                        for (let i = 0; i < 3; i++) {
+                        for (let i = 0; i < 4; i++) {
                             yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
                         }
                         yearTarget.innerHTML = yearHtml;
@@ -523,6 +523,7 @@
                                     cell.classList.add("fw-bold");
                                     cell.classList.add("fst-italic");
                                     cell.classList.add("year-category");
+                                    cell.style.maxWidth = 'fit-content';
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
@@ -950,7 +951,7 @@
 
         if (isEditing) {
             var paragraphElement = document.createElement('p');
-            paragraphElement.innerText = element.value;
+            paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
             paragraphElement.classList.add('editable', 'm-0');
             paragraphElement.ondblclick = function () {
                 toggleEdit(paragraphElement);
@@ -959,7 +960,7 @@
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
-            inputElement.value = element.innerText;
+            inputElement.value = element.innerText == 'Double click to edit' ? '' : element.innerText;
             inputElement.classList.add('editable', 'editing', 'm-0', 'w-100');
             inputElement.ondblclick = function () {
                 toggleEdit(inputElement);
@@ -978,7 +979,7 @@
 
         if (isEditing) {
             var paragraphElement = document.createElement('p');
-            paragraphElement.innerText = element.value;
+            paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
             paragraphElement.classList.add('editableYear', 'm-0', 'yearTarget');
             paragraphElement.ondblclick = function () {
                 toggleEditYear(paragraphElement);
@@ -987,7 +988,7 @@
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
-            inputElement.value = element.innerText;
+            inputElement.value = element.innerText == 'Double click to edit' ? '' : element.innerText;
             inputElement.classList.add('editableYear', 'editingYear', 'm-0', 'w-100');
             inputElement.ondblclick = function () {
                 toggleEditYear(inputElement);
