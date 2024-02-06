@@ -404,6 +404,8 @@
                                         <button type="button" class="btn btn-success waves-effect waves-light"
                                                 id="addDaily"><i class="bx bx-plus"></i></button>
                                     </td>
+                                    <td style="position: relative">
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -920,7 +922,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-container" style="max-height: 3000px">
+                            <div class="table-container" style="max-height: 2000px;">
                                 <table>
                                     <thead>
                                     <tr>
@@ -932,7 +934,7 @@
                                     <tbody>
                                     <tr>
                                         <c:forEach var="day" items="${weekly.days}">
-                                            <td class="fw-bolder" colspan="3">Goals</td>
+                                            <td class="fw-bolder" colspan="2">Goals</td>
                                             <td class="fw-bolder">Performance</td>
                                         </c:forEach>
                                     </tr>
@@ -942,7 +944,7 @@
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="theSingleMostImportantThing"
                                                    value="${day.data.oneThingCalendar[0]}"/>
-                                            <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="3"
+                                            <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="2"
                                                 contenteditable="true"
                                                 data-name="theSingleMostImportantThing"
                                                 data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[0]}">${theSingleMostImportantThing.target}</td>
@@ -955,7 +957,7 @@
                                     <tr class="lecture">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
-                                            <td class="editable-cell target-color-lecture isModifyLecture" colspan="3"
+                                            <td class="editable-cell target-color-lecture isModifyLecture" colspan="2"
                                                 contenteditable="true" data-name="lecture"
                                                 data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[1]}">${lecture.target}</td>
                                             <td class="performance-color-lecture isModifyLecture" style="background-color: ${weekly.monthlys[0].color[1]}"><input
@@ -966,7 +968,7 @@
                                     <tr class="dailyEvaluation">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
-                                            <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="3"
+                                            <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="2"
                                                 contenteditable="true"
                                                 data-name="dailyEvaluation"
                                                 data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[2]}">${dailyEvaluation.target}</td>
@@ -978,18 +980,17 @@
                                     <tr class="work">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
-                                            <td class="editable-cell target-color-work isModifyWork" colspan="3"
+                                            <td class="editable-cell target-color-work isModifyWork" colspan="2"
                                                 contenteditable="true" data-name="work"
                                                 data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[3]}">${work.target}</td>
-                                            <td class="performance-color-work isModifyWork" style="background-color: ${weekly.monthlys[0].color[3]}"><input class="form-check-input"
-                                                                                                                                                            type="checkbox" ${work.performance ? 'checked' : ''}>
+                                            <td class="performance-color-work isModifyWork" style="background-color: ${weekly.monthlys[0].color[3]}"><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
                                             </td>
                                         </c:forEach>
                                     </tr>
                                     <tr class="reading">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
-                                            <td class="editable-cell target-color-reading isModifyReading" colspan="3"
+                                            <td class="editable-cell target-color-reading isModifyReading" colspan="2"
                                                 contenteditable="true" data-name="reading"
                                                 data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[4]}">${reading.target}</td>
                                             <td class="performance-color-reading isModifyReading" style="background-color: ${weekly.monthlys[0].color[4]}"><input
@@ -1013,7 +1014,7 @@
                                                                value="${weekly.monthlys[1].dailyRoutine[loop.index]}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="editable-cell " colspan="3">${dailyRoutine.title}</td>
+                                                <td class="editable-cell " colspan="2">${dailyRoutine.title}</td>
                                                 <td><input class="form-check-input dailyRoutine"
                                                            type="checkbox" ${day.data.dailyRoutine[loop.index] ? 'checked' : ''}
                                                            data-day="${day.day}"></td>
@@ -1115,25 +1116,25 @@
                                                     data-day="${day.day}"
                                                     data-name="timeLine">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control content-plan" aria-label="Text input with checkbox">
+                                                        <input type="text" value="${data.plans[0].content}" class="form-control content-plan" aria-label="Text input with checkbox">
                                                         <div class="input-group-text">
                                                             <input class="form-check-input mt-0 performance-plan" type="checkbox" value="" aria-label="Checkbox for following text input">
                                                         </div>
                                                     </div>
                                                     <div class="input-group mt-2">
-                                                        <input type="text" class="form-control content-plan" aria-label="Text input with checkbox">
+                                                        <input type="text" value="${data.plans[1].content}" class="form-control content-plan" aria-label="Text input with checkbox">
                                                         <div class="input-group-text">
-                                                            <input class="form-check-input mt-0 performance-plan" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                                            <input class="form-check-input mt-0 performance-plan" type="checkbox" ${data.plans[1].performance ? 'checked' : ''} aria-label="Checkbox for following text input">
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
                                                     data-day="${day.day}"
-                                                    data-name="timeLine">${data[0].actual}</td>
+                                                    data-name="timeLine">${data.actual[0]}</td>
                                                 <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
                                                     data-day="${day.day}"
-                                                    data-name="timeLine">${data[1].actual}</td>
+                                                    data-name="timeLine">${data.actual[1]}</td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
@@ -3717,11 +3718,11 @@
                 }
             })
 
-            $('tr[name="timeLine"]').each(function () {
+            $('tr[name="timeLine"]').each(function (indexTr) {
                 $(this).find('td[data-name="timeLine"]').each(function (index) {
                     const day = $(this).data('day');
                     let dayObj = days.find(d => d.day === day);
-                        if (day != null) {
+                    if (day != null) {
                             if (!dayObj) {
                                 dayObj = {
                                     day: day,
@@ -3740,35 +3741,33 @@
                         }
                     if (dayObj) {
                         let obj = {
-                            plan: [],
+                            plans: [],
                             actual: [],
                             timeRange: ''
                         }
-
-                        const contentInputs = $(this).find('input.content-plan');
-                        const performanceInputs = $(this).find('input.performance-plan');
-                        contentInputs.each(function (indexContent) {
-                            const contentPlan = $(this).val();
-                            const performancePlan = performanceInputs.eq(indexContent).prop('checked');
-                            obj.plan.push({
-                                content: contentPlan,
-                                performance: performancePlan
+                        if ((index + 1) % 3 === 1) {
+                            const contentInputs = $(this).find('input.content-plan');
+                            const performanceInputs = $(this).find('input.performance-plan');
+                            contentInputs.each(function (indexContent) {
+                                const contentPlan = $(this).val();
+                                const performancePlan = performanceInputs.eq(indexContent).prop('checked');
+                                obj.plans.push({
+                                    content: contentPlan,
+                                    performance: performancePlan
+                                });
                             });
-                        });
-                       dayObj.data.toDoDetail.push(obj);
-                       //  if ((index + 1) % 4 === 1) {
-                       //      dayObj.data.toDoDetail.push([
-                       //          {contentPlan: value, contentNotiPlan: contentPlan, actual: ''},
-                       //          {contentPlan: '', contentNotiPlan: '', actual: ''}
-                       //      ]);
-                       //  } else if ((index + 1) % 4 === 2) {
-                       //      dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][1].contentPlan = value;
-                       //      dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][1].contentNotiPlan = contentPlan;
-                       //  } else if ((index + 1) % 4 === 3) {
-                       //      dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][0].actual = value;
-                       //  } else if ((index + 1) % 4 === 0) {
-                       //      dayObj.data.toDoDetail[dayObj.data.toDoDetail.length - 1][1].actual = value;
-                       //  }
+                            if (indexTr == 0) obj.timeRange = 'MIDNIGHT_TO_SIX';
+                            else if (indexTr == 1) obj.timeRange = 'SIX_TO_TWELVE';
+                            else if (indexTr == 2) obj.timeRange = 'TWELVE_TO_SIXTEEN';
+                            else if (indexTr == 3) obj.timeRange = 'SIXTEEN_TO_MIDNIGHT';
+                            dayObj.data.toDoDetail.push(obj);
+                        } else if ((index + 1) % 3 === 2) {
+                            const contentPlan = $(this).text();
+                            dayObj.data.toDoDetail[indexTr].actual.push(contentPlan)
+                        } else if ((index + 1) % 3 === 0) {
+                            const contentPlan = $(this).text();
+                            dayObj.data.toDoDetail[indexTr].actual.push(contentPlan)
+                        }
                     }
                 });
             });
@@ -3939,6 +3938,7 @@
         var selector = 'input.' + className + '[data-day="' + day + '"]';
 
         $(selector).each(function () {
+            console.log(1)
             var isChecked = $(this).prop('checked');
             dailyRoutineList.push(isChecked);
         });
