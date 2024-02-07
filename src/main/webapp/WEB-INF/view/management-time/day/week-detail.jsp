@@ -866,7 +866,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3" style="height: 162.5px" id="daily-routine"><h5 class="fw-bolder">Daily
+                                        <td colspan="3" style="height: 260.5px" id="daily-routine"><h5 class="fw-bolder">Daily
                                             Routine</h5></td>
                                     </tr>
                                     <tr>
@@ -1000,7 +1000,7 @@
                                     </tr>
 
                                     <%--daily routine--%>
-                                    <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="4">
+                                    <c:forEach var="dailyRoutine" varStatus="loop" begin="0" end="7">
                                         <tr name="daily" class="checkDailyRoutine">
                                             <c:forEach var="day" items="${weekly.days}">
                                                 <c:set var="dayMonth" value="${fn:substring(day.day, 0, 7)}"/>
@@ -1112,21 +1112,22 @@
                                                 </c:forEach>
 
                                                 <td style="background-color: ${backgroundColor0}" contenteditable="true"
-                                                    class="setting"
+                                                    class="setting plan"
                                                     data-day="${day.day}"
                                                     data-name="timeLine">
-                                                    <div class="input-group">
+                                                    <div class="input-group" style="padding-right: 24px">
                                                         <input type="text" value="${data.plans[0].content}" class="form-control content-plan" aria-label="Text input with checkbox">
                                                         <div class="input-group-text">
                                                             <input class="form-check-input mt-0 performance-plan" type="checkbox" value="" aria-label="Checkbox for following text input">
                                                         </div>
                                                     </div>
-                                                    <div class="input-group mt-2">
+                                                    <div class="input-group mt-2" style="padding-right: 24px">
                                                         <input type="text" value="${data.plans[1].content}" class="form-control content-plan" aria-label="Text input with checkbox">
                                                         <div class="input-group-text">
                                                             <input class="form-check-input mt-0 performance-plan" type="checkbox" ${data.plans[1].performance ? 'checked' : ''} aria-label="Checkbox for following text input">
                                                         </div>
                                                     </div>
+                                                    <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
                                                 </td>
 
                                                 <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
@@ -3134,13 +3135,14 @@
             var lastElement = tdDaily[tdDaily.length - 2];
             if (lastElement.textContent == '') {
                 count++;
-                if (count != 5) {
+                if (count != 8) {
                     $(e).addClass('d-none');
                     heightDaily = heightDaily - 32.5;
+                    console.log(heightDaily)
                 }
             }
         });
-        if (count == 4 || count == 5) $(dailySession).addClass('p-0');
+        if (count == 7 || count == 8) $(dailySession).addClass('p-0');
         dailySession.style.height = heightDaily + 'px';
     })
 
@@ -3157,7 +3159,7 @@
         })
         dailyObjective.setAttribute('rowspan', countValue + 1);
         const btnAddDaily = document.getElementById('addDaily');
-        if (countValue == 5) {
+        if (countValue == 8) {
             btnAddDaily.innerHTML = `<i class="bx bx-minus"></i>`
             $('#addDaily').removeClass('btn-success');
             $('#addDaily').addClass('btn-danger');
@@ -3170,7 +3172,7 @@
                 $(newDaily).insertBefore('#dailySession');
                 countValue++;
 
-                if (countValue == 5) {
+                if (countValue == 8) {
                     btnAddDaily.innerHTML = `<i class="bx bx-minus"></i>`
                     $('#addDaily').removeClass('btn-success');
                     $('#addDaily').addClass('btn-danger');
@@ -3475,7 +3477,6 @@
     // Handle when user click check box Performance
     $(document).ready(function () {
         checkInitialValue();
-
         $('td.editable-cell').on('input', function () {
             checkInitialValue();
         });
@@ -3658,6 +3659,7 @@
                 }
             })
             $('input[type="checkbox"].dailyRoutine').each(function () {
+                console.log(1)
                 const day = $(this).data('day');
                 const isChecked = $(this).prop('checked');
 
@@ -3827,21 +3829,21 @@
                 }
             }
             console.log(data)
-            // callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
-            //     data.quotes.image = rs[0];
-            //     callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
-            //         if (rs) {
-            //             $("div.containerLoading").addClass("d-none")
-            //             $("div.calendar-container").removeClass("d-none")
-            //             localStorage.setItem('result', 'addSuccess');
-            //             window.location.reload();
-            //         } else {
-            //             rsUnSuccess();
-            //             $("div.containerLoading").addClass("d-none")
-            //             $("div.calendar-container").removeClass("d-none")
-            //         }
-            //     })
-            // })
+            callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
+                data.quotes.image = rs[0];
+                callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
+                    if (rs) {
+                        $("div.containerLoading").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
+                        localStorage.setItem('result', 'addSuccess');
+                        window.location.reload();
+                    } else {
+                        rsUnSuccess();
+                        $("div.containerLoading").addClass("d-none")
+                        $("div.calendar-container").removeClass("d-none")
+                    }
+                })
+            })
         }
     });
 
@@ -3938,7 +3940,6 @@
         var selector = 'input.' + className + '[data-day="' + day + '"]';
 
         $(selector).each(function () {
-            console.log(1)
             var isChecked = $(this).prop('checked');
             dailyRoutineList.push(isChecked);
         });
@@ -3985,6 +3986,36 @@
         }
         return false;
     }
+
+    // Add Plan
+    $(document).ready(function(){
+        $('.addPlan').on('click', function(){
+            var newHtml = `
+                    <div class="d-flex align-items-center">
+                        <div class="input-group mt-2">
+                            <input type="text" value="" class="form-control content-plan" aria-label="Text input with checkbox">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0 performance-plan" type="checkbox" aria-label="Checkbox for following text input">
+                            </div>
+                        </div>
+                        <i class="ri-close-circle-line fs-4 ms-1 text-danger remove-plan cursor-pointer"></i>
+                    </div>
+                    `;
+            $(this).before(newHtml);
+
+            document.querySelectorAll('.remove-plan').forEach(function (btnRemovePlan) {
+                btnRemovePlan.addEventListener('click', function () {
+
+                })
+            })
+
+            $('.remove-plan').on('click', function () {
+                console.log($(this).closest('.input-group'))
+            })
+        });
+    });
+
+
 </script>
 </body>
 </html>
