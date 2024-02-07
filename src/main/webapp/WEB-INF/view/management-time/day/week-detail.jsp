@@ -3138,7 +3138,6 @@
                 if (count != 8) {
                     $(e).addClass('d-none');
                     heightDaily = heightDaily - 32.5;
-                    console.log(heightDaily)
                 }
             }
         });
@@ -3987,10 +3986,12 @@
         return false;
     }
 
-    // Add Plan
+    // Add Plan TimeLine
     $(document).ready(function(){
+        var count = 0;
         $('.addPlan').on('click', function(){
-            var newHtml = `
+            if (count < 3) {
+                var newHtml = `
                     <div class="d-flex align-items-center">
                         <div class="input-group mt-2">
                             <input type="text" value="" class="form-control content-plan" aria-label="Text input with checkbox">
@@ -4001,17 +4002,16 @@
                         <i class="ri-close-circle-line fs-4 ms-1 text-danger remove-plan cursor-pointer"></i>
                     </div>
                     `;
-            $(this).before(newHtml);
-
-            document.querySelectorAll('.remove-plan').forEach(function (btnRemovePlan) {
-                btnRemovePlan.addEventListener('click', function () {
-
+                $(this).before(newHtml);
+                count++;
+                $('.remove-plan').on('click', function () {
+                    count--;
+                    $(this).parent().remove();
                 })
-            })
-
-            $('.remove-plan').on('click', function () {
-                console.log($(this).closest('.input-group'))
-            })
+                if (count == 3) {
+                    $(this).addClass('d-none');
+                }
+            }
         });
     });
 
