@@ -213,7 +213,6 @@
                            </a>
                        </div>
                    </div>
-
                </li>
                <li class="nav-item">
                    <a class="nav-link" id="session-checkBook" data-bs-toggle="tab" href="#check-book" role="tab" aria-selected="false">
@@ -4014,8 +4013,6 @@
             }
         });
     });
-
-
 </script>
 </body>
 </html>
