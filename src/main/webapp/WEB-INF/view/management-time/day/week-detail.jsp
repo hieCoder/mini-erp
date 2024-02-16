@@ -30,7 +30,7 @@
         #addDaily{
             position: absolute;
             top: 0;
-            left: 51%;
+            left: 56%;
             transform: translate(-50%, -50%);
             padding: 4px;
             border-radius: 50%;
