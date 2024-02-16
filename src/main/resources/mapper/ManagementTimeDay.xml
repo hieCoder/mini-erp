@@ -54,11 +54,11 @@
     </select>
 
     <insert id="createListDayDetail" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, TO_DO_LIST, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
+        INSERT INTO MANAGEMENT_TIME_DAY (ID, ONE_THING_CALENDAR, GRATITUDE_DIARY, AFFIRMATION, DAY, USER_ID, WEEKLY_CODE,
         COMPLIMENT_FOR_ME_TODAY, TODAYS_REFLECTIONS_AND_IMPROVEMENTS, TODO_DETAIL, DAILY_ROUTINE, SPENDING)
         VALUES
         <foreach collection="days" item="day" separator=",">
-            (UUID(), #{day.oneThingCalendar}, #{day.toDoList}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
+            (UUID(), #{day.oneThingCalendar}, #{day.gratitudeDiary}, #{day.affirmation}, #{day.day}, #{day.user.id}, #{day.weeklyCode},
             #{day.complimentForMeToday}, #{day.todaysReflectionsAndImprovements}, #{day.toDoDetail}, #{day.dailyRoutine}, #{day.spending})
         </foreach>
     </insert>
@@ -67,7 +67,6 @@
         <foreach collection="days" item="day" separator=";">
             UPDATE MANAGEMENT_TIME_DAY
             SET ONE_THING_CALENDAR = #{day.oneThingCalendar},
-            TO_DO_LIST = #{day.toDoList},
             GRATITUDE_DIARY = #{day.gratitudeDiary},
             AFFIRMATION = #{day.affirmation},
             COMPLIMENT_FOR_ME_TODAY = #{day.complimentForMeToday},
@@ -82,7 +81,6 @@
     <resultMap id="dayResultMap" type="com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="oneThingCalendar" column="ONE_THING_CALENDAR"/>
-        <result property="toDoList" column="TO_DO_LIST"/>
         <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
         <result property="affirmation" column="AFFIRMATION"/>
         <result property="complimentForMeToday" column="COMPLIMENT_FOR_ME_TODAY"/>

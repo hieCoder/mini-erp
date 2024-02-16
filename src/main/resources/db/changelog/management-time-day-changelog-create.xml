@@ -10,7 +10,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ONE_THING_CALENDAR" type="TEXT"/>
-            <column name="TO_DO_LIST" type="TEXT"/>
             <column name="GRATITUDE_DIARY" type="TEXT"/>
             <column name="AFFIRMATION" type="TEXT"/>
             <column name="COMPLIMENT_FOR_ME_TODAY" type="TEXT"/>
