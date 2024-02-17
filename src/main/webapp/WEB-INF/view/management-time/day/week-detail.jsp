@@ -21,6 +21,26 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
+        .node {
+            position: relative;
+            display: inline-block;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+            margin: 20px;
+        }
+        .add-node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+        }
+
         .unset-table {
             white-space: unset !important;
             max-width: unset !important;
@@ -190,7 +210,7 @@
                     <div class="btn-group w-100 mt-2">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">TABS</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item nav-link" data-bs-toggle="tab"  role="tab" aria-selected="false">
+                            <a class="dropdown-item nav-link"  id="session-goals" data-bs-toggle="tab" href="#year-goals" role="tab" aria-selected="false">
                                 2024 Goals
                             </a>
                             <a class="dropdown-item nav-link management-time-year">
@@ -228,6 +248,22 @@
         </div>
     </div>
     <div class="tab-content">
+        <div class="tab-pane" id="year-goals" role="tabpanel" style="min-height: 700px">
+            <div class="row calendar-container d-none">
+                <div class="card p-0">
+                    <div class="row card-body">
+                        <div class="container">
+                            <div id="mindmap">
+                                <div class="node" id="root">
+                                    Root
+                                    <div class="add-node">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="tab-pane active" id="calendar" role="tabpanel">
             <div class="row calendar-container d-none" data-date="${day}" data-id="${dayResponse.id}">
                 <div class="card">
@@ -2426,7 +2462,24 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script>
+    $(document).ready(function() {
+        // Function to add a new node
+        function addNode(parentId) {
+            var newNodeId = 'node-' + Math.random().toString(36).substr(2, 9);
+            var newNode = $('<div class="node" id="' + newNodeId + '">Node<div class="add-node">+</div></div>');
+            newNode.appendTo($('#' + parentId)).css({top: '50%', left: '50%', transform: 'translate(-50%, -50%)'});
+            newNode.click(function() {
+                addNode(newNodeId);
+            });
+        }
 
+        // Click event for adding new node
+        $('.add-node').click(function(e) {
+            e.stopPropagation();
+            var parentId = $(this).parent().attr('id');
+            addNode(parentId);
+        });
+    });
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
         e.classList.add('unset-table');
     })
