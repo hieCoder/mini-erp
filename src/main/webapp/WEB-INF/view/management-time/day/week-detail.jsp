@@ -887,20 +887,24 @@
                                         <td colspan="2" class="fw-bolder">Process</td>
                                     </tr>
                                     <tr>
-                                        <td rowspan="4" style="max-width: 5rem;white-space: normal;" class="fw-bolder">
+                                        <td rowspan="24" style="max-width: 5rem;white-space: normal; height: 1000px" class="fw-bolder">
                                             Timeline
                                         </td>
-                                        <td colspan="2" class="fw-bolder" style="height: 147px">00:00 ~ 06:00</td>
+                                        <td colspan="2" class="fw-bolder">0:00</td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2" class="fw-bolder" style="height: 147px">06:00 ~ 12:00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="fw-bolder" style="height: 147px">12:00 ~ 18:00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"class="fw-bolder" style="height: 147px">18:00 ~ 00:00</td>
-                                    </tr>
+                                    <c:forEach var="time" begin="1" end="23">
+                                        <tr>
+                                            <c:choose>
+                                                <c:when test="${time % 6 == 0}">
+                                                    <td colspan="2" class="fw-bolder">${time}:00</td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td colspan="2">${time}:00</td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </tr>
+                                    </c:forEach>
+
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
                                         <td class="title-report-category" style="background-color: #fcecec"></td>
@@ -1076,7 +1080,7 @@
 
                                     <%--Timeline--%>
                                     <c:forEach var="time" varStatus="loop" begin="0" end="3">
-                                        <tr name="timeLine" data-value="${time}" style="height: 147px">
+                                        <tr name="timeLine" data-value="${time}">
                                             <c:forEach var="day" items="${weekly.days}">
                                                 <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
                                                 <c:set var="backgroundColor0" value=""/>
@@ -1110,10 +1114,9 @@
                                                     </c:forEach>
                                                 </c:forEach>
 
-                                                <td style="background-color: ${backgroundColor0}" contenteditable="true" class="setting plan" data-day="${day.day}" data-name="timeLine">
+                                                <td rowspan="6" style="background-color: ${backgroundColor0}; height: 250px" contenteditable="true" class="setting plan" data-day="${day.day}" data-name="timeLine">
                                                     <c:choose>
                                                         <c:when test="${empty data.plans}">
-                                                            <!-- Code HTML cũ nếu mảng plans rỗng -->
                                                             <div class="input-group mt-2" style="padding-right: 24px">
                                                                 <input type="text" value="" class="form-control content-plan" aria-label="Text input with checkbox">
                                                                 <div class="input-group-text">
@@ -1129,21 +1132,75 @@
                                                             <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <!-- Code HTML sử dụng c:forEach nếu mảng plans không rỗng -->
-                                                            <c:forEach var="plan" items="${data.plans}">
-                                                                <div class="input-group mt-2" style="padding-right: 24px">
-                                                                    <input type="text" value="${plan.content}" class="form-control content-plan" aria-label="Text input with checkbox">
-                                                                    <div class="input-group-text">
-                                                                        <input class="form-check-input mt-0 performance-plan" type="checkbox" ${plan.performance ? 'checked' : ''} aria-label="Checkbox for following text input">
-                                                                    </div>
-                                                                </div>
+                                                            <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
+                                                                <c:choose>
+                                                                    <c:when test="${loop1.index > 2}">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="input-group mt-2">
+                                                                                <input type="text" value="${plan.content}" class="form-control content-plan" aria-label="Text input with checkbox">
+                                                                                <div class="input-group-text">
+                                                                                    <input class="form-check-input mt-0 performance-plan" type="checkbox" ${plan.performance ? 'checked' : ''} aria-label="Checkbox for following text input">
+                                                                                </div>
+                                                                            </div>
+                                                                            <i class="ri-close-circle-line fs-4 ms-1 text-danger remove-plan cursor-pointer"></i>
+                                                                        </div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div class="input-group mt-2" style="padding-right: 24px">
+                                                                            <input type="text" value="${plan.content}" class="form-control content-plan" aria-label="Text input with checkbox">
+                                                                            <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0 performance-plan" type="checkbox" ${plan.performance ? 'checked' : ''} aria-label="Checkbox for following text input">
+                                                                            </div>
+                                                                        </div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             </c:forEach>
                                                             <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
 
-
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[10]}</td>
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[11]}</td>
+                                            </c:forEach>
+                                        </tr>
+                                        <tr name="timeLine-actual" data-value="${time}">
+                                            <c:forEach var="day" items="${weekly.days}">
+                                                <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
+                                                <c:set var="backgroundColor0" value=""/>
+                                                <c:set var="backgroundColor1" value=""/>
+                                                <c:set var="backgroundColor2" value=""/>
+                                                <c:set var="backgroundColor3" value=""/>
+                                                <c:set var="exitLoop0" value="false"/>
+                                                <c:set var="exitLoop1" value="false"/>
+                                                <c:set var="exitLoop2" value="false"/>
+                                                <c:set var="exitLoop3" value="false"/>
+                                                <c:forEach var="color" items="${weekly.colors}">
+                                                    <c:forEach var="value" items="${color.values}">
+                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                                <c:set var="backgroundColor0" value="${color.color}"/>
+                                                                <c:set var="exitLoop0" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">
+                                                                <c:set var="backgroundColor1" value="${color.color}"/>
+                                                                <c:set var="exitLoop1" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">
+                                                                <c:set var="backgroundColor2" value="${color.color}"/>
+                                                                <c:set var="exitLoop2" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">
+                                                                <c:set var="backgroundColor3" value="${color.color}"/>
+                                                                <c:set var="exitLoop3" value="true"/>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
 
                                                 <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
                                                     data-day="${day.day}"
@@ -1151,6 +1208,174 @@
                                                 <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
                                                     data-day="${day.day}"
                                                     data-name="timeLine">${data.actual[1]}</td>
+                                            </c:forEach>
+                                        </tr>
+                                        <tr name="timeLine-actual" data-value="${time}">
+                                            <c:forEach var="day" items="${weekly.days}">
+                                                <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
+                                                <c:set var="backgroundColor0" value=""/>
+                                                <c:set var="backgroundColor1" value=""/>
+                                                <c:set var="backgroundColor2" value=""/>
+                                                <c:set var="backgroundColor3" value=""/>
+                                                <c:set var="exitLoop0" value="false"/>
+                                                <c:set var="exitLoop1" value="false"/>
+                                                <c:set var="exitLoop2" value="false"/>
+                                                <c:set var="exitLoop3" value="false"/>
+                                                <c:forEach var="color" items="${weekly.colors}">
+                                                    <c:forEach var="value" items="${color.values}">
+                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                                <c:set var="backgroundColor0" value="${color.color}"/>
+                                                                <c:set var="exitLoop0" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">
+                                                                <c:set var="backgroundColor1" value="${color.color}"/>
+                                                                <c:set var="exitLoop1" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">
+                                                                <c:set var="backgroundColor2" value="${color.color}"/>
+                                                                <c:set var="exitLoop2" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">
+                                                                <c:set var="backgroundColor3" value="${color.color}"/>
+                                                                <c:set var="exitLoop3" value="true"/>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
+
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[2]}</td>
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[3]}</td>
+                                            </c:forEach>
+                                        </tr>
+                                        <tr name="timeLine-actual" data-value="${time}">
+                                            <c:forEach var="day" items="${weekly.days}">
+                                                <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
+                                                <c:set var="backgroundColor0" value=""/>
+                                                <c:set var="backgroundColor1" value=""/>
+                                                <c:set var="backgroundColor2" value=""/>
+                                                <c:set var="backgroundColor3" value=""/>
+                                                <c:set var="exitLoop0" value="false"/>
+                                                <c:set var="exitLoop1" value="false"/>
+                                                <c:set var="exitLoop2" value="false"/>
+                                                <c:set var="exitLoop3" value="false"/>
+                                                <c:forEach var="color" items="${weekly.colors}">
+                                                    <c:forEach var="value" items="${color.values}">
+                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                                <c:set var="backgroundColor0" value="${color.color}"/>
+                                                                <c:set var="exitLoop0" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">
+                                                                <c:set var="backgroundColor1" value="${color.color}"/>
+                                                                <c:set var="exitLoop1" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">
+                                                                <c:set var="backgroundColor2" value="${color.color}"/>
+                                                                <c:set var="exitLoop2" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">
+                                                                <c:set var="backgroundColor3" value="${color.color}"/>
+                                                                <c:set var="exitLoop3" value="true"/>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
+
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[4]}</td>
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[5]}</td>
+                                            </c:forEach>
+                                        </tr>
+                                        <tr name="timeLine-actual" data-value="${time}">
+                                            <c:forEach var="day" items="${weekly.days}">
+                                                <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
+                                                <c:set var="backgroundColor0" value=""/>
+                                                <c:set var="backgroundColor1" value=""/>
+                                                <c:set var="backgroundColor2" value=""/>
+                                                <c:set var="backgroundColor3" value=""/>
+                                                <c:set var="exitLoop0" value="false"/>
+                                                <c:set var="exitLoop1" value="false"/>
+                                                <c:set var="exitLoop2" value="false"/>
+                                                <c:set var="exitLoop3" value="false"/>
+                                                <c:forEach var="color" items="${weekly.colors}">
+                                                    <c:forEach var="value" items="${color.values}">
+                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                                <c:set var="backgroundColor0" value="${color.color}"/>
+                                                                <c:set var="exitLoop0" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">
+                                                                <c:set var="backgroundColor1" value="${color.color}"/>
+                                                                <c:set var="exitLoop1" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">
+                                                                <c:set var="backgroundColor2" value="${color.color}"/>
+                                                                <c:set var="exitLoop2" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">
+                                                                <c:set var="backgroundColor3" value="${color.color}"/>
+                                                                <c:set var="exitLoop3" value="true"/>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
+
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[6]}</td>
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[7]}</td>
+                                            </c:forEach>
+                                        </tr>
+                                        <tr name="timeLine-actual" data-value="${time}">
+                                            <c:forEach var="day" items="${weekly.days}">
+                                                <c:set var="data" value="${day.data.toDoDetail[loop.index]}"/>
+                                                <c:set var="backgroundColor0" value=""/>
+                                                <c:set var="backgroundColor1" value=""/>
+                                                <c:set var="backgroundColor2" value=""/>
+                                                <c:set var="backgroundColor3" value=""/>
+                                                <c:set var="exitLoop0" value="false"/>
+                                                <c:set var="exitLoop1" value="false"/>
+                                                <c:set var="exitLoop2" value="false"/>
+                                                <c:set var="exitLoop3" value="false"/>
+                                                <c:forEach var="color" items="${weekly.colors}">
+                                                    <c:forEach var="value" items="${color.values}">
+                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
+                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                                <c:set var="backgroundColor0" value="${color.color}"/>
+                                                                <c:set var="exitLoop0" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">
+                                                                <c:set var="backgroundColor1" value="${color.color}"/>
+                                                                <c:set var="exitLoop1" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">
+                                                                <c:set var="backgroundColor2" value="${color.color}"/>
+                                                                <c:set var="exitLoop2" value="true"/>
+                                                            </c:if>
+                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">
+                                                                <c:set var="backgroundColor3" value="${color.color}"/>
+                                                                <c:set var="exitLoop3" value="true"/>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
+
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor2}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[8]}</td>
+                                                <td class="actual-timeLine" style="background-color: ${backgroundColor3}" contenteditable="true"
+                                                    data-day="${day.day}"
+                                                    data-name="timeLine">${data.actual[9]}</td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
@@ -3673,7 +3898,6 @@
                 }
             })
             $('input[type="checkbox"].dailyRoutine').each(function () {
-                console.log(1)
                 const day = $(this).data('day');
                 const isChecked = $(this).prop('checked');
 
@@ -3735,6 +3959,7 @@
             })
 
             $('tr[name="timeLine"]').each(function (indexTr) {
+                var countPlan = 0;
                 $(this).find('td[data-name="timeLine"]').each(function (index) {
                     const day = $(this).data('day');
                     let dayObj = days.find(d => d.day === day);
@@ -3777,12 +4002,24 @@
                             else if (indexTr == 2) obj.timeRange = 'TWELVE_TO_SIXTEEN';
                             else if (indexTr == 3) obj.timeRange = 'SIXTEEN_TO_MIDNIGHT';
                             dayObj.data.toDoDetail.push(obj);
-                        } else if ((index + 1) % 3 === 2) {
+                        } else if ((index + 1) % 3 === 2 || (index + 1) % 3 === 0) {
                             const contentPlan = $(this).text();
-                            dayObj.data.toDoDetail[indexTr].actual.push(contentPlan)
-                        } else if ((index + 1) % 3 === 0) {
-                            const contentPlan = $(this).text();
-                            dayObj.data.toDoDetail[indexTr].actual.push(contentPlan)
+                            dayObj.data.toDoDetail[indexTr].actual.push(contentPlan);
+                        }
+                        if ((index + 1) % 3 === 1) {
+                            let nextTr = $(this).closest('tr').next();
+                            let count = 0;
+                            while (nextTr.length && count < 5) {
+                                if (nextTr.attr('name') === 'timeLine-actual') {
+                                    nextTr.find('td').slice(countPlan, countPlan + 2).each(function() {
+                                        const text = $(this).text();
+                                        dayObj.data.toDoDetail[indexTr].actual.push(text);
+                                    });
+                                    count++;
+                                }
+                                nextTr = nextTr.next();
+                            }
+                            countPlan+=2;
                         }
                     }
                 });
@@ -4031,6 +4268,19 @@
             if (count < 3) {
                 $('.addPlan').removeClass('d-none');
             }
+        });
+    });
+
+    $(document).ready(function(){
+        $('tr[name="timeLine"]').each(function (indexTr) {
+            $(this).find('td[data-name="timeLine"]').each(function (index) {
+                if ((index + 1) % 3 === 1) {
+                    const inputs = $(this).find('input.content-plan');
+                    if (inputs.length === 5) {
+                        $(this).find('button.addPlan').addClass('d-none');
+                    }
+                }
+            });
         });
     });
 
