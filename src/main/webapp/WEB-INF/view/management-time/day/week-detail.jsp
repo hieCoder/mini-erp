@@ -1114,7 +1114,7 @@
                                                     </c:forEach>
                                                 </c:forEach>
 
-                                                <td rowspan="6" style="background-color: ${backgroundColor0}; height: 250px" contenteditable="true" class="setting plan" data-day="${day.day}" data-name="timeLine">
+                                                <td rowspan="6" style="background-color: ${backgroundColor0}; height: 250px" class="setting plan" data-day="${day.day}" data-name="timeLine">
                                                     <c:choose>
                                                         <c:when test="${empty data.plans}">
                                                             <div class="input-group mt-2" style="padding-right: 24px">
@@ -1134,7 +1134,7 @@
                                                         <c:otherwise>
                                                             <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
                                                                 <c:choose>
-                                                                    <c:when test="${loop1.index > 2}">
+                                                                    <c:when test="${loop1.index >= 2}">
                                                                         <div class="d-flex align-items-center">
                                                                             <div class="input-group mt-2">
                                                                                 <input type="text" value="${plan.content}" class="form-control content-plan" aria-label="Text input with checkbox">
@@ -3992,10 +3992,12 @@
                             contentInputs.each(function (indexContent) {
                                 const contentPlan = $(this).val();
                                 const performancePlan = performanceInputs.eq(indexContent).prop('checked');
-                                obj.plans.push({
-                                    content: contentPlan,
-                                    performance: performancePlan
-                                });
+                                if (contentPlan != '') {
+                                    obj.plans.push({
+                                        content: contentPlan,
+                                        performance: performancePlan
+                                    });
+                                }
                             });
                             if (indexTr == 0) obj.timeRange = 'MIDNIGHT_TO_SIX';
                             else if (indexTr == 1) obj.timeRange = 'SIX_TO_TWELVE';
@@ -4079,7 +4081,6 @@
                     i--;
                 }
             }
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
@@ -4263,11 +4264,12 @@
         });
 
         $(document).on('click', '.remove-plan', function () {
-            $(this).parent().remove();
-            var count = $('.addPlan').parent().find('.remove-plan').length;
-            if (count < 3) {
-                $('.addPlan').removeClass('d-none');
+            var closestAddPlanButton = $(this).closest('.d-flex').siblings('.addPlan');
+            var count = closestAddPlanButton.parent().find('.remove-plan').length;
+            if (count <= 3) {
+                closestAddPlanButton.removeClass('d-none');
             }
+            $(this).parent().remove();
         });
     });
 
