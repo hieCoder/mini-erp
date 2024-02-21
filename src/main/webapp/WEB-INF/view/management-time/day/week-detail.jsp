@@ -21,24 +21,136 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
+
+        .arrow-common {
+            position: absolute;
+            height: 1px;
+            background-color: #000;
+        }
+
+        .arrow1-top {
+            transform: rotate(-155deg) !important;
+            top: 25px;
+            left: -152%;
+            width: 240px;
+        }
+
+        .arrow2-top {
+            transform: rotate(-135deg) !important;
+            top: -65px;
+            left: -98%;
+            width: 215px;
+        }
+
+        .arrow3-top {
+            transform: rotate(-90deg) !important;
+            top: -91px;
+            left: -10%;
+            width: 180px;
+        }
+
+        .arrow4-top {
+            transform: rotate(-45deg) !important;
+            top: -65px;
+            left: 55%;
+            width: 215px;
+        }
+
+        .arrow5-top {
+            transform: rotate(-25deg) !important;
+            top: 25px;
+            left: 92%;
+            width: 240px;
+        }
+
+        .arrow1-top::after,
+        .arrow2-top::after,
+        .arrow3-top::after,
+        .arrow4-top::after,
+        .arrow5-top::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -20px; /* Độ dài của mũi tên */
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent; /* Kích thước của mũi tên */
+            border-bottom: 10px solid transparent; /* Kích thước của mũi tên */
+            border-left: 20px solid #000; /* Kích thước và màu sắc của mũi tên */
+            transform: translateY(-50%);
+        }
+
+        #mindmap {
+            margin-top: 50vh;
+            margin-bottom: 50vh;
+        }
+
+        #node-year {
+            width: 200px; /* Điều chỉnh chiều rộng của node default */
+            height: 200px; /* Điều chỉnh chiều cao của node default */
+            line-height: 150px; /* Đảm bảo văn bản nằm giữa node */
+        }
+
         .node {
             position: relative;
             display: inline-block;
-            border: 2px solid #007bff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
-            text-align: center;
-            cursor: pointer;
-            margin: 20px;
         }
-        .add-node {
+
+        .node .content {
+            width: 150px; /* Điều chỉnh kích thước của node ở đây */
+            height: 150px; /* Điều chỉnh kích thước của node ở đây */
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .add-node, .remove-node {
+            position: absolute;
+            bottom: -15px; /* Điều chỉnh vị trí dấu "+" so với node */
+            left: 50%; /* Điều chỉnh vị trí dấu "+" so với node */
+            transform: translateX(-50%);
+            width: 30px; /* Điều chỉnh kích thước của dấu "+" */
+            height: 30px; /* Điều chỉnh kích thước của dấu "+" */
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            text-align: center;
+            line-height: 26px; /* Điều chỉnh vị trí dấu "+" so với node */
+            cursor: pointer;
+        }
+
+        .add-node:hover, .remove-node:hover {
+            background-color: #f0f0f0; /* Màu nền khi hover vào dấu "+" */
+        }
+
+        .node.node-left {
             position: absolute;
             top: 50%;
+            left: -150px; /* Điều chỉnh vị trí node 1 so với node default */
+            transform: translateY(-50%);
+        }
+
+        .node.node-top {
+            position: absolute;
+            top: -150px; /* Điều chỉnh vị trí node 2 so với node default */
             left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
+            transform: translateX(-50%);
+        }
+
+        .node.node-right {
+            position: absolute;
+            top: 50%;
+            left: 200px; /* Điều chỉnh vị trí node 3 so với node default */
+            transform: translateY(-50%);
+        }
+
+        .node.node-bottom {
+            position: absolute;
+            top: 200px; /* Điều chỉnh vị trí node 2 so với node default */
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .unset-table {
@@ -138,18 +250,6 @@
         .categoryColor td {
             max-width: 20px;
             text-wrap: normal;
-        }
-
-        .note {
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            width: 160px;
-            cursor: pointer;
-            padding: 5px;
-            left: 60%;
-            top: 15px;
-            z-index: 1;
         }
 
         .note:hover {
@@ -253,10 +353,30 @@
                 <div class="card p-0">
                     <div class="row card-body">
                         <div class="container">
-                            <div id="mindmap">
-                                <div class="node" id="root">
-                                    Root
+                            <div id="mindmap" class="text-center">
+                                <div class="node default">
+                                    <div class="content" id="node-year" contenteditable="true">Node Default</div>
                                     <div class="add-node">+</div>
+                                    <div class="additional-nodes">
+                                        <div class="node node-left">
+                                            <div class="content" contenteditable="true">Node 1</div>
+                                        </div>
+                                        <div class="node node-top">
+                                            <div class="content" contenteditable="true">Node 2</div>
+                                            <div class="arrow-common arrow1-top"></div>
+                                            <div class="arrow-common arrow2-top"></div>
+                                            <div class="arrow-common arrow3-top"></div>
+                                            <div class="arrow-common arrow4-top"></div>
+                                            <div class="arrow-common arrow5-top"></div>
+                                        </div>
+                                        <div class="node node-right">
+                                            <div class="content" contenteditable="true">Node 3</div>
+                                        </div>
+                                        <div class="node node-bottom d-none">
+                                            <div class="content" contenteditable="true">Node 4</div>
+                                            <div class="remove-node text-danger">-</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2462,24 +2582,22 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Function to add a new node
-        function addNode(parentId) {
-            var newNodeId = 'node-' + Math.random().toString(36).substr(2, 9);
-            var newNode = $('<div class="node" id="' + newNodeId + '">Node<div class="add-node">+</div></div>');
-            newNode.appendTo($('#' + parentId)).css({top: '50%', left: '50%', transform: 'translate(-50%, -50%)'});
-            newNode.click(function() {
-                addNode(newNodeId);
-            });
-        }
 
-        // Click event for adding new node
-        $('.add-node').click(function(e) {
-            e.stopPropagation();
-            var parentId = $(this).parent().attr('id');
-            addNode(parentId);
+    // Mind map
+    $(document).ready(function() {
+        $('.add-node').click(function() {
+            $(this).addClass('d-none');
+            $(this).parent('.node').find('.node-bottom').removeClass('d-none');
+        });
+
+        $('.remove-node').click(function() {
+            $('.add-node').removeClass('d-none');
+            $(this).parent('.node-bottom').addClass('d-none');
         });
     });
+
+    // End Mind map
+
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
         e.classList.add('unset-table');
     })
@@ -4349,3 +4467,4 @@
 </script>
 </body>
 </html>
+

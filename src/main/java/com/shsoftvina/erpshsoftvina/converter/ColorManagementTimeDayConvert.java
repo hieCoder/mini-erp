@@ -1,30 +1,14 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.ManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.DataOfDayDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.ItemDto;
-import com.shsoftvina.erpshsoftvina.model.dto.management_time.ToDoListDto;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.calendar.CalendarDayRequest;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.ColorRequest;
-import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.DayRequest;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.calendar.CalendarDayResponse;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.ColorResponse;
-import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.DayResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
