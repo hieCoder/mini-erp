@@ -22,90 +22,6 @@
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
 
-        .arrow-common {
-            position: absolute;
-            height: 1px;
-            background-color: #000;
-        }
-
-        .arrow1-top {
-            transform: rotate(-155deg) !important;
-            top: 25px;
-            left: -152%;
-            width: 240px;
-        }
-
-        .arrow2-top {
-            transform: rotate(-135deg) !important;
-            top: -65px;
-            left: -98%;
-            width: 215px;
-        }
-
-        .arrow3-top {
-            transform: rotate(-90deg) !important;
-            top: -91px;
-            left: -10%;
-            width: 180px;
-        }
-
-        .arrow4-top {
-            transform: rotate(-45deg) !important;
-            top: -65px;
-            left: 55%;
-            width: 215px;
-        }
-
-        .arrow5-top {
-            transform: rotate(-25deg) !important;
-            top: 25px;
-            left: 92%;
-            width: 240px;
-        }
-
-        .arrow1-top::after,
-        .arrow2-top::after,
-        .arrow3-top::after,
-        .arrow4-top::after,
-        .arrow5-top::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: -20px; /* Độ dài của mũi tên */
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent; /* Kích thước của mũi tên */
-            border-bottom: 10px solid transparent; /* Kích thước của mũi tên */
-            border-left: 20px solid #000; /* Kích thước và màu sắc của mũi tên */
-            transform: translateY(-50%);
-        }
-
-        #mindmap {
-            margin-top: 50vh;
-            margin-bottom: 50vh;
-        }
-
-        #node-year {
-            width: 200px; /* Điều chỉnh chiều rộng của node default */
-            height: 200px; /* Điều chỉnh chiều cao của node default */
-            line-height: 150px; /* Đảm bảo văn bản nằm giữa node */
-        }
-
-        .node {
-            position: relative;
-            display: inline-block;
-        }
-
-        .node .content {
-            width: 150px; /* Điều chỉnh kích thước của node ở đây */
-            height: 150px; /* Điều chỉnh kích thước của node ở đây */
-            border: 2px solid #000;
-            border-radius: 50%;
-            background-color: #fff;
-            text-align: center;
-            line-height: 100px;
-        }
-
         .add-node, .remove-node {
             position: absolute;
             bottom: -15px; /* Điều chỉnh vị trí dấu "+" so với node */
@@ -119,38 +35,212 @@
             text-align: center;
             line-height: 26px; /* Điều chỉnh vị trí dấu "+" so với node */
             cursor: pointer;
+            z-index: 9999;
         }
 
         .add-node:hover, .remove-node:hover {
             background-color: #f0f0f0; /* Màu nền khi hover vào dấu "+" */
         }
 
-        .node.node-left {
+        .containerMindMap {
+            text-align: center;
+            line-height: 48px;
             position: absolute;
-            top: 50%;
-            left: -150px; /* Điều chỉnh vị trí node 1 so với node default */
-            transform: translateY(-50%);
-        }
-
-        .node.node-top {
-            position: absolute;
-            top: -150px; /* Điều chỉnh vị trí node 2 so với node default */
+            z-index: 3;
             left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .node.node-right {
-            position: absolute;
             top: 50%;
-            left: 200px; /* Điều chỉnh vị trí node 3 so với node default */
-            transform: translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
         }
 
-        .node.node-bottom {
+        #main, #elem0, #elem1, #elem2, #elem3 {
+            width: 150px;
+            height: 150px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .nodeChill {
+            width: 100px !important;
+            height: 100px;
+            border: 2px solid #000;
+            border-radius: 50% !important;
+            background-color: #fff !important;
+            text-align: center !important;
+            position: relative;
+        }
+
+        .nodeChill ul {
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
             position: absolute;
-            top: 200px; /* Điều chỉnh vị trí node 2 so với node default */
-            left: 50%;
-            transform: translateX(-50%);
+        }
+
+        #elem0child0 {
+            margin-left: -100px;
+            top: -275px !important;
+        }
+
+        #elem0child1 {
+            margin-left: -25px;
+            top: -340px !important;
+        }
+
+        #elem0child2 {
+            margin-left: 60px;
+            top: -340px !important;
+        }
+
+        #elem0child3 {
+            margin-left: 150px;
+            top: -280px !important;
+        }
+
+
+        #elem1child0 {
+            margin-left: 130px;
+            top: -170px !important;
+        }
+
+        #elem1child1 {
+            margin-left: 140px;
+            top: -60px !important;
+        }
+
+        #elem1child2 {
+            margin-left: 140px;
+            top: 60px !important;
+        }
+
+        #elem1child3 {
+            margin-left: 135px;
+            top: 175px !important;
+        }
+
+        #elem2child0 {
+            margin-left: -320px;
+            top: 310px !important;
+        }
+
+        #elem2child1 {
+            margin-left: -110px;
+            top: 390px !important;
+        }
+
+        #elem2child2 {
+            margin-left: 135px;
+            top: 390px !important;
+        }
+
+        #elem2child3 {
+            margin-left: 345px;
+            top: 310px !important;
+        }
+
+        #elem3child0 {
+            margin-left: -100px;
+            top: -170px !important;
+        }
+
+        #elem3child1 {
+            margin-left: -110px;
+            top: -65px !important;
+        }
+
+        #elem3child2 {
+            margin-left: -115px;
+            top: 55px !important;
+        }
+
+        #elem3child3 {
+            margin-left: -120px;
+            top: 175px !important;
+        }
+
+        .elem {
+            display: block;
+            text-align: center;
+            line-height: 30px;
+            font-size: 21px;
+            position: absolute;
+            border-radius: 4px;
+            z-index: 3;
+            padding: 10px 15px;
+            transition: background-color 0.2s;
+        }
+
+        .level1 {
+            background-color: #b0d7ff;
+            color: #2d3142;
+            transition: all 0.5s;
+            padding: 10px 18px;
+            transition: background-color 0.2s, border-radius 0.2s;
+            /*color: white;
+            background: rgba(0,0,0,0);*/
+        }
+
+        .level1:hover {
+            transition: background-color 0.2s, border-radius 0.2s;
+            background-color: #7b96b2;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .line {
+            transform-origin: 0 0;
+            position: absolute;
+            border: #adacb5 1px solid;
+            height: 0px;
+            transition: all 0.5s;
+            z-index: 1;
+        }
+
+        .hiddenLevel1 {
+            z-index: 1;
+            top: 50% !important;
+            left: 50% !important;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-50%) rotate(180deg);
+            transition: all 0.5s;
+        }
+
+        .hiddenLevel1:hover {
+            cursor: auto;
+        }
+
+        .hiddenLine {
+            /* !important because width was originally set by js */
+            width: 0 !important;
+            border: 0 rgba(0, 0, 0, 0) solid;
+            transition: all 0.4s;
+        }
+
+        .level2 {
+            z-index: 1;
+            white-space: nowrap;
+            color: #2d3142;
+            padding: 4px 8px;
+            background-color: #dfefff;
+            transition: all 0.5s;
+        }
+
+        .level2:hover {
+            background-color: #80bfff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hiddenLevel2 {
+            opacity: 0;
+            transform: rotate(180deg);
+        }
+
+        .hiddenLevel2:hover {
+            cursor: default;
         }
 
         .unset-table {
@@ -350,33 +440,153 @@
     <div class="tab-content">
         <div class="tab-pane" id="year-goals" role="tabpanel" style="min-height: 700px">
             <div class="row calendar-container d-none">
-                <div class="card p-0">
+                <div class="card p-0" style="height: 1040px">
                     <div class="row card-body">
-                        <div class="container">
-                            <div id="mindmap" class="text-center">
-                                <div class="node default">
-                                    <div class="content" id="node-year" contenteditable="true">Node Default</div>
-                                    <div class="add-node">+</div>
-                                    <div class="additional-nodes">
-                                        <div class="node node-left">
-                                            <div class="content" contenteditable="true">Node 1</div>
-                                        </div>
-                                        <div class="node node-top">
-                                            <div class="content" contenteditable="true">Node 2</div>
-                                            <div class="arrow-common arrow1-top"></div>
-                                            <div class="arrow-common arrow2-top"></div>
-                                            <div class="arrow-common arrow3-top"></div>
-                                            <div class="arrow-common arrow4-top"></div>
-                                            <div class="arrow-common arrow5-top"></div>
-                                        </div>
-                                        <div class="node node-right">
-                                            <div class="content" contenteditable="true">Node 3</div>
-                                        </div>
-                                        <div class="node node-bottom d-none">
-                                            <div class="content" contenteditable="true">Node 4</div>
-                                            <div class="remove-node text-danger">-</div>
-                                        </div>
-                                    </div>
+                        <div class="container vh-100">
+                            <div class="containerMindMap">
+                                <div id="main" class="elem text-danger" contenteditable="true" style="overflow: auto; max-height: 200px;">
+                                    ${weekly.year.year}
+                                </div>
+                                <div class="add-node">+</div>
+                                <div id="elem0" class="level1 elem" contenteditable="true">
+                                    0
+                                </div>
+                                <div id="elem1" class="level1 elem" contenteditable="true">
+                                    1
+                                </div>
+                                <div id="elem2" class="level1 elem d-none" contenteditable="true">
+                                    2
+                                </div>
+                                <div id="elem3" class="level1 elem" contenteditable="true">
+                                    3
+                                </div>
+                                <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="right: 110px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem0child1" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="top: -75px; right: 100px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem0child2" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="top: -75px; left: 115px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem0child3" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="left: 125px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem1child0" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="left: 125px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem1child1" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="left: 125px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem1child2" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="left: 125px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem1child3" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="left: 125px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child0" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="right: 115px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child1" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="top: 100px; right: -5px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child2" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="top: 100px; left: 20px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child3" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="left: 130px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem3child0" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="right: 110px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem3child1" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="right: 110px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem3child2" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="right: 110px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
+                                </div>
+                                <div id="elem3child3" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
+                                    <span contenteditable="true">TEXT</span>
+                                    <ul style="right: 110px">
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                        <li contenteditable="true">Click To Edit</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -2584,20 +2794,180 @@
 <script>
 
     // Mind map
-    $(document).ready(function() {
-        $('.add-node').click(function() {
-            $(this).addClass('d-none');
-            $(this).parent('.node').find('.node-bottom').removeClass('d-none');
+    // Handle User click TAB 2024 Golas
+    $('#session-goals').one('click', function() {
+        RADIUS_L1 = 150;
+        RADIUS_L2 = 130;
+
+        initialize();
+
+        function initialize() {
+            $(".containerMindMap").css("width", $("#main").outerWidth() + "px");
+            $(".containerMindMap").css("height", $("#main").outerHeight() + "px");
+
+            for (var i = 0; i < $(".level1").length; i++)
+            {
+                $("#elem" + i).click(function(e) {
+                    if ( hasLevel2Children($(this).attr('id').match(/\d+/)[0]) === true ) {
+                        for (var i = 0; i < $(".level1").length; i++) {
+                            // if (!$("#elem" + i + "child0").hasClass("hiddenLevel2")) {
+                                if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
+                                if ("elem" + i !== $(this).attr('id'))
+                                    toggle("elem" + i);
+                            }
+                        }
+                        toggle($(this).attr('id'));
+                    } else {
+                        alert($(this).html());
+                    }
+                });
+                centerx = $("#main").outerWidth() / 2;
+                centery = $("#main").outerHeight() / 2;
+                $("#elem" + i).css("left", centerx - RADIUS_L1 * Math.cos((i / $(".level1").length) * 2 * Math.PI + Math.PI / 2) - $("#elem" + i).outerWidth() / 2 + "px");
+                $("#elem" + i).css("top", centery - RADIUS_L1 * Math.sin((i / $(".level1").length) * 2 * Math.PI + Math.PI / 2) - $("#elem" + i).outerHeight() / 2 + "px");
+
+                angle = createLineFromTo("#main", "#elem" + i, "#line" + i);
+                if ( hasLevel2Children(i))
+                {
+                    redrawLevel2(i, angle, true);
+                    toggle("elem" + i);
+                }
+            }
+        }
+
+        function createLineFromTo(fromElem, toElem, lineId) {
+            fromTop = $(fromElem).offset().top + $(fromElem).outerHeight() / 2;
+            fromLeft = $(fromElem).offset().left + $(fromElem).outerWidth() / 2;
+            toTop = $(toElem).offset().top + $(toElem).outerHeight() / 2;
+            toLeft = $(toElem).offset().left + $(toElem).outerWidth() / 2;
+            theta = Math.PI - Math.atan2(toTop - fromTop, fromLeft - toLeft);
+
+            if (!$(lineId).length) {
+                $(fromElem).after("<div class='line lineFrom_" + $(fromElem).attr('id') + "' id='" + lineId.substring(1) + "'></div>");
+            }
+            $(lineId).css("width", Math.sqrt(Math.pow((fromTop + 40 - toTop), 2) + Math.pow((fromLeft - toLeft), 2)) + "px");
+
+            $(lineId).css("left", (fromLeft - $("#main").offset().left) + "px");
+            $(lineId).css("top", (fromTop - $("#main").offset().top) + "px");
+            $(lineId).css("transform", "rotate(" + theta + "rad)");
+
+            return theta;
+        }
+
+        function toggle(to) {
+            if (to === "#main") {
+                // toggle first level
+                $(".level1").toggleClass("hiddenLevel1");
+                $(".lineFrom_main").toggleClass("hiddenLine");
+            } else {
+                // toggle second level
+                $(".lineFrom_" + to).toggleClass("hiddenLine");
+
+                var i = $("#" + to).attr('id').match(/\d+/)[0];
+                if ($(".elem" + i + "child").hasClass("hiddenLevel2")) {
+                    // now expand layer 1 element
+
+                    $(".elem" + i + "child").removeClass("hiddenLevel2");
+
+                    fromTop = $("#main").offset().top + $("#main").outerHeight() / 2;
+                    fromLeft = $("#main").offset().left + $("#main").outerWidth() / 2;
+                    toTop = $("#elem" + i).offset().top + $("#elem" + i).outerHeight() / 2;
+                    toLeft = $("#elem" + i).offset().left + $("#elem" + i).outerWidth() / 2;
+                    angle = Math.PI - Math.atan2(toTop - fromTop, fromLeft - toLeft);
+                    redrawLevel2(i, angle, false);
+                } else {
+                    // now collapse layer 1 element
+                    for (var j = 0; j < $(".elem" + i + "child").length; j++) {
+                        xPos = parseFloat($("#elem" + i).css("left").slice(0, -2)) + $("#elem" + i).outerWidth() / 2;
+                        yPos = parseFloat($("#elem" + i).css("top").slice(0, -2)) + $("#elem" + i).outerHeight() / 2;
+                        xPos -= $("#elem" + i + "child" + j).outerWidth() / 2;
+                        yPos -= $("#elem" + i + "child" + j).outerHeight() / 2;
+
+                        $(".elem" + i + "child").css("left", xPos + "px");
+                        $(".elem" + i + "child").css("top", yPos + "px");
+                    }
+                    $(".elem" + i + "child").addClass("hiddenLevel2");
+                }
+            }
+        }
+
+        function hasLevel2Children(elemId) {
+            if ($(".level2").length === 0) return false;
+            for (var i = 0; i < $(".level2").length; i++) {
+                if ($(".level2").eq(i).hasClass("elem" + elemId + "child"))
+                    return true;
+            }
+            return false;
+        }
+
+        function redrawLevel2(i, angle, preparation) {
+            var j = 0;
+            angle = deg(angle);
+            do {
+                //put sub entry on same position as its parent
+                xPos = parseFloat($("#elem" + i).css("left").slice(0, -2)) + $("#elem" + i).outerWidth() / 2;
+                yPos = parseFloat($("#elem" + i).css("top").slice(0, -2)) + $("#elem" + i).outerHeight() / 2;
+                amount = $(".elem" + i + "child").length;
+                distance = 46 - amount * 3;
+                xPos += Math.cos(rad(angle) + rad((amount - 1) * -distance / 2 + j * distance)) * RADIUS_L2;
+                yPos += Math.sin(rad(angle) + rad((amount - 1) * -distance / 2 + j * distance)) * RADIUS_L2;
+
+                //set the right position
+                xPos -= $("#elem" + i + "child" + j).outerWidth() / 2;
+                yPos -= $("#elem" + i + "child" + j).outerHeight() / 2;
+                $("#elem" + i + "child" + j).css("left", xPos + "px");
+                $("#elem" + i + "child" + j).css("top", yPos + "px");
+
+                if (preparation) {
+                    createLineFromTo("#elem" + i, "#elem" + i + "child" + j, "#line" + i + "child" + j);
+                }
+
+                j++;
+            } while ($("#elem" + i + "child" + j).length !== 0);
+        }
+
+        function rad(degrees) {
+            return degrees * Math.PI / 180;
+        };
+
+        function deg(radians) {
+            return radians * 180 / Math.PI;
+        };
+
+        $('#line2').addClass('d-none');
+        // $('.lineFrom_elem2').addClass('d-none');
+        // $('.elem2child').addClass('d-none');
+
+        // Function to draw lines for a given level 1 element
+        function drawLinesForLevel1Element(level1ElemId) {
+            for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
+                createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
+            }
+        }
+
+        $(document).on('click', '.add-node', function() {
+            $('#elem2').removeClass('d-none');
+            $(this).css('background', 'red');
+            $(this).text('-');
+            $(this).addClass('remove-node');
+            $(this).removeClass('add-node');
+            $('.lineFrom_elem2').removeClass('d-none');
+            $('.elem2child').removeClass('d-none');
+            drawLinesForLevel1Element(2);
         });
 
-        $('.remove-node').click(function() {
-            $('.add-node').removeClass('d-none');
-            $(this).parent('.node-bottom').addClass('d-none');
+        $(document).on('click', '.remove-node', function () {
+            $('#elem2').addClass('d-none');
+            $(this).addClass('add-node');
+            $(this).css('background', '#ffff');
+            $(this).text('+');
+            $(this).removeClass('remove-node');
+            $('.lineFrom_elem2').addClass('d-none');
+            $('.elem2child').addClass('d-none');
         });
     });
 
     // End Mind map
-
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
         e.classList.add('unset-table');
     })
@@ -2974,7 +3344,6 @@
             dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
             dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
         });
-
     })
 
     // Handle Tab Year Report
@@ -4444,6 +4813,7 @@
         });
     });
 
+    // Hide button Add plan
     $(document).ready(function(){
         $('tr[name="timeLine"]').each(function (indexTr) {
             $(this).find('td[data-name="timeLine"]').each(function (index) {
