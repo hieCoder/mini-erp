@@ -59,7 +59,6 @@
             border-radius: 50%;
             background-color: #fff;
             text-align: center;
-            line-height: 100px;
         }
 
         .nodeChill {
@@ -72,6 +71,11 @@
             position: relative;
         }
 
+        .nodeChill span {
+            font-size: 15px;
+        }
+
+
         .nodeChill ul {
             margin: 0;
             padding: 0;
@@ -79,6 +83,10 @@
             position: absolute;
         }
 
+        .nodeChill ul li:nth-child(-n+2) {
+           margin-right: 14px;
+        }
+        
         #elem0child0 {
             margin-left: -100px;
             top: -275px !important;
@@ -178,8 +186,6 @@
             transition: all 0.5s;
             padding: 10px 18px;
             transition: background-color 0.2s, border-radius 0.2s;
-            /*color: white;
-            background: rgba(0,0,0,0);*/
         }
 
         .level1:hover {
@@ -249,7 +255,7 @@
             min-width: unset !important;
         }
 
-        #addDaily{
+        #addDaily {
             position: absolute;
             top: 0;
             left: 56%;
@@ -361,6 +367,9 @@
         #readingCategory {
             background-color: #e9e4f5;
         }
+        .main-content-node {
+            max-height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -444,148 +453,148 @@
                     <div class="row card-body">
                         <div class="container vh-100">
                             <div class="containerMindMap">
-                                <div id="main" class="elem text-danger" contenteditable="true" style="overflow: auto; max-height: 200px;">
+                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
                                     ${weekly.year.year}
                                 </div>
-                                <div class="add-node">+</div>
-                                <div id="elem0" class="level1 elem" contenteditable="true">
+                                <div class="remove-node" style="background-color: red">-</div>
+                                <div id="elem0" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
                                     0
                                 </div>
-                                <div id="elem1" class="level1 elem" contenteditable="true">
+                                <div id="elem1" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
                                     1
                                 </div>
-                                <div id="elem2" class="level1 elem d-none" contenteditable="true">
+                                <div id="elem2" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
                                     2
                                 </div>
-                                <div id="elem3" class="level1 elem" contenteditable="true">
+                                <div id="elem3" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
                                     3
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node text-wrap overflow-auto">TEXT</span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem0child1" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="top: -75px; right: 100px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem0child2" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="top: -75px; left: 115px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem0child3" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem1child0" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem1child1" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem1child2" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem1child3" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
-                                <div id="elem2child0" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                <div id="elem2child0" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="right: 115px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
-                                <div id="elem2child1" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                <div id="elem2child1" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="top: 100px; right: -5px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
-                                <div id="elem2child2" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                <div id="elem2child2" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="top: 100px; left: 20px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
-                                <div id="elem2child3" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                <div id="elem2child3" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="left: 130px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem3child0" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem3child1" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem3child2" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                                 <div id="elem3child3" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                    <span contenteditable="true" class="main-content-node overflow-auto">TEXT</span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">Click To Edit</li>
+                                        <li style="list-style: none; float: left"> <span class="add-edit fs-4"> + </span> <span class="child-content-node d-none" contenteditable="true">Click To Edit</span> <span class="remove-edit fs-4 d-none text-danger"> - </span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -2800,6 +2809,7 @@
         RADIUS_L2 = 130;
 
         initialize();
+        document.getElementById('elem3').click();
 
         function initialize() {
             $(".containerMindMap").css("width", $("#main").outerWidth() + "px");
@@ -2810,7 +2820,6 @@
                 $("#elem" + i).click(function(e) {
                     if ( hasLevel2Children($(this).attr('id').match(/\d+/)[0]) === true ) {
                         for (var i = 0; i < $(".level1").length; i++) {
-                            // if (!$("#elem" + i + "child0").hasClass("hiddenLevel2")) {
                                 if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
                                 if ("elem" + i !== $(this).attr('id'))
                                     toggle("elem" + i);
@@ -2935,36 +2944,81 @@
         };
 
         $('#line2').addClass('d-none');
-        // $('.lineFrom_elem2').addClass('d-none');
-        // $('.elem2child').addClass('d-none');
 
         // Function to draw lines for a given level 1 element
-        function drawLinesForLevel1Element(level1ElemId) {
-            for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
-                createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
-            }
-        }
+        // function drawLinesForLevel1Element(level1ElemId) {
+        //     for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
+        //         createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
+        //     }
+        // }
 
+        // Add Main node
         $(document).on('click', '.add-node', function() {
-            $('#elem2').removeClass('d-none');
-            $(this).css('background', 'red');
+            $(this).css('background-color', 'red');
             $(this).text('-');
             $(this).addClass('remove-node');
             $(this).removeClass('add-node');
+            $('#elem2').removeClass('d-none');
             $('.lineFrom_elem2').removeClass('d-none');
             $('.elem2child').removeClass('d-none');
-            drawLinesForLevel1Element(2);
         });
 
+        // Remove Main node
         $(document).on('click', '.remove-node', function () {
             $('#elem2').addClass('d-none');
             $(this).addClass('add-node');
-            $(this).css('background', '#ffff');
+            $(this).css('background-color', '#ffff');
             $(this).text('+');
             $(this).removeClass('remove-node');
             $('.lineFrom_elem2').addClass('d-none');
             $('.elem2child').addClass('d-none');
         });
+
+        // Remove content "TEXT" When user focus
+        document.querySelectorAll('.main-content-node').forEach(function (e) {
+            e.addEventListener('click', function () {
+                if (e.textContent.trim() == 'TEXT') e.textContent = '';
+            })
+
+            e.addEventListener('blur', function () {
+                if (e.textContent == '') e.textContent = 'TEXT';
+            })
+        })
+
+        // Remove content "Click To Edit" When user focus
+        document.querySelectorAll('.child-content-node').forEach(function (e, index) {
+            e.addEventListener('click', function () {
+                if (e.textContent.trim() == 'Click To Edit') {
+                    e.textContent = '';
+                }
+            })
+
+            e.addEventListener('blur', function () {
+                if (e.textContent == '') e.textContent = 'Click To Edit';
+                e.textContent = e.textContent.trim();
+            })
+        })
+
+        // Add Click To Edit
+        document.querySelectorAll('.add-edit').forEach(function (elAdd) {
+            elAdd.addEventListener('click', function () {
+                elAdd.parentNode.style.listStyle = "disc";
+                elAdd.nextElementSibling.classList.remove('d-none');
+                elAdd.nextElementSibling.nextElementSibling.classList.remove('d-none');
+                elAdd.classList.add('d-none');
+            })
+        })
+
+        // Remove Click To Edit
+        document.querySelectorAll('.remove-edit').forEach(function (elRemove) {
+            elRemove.addEventListener('click', function () {
+                elRemove.parentNode.style.listStyle = "none";
+                elRemove.previousElementSibling.classList.add('d-none');
+                elRemove.previousElementSibling.previousElementSibling.classList.remove('d-none');
+                elRemove.classList.add('d-none');
+            })
+        })
+
     });
 
     // End Mind map
