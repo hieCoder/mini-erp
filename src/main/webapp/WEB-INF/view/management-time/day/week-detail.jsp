@@ -458,16 +458,16 @@
                                 </div>
                                 <div class="remove-node" style="background-color: red">-</div>
                                 <div id="elem0" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
-                                    0
+                                    ${weekly.year.target[0].target}
                                 </div>
                                 <div id="elem1" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
-                                    1
+                                    ${weekly.year.target[1].target}
                                 </div>
                                 <div id="elem2" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
-                                    2
+                                    ${weekly.year.target[2].target}
                                 </div>
                                 <div id="elem3" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5" contenteditable="true">
-                                    3
+                                    ${weekly.year.target[3].target}
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto">TEXT</span>
@@ -3018,7 +3018,6 @@
                 elRemove.classList.add('d-none');
             })
         })
-
     });
 
     // End Mind map
