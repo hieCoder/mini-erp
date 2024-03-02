@@ -55,21 +55,39 @@
         #main, #elem0, #elem1, #elem2, #elem3 {
             width: 150px;
             height: 150px;
-            border: 2px solid #000;
+            border: 2px solid white;
             border-radius: 50%;
             background-color: #fff;
             text-align: center;
-            line-height: 100px;
         }
 
         .nodeChill {
             width: 100px !important;
             height: 100px;
-            border: 2px solid #000;
             border-radius: 50% !important;
             background-color: #fff !important;
             text-align: center !important;
             position: relative;
+        }
+
+        .elem0child {
+            border: 2px solid #12c8fe;;
+        }
+
+        .elem1child {
+            border: 2px solid #9793e4;;
+        }
+
+        .elem2child {
+            border: 2px solid #2cdac8;;
+        }
+
+        .elem3child {
+            border: 2px solid #F2668A;;
+        }
+
+        .nodeChill span {
+            font-size: 15px;
         }
 
         .nodeChill ul {
@@ -79,6 +97,10 @@
             position: absolute;
         }
 
+        .nodeChill ul li:nth-child(-n+2) {
+           margin-right: 14px;
+        }
+        
         #elem0child0 {
             margin-left: -100px;
             top: -275px !important;
@@ -121,43 +143,43 @@
         }
 
         #elem2child0 {
-            margin-left: -320px;
-            top: 310px !important;
+            margin-left: 160px;
+            top: 290px !important;
         }
 
         #elem2child1 {
-            margin-left: -110px;
-            top: 390px !important;
+            margin-left: 70px;
+            top: 380px !important;
         }
 
         #elem2child2 {
-            margin-left: 135px;
-            top: 390px !important;
+            margin-left: -40px;
+            top: 380px !important;
         }
 
         #elem2child3 {
-            margin-left: 345px;
-            top: 310px !important;
+            margin-left: -120px;
+            top: 290px !important;
         }
 
         #elem3child0 {
-            margin-left: -100px;
-            top: -170px !important;
+            margin-left: -120px;
+            top: 175px !important;
         }
 
         #elem3child1 {
-            margin-left: -110px;
-            top: -65px !important;
-        }
-
-        #elem3child2 {
             margin-left: -115px;
             top: 55px !important;
         }
 
+        #elem3child2 {
+            margin-left: -110px;
+            top: -65px !important;
+        }
+
         #elem3child3 {
-            margin-left: -120px;
-            top: 175px !important;
+            margin-left: -100px;
+            top: -170px !important;
         }
 
         .elem {
@@ -178,8 +200,6 @@
             transition: all 0.5s;
             padding: 10px 18px;
             transition: background-color 0.2s, border-radius 0.2s;
-            /*color: white;
-            background: rgba(0,0,0,0);*/
         }
 
         .level1:hover {
@@ -249,7 +269,7 @@
             min-width: unset !important;
         }
 
-        #addDaily{
+        #addDaily {
             position: absolute;
             top: 0;
             left: 56%;
@@ -361,6 +381,9 @@
         #readingCategory {
             background-color: #e9e4f5;
         }
+        .main-content-node {
+            max-height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -403,13 +426,13 @@
                             <a class="dropdown-item nav-link"  id="session-goals" data-bs-toggle="tab" href="#year-goals" role="tab" aria-selected="false">
                                 2024 Goals
                             </a>
-                            <a class="dropdown-item nav-link management-time-year">
+                            <a id="year-calendar" class="dropdown-item nav-link">
                                 2024 Calendar
                             </a>
-                            <a class="dropdown-item nav-link management-time-month">
+                            <a id="month-calendar" class="dropdown-item nav-link management-time-month">
                                 Monthly
                             </a>
-                            <a class="dropdown-item nav-link management-time-week">
+                            <a class="dropdown-item nav-link" href="#" onclick="window.location.reload();">
                                 Weekly
                             </a>
                             <a class="dropdown-item nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">
@@ -440,155 +463,351 @@
     <div class="tab-content">
         <div class="tab-pane" id="year-goals" role="tabpanel" style="min-height: 700px">
             <div class="row calendar-container d-none">
-                <div class="card p-0" style="height: 1040px">
+                <div class="card p-0" style="height: 1130px">
                     <div class="row card-body">
                         <div class="container vh-100">
                             <div class="containerMindMap">
-                                <div id="main" class="elem text-danger" contenteditable="true" style="overflow: auto; max-height: 200px;">
-                                    ${weekly.year.year}
+                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #fae23b;"></div>
+                                <div class="remove-node" style="background:#ff4d4d;">-</div>
+                                <div id="elem0" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #12c8fe">
+                                    ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
                                 </div>
-                                <div class="add-node">+</div>
-                                <div id="elem0" class="level1 elem" contenteditable="true">
-                                    0
+                                <div id="elem1" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #9793e4;">
+                                    ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
                                 </div>
-                                <div id="elem1" class="level1 elem" contenteditable="true">
-                                    1
+                                <div id="elem2" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #2cdac8;">
+                                    ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
                                 </div>
-                                <div id="elem2" class="level1 elem d-none" contenteditable="true">
-                                    2
-                                </div>
-                                <div id="elem3" class="level1 elem" contenteditable="true">
-                                    3
+                                <div id="elem3" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background:#F2668A;">
+                                    ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[0].mainContent}
+                                     </span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem0child1" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
+                                     </span>
                                     <ul style="top: -75px; right: 100px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem0child2" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
+                                     </span>
                                     <ul style="top: -75px; left: 115px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem0child3" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
+                                     </span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem1child0" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
+                                     </span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem1child1" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
+                                     </span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem1child2" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
+                                     </span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem1child3" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
+                                     </span>
                                     <ul style="left: 125px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
-                                <div id="elem2child0" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
-                                    <ul style="right: 115px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                    </ul>
-                                </div>
-                                <div id="elem2child1" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
-                                    <ul style="top: 100px; right: -5px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                    </ul>
-                                </div>
-                                <div id="elem2child2" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
-                                    <ul style="top: 100px; left: 20px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                    </ul>
-                                </div>
-                                <div id="elem2child3" class="d-none elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                <div id="elem2child0" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
+                                     </span>
                                     <ul style="left: 130px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child1" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
+                                     </span>
+                                    <ul style="top: 110px; left: 0px">
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child2" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
+                                     </span>
+                                    <ul style="top: 110px; right: 0px">
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="elem2child3" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
+                                     </span>
+                                    <ul style="right: 100px">
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem3child0" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
+                                     </span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem3child1" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
+                                     </span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem3child2" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
+                                     </span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div id="elem3child3" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
-                                    <span contenteditable="true">TEXT</span>
+                                     <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
+                                        ${weekly.year == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
+                                    </span>
                                     <ul style="right: 110px">
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
-                                        <li contenteditable="true">Click To Edit</li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[0]}
+                                        </li>
+                                        <li class="child-content-node" contenteditable="true">
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[1]}
+                                        </li>
+                                        <li style="list-style: none; float: left">
+                                            <span class="add-edit fs-4"> + </span>
+                                            <span class="child-content-node d-none" contenteditable="true">
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[2]}
+                                            </span>
+                                            <span class="remove-edit fs-4 d-none text-danger"> - </span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-12 text-center align-middle" style="margin-top: 90px">
+                            <button class="btn btn-primary mr-2" onclick="history.back()">
+                                Back
+                            </button>
+                            <button class="btn btn-success ml-2 btn-save" data-value="save-mindmap">Save</button>
                         </div>
                     </div>
                 </div>
@@ -1821,7 +2040,6 @@
                                     <th>Book</th>
                                     <th>Title</th>
                                     <th>Author</th>
-                                    <th>Created by</th>
                                     <th>Created date</th>
                                     <th>Time Spent Reading <span class="text-danger">(Hour)</span></th>
                                     <th>Note</th>
@@ -2006,7 +2224,7 @@
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-weekly-amountTime" style="height: 45px">
                                             <c:forEach begin="0" end="4" varStatus="loop">
-                                                <td colspan="3" class="weekly-amountTime">0/168 hours</td>
+                                                <td colspan="4" class="weekly-amountTime">0/168 hours</td>
                                                 <td colspan="3.5" class="performance-time-used-amountTime"></td>
                                             </c:forEach>
                                         </tr>
@@ -2391,7 +2609,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <td class="title-dailyRoutine-report" style="width: 70px; max-width: 70px; max-height: 57px" data-month="${weekly.year.year}-${formattedMonth}" data-simplebar></td>
-                                                <td class="perf-dailyRoutine-report" style="width: 39px;">0%</td>
+                                                <td class="perf-dailyRoutine-report" style="width: 39px;">0.00%</td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
@@ -2793,6 +3011,42 @@
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script>
 
+    $(document).ready(function () {
+        const currentURL = window.location.href;
+        const currentDayParam = getParameterByName('currentDay', currentURL);
+        const tabPlanner = getParameterByName('tab', currentURL);
+        const currentDate = new Date(currentDayParam);
+        const currentYear = currentDate.getFullYear();
+        const yearCalendar = document.getElementById('year-calendar');
+        const monthCalendar = document.getElementById('month-calendar');
+        const yearGoalsTarget = document.getElementById('main');
+        var urlParts = currentURL.split('/');
+        var lastPart = urlParts[urlParts.length - 1];
+        var lastPartParts = lastPart.split('?');
+        var userId = lastPartParts[0];
+
+        yearGoalsTarget.textContent = currentYear + ' Target';
+        yearCalendar.href = '/management-time/years?year=' + currentYear + '&id' + userId;
+        monthCalendar.href = '/management-time/' + userId;
+
+       switch (tabPlanner) {
+           case 'year-goals':
+               $('#session-goals').tab('show');
+               $('#session-goals').click();
+               break;
+           case 'wm-report':
+               $('#session-review').tab('show');
+               break;
+           case 'year-report':
+               $('#session-year-report').tab('show');
+               $('#session-year-report').click();
+               break;
+           default:
+               break;
+       }
+
+    })
+
     // Mind map
     // Handle User click TAB 2024 Golas
     $('#session-goals').one('click', function() {
@@ -2800,6 +3054,7 @@
         RADIUS_L2 = 130;
 
         initialize();
+        document.getElementById('elem3').click();
 
         function initialize() {
             $(".containerMindMap").css("width", $("#main").outerWidth() + "px");
@@ -2810,7 +3065,6 @@
                 $("#elem" + i).click(function(e) {
                     if ( hasLevel2Children($(this).attr('id').match(/\d+/)[0]) === true ) {
                         for (var i = 0; i < $(".level1").length; i++) {
-                            // if (!$("#elem" + i + "child0").hasClass("hiddenLevel2")) {
                                 if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
                                 if ("elem" + i !== $(this).attr('id'))
                                     toggle("elem" + i);
@@ -2856,16 +3110,13 @@
 
         function toggle(to) {
             if (to === "#main") {
-                // toggle first level
                 $(".level1").toggleClass("hiddenLevel1");
                 $(".lineFrom_main").toggleClass("hiddenLine");
             } else {
-                // toggle second level
                 $(".lineFrom_" + to).toggleClass("hiddenLine");
 
                 var i = $("#" + to).attr('id').match(/\d+/)[0];
                 if ($(".elem" + i + "child").hasClass("hiddenLevel2")) {
-                    // now expand layer 1 element
 
                     $(".elem" + i + "child").removeClass("hiddenLevel2");
 
@@ -2904,7 +3155,6 @@
             var j = 0;
             angle = deg(angle);
             do {
-                //put sub entry on same position as its parent
                 xPos = parseFloat($("#elem" + i).css("left").slice(0, -2)) + $("#elem" + i).outerWidth() / 2;
                 yPos = parseFloat($("#elem" + i).css("top").slice(0, -2)) + $("#elem" + i).outerHeight() / 2;
                 amount = $(".elem" + i + "child").length;
@@ -2912,7 +3162,6 @@
                 xPos += Math.cos(rad(angle) + rad((amount - 1) * -distance / 2 + j * distance)) * RADIUS_L2;
                 yPos += Math.sin(rad(angle) + rad((amount - 1) * -distance / 2 + j * distance)) * RADIUS_L2;
 
-                //set the right position
                 xPos -= $("#elem" + i + "child" + j).outerWidth() / 2;
                 yPos -= $("#elem" + i + "child" + j).outerHeight() / 2;
                 $("#elem" + i + "child" + j).css("left", xPos + "px");
@@ -2935,39 +3184,109 @@
         };
 
         $('#line2').addClass('d-none');
-        // $('.lineFrom_elem2').addClass('d-none');
-        // $('.elem2child').addClass('d-none');
 
         // Function to draw lines for a given level 1 element
-        function drawLinesForLevel1Element(level1ElemId) {
-            for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
-                createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
-            }
-        }
+        // function drawLinesForLevel1Element(level1ElemId) {
+        //     for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
+        //         createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
+        //     }
+        // }
 
+        for (var i = 0; i < $(".level1").length; i++) { $("#elem" + i).off('click'); }
+
+        // Add Main node
         $(document).on('click', '.add-node', function() {
-            $('#elem2').removeClass('d-none');
-            $(this).css('background', 'red');
+            $(this).css('background-color', '#ff4d4d');
             $(this).text('-');
             $(this).addClass('remove-node');
             $(this).removeClass('add-node');
+            $('#elem2').removeClass('d-none');
             $('.lineFrom_elem2').removeClass('d-none');
             $('.elem2child').removeClass('d-none');
-            drawLinesForLevel1Element(2);
         });
 
+        // Remove Main node
         $(document).on('click', '.remove-node', function () {
             $('#elem2').addClass('d-none');
             $(this).addClass('add-node');
-            $(this).css('background', '#ffff');
+            $(this).css('background-color', '#ffff');
             $(this).text('+');
             $(this).removeClass('remove-node');
             $('.lineFrom_elem2').addClass('d-none');
             $('.elem2child').addClass('d-none');
         });
+
+        // Remove content "TEXT" When user focus
+        document.querySelectorAll('.main-content-node').forEach(function (e) {
+            e.addEventListener('click', function () {
+                if (e.textContent.trim() == 'TEXT') e.textContent = '';
+            })
+
+            e.addEventListener('blur', function () {
+                if (e.textContent == '') e.textContent = 'TEXT';
+            })
+        })
+
+        document.querySelectorAll('.level1').forEach(function (e) {
+            e.addEventListener('click', function () {
+                if (e.textContent.trim() == 'Click To Edit') {
+                    e.textContent = '';
+                }
+            })
+
+            e.addEventListener('blur', function () {
+                if (e.textContent.trim() == '') e.textContent = 'Click To Edit';
+                e.textContent = e.textContent.trim();
+            })
+        })
+
+        // Remove content "Click To Edit" When user focus
+        document.querySelectorAll('.child-content-node').forEach(function (e, index) {
+            e.addEventListener('click', function () {
+                if (e.textContent.trim() == 'Click To Edit') {
+                    e.textContent = '';
+                }
+            })
+
+            e.addEventListener('blur', function () {
+                if (e.textContent == '') e.textContent = 'Click To Edit';
+                e.textContent = e.textContent.trim();
+            })
+        })
+
+        // Add Click To Edit
+        document.querySelectorAll('.add-edit').forEach(function (elAdd) {
+            elAdd.addEventListener('click', function () {
+                elAdd.parentNode.style.listStyle = "disc";
+                elAdd.nextElementSibling.classList.remove('d-none');
+                elAdd.nextElementSibling.nextElementSibling.classList.remove('d-none');
+                elAdd.classList.add('d-none');
+            })
+        })
+
+        // Remove Click To Edit
+        document.querySelectorAll('.remove-edit').forEach(function (elRemove) {
+            elRemove.addEventListener('click', function () {
+                elRemove.parentNode.style.listStyle = "none";
+                elRemove.previousElementSibling.classList.add('d-none');
+                elRemove.previousElementSibling.previousElementSibling.classList.remove('d-none');
+                elRemove.classList.add('d-none');
+            })
+        })
+
+        // Show ContentChild if have content
+        document.querySelectorAll('span.child-content-node').forEach(function (e) {
+            if (e.textContent.trim() != 'Click To Edit' && e.textContent.trim() != '') {
+                e.classList.remove('d-none');
+                e.previousElementSibling.classList.add('d-none');
+                e.nextElementSibling.classList.remove('d-none');
+                e.parentNode.style.listStyle = "disc";
+            } else {
+                e.textContent = 'Click To Edit';
+            }
+        })
     });
 
-    // End Mind map
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
         e.classList.add('unset-table');
     })
@@ -3399,7 +3718,7 @@
                                             if (month.dailyRoutine != null && dailyDB != null) {
                                                 const titleDailyDB = dailyDB.title;
                                                 eTitle.textContent = titleDailyDB;
-                                                perfDailyReport[indexTitle].textContent = dailyDB.rate;
+                                                perfDailyReport[indexTitle].textContent = dailyDB.rate == null || dailyDB.rate == '0%' ? '0.00%' : dailyDB.rate;
                                             }
                                         }
                                     }
@@ -3437,7 +3756,15 @@
                             })
                         })
 
-                        const totalHoursOfYear = getNumberOfHoursInYear('${weekly.year.year}');
+                        function getTotalHoursInMonth(dataMonth) {
+                            const monthDate = new Date(dataMonth);
+                            const month = monthDate.getMonth() + 1;
+                            const year = monthDate.getFullYear();
+                            const daysInMonth = new Date(year, month, 0).getDate();
+                            const totalHoursInMonth = daysInMonth * 24;
+                            return totalHoursInMonth;
+                        }
+
                         const totalTimeUsedMonthlyArr = [];
                         document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
                             const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
@@ -3445,12 +3772,13 @@
                             var totalTimeUsedMonthLy = 0;
                             timeUsedMonthly.forEach(function (eTd, indexTd) {
                                 const dataMonth = eTd.getAttribute('data-month');
+                                const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
                                 parseData.forEach(month => {
                                     if (dataMonth == month.month) {
                                         const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                                        eTd.textContent = timeUsed + '/' + totalHoursOfYear + ' hours';
+                                        eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
                                         totalTimeUsedMonthLy += parseFloat(timeUsed);
-                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursOfYear)).toFixed(2) + '%'
+                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
                                     }
                                 });
                             })
@@ -3561,7 +3889,6 @@
                     }
                 },
                 {data: 'author'},
-                {data: 'createdBy'},
                 {data: 'createdDate'},
                 {data: 'timeSpentReading'},
                 {data: 'note'}
@@ -4462,6 +4789,7 @@
                     }
                 }
             })
+
             $('td[contenteditable="true"]').each(function () {
                 const day = $(this).data('day');
                 const name = $(this).data('name');
@@ -4585,16 +4913,43 @@
                 category: []
             };
 
-            $('.yearTarget').each(function () {
+            const yearTargetNode = document.querySelectorAll('.level1');
+            const btnSaveMindmap = $(this).data('value');
+            $('.yearTarget').each(function (index) {
                 const statusYear = $(this).closest('div').find('button');
                 var valueStatus = statusYear.data('value');
+                var tartgetYear = '';
+
+                if (btnSaveMindmap == 'save-mindmap') {
+                    tartgetYear = yearTargetNode[index].textContent.trim() == 'Click To Edit' ? '' : yearTargetNode[index].textContent.trim();
+                } else {
+                    tartgetYear = $(this).val().trim();
+                }
+
                 if (valueStatus == undefined) valueStatus = '';
                 let obj = {
-                    target: $(this).val(),
-                    status: valueStatus
+                    target: tartgetYear,
+                    status: valueStatus,
+                    contentNode: []
                 }
+
+                $('.elem' + index + 'child').find('.main-content-node').each(function () {
+                    let objMainContent = {
+                        mainContent : $(this).text().trim() == 'TEXT' ? '' : $(this).text().trim(),
+                        childContent : []
+                    }
+
+                    $(this).closest('div').find('.child-content-node').each(function () {
+                        if (!$(this).hasClass('d-none')) {
+                            objMainContent.childContent.push($(this).text().trim() == 'Click To Edit' ? '' : $(this).text().trim())
+                        }
+                    })
+                    obj.contentNode.push(objMainContent)
+                })
+
                 data.year.target.push(obj);
             });
+
             document.querySelectorAll('.yearTitle').forEach(function (e) {
                 data.year.category.push(e.textContent);
             })
@@ -4621,6 +4976,7 @@
                     i--;
                 }
             }
+
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {

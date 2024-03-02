@@ -66,6 +66,9 @@
                                                                    urlSearchParams.forEach(function(value, key) {
                                                                        if (key.includes('year')) newHref = '/management-time/years?year=' + value + '&id=' + ${user.id};
                                                                        else if (key.includes('currentDay')) newHref = '/management-time/weekly-detail/' + ${user.id} + '?currentDay=' + value;
+                                                                       else if (key.includes('tabGoals')) newHref = '/management-time/weekly-detail/' + ${user.id} + '?currentDay=' + value + '&tab=year-goals';
+                                                                       else if (key.includes('tabWMReport')) newHref = '/management-time/weekly-detail/' + ${user.id} + '?currentDay=' + value + '&tab=wm-report';
+                                                                       else if (key.includes('tabYearReport')) newHref = '/management-time/weekly-detail/' + ${user.id} + '?currentDay=' + value + '&tab=year-report';
                                                                    });
 
                                                                    document.write('<a href="' + newHref + '" class="link name text-dark">' + '${user.fullname}' + '</a>');

@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class YearTargetDto {
-    private String target;
-    private String status;
-    private YearContentNodeDto[] contentNode;
+public class YearContentNodeDto {
+    private String mainContent;
+    private String[] childContent;
 }

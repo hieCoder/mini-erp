@@ -18,15 +18,11 @@ public class BookCreateRequest {
     @NotBlank(message = "Field title is not filled")
     private String title;
 
-    @NotBlank(message = "Field author is not filled")
     private String author;
 
-    @NotBlank(message = "Field link is not filled")
     private String link;
 
-    @NotBlank(message = "Field fullnameUser is not filled")
     private String fullnameUser;
 
-    @NotNull(message = "Field image is not filled")
     private MultipartFile image;
 }
