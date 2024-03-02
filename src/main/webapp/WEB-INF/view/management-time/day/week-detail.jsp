@@ -2040,6 +2040,7 @@
                                     <th>Book</th>
                                     <th>Title</th>
                                     <th>Author</th>
+                                    <th>Created by</th>
                                     <th>Created date</th>
                                     <th>Time Spent Reading <span class="text-danger">(Hour)</span></th>
                                     <th>Note</th>
