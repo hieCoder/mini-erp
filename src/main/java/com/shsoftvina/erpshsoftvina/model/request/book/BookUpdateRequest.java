@@ -20,10 +20,8 @@ public class BookUpdateRequest {
     @NotBlank(message = "Field title is not filled")
     private String title;
 
-    @NotBlank(message = "Field author is not filled")
     private String author;
 
-    @NotBlank(message = "Field link is not filled")
     private String link;
 
     private MultipartFile image;

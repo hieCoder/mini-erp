@@ -87,11 +87,10 @@
                            style="margin: 0px!important;">
                         <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Book</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Created by</th>
+                            <th>MeMo</th>
                             <th>Created date</th>
                             <th id="isDeveloper">Action</th>
                         </tr>
@@ -136,14 +135,12 @@
                                 <label for="author-add" class="form-label">Author</label>
                                 <input type="text" id="author-add" name="author" class="form-control"
                                        placeholder="Author"/>
-                                <small class="form-message"></small>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div>
                                 <label for="link-add" class="form-label">Link</label>
                                 <input type="text" id="link-add" name="link" class="form-control" placeholder="Link"/>
-                                <small class="form-message"></small>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -153,7 +150,6 @@
                                        accept="image/*" placeholder="Image"/>
                                 <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-add"
                                      class="image-preview d-none mt-2">
-                                <small class="form-message"></small>
                             </div>
                         </div>
                     </div>
@@ -202,14 +198,12 @@
                                 <label for="author-add" class="form-label">Author</label>
                                 <input type="text" id="author-edit" name="author" class="form-control"
                                        placeholder="Author"/>
-                                <small class="form-message"></small>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div>
                                 <label for="link-add" class="form-label">Link</label>
                                 <input type="text" id="link-edit" name="link" class="form-control" placeholder="Link"/>
-                                <small class="form-message"></small>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -219,7 +213,6 @@
                                        accept="image/*" placeholder="Image"/>
                                 <img src="" alt="Preview Image" style="max-width: 200px;" id="image-preview-edit"
                                      class="image-preview d-none">
-                                <small class="form-message"></small>
                             </div>
                         </div>
                     </div>
@@ -291,7 +284,6 @@
     var table = null;
 
     $(document).ready(function () {
-
         table = $('#datatable-book').DataTable({
             ajax: {
                 url: getUrlApiBooks(objPaging.search, 1, objPaging.pageSize),
@@ -308,7 +300,6 @@
                 }
             },
             columns: [
-                {data: 'id'},
                 {
                     data: 'image',
                     render: function (data, type, row) {
@@ -322,7 +313,7 @@
                     }
                 },
                 {data: 'author'},
-                {data: 'createdBy'},
+                {data: null},
                 {data: 'createdDate'},
                 {
                     render: function (data, type, row) {
@@ -379,7 +370,6 @@
 
     function loadPaging() {
         callAjaxByJsonWithData(getCountListApiUrl(objPaging.search), 'GET', null, function (totalItem) {
-
             removePagingIfExsit();
 
             //paging
@@ -424,7 +414,7 @@
             callAjaxByJsonWithData('/api/v1/settings/code?code=BOOK', 'GET', null, function (rs) {
                 var setting = rs;
                 var allowedFile = setting.imageType.split(',');
-                var fileName = element.files[0].name.split('.').pop();
+                var fileName = element.files[0] == null ? '' : element.files[0].name.split('.').pop();
                 var fileSize = element.files[0].size;
 
                 if (fileSize > convertMbToB(setting.fileSize)) {
@@ -459,7 +449,6 @@
     });
 
     $(document).on('shown.bs.modal', '#addBookModal', function () {
-
         $('#title-add').val('');
         $('#author-add').val('');
         $('#link-add').val('');
@@ -472,18 +461,13 @@
             form: '#addBookForm',
             errorSelector: '.form-message',
             rules: [
-                Validator.isRequired('#title-add'),
-                Validator.isRequired('#author-add'),
-                Validator.isRequired('#link-add'),
-                Validator.isRequired('#image-add'),
+                Validator.isRequired('#title-add')
             ],
             onSubmit: function (formData) {
-
                 formData.append('fullnameUser', userCurrent.fullname);
-
                 $('#addBookForm .spinner-border').removeClass('d-none');
-                callAjaxByDataFormWithDataForm('/api/v1/books', 'POST', formData, function (rs) {
 
+                callAjaxByDataFormWithDataForm('/api/v1/books', 'POST', formData, function (rs) {
                     table.ajax.url(getUrlApiBooks(objPaging.search,
                         objPaging.page, objPaging.pageSize)).load(function () {
                         $('#addBookForm .spinner-border').addClass('d-none');
@@ -498,6 +482,7 @@
     $(document).on('click', '.edit-book-btn', function () {
         var id = $(this).data('id');
         var swal = showAlertLoading();
+
         callAjaxByJsonWithData("/api/v1/books/" + id, "GET", null, function (rs) {
             $('#title-edit').val(rs.title);
             $('#author-edit').val(rs.author);
@@ -515,9 +500,7 @@
             form: '#editBookForm',
             errorSelector: '.form-message',
             rules: [
-                Validator.isRequired('#title-edit'),
-                Validator.isRequired('#author-edit'),
-                Validator.isRequired('#link-edit')
+                Validator.isRequired('#title-edit')
             ],
             onSubmit: function (formData) {
                 formData.append('id', id);
@@ -543,10 +526,9 @@
 
     $(document).on('click', '#delete-book', function (e) {
         var idBook = $(this).attr('data-id');
-
         $('#deleteBookModal .spinner-border').removeClass('d-none');
-        callAjaxByJsonWithData("/api/v1/books/" + idBook, "DELETE", null, function (rs) {
 
+        callAjaxByJsonWithData("/api/v1/books/" + idBook, "DELETE", null, function (rs) {
             table.ajax.url(getUrlApiBooks(objPaging.search,
                 objPaging.page, objPaging.pageSize)).load(function () {
                 $('#deleteBookModal .spinner-border').addClass('d-none');

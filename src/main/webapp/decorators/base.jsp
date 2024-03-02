@@ -849,7 +849,7 @@
 
     $('.header-profile-user').attr('src', userCurrent.avatar);
 
-    var scheduleLink = '', managementTimeYear = '', managementTimeMonth = '', managementTimeWeek = '';
+    var scheduleLink = '', managementTimeYear = '', managementTimeMonth = '', managementTimeWeek = '', managementYearGoals = '', managementWMReport = '', managementYearReport = '';
     const dateCalendar = new Date();
     const yearCalendar = dateCalendar.getFullYear();
     const monthCalendar = (dateCalendar.getMonth() + 1).toString().padStart(2, '0');
@@ -862,18 +862,27 @@
         managementTimeYear = '/management-time/years?year=' + dateCalendar.getFullYear() + '&id=' + userCurrent.id;
         managementTimeMonth = '/management-time/' + userCurrent.id;
         managementTimeWeek = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + formattedDateCalendar;
+        managementYearGoals = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + formattedDateCalendar + '&tabGoals=' + formattedDateCalendar;
+        managementWMReport = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + formattedDateCalendar + '&tabWMReport=' + formattedDateCalendar;
+        managementYearReport = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + formattedDateCalendar + '&tabYearReport=' + formattedDateCalendar;
     } else {
         $('.manager-menu').removeClass('d-none');
         scheduleLink = '/schedules';
         managementTimeYear = '/management-time?year=' + dateCalendar.getFullYear();
         managementTimeMonth = '/management-time';
         managementTimeWeek = '/management-time?currentDay=' + formattedDateCalendar;
+        managementYearGoals = '/management-time?currentDay=' + formattedDateCalendar + '&tabGoals=' + formattedDateCalendar;
+        managementWMReport = '/management-time?currentDay=' + formattedDateCalendar + '&tabWMReport=' + formattedDateCalendar;
+        managementYearReport = '/management-time?currentDay=' + formattedDateCalendar + '&tabYearReport=' + formattedDateCalendar;
     }
 
     $('.schedule-item-menu').attr('href', scheduleLink);
+    $('.management-time-year-goals').attr('href', managementYearGoals);
     $('.management-time-year').attr('href', managementTimeYear);
     $('.management-time-month').attr('href', managementTimeMonth);
     $('.management-time-week').attr('href', managementTimeWeek);
+    $('.management-time-wm-report').attr('href', managementWMReport);
+    $('.management-time-year-report').attr('href', managementYearReport);
 </script>
 </body>
 </html>

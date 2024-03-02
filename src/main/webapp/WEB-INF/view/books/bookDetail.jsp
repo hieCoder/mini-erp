@@ -55,7 +55,6 @@
                                         <div class="col ps-2 fs-5">Feel about the book?</div>
                                     </div>
                                     <textarea class="form-control data" name="feeling" id="feelingArea" placeholder="Enter here..."></textarea>
-                                    <small class="form-message"></small>
                                 </div>
                                 <div class="form-group mt-3">
                                     <div class="row align-items-center">
@@ -63,7 +62,6 @@
                                         <div class="col ps-2 fs-5">Lessons Learned ?</div>
                                     </div>
                                     <textarea class="form-control data" name="lesson" id="lessonArea" placeholder="Enter here..."></textarea>
-                                    <small class="form-message"></small>
                                 </div>
                                 <div class="form-group mt-3">
                                     <div class="row align-items-center">
@@ -71,7 +69,6 @@
                                         <div class="col ps-2 fs-5">Quotes?</div>
                                     </div>
                                     <textarea class="form-control data" name="quote" id="quoteArea" placeholder="Enter here..."></textarea>
-                                    <small class="form-message"></small>
                                 </div>
                                 <div class="form-group mt-3">
                                     <div class="row align-items-center">
@@ -79,10 +76,9 @@
                                         <div class="col ps-2 fs-5">Action?</div>
                                     </div>
                                     <textarea class="form-control data" name="action" id="actionArea" placeholder="Enter here..."></textarea>
-                                    <small class="form-message"></small>
                                 </div>
                                 <div class="form-group mt-3">
-                                    <button id="submit-feeling" type="submit" class="btn btn-primary btn-load d-none">
+                                    <button id="submit-feeling" type="submit" class="btn btn-primary btn-load d-none" disabled>
                                         <span class="d-flex align-items-center">
                                             <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
                                             <span class="flex-grow-1">Submit</span>
@@ -191,14 +187,25 @@
             $('#update-feeling').addClass('d-none');
         });
 
+        const feeling = document.querySelectorAll('.data');
+        const submitButton = document.getElementById('submit-feeling');
+        feeling.forEach(function (e) {
+            e.addEventListener('input', function () {
+                let allowSubmit = false;
+                feeling.forEach(function (content) {
+                    if (content.value != '') {
+                        allowSubmit = true;
+                    }
+                })
+                if (allowSubmit == true) submitButton.disabled = false;
+                else if (allowSubmit == false) submitButton.disabled = true;
+            })
+        })
+
         Validator({
             form: '#feelingBookForm',
             errorSelector: '.form-message',
             rules: [
-                Validator.isRequired('#feelingArea'),
-                Validator.isRequired('#lessonArea'),
-                Validator.isRequired('#quoteArea'),
-                Validator.isRequired('#actionArea')
             ],
             onSubmit: function (formData) {
                 formData.append('userId', userCurrent.id);
@@ -254,8 +261,8 @@
 
     $(document).on('click', '#delete-feeling-confirm', function (e){
         var id = $(this).data('id');
-
         $('#deleteFeelingModal .spinner-border').removeClass('d-none');
+
         callAjaxByJsonWithData("/api/v1/feeling-of-book?userId=" + userCurrent.id + "&bookId=" + bookId, "DELETE", null, function (rs) {
             $('#update-feeling').addClass('d-none');
             $('#delete-feeling').addClass('d-none');
@@ -289,8 +296,8 @@
                 parentId: null,
                 userId: userCurrent.id
             }
-
             $(closestForm).find('.spinner-border').removeClass('d-none');
+
             callAjaxByJsonWithData('/api/v1/comment-feeling-book', 'POST', object, function (rs) {
                 var newComment = createComment(rs);
                 var commentListE = $('.comment-list[data-id="'+ id + '"]');
@@ -348,10 +355,8 @@
 
             $(closestForm).find('.spinner-border').removeClass('d-none');
             callAjaxByJsonWithData('/api/v1/comment-feeling-book', 'PUT', object, function (rs) {
-
                 $('.content-comment[data-id="' + id + '"]').text(rs.content);
                 $(closestForm).remove();
-
                 resetFormComment(closestForm);
             });
         }

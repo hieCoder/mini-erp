@@ -59,8 +59,6 @@ public class BookServiceImpl implements BookService {
 
             bookImageFileName = FileUtils.formatNameImage(bookImage);
             isSaveImageSuccess = FileUtils.saveImageToServer(BookConstant.UPLOAD_FILE_DIR, bookCreateRequest.getImage(), bookImageFileName);
-        } else{
-            throw new MissingException(MessageErrorUtils.missing("image"));
         }
 
         if(isSaveImageSuccess){

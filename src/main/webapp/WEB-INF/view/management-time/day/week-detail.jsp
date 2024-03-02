@@ -426,13 +426,13 @@
                             <a class="dropdown-item nav-link"  id="session-goals" data-bs-toggle="tab" href="#year-goals" role="tab" aria-selected="false">
                                 2024 Goals
                             </a>
-                            <a class="dropdown-item nav-link management-time-year">
+                            <a id="year-calendar" class="dropdown-item nav-link">
                                 2024 Calendar
                             </a>
-                            <a class="dropdown-item nav-link management-time-month">
+                            <a id="month-calendar" class="dropdown-item nav-link management-time-month">
                                 Monthly
                             </a>
-                            <a class="dropdown-item nav-link management-time-week">
+                            <a class="dropdown-item nav-link" href="#" onclick="window.location.reload();">
                                 Weekly
                             </a>
                             <a class="dropdown-item nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">
@@ -467,9 +467,7 @@
                     <div class="row card-body">
                         <div class="container vh-100">
                             <div class="containerMindMap">
-                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #fae23b;">
-                                    ${weekly.year.year} target
-                                </div>
+                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #fae23b;"></div>
                                 <div class="remove-node" style="background:#ff4d4d;">-</div>
                                 <div id="elem0" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #12c8fe">
                                     ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
@@ -2042,7 +2040,6 @@
                                     <th>Book</th>
                                     <th>Title</th>
                                     <th>Author</th>
-                                    <th>Created by</th>
                                     <th>Created date</th>
                                     <th>Time Spent Reading <span class="text-danger">(Hour)</span></th>
                                     <th>Note</th>
@@ -2227,7 +2224,7 @@
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-weekly-amountTime" style="height: 45px">
                                             <c:forEach begin="0" end="4" varStatus="loop">
-                                                <td colspan="3" class="weekly-amountTime">0/168 hours</td>
+                                                <td colspan="4" class="weekly-amountTime">0/168 hours</td>
                                                 <td colspan="3.5" class="performance-time-used-amountTime"></td>
                                             </c:forEach>
                                         </tr>
@@ -2612,7 +2609,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <td class="title-dailyRoutine-report" style="width: 70px; max-width: 70px; max-height: 57px" data-month="${weekly.year.year}-${formattedMonth}" data-simplebar></td>
-                                                <td class="perf-dailyRoutine-report" style="width: 39px;">0%</td>
+                                                <td class="perf-dailyRoutine-report" style="width: 39px;">0.00%</td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
@@ -3013,6 +3010,42 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script>
+
+    $(document).ready(function () {
+        const currentURL = window.location.href;
+        const currentDayParam = getParameterByName('currentDay', currentURL);
+        const tabPlanner = getParameterByName('tab', currentURL);
+        const currentDate = new Date(currentDayParam);
+        const currentYear = currentDate.getFullYear();
+        const yearCalendar = document.getElementById('year-calendar');
+        const monthCalendar = document.getElementById('month-calendar');
+        const yearGoalsTarget = document.getElementById('main');
+        var urlParts = currentURL.split('/');
+        var lastPart = urlParts[urlParts.length - 1];
+        var lastPartParts = lastPart.split('?');
+        var userId = lastPartParts[0];
+
+        yearGoalsTarget.textContent = currentYear + ' Target';
+        yearCalendar.href = '/management-time/years?year=' + currentYear + '&id' + userId;
+        monthCalendar.href = '/management-time/' + userId;
+
+       switch (tabPlanner) {
+           case 'year-goals':
+               $('#session-goals').tab('show');
+               $('#session-goals').click();
+               break;
+           case 'wm-report':
+               $('#session-review').tab('show');
+               break;
+           case 'year-report':
+               $('#session-year-report').tab('show');
+               $('#session-year-report').click();
+               break;
+           default:
+               break;
+       }
+
+    })
 
     // Mind map
     // Handle User click TAB 2024 Golas
@@ -3685,7 +3718,7 @@
                                             if (month.dailyRoutine != null && dailyDB != null) {
                                                 const titleDailyDB = dailyDB.title;
                                                 eTitle.textContent = titleDailyDB;
-                                                perfDailyReport[indexTitle].textContent = dailyDB.rate;
+                                                perfDailyReport[indexTitle].textContent = dailyDB.rate == null || dailyDB.rate == '0%' ? '0.00%' : dailyDB.rate;
                                             }
                                         }
                                     }
@@ -3723,7 +3756,15 @@
                             })
                         })
 
-                        const totalHoursOfYear = getNumberOfHoursInYear('${weekly.year.year}');
+                        function getTotalHoursInMonth(dataMonth) {
+                            const monthDate = new Date(dataMonth);
+                            const month = monthDate.getMonth() + 1;
+                            const year = monthDate.getFullYear();
+                            const daysInMonth = new Date(year, month, 0).getDate();
+                            const totalHoursInMonth = daysInMonth * 24;
+                            return totalHoursInMonth;
+                        }
+
                         const totalTimeUsedMonthlyArr = [];
                         document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
                             const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
@@ -3731,12 +3772,13 @@
                             var totalTimeUsedMonthLy = 0;
                             timeUsedMonthly.forEach(function (eTd, indexTd) {
                                 const dataMonth = eTd.getAttribute('data-month');
+                                const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
                                 parseData.forEach(month => {
                                     if (dataMonth == month.month) {
                                         const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                                        eTd.textContent = timeUsed + '/' + totalHoursOfYear + ' hours';
+                                        eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
                                         totalTimeUsedMonthLy += parseFloat(timeUsed);
-                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursOfYear)).toFixed(2) + '%'
+                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
                                     }
                                 });
                             })
@@ -3847,7 +3889,6 @@
                     }
                 },
                 {data: 'author'},
-                {data: 'createdBy'},
                 {data: 'createdDate'},
                 {data: 'timeSpentReading'},
                 {data: 'note'}

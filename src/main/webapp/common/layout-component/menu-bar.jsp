@@ -99,8 +99,8 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarTime">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link">2024 Goals</a>
+                            <li class="nav-item management-time-year-goals">
+                                <a class="nav-link management-time-year-goals">2024 Goals</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link management-time-year">2024 Calendar</a>
@@ -115,10 +115,10 @@
                                 <a class="nav-link">Daily Schedule</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link">W&M Report</a>
+                                <a class="nav-link management-time-wm-report">W&M Report</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link">2024 Report</a>
+                                <a class="nav-link management-time-year-report">2024 Report</a>
                             </li>
                         </ul>
                     </div>
