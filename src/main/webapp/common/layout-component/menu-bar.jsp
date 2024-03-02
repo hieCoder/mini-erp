@@ -100,10 +100,10 @@
                     <div class="collapse menu-dropdown" id="sidebarTime">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item management-time-year-goals">
-                                <a class="nav-link management-time-year-goals">2024 Goals</a>
+                                <a class="nav-link management-time-year-goals"><span class="current-year me-1"></span> Goals</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link management-time-year">2024 Calendar</a>
+                                <a class="nav-link management-time-year"><span class="current-year me-1"></span> Calendar</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link management-time-month">Monthly</a>
@@ -118,7 +118,7 @@
                                 <a class="nav-link management-time-wm-report">W&M Report</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link management-time-year-report">2024 Report</a>
+                                <a class="nav-link management-time-year-report"><span class="current-year me-1"></span> Report</a>
                             </li>
                         </ul>
                     </div>
@@ -153,3 +153,9 @@
 
     <div class="sidebar-background"></div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $(".current-year").text(new Date().getFullYear());
+    });
+</script>
