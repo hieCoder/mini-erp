@@ -3030,17 +3030,26 @@
         yearCalendar.href = '/management-time/years?year=' + currentYear + '&id' + userId;
         monthCalendar.href = '/management-time/' + userId;
 
+        function removeTabParamFromURL(url) {
+            var url = new URL(currentURL);
+            url.searchParams.delete('tab');
+            window.history.replaceState({}, document.title, url);
+        }
+
        switch (tabPlanner) {
            case 'year-goals':
                $('#session-goals').tab('show');
                $('#session-goals').click();
+               removeTabParamFromURL(currentURL);
                break;
            case 'wm-report':
                $('#session-review').tab('show');
+               removeTabParamFromURL(currentURL);
                break;
            case 'year-report':
                $('#session-year-report').tab('show');
                $('#session-year-report').click();
+               removeTabParamFromURL(currentURL);
                break;
            default:
                break;
