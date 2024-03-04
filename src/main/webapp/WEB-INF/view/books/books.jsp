@@ -313,7 +313,7 @@
                     }
                 },
                 {data: 'author'},
-                {data: null},
+                {data: 'note'},
                 {data: 'createdDate'},
                 {
                     render: function (data, type, row) {
