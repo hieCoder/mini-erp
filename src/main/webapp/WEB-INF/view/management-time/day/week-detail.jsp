@@ -3328,8 +3328,16 @@
             date.setDate(date.getDate() - 1);
         }
 
+        var count = 0; // Biến đếm số lượng ngày Chủ nhật đã thêm vào mảng
+
         do {
             sundays.push(new Date(date));
+            count++;
+
+            if (count === 5) { // Nếu đã thêm đủ 5 ngày, thoát khỏi vòng lặp
+                break;
+            }
+
             date.setDate(date.getDate() + 7);
         } while (date.getMonth() === month);
 
@@ -3448,6 +3456,7 @@
         weeklyAmountTime.forEach(function (e, index) {
             const weekIndex = index % sundaysInMonth.length;
             e.setAttribute('data-week', sundaysInMonth[weekIndex]);
+            console.log(sundaysInMonth[weekIndex])
         });
 
         weeklySentence.forEach(function (e, index) {
@@ -3467,7 +3476,7 @@
                     const parseData = JSON.parse(xhr.responseText);
                     const days = parseData.days;
                     const weeklys = parseData.weeklys;
-
+                    console.log(weeklys);
                     const dayInRow = document.querySelectorAll('.category-review');
                     dayInRow.forEach(function (dayRow, index) {
                         if (index < 5) {
