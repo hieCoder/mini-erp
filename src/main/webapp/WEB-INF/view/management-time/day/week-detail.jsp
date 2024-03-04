@@ -483,19 +483,19 @@
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[0].mainContent}
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[0] == null || weekly.year.target[0].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[0].mainContent}
                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[0] == null || weekly.year.target[0].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[0] == null || weekly.year.target[0].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[0].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[0] == null || weekly.year.target[0].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[0].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -503,19 +503,19 @@
                                 </div>
                                 <div id="elem0child1" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
                                      </span>
                                     <ul style="top: -75px; right: 100px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[0].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -523,19 +523,19 @@
                                 </div>
                                 <div id="elem0child2" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
                                      </span>
                                     <ul style="top: -75px; left: 115px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[0].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -543,19 +543,19 @@
                                 </div>
                                 <div id="elem0child3" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
+                                         ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[0].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[0].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -563,19 +563,19 @@
                                 </div>
                                 <div id="elem1child0" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[1].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -583,19 +583,19 @@
                                 </div>
                                 <div id="elem1child1" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[1].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -603,19 +603,19 @@
                                 </div>
                                 <div id="elem1child2" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[1].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -623,19 +623,19 @@
                                 </div>
                                 <div id="elem1child3" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
+                                         ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[1].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[1].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -643,19 +643,19 @@
                                 </div>
                                 <div id="elem2child0" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
                                      </span>
                                     <ul style="left: 130px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[2].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -663,19 +663,19 @@
                                 </div>
                                 <div id="elem2child1" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
                                      </span>
                                     <ul style="top: 110px; left: 0px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[2].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -683,19 +683,19 @@
                                 </div>
                                 <div id="elem2child2" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
                                      </span>
                                     <ul style="top: 110px; right: 0px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[2].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -703,19 +703,19 @@
                                 </div>
                                 <div id="elem2child3" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
+                                         ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
                                      </span>
                                     <ul style="right: 100px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[2].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[2].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -723,19 +723,19 @@
                                 </div>
                                 <div id="elem3child0" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[3].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -743,19 +743,19 @@
                                 </div>
                                 <div id="elem3child1" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[3].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -763,19 +763,19 @@
                                 </div>
                                 <div id="elem3child2" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[3].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -783,19 +783,19 @@
                                 </div>
                                 <div id="elem3child3" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                        ${weekly.year == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
+                                        ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
                                     </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[0]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[0]}
                                         </li>
                                         <li class="child-content-node" contenteditable="true">
-                                            ${weekly.year == null || weekly.year.target[3].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[1]}
+                                            ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].childContent[1] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[1]}
                                         </li>
                                         <li style="list-style: none; float: left">
                                             <span class="add-edit fs-4"> + </span>
                                             <span class="child-content-node d-none" contenteditable="true">
-                                                ${weekly.year == null || weekly.year.target[3].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[2]}
+                                                ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].childContent[2] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[2]}
                                             </span>
                                             <span class="remove-edit fs-4 d-none text-danger"> - </span>
                                         </li>
@@ -993,7 +993,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-
                             <h4 class="fw-bolder">Year Goals</h4>
                             <table class="table table-bordered oneThingCalendar text-center align-middle">
                                 <thead>
@@ -1284,7 +1283,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-
                             <div class="d-flex align-items-center justify-content-between">
                                 <h4 class="fw-bolder">A quote I shouldn't forget</h4>
                                 <button type="button" class="btn btn-info mb-2" data-bs-toggle="modal"
@@ -1360,7 +1358,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-
                             <h4 class="fw-bolder">Category Color</h4>
                             <table class="table table-bordered border-primary categoryColor text-center align-middle">
                                 <thead>
@@ -1385,7 +1382,6 @@
                                         </c:forEach>
                                     </c:if>
                                 </tr>
-
                                 </thead>
                                 <tbody>
                                 <c:forEach begin="0" end="8" var="item" varStatus="loop">
@@ -1489,7 +1485,6 @@
                                             </c:choose>
                                         </tr>
                                     </c:forEach>
-
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
                                         <td class="title-report-category" style="background-color: #fcecec"></td>
@@ -1510,7 +1505,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-container" style="max-height: 2000px;">
+                            <div class="table-container" style="max-height: 2120px;">
                                 <table>
                                     <thead>
                                     <tr>
@@ -2040,10 +2035,9 @@
                                     <th>Book</th>
                                     <th>Title</th>
                                     <th>Author</th>
-                                    <th>Created by</th>
                                     <th>Created date</th>
                                     <th>Time Spent Reading <span class="text-danger">(Hour)</span></th>
-                                    <th>Note</th>
+                                    <th>MeMo</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -2500,7 +2494,7 @@
                                             <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                                         </div>
                                         <h5 class="fs-14 text-end mb-3">Goals of <span >${weekly.year.year}</span></h5>
-                                        <div class="m-0" >
+                                        <div class="m-0">
                                             <p class="editable m-0">${weekly.year.target[0].target}</p>
                                             <p class="editable m-0">${weekly.year.target[1].target}</p>
                                             <p class="editable m-0">${weekly.year.target[2].target}</p>
@@ -2546,7 +2540,7 @@
                                     <tr>
                                         <td>${weekly.year.category[4]}</td>
                                     </tr>
-                                    <tr style="height: 290px;">
+                                    <tr style="height: 464px;">
                                         <td colspan="2" class="fw-bolder">
                                             DAILY <br> ROUTINE
                                         </td>
@@ -2597,7 +2591,7 @@
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <c:forEach begin="0" end="4" varStatus="loop">
+                                    <c:forEach begin="0" end="7" varStatus="loop">
                                         <tr class="report-dailyRoutine" style="max-width: 1500px; max-height: 58px; height: 58px">
                                             <c:forEach begin="0" end="11" varStatus="loop">
                                                 <c:set var="month" value="${loop.index + 1}" />
@@ -3687,7 +3681,6 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
-                        console.log(parseData)
                         document.querySelectorAll('.onething-report').forEach(function (e, index) {
                             const onethingReport = e.querySelectorAll('.onething-category-report');
                             const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
@@ -4042,7 +4035,7 @@
         document.querySelectorAll('.tr-timeReport').forEach(function (eTr, index) {
             var total = 0;
             eTr.querySelectorAll('td').forEach(function (eTd, index) {
-                if (index == 0) total += parseFloat(eTd.textContent);
+                if (index % 2 == 0) total += parseFloat(eTd.textContent);
             })
             totalTimeCategory[index].innerHTML = 'Total time: ' + '<span class="text-danger time-used-category fw-bolder">' + total + '</span>' +' hours';
         })

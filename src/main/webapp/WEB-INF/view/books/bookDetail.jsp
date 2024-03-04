@@ -40,7 +40,7 @@
                             <input type="number" class="form-control" placeholder="Enter here..." id="time-spent-reading">
                     </div>
                     <div class="ps-4 mt-2">
-                        <label class="form-label">Note</label>
+                        <label class="form-label">MeMo</label>
                         <textarea  class="form-control" placeholder="Enter here..." id="note"></textarea>
                     </div>
                 </div>
