@@ -137,30 +137,8 @@
                 </div>
             </div>
             <div style="width: 345px" class="m-3 position-relative">
-                <span class="d-flex align-items-center border p-2">
-                    <h4 class="m-0 me-2">Color Category: </h4>
-                    <div scope="col" class="panel colorPicker btn-change-color me-1">
-                        <div class="pickr"></div>
-                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                    </div>
-                    <div scope="col" class="panel colorPicker btn-change-color me-1">
-                        <div class="pickr"></div>
-                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                    </div>
-                    <div scope="col" class="panel colorPicker btn-change-color me-1">
-                        <div class="pickr"></div>
-                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                    </div>
-                    <div scope="col" class="panel colorPicker btn-change-color me-1">
-                        <div class="pickr"></div>
-                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                    </div>
-                    <div scope="col" class="panel colorPicker btn-change-color me-1">
-                        <div class="pickr"></div>
-                        <p hidden="hidden" class="pickedColor currentColor">#FFFFFF</p>
-                    </div>
-                </span>
-                <button class="btn btn-primary bottom-left createCalendar" id="save-calendar" type="button">Save</button>
+
+                <button class="btn btn-primary bottom-left createCalendar" type="button">Save</button>
                 <button type="button" class="btn btn-info bottom-right" data-bs-toggle="modal"
                         data-bs-target="#exampleModalgrid">Dream Board</button>
             </div>
@@ -273,36 +251,6 @@
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.btn-change-color').forEach(function (e, index) {
-            var divBtnChangeColor = e;
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    if (mutation.attributeName === 'style') {
-                        handleBackgroundColorChange(divBtnChangeColor);
-                    }
-                });
-            });
-
-            var config = {attributes: true};
-            observer.observe(divBtnChangeColor, config);
-
-            function handleBackgroundColorChange(divBtnChangeColor) {
-                var style = window.getComputedStyle(divBtnChangeColor);
-                var newColor = style.backgroundColor;
-                changeColor(newColor, index)
-            }
-        });
-    });
-
-    function changeColor(newColor, index) {
-        if (index == 0) $('.theSingleMostImportantThing').css('background-color', newColor)
-        else if (index == 1) $('.lecture').css('background-color', newColor)
-        else if (index == 2) $('.dailyEvaluation').css('background-color', newColor)
-        else if (index == 3) $('.work').css('background-color', newColor)
-        else if (index == 4) $('.reading').css('background-color', newColor);
-    }
-
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
@@ -387,31 +335,33 @@
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
                     let yearTarget = document.getElementById('yearTarget');
+                    console.log(parseData)
 
                     let xhtml = '';
+                    var yearColor = parseData.year == null || parseData.year.color == null ? ['#f2aaaa','#bcd6af','#ffe180','#ad9ad9'] : parseData.year.color;
                     if (parseData.monthlyContents != null) {
-                        parseData.monthlyContents.forEach((e) => {
+                        parseData.monthlyContents.forEach((e, index) => {
                             if (e.content === "") {
-                                xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
+                                xhtml += '<p class="editable m-0 text-white ps-2" style="background: ' + yearColor[index] + '" ondblclick="toggleEdit(this)">Double click to edit</p>'
                             } else {
-                                xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)" data-value="' + e.status + '">' + e.content + '</p>'
+                                xhtml += '<p class="editable m-0 text-white ps-2" style="background: ' + yearColor[index] + '" ondblclick="toggleEdit(this)" data-value="' + e.status + '">' + e.content + '</p>'
                             }
                         })
                         monthlyTarget.innerHTML = xhtml;
                     } else {
                         for (let i = 0; i < 4; i++) {
-                            xhtml += '<p class="editable m-0" ondblclick="toggleEdit(this)">Double click to edit</p>'
+                            xhtml += '<p class="editable m-0 text-white ps-2" style="background: ' + yearColor[i] + '" ondblclick="toggleEdit(this)">Double click to edit</p>'
                         }
                         monthlyTarget.innerHTML = xhtml;
                     }
 
                     let yearHtml = '';
                     if (parseData.year != null) {
-                        parseData.year.target.forEach((e) => {
+                        parseData.year.target.forEach((e, index) => {
                             if (e.target === "") {
-                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
+                                yearHtml += '<p class="editableYear m-0 yearTarget text-white ps-2" style="background: ' + yearColor[index] + '" ondblclick="toggleEditYear(this)">Double click to edit</p>'
                             } else {
-                                yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)" data-value="' + e.status + '">' + e.target + '</p>'
+                                yearHtml += '<p class="editableYear m-0 yearTarget text-white ps-2" style="background: ' + yearColor[index] + '" ondblclick="toggleEditYear(this)" data-value="' + e.status + '">' + e.target + '</p>'
                             }
                         })
                         yearTarget.innerHTML = yearHtml;
@@ -798,7 +748,6 @@
             const monthly = {
                 month: year + '-' + ((month + 1 < 10) ? '0' + (month + 1) : month + 1),
                 content: [],
-                color: []
             };
             $('.editable').each(function (index) {
                 let obj = {};
@@ -812,17 +761,6 @@
                     obj.content = content;
                     obj.status = statusMonthly[index];
                     monthly.content.push(obj);
-                }
-            })
-
-            var count = 5;
-            $('.color').each(function (index) {
-                if (index != 0) {
-                    if (count != 0) {
-                        const colorMonthLy = $(this).css('background-color');
-                        monthly.color.push(colorMonthLy)
-                        count--;
-                    }
                 }
             })
 
@@ -895,7 +833,6 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.quotes = [];
                 data.quotes.image = rs[0];
@@ -951,7 +888,7 @@
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
-            paragraphElement.classList.add('editable', 'm-0');
+            paragraphElement.classList.add('editable', 'm-0', 'ps-2', 'text-white');
             paragraphElement.ondblclick = function () {
                 toggleEdit(paragraphElement);
             };
@@ -964,11 +901,8 @@
             inputElement.ondblclick = function () {
                 toggleEdit(inputElement);
             };
-
             element.replaceWith(inputElement);
-
             inputElement.style.display = 'block';
-
             inputElement.focus();
         }
     }

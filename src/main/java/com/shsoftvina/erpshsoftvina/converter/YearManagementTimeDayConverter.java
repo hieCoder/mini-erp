@@ -22,6 +22,7 @@ public class YearManagementTimeDayConverter {
                 .personalGoal(yearRequest.getPersonalGoal())
                 .commendable(yearRequest.getCommendable())
                 .keywords3(yearRequest.getKeywords3())
+                .color(JsonUtils.objectToJson(yearRequest.getColor()))
                 .user(User.builder().id(userId).build()).build();
     }
 
@@ -37,6 +38,7 @@ public class YearManagementTimeDayConverter {
                 .personalGoal(yearManagementTimeDay.getPersonalGoal())
                 .commendable(yearManagementTimeDay.getCommendable())
                 .keywords3(yearManagementTimeDay.getKeywords3())
+                .color(JsonUtils.jsonToObject(yearManagementTimeDay.getColor(), String[].class))
                 .build();
     }
 }

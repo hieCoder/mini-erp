@@ -31,7 +31,6 @@ public class MonthlyManagementTimeDayConverter {
         return MonthlyManagementTimeDay.builder()
                 .code(monthlyRequest.getMonth())
                 .content(JsonUtils.objectToJson(monthlyRequest.getContent()))
-                .color(JsonUtils.objectToJson(monthlyRequest.getColor()))
                 .user(userMapper.findById(userId)).build();
     }
 
@@ -68,7 +67,6 @@ public class MonthlyManagementTimeDayConverter {
                 .month(monthlyManagementTimeDay.getCode())
                 .dailyRoutine(JsonUtils.jsonToObject(monthlyManagementTimeDay.getDailyRoutine(), DailyRoutineResponse[].class))
                 .monthlyContents(JsonUtils.jsonToObject(monthlyManagementTimeDay.getContent(), MonthlyContentDto[].class))
-                .color(JsonUtils.jsonToObject(monthlyManagementTimeDay.getColor(), String[].class))
                 .targetCategory(JsonUtils.jsonToObject(monthlyManagementTimeDay.getTargetCategory(), MonthlyTagetCategoryDto[].class))
                 .timeUsedMonthly(JsonUtils.jsonToObject(monthlyManagementTimeDay.getTimeUsedCategory(), TimeUsedMonthlyDto[].class))
                 .build();

@@ -290,7 +290,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 });
             } else {
                 monthlyEntity.setContent(JsonUtils.objectToJson(monthlyReq.getContent()));
-                monthlyEntity.setColor(JsonUtils.objectToJson(monthlyReq.getColor()));
                CompletableFuture.runAsync(() -> {
                     monthlyManagementTimeDayMapper.updateMonthlyManagementTimeDay(monthlyEntity);
                 });
@@ -368,16 +367,12 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 (monthly != null) ? JsonUtils.jsonToObject(monthly.getContent(), MonthlyContentDto[].class) : null
         ).join();
 
-        String color = monthlyFuture.thenApply(monthly ->
-                (monthly != null) ? monthly.getColor() : null
-        ).join();
 
         return CalendarResponse.builder()
                 .monthlyContents(monthlyContents)
                 .days(managementTimeDayConvert.toListCalendarResponse(daysFuture.join()))
                 .weeklys(weeklyManagementTimeDayConverter.toListResponse(weeklysFuture.join()))
                 .year(yearManagementTimeDayConverter.toResponse(yearFuture.join()))
-                .color(JsonUtils.jsonToObject(color, String[].class))
                 .build();
     }
 
@@ -425,7 +420,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
 
                         monthResponse.setDailyRoutine(dailyRoutineResponses);
                     }
-                    monthResponse.setColor(JsonUtils.jsonToObject(monthlyManagementTimeDay.getColor(), String[].class));
                     monthlys.add(monthResponse);
                 } else {
                     MonthResponse monthResponse = MonthResponse.builder()
@@ -668,6 +662,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             String personalGoal = yearRequest.getPersonalGoal();
             String commendable = yearRequest.getCommendable();
             String keywords3 = yearRequest.getKeywords3();
+            String[] color = yearRequest.getColor();
             YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
             if (yearE == null) {
                 YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
@@ -684,6 +679,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 yearE.setPersonalGoal(personalGoal);
                 yearE.setCommendable(commendable);
                 yearE.setKeywords3(keywords3);
+                yearE.setColor(JsonUtils.objectToJson(color));
                 CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);
                 });

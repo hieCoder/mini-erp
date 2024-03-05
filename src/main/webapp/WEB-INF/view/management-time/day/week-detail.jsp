@@ -24,22 +24,22 @@
 
         .add-node, .remove-node {
             position: absolute;
-            bottom: -15px; /* Điều chỉnh vị trí dấu "+" so với node */
-            left: 50%; /* Điều chỉnh vị trí dấu "+" so với node */
+            bottom: -15px;
+            left: 50%;
             transform: translateX(-50%);
-            width: 30px; /* Điều chỉnh kích thước của dấu "+" */
-            height: 30px; /* Điều chỉnh kích thước của dấu "+" */
+            width: 30px;
+            height: 30px;
             border: 2px solid #000;
             border-radius: 50%;
             background-color: #fff;
             text-align: center;
-            line-height: 26px; /* Điều chỉnh vị trí dấu "+" so với node */
+            line-height: 26px;
             cursor: pointer;
             z-index: 9999;
         }
 
         .add-node:hover, .remove-node:hover {
-            background-color: #f0f0f0; /* Màu nền khi hover vào dấu "+" */
+            background-color: #f0f0f0;
         }
 
         .containerMindMap {
@@ -71,19 +71,19 @@
         }
 
         .elem0child {
-            border: 2px solid #12c8fe;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]};
         }
 
         .elem1child {
-            border: 2px solid #9793e4;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]};
         }
 
         .elem2child {
-            border: 2px solid #2cdac8;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]};
         }
 
         .elem3child {
-            border: 2px solid #F2668A;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]};
         }
 
         .nodeChill span {
@@ -467,19 +467,51 @@
                     <div class="row card-body">
                         <div class="container vh-100">
                             <div class="containerMindMap">
-                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #fae23b;"></div>
+                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #9a9a9a;"></div>
                                 <div class="remove-node" style="background:#ff4d4d;">-</div>
-                                <div id="elem0" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #12c8fe">
-                                    ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
+                                <div id="elem0" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                     style="background: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                       ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
+                                   </p>
+                                    <div style="position: absolute; top: 100px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
-                                <div id="elem1" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #9793e4;">
-                                    ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
+                                <div id="elem1" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                     style="background: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                        ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
+                                    </p>
+                                    <div style="position: absolute; top: 100px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
-                                <div id="elem2" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #2cdac8;">
-                                    ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
+                                <div id="elem2" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                    style="background: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                        ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
+                                    </p>
+                                    <div style="position: absolute; top: 100px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
-                                <div id="elem3" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background:#F2668A;">
-                                    ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
+                                <div id="elem3" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                    style="background: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                        ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
+                                    </p>
+                                    <div style="position: absolute; top: 100px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
@@ -3006,6 +3038,7 @@
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script>
 
+    // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
         const currentDayParam = getParameterByName('currentDay', currentURL);
@@ -3048,7 +3081,6 @@
            default:
                break;
        }
-
     })
 
     // Mind map
@@ -3059,6 +3091,7 @@
 
         initialize();
         document.getElementById('elem3').click();
+        $('.pcr-swatches').addClass('d-none');
 
         function initialize() {
             $(".containerMindMap").css("width", $("#main").outerWidth() + "px");
@@ -3231,7 +3264,7 @@
             })
         })
 
-        document.querySelectorAll('.level1').forEach(function (e) {
+        document.querySelectorAll('.content-level1').forEach(function (e) {
             e.addEventListener('click', function () {
                 if (e.textContent.trim() == 'Click To Edit') {
                     e.textContent = '';
@@ -3328,13 +3361,13 @@
             date.setDate(date.getDate() - 1);
         }
 
-        var count = 0; // Biến đếm số lượng ngày Chủ nhật đã thêm vào mảng
+        var count = 0;
 
         do {
             sundays.push(new Date(date));
             count++;
 
-            if (count === 5) { // Nếu đã thêm đủ 5 ngày, thoát khỏi vòng lặp
+            if (count === 5) {
                 break;
             }
 
@@ -3456,7 +3489,6 @@
         weeklyAmountTime.forEach(function (e, index) {
             const weekIndex = index % sundaysInMonth.length;
             e.setAttribute('data-week', sundaysInMonth[weekIndex]);
-            console.log(sundaysInMonth[weekIndex])
         });
 
         weeklySentence.forEach(function (e, index) {
@@ -3476,7 +3508,6 @@
                     const parseData = JSON.parse(xhr.responseText);
                     const days = parseData.days;
                     const weeklys = parseData.weeklys;
-                    console.log(weeklys);
                     const dayInRow = document.querySelectorAll('.category-review');
                     dayInRow.forEach(function (dayRow, index) {
                         if (index < 5) {
@@ -4739,7 +4770,7 @@
 
             const tr0 = document.querySelector('.tr-weekly-sentence0').querySelectorAll('textarea');
             const tr1 = document.querySelector('.tr-weekly-sentence1').querySelectorAll('textarea');
-            const tr2 = document.querySelector('.tr-weekly-sentence2').querySelectorAll('textarea');;
+            const tr2 = document.querySelector('.tr-weekly-sentence2').querySelectorAll('textarea');
             tr0.forEach(function (e, index) {
                 let obj = {
                     startDay: e.getAttribute('data-week'),
@@ -4776,6 +4807,7 @@
                     }
                 }
             })
+
             $('input[type="checkbox"].dailyRoutine').each(function () {
                 const day = $(this).data('day');
                 const isChecked = $(this).prop('checked');
@@ -4922,7 +4954,8 @@
             data.year = {
                 year: year,
                 target: [],
-                category: []
+                category: [],
+                color: []
             };
 
             const yearTargetNode = document.querySelectorAll('.level1');
@@ -4933,7 +4966,7 @@
                 var tartgetYear = '';
 
                 if (btnSaveMindmap == 'save-mindmap') {
-                    tartgetYear = yearTargetNode[index].textContent.trim() == 'Click To Edit' ? '' : yearTargetNode[index].textContent.trim();
+                    tartgetYear = yearTargetNode[index].querySelector('p').textContent.trim() == 'Click To Edit' ? '' : yearTargetNode[index].querySelector('p').textContent.trim();
                 } else {
                     tartgetYear = $(this).val().trim();
                 }
@@ -4971,6 +5004,14 @@
             data.year.personalGoal = $('#year-personalGoal').val();
             data.year.commendable = $('#year-commendable').val();
             data.year.keywords3 = $('#year-keywords3').val();
+
+            document.querySelectorAll('.level1').forEach(function (e) {
+                if (btnSaveMindmap == 'save-mindmap') {
+                    var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
+                    data.year.color.push(backgroundColor);
+                }
+            })
+
             data.days.push(...days);
 
             const imageQuote = document.getElementById('quoteImage').files[0];

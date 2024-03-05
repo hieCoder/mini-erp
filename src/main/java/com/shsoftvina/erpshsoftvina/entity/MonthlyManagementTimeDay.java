@@ -17,7 +17,6 @@ public class MonthlyManagementTimeDay {
     private String dailyRoutine;
     private Float spendingGoals;
     private String targetCategory;
-    private String color;
     private String gratitudeDiary;
     private String compliment;
     private String reflectionAndImprovement;

@@ -20,5 +20,6 @@ public class YearManagementTimeDay {
     private String personalGoal;
     private String commendable;
     private String keywords3;
+    private String color;
     private User user;
 }
