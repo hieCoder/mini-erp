@@ -146,7 +146,7 @@
         <table class="table table-bordered" id="todoTable">
             <thead>
             <tr class="text-center week">
-                <th style="width: 150px;" scope="col" class="text-warning">Categories</th>
+                <th style="width: 260px;" scope="col" class="text-success">Weekly Goals</th>
                 <th style="width: 150px;" scope="col" class="text-danger">Sun</th>
                 <th style="width: 150px;" scope="col">Mon</th>
                 <th style="width: 150px;" scope="col">Tue</th>
@@ -154,7 +154,6 @@
                 <th style="width: 150px;" scope="col">Thu</th>
                 <th style="width: 150px;" scope="col">Fri</th>
                 <th style="width: 150px;" scope="col" class="text-primary">Sat</th>
-                <th style="width: 260px;" scope="col" class="text-success">Weekly Goals</th>
             </tr>
             </thead>
             <tbody>
@@ -330,7 +329,6 @@
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
-                    let category = parseData.year == null ? null : parseData.year.category  ;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
                     let yearCurrent = document.getElementById('yearCurrent');
@@ -395,7 +393,7 @@
                     const weeksInSpecificMonth = getWeeksInMonth(year, month) * numberOfRowsPerWeek;
                     for (let i = 0; i < weeksInSpecificMonth; i++) {
                         const row = document.createElement('tr');
-                        for (let j = 0; j < 9; j++) {
+                        for (let j = 0; j < 8; j++) {
                             const cell = document.createElement('td');
                             cell.classList.add("text-center")
                             cell.classList.add("align-middle")
@@ -453,6 +451,7 @@
                                                 cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
+                                                cell.textContent = e.weeklys[dayTodo].content;
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                                 cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                             }
@@ -467,12 +466,12 @@
                                         }
                                     }
                                     row.classList.add(dayCodeTrTag[(i % 6) - 1])
-                                    cell.classList.add("title");
                                     cell.classList.add("text-wrap");
                                     cell.classList.add("fw-bold");
                                     cell.classList.add("fst-italic");
-                                    cell.classList.add("year-category");
+                                    cell.classList.add("content");
                                     cell.style.maxWidth = 'fit-content';
+                                    cell.setAttribute('contenteditable', 'true');
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
@@ -501,56 +500,6 @@
                                         cell.setAttribute('data-day', currentColDay);
                                         cell.setAttribute('contenteditable', 'true');
                                     }
-                                } else {
-                                    const dayTodo = (i % 6) - 1;
-                                    const dayNumber = countLine * 7 + j - startDay;
-                                    const year = getCurentYear(document.getElementById('currentYear').textContent);
-                                    const currentMonth = getCurentMonth(document.getElementById('currentMonth').textContent) + 1;
-                                    let currentColDay;
-                                    if (dayNumber > daysInMonth) {
-                                        currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + daysInMonth;
-                                    } else {
-                                        currentColDay = year + "-" + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + "-" + ((0 < dayNumber && dayNumber < 10) ? '0' + dayNumber : dayNumber);
-                                    }
-                                    if (weekData != null && weekData.length > 0) {
-                                        cell.classList.add("fw-bold")
-                                        cell.classList.add("fst-italic")
-                                        cell.classList.add("text-wrap")
-                                        weekData.forEach((e) => {
-                                            if (e.weeklys === null) {
-                                                return;
-                                            }
-                                            const startDate = new Date(e.startDate);
-                                            const firstDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-                                            const daysDiff = Math.ceil((startDate - firstDayOfMonth) / (1000 * 60 * 60 * 24));
-                                            var weekNumber;
-                                            if (e.startDate === formattedFirstSunday) {
-                                                weekNumber = 1;
-                                            } else {
-                                                weekNumber = Math.ceil((daysDiff + firstDayOfMonth.getDay() + 1) / 7);
-                                            }
-                                            if ((dayNumber - 7) === daysInMonth) {
-                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay, true));
-                                            } else {
-                                                cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
-                                            }
-                                            if (weekNumber === (Math.floor((i / 6) + 1))) {
-                                                cell.textContent = e.weeklys[dayTodo].content;
-                                                cell.setAttribute('data-status', e.weeklys[dayTodo].status)
-                                                cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
-                                            }
-                                            cell.setAttribute('data-array', dayTodo);
-                                        });
-                                    } else {
-                                        cell.setAttribute('data-array', dayTodo);
-                                        if ((dayNumber - 7) === daysInMonth) {
-                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay, true));
-                                        } else {
-                                            cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
-                                        }
-                                    }
-                                    cell.classList.add("content");
-                                    cell.setAttribute('contenteditable', 'true');
                                 }
                             }
                             row.classList.add('color');
@@ -585,17 +534,6 @@
                             default:
                                 break;
                         }
-                    })
-                    document.querySelectorAll('.year-category').forEach(function (e, index) {
-                        if (category != null) {
-                            const arrayIndex = index % category.length;
-                            e.textContent = category[arrayIndex];
-                            if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
-                        }
-                    })
-                    document.querySelectorAll('.theSingleMostImportantThing').forEach(function (e) {
-                        e.querySelector('td').classList.add('text-danger');
-                        e.querySelector('td').textContent = 'Important matter';
                     })
                     document.querySelectorAll('.title').forEach(function (e, index) {
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
@@ -715,9 +653,9 @@
         document.getElementById('monthlyTarget').querySelectorAll('p').forEach( function (e) {
             statusMonthly.push(e.getAttribute('data-value'));
         })
-       document.querySelectorAll('.yearTarget').forEach(function (e) {
-           statusYear.push(e.getAttribute('data-value'))
-       })
+        document.querySelectorAll('.yearTarget').forEach(function (e) {
+            statusYear.push(e.getAttribute('data-value'))
+        })
         $(document).on("click", "button.createCalendar", function (event) {
             $(".containerLoading ").removeClass("d-none")
             $("div.calendar-container").addClass("d-none")
@@ -767,7 +705,6 @@
             $('td[contenteditable="true"]').each(function () {
                 const day = $(this).data('day');
                 const index = $(this).data('array');
-                const hasTitleClass = $(this).hasClass('title');
                 const hasContentClass = $(this).hasClass('content');
                 const value = $(this).text().trim();
                 const week = $(this).data('week');
@@ -794,13 +731,7 @@
                             weeklys.push(weekObj);
                         }
                         const currentWeekly = weekObj.weeklys[index];
-                        if (hasTitleClass) {
-                            if (!currentWeekly.hasOwnProperty('content')) {
-                                currentWeekly.content = '';
-                            }
-                            currentWeekly.status = $(this).data('status')
-                            currentWeekly.timeUsed = $(this).data('timeused') == null ? null : $(this).data('timeused').toString()
-                        } else if (hasContentClass) {
+                        if (hasContentClass) {
                             currentWeekly.content = value;
                             currentWeekly.status = $(this).data('status')
                             currentWeekly.timeUsed = $(this).data('timeused') == null ? null : $(this).data('timeused').toString()
@@ -812,7 +743,6 @@
             data.year = {
                 year: currentYear.textContent,
                 target: [],
-                category: []
             };
 
             document.querySelectorAll('.yearTarget').forEach(function (target) {
@@ -821,9 +751,6 @@
                     status: target.getAttribute('data-value')
                 }
                 data.year.target.push(obj);
-            })
-            document.querySelectorAll('.title').forEach(function (e, index) {
-               if (index < 5) data.year.category.push(e.textContent)
             })
 
             data.days.push(...days);
@@ -884,7 +811,7 @@
 
     function toggleEdit(element) {
         var isEditing = element.classList.contains('editing');
-
+        element.style.background = element.style.background
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;

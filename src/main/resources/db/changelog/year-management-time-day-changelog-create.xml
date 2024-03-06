@@ -12,7 +12,6 @@
             <column name="CODE" type="VARCHAR(255)"/>
             <column name="TARGET" type="TEXT"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
-            <column name="CATEGORY" type="VARCHAR(255)"/>
             <column name="GRATEFUL" type="VARCHAR(1500)"/>
             <column name="HAPPY" type="VARCHAR(1500)"/>
             <column name="WHO_U_BECOME" type="VARCHAR(1500)"/>

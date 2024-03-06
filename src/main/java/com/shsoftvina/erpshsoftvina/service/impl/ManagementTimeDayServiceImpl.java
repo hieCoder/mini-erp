@@ -305,7 +305,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 });
             } else {
                 yearEntity.setTarget(JsonUtils.objectToJson(yearRequest.getTarget()));
-                yearEntity.setCategory(JsonUtils.objectToJson(yearRequest.getCategory()));
                 CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.updateYearManagementTimeDay(yearEntity);
                 });
@@ -655,7 +654,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             YearRequest yearRequest = daysUpdateRequest.getYear();
             String yearCode = yearRequest.getYear();
             YearTargetDto[] target = yearRequest.getTarget();
-            String[] category = yearRequest.getCategory();
             String grateful = yearRequest.getGrateful();
             String happy = yearRequest.getHappy();
             String whoUBecome = yearRequest.getWhoUBecome();
@@ -672,7 +670,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 asyncTasks.add(createYearManagementTimeDayAsync);
             } else {
                 yearE.setTarget(JsonUtils.objectToJson(target));
-                yearE.setCategory(JsonUtils.objectToJson(category));
                 yearE.setGrateful(grateful);
                 yearE.setHappy(happy);
                 yearE.setWhoUBecome(whoUBecome);

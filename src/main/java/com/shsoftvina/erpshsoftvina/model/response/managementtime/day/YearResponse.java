@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class YearResponse {
     private String year;
     private YearTargetDto[] target;
-    private String[] category;
     private String grateful;
     private String happy;
     private String whoUBecome;
