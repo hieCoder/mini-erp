@@ -48,6 +48,8 @@
             font-size: 25px !important;
             margin-left: 0 !important;
         }
+
+
     </style>
     <title>Calendars</title>
     <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
@@ -57,7 +59,6 @@
     <div class="col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">MANAGEMENT TIME CALENDAR</h4>
-
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
@@ -67,7 +68,6 @@
                     <li class="breadcrumb-item active">Management Time Calendar</li>
                 </ol>
             </div>
-
         </div>
     </div>
     <div style="width: 3rem; height: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
@@ -137,7 +137,6 @@
                 </div>
             </div>
             <div style="width: 345px" class="m-3 position-relative">
-
                 <button class="btn btn-primary bottom-left createCalendar" type="button">Save</button>
                 <button type="button" class="btn btn-info bottom-right" data-bs-toggle="modal"
                         data-bs-target="#exampleModalgrid">Dream Board</button>
@@ -336,7 +335,7 @@
                     console.log(parseData)
 
                     let xhtml = '';
-                    var yearColor = parseData.year == null || parseData.year.color == null ? ['#f2aaaa','#bcd6af','#ffe180','#ad9ad9'] : parseData.year.color;
+                    var yearColor = parseData.year == null || parseData.year.color == null || parseData.year.color == '' ? ['#f2aaaa','#bcd6af','#ffe180','#ad9ad9'] : parseData.year.color;
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e, index) => {
                             if (e.content === "") {
@@ -365,7 +364,7 @@
                         yearTarget.innerHTML = yearHtml;
                     } else {
                         for (let i = 0; i < 4; i++) {
-                            yearHtml += '<p class="editableYear m-0 yearTarget" ondblclick="toggleEditYear(this)">Double click to edit</p>'
+                            yearHtml += '<p class="editableYear m-0 yearTarget text-white ps-2" style="background: ' + yearColor[i] + '" ondblclick="toggleEditYear(this)">Double click to edit</p>'
                         }
                         yearTarget.innerHTML = yearHtml;
                     }
@@ -538,6 +537,22 @@
                     document.querySelectorAll('.title').forEach(function (e, index) {
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                     });
+
+                    if (parseData.year != null) {
+                        let targetYearColor = parseData.year.color;
+                        document.querySelectorAll('.lecture').forEach(function (e) {
+                            e.style.backgroundColor = targetYearColor[0]
+                        })
+                        document.querySelectorAll('.dailyEvaluation').forEach(function (e) {
+                            e.style.backgroundColor = targetYearColor[1]
+                        })
+                        document.querySelectorAll('.work').forEach(function (e) {
+                            e.style.backgroundColor = targetYearColor[2]
+                        })
+                        document.querySelectorAll('.reading').forEach(function (e) {
+                            e.style.backgroundColor = targetYearColor[3]
+                        })
+                    }
 
                 } else {
                     window.location.href = "/management-time/";
