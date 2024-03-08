@@ -87,7 +87,7 @@
                         <span class="trending-ribbon-text">Focus</span> <i
                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                     </div>
-                    <h5 class="fs-14 text-end mb-3" id="yearCurrent"></h5>
+                    <h5 class="fs-14 text-end mb-3" id="yearCurrent">Monthly Goals</h5>
                     <div class="m-0" id="yearTarget">
                     </div>
                 </div>
@@ -330,9 +330,8 @@
                     let colors = parseData.color;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
-                    let yearCurrent = document.getElementById('yearCurrent');
+                    // let yearCurrent = document.getElementById('yearCurrent');
                     let yearTarget = document.getElementById('yearTarget');
-                    console.log(parseData)
 
                     let xhtml = '';
                     var yearColor = parseData.year == null || parseData.year.color == null || parseData.year.color == '' ? ['#f2aaaa','#bcd6af','#ffe180','#ad9ad9'] : parseData.year.color;
@@ -377,9 +376,7 @@
                     const targetOptions = {month: 'long'};
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
-                    monthTarget.textContent = 'Goals of ' + startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions);
-                    const targetOfYear = parseData.year == null ? currentYear.textContent : parseData.year.year;
-                    yearCurrent.textContent = 'Goals of ' + targetOfYear;
+                    monthTarget.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions) + ' Goals';
 
                     const startDay = startDateOfCurrentDate.getDay();
 
@@ -538,21 +535,25 @@
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                     });
 
-                    if (parseData.year != null) {
-                        let targetYearColor = parseData.year.color;
-                        document.querySelectorAll('.lecture').forEach(function (e) {
-                            e.style.backgroundColor = targetYearColor[0]
-                        })
-                        document.querySelectorAll('.dailyEvaluation').forEach(function (e) {
-                            e.style.backgroundColor = targetYearColor[1]
-                        })
-                        document.querySelectorAll('.work').forEach(function (e) {
-                            e.style.backgroundColor = targetYearColor[2]
-                        })
-                        document.querySelectorAll('.reading').forEach(function (e) {
-                            e.style.backgroundColor = targetYearColor[3]
-                        })
-                    }
+                    document.querySelectorAll('.lecture').forEach(function (e) {
+                        e.style.backgroundColor = yearColor[0]
+                    })
+                    document.querySelectorAll('.dailyEvaluation').forEach(function (e) {
+                        e.style.backgroundColor = yearColor[1]
+                    })
+                    document.querySelectorAll('.work').forEach(function (e) {
+                        e.style.backgroundColor = yearColor[2]
+                    })
+                    document.querySelectorAll('.reading').forEach(function (e) {
+                        e.style.backgroundColor = yearColor[3]
+                    })
+
+                    document.querySelectorAll('.theSingleMostImportantThing').forEach(function (e) {
+                        const elImportant = e.querySelector('td');
+                        elImportant.classList.add('text-danger', 'fw-bold');
+                        elImportant.textContent = 'Important matter';
+                        elImportant.setAttribute('contenteditable', 'false');
+                    })
 
                 } else {
                     window.location.href = "/management-time/";
@@ -746,6 +747,9 @@
                             weeklys.push(weekObj);
                         }
                         const currentWeekly = weekObj.weeklys[index];
+                        weekObj.weeklys[0].content = 'Important matter';
+                        weekObj.weeklys[0].status = 'INPROGRESS';
+                        weekObj.weeklys[0].timeUsed = '0';
                         if (hasContentClass) {
                             currentWeekly.content = value;
                             currentWeekly.status = $(this).data('status')
@@ -793,6 +797,7 @@
             });
         })
     }
+
     function getPreviousSunday(currentDate, isLastSunday) {
         const dateObject = new Date(currentDate);
 

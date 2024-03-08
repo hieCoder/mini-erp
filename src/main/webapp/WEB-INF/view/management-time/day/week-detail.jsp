@@ -367,19 +367,19 @@
         }
 
         #lectureCategory {
-            background-color: #fcecec;
+            background-color: #f2aaaa;
         }
 
         #dailyCategory {
-            background-color: #e6f0e2;
+            background-color: #bcd6af;
         }
 
         #workCategory {
-            background-color: #fff9e6;
+            background-color: #ffe180;
         }
 
         #readingCategory {
-            background-color: #e9e4f5;
+            background-color: #ad9ad9;
         }
         .main-content-node {
             max-height: 200px;
@@ -895,7 +895,7 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#fcecec' : weekly.year.color[0]}">
+                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
                                     <td class="text-start d-flex align-items-center">
                                         <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[0].target}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[0].status}" type="button" data-bs-toggle="dropdown"
@@ -977,7 +977,7 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <tr style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#e6f0e2' : weekly.year.color[1]}">
+                                <tr style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                     <td class="text-start d-flex align-items-center">
                                         <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[1].target}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[1].status}" type="button" data-bs-toggle="dropdown"
@@ -1059,7 +1059,7 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#fff9e6' : weekly.year.color[2]}">
+                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                     <td class="text-start d-flex align-items-center">
                                         <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[2].target}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[2].status}" type="button" data-bs-toggle="dropdown"
@@ -1141,7 +1141,7 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#e9e4f5' : weekly.year.color[3]}">
+                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                     <td class="text-start d-flex align-items-center">
                                         <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[3].target}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[3].status}" type="button" data-bs-toggle="dropdown"
@@ -1412,7 +1412,7 @@
                                     <tbody>
                                     <tr>
                                         <td></td>
-                                        <td colspan="2" class="fw-bolder">Categories</td>
+                                        <td colspan="2" class="fw-bolder">Goals</td>
                                     </tr>
                                     <tr class="theSingleMostImportantThing" style="height: 42px">
                                         <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">
@@ -1425,7 +1425,7 @@
                                     </tr>
                                     <tr class="lecture">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#fcecec' : weekly.year.color[0]}">
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
                                             <div class="d-flex align-items-center">
                                                 <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[1].content}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[1].status}" type="button" data-bs-toggle="dropdown"
@@ -1463,7 +1463,7 @@
                                     </tr>
                                     <tr class="dailyEvaluation">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#e6f0e2' : weekly.year.color[1]}">
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
                                             <div class="d-flex align-items-center">
                                                 <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[2].content}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[2].status}" type="button" data-bs-toggle="dropdown"
@@ -1500,7 +1500,7 @@
                                     </tr>
                                     <tr class="work">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#fff9e6' : weekly.year.color[2]}">
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
                                             <div class="d-flex align-items-center">
                                                 <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[3].content}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[3].status}" type="button" data-bs-toggle="dropdown"
@@ -1537,7 +1537,7 @@
                                     </tr>
                                     <tr class="reading">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#e9e4f5' : weekly.year.color[3]}">
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
                                             <div class="d-flex align-items-center">
                                                 <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[4].content}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[4].status}" type="button" data-bs-toggle="dropdown"
@@ -1614,25 +1614,25 @@
                                     </c:forEach>
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
-                                        <td class="title-report-category" style="background-color: #fcecec"></td>
+                                        <td class="title-report-category" style="background-color: #f2aaaa"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #e6f0e2"></td>
+                                        <td class="title-report-category" style="background-color: #bcd6af"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #fff9e6"></td>
+                                        <td class="title-report-category" style="background-color: #ffe180"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #e9e4f5"></td>
+                                        <td class="title-report-category" style="background-color: #ad9ad9"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-container" style="max-height: 2120px;">
+                            <div class="table-container" style="max-height: 2190px;">
                                 <table>
                                     <thead>
                                     <tr>
@@ -1669,8 +1669,8 @@
                                             <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
                                             <td class="editable-cell target-color-lecture isModifyLecture" colspan="2"
                                                 contenteditable="true" data-name="lecture"
-                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#fcecec' : weekly.year.color[0]}">${lecture.target}</td>
-                                            <td class="performance-color-lecture isModifyLecture" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#fcecec' : weekly.year.color[0]}"><input
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">${lecture.target}</td>
+                                            <td class="performance-color-lecture isModifyLecture" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                         </c:forEach>
@@ -1681,8 +1681,8 @@
                                             <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="2"
                                                 contenteditable="true"
                                                 data-name="dailyEvaluation"
-                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#e6f0e2' : weekly.year.color[1]}">${dailyEvaluation.target}</td>
-                                            <td class="performance-color-dailyEvaluation isModifyDaily" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#e6f0e2' : weekly.year.color[1]}"><input
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">${dailyEvaluation.target}</td>
+                                            <td class="performance-color-dailyEvaluation isModifyDaily" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                         </c:forEach>
@@ -1692,8 +1692,8 @@
                                             <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
                                             <td class="editable-cell target-color-work isModifyWork" colspan="2"
                                                 contenteditable="true" data-name="work"
-                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#fff9e6' : weekly.year.color[2]}">${work.target}</td>
-                                            <td class="performance-color-work isModifyWork" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#fff9e6' : weekly.year.color[2]}"><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">${work.target}</td>
+                                            <td class="performance-color-work isModifyWork" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}"><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -1702,8 +1702,8 @@
                                             <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
                                             <td class="editable-cell target-color-reading isModifyReading" colspan="2"
                                                 contenteditable="true" data-name="reading"
-                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#e9e4f5' : weekly.year.color[3]}">${reading.target}</td>
-                                            <td class="performance-color-reading isModifyReading" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#e9e4f5' : weekly.year.color[3]}"><input
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">${reading.target}</td>
+                                            <td class="performance-color-reading isModifyReading" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                         </c:forEach>
@@ -2222,16 +2222,16 @@
                                     <tr>
                                         <td class="reivew-daily-onething text-nowrap"></td>
                                     </tr>
-                                    <tr style="background-color: #fcecec">
+                                    <tr style="background-color: #f2aaaa">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
-                                    <tr style="background-color: #e6f0e2">
+                                    <tr style="background-color: #bcd6af">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
-                                    <tr style="background-color: #fff9e6">
+                                    <tr style="background-color: #ffe180">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
-                                    <tr style="background-color: #e9e4f5">
+                                    <tr style="background-color: #ad9ad9">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
                                     <c:choose>
@@ -2249,22 +2249,22 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 50px; background-color: #fcecec">
+                                    <tr style="height: 50px; background-color: #f2aaaa">
                                         <td rowspan="4" style="background-color: #FFBB64;">
                                             <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
                                         </td>
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 51px; background-color: #e6f0e2">
+                                    <tr style="height: 51px; background-color: #bcd6af">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 50px; background-color: #fff9e6">
+                                    <tr style="height: 50px; background-color: #ffe180">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 51px; background-color: #e9e4f5">
+                                    <tr style="height: 51px; background-color: #ad9ad9">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #fcecec">
+                                    <tr style="height: 45px; background-color: #f2aaaa">
                                         <td rowspan="4" style="background-color: #E6A4B4;">
                                             <h5 class="fw-bolder text-white">Amount of <br>time</h5>
                                             <button type="button" id="btn-chart-time-used" class="btn btn-primary btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
@@ -2297,13 +2297,13 @@
                                         </td>
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #e6f0e2">
+                                    <tr style="height: 45px; background-color: #bcd6af">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #fff9e6">
+                                    <tr style="height: 45px; background-color: #ffe180">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #e9e4f5">
+                                    <tr style="height: 45px; background-color: #ad9ad9">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
                                     <tr style="background-color: #FF9BD2">
@@ -2386,7 +2386,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#fcecec' : weekly.monthlys[0].color[1]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#f2aaaa' : weekly.monthlys[0].color[1]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -2395,7 +2395,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#e6f0e2' : weekly.monthlys[0].color[2]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#bcd6af' : weekly.monthlys[0].color[2]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -2404,7 +2404,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#fff9e6' : weekly.monthlys[0].color[3]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#ffe180' : weekly.monthlys[0].color[3]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -2413,7 +2413,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#e9e4f5' : weekly.monthlys[0].color[4]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#ad9ad9' : weekly.monthlys[0].color[4]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -3155,7 +3155,7 @@
         function removeTabParamFromURL(url) {
             var url = new URL(currentURL);
             url.searchParams.delete('tab');
-            window.history.replaceState({}, document.title, url);
+            window.history.replaceState( {}, document.title, url);
         }
 
        switch (tabPlanner) {
