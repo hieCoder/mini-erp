@@ -26,7 +26,7 @@ public class BookConverter {
                 .createdBy(book.getCreatedBy())
                 .link(book.getLink())
                 .image(FileUtils.getPathUpload(Book.class, book.getImage()))
-                .timeSpentReading(book.getFeelingOfBook() == null ? 0 : book.getFeelingOfBook().getTimeSpentReading())
+                .timeSpentReading(book.getFeelingOfBook() == null || book.getFeelingOfBook().getTimeSpentReading() == null ? 0 : book.getFeelingOfBook().getTimeSpentReading())
                 .note(book.getFeelingOfBook() == null ? "" : book.getFeelingOfBook().getNote())
                 .build();
     }

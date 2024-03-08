@@ -4,8 +4,8 @@
 <mapper namespace="com.shsoftvina.erpshsoftvina.mapper.YearManagementTimeDayMapper">
 
     <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
-        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID, CATEGORY, GRATEFUL, HAPPY, WHO_U_BECOME, PERSONAL_GOAL, COMMENDABLE, KEYWORDS_3)
-        VALUES (UUID(), #{code}, #{target}, #{user.id}, #{category}, #{grateful}, #{happy}, #{whoUBecome}, #{personalGoal}, #{commendable}, #{keywords3})
+        INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID, GRATEFUL, HAPPY, WHO_U_BECOME, PERSONAL_GOAL, COMMENDABLE, KEYWORDS_3, COLOR)
+        VALUES (UUID(), #{code}, #{target}, #{user.id}, #{grateful}, #{happy}, #{whoUBecome}, #{personalGoal}, #{commendable}, #{keywords3}, #{color})
     </insert>
 
     <select id="findByCode" resultMap="yearManagementTimeDayResultMap">
@@ -19,13 +19,13 @@
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="target" column="TARGET"/>
-        <result property="category" column="CATEGORY"/>
         <result property="grateful" column="GRATEFUL"/>
         <result property="happy" column="HAPPY"/>
         <result property="whoUBecome" column="WHO_U_BECOME"/>
         <result property="personalGoal" column="PERSONAL_GOAL"/>
         <result property="commendable" column="COMMENDABLE"/>
         <result property="keywords3" column="KEYWORDS_3"/>
+        <result property="color" column="COLOR"/>
         <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
@@ -37,13 +37,13 @@
     <update id="updateYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
         UPDATE YEAR_MANAGEMENT_TIME_DAY
         SET TARGET = #{target},
-            CATEGORY = #{category},
             GRATEFUL = #{grateful},
             HAPPY = #{happy},
             WHO_U_BECOME = #{whoUBecome},
             PERSONAL_GOAL = #{personalGoal},
             COMMENDABLE = #{commendable},
-            KEYWORDS_3 = #{keywords3}
+            KEYWORDS_3 = #{keywords3},
+            COLOR = #{color}
         WHERE ID = #{id};
     </update>
 </mapper>

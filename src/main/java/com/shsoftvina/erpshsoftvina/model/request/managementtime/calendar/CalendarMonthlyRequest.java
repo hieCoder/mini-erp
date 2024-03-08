@@ -13,5 +13,4 @@ import lombok.NoArgsConstructor;
 public class CalendarMonthlyRequest {
     private String month;
     private MonthlyContentDto[] content;
-    private String[] color;
 }

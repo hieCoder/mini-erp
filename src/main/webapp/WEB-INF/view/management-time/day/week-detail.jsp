@@ -24,22 +24,22 @@
 
         .add-node, .remove-node {
             position: absolute;
-            bottom: -15px; /* Điều chỉnh vị trí dấu "+" so với node */
-            left: 50%; /* Điều chỉnh vị trí dấu "+" so với node */
+            bottom: -15px;
+            left: 50%;
             transform: translateX(-50%);
-            width: 30px; /* Điều chỉnh kích thước của dấu "+" */
-            height: 30px; /* Điều chỉnh kích thước của dấu "+" */
+            width: 30px;
+            height: 30px;
             border: 2px solid #000;
             border-radius: 50%;
             background-color: #fff;
             text-align: center;
-            line-height: 26px; /* Điều chỉnh vị trí dấu "+" so với node */
+            line-height: 26px;
             cursor: pointer;
             z-index: 9999;
         }
 
         .add-node:hover, .remove-node:hover {
-            background-color: #f0f0f0; /* Màu nền khi hover vào dấu "+" */
+            background-color: #f0f0f0;
         }
 
         .containerMindMap {
@@ -71,19 +71,19 @@
         }
 
         .elem0child {
-            border: 2px solid #12c8fe;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]};
         }
 
         .elem1child {
-            border: 2px solid #9793e4;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]};
         }
 
         .elem2child {
-            border: 2px solid #2cdac8;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};
         }
 
         .elem3child {
-            border: 2px solid #F2668A;;
+            border: 2px solid ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};
         }
 
         .nodeChill span {
@@ -367,22 +367,25 @@
         }
 
         #lectureCategory {
-            background-color: #fcecec;
+            background-color: #f2aaaa;
         }
 
         #dailyCategory {
-            background-color: #e6f0e2;
+            background-color: #bcd6af;
         }
 
         #workCategory {
-            background-color: #fff9e6;
+            background-color: #ffe180;
         }
 
         #readingCategory {
-            background-color: #e9e4f5;
+            background-color: #ad9ad9;
         }
         .main-content-node {
             max-height: 200px;
+        }
+        .yearTarget {
+            width: 145px !important;
         }
     </style>
 </head>
@@ -467,19 +470,51 @@
                     <div class="row card-body">
                         <div class="container vh-100">
                             <div class="containerMindMap">
-                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #fae23b;"></div>
+                                <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #9a9a9a;"></div>
                                 <div class="remove-node" style="background:#ff4d4d;">-</div>
-                                <div id="elem0" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #12c8fe">
-                                    ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
+                                <div id="elem0" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                     style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                       ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
+                                   </p>
+                                    <div style="position: absolute; top: 92px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
-                                <div id="elem1" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #9793e4;">
-                                    ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
+                                <div id="elem1" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                     style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                        ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
+                                    </p>
+                                    <div style="position: absolute; top: 92px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
-                                <div id="elem2" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background: #2cdac8;">
-                                    ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
+                                <div id="elem2" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                    style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                        ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
+                                    </p>
+                                    <div style="position: absolute; top: 92px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
-                                <div id="elem3" class="level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white" contenteditable="true" style="background:#F2668A;">
-                                    ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
+                                <div id="elem3" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                    style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
+                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                        ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
+                                    </p>
+                                    <div style="position: absolute; top: 92px">
+                                        <div class="pickr"></div>
+                                        <p hidden="hidden"
+                                           class="pickedColor"></p>
+                                    </div>
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
@@ -817,7 +852,7 @@
             <div class="row calendar-container d-none" data-date="${day}" data-id="${dayResponse.id}">
                 <div class="card">
                     <div class="row card-body">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <h4 class="fw-bolder">One Thing Calendar</h4>
@@ -831,8 +866,8 @@
                             <table class="table table-bordered oneThingCalendar text-center align-middle">
                                 <thead>
                                 <tr>
-                                    <th class="w-25">Objective</th>
-                                    <th>Key Results</th>
+                                    <th class="w-25">Year Goals</th>
+                                    <th>Monthly Goals</th>
                                     <th>Rate</th>
                                     <th>Target</th>
                                     <th class="text-wrap">Performance</th>
@@ -840,10 +875,11 @@
                                 </thead>
                                 <tbody>
                                 <%-- OneThing Calendar Session --%>
-                                <c:set var="theSingleMostImportantThing" value="${weekly.weeklys.weeklys[0]}"/>
-                                <tr style="background-color: ${weekly.monthlys[0].color[0]}" class="text-center">
-                                    <td class="text-start" rowspan="5" style="background-color: #ffffff !important;">Onething calendar</td>
-                                    <td><input class="form-control text-danger fw-bolder" type="text" value="Important matter" disabled></td>
+                                <tr class="text-center" style="height: 62px">
+                                    <td class="text-start" style="background-color: #ffffff !important;"></td>
+                                    <td class="text-danger fw-bold">
+                                        Important matter
+                                    </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
                                         ${weekly.monthlys[0].targetCategory[0] == null ? 0 : weekly.monthlys[0].targetCategory[0].target}
@@ -859,9 +895,73 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
-                                <tr style="background-color: ${weekly.monthlys[0].color[1] == null ? '#fcecec' : weekly.monthlys[0].color[1]}">
-                                    <td><input class="form-control" type="text" value="${weekly.year.category[1]}" disabled></td>
+                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
+                                    <td class="text-start d-flex align-items-center">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[0].target}">
+                                        <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[0].status}" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-warning waves-effect waves-light pending"
+                                                        style="margin: 0 5px; width: 102px;"><i
+                                                        class="ri-arrow-right-line"></i> </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                       <div class="d-flex align-items-center">
+                                           <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}">
+                                           <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[0].status}" type="button" data-bs-toggle="dropdown"
+                                                   aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                           </button>
+                                           <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                               <li>
+                                                   <button type="button"
+                                                           class="btn btn-outline-warning waves-effect waves-light pending"
+                                                           style="margin: 0 5px; width: 102px;"><i
+                                                           class="ri-arrow-right-line"></i> </button>
+                                               </li>
+                                               <li>
+                                                   <button type="button"
+                                                           class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                           style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                   </button>
+                                               </li>
+                                               <li>
+                                                   <button type="button"
+                                                           class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                           style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                   </button>
+                                               </li>
+                                               <li>
+                                                   <button type="button"
+                                                           class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                           style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                   </button>
+                                               </li>
+                                           </ul>
+                                       </div>
+                                    </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
                                         ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -877,9 +977,73 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
-                                <tr style="background-color:  ${weekly.monthlys[0].color[2] == null ? '#e6f0e2' : weekly.monthlys[0].color[2]}">
-                                    <td><input class="form-control" type="text" value="${weekly.year.category[2]}" disabled></td>
+                                <tr style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
+                                    <td class="text-start d-flex align-items-center">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[1].target}">
+                                        <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[1].status}" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-warning waves-effect waves-light pending"
+                                                        style="margin: 0 5px; width: 102px;"><i
+                                                        class="ri-arrow-right-line"></i> </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[1].content}">
+                                            <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[1].status}" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-warning waves-effect waves-light pending"
+                                                            style="margin: 0 5px; width: 102px;"><i
+                                                            class="ri-arrow-right-line"></i> </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
                                         ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -895,9 +1059,73 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
-                                <tr style="background-color: ${weekly.monthlys[0].color[3] == null ? '#fff9e6' : weekly.monthlys[0].color[3]}">
-                                    <td><input class="form-control" type="text" value="${weekly.year.category[3]}" disabled></td>
+                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
+                                    <td class="text-start d-flex align-items-center">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[2].target}">
+                                        <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[2].status}" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-warning waves-effect waves-light pending"
+                                                        style="margin: 0 5px; width: 102px;"><i
+                                                        class="ri-arrow-right-line"></i> </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[2].content}">
+                                            <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[2].status}" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-warning waves-effect waves-light pending"
+                                                            style="margin: 0 5px; width: 102px;"><i
+                                                            class="ri-arrow-right-line"></i> </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
                                         ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -913,9 +1141,73 @@
                                         ${sum}
                                     </td>
                                 </tr>
-                                <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
-                                <tr style="background-color: ${weekly.monthlys[0].color[4] == null ? '#e9e4f5' : weekly.monthlys[0].color[4]}">
-                                    <td><input class="form-control" type="text" value="${weekly.year.category[4]}" disabled></td>
+                                <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
+                                    <td class="text-start d-flex align-items-center">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[3].target}">
+                                        <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[3].status}" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-warning waves-effect waves-light pending"
+                                                        style="margin: 0 5px; width: 102px;"><i
+                                                        class="ri-arrow-right-line"></i> </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                        style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[3].content}">
+                                            <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[3].status}" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-warning waves-effect waves-light pending"
+                                                            style="margin: 0 5px; width: 102px;"><i
+                                                            class="ri-arrow-right-line"></i> </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
                                         ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -935,7 +1227,7 @@
                                 <%-- Daily Session --%>
                                 <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
                                 <tr name="theSingleMostImportantThing">
-                                    <td class="text-start" rowspan="1" id="daily-objective">Daily Routine</td>
+                                    <td class="text-center" rowspan="1" id="daily-objective">Daily Routine</td>
                                     <td><input class="form-control dailyRoutineInput checkDaily" type="text"
                                                value="${dailyRoutine.title == '' || dailyRoutine == null ? ' ' : dailyRoutine.title }">
                                     </td>
@@ -989,296 +1281,6 @@
                                                 id="addDaily"><i class="bx bx-plus"></i></button>
                                     </td>
                                     <td style="position: relative">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <h4 class="fw-bolder">Year Goals</h4>
-                            <table class="table table-bordered oneThingCalendar text-center align-middle">
-                                <thead>
-                                <tr>
-                                    <th class="w-25">Objective</th>
-                                    <th>Key Results</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="year" varStatus="loop" items="${weekly.year.target}">
-                                    <tr>
-                                        <c:if test="${loop.index == 0}">
-                                            <td class="text-start" rowspan="4">Main target</td>
-                                        </c:if>
-                                        <td>
-                                            <div class="input-group">
-                                                <input class="form-control yearTarget" type="text" value="${year.target}">
-                                                <button class="btn btn-info dropdown-toggle btn-status" data-value="${year.status}" type="button" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">Setting
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                    <li>
-                                                        <button type="button"
-                                                                class="btn btn-outline-warning waves-effect waves-light pending"
-                                                                style="margin: 0 5px; width: 102px;"><i
-                                                                class="ri-arrow-right-line"></i> Pending</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button"
-                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button"
-                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                <c:if test="${weekly.year.target == null}">
-                                    <c:forEach begin="1" end="${4}" varStatus="loop">
-                                        <tr>
-                                            <c:if test="${loop.index == 1}">
-                                                <td class="text-start" rowspan="4">Main target</td>
-                                            </c:if>
-                                            <td><input class="form-control yearTarget" type="text"></td>
-                                        </tr>
-                                    </c:forEach>
-                                </c:if>
-                                </tbody>
-                            </table>
-                            <h4 class="fw-bolder">Monthly goals</h4>
-                            <table class="table table-bordered oneThingCalendar text-center align-middle">
-                                <thead>
-                                <tr>
-                                    <th class="w-25">Objective</th>
-                                    <th>Key Results</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="monthly" varStatus="loop" items="${weekly.monthlys[0].monthlyContents}">
-                                    <tr>
-                                        <c:if test="${loop.index == 0}">
-                                            <td class="text-start" rowspan="4">Main target</td>
-                                        </c:if>
-                                        <td>
-                                            <div class="input-group">
-                                                <input class="form-control monthTarget" type="text" value="${monthly.content}">
-                                                <button class="btn btn-info dropdown-toggle btn-status" data-value="${monthly.status}" type="button" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">Setting
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                    <li>
-                                                        <button type="button"
-                                                                class="btn btn-outline-warning waves-effect waves-light pending"
-                                                                style="margin: 0 5px; width: 102px;"><i
-                                                                class="ri-arrow-right-line"></i> Pending</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button"
-                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button"
-                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                <c:if test="${weekly.monthlys[0].monthlyContents == null}">
-                                    <c:forEach begin="1" end="${4}" varStatus="loop">
-                                        <tr>
-                                            <c:if test="${loop.index == 1}">
-                                                <td class="text-start" rowspan="4">Main target</td>
-                                            </c:if>
-                                            <td><input class="form-control monthTarget" type="text"></td>
-                                        </tr>
-                                    </c:forEach>
-                                </c:if>
-                                </tbody>
-                            </table>
-                            <h4 class="fw-bolder">Weekly Goals</h4>
-                            <table class="table table-bordered oneThingCalendar text-center align-middle">
-                                <thead>
-                                <tr>
-                                    <th class="w-25">Category</th>
-                                    <th>Goals</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:set var="theSingleMostImportantThing"
-                                       value="${weekly.weeklys.weeklys[0]}"/>
-                                <tr id="theSingCategory">
-                                    <td class="text-start yearTitle text-danger fw-bolder" style="background-color: ${weekly.monthlys[0].color[0]};">Important matter</td>
-                                    <td style="background-color: ${weekly.monthlys[0].color[0]}">
-                                        <div class="input-group">
-                                            <input class="form-control weekTarget" name="theSingleMostImportantThing"
-                                                   type="text"
-                                                   value="${theSingleMostImportantThing.content}">
-                                            <button class="btn btn-info dropdown-toggle btn-status" data-value="${theSingleMostImportantThing.status}" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">Setting
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-warning waves-effect waves-light pending"
-                                                            style="margin: 0 5px; width: 102px;"><i
-                                                            class="ri-arrow-right-line"></i> Pending</button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <c:set var="lecture" value="${weekly.weeklys.weeklys[1]}"/>
-                                <tr id="lectureCategory">
-                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[1]}">${weekly.year.category[1]}</td>
-                                    <td style="background-color: ${weekly.monthlys[0].color[1]}">
-                                        <div class="input-group">
-                                            <input class="form-control weekTarget" name="lecture" type="text"
-                                                   value="${lecture.content}">
-                                            <button class="btn btn-info dropdown-toggle btn-status" data-value="${lecture.status}" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">Setting
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-warning waves-effect waves-light pending"
-                                                            style="margin: 0 5px; width: 102px;"><i
-                                                            class="ri-arrow-right-line"></i> Pending</button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <c:set var="dailyEvaluation" value="${weekly.weeklys.weeklys[2]}"/>
-                                <tr id="dailyCategory">
-                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[2]}">${weekly.year.category[2]}</td>
-                                    <td style="background-color: ${weekly.monthlys[0].color[2]}">
-                                        <div class="input-group">
-                                            <input class="form-control weekTarget" name="dailyEvaluation" type="text"
-                                                   value="${dailyEvaluation.content}">
-                                            <button class="btn btn-info dropdown-toggle btn-status" data-value="${dailyEvaluation.status}" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">Setting
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-warning waves-effect waves-light pending"
-                                                            style="margin: 0 5px; width: 102px;"><i
-                                                            class="ri-arrow-right-line"></i> Pending</button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <c:set var="work" value="${weekly.weeklys.weeklys[3]}"/>
-                                <tr id="workCategory">
-                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[3]}">${weekly.year.category[3]}</td>
-                                    <td style="background-color: ${weekly.monthlys[0].color[3]}">
-                                        <div class="input-group">
-                                            <input class="form-control weekTarget" name="work" type="text"
-                                                   value="${work.content}">
-                                            <button class="btn btn-info dropdown-toggle btn-status" data-value="${work.status}" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">Setting
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-warning waves-effect waves-light pending"
-                                                            style="margin: 0 5px; width: 102px;"><i
-                                                            class="ri-arrow-right-line"></i> Pending</button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <c:set var="reading" value="${weekly.weeklys.weeklys[4]}"/>
-                                <tr id="readingCategory">
-                                    <td class="text-start yearTitle" contenteditable="true" style="background-color: ${weekly.monthlys[0].color[4]}">${weekly.year.category[4]}</td>
-                                    <td style="background-color: ${weekly.monthlys[0].color[4]}">
-                                        <div class="input-group">
-                                            <input class="form-control weekTarget" name="reading" type="text"
-                                                   value="${reading.content}">
-                                            <button class="btn btn-info dropdown-toggle btn-status" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false" data-value="${reading.status}">Setting
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-warning waves-effect waves-light pending"
-                                                            style="margin: 0 5px; width: 102px;"><i
-                                                            class="ri-arrow-right-line"></i> Pending</button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"> Cancel</i>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"> Complete</i>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -1399,7 +1401,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-md-8 d-flex">
+                        <div class="col-md-7 d-flex">
                             <div class="table-detail">
                                 <table>
                                     <thead>
@@ -1410,43 +1412,168 @@
                                     <tbody>
                                     <tr>
                                         <td></td>
-                                        <td colspan="2" class="fw-bolder">Categories</td>
+                                        <td colspan="2" class="fw-bolder">Goals</td>
                                     </tr>
-                                    <tr class="theSingleMostImportantThing">
-                                        <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">Onething
-                                            calendar
+                                    <tr class="theSingleMostImportantThing" style="height: 42px">
+                                        <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">
+                                            Weekly Goals
                                         </td>
                                         <td colspan="2"
-                                            style="border-top: 0; border-left: 0; border-bottom: 0;  background-color: ${weekly.monthlys[0].color[0]}">
+                                            style="border-top: 0; border-left: 0; border-bottom: 0;">
                                             <span class="mx-auto fw-bolder text-danger">Important matter</span>
                                         </td>
                                     </tr>
                                     <tr class="lecture">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[1]}">
-                                            <span class="mx-auto">${weekly.year.category[1]}</span>
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[1].content}">
+                                                <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[1].status}" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning waves-effect waves-light pending"
+                                                                style="margin: 0 5px; width: 102px;"><i
+                                                                class="ri-arrow-right-line"></i> </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr class="dailyEvaluation">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[2]}">
-                                            <span class="mx-auto">${weekly.year.category[2]}</span>
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[2].content}">
+                                                <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[2].status}" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning waves-effect waves-light pending"
+                                                                style="margin: 0 5px; width: 102px;"><i
+                                                                class="ri-arrow-right-line"></i> </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr class="work">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[3]}">
-                                            <span class="mx-auto">${weekly.year.category[3]}</span>
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[3].content}">
+                                                <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[3].status}" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning waves-effect waves-light pending"
+                                                                style="margin: 0 5px; width: 102px;"><i
+                                                                class="ri-arrow-right-line"></i> </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr class="reading">
                                         <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.monthlys[0].color[4]}">
-                                            <span class="mx-auto">${weekly.year.category[4]}</span>
+                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[4].content}">
+                                                <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[4].status}" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning waves-effect waves-light pending"
+                                                                style="margin: 0 5px; width: 102px;"><i
+                                                                class="ri-arrow-right-line"></i> </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button"
+                                                                class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                                style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3" style="height: 264.5px" id="daily-routine"><h5 class="fw-bolder">Daily
+                                        <td colspan="3" style="height: 263.5px" id="daily-routine"><h5 class="fw-bolder">Daily
                                             Routine</h5></td>
                                     </tr>
                                     <tr>
@@ -1487,25 +1614,25 @@
                                     </c:forEach>
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
-                                        <td class="title-report-category" style="background-color: #fcecec"></td>
+                                        <td class="title-report-category" style="background-color: #f2aaaa"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #e6f0e2"></td>
+                                        <td class="title-report-category" style="background-color: #bcd6af"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #fff9e6"></td>
+                                        <td class="title-report-category" style="background-color: #ffe180"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #e9e4f5"></td>
+                                        <td class="title-report-category" style="background-color: #ad9ad9"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-container" style="max-height: 2120px;">
+                            <div class="table-container" style="max-height: 2190px;">
                                 <table>
                                     <thead>
                                     <tr>
@@ -1523,60 +1650,60 @@
                                     </tr>
 
                                     <%--one-thing--%>
-                                    <tr class="theSingleMostImportantThing">
+                                    <tr class="theSingleMostImportantThing" style="height: 42px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="theSingleMostImportantThing"
                                                    value="${day.data.oneThingCalendar[0]}"/>
                                             <td class="editable-cell target-color-theSingle isModifyTheSing" colspan="2"
                                                 contenteditable="true"
                                                 data-name="theSingleMostImportantThing"
-                                                data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[0]}">${theSingleMostImportantThing.target}</td>
-                                            <td class="performance-color-theSingle isModifyTheSing" style="background-color: ${weekly.monthlys[0].color[0]}"><input
+                                                data-day="${day.day}">${theSingleMostImportantThing.target}</td>
+                                            <td class="performance-color-theSingle isModifyTheSing"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${theSingleMostImportantThing.performance ? 'checked' : ''}>
                                             </td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="lecture">
+                                    <tr class="lecture" style="height: 49px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
                                             <td class="editable-cell target-color-lecture isModifyLecture" colspan="2"
                                                 contenteditable="true" data-name="lecture"
-                                                data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[1]}">${lecture.target}</td>
-                                            <td class="performance-color-lecture isModifyLecture" style="background-color: ${weekly.monthlys[0].color[1]}"><input
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">${lecture.target}</td>
+                                            <td class="performance-color-lecture isModifyLecture" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="dailyEvaluation">
+                                    <tr class="dailyEvaluation" style="height: 48px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
                                             <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="2"
                                                 contenteditable="true"
                                                 data-name="dailyEvaluation"
-                                                data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[2]}">${dailyEvaluation.target}</td>
-                                            <td class="performance-color-dailyEvaluation isModifyDaily" style="background-color: ${weekly.monthlys[0].color[2]}"><input
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">${dailyEvaluation.target}</td>
+                                            <td class="performance-color-dailyEvaluation isModifyDaily" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="work">
+                                    <tr class="work" style="height: 49px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
                                             <td class="editable-cell target-color-work isModifyWork" colspan="2"
                                                 contenteditable="true" data-name="work"
-                                                data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[3]}">${work.target}</td>
-                                            <td class="performance-color-work isModifyWork" style="background-color: ${weekly.monthlys[0].color[3]}"><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">${work.target}</td>
+                                            <td class="performance-color-work isModifyWork" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}"><input class="form-check-input" type="checkbox" ${work.performance ? 'checked' : ''}>
                                             </td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="reading">
+                                    <tr class="reading" style="height: 48px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
                                             <td class="editable-cell target-color-reading isModifyReading" colspan="2"
                                                 contenteditable="true" data-name="reading"
-                                                data-day="${day.day}" style="background-color: ${weekly.monthlys[0].color[4]}">${reading.target}</td>
-                                            <td class="performance-color-reading isModifyReading" style="background-color: ${weekly.monthlys[0].color[4]}"><input
+                                                data-day="${day.day}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">${reading.target}</td>
+                                            <td class="performance-color-reading isModifyReading" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}"><input
                                                     class="form-check-input"
                                                     type="checkbox" ${reading.performance ? 'checked' : ''}></td>
                                         </c:forEach>
@@ -2095,16 +2222,16 @@
                                     <tr>
                                         <td class="reivew-daily-onething text-nowrap"></td>
                                     </tr>
-                                    <tr style="background-color: #fcecec">
+                                    <tr style="background-color: #f2aaaa">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
-                                    <tr style="background-color: #e6f0e2">
+                                    <tr style="background-color: #bcd6af">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
-                                    <tr style="background-color: #fff9e6">
+                                    <tr style="background-color: #ffe180">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
-                                    <tr style="background-color: #e9e4f5">
+                                    <tr style="background-color: #ad9ad9">
                                         <td class="reivew-daily-onething"></td>
                                     </tr>
                                     <c:choose>
@@ -2122,22 +2249,22 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 50px; background-color: #fcecec">
+                                    <tr style="height: 50px; background-color: #f2aaaa">
                                         <td rowspan="4" style="background-color: #FFBB64;">
                                             <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
                                         </td>
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 51px; background-color: #e6f0e2">
+                                    <tr style="height: 51px; background-color: #bcd6af">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 50px; background-color: #fff9e6">
+                                    <tr style="height: 50px; background-color: #ffe180">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 51px; background-color: #e9e4f5">
+                                    <tr style="height: 51px; background-color: #ad9ad9">
                                         <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #fcecec">
+                                    <tr style="height: 45px; background-color: #f2aaaa">
                                         <td rowspan="4" style="background-color: #E6A4B4;">
                                             <h5 class="fw-bolder text-white">Amount of <br>time</h5>
                                             <button type="button" id="btn-chart-time-used" class="btn btn-primary btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
@@ -2170,13 +2297,13 @@
                                         </td>
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #e6f0e2">
+                                    <tr style="height: 45px; background-color: #bcd6af">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #fff9e6">
+                                    <tr style="height: 45px; background-color: #ffe180">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
-                                    <tr style="height: 45px; background-color: #e9e4f5">
+                                    <tr style="height: 45px; background-color: #ad9ad9">
                                         <td class="review-weekly-amount-time"></td>
                                     </tr>
                                     <tr style="background-color: #FF9BD2">
@@ -2259,7 +2386,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#fcecec' : weekly.monthlys[0].color[1]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#f2aaaa' : weekly.monthlys[0].color[1]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -2268,7 +2395,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#e6f0e2' : weekly.monthlys[0].color[2]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#bcd6af' : weekly.monthlys[0].color[2]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -2277,7 +2404,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#fff9e6' : weekly.monthlys[0].color[3]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#ffe180' : weekly.monthlys[0].color[3]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -2286,7 +2413,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#e9e4f5' : weekly.monthlys[0].color[4]}">
+                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#ad9ad9' : weekly.monthlys[0].color[4]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -2350,12 +2477,12 @@
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('PENDING')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('POSTPONE')}">
                                                 <button class="btn btn-warning" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('CANCEL')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('CANCELLATION')}">
                                                 <button class="btn btn-danger" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
@@ -2370,13 +2497,13 @@
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('PENDING')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('POSTPONE')}">
                                                 <button class="btn btn-warning" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
 
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('CANCEL')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('CANCELLATION')}">
                                                 <button class="btn btn-danger" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
@@ -2391,12 +2518,12 @@
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('PENDING')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('POSTPONE')}">
                                                 <button class="btn btn-warning" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('CANCEL')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('CANCELLATION')}">
                                                 <button class="btn btn-danger" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
@@ -2411,12 +2538,12 @@
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('PENDING')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('POSTPONE')}">
                                                 <button class="btn btn-warning" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('CANCEL')}">
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('CANCELLATION')}">
                                                 <button class="btn btn-danger" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
@@ -2529,16 +2656,16 @@
                                         <td class="fw-bolder" style="height: 232px;" rowspan="4">
                                             ONETHING
                                         </td>
-                                        <td>${weekly.year.category[1]}</td>
+                                        <td></td>
                                     </tr>
                                     <tr>
-                                        <td>${weekly.year.category[2]}</td>
+                                        <td></td>
                                     </tr>
                                     <tr>
-                                        <td>${weekly.year.category[3]}</td>
+                                        <td></td>
                                     </tr>
                                     <tr>
-                                        <td>${weekly.year.category[4]}</td>
+                                        <td></td>
                                     </tr>
                                     <tr style="height: 464px;">
                                         <td colspan="2" class="fw-bolder">
@@ -2633,12 +2760,12 @@
                                                         <i class="ri-check-line"></i>
                                                     </button>
                                                 </c:if>
-                                                <c:if test="${weekly.year.target[loop.index].status.equals('PENDING')}">
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('POSTPONE')}">
                                                     <button class="btn btn-warning float-end" style="width: 53px">
                                                         <i class="ri-arrow-right-line"></i>
                                                     </button>
                                                 </c:if>
-                                                <c:if test="${weekly.year.target[loop.index].status.equals('CANCEL')}">
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('CANCELLATION')}">
                                                     <button class="btn btn-danger float-end" style="width: 53px">
                                                         <i class="ri-close-line"></i>
                                                     </button>
@@ -2690,7 +2817,7 @@
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="fw-bolder">
                                             <td class="text-wrap" style="max-width: 90px; width: 90px; height: 50px; max-height: 50px" data-simplebar>
-                                                    ${weekly.year.category[loop.index + 1]}
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -3006,6 +3133,7 @@
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script>
 
+    // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
         const currentDayParam = getParameterByName('currentDay', currentURL);
@@ -3027,7 +3155,7 @@
         function removeTabParamFromURL(url) {
             var url = new URL(currentURL);
             url.searchParams.delete('tab');
-            window.history.replaceState({}, document.title, url);
+            window.history.replaceState( {}, document.title, url);
         }
 
        switch (tabPlanner) {
@@ -3048,7 +3176,6 @@
            default:
                break;
        }
-
     })
 
     // Mind map
@@ -3059,6 +3186,7 @@
 
         initialize();
         document.getElementById('elem3').click();
+        $('.pcr-swatches').addClass('d-none');
 
         function initialize() {
             $(".containerMindMap").css("width", $("#main").outerWidth() + "px");
@@ -3231,7 +3359,7 @@
             })
         })
 
-        document.querySelectorAll('.level1').forEach(function (e) {
+        document.querySelectorAll('.content-level1').forEach(function (e) {
             e.addEventListener('click', function () {
                 if (e.textContent.trim() == 'Click To Edit') {
                     e.textContent = '';
@@ -3328,13 +3456,13 @@
             date.setDate(date.getDate() - 1);
         }
 
-        var count = 0; // Biến đếm số lượng ngày Chủ nhật đã thêm vào mảng
+        var count = 0;
 
         do {
             sundays.push(new Date(date));
             count++;
 
-            if (count === 5) { // Nếu đã thêm đủ 5 ngày, thoát khỏi vòng lặp
+            if (count === 5) {
                 break;
             }
 
@@ -3456,7 +3584,6 @@
         weeklyAmountTime.forEach(function (e, index) {
             const weekIndex = index % sundaysInMonth.length;
             e.setAttribute('data-week', sundaysInMonth[weekIndex]);
-            console.log(sundaysInMonth[weekIndex])
         });
 
         weeklySentence.forEach(function (e, index) {
@@ -3476,7 +3603,6 @@
                     const parseData = JSON.parse(xhr.responseText);
                     const days = parseData.days;
                     const weeklys = parseData.weeklys;
-                    console.log(weeklys);
                     const dayInRow = document.querySelectorAll('.category-review');
                     dayInRow.forEach(function (dayRow, index) {
                         if (index < 5) {
@@ -3508,53 +3634,53 @@
                         }
                     })
 
-                    const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
-                    weeklyGoalsRow.forEach(function (weekRow, index) {
-                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                            const startDate = onlyWeek.getAttribute('data-week');
-                            weeklys.forEach(week => {
-                                const startDateDB = week.startDate;
-                                if (startDate == startDateDB) {
-                                    if (week.weeklys != null) {
-                                        const weeklyTarget = week.weeklys[index + 1].content;
-                                        const statusWeek = week.weeklys[index + 1].status;
-                                        if (weeklyTarget != null && weeklyTarget != '') {
-                                            var btnStatus = ``;
-                                            if (statusWeek == 'COMPLETE') {
-                                                btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
-                                            } else if (statusWeek == 'PENDING') {
-                                                btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
-                                            } else if (statusWeek == 'CANCEL') {
-                                                btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
-                                            } else if (statusWeek == '') {
-                                                btnStatus = `<button class="btn btn-info float-end">null</button>`
-                                            }
-                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
-                                            $(onlyWeek).append(html);
-                                        }
-                                    }
-                                }
-                            });
-                        })
-                    })
+                    // const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
+                    // weeklyGoalsRow.forEach(function (weekRow, index) {
+                    //     weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                    //         const startDate = onlyWeek.getAttribute('data-week');
+                    //         weeklys.forEach(week => {
+                    //             const startDateDB = week.startDate;
+                    //             if (startDate == startDateDB) {
+                    //                 if (week.weeklys != null) {
+                    //                     const weeklyTarget = week.weeklys[index + 1].content;
+                    //                     const statusWeek = week.weeklys[index + 1].status;
+                    //                     if (weeklyTarget != null && weeklyTarget != '') {
+                    //                         var btnStatus = ``;
+                    //                         if (statusWeek == 'COMPLETE') {
+                    //                             btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
+                    //                         } else if (statusWeek == 'POSTPONE') {
+                    //                             btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
+                    //                         } else if (statusWeek == 'CANCELLATION') {
+                    //                             btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
+                    //                         } else if (statusWeek == '') {
+                    //                             btnStatus = `<button class="btn btn-info float-end">null</button>`
+                    //                         }
+                    //                         const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                    //                         $(onlyWeek).append(html);
+                    //                     }
+                    //                 }
+                    //             }
+                    //         });
+                    //     })
+                    // })
 
-                    const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
-                    weeklyAmountTime.forEach(function (weekRow, index) {
-                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                            const startDate = onlyWeek.getAttribute('data-week');
-                            weeklys.forEach(week => {
-                                const startDateDB = week.startDate;
-                                if (startDate == startDateDB) {
-                                    if (week.weeklys != null) {
-                                        const timeusedWeekly = week.weeklys[index + 1].timeUsed;
-                                        if (timeusedWeekly != null && timeusedWeekly != '') {
-                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
-                                        }
-                                    }
-                                }
-                            });
-                        })
-                    })
+                    // const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
+                    // weeklyAmountTime.forEach(function (weekRow, index) {
+                    //     weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                    //         const startDate = onlyWeek.getAttribute('data-week');
+                    //         weeklys.forEach(week => {
+                    //             const startDateDB = week.startDate;
+                    //             if (startDate == startDateDB) {
+                    //                 if (week.weeklys != null) {
+                    //                     const timeusedWeekly = week.weeklys[index + 1].timeUsed;
+                    //                     if (timeusedWeekly != null && timeusedWeekly != '') {
+                    //                         onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
+                    //                     }
+                    //                 }
+                    //             }
+                    //         });
+                    //     })
+                    // })
 
                     const gratitudeDiaryTr = document.querySelectorAll('.tr-weekly-sentence0');
                     gratitudeDiaryTr.forEach(function (weekRow, index) {
@@ -3597,14 +3723,14 @@
 
                     document.querySelectorAll('.weekly-goals').forEach(function (e) {
                         if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
-                        else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
-                        else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
+                        else if (e.textContent.trim() == 'POSTPONE') e.classList.add('text-warning')
+                        else if (e.textContent.trim() == 'CANCELLATION') e.classList.add('text-danger')
                     })
 
                     document.querySelectorAll('.monthly-goals').forEach(function (e) {
                         if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
-                        else if (e.textContent.trim() == 'PENDING') e.classList.add('text-warning')
-                        else if (e.textContent.trim() == 'CANCEL') e.classList.add('text-danger')
+                        else if (e.textContent.trim() == 'POSTPONE') e.classList.add('text-warning')
+                        else if (e.textContent.trim() == 'CANCELLATION') e.classList.add('text-danger')
                     })
 
                     const weeklyAmountTimeUsed = document.querySelectorAll('.weekly-amountTime');
@@ -3752,9 +3878,9 @@
                                                 var btnStatus = ``;
                                                 if (status == 'COMPLETE') {
                                                     btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
-                                                } else if (status == 'PENDING') {
+                                                } else if (status == 'POSTPONE') {
                                                     btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
-                                                } else if (status == 'CANCEL') {
+                                                } else if (status == 'CANCELLATION') {
                                                     btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
                                                 } else if (status == '') {
                                                     btnStatus = `<button class="btn btn-info float-end">null</button>`
@@ -4051,31 +4177,31 @@
     }
 
     // Handle change content Category Color
-    document.addEventListener("DOMContentLoaded", function () {
-        const elColorCategory = document.querySelectorAll('.color-category');
-        const titleReportCategory = document.querySelectorAll('.title-report-category');
-        const reviewWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
-        const reivewWeeklyAmountTime = document.querySelectorAll('.review-weekly-amount-time');
-        const reivewDailyOnething = document.querySelectorAll('.reivew-daily-onething');
-        const yearTitle = document.querySelectorAll('.yearTitle');
-
-        yearTitle.forEach(function (e, index) {
-            if (index != 0) {
-                if (e.textContent != '') {
-                    elColorCategory[index - 1].textContent = e.textContent;
-                    titleReportCategory[index - 1].textContent = e.textContent;
-                    titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-                    reviewWeeklyGoals[index - 1].textContent = e.textContent;
-                    reviewWeeklyGoals[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-                    reivewWeeklyAmountTime[index - 1].textContent = e.textContent;
-                    reivewWeeklyAmountTime[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-                }
-            }
-            reivewDailyOnething[0].classList.add('text-danger', 'fw-bolder')
-            reivewDailyOnething[index].textContent = e.textContent;
-            reivewDailyOnething[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
-        })
-    })
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const elColorCategory = document.querySelectorAll('.color-category');
+    //     const titleReportCategory = document.querySelectorAll('.title-report-category');
+    //     const reviewWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
+    //     const reivewWeeklyAmountTime = document.querySelectorAll('.review-weekly-amount-time');
+    //     const reivewDailyOnething = document.querySelectorAll('.reivew-daily-onething');
+    //     const yearTitle = document.querySelectorAll('.yearTitle');
+    //
+    //     yearTitle.forEach(function (e, index) {
+    //         if (index != 0) {
+    //             if (e.textContent != '') {
+    //                 elColorCategory[index - 1].textContent = e.textContent;
+    //                 titleReportCategory[index - 1].textContent = e.textContent;
+    //                 titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
+    //                 reviewWeeklyGoals[index - 1].textContent = e.textContent;
+    //                 reviewWeeklyGoals[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
+    //                 reivewWeeklyAmountTime[index - 1].textContent = e.textContent;
+    //                 reivewWeeklyAmountTime[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
+    //             }
+    //         }
+    //         reivewDailyOnething[0].classList.add('text-danger', 'fw-bolder')
+    //         reivewDailyOnething[index].textContent = e.textContent;
+    //         reivewDailyOnething[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
+    //     })
+    // })
 
     // Handle performance onething calendar
     document.addEventListener("DOMContentLoaded", function () {
@@ -4097,26 +4223,33 @@
     // Function change color and content Status
     function addStatus(btn, value) {
         switch (value) {
-            case 'PENDING':
-                $(btn).removeClass('btn-info btn-danger btn-success');
-                $(btn).addClass('btn-warning');
-                btn.setAttribute('data-value', 'PENDING');
-                $(btn).text('');
-                $(btn).append(`<i class="ri-arrow-right-line"></i>`);
-                break;
-            case 'CANCEL':
-                $(btn).removeClass('btn-info btn-warning btn-success');
-                $(btn).addClass('btn-danger');
-                $(btn).text('');
-                btn.setAttribute('data-value', 'CANCEL');
-                $(btn).append(`<i class="ri-close-line"></i>`);
-                break;
             case 'COMPLETE':
                 $(btn).removeClass('btn-info btn-warning btn-danger');
                 $(btn).addClass('btn-success');
                 btn.setAttribute('data-value', 'COMPLETE');
                 $(btn).text('');
-                $(btn).append(`<i class="ri-check-line">`);
+                $(btn).append(`<i class="ri-check-line fs-5">`);
+                break;
+            case 'POSTPONE':
+                $(btn).removeClass('btn-info btn-danger btn-success');
+                $(btn).addClass('btn-warning');
+                btn.setAttribute('data-value', 'POSTPONE');
+                $(btn).text('');
+                $(btn).append(`<i class="ri-arrow-right-line fs-5"></i>`);
+                break;
+            case 'CANCELLATION':
+                $(btn).removeClass('btn-info btn-warning btn-success');
+                $(btn).addClass('btn-danger');
+                $(btn).text('');
+                btn.setAttribute('data-value', 'CANCELLATION');
+                $(btn).append(`<i class="ri-close-line fs-5"></i>`);
+                break;
+            case 'INPROGRESS':
+                $(btn).removeClass('btn-warning btn-success btn-danger');
+                $(btn).addClass('btn-info');
+                $(btn).text('');
+                btn.setAttribute('data-value', 'INPROGRESS');
+                $(btn).append(`<i class="ri-play-mini-line fs-5"></i>`);
                 break;
         }
     }
@@ -4130,19 +4263,25 @@
         document.querySelectorAll('.pending').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnPending = e.parentNode.parentNode.previousElementSibling;
-                addStatus(btnPending, 'PENDING');
+                addStatus(btnPending, 'POSTPONE');
             })
         })
         document.querySelectorAll('.close').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnClose = e.parentNode.parentNode.previousElementSibling;
-                addStatus(btnClose, 'CANCEL');
+                addStatus(btnClose, 'CANCELLATION');
             })
         })
         document.querySelectorAll('.complete').forEach(function (e) {
             e.addEventListener('click', function () {
                 const btnComplete = e.parentNode.parentNode.previousElementSibling;
                 addStatus(btnComplete, 'COMPLETE');
+            })
+        })
+        document.querySelectorAll('.in-progress').forEach(function (e) {
+            e.addEventListener('click', function () {
+                const btnComplete = e.parentNode.parentNode.previousElementSibling;
+                addStatus(btnComplete, 'INPROGRESS');
             })
         })
     })
@@ -4516,7 +4655,7 @@
     // }
 
     // Handle show image quote + message success when user save all success
-    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function () {
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
 
@@ -4539,12 +4678,31 @@
                 document.getElementById('imageQuote').style.display = 'none';
                 localStorage.clear();
                 break;
+            case (result == 'year-goals'):
+                Swal.fire(
+                    {
+                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
+                            '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
+                        imageAlt: 'A tall image',
+                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                        buttonsStyling: false,
+                        showCloseButton: true,
+                        width: 800
+                    }
+                )
+                if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
+                document.getElementById('imageQuote').style.display = 'none';
+                $('#session-goals').tab('show');
+                $('#session-goals').click();
+                break;
             case !(result == 'addSuccess'):
                 if (document.getElementById('srcImageQuote').getAttribute('src') != '') document.getElementById('showImageQuoteBtn').click();
                 break;
             default:
                 break;
         }
+        localStorage.clear();
+
     })
 
     // Loading when wait api load done
@@ -4707,21 +4865,26 @@
                 }
                 monthly.targetCategory.push(obj);
             })
-            const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
-            const yearTitle = document.querySelectorAll('.yearTitle');
-            timeUsedMonthly.forEach(function (e, index) {
-                let obj = {
-                    category: yearTitle[index + 1].textContent,
-                    timeUsedCategory: e.textContent
-                }
-                monthly.timeUsedMonthly.push(obj);
-            })
+            // const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
+            // const yearTitle = document.querySelectorAll('.yearTitle');
+            // timeUsedMonthly.forEach(function (e, index) {
+            //     let obj = {
+            //         category: yearTitle[index + 1].textContent,
+            //         timeUsedCategory: e.textContent
+            //     }
+            //     monthly.timeUsedMonthly.push(obj);
+            // })
             monthly.gratitudeDiary = document.getElementById('monthly-gratitudeDiary').value;
             monthly.compliment = document.getElementById('monthly-compliment').value;
             monthly.reflectionAndImprovement = document.getElementById('monthly-reflectionAndImprovement').value;
             data.monthly = monthly;
 
             const timeUsedCategory = document.querySelectorAll('.time-used-category');
+            weekly.weeklys.push({
+                content: 'Important matter',
+                status: '',
+                timeUsed: ''
+            })
             $("input.form-control.weekTarget").each(function (index) {
                 const statusWeekly = $(this).closest('div').find('button');
                 var timeUsed = '';
@@ -4739,7 +4902,7 @@
 
             const tr0 = document.querySelector('.tr-weekly-sentence0').querySelectorAll('textarea');
             const tr1 = document.querySelector('.tr-weekly-sentence1').querySelectorAll('textarea');
-            const tr2 = document.querySelector('.tr-weekly-sentence2').querySelectorAll('textarea');;
+            const tr2 = document.querySelector('.tr-weekly-sentence2').querySelectorAll('textarea');
             tr0.forEach(function (e, index) {
                 let obj = {
                     startDay: e.getAttribute('data-week'),
@@ -4776,6 +4939,7 @@
                     }
                 }
             })
+
             $('input[type="checkbox"].dailyRoutine').each(function () {
                 const day = $(this).data('day');
                 const isChecked = $(this).prop('checked');
@@ -4922,18 +5086,18 @@
             data.year = {
                 year: year,
                 target: [],
-                category: []
+                color: []
             };
 
             const yearTargetNode = document.querySelectorAll('.level1');
             const btnSaveMindmap = $(this).data('value');
             $('.yearTarget').each(function (index) {
-                const statusYear = $(this).closest('div').find('button');
+                const statusYear = $(this).closest('td').find('button');
                 var valueStatus = statusYear.data('value');
                 var tartgetYear = '';
 
                 if (btnSaveMindmap == 'save-mindmap') {
-                    tartgetYear = yearTargetNode[index].textContent.trim() == 'Click To Edit' ? '' : yearTargetNode[index].textContent.trim();
+                    tartgetYear = yearTargetNode[index].querySelector('p').textContent.trim() == 'Click To Edit' ? '' : yearTargetNode[index].querySelector('p').textContent.trim();
                 } else {
                     tartgetYear = $(this).val().trim();
                 }
@@ -4961,16 +5125,18 @@
 
                 data.year.target.push(obj);
             });
-
-            document.querySelectorAll('.yearTitle').forEach(function (e) {
-                data.year.category.push(e.textContent);
-            })
             data.year.grateful = $('#year-grateful').val();
             data.year.happy = $('#year-happy').val();
             data.year.whoUBecome = $('#year-whoUBecome').val();
             data.year.personalGoal = $('#year-personalGoal').val();
             data.year.commendable = $('#year-commendable').val();
             data.year.keywords3 = $('#year-keywords3').val();
+
+            document.querySelectorAll('.level1').forEach(function (e) {
+                    var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
+                    data.year.color.push(backgroundColor);
+            })
+
             data.days.push(...days);
 
             const imageQuote = document.getElementById('quoteImage').files[0];
@@ -4988,19 +5154,19 @@
                     i--;
                 }
             }
-
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
                     if (rs) {
-                        $("div.containerLoading").addClass("d-none")
-                        $("div.calendar-container").removeClass("d-none")
+                        $("div.containerLoading").addClass("d-none");
+                        $("div.calendar-container").removeClass("d-none");
                         localStorage.setItem('result', 'addSuccess');
+                        if (btnSaveMindmap == 'save-mindmap')  localStorage.setItem('result', 'year-goals');
                         window.location.reload();
                     } else {
                         rsUnSuccess();
-                        $("div.containerLoading").addClass("d-none")
-                        $("div.calendar-container").removeClass("d-none")
+                        $("div.containerLoading").addClass("d-none");
+                        $("div.calendar-container").removeClass("d-none");
                     }
                 })
             })

@@ -13,39 +13,13 @@
             <column name="CONTENT" type="TEXT"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
             <column name="DAILY_ROUTINE" type="TEXT"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="team2">
-        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
             <column name="SPENDING_GOALS" type="FLOAT"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="3" author="team2">
-        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
-            <column name="COLOR" type="VARCHAR(1000)"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="4" author="team2">
-        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
             <column name="TARGET_CATEGORY" type="VARCHAR(1000)"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="5" author="team2">
-        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
             <column name="GRATITUDE_DIARY" type="TEXT"/>
             <column name="COMPLIMENT" type="TEXT"/>
             <column name="REFLECTIONS_AND_IMPROVEMENTS" type="TEXT"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="6" author="team2">
-        <addColumn tableName="MONTHLY_MANAGEMENT_TIME_DAY">
             <column name="TIME_USED_CATEGORY" type="VARCHAR(1000)"/>
-        </addColumn>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>
