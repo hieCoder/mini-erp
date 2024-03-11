@@ -21,7 +21,12 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
-
+        /*
+            #f2aaaa
+            #bcd6af
+            #ffe180
+            #ad9ad9
+         */
         .add-node, .remove-node {
             position: absolute;
             bottom: -15px;
@@ -386,6 +391,14 @@
         }
         .yearTarget {
             width: 145px !important;
+        }
+
+        #table-monthlyReview-per th {
+            border: 1px solid black; !important;
+        }
+
+        #table-monthlyReview-per td {
+            border: 1px solid black; !important;
         }
     </style>
 </head>
@@ -897,7 +910,7 @@
                                 </tr>
                                 <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[0].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[0].target}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[0].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -930,7 +943,7 @@
                                     </td>
                                     <td>
                                        <div class="d-flex align-items-center">
-                                           <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}">
+                                           <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
                                            <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[0].status}" type="button" data-bs-toggle="dropdown"
                                                    aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                            </button>
@@ -979,7 +992,7 @@
                                 </tr>
                                 <tr style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[1].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[1].target}" style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[1].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -1012,7 +1025,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[1].content}">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[1].content}" style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                             <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[1].status}" type="button" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                             </button>
@@ -1061,7 +1074,7 @@
                                 </tr>
                                 <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[2].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[2].target}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[2].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -1094,7 +1107,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[2].content}">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[2].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                             <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[2].status}" type="button" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                             </button>
@@ -1143,7 +1156,7 @@
                                 </tr>
                                 <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[3].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[3].target}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[3].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -1176,7 +1189,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[3].content}">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[3].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                             <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[3].status}" type="button" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                             </button>
@@ -1365,21 +1378,14 @@
                                 <thead>
                                 <tr>
                                     <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
-                                        <th scope="col" class="panel colorPicker category-color"
-                                            style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
-                                            <p class="m-0 color-category">${color.category}</p>
-                                            <div class="pickr"></div>
-                                            <p hidden="hidden"
-                                               class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
+                                        <th scope="col" class="category-color">
+                                            <p class="m-0 color-category">${weekly.year.target[loop.index].target}</p>
                                         </th>
                                     </c:forEach>
                                     <c:if test="${weekly.colors.size() < 4}">
-                                        <c:forEach begin="${weekly.colors.size()}" end="3">
-                                            <th scope="col" class="panel colorPicker category-color"
-                                                style="background-color: #FFFFFF;">
-                                                <p class="m-0 color-category">Default Category</p>
-                                                <div class="pickr"></div>
-                                                <p hidden="hidden" class="pickedColor">#FFFFFF</p>
+                                        <c:forEach begin="${weekly.colors.size()}" end="3" varStatus="loop">
+                                            <th scope="col" class="category-color">
+                                                <p class="m-0 color-category">${weekly.year.target[loop.index].target}</p>
                                             </th>
                                         </c:forEach>
                                     </c:if>
@@ -1411,23 +1417,18 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td></td>
-                                        <td colspan="2" class="fw-bolder">Goals</td>
+                                        <td colspan="3" class="fw-bolder">Weekly Goals</td>
                                     </tr>
                                     <tr class="theSingleMostImportantThing" style="height: 42px">
-                                        <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">
-                                            Weekly Goals
-                                        </td>
-                                        <td colspan="2"
-                                            style="border-top: 0; border-left: 0; border-bottom: 0;">
+                                        <td colspan="3">
                                             <span class="mx-auto fw-bolder text-danger">Important matter</span>
                                         </td>
                                     </tr>
                                     <tr class="lecture">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[1].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[1].content}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[1].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1462,10 +1463,10 @@
                                         </td>
                                     </tr>
                                     <tr class="dailyEvaluation">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[2].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[2].content}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[2].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1499,10 +1500,10 @@
                                         </td>
                                     </tr>
                                     <tr class="work">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[3].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[3].content}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[3].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1536,10 +1537,10 @@
                                         </td>
                                     </tr>
                                     <tr class="reading">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[4].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[4].content}"  style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[4].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1614,19 +1615,19 @@
                                     </c:forEach>
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
-                                        <td class="title-report-category" style="background-color: #f2aaaa"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #bcd6af"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #ffe180"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #ad9ad9"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}"></td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
@@ -1664,7 +1665,7 @@
                                             </td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="lecture" style="height: 49px">
+                                    <tr class="lecture" style="height: 47px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
                                             <td class="editable-cell target-color-lecture isModifyLecture" colspan="2"
@@ -1675,7 +1676,7 @@
                                                     type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="dailyEvaluation" style="height: 48px">
+                                    <tr class="dailyEvaluation" style="height: 46px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
                                             <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="2"
@@ -1687,7 +1688,7 @@
                                                     type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="work" style="height: 49px">
+                                    <tr class="work" style="height: 47px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
                                             <td class="editable-cell target-color-work isModifyWork" colspan="2"
@@ -1697,7 +1698,7 @@
                                             </td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="reading" style="height: 48px">
+                                    <tr class="reading" style="height: 46px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
                                             <td class="editable-cell target-color-reading isModifyReading" colspan="2"
@@ -1801,7 +1802,7 @@
                                                 <c:forEach var="color" items="${weekly.colors}">
                                                     <c:forEach var="value" items="${color.values}">
                                                         <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
-                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].contentPlan}">
                                                                 <c:set var="backgroundColor0" value="${color.color}"/>
                                                                 <c:set var="exitLoop0" value="true"/>
                                                             </c:if>
@@ -1836,7 +1837,7 @@
                                                                     <input class="form-check-input mt-0 performance-plan" type="checkbox" aria-label="Checkbox for following text input">
                                                                 </div>
                                                             </div>
-                                                            <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
+                                                            <button class="addPlan btn btn-primary mt-1">+</button>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
@@ -1862,7 +1863,7 @@
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </c:forEach>
-                                                            <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
+                                                            <button class="addPlan btn btn-primary mt-1">+</button>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -2209,66 +2210,46 @@
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
-                                <table id="table-title-review" class="table-sm">
+                                <table id="table-title-review" class="table-sm" style="width: 140px">
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td id="daily-onething-routine" rowspan="6" style="height: 311px; background-color: #FFEAA7">
-                                            <h5 class="fw-bolder text-white">Daily Onething <br>&<br> Daily routine</h5>
-                                        </td>
-                                        <td style="height: 65px"></td>
+                                    <tr style="height: 89px">
+                                        <td class="text-info fw-bold">Daily Tracker</td>
                                     </tr>
-                                    <tr>
-                                        <td class="reivew-daily-onething text-nowrap"></td>
+                                    <tr style="height: 45px">
+                                        <td class="fw-bold text-danger">Important matter</td>
                                     </tr>
-                                    <tr style="background-color: #f2aaaa">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
-                                    <tr style="background-color: #bcd6af">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
-                                    <tr style="background-color: #ffe180">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
-                                    <tr style="background-color: #ad9ad9">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr style="height: 45px; background: ${weekly.year.color[loop.index]}">
+                                            <td>${weekly.monthlys[0].monthlyContents[loop.index].content}</td>
+                                        </tr>
+                                    </c:forEach>
                                     <c:choose>
                                         <c:when test="${empty weekly.monthlys[0].dailyRoutine}">
-                                            <tr class="review-dailyRoutine">
+                                            <tr class="review-dailyRoutine" style="height: 45px">
                                                 <td></td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
                                             <c:forEach items="${weekly.monthlys[0].dailyRoutine}" var="dailyRoutine" varStatus="loop">
-                                                <tr class="review-dailyRoutine">
+                                                <tr class="review-dailyRoutine" style="height: 45px">
                                                     <td>${dailyRoutine.title}</td>
                                                 </tr>
                                             </c:forEach>
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 50px; background-color: #f2aaaa">
-                                        <td rowspan="4" style="background-color: #FFBB64;">
-                                            <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
+                                    <tr style="height: 202px; background-color: #f2aaaa">
+                                        <td  style="background-color: #FFBB64;">
+                                            <h5 class="fw-bolder text-white">Weekly Goals</h5>
                                         </td>
-                                        <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 51px; background-color: #bcd6af">
-                                        <td class="review-weekly-goals"></td>
-                                    </tr>
-                                    <tr style="height: 50px; background-color: #ffe180">
-                                        <td class="review-weekly-goals"></td>
-                                    </tr>
-                                    <tr style="height: 51px; background-color: #ad9ad9">
-                                        <td class="review-weekly-goals"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #f2aaaa">
-                                        <td rowspan="4" style="background-color: #E6A4B4;">
-                                            <h5 class="fw-bolder text-white">Amount of <br>time</h5>
+                                    <tr style="height: 180px; background-color: #f2aaaa">
+                                        <td style="background-color: #E6A4B4;">
+                                            <h5 class="fw-bolder text-white">Time Usage</h5>
                                             <button type="button" id="btn-chart-time-used" class="btn btn-primary btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
-                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Time Usage: 4C
+                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Chart
                                             </button>
                                             <div id="modalChart" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                                 <div class="modal-dialog">
@@ -2295,30 +2276,11 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="review-weekly-amount-time"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #bcd6af">
-                                        <td class="review-weekly-amount-time"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #ffe180">
-                                        <td class="review-weekly-amount-time"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #ad9ad9">
-                                        <td class="review-weekly-amount-time"></td>
                                     </tr>
                                     <tr style="background-color: #FF9BD2">
-                                        <td rowspan="4" style="height: 378px">
-                                            <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
+                                        <td  style="height: 378px">
+                                            <h5 class="fw-bolder text-white">Review</h5>
                                         </td>
-                                    </tr>
-                                    <tr >
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Gratitude Diary</td>
-                                    </tr>
-                                    <tr >
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Compliment</td>
-                                    </tr>
-                                    <tr >
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Reflection/<br>Improvement</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -2337,47 +2299,59 @@
                                     <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="tr-review-weekly" style="height: 50.5px">
+                                        <tr class="tr-review-weekly" style="height: 50.5px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="7" class="weekly-goals fw-bolder"></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="tr-weekly-amountTime" style="height: 45px">
+                                        <tr class="tr-weekly-amountTime" style="height: 45px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="4" class="weekly-amountTime">0/168 hours</td>
                                                 <td colspan="3.5" class="performance-time-used-amountTime"></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <c:forEach begin="0" end="2" varStatus="outerLoop">
-                                        <tr class="tr-weekly-sentence${outerLoop.index}">
+                                        <tr class="tr-weekly-sentence0">
                                             <c:forEach begin="0" end="4" varStatus="innerLoop">
                                                 <td colspan="7" style="height: 126px">
-                                                    <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter here..."></textarea>
+                                                    <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Gratitude Diary"></textarea>
                                                 </td>
                                             </c:forEach>
                                         </tr>
-                                    </c:forEach>
+                                    <tr class="tr-weekly-sentence1">
+                                        <c:forEach begin="0" end="4" varStatus="innerLoop">
+                                            <td colspan="7" style="height: 126px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Compliment"></textarea>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr class="tr-weekly-sentence2">
+                                        <c:forEach begin="0" end="4" varStatus="innerLoop">
+                                            <td colspan="7" style="height: 126px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Reflection/Improvement"></textarea>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div>
-                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black; width: 240px">
+                                <table id="table-monthlyReview-per" class="table text-center mb-0" style="width: 245px; border: 1px solid black !important;">
                                     <thead>
-                                    <tr>
-                                        <th colspan="3" style="border: 1px solid black" class="month-current text-danger fw-bolder text-uppercase"></th>
+                                    <tr style="border: 1px solid black">
+                                        <th colspan="3" class="month-current text-danger fw-bolder text-uppercase"></th>
                                     </tr>
-                                    <tr>
-                                        <th style="border: 1px solid black">Rate</th>
-                                        <th style="border: 1px solid black">Target</th>
-                                        <th class="text-wrap" style="border: 1px solid black">Performance</th>
+                                    <tr style="border: 1px solid black">
+                                        <th >Rate</th>
+                                        <th >Target</th>
+                                        <th class="text-wrap" >Performance</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <%-- Review OneThing Calendar Session --%>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[0]}">
+                                    <tr class="text-center">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[0] == null ? 0 : weekly.monthlys[0].targetCategory[0].target}
@@ -2386,7 +2360,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#f2aaaa' : weekly.monthlys[0].color[1]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[0] == null ? '#f2aaaa' : weekly.year.color[0]}; height: 46px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -2395,7 +2369,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#bcd6af' : weekly.monthlys[0].color[2]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[1] == null ? '#bcd6af' : weekly.year.color[1]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -2404,7 +2378,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#ffe180' : weekly.monthlys[0].color[3]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[2] == null ? '#ffe180' : weekly.year.color[2]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -2413,7 +2387,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#ad9ad9' : weekly.monthlys[0].color[4]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[3] == null ? '#ad9ad9' : weekly.year.color[3]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -2470,7 +2444,7 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center" >
-                                        <td style="height: 50px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 50px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[0].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2487,10 +2461,15 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 50px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 50px; background: ${weekly.year.color[1]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[1].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2508,10 +2487,15 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 51px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 51px; background: ${weekly.year.color[2]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[2].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2528,10 +2512,15 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 48px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 48px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[3].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2548,6 +2537,11 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2557,19 +2551,19 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[0]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[1]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[2]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[3]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
@@ -2582,17 +2576,17 @@
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center">
                                         <td>
-                                            <textarea id="monthly-gratitudeDiary" class="form-control" style="height: 100px" placeholder="Enter here...">${weekly.monthlys[0].gratitudeDiary}</textarea>
+                                            <textarea id="monthly-gratitudeDiary" class="form-control" style="height: 100px" placeholder="Enter Gratitude Diary...">${weekly.monthlys[0].gratitudeDiary}</textarea>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
                                         <td>
-                                            <textarea id="monthly-compliment" class="form-control" style="height: 101px" placeholder="Enter here...">${weekly.monthlys[0].compliment}</textarea>
+                                            <textarea id="monthly-compliment" class="form-control" style="height: 101px" placeholder="Enter Compliment">${weekly.monthlys[0].compliment}</textarea>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
                                         <td>
-                                            <textarea class="form-control" id="monthly-reflectionAndImprovement" style="height: 101px" placeholder="Enter here...">${weekly.monthlys[0].reflectionAndImprovement}</textarea>
+                                            <textarea id="monthly-reflectionAndImprovement" class="form-control" style="height: 101px" placeholder="Enter Reflection/Improvement">${weekly.monthlys[0].reflectionAndImprovement}</textarea>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2644,32 +2638,17 @@
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr style="height: 34px">
-                                        <td colspan="2"></td>
+                                    <tr style="height: 68px">
+                                        <td></td>
                                     </tr>
-                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7); height: 34px">
-                                        <td colspan="2">
-                                            Objective
+                                    <tr>
+                                        <td class="fw-bolder" style="height: 232px;">
+                                            Monthly Goals
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bolder" style="height: 232px;" rowspan="4">
-                                            ONETHING
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
                                     </tr>
                                     <tr style="height: 464px;">
                                         <td colspan="2" class="fw-bolder">
-                                            DAILY <br> ROUTINE
+                                            ROUTINE
                                         </td>
                                     </tr>
                                     <tr style="height: 232px;">
@@ -3549,7 +3528,7 @@
         if (tableDailyOnethingRoutine) {
             for (let i = 0; i < 5 + totalDailyRoutine; i++) {
                 const tr = document.createElement('tr');
-                tr.style.height = '44.5px';
+                tr.style.height = '45px';
                 tr.classList.add('category-review');
                 for (let j = 0; j < daysOfMonth.children.length; j++) {
                     const td = document.createElement('td');
@@ -3565,7 +3544,6 @@
         $('#table-dailyOnethingRoutine th').css('border', '1px solid #000');
         $('#table-dailyOnethingRoutine tr').css('border', '1px solid #000');
         $('#table-dailyOnethingRoutine td').css('border', '1px solid #000');
-
 
         var queryString = window.location.search;
         var urlParams = new URLSearchParams(queryString);
@@ -3634,53 +3612,55 @@
                         }
                     })
 
-                    // const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
-                    // weeklyGoalsRow.forEach(function (weekRow, index) {
-                    //     weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                    //         const startDate = onlyWeek.getAttribute('data-week');
-                    //         weeklys.forEach(week => {
-                    //             const startDateDB = week.startDate;
-                    //             if (startDate == startDateDB) {
-                    //                 if (week.weeklys != null) {
-                    //                     const weeklyTarget = week.weeklys[index + 1].content;
-                    //                     const statusWeek = week.weeklys[index + 1].status;
-                    //                     if (weeklyTarget != null && weeklyTarget != '') {
-                    //                         var btnStatus = ``;
-                    //                         if (statusWeek == 'COMPLETE') {
-                    //                             btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
-                    //                         } else if (statusWeek == 'POSTPONE') {
-                    //                             btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
-                    //                         } else if (statusWeek == 'CANCELLATION') {
-                    //                             btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
-                    //                         } else if (statusWeek == '') {
-                    //                             btnStatus = `<button class="btn btn-info float-end">null</button>`
-                    //                         }
-                    //                         const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
-                    //                         $(onlyWeek).append(html);
-                    //                     }
-                    //                 }
-                    //             }
-                    //         });
-                    //     })
-                    // })
+                    const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
+                    weeklyGoalsRow.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    if (week.weeklys != null) {
+                                        const weeklyTarget = week.weeklys[index + 1].content;
+                                        const statusWeek = week.weeklys[index + 1].status;
+                                        if (weeklyTarget != null && weeklyTarget != '') {
+                                            var btnStatus = ``;
+                                            if (statusWeek == 'COMPLETE') {
+                                                btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
+                                            } else if (statusWeek == 'POSTPONE') {
+                                                btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
+                                            } else if (statusWeek == 'CANCELLATION') {
+                                                btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
+                                            } else if (statusWeek == 'INPROGRESS') {
+                                                btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
+                                            } else if (statusWeek == '') {
+                                                btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                            }
+                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                                            $(onlyWeek).append(html);
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
 
-                    // const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
-                    // weeklyAmountTime.forEach(function (weekRow, index) {
-                    //     weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                    //         const startDate = onlyWeek.getAttribute('data-week');
-                    //         weeklys.forEach(week => {
-                    //             const startDateDB = week.startDate;
-                    //             if (startDate == startDateDB) {
-                    //                 if (week.weeklys != null) {
-                    //                     const timeusedWeekly = week.weeklys[index + 1].timeUsed;
-                    //                     if (timeusedWeekly != null && timeusedWeekly != '') {
-                    //                         onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
-                    //                     }
-                    //                 }
-                    //             }
-                    //         });
-                    //     })
-                    // })
+                    const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
+                    weeklyAmountTime.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    if (week.weeklys != null) {
+                                        const timeusedWeekly = week.weeklys[index + 1].timeUsed;
+                                        if (timeusedWeekly != null && timeusedWeekly != '') {
+                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
 
                     const gratitudeDiaryTr = document.querySelectorAll('.tr-weekly-sentence0');
                     gratitudeDiaryTr.forEach(function (weekRow, index) {
@@ -3797,11 +3777,11 @@
         }
         xhr.send();
 
-        const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
-        document.querySelectorAll('.review-dailyRoutine').forEach(function () {
-            dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
-            dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
-        });
+        // const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
+        // document.querySelectorAll('.review-dailyRoutine').forEach(function () {
+        //     dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
+        //     dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
+        // });
     })
 
     // Handle Tab Year Report
@@ -4808,9 +4788,9 @@
             }
 
             const colors = [];
-            $('th.colorPicker').each(function () {
+            $('th.category-color').each(function () {
                 const category = $(this).find('p:first').text().trim();
-                const color = $(this).find('.pickedColor').text().trim();
+                const color = $(this).css('background-color');
                 const values = [];
                 const columnIndex = $(this).index();
                 $('table.categoryColor tbody tr').each(function () {
@@ -5154,6 +5134,7 @@
                     i--;
                 }
             }
+
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
@@ -5368,6 +5349,47 @@
             $('.category-color').eq(index).css('background-color', backgroundColor);
         });
     });
+
+    document.querySelectorAll('.yearTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+          e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
+    document.querySelectorAll('.monthTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
+    document.querySelectorAll('.weekTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
+    document.querySelectorAll('.weekTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
 </script>
 </body>
 </html>

@@ -87,7 +87,7 @@
                         <span class="trending-ribbon-text">Focus</span> <i
                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                     </div>
-                    <h5 class="fs-14 text-end mb-3" id="yearCurrent">Monthly Goals</h5>
+                    <h5 class="fs-14 text-end mb-3" id="yearCurrent"></h5>
                     <div class="m-0" id="yearTarget">
                     </div>
                 </div>
@@ -325,12 +325,13 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
+                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
-                    // let yearCurrent = document.getElementById('yearCurrent');
+                    let yearCurrent = document.getElementById('yearCurrent');
                     let yearTarget = document.getElementById('yearTarget');
 
                     let xhtml = '';
@@ -377,6 +378,8 @@
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
                     monthTarget.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions) + ' Goals';
+                    const targetOfYear = parseData.year == null ? currentYear.textContent : parseData.year.year;
+                    yearCurrent.textContent = targetOfYear + " Goals";
 
                     const startDay = startDateOfCurrentDate.getDay();
 
@@ -387,6 +390,7 @@
                     var countLine = -1;
                     const tbody = table.querySelector('tbody');
                     const weeksInSpecificMonth = getWeeksInMonth(year, month) * numberOfRowsPerWeek;
+
                     for (let i = 0; i < weeksInSpecificMonth; i++) {
                         const row = document.createElement('tr');
                         for (let j = 0; j < 8; j++) {
@@ -510,6 +514,7 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
+
                     $.each(colors, function (index, value) {
                         switch (index) {
                             case 0:
@@ -531,6 +536,7 @@
                                 break;
                         }
                     })
+
                     document.querySelectorAll('.title').forEach(function (e, index) {
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                     });
@@ -538,12 +544,15 @@
                     document.querySelectorAll('.lecture').forEach(function (e) {
                         e.style.backgroundColor = yearColor[0]
                     })
+
                     document.querySelectorAll('.dailyEvaluation').forEach(function (e) {
                         e.style.backgroundColor = yearColor[1]
                     })
+
                     document.querySelectorAll('.work').forEach(function (e) {
                         e.style.backgroundColor = yearColor[2]
                     })
+
                     document.querySelectorAll('.reading').forEach(function (e) {
                         e.style.backgroundColor = yearColor[3]
                     })
