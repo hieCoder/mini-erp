@@ -2632,18 +2632,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 d-flex mt-2 p-0">
+                        <div class="col-md-12 d-flex mt-2 p-0 content-wrapper overflow-auto">
                             <div class="table-detail" style="width: unset;">
                                 <table class="text-center table-sm">
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr style="height: 68px">
+                                    <tr style="height: 34px">
                                         <td></td>
                                     </tr>
-                                    <tr>
+                                    <tr style="height: 266px">
                                         <td class="fw-bolder" style="height: 232px;">
-                                            Monthly Goals
+                                            Monthly <br> Goals
                                         </td>
                                     </tr>
                                     <tr style="height: 464px;">
@@ -2651,14 +2651,9 @@
                                             ROUTINE
                                         </td>
                                     </tr>
-                                    <tr style="height: 232px;">
-                                        <td class="fw-bolder" colspan="2">
-                                            MONTHLY
-                                        </td>
-                                    </tr>
                                     <tr style="height: 200px">
                                         <td class="fw-bolder" colspan="2">
-                                            ${weekly.year.year} GOAL
+                                            Time <br> Usage
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2668,20 +2663,21 @@
                                 <table class="table table-sm table-bordered text-center" id="table-year-report">
                                     <thead>
                                     <tr style="height: 34px; max-width: 1500px">
-                                        <c:forEach begin="0" end="11" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                        <c:set var="monthName" value='Jan.,Feb.,Mar.,Apr.,May,Jun.,Jul.,Aug.,Sep.,Oct., Nov.,Dec.' />
+                                        <c:forEach items="${monthName}" var="month" varStatus="loop">
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white"><span>${month}</span></th>
                                         </c:forEach>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr style="max-width: 1500px; height: 34px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td class="text-white fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);">P/T</td>
+                                            <td class="text-white fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);">Progress</td>
                                             <td class="fw-bolder" style="width: 39px;">Rate</td>
                                         </c:forEach>
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="onething-report" style="max-width: 1500px; height: 58px">
+                                        <tr class="monthly-report" style="max-width: 1500px; height: 58px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="11" varStatus="loop">
                                                 <c:set var="month" value="${loop.index + 1}" />
                                                 <c:choose>
@@ -2692,7 +2688,7 @@
                                                         <c:set var="formattedMonth" value="${month}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 90px; max-width: 90px; max-height: 57px" data-simplebar></td>
                                                 <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0.00%</td>
                                             </c:forEach>
                                         </tr>
@@ -2714,8 +2710,9 @@
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <c:forEach begin="0" end="3">
-                                        <tr class="monthly-report" style="max-width: 1500px; max-height: 58px; height: 58px">
+
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr class="monthly-time-report" style="height: 50px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="11" varStatus="loop">
                                                 <c:set var="month" value="${loop.index + 1}" />
                                                 <c:choose>
@@ -2726,13 +2723,29 @@
                                                         <c:set var="formattedMonth" value="${month}" />
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td colspan="2" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <td class="timeUsed-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; border: 1px solid black"></td>
+                                                <td class="performance-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px; border: 1px solid black"></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-detail" style="width: unset;">
+                                <table class="text-center table-sm">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="height: 34px; background: red" class="fw-bold text-white">
+                                        <td colspan="2">${weekly.year.year.substring(2)}' goals</td>
+                                    </tr>
+                                    <tr class="fw-bold" style="height: 34px">
+                                        <td class="text-white" style="background-color: rgba(60, 127, 234, 0.7);">Progess</td>
+                                        <td>Rate</td>
+                                    </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr style="max-width: 1500px;" >
-                                            <td colspan="24" style="height: 50px">
+                                        <tr style="height: 58px">
+                                            <td colspan="2">
                                                 <span class="d-inline-block">${weekly.year.target[loop.index].target}</span>
                                                 <c:if test="${weekly.year.target[loop.index].status.equals('COMPLETE')}">
                                                     <button class="btn btn-success float-end" style="width: 53px">
@@ -2749,6 +2762,26 @@
                                                         <i class="ri-close-line"></i>
                                                     </button>
                                                 </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('INPROGRESS')}">
+                                                    <button class="btn btn-info float-end" style="width: 53px">
+                                                        <i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    <tr style="height: 464px;">
+                                        <td colspan="2" class="fw-bolder">
+                                            ROUTINE
+                                        </td>
+                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr style="height: 50px">
+                                            <td>
+
+                                            </td>
+                                            <td>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -2793,46 +2826,11 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="fw-bolder">
-                                            <td class="text-wrap" style="max-width: 90px; width: 90px; height: 50px; max-height: 50px" data-simplebar>
 
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
-                            <div style="width: 100%">
-                                <table class="table table-sm text-center">
-                                    <thead>
-                                    <tr style="height: 49px; max-width: 1500px">
-                                        <c:forEach begin="0" end="11" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
-                                        </c:forEach>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="monthly-time-report" style="max-width: 1500px; height: 51px">
-                                            <c:forEach begin="0" end="11" varStatus="loop">
-                                                <c:set var="month" value="${loop.index + 1}" />
-                                                <c:choose>
-                                                    <c:when test="${month lt 10}">
-                                                        <c:set var="formattedMonth" value="0${month}" />
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:set var="formattedMonth" value="${month}" />
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <td class="timeUsed-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; border: 1px solid black"></td>
-                                                <td class="performance-monthly-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px; border: 1px solid black"></td>
-                                            </c:forEach>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
+
                         </div>
                         <div class="col-md-12 mt-4">
                             <h1 class="font-weight-bold mb-4">Year in Review and Self-Inspiration</h1>
@@ -3110,6 +3108,8 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script>
 
     // Handle Tab Redirection
@@ -3633,7 +3633,7 @@
                                             } else if (statusWeek == 'INPROGRESS') {
                                                 btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
                                             } else if (statusWeek == '') {
-                                                btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                                btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
                                             }
                                             const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
                                             $(onlyWeek).append(html);
@@ -3796,33 +3796,34 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const parseData = JSON.parse(xhr.responseText);
-                        document.querySelectorAll('.onething-report').forEach(function (e, index) {
-                            const onethingReport = e.querySelectorAll('.onething-category-report');
-                            const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
-                            onethingReport.forEach(function (e, indexTd) {
-                                const dataMonth = e.getAttribute('data-month');
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        if (month.targetCategory != null) {
-                                            const monthTarget = month.targetCategory[index + 1].target;
-                                            const monthPer = month.targetCategory[index + 1].performance;
-                                            const performanceMonthtTarget = month.targetCategory[index + 1].performance
-                                            e.textContent = monthPer + '/' + monthTarget;
-
-                                            const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                                            if (!isNaN(performancePercentage)) {
-                                                const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                                                perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
-                                                if (month.color != null) {
-                                                    e.style.backgroundColor = month.color[index + 1];
-                                                    perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                            });
-                        })
+                        console.log(parseData)
+                        // document.querySelectorAll('.onething-report').forEach(function (e, index) {
+                        //     const onethingReport = e.querySelectorAll('.onething-category-report');
+                        //     const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
+                        //     onethingReport.forEach(function (e, indexTd) {
+                        //         const dataMonth = e.getAttribute('data-month');
+                        //         parseData.forEach(month => {
+                        //             if (dataMonth == month.month) {
+                        //                 if (month.targetCategory != null) {
+                        //                     const monthTarget = month.targetCategory[index + 1].target;
+                        //                     const monthPer = month.targetCategory[index + 1].performance;
+                        //                     const performanceMonthtTarget = month.targetCategory[index + 1].performance
+                        //                     e.textContent = monthPer + '/' + monthTarget;
+                        //
+                        //                     const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                        //                     if (!isNaN(performancePercentage)) {
+                        //                         const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                        //                         perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
+                        //                         if (month.color != null) {
+                        //                             e.style.backgroundColor = month.color[index + 1];
+                        //                             perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                        //                         }
+                        //                     }
+                        //                 }
+                        //             }
+                        //         });
+                        //     });
+                        // })
 
                         document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
                             const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
@@ -3850,23 +3851,38 @@
                                 const dataMonth = eTarget.getAttribute('data-month');
                                 parseData.forEach(month => {
                                     if (dataMonth == month.month) {
-                                        const monthDB = month.monthlyContents[indexTr];
-                                        if (month.monthlyContents != null && monthDB != null) {
-                                            const content = monthDB.content;
-                                            const status = monthDB.status;
-                                            if (content != null && content != '') {
-                                                var btnStatus = ``;
-                                                if (status == 'COMPLETE') {
-                                                    btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
-                                                } else if (status == 'POSTPONE') {
-                                                    btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
-                                                } else if (status == 'CANCELLATION') {
-                                                    btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
-                                                } else if (status == '') {
-                                                    btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                        if (indexTarget % 2 == 0) {
+                                            const monthDB = month.monthlyContents[indexTr];
+                                            if (month.monthlyContents != null && monthDB != null) {
+                                                const content = monthDB.content;
+                                                const status = monthDB.status;
+                                                if (content != null && content != '') {
+                                                    var btnStatus = ``;
+                                                    if (status == 'COMPLETE') {
+                                                        btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
+                                                    } else if (status == 'POSTPONE') {
+                                                        btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
+                                                    } else if (status == 'CANCELLATION') {
+                                                        btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
+                                                    } else if (status == 'INPROGRESS') {
+                                                        btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
+                                                    } else if (status == '') {
+                                                        btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
+                                                    }
+                                                    const html = `<span>` + content + `</span>`+ btnStatus;
+                                                    $(eTarget).append(html);
                                                 }
-                                                const html = `<span>` + content + `</span>`+ btnStatus;
-                                                $(eTarget).append(html);
+                                            }
+                                        } else {
+                                            if (month.targetCategory != null) {
+                                                const monthTarget = month.targetCategory[indexTr + 1].target;
+                                                const performanceMonthtTarget = month.targetCategory[indexTr + 1].performance
+
+                                                const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                                                if (!isNaN(performancePercentage)) {
+                                                    const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                                                    eTarget.textContent = roundedPerformancePercentage + '%';
+                                                }
                                             }
                                         }
                                     }
@@ -3883,25 +3899,25 @@
                             return totalHoursInMonth;
                         }
 
-                        const totalTimeUsedMonthlyArr = [];
-                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
-                            const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
-                            const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
-                            var totalTimeUsedMonthLy = 0;
-                            timeUsedMonthly.forEach(function (eTd, indexTd) {
-                                const dataMonth = eTd.getAttribute('data-month');
-                                const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                                        eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
-                                        totalTimeUsedMonthLy += parseFloat(timeUsed);
-                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
-                                    }
-                                });
-                            })
-                            totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
-                        })
+                        // const totalTimeUsedMonthlyArr = [];
+                        // document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                        //     const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
+                        //     const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
+                        //     var totalTimeUsedMonthLy = 0;
+                        //     timeUsedMonthly.forEach(function (eTd, indexTd) {
+                        //         const dataMonth = eTd.getAttribute('data-month');
+                        //         const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
+                        //         parseData.forEach(month => {
+                        //             if (dataMonth == month.month) {
+                        //                 const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
+                        //                 eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
+                        //                 totalTimeUsedMonthLy += parseFloat(timeUsed);
+                        //                 performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
+                        //             }
+                        //         });
+                        //     })
+                        //     totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
+                        // })
 
                         const btnChart = document.getElementById('btn-chart-time-used-yearReport');
                         btnChart.addEventListener('click', function (e) {
