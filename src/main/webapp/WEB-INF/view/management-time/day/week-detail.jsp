@@ -103,9 +103,9 @@
         }
 
         .nodeChill ul li:nth-child(-n+2) {
-           margin-right: 14px;
+            margin-right: 14px;
         }
-        
+
         #elem0child0 {
             margin-left: -100px;
             top: -275px !important;
@@ -277,7 +277,7 @@
         #addDaily {
             position: absolute;
             top: 0;
-            left: 56%;
+            left: 61%;
             transform: translate(-50%, -50%);
             padding: 4px;
             border-radius: 50%;
@@ -488,8 +488,8 @@
                                 <div id="elem0" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]};">
                                     <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
-                                       ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
-                                   </p>
+                                        ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
+                                    </p>
                                     <div style="position: absolute; top: 92px">
                                         <div class="pickr"></div>
                                         <p hidden="hidden"
@@ -508,7 +508,7 @@
                                     </div>
                                 </div>
                                 <div id="elem2" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
-                                    style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
+                                     style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
                                     <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
                                     </p>
@@ -519,7 +519,7 @@
                                     </div>
                                 </div>
                                 <div id="elem3" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
-                                    style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
+                                     style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
                                     <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
                                     </p>
@@ -551,8 +551,8 @@
                                 </div>
                                 <div id="elem0child1" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="top: -75px; right: 100px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[0]}
@@ -571,8 +571,8 @@
                                 </div>
                                 <div id="elem0child2" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="top: -75px; left: 115px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[0]}
@@ -591,8 +591,8 @@
                                 </div>
                                 <div id="elem0child3" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[0]}
@@ -611,8 +611,8 @@
                                 </div>
                                 <div id="elem1child0" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[0]}
@@ -631,8 +631,8 @@
                                 </div>
                                 <div id="elem1child1" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[0]}
@@ -651,8 +651,8 @@
                                 </div>
                                 <div id="elem1child2" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[0]}
@@ -671,8 +671,8 @@
                                 </div>
                                 <div id="elem1child3" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[0]}
@@ -691,8 +691,8 @@
                                 </div>
                                 <div id="elem2child0" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
+                                      </span>
                                     <ul style="left: 130px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[0]}
@@ -711,8 +711,8 @@
                                 </div>
                                 <div id="elem2child1" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="top: 110px; left: 0px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[0]}
@@ -731,8 +731,8 @@
                                 </div>
                                 <div id="elem2child2" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="top: 110px; right: 0px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[0]}
@@ -751,8 +751,8 @@
                                 </div>
                                 <div id="elem2child3" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
+                                      </span>
                                     <ul style="right: 100px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[0]}
@@ -771,8 +771,8 @@
                                 </div>
                                 <div id="elem3child0" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
+                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[0]}
@@ -791,8 +791,8 @@
                                 </div>
                                 <div id="elem3child1" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[0]}
@@ -811,8 +811,8 @@
                                 </div>
                                 <div id="elem3child2" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[0]}
@@ -831,8 +831,8 @@
                                 </div>
                                 <div id="elem3child3" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                        ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
-                                    </span>
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
+                                     </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[0]}
@@ -942,38 +942,38 @@
                                         </ul>
                                     </td>
                                     <td>
-                                       <div class="d-flex align-items-center">
-                                           <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
-                                           <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[0].status}" type="button" data-bs-toggle="dropdown"
-                                                   aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
-                                           </button>
-                                           <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-warning waves-effect waves-light pending"
-                                                           style="margin: 0 5px; width: 102px;"><i
-                                                           class="ri-arrow-right-line"></i> </button>
-                                               </li>
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                           style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
-                                                   </button>
-                                               </li>
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                           style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
-                                                   </button>
-                                               </li>
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
-                                                           style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
-                                                   </button>
-                                               </li>
-                                           </ul>
-                                       </div>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
+                                            <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[0].status}" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-warning waves-effect waves-light pending"
+                                                            style="margin: 0 5px; width: 102px;"><i
+                                                            class="ri-arrow-right-line"></i> </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
@@ -1615,19 +1615,19 @@
                                     </c:forEach>
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
-                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">${weekly.weeklys.weeklys[1].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">${weekly.weeklys.weeklys[2].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">${weekly.weeklys.weeklys[3].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">${weekly.weeklys.weeklys[1].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
@@ -2190,12 +2190,20 @@
                                         <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                                             <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                                         </div>
-                                        <h5 class="fs-14 text-end mb-3">Goals of <span id="monthTarget">${weekly.monthlys[0].month}</span></h5>
-                                        <div class="m-0" id="monthlyTarget">
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[0].content}</p>
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[1].content}</p>
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[2].content}</p>
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[3].content}</p>
+                                        <h5 class="fs-14 text-end mb-3"><span id="monthTarget">${weekly.monthlys[0].month}</span> Goals</h5>
+                                        <div class="m-0" id="monthlyTarget" style="background: ${weekly.year.color[0]}">
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[0]}">
+                                                ${weekly.monthlys[0].monthlyContents[0].content}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[1]}">
+                                                ${weekly.monthlys[0].monthlyContents[1].content}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[2]}">
+                                                ${weekly.monthlys[0].monthlyContents[2].content}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[3]}">
+                                                ${weekly.monthlys[0].monthlyContents[3].content}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -2255,13 +2263,13 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category By Month</h4>
+                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage By Month</h4>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="card-body">
                                                                 <c:choose>
-                                                                    <c:when test="${weekly.monthlys[0].color != null}">
-                                                                        <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                                                    <c:when test="${weekly.year.color != null}">
+                                                                        <div id="simple_pie_chart" data-colors='["${weekly.year.color[0]}", "${weekly.year.color[1]}", "${weekly.year.color[2]}", "${weekly.year.color[3]}"]' class="apex-charts" dir="ltr"></div>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <div id="simple_pie_chart" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
@@ -2313,13 +2321,13 @@
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                        <tr class="tr-weekly-sentence0">
-                                            <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                                <td colspan="7" style="height: 126px">
-                                                    <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Gratitude Diary"></textarea>
-                                                </td>
-                                            </c:forEach>
-                                        </tr>
+                                    <tr class="tr-weekly-sentence0">
+                                        <c:forEach begin="0" end="4" varStatus="innerLoop">
+                                            <td colspan="7" style="height: 126px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Gratitude Diary"></textarea>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
                                     <tr class="tr-weekly-sentence1">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
                                             <td colspan="7" style="height: 126px">
@@ -2466,6 +2474,11 @@
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
@@ -2488,6 +2501,11 @@
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
                                                 <button class="btn btn-info" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
@@ -2517,6 +2535,11 @@
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
@@ -2538,6 +2561,11 @@
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
                                                 <button class="btn btn-info" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
@@ -2614,12 +2642,19 @@
                                         <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                                             <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                                         </div>
-                                        <h5 class="fs-14 text-end mb-3">Goals of <span >${weekly.year.year}</span></h5>
+                                        <h5 class="fs-14 text-end mb-3"><span id="current-year">${weekly.year.year}</span> Goals</h5>
                                         <div class="m-0">
-                                            <p class="editable m-0">${weekly.year.target[0].target}</p>
-                                            <p class="editable m-0">${weekly.year.target[1].target}</p>
-                                            <p class="editable m-0">${weekly.year.target[2].target}</p>
-                                            <p class="editable m-0">${weekly.year.target[3].target}</p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[0]}">
+                                                ${weekly.year.target[0].target}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[1]}">
+                                                ${weekly.year.target[1].target}</p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[2]}">
+                                                ${weekly.year.target[2].target}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[3]}">
+                                                ${weekly.year.target[3].target}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -2744,7 +2779,7 @@
                                         <td>Rate</td>
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr style="height: 58px">
+                                        <tr style="height: 58px; background: ${weekly.year.color[loop.index]}">
                                             <td colspan="2">
                                                 <span class="d-inline-block">${weekly.year.target[loop.index].target}</span>
                                                 <c:if test="${weekly.year.target[loop.index].status.equals('COMPLETE')}">
@@ -2767,6 +2802,11 @@
                                                         <i class="ri-play-mini-line"></i>
                                                     </button>
                                                 </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('')}">
+                                                    <button class="btn btn-info float-end" style="width: 53px">
+                                                        <i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -2776,11 +2816,11 @@
                                         </td>
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr style="height: 50px">
-                                            <td>
+                                        <tr style="height: 50px; background: ${weekly.year.color[loop.index]}">
+                                            <td class="year-time-usage">
 
                                             </td>
-                                            <td>
+                                            <td class="rate-year-time-usage">
 
                                             </td>
                                         </tr>
@@ -2789,48 +2829,20 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-md-12 d-flex mt-2 p-0">
-                            <div class="table-detail" style="width: unset;">
-                                <table class="text-center table-sm">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                    <tr style="height: 34px">
-                                        <td>
-                                            <button type="button" id="btn-chart-time-used-yearReport" class="btn btn-info btn-label waves-effect waves-light text-white"  data-bs-toggle="modal" data-bs-target="#modalChart-yearReport">
-                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Chart
-                                            </button>
-                                            <div id="modalChart-yearReport" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category By Year</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="card-body">
-                                                                <c:choose>
-                                                                    <c:when test="${weekly.monthlys[0].color != null}">
-                                                                        <div id="simple_pie_chart2" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <div id="simple_pie_chart2" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
+                        <div class="col-md-7 mt-4 p-0">
+                            <h4 class="text-center">Line Chart Time Usage ${weekly.year.year}</h4>
+                            <div id="line_chart_basic" data-colors='["--vz-primary", "--vz-success", "--vz-danger", "--vz-info"]' class="apex-charts" dir="ltr"></div>
+                        </div>
+                        <div class="col-md-5 mt-4 p-0">
+                            <h4 class="text-center">Pie Chart Time Usage ${weekly.year.year}</h4>
+                            <c:choose>
+                                <c:when test="${weekly.monthlys[0].color != null}">
+                                    <div id="simple_pie_chart2" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div id="simple_pie_chart2" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="col-md-12 mt-4">
                             <h1 class="font-weight-bold mb-4">Year in Review and Self-Inspiration</h1>
@@ -3111,7 +3123,6 @@
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script>
-
     // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
@@ -3137,24 +3148,24 @@
             window.history.replaceState( {}, document.title, url);
         }
 
-       switch (tabPlanner) {
-           case 'year-goals':
-               $('#session-goals').tab('show');
-               $('#session-goals').click();
-               removeTabParamFromURL(currentURL);
-               break;
-           case 'wm-report':
-               $('#session-review').tab('show');
-               removeTabParamFromURL(currentURL);
-               break;
-           case 'year-report':
-               $('#session-year-report').tab('show');
-               $('#session-year-report').click();
-               removeTabParamFromURL(currentURL);
-               break;
-           default:
-               break;
-       }
+        switch (tabPlanner) {
+            case 'year-goals':
+                $('#session-goals').tab('show');
+                $('#session-goals').click();
+                removeTabParamFromURL(currentURL);
+                break;
+            case 'wm-report':
+                $('#session-review').tab('show');
+                removeTabParamFromURL(currentURL);
+                break;
+            case 'year-report':
+                $('#session-year-report').tab('show');
+                $('#session-year-report').click();
+                removeTabParamFromURL(currentURL);
+                break;
+            default:
+                break;
+        }
     })
 
     // Mind map
@@ -3176,7 +3187,7 @@
                 $("#elem" + i).click(function(e) {
                     if ( hasLevel2Children($(this).attr('id').match(/\d+/)[0]) === true ) {
                         for (var i = 0; i < $(".level1").length; i++) {
-                                if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
+                            if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
                                 if ("elem" + i !== $(this).attr('id'))
                                     toggle("elem" + i);
                             }
@@ -3705,12 +3716,14 @@
                         if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
                         else if (e.textContent.trim() == 'POSTPONE') e.classList.add('text-warning')
                         else if (e.textContent.trim() == 'CANCELLATION') e.classList.add('text-danger')
+                        else if (e.textContent.trim() == 'INPROGRESS') e.classList.add('text-info')
                     })
 
                     document.querySelectorAll('.monthly-goals').forEach(function (e) {
                         if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
                         else if (e.textContent.trim() == 'POSTPONE') e.classList.add('text-warning')
                         else if (e.textContent.trim() == 'CANCELLATION') e.classList.add('text-danger')
+                        else if (e.textContent.trim() == 'INPROGRESS') e.classList.add('text-info')
                     })
 
                     const weeklyAmountTimeUsed = document.querySelectorAll('.weekly-amountTime');
@@ -3736,15 +3749,15 @@
                         e.querySelectorAll('span').forEach(function (eSpan) {
                             totalTimeUsedWeekly += parseFloat(eSpan.textContent);
                         })
-                        $( timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
+                        $(timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
                         performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
                         arrayTimeUsedCategory.push(totalTimeUsedWeekly)
                     })
                     const btnChart = document.getElementById('btn-chart-time-used');
                     btnChart.addEventListener('click', function (e) {
                         const arrCategory = [];
-                        document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
-                            arrCategory.push(e.textContent);
+                        document.querySelectorAll('.yearTarget').forEach(function (e) {
+                            arrCategory.push(e.value);
                         })
                         var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart"),
                             chartDonutBasicColors = (chartPieBasicColors && (options = {
@@ -3899,49 +3912,427 @@
                             return totalHoursInMonth;
                         }
 
-                        // const totalTimeUsedMonthlyArr = [];
-                        // document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
-                        //     const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
-                        //     const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
-                        //     var totalTimeUsedMonthLy = 0;
-                        //     timeUsedMonthly.forEach(function (eTd, indexTd) {
-                        //         const dataMonth = eTd.getAttribute('data-month');
-                        //         const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
-                        //         parseData.forEach(month => {
-                        //             if (dataMonth == month.month) {
-                        //                 const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                        //                 eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
-                        //                 totalTimeUsedMonthLy += parseFloat(timeUsed);
-                        //                 performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
-                        //             }
-                        //         });
-                        //     })
-                        //     totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
-                        // })
+                        function totalHoursInYear(year) {
+                            var isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+                            var totalHours = isLeapYear ? 366 * 24 : 365 * 24;
+                            return totalHours;
+                        }
 
-                        const btnChart = document.getElementById('btn-chart-time-used-yearReport');
-                        btnChart.addEventListener('click', function (e) {
-                            const arrCategory = [];
-                            document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
-                                arrCategory.push(e.textContent);
+                        const totalTimeUsedMonthlyArr = [];
+                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                            const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
+                            const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
+                            var totalTimeUsedMonthLy = 0;
+                            timeUsedMonthly.forEach(function (eTd, indexTd) {
+                                const dataMonth = eTd.getAttribute('data-month');
+                                const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
+                                parseData.forEach(month => {
+                                    if (dataMonth == month.month) {
+                                        const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
+                                        eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
+                                        totalTimeUsedMonthLy += parseFloat(timeUsed);
+                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
+                                    }
+                                });
                             })
-                            var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
-                                chartDonutBasicColors = (chartPieBasicColors && (options = {
-                                    series: totalTimeUsedMonthlyArr,
-                                    chart: {height: 300, type: "pie"},
-                                    labels: arrCategory,
-                                    legend: {position: "bottom"},
-                                    dataLabels: {dropShadow: {enabled: !1}},
-                                    colors: chartPieBasicColors
-                                }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
-                                chartDonutupdatingColors = (chartDonutBasicColors && (options = {
-                                    series: [44, 55, 41, 17, 15],
-                                    chart: {height: 300, type: "donut"},
-                                    legend: {position: "bottom"},
-                                    dataLabels: {dropShadow: {enabled: !1}},
-                                    colors: chartDonutBasicColors
-                                }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+                            totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
                         })
+
+                        const hoursInYear = totalHoursInYear(parseInt(document.getElementById('current-year').textContent));
+                        const rateYearTimeUsage = document.querySelectorAll('.rate-year-time-usage');
+                        document.querySelectorAll('.year-time-usage').forEach(function (e, index) {
+                            e.textContent = totalTimeUsedMonthlyArr[index] + '/' + hoursInYear + 'hours';
+                            rateYearTimeUsage[index].textContent = parseFloat(parseFloat(totalTimeUsedMonthlyArr[index]) * 100 / hoursInYear).toFixed(2) + '%';
+                        })
+
+                        const yearGoals = [];
+                        document.querySelectorAll('.yearTarget').forEach(function (e) {
+                            yearGoals.push(e.value);
+                        })
+                        const yearColorGoals = [];
+                        document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e) {
+                            yearColorGoals.push(e.style.background);
+                        })
+                        var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
+                            chartDonutBasicColors = (chartPieBasicColors && (options = {
+                                series: totalTimeUsedMonthlyArr,
+                                chart: {height: 600, type: "pie"},
+                                labels: yearGoals,
+                                legend: {position: "bottom"},
+                                dataLabels: {dropShadow: {enabled: !1}},
+                                colors: yearColorGoals
+                            }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
+                            chartDonutupdatingColors = (chartDonutBasicColors && (options = {
+                                series: [44, 55, 41, 17, 15],
+                                chart: {height: 300, type: "donut"},
+                                legend: {position: "bottom"},
+                                dataLabels: {dropShadow: {enabled: !1}},
+                                colors: yearColorGoals
+                            }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+
+
+                        const yearTarget = document.querySelectorAll('.yearTarget');
+
+
+                        const yearGoals1 = [], yearGoals2 = [], yearGoals3 = [], yearGoals4 = [];
+                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                            if (indexTr == 0) {
+                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                    let timeUsageOfMonth = eTd.textContent;
+                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                    yearGoals1.push(timeUsageOfMonth)
+                                })
+                            } else if (indexTr == 1) {
+                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                    let timeUsageOfMonth = eTd.textContent;
+                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                    yearGoals2.push(timeUsageOfMonth)
+                                })
+                            } else if (indexTr == 2) {
+                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                    let timeUsageOfMonth = eTd.textContent;
+                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                    yearGoals3.push(timeUsageOfMonth)
+                                })
+                            } else if (indexTr == 3) {
+                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                    let timeUsageOfMonth = eTd.textContent;
+                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                    yearGoals4.push(timeUsageOfMonth)
+                                })
+                            }
+                        })
+
+                        var linechartBasicColors = getChartColorsArray("line_chart_basic"),
+                            linechartZoomColors = (linechartBasicColors && (options = {
+                                series: [
+                                    {
+                                        name: yearTarget[0].value,
+                                        data: yearGoals1
+                                    },
+                                    {
+                                        name: yearTarget[1].value,
+                                        data: yearGoals2
+                                    },
+                                    {
+                                        name: yearTarget[2].value,
+                                        data: yearGoals3
+                                    },
+                                    {
+                                        name: yearTarget[3].value,
+                                        data: yearGoals4
+                                    },
+                                ],
+                                chart: {height: 570, type: "line", zoom: {enabled: !1}, toolbar: {show: !1}},
+                                markers: {size: 4},
+                                dataLabels: {enabled: !1},
+                                stroke: {curve: "straight"},
+                                colors: yearColorGoals,
+                                xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]}
+                            }, (chart = new ApexCharts(document.querySelector("#line_chart_basic"), options)).render()), getChartColorsArray("line_chart_zoomable")),
+                            linechartDatalabelColors = (linechartZoomColors && (options = {
+                                series: [{
+                                    name: "XYZ MOTORS",
+                                    data: [{x: new Date("2018-01-12").getTime(), y: 140}, {
+                                        x: new Date("2018-01-13").getTime(),
+                                        y: 147
+                                    }, {x: new Date("2018-01-14").getTime(), y: 150}, {
+                                        x: new Date("2018-01-15").getTime(),
+                                        y: 154
+                                    }, {x: new Date("2018-01-16").getTime(), y: 160}, {
+                                        x: new Date("2018-01-17").getTime(),
+                                        y: 165
+                                    }, {x: new Date("2018-01-18").getTime(), y: 162}, {
+                                        x: new Date("2018-01-20").getTime(),
+                                        y: 159
+                                    }, {x: new Date("2018-01-21").getTime(), y: 164}, {
+                                        x: new Date("2018-01-22").getTime(),
+                                        y: 160
+                                    }, {x: new Date("2018-01-23").getTime(), y: 165}, {
+                                        x: new Date("2018-01-24").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-01-25").getTime(), y: 172}, {
+                                        x: new Date("2018-01-26").getTime(),
+                                        y: 177
+                                    }, {x: new Date("2018-01-27").getTime(), y: 173}, {
+                                        x: new Date("2018-01-28").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-01-29").getTime(), y: 163}, {
+                                        x: new Date("2018-01-30").getTime(),
+                                        y: 158
+                                    }, {x: new Date("2018-02-01").getTime(), y: 153}, {
+                                        x: new Date("2018-02-02").getTime(),
+                                        y: 149
+                                    }, {x: new Date("2018-02-03").getTime(), y: 144}, {
+                                        x: new Date("2018-02-05").getTime(),
+                                        y: 150
+                                    }, {x: new Date("2018-02-06").getTime(), y: 155}, {
+                                        x: new Date("2018-02-07").getTime(),
+                                        y: 159
+                                    }, {x: new Date("2018-02-08").getTime(), y: 163}, {
+                                        x: new Date("2018-02-09").getTime(),
+                                        y: 156
+                                    }, {x: new Date("2018-02-11").getTime(), y: 151}, {
+                                        x: new Date("2018-02-12").getTime(),
+                                        y: 157
+                                    }, {x: new Date("2018-02-13").getTime(), y: 161}, {
+                                        x: new Date("2018-02-14").getTime(),
+                                        y: 150
+                                    }, {x: new Date("2018-02-15").getTime(), y: 154}, {
+                                        x: new Date("2018-02-16").getTime(),
+                                        y: 160
+                                    }, {x: new Date("2018-02-17").getTime(), y: 165}, {
+                                        x: new Date("2018-02-18").getTime(),
+                                        y: 162
+                                    }, {x: new Date("2018-02-20").getTime(), y: 159}, {
+                                        x: new Date("2018-02-21").getTime(),
+                                        y: 164
+                                    }, {x: new Date("2018-02-22").getTime(), y: 160}, {
+                                        x: new Date("2018-02-23").getTime(),
+                                        y: 165
+                                    }, {x: new Date("2018-02-24").getTime(), y: 169}, {
+                                        x: new Date("2018-02-25").getTime(),
+                                        y: 172
+                                    }, {x: new Date("2018-02-26").getTime(), y: 177}, {
+                                        x: new Date("2018-02-27").getTime(),
+                                        y: 173
+                                    }, {x: new Date("2018-02-28").getTime(), y: 169}, {
+                                        x: new Date("2018-02-29").getTime(),
+                                        y: 163
+                                    }, {x: new Date("2018-02-30").getTime(), y: 162}, {
+                                        x: new Date("2018-03-01").getTime(),
+                                        y: 158
+                                    }, {x: new Date("2018-03-02").getTime(), y: 152}, {
+                                        x: new Date("2018-03-03").getTime(),
+                                        y: 147
+                                    }, {x: new Date("2018-03-05").getTime(), y: 142}, {
+                                        x: new Date("2018-03-06").getTime(),
+                                        y: 147
+                                    }, {x: new Date("2018-03-07").getTime(), y: 151}, {
+                                        x: new Date("2018-03-08").getTime(),
+                                        y: 155
+                                    }, {x: new Date("2018-03-09").getTime(), y: 159}, {
+                                        x: new Date("2018-03-11").getTime(),
+                                        y: 162
+                                    }, {x: new Date("2018-03-12").getTime(), y: 157}, {
+                                        x: new Date("2018-03-13").getTime(),
+                                        y: 161
+                                    }, {x: new Date("2018-03-14").getTime(), y: 166}, {
+                                        x: new Date("2018-03-15").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-03-16").getTime(), y: 172}, {
+                                        x: new Date("2018-03-17").getTime(),
+                                        y: 177
+                                    }, {x: new Date("2018-03-18").getTime(), y: 181}, {
+                                        x: new Date("2018-03-20").getTime(),
+                                        y: 178
+                                    }, {x: new Date("2018-03-21").getTime(), y: 173}, {
+                                        x: new Date("2018-03-22").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-03-23").getTime(), y: 163}, {
+                                        x: new Date("2018-03-24").getTime(),
+                                        y: 159
+                                    }, {x: new Date("2018-03-25").getTime(), y: 164}, {
+                                        x: new Date("2018-03-26").getTime(),
+                                        y: 168
+                                    }, {x: new Date("2018-03-27").getTime(), y: 172}, {
+                                        x: new Date("2018-03-28").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-03-29").getTime(), y: 163}, {
+                                        x: new Date("2018-03-30").getTime(),
+                                        y: 162
+                                    }, {x: new Date("2018-04-01").getTime(), y: 158}, {
+                                        x: new Date("2018-04-02").getTime(),
+                                        y: 152
+                                    }, {x: new Date("2018-04-03").getTime(), y: 147}, {
+                                        x: new Date("2018-04-05").getTime(),
+                                        y: 142
+                                    }, {x: new Date("2018-04-06").getTime(), y: 147}, {
+                                        x: new Date("2018-04-07").getTime(),
+                                        y: 151
+                                    }, {x: new Date("2018-04-08").getTime(), y: 155}, {
+                                        x: new Date("2018-04-09").getTime(),
+                                        y: 159
+                                    }, {x: new Date("2018-04-11").getTime(), y: 162}, {
+                                        x: new Date("2018-04-12").getTime(),
+                                        y: 157
+                                    }, {x: new Date("2018-04-13").getTime(), y: 161}, {
+                                        x: new Date("2018-04-14").getTime(),
+                                        y: 166
+                                    }, {x: new Date("2018-04-15").getTime(), y: 169}, {
+                                        x: new Date("2018-04-16").getTime(),
+                                        y: 172
+                                    }, {x: new Date("2018-04-17").getTime(), y: 177}, {
+                                        x: new Date("2018-04-18").getTime(),
+                                        y: 181
+                                    }, {x: new Date("2018-04-20").getTime(), y: 178}, {
+                                        x: new Date("2018-04-21").getTime(),
+                                        y: 173
+                                    }, {x: new Date("2018-04-22").getTime(), y: 169}, {
+                                        x: new Date("2018-04-23").getTime(),
+                                        y: 163
+                                    }, {x: new Date("2018-04-24").getTime(), y: 159}, {
+                                        x: new Date("2018-04-25").getTime(),
+                                        y: 164
+                                    }, {x: new Date("2018-04-26").getTime(), y: 168}, {
+                                        x: new Date("2018-04-27").getTime(),
+                                        y: 172
+                                    }, {x: new Date("2018-04-28").getTime(), y: 169}, {
+                                        x: new Date("2018-04-29").getTime(),
+                                        y: 163
+                                    }, {x: new Date("2018-04-30").getTime(), y: 162}, {
+                                        x: new Date("2018-05-01").getTime(),
+                                        y: 158
+                                    }, {x: new Date("2018-05-02").getTime(), y: 152}, {
+                                        x: new Date("2018-05-03").getTime(),
+                                        y: 147
+                                    }, {x: new Date("2018-05-04").getTime(), y: 142}, {
+                                        x: new Date("2018-05-05").getTime(),
+                                        y: 147
+                                    }, {x: new Date("2018-05-07").getTime(), y: 151}, {
+                                        x: new Date("2018-05-08").getTime(),
+                                        y: 155
+                                    }, {x: new Date("2018-05-09").getTime(), y: 159}, {
+                                        x: new Date("2018-05-11").getTime(),
+                                        y: 162
+                                    }, {x: new Date("2018-05-12").getTime(), y: 157}, {
+                                        x: new Date("2018-05-13").getTime(),
+                                        y: 161
+                                    }, {x: new Date("2018-05-14").getTime(), y: 166}, {
+                                        x: new Date("2018-05-15").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-05-16").getTime(), y: 172}, {
+                                        x: new Date("2018-05-17").getTime(),
+                                        y: 177
+                                    }, {x: new Date("2018-05-18").getTime(), y: 181}, {
+                                        x: new Date("2018-05-20").getTime(),
+                                        y: 178
+                                    }, {x: new Date("2018-05-21").getTime(), y: 173}, {
+                                        x: new Date("2018-05-22").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-05-23").getTime(), y: 163}, {
+                                        x: new Date("2018-05-24").getTime(),
+                                        y: 159
+                                    }, {x: new Date("2018-05-25").getTime(), y: 164}, {
+                                        x: new Date("2018-05-26").getTime(),
+                                        y: 168
+                                    }, {x: new Date("2018-05-27").getTime(), y: 172}, {
+                                        x: new Date("2018-05-28").getTime(),
+                                        y: 169
+                                    }, {x: new Date("2018-05-29").getTime(), y: 163}, {x: new Date("2018-05-30").getTime(), y: 162}]
+                                }],
+                                chart: {
+                                    type: "area",
+                                    stacked: !1,
+                                    height: 350,
+                                    zoom: {type: "x", enabled: !0, autoScaleYaxis: !0},
+                                    toolbar: {autoSelected: "zoom"}
+                                },
+                                colors: linechartZoomColors,
+                                dataLabels: {enabled: !1},
+                                markers: {size: 0},
+                                title: {text: "Stock Price Movement", align: "left", style: {fontWeight: 500}},
+                                fill: {
+                                    type: "gradient",
+                                    gradient: {shadeIntensity: 1, inverseColors: !1, opacityFrom: .5, opacityTo: 0, stops: [0, 90, 100]}
+                                },
+                                yaxis: {
+                                    showAlways: !0, labels: {
+                                        show: !0, formatter: function (e) {
+                                            return (e / 1e6).toFixed(0)
+                                        }
+                                    }, title: {text: "Price", style: {fontWeight: 500}}
+                                },
+                                xaxis: {type: "datetime"},
+                                tooltip: {
+                                    shared: !1, y: {
+                                        formatter: function (e) {
+                                            return (e / 1e6).toFixed(0)
+                                        }
+                                    }
+                                }
+                            }, (chart = new ApexCharts(document.querySelector("#line_chart_zoomable"), options)).render()), getChartColorsArray("line_chart_datalabel")),
+                            linechartDashedColors = (linechartDatalabelColors && (options = {
+                                chart: {
+                                    height: 600,
+                                    type: "line",
+                                    zoom: {enabled: !1},
+                                    toolbar: {show: !1}
+                                },
+                                colors: linechartDatalabelColors,
+                                dataLabels: {enabled: !1},
+                                stroke: {width: [3, 3], curve: "straight"},
+                                series: [
+                                    {
+                                        name: "High - 2018",
+                                        data: [26, 24, 32, 36, 33, 31, 33]
+                                    },
+                                    {
+                                        name: "Low - 2018",
+                                        data: [14, 11, 16, 12, 17, 13, 12]
+                                    },
+                                    {
+                                        name: "Low - 2018",
+                                        data: [61, 1, 25, 27, 85, 36, 11]
+                                    },
+                                    {
+                                        name: "Low - 2018",
+                                        data: [33, 66, 22, 98, 14, 63, 12]
+                                    }
+                                ],
+                                title: {text: "Average High & Low Temperature", align: "left", style: {fontWeight: 500}},
+                                grid: {row: {colors: ["transparent", "transparent"], opacity: .2}, borderColor: "#f1f1f1"},
+                                markers: {style: "inverted", size: 6},
+                                xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], title: {text: "Month"}},
+                                yaxis: {title: {text: "Temperature"}, min: 5, max: 200},
+                                legend: {position: "top", horizontalAlign: "right", floating: !0, offsetY: -25, offsetX: -5},
+                                responsive: [{breakpoint: 600, options: {chart: {toolbar: {show: !1}}, legend: {show: !1}}}]
+                            }, (chart = new ApexCharts(document.querySelector("#line_chart_datalabel"), options)).render()), getChartColorsArray("line_chart_dashed")),
+                            linechartannotationsColors = (linechartDashedColors && (options = {
+                                chart: {
+                                    height: 380,
+                                    type: "line",
+                                    zoom: {enabled: !1},
+                                    toolbar: {show: !1}
+                                },
+                                colors: linechartDashedColors,
+                                dataLabels: {enabled: !1},
+                                stroke: {width: [3, 4, 3], curve: "straight", dashArray: [0, 8, 5]},
+                                series: [{name: "Session Duration", data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]}, {
+                                    name: "Page Views",
+                                    data: [36, 42, 60, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+                                }, {name: "Total Visits", data: [89, 56, 74, 98, 72, 38, 64, 46, 84, 58, 46, 49]}],
+                                title: {text: "Page Statistics", align: "left", style: {fontWeight: 500}},
+                                markers: {size: 0, hover: {sizeOffset: 6}},
+                                xaxis: {categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"]},
+                                tooltip: {
+                                    y: [{
+                                        title: {
+                                            formatter: function (e) {
+                                                return e + " (mins)"
+                                            }
+                                        }
+                                    }, {
+                                        title: {
+                                            formatter: function (e) {
+                                                return e + " per session"
+                                            }
+                                        }
+                                    }, {
+                                        title: {
+                                            formatter: function (e) {
+                                                return e
+                                            }
+                                        }
+                                    }]
+                                },
+                                grid: {borderColor: "#f1f1f1"}
+                            }, (chart = new ApexCharts(document.querySelector("#line_chart_dashed"), options)).render()), getChartColorsArray("line_chart_annotations"));
+
                     } else {
                         window.location.href = "/management-time/";
                     }
@@ -4861,32 +5252,32 @@
                 }
                 monthly.targetCategory.push(obj);
             })
-            // const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
-            // const yearTitle = document.querySelectorAll('.yearTitle');
-            // timeUsedMonthly.forEach(function (e, index) {
-            //     let obj = {
-            //         category: yearTitle[index + 1].textContent,
-            //         timeUsedCategory: e.textContent
-            //     }
-            //     monthly.timeUsedMonthly.push(obj);
-            // })
+            const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
+            const title = document.querySelectorAll('.monthTarget');
+            timeUsedMonthly.forEach(function (e, index) {
+                let obj = {
+                    category: title[index].value,
+                    timeUsedCategory: e.textContent
+                }
+                monthly.timeUsedMonthly.push(obj);
+            })
             monthly.gratitudeDiary = document.getElementById('monthly-gratitudeDiary').value;
             monthly.compliment = document.getElementById('monthly-compliment').value;
             monthly.reflectionAndImprovement = document.getElementById('monthly-reflectionAndImprovement').value;
             data.monthly = monthly;
 
-            const timeUsedCategory = document.querySelectorAll('.time-used-category');
             weekly.weeklys.push({
                 content: 'Important matter',
                 status: '',
                 timeUsed: ''
             })
+            const timeUsedCategory = document.querySelectorAll('.time-used-category');
             $("input.form-control.weekTarget").each(function (index) {
                 const statusWeekly = $(this).closest('div').find('button');
                 var timeUsed = '';
                 var valueStatus = statusWeekly.data('value');
                 if (valueStatus == null || valueStatus == undefined) valueStatus = '';
-                if (index != 0) timeUsed = timeUsedCategory[index - 1].textContent;
+                timeUsed = timeUsedCategory[index].textContent;
                 let obj = {
                     content: $(this).val(),
                     status: valueStatus,
@@ -4894,6 +5285,7 @@
                 }
                 weekly.weeklys.push(obj);
             })
+            console.log(data.weekly)
             data.weekly = weekly;
 
             const tr0 = document.querySelector('.tr-weekly-sentence0').querySelectorAll('textarea');
@@ -5129,8 +5521,8 @@
             data.year.keywords3 = $('#year-keywords3').val();
 
             document.querySelectorAll('.level1').forEach(function (e) {
-                    var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
-                    data.year.color.push(backgroundColor);
+                var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
+                data.year.color.push(backgroundColor);
             })
 
             data.days.push(...days);
@@ -5150,7 +5542,7 @@
                     i--;
                 }
             }
-
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
@@ -5371,7 +5763,7 @@
         e.addEventListener('focus', function () {
             e.style.border = '1px solid black';
         })
-          e.addEventListener('blur', function () {
+        e.addEventListener('blur', function () {
             e.style.border = 'none';
         });
     })
