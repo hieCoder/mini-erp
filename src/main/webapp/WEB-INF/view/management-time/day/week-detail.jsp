@@ -2625,7 +2625,7 @@
                             <button class="btn btn-primary mr-2" onclick="history.back()">
                                 Back
                             </button>
-                            <button class="btn btn-success ml-2 btn-save">Save</button>
+                            <button class="btn btn-success ml-2 btn-save" data-value="save-WMReport">Save</button>
                         </div>
                     </div>
                 </div>
@@ -2892,7 +2892,7 @@
                                 <button class="btn btn-primary mr-2" onclick="history.back()">
                                     Back
                                 </button>
-                                <button class="btn btn-success ml-2 btn-save">Save</button>
+                                <button class="btn btn-success ml-2 btn-save" data-value="save-year-report">Save</button>
                             </div>
                         </div>
                     </div>
@@ -5042,41 +5042,40 @@
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
 
+        function notificationSuccess(image) {
+            Swal.fire(
+                {
+                    html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
+                        '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
+                    imageAlt: 'A tall image',
+                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                    buttonsStyling: false,
+                    showCloseButton: true,
+                    width: 800
+                }
+            )
+            if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
+            document.getElementById('imageQuote').style.display = 'none';
+        }
         const result = localStorage.getItem('result');
         const image = '${weekly.quotes.image}';
         switch (true) {
             case (result == 'addSuccess'):
-                Swal.fire(
-                    {
-                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
-                            '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
-                        imageAlt: 'A tall image',
-                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
-                        buttonsStyling: false,
-                        showCloseButton: true,
-                        width: 800
-                    }
-                )
-                if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
-                document.getElementById('imageQuote').style.display = 'none';
-                localStorage.clear();
+                notificationSuccess(image);
                 break;
             case (result == 'year-goals'):
-                Swal.fire(
-                    {
-                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
-                            '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
-                        imageAlt: 'A tall image',
-                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
-                        buttonsStyling: false,
-                        showCloseButton: true,
-                        width: 800
-                    }
-                )
-                if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
-                document.getElementById('imageQuote').style.display = 'none';
+                notificationSuccess(image);
                 $('#session-goals').tab('show');
                 $('#session-goals').click();
+                break;
+            case (result == 'wmReport'):
+                notificationSuccess(image);
+                $('#session-review').tab('show');
+                break;
+            case (result == 'year-report'):
+                notificationSuccess(image);
+                $('#session-year-report').tab('show');
+                handleClickTabReport();
                 break;
             case !(result == 'addSuccess'):
                 if (document.getElementById('srcImageQuote').getAttribute('src') != '') document.getElementById('showImageQuoteBtn').click();
@@ -5547,6 +5546,8 @@
                         $("div.calendar-container").removeClass("d-none");
                         localStorage.setItem('result', 'addSuccess');
                         if (btnSaveMindmap == 'save-mindmap')  localStorage.setItem('result', 'year-goals');
+                        else if (btnSaveMindmap == 'save-WMReport')  localStorage.setItem('result', 'wmReport');
+                        else if (btnSaveMindmap == 'save-year-report')  localStorage.setItem('result', 'year-report');
                         window.location.reload();
                     } else {
                         rsUnSuccess();
