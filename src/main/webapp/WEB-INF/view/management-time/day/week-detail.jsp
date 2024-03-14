@@ -3145,13 +3145,15 @@
         function removeTabParamFromURL(url) {
             var url = new URL(currentURL);
             url.searchParams.delete('tab');
-            window.history.replaceState( {}, document.title, url);
+            window.history.replaceState({}, document.title, url);
         }
 
         switch (tabPlanner) {
             case 'year-goals':
                 $('#session-goals').tab('show');
-                $('#session-goals').click();
+                setTimeout(function () {
+                    $('#session-goals').click();
+                }, 0.00000000001);
                 removeTabParamFromURL(currentURL);
                 break;
             case 'wm-report':
@@ -3160,7 +3162,7 @@
                 break;
             case 'year-report':
                 $('#session-year-report').tab('show');
-                $('#session-year-report').click();
+                handleClickTabReport();
                 removeTabParamFromURL(currentURL);
                 break;
             default:
@@ -3797,554 +3799,548 @@
         // });
     })
 
-    // Handle Tab Year Report
-    document.addEventListener("DOMContentLoaded", function () {
-        // Function handle Click tab report
-        function handleClickTabReport(e) {
-            var currentUrl = window.location.href;
-            var year = getParameterByName('currentDay', currentUrl);
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "/api/v1/management-time/weekly-detail/monthOfYear/" + "${requestScope.user.id}" + "?year=" + year, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        const parseData = JSON.parse(xhr.responseText);
-                        console.log(parseData)
-                        // document.querySelectorAll('.onething-report').forEach(function (e, index) {
-                        //     const onethingReport = e.querySelectorAll('.onething-category-report');
-                        //     const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
-                        //     onethingReport.forEach(function (e, indexTd) {
-                        //         const dataMonth = e.getAttribute('data-month');
-                        //         parseData.forEach(month => {
-                        //             if (dataMonth == month.month) {
-                        //                 if (month.targetCategory != null) {
-                        //                     const monthTarget = month.targetCategory[index + 1].target;
-                        //                     const monthPer = month.targetCategory[index + 1].performance;
-                        //                     const performanceMonthtTarget = month.targetCategory[index + 1].performance
-                        //                     e.textContent = monthPer + '/' + monthTarget;
-                        //
-                        //                     const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                        //                     if (!isNaN(performancePercentage)) {
-                        //                         const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                        //                         perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
-                        //                         if (month.color != null) {
-                        //                             e.style.backgroundColor = month.color[index + 1];
-                        //                             perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
-                        //                         }
-                        //                     }
-                        //                 }
-                        //             }
-                        //         });
-                        //     });
-                        // })
+    // Function handle Click tab report
+    function handleClickTabReport(e) {
+        var currentUrl = window.location.href;
+        var year = getParameterByName('currentDay', currentUrl);
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/v1/management-time/weekly-detail/monthOfYear/" + "${requestScope.user.id}" + "?year=" + year, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const parseData = JSON.parse(xhr.responseText);
+                    // document.querySelectorAll('.onething-report').forEach(function (e, index) {
+                    //     const onethingReport = e.querySelectorAll('.onething-category-report');
+                    //     const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
+                    //     onethingReport.forEach(function (e, indexTd) {
+                    //         const dataMonth = e.getAttribute('data-month');
+                    //         parseData.forEach(month => {
+                    //             if (dataMonth == month.month) {
+                    //                 if (month.targetCategory != null) {
+                    //                     const monthTarget = month.targetCategory[index + 1].target;
+                    //                     const monthPer = month.targetCategory[index + 1].performance;
+                    //                     const performanceMonthtTarget = month.targetCategory[index + 1].performance
+                    //                     e.textContent = monthPer + '/' + monthTarget;
+                    //
+                    //                     const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                    //                     if (!isNaN(performancePercentage)) {
+                    //                         const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                    //                         perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
+                    //                         if (month.color != null) {
+                    //                             e.style.backgroundColor = month.color[index + 1];
+                    //                             perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                    //                         }
+                    //                     }
+                    //                 }
+                    //             }
+                    //         });
+                    //     });
+                    // })
 
-                        document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
-                            const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
-                            const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
-                            titleDailyReport.forEach(function (eTitle, indexTitle) {
-                                const dataMonth = eTitle.getAttribute('data-month');
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        if (month.dailyRoutine != null) {
-                                            const dailyDB = month.dailyRoutine[indexTr];
-                                            if (month.dailyRoutine != null && dailyDB != null) {
-                                                const titleDailyDB = dailyDB.title;
-                                                eTitle.textContent = titleDailyDB;
-                                                perfDailyReport[indexTitle].textContent = dailyDB.rate == null || dailyDB.rate == '0%' ? '0.00%' : dailyDB.rate;
-                                            }
-                                        }
-                                    }
-                                });
-                            })
-                        })
-
-                        document.querySelectorAll('.monthly-report').forEach(function (eTr, indexTr) {
-                            const targetMonthReport = eTr.querySelectorAll('td');
-                            targetMonthReport.forEach(function (eTarget, indexTarget) {
-                                const dataMonth = eTarget.getAttribute('data-month');
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        if (indexTarget % 2 == 0) {
-                                            const monthDB = month.monthlyContents[indexTr];
-                                            if (month.monthlyContents != null && monthDB != null) {
-                                                const content = monthDB.content;
-                                                const status = monthDB.status;
-                                                if (content != null && content != '') {
-                                                    var btnStatus = ``;
-                                                    if (status == 'COMPLETE') {
-                                                        btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
-                                                    } else if (status == 'POSTPONE') {
-                                                        btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
-                                                    } else if (status == 'CANCELLATION') {
-                                                        btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
-                                                    } else if (status == 'INPROGRESS') {
-                                                        btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
-                                                    } else if (status == '') {
-                                                        btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
-                                                    }
-                                                    const html = `<span>` + content + `</span>`+ btnStatus;
-                                                    $(eTarget).append(html);
-                                                }
-                                            }
-                                        } else {
-                                            if (month.targetCategory != null) {
-                                                const monthTarget = month.targetCategory[indexTr + 1].target;
-                                                const performanceMonthtTarget = month.targetCategory[indexTr + 1].performance
-
-                                                const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                                                if (!isNaN(performancePercentage)) {
-                                                    const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                                                    eTarget.textContent = roundedPerformancePercentage + '%';
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                            })
-                        })
-
-                        function getTotalHoursInMonth(dataMonth) {
-                            const monthDate = new Date(dataMonth);
-                            const month = monthDate.getMonth() + 1;
-                            const year = monthDate.getFullYear();
-                            const daysInMonth = new Date(year, month, 0).getDate();
-                            const totalHoursInMonth = daysInMonth * 24;
-                            return totalHoursInMonth;
-                        }
-
-                        function totalHoursInYear(year) {
-                            var isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-                            var totalHours = isLeapYear ? 366 * 24 : 365 * 24;
-                            return totalHours;
-                        }
-
-                        const totalTimeUsedMonthlyArr = [];
-                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
-                            const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
-                            const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
-                            var totalTimeUsedMonthLy = 0;
-                            timeUsedMonthly.forEach(function (eTd, indexTd) {
-                                const dataMonth = eTd.getAttribute('data-month');
-                                const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                                        eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
-                                        totalTimeUsedMonthLy += parseFloat(timeUsed);
-                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
-                                    }
-                                });
-                            })
-                            totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
-                        })
-
-                        const hoursInYear = totalHoursInYear(parseInt(document.getElementById('current-year').textContent));
-                        const rateYearTimeUsage = document.querySelectorAll('.rate-year-time-usage');
-                        document.querySelectorAll('.year-time-usage').forEach(function (e, index) {
-                            e.textContent = totalTimeUsedMonthlyArr[index] + '/' + hoursInYear + 'hours';
-                            rateYearTimeUsage[index].textContent = parseFloat(parseFloat(totalTimeUsedMonthlyArr[index]) * 100 / hoursInYear).toFixed(2) + '%';
-                        })
-
-                        const yearGoals = [];
-                        document.querySelectorAll('.yearTarget').forEach(function (e) {
-                            yearGoals.push(e.value);
-                        })
-                        const yearColorGoals = [];
-                        document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e) {
-                            yearColorGoals.push(e.style.background);
-                        })
-                        var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
-                            chartDonutBasicColors = (chartPieBasicColors && (options = {
-                                series: totalTimeUsedMonthlyArr,
-                                chart: {height: 600, type: "pie"},
-                                labels: yearGoals,
-                                legend: {position: "bottom"},
-                                dataLabels: {dropShadow: {enabled: !1}},
-                                colors: yearColorGoals
-                            }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
-                            chartDonutupdatingColors = (chartDonutBasicColors && (options = {
-                                series: [44, 55, 41, 17, 15],
-                                chart: {height: 300, type: "donut"},
-                                legend: {position: "bottom"},
-                                dataLabels: {dropShadow: {enabled: !1}},
-                                colors: yearColorGoals
-                            }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
-
-
-                        const yearTarget = document.querySelectorAll('.yearTarget');
-
-
-                        const yearGoals1 = [], yearGoals2 = [], yearGoals3 = [], yearGoals4 = [];
-                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
-                            if (indexTr == 0) {
-                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
-                                    let timeUsageOfMonth = eTd.textContent;
-                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
-                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
-                                    yearGoals1.push(timeUsageOfMonth)
-                                })
-                            } else if (indexTr == 1) {
-                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
-                                    let timeUsageOfMonth = eTd.textContent;
-                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
-                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
-                                    yearGoals2.push(timeUsageOfMonth)
-                                })
-                            } else if (indexTr == 2) {
-                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
-                                    let timeUsageOfMonth = eTd.textContent;
-                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
-                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
-                                    yearGoals3.push(timeUsageOfMonth)
-                                })
-                            } else if (indexTr == 3) {
-                                eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
-                                    let timeUsageOfMonth = eTd.textContent;
-                                    if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
-                                    else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
-                                    yearGoals4.push(timeUsageOfMonth)
-                                })
-                            }
-                        })
-
-                        var linechartBasicColors = getChartColorsArray("line_chart_basic"),
-                            linechartZoomColors = (linechartBasicColors && (options = {
-                                series: [
-                                    {
-                                        name: yearTarget[0].value,
-                                        data: yearGoals1
-                                    },
-                                    {
-                                        name: yearTarget[1].value,
-                                        data: yearGoals2
-                                    },
-                                    {
-                                        name: yearTarget[2].value,
-                                        data: yearGoals3
-                                    },
-                                    {
-                                        name: yearTarget[3].value,
-                                        data: yearGoals4
-                                    },
-                                ],
-                                chart: {height: 570, type: "line", zoom: {enabled: !1}, toolbar: {show: !1}},
-                                markers: {size: 4},
-                                dataLabels: {enabled: !1},
-                                stroke: {curve: "straight"},
-                                colors: yearColorGoals,
-                                xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]}
-                            }, (chart = new ApexCharts(document.querySelector("#line_chart_basic"), options)).render()), getChartColorsArray("line_chart_zoomable")),
-                            linechartDatalabelColors = (linechartZoomColors && (options = {
-                                series: [{
-                                    name: "XYZ MOTORS",
-                                    data: [{x: new Date("2018-01-12").getTime(), y: 140}, {
-                                        x: new Date("2018-01-13").getTime(),
-                                        y: 147
-                                    }, {x: new Date("2018-01-14").getTime(), y: 150}, {
-                                        x: new Date("2018-01-15").getTime(),
-                                        y: 154
-                                    }, {x: new Date("2018-01-16").getTime(), y: 160}, {
-                                        x: new Date("2018-01-17").getTime(),
-                                        y: 165
-                                    }, {x: new Date("2018-01-18").getTime(), y: 162}, {
-                                        x: new Date("2018-01-20").getTime(),
-                                        y: 159
-                                    }, {x: new Date("2018-01-21").getTime(), y: 164}, {
-                                        x: new Date("2018-01-22").getTime(),
-                                        y: 160
-                                    }, {x: new Date("2018-01-23").getTime(), y: 165}, {
-                                        x: new Date("2018-01-24").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-01-25").getTime(), y: 172}, {
-                                        x: new Date("2018-01-26").getTime(),
-                                        y: 177
-                                    }, {x: new Date("2018-01-27").getTime(), y: 173}, {
-                                        x: new Date("2018-01-28").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-01-29").getTime(), y: 163}, {
-                                        x: new Date("2018-01-30").getTime(),
-                                        y: 158
-                                    }, {x: new Date("2018-02-01").getTime(), y: 153}, {
-                                        x: new Date("2018-02-02").getTime(),
-                                        y: 149
-                                    }, {x: new Date("2018-02-03").getTime(), y: 144}, {
-                                        x: new Date("2018-02-05").getTime(),
-                                        y: 150
-                                    }, {x: new Date("2018-02-06").getTime(), y: 155}, {
-                                        x: new Date("2018-02-07").getTime(),
-                                        y: 159
-                                    }, {x: new Date("2018-02-08").getTime(), y: 163}, {
-                                        x: new Date("2018-02-09").getTime(),
-                                        y: 156
-                                    }, {x: new Date("2018-02-11").getTime(), y: 151}, {
-                                        x: new Date("2018-02-12").getTime(),
-                                        y: 157
-                                    }, {x: new Date("2018-02-13").getTime(), y: 161}, {
-                                        x: new Date("2018-02-14").getTime(),
-                                        y: 150
-                                    }, {x: new Date("2018-02-15").getTime(), y: 154}, {
-                                        x: new Date("2018-02-16").getTime(),
-                                        y: 160
-                                    }, {x: new Date("2018-02-17").getTime(), y: 165}, {
-                                        x: new Date("2018-02-18").getTime(),
-                                        y: 162
-                                    }, {x: new Date("2018-02-20").getTime(), y: 159}, {
-                                        x: new Date("2018-02-21").getTime(),
-                                        y: 164
-                                    }, {x: new Date("2018-02-22").getTime(), y: 160}, {
-                                        x: new Date("2018-02-23").getTime(),
-                                        y: 165
-                                    }, {x: new Date("2018-02-24").getTime(), y: 169}, {
-                                        x: new Date("2018-02-25").getTime(),
-                                        y: 172
-                                    }, {x: new Date("2018-02-26").getTime(), y: 177}, {
-                                        x: new Date("2018-02-27").getTime(),
-                                        y: 173
-                                    }, {x: new Date("2018-02-28").getTime(), y: 169}, {
-                                        x: new Date("2018-02-29").getTime(),
-                                        y: 163
-                                    }, {x: new Date("2018-02-30").getTime(), y: 162}, {
-                                        x: new Date("2018-03-01").getTime(),
-                                        y: 158
-                                    }, {x: new Date("2018-03-02").getTime(), y: 152}, {
-                                        x: new Date("2018-03-03").getTime(),
-                                        y: 147
-                                    }, {x: new Date("2018-03-05").getTime(), y: 142}, {
-                                        x: new Date("2018-03-06").getTime(),
-                                        y: 147
-                                    }, {x: new Date("2018-03-07").getTime(), y: 151}, {
-                                        x: new Date("2018-03-08").getTime(),
-                                        y: 155
-                                    }, {x: new Date("2018-03-09").getTime(), y: 159}, {
-                                        x: new Date("2018-03-11").getTime(),
-                                        y: 162
-                                    }, {x: new Date("2018-03-12").getTime(), y: 157}, {
-                                        x: new Date("2018-03-13").getTime(),
-                                        y: 161
-                                    }, {x: new Date("2018-03-14").getTime(), y: 166}, {
-                                        x: new Date("2018-03-15").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-03-16").getTime(), y: 172}, {
-                                        x: new Date("2018-03-17").getTime(),
-                                        y: 177
-                                    }, {x: new Date("2018-03-18").getTime(), y: 181}, {
-                                        x: new Date("2018-03-20").getTime(),
-                                        y: 178
-                                    }, {x: new Date("2018-03-21").getTime(), y: 173}, {
-                                        x: new Date("2018-03-22").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-03-23").getTime(), y: 163}, {
-                                        x: new Date("2018-03-24").getTime(),
-                                        y: 159
-                                    }, {x: new Date("2018-03-25").getTime(), y: 164}, {
-                                        x: new Date("2018-03-26").getTime(),
-                                        y: 168
-                                    }, {x: new Date("2018-03-27").getTime(), y: 172}, {
-                                        x: new Date("2018-03-28").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-03-29").getTime(), y: 163}, {
-                                        x: new Date("2018-03-30").getTime(),
-                                        y: 162
-                                    }, {x: new Date("2018-04-01").getTime(), y: 158}, {
-                                        x: new Date("2018-04-02").getTime(),
-                                        y: 152
-                                    }, {x: new Date("2018-04-03").getTime(), y: 147}, {
-                                        x: new Date("2018-04-05").getTime(),
-                                        y: 142
-                                    }, {x: new Date("2018-04-06").getTime(), y: 147}, {
-                                        x: new Date("2018-04-07").getTime(),
-                                        y: 151
-                                    }, {x: new Date("2018-04-08").getTime(), y: 155}, {
-                                        x: new Date("2018-04-09").getTime(),
-                                        y: 159
-                                    }, {x: new Date("2018-04-11").getTime(), y: 162}, {
-                                        x: new Date("2018-04-12").getTime(),
-                                        y: 157
-                                    }, {x: new Date("2018-04-13").getTime(), y: 161}, {
-                                        x: new Date("2018-04-14").getTime(),
-                                        y: 166
-                                    }, {x: new Date("2018-04-15").getTime(), y: 169}, {
-                                        x: new Date("2018-04-16").getTime(),
-                                        y: 172
-                                    }, {x: new Date("2018-04-17").getTime(), y: 177}, {
-                                        x: new Date("2018-04-18").getTime(),
-                                        y: 181
-                                    }, {x: new Date("2018-04-20").getTime(), y: 178}, {
-                                        x: new Date("2018-04-21").getTime(),
-                                        y: 173
-                                    }, {x: new Date("2018-04-22").getTime(), y: 169}, {
-                                        x: new Date("2018-04-23").getTime(),
-                                        y: 163
-                                    }, {x: new Date("2018-04-24").getTime(), y: 159}, {
-                                        x: new Date("2018-04-25").getTime(),
-                                        y: 164
-                                    }, {x: new Date("2018-04-26").getTime(), y: 168}, {
-                                        x: new Date("2018-04-27").getTime(),
-                                        y: 172
-                                    }, {x: new Date("2018-04-28").getTime(), y: 169}, {
-                                        x: new Date("2018-04-29").getTime(),
-                                        y: 163
-                                    }, {x: new Date("2018-04-30").getTime(), y: 162}, {
-                                        x: new Date("2018-05-01").getTime(),
-                                        y: 158
-                                    }, {x: new Date("2018-05-02").getTime(), y: 152}, {
-                                        x: new Date("2018-05-03").getTime(),
-                                        y: 147
-                                    }, {x: new Date("2018-05-04").getTime(), y: 142}, {
-                                        x: new Date("2018-05-05").getTime(),
-                                        y: 147
-                                    }, {x: new Date("2018-05-07").getTime(), y: 151}, {
-                                        x: new Date("2018-05-08").getTime(),
-                                        y: 155
-                                    }, {x: new Date("2018-05-09").getTime(), y: 159}, {
-                                        x: new Date("2018-05-11").getTime(),
-                                        y: 162
-                                    }, {x: new Date("2018-05-12").getTime(), y: 157}, {
-                                        x: new Date("2018-05-13").getTime(),
-                                        y: 161
-                                    }, {x: new Date("2018-05-14").getTime(), y: 166}, {
-                                        x: new Date("2018-05-15").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-05-16").getTime(), y: 172}, {
-                                        x: new Date("2018-05-17").getTime(),
-                                        y: 177
-                                    }, {x: new Date("2018-05-18").getTime(), y: 181}, {
-                                        x: new Date("2018-05-20").getTime(),
-                                        y: 178
-                                    }, {x: new Date("2018-05-21").getTime(), y: 173}, {
-                                        x: new Date("2018-05-22").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-05-23").getTime(), y: 163}, {
-                                        x: new Date("2018-05-24").getTime(),
-                                        y: 159
-                                    }, {x: new Date("2018-05-25").getTime(), y: 164}, {
-                                        x: new Date("2018-05-26").getTime(),
-                                        y: 168
-                                    }, {x: new Date("2018-05-27").getTime(), y: 172}, {
-                                        x: new Date("2018-05-28").getTime(),
-                                        y: 169
-                                    }, {x: new Date("2018-05-29").getTime(), y: 163}, {x: new Date("2018-05-30").getTime(), y: 162}]
-                                }],
-                                chart: {
-                                    type: "area",
-                                    stacked: !1,
-                                    height: 350,
-                                    zoom: {type: "x", enabled: !0, autoScaleYaxis: !0},
-                                    toolbar: {autoSelected: "zoom"}
-                                },
-                                colors: linechartZoomColors,
-                                dataLabels: {enabled: !1},
-                                markers: {size: 0},
-                                title: {text: "Stock Price Movement", align: "left", style: {fontWeight: 500}},
-                                fill: {
-                                    type: "gradient",
-                                    gradient: {shadeIntensity: 1, inverseColors: !1, opacityFrom: .5, opacityTo: 0, stops: [0, 90, 100]}
-                                },
-                                yaxis: {
-                                    showAlways: !0, labels: {
-                                        show: !0, formatter: function (e) {
-                                            return (e / 1e6).toFixed(0)
-                                        }
-                                    }, title: {text: "Price", style: {fontWeight: 500}}
-                                },
-                                xaxis: {type: "datetime"},
-                                tooltip: {
-                                    shared: !1, y: {
-                                        formatter: function (e) {
-                                            return (e / 1e6).toFixed(0)
+                    document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
+                        const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
+                        const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
+                        titleDailyReport.forEach(function (eTitle, indexTitle) {
+                            const dataMonth = eTitle.getAttribute('data-month');
+                            parseData.forEach(month => {
+                                if (dataMonth == month.month) {
+                                    if (month.dailyRoutine != null) {
+                                        const dailyDB = month.dailyRoutine[indexTr];
+                                        if (month.dailyRoutine != null && dailyDB != null) {
+                                            const titleDailyDB = dailyDB.title;
+                                            eTitle.textContent = titleDailyDB;
+                                            perfDailyReport[indexTitle].textContent = dailyDB.rate == null || dailyDB.rate == '0%' ? '0.00%' : dailyDB.rate;
                                         }
                                     }
                                 }
-                            }, (chart = new ApexCharts(document.querySelector("#line_chart_zoomable"), options)).render()), getChartColorsArray("line_chart_datalabel")),
-                            linechartDashedColors = (linechartDatalabelColors && (options = {
-                                chart: {
-                                    height: 600,
-                                    type: "line",
-                                    zoom: {enabled: !1},
-                                    toolbar: {show: !1}
-                                },
-                                colors: linechartDatalabelColors,
-                                dataLabels: {enabled: !1},
-                                stroke: {width: [3, 3], curve: "straight"},
-                                series: [
-                                    {
-                                        name: "High - 2018",
-                                        data: [26, 24, 32, 36, 33, 31, 33]
-                                    },
-                                    {
-                                        name: "Low - 2018",
-                                        data: [14, 11, 16, 12, 17, 13, 12]
-                                    },
-                                    {
-                                        name: "Low - 2018",
-                                        data: [61, 1, 25, 27, 85, 36, 11]
-                                    },
-                                    {
-                                        name: "Low - 2018",
-                                        data: [33, 66, 22, 98, 14, 63, 12]
-                                    }
-                                ],
-                                title: {text: "Average High & Low Temperature", align: "left", style: {fontWeight: 500}},
-                                grid: {row: {colors: ["transparent", "transparent"], opacity: .2}, borderColor: "#f1f1f1"},
-                                markers: {style: "inverted", size: 6},
-                                xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], title: {text: "Month"}},
-                                yaxis: {title: {text: "Temperature"}, min: 5, max: 200},
-                                legend: {position: "top", horizontalAlign: "right", floating: !0, offsetY: -25, offsetX: -5},
-                                responsive: [{breakpoint: 600, options: {chart: {toolbar: {show: !1}}, legend: {show: !1}}}]
-                            }, (chart = new ApexCharts(document.querySelector("#line_chart_datalabel"), options)).render()), getChartColorsArray("line_chart_dashed")),
-                            linechartannotationsColors = (linechartDashedColors && (options = {
-                                chart: {
-                                    height: 380,
-                                    type: "line",
-                                    zoom: {enabled: !1},
-                                    toolbar: {show: !1}
-                                },
-                                colors: linechartDashedColors,
-                                dataLabels: {enabled: !1},
-                                stroke: {width: [3, 4, 3], curve: "straight", dashArray: [0, 8, 5]},
-                                series: [{name: "Session Duration", data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]}, {
-                                    name: "Page Views",
-                                    data: [36, 42, 60, 42, 13, 18, 29, 37, 36, 51, 32, 35]
-                                }, {name: "Total Visits", data: [89, 56, 74, 98, 72, 38, 64, 46, 84, 58, 46, 49]}],
-                                title: {text: "Page Statistics", align: "left", style: {fontWeight: 500}},
-                                markers: {size: 0, hover: {sizeOffset: 6}},
-                                xaxis: {categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"]},
-                                tooltip: {
-                                    y: [{
-                                        title: {
-                                            formatter: function (e) {
-                                                return e + " (mins)"
-                                            }
-                                        }
-                                    }, {
-                                        title: {
-                                            formatter: function (e) {
-                                                return e + " per session"
-                                            }
-                                        }
-                                    }, {
-                                        title: {
-                                            formatter: function (e) {
-                                                return e
-                                            }
-                                        }
-                                    }]
-                                },
-                                grid: {borderColor: "#f1f1f1"}
-                            }, (chart = new ApexCharts(document.querySelector("#line_chart_dashed"), options)).render()), getChartColorsArray("line_chart_annotations"));
+                            });
+                        })
+                    })
 
-                    } else {
-                        window.location.href = "/management-time/";
+                    document.querySelectorAll('.monthly-report').forEach(function (eTr, indexTr) {
+                        const targetMonthReport = eTr.querySelectorAll('td');
+                        targetMonthReport.forEach(function (eTarget, indexTarget) {
+                            const dataMonth = eTarget.getAttribute('data-month');
+                            parseData.forEach(month => {
+                                if (dataMonth == month.month) {
+                                    if (indexTarget % 2 == 0) {
+                                        const monthDB = month.monthlyContents[indexTr];
+                                        if (month.monthlyContents != null && monthDB != null) {
+                                            const content = monthDB.content;
+                                            const status = monthDB.status;
+                                            if (content != null && content != '') {
+                                                var btnStatus = ``;
+                                                if (status == 'COMPLETE') {
+                                                    btnStatus = `<button class="btn btn-success float-end"><i class="ri-check-line"></i></button>`
+                                                } else if (status == 'POSTPONE') {
+                                                    btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
+                                                } else if (status == 'CANCELLATION') {
+                                                    btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
+                                                } else if (status == 'INPROGRESS') {
+                                                    btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
+                                                } else if (status == '') {
+                                                    btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
+                                                }
+                                                const html = `<span>` + content + `</span>`+ btnStatus;
+                                                $(eTarget).append(html);
+                                            }
+                                        }
+                                    } else {
+                                        if (month.targetCategory != null) {
+                                            const monthTarget = month.targetCategory[indexTr + 1].target;
+                                            const performanceMonthtTarget = month.targetCategory[indexTr + 1].performance
+
+                                            const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                                            if (!isNaN(performancePercentage)) {
+                                                const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                                                eTarget.textContent = roundedPerformancePercentage + '%';
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
+
+                    function getTotalHoursInMonth(dataMonth) {
+                        const monthDate = new Date(dataMonth);
+                        const month = monthDate.getMonth() + 1;
+                        const year = monthDate.getFullYear();
+                        const daysInMonth = new Date(year, month, 0).getDate();
+                        const totalHoursInMonth = daysInMonth * 24;
+                        return totalHoursInMonth;
                     }
+
+                    function totalHoursInYear(year) {
+                        var isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+                        var totalHours = isLeapYear ? 366 * 24 : 365 * 24;
+                        return totalHours;
+                    }
+
+                    const totalTimeUsedMonthlyArr = [];
+                    document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                        const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
+                        const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
+                        var totalTimeUsedMonthLy = 0;
+                        timeUsedMonthly.forEach(function (eTd, indexTd) {
+                            const dataMonth = eTd.getAttribute('data-month');
+                            const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
+                            parseData.forEach(month => {
+                                if (dataMonth == month.month) {
+                                    const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
+                                    eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
+                                    totalTimeUsedMonthLy += parseFloat(timeUsed);
+                                    performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
+                                }
+                            });
+                        })
+                        totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
+                    })
+
+                    const hoursInYear = totalHoursInYear(parseInt(document.getElementById('current-year').textContent));
+                    const rateYearTimeUsage = document.querySelectorAll('.rate-year-time-usage');
+                    document.querySelectorAll('.year-time-usage').forEach(function (e, index) {
+                        e.textContent = totalTimeUsedMonthlyArr[index] + '/' + hoursInYear + 'hours';
+                        rateYearTimeUsage[index].textContent = parseFloat(parseFloat(totalTimeUsedMonthlyArr[index]) * 100 / hoursInYear).toFixed(2) + '%';
+                    })
+
+                    const yearGoals = [];
+                    document.querySelectorAll('.yearTarget').forEach(function (e) {
+                        yearGoals.push(e.value);
+                    })
+                    const yearColorGoals = [];
+                    document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e) {
+                        yearColorGoals.push(e.style.background);
+                    })
+                    var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
+                        chartDonutBasicColors = (chartPieBasicColors && (options = {
+                            series: totalTimeUsedMonthlyArr,
+                            chart: {height: 600, type: "pie"},
+                            labels: yearGoals,
+                            legend: {position: "bottom"},
+                            dataLabels: {dropShadow: {enabled: !1}},
+                            colors: yearColorGoals
+                        }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
+                        chartDonutupdatingColors = (chartDonutBasicColors && (options = {
+                            series: [44, 55, 41, 17, 15],
+                            chart: {height: 300, type: "donut"},
+                            legend: {position: "bottom"},
+                            dataLabels: {dropShadow: {enabled: !1}},
+                            colors: yearColorGoals
+                        }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+
+                    const yearTarget = document.querySelectorAll('.yearTarget');
+
+                    const yearGoals1 = [], yearGoals2 = [], yearGoals3 = [], yearGoals4 = [];
+                    document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                        if (indexTr == 0) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals1.push(timeUsageOfMonth)
+                            })
+                        } else if (indexTr == 1) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals2.push(timeUsageOfMonth)
+                            })
+                        } else if (indexTr == 2) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals3.push(timeUsageOfMonth)
+                            })
+                        } else if (indexTr == 3) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals4.push(timeUsageOfMonth)
+                            })
+                        }
+                    })
+
+                    var linechartBasicColors = getChartColorsArray("line_chart_basic"),
+                        linechartZoomColors = (linechartBasicColors && (options = {
+                            series: [
+                                {
+                                    name: yearTarget[0].value,
+                                    data: yearGoals1
+                                },
+                                {
+                                    name: yearTarget[1].value,
+                                    data: yearGoals2
+                                },
+                                {
+                                    name: yearTarget[2].value,
+                                    data: yearGoals3
+                                },
+                                {
+                                    name: yearTarget[3].value,
+                                    data: yearGoals4
+                                },
+                            ],
+                            chart: {height: 570, type: "line", zoom: {enabled: !1}, toolbar: {show: !1}},
+                            markers: {size: 4},
+                            dataLabels: {enabled: !1},
+                            stroke: {curve: "straight"},
+                            colors: yearColorGoals,
+                            xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]}
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_basic"), options)).render()), getChartColorsArray("line_chart_zoomable")),
+                        linechartDatalabelColors = (linechartZoomColors && (options = {
+                            series: [{
+                                name: "XYZ MOTORS",
+                                data: [{x: new Date("2018-01-12").getTime(), y: 140}, {
+                                    x: new Date("2018-01-13").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-01-14").getTime(), y: 150}, {
+                                    x: new Date("2018-01-15").getTime(),
+                                    y: 154
+                                }, {x: new Date("2018-01-16").getTime(), y: 160}, {
+                                    x: new Date("2018-01-17").getTime(),
+                                    y: 165
+                                }, {x: new Date("2018-01-18").getTime(), y: 162}, {
+                                    x: new Date("2018-01-20").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-01-21").getTime(), y: 164}, {
+                                    x: new Date("2018-01-22").getTime(),
+                                    y: 160
+                                }, {x: new Date("2018-01-23").getTime(), y: 165}, {
+                                    x: new Date("2018-01-24").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-01-25").getTime(), y: 172}, {
+                                    x: new Date("2018-01-26").getTime(),
+                                    y: 177
+                                }, {x: new Date("2018-01-27").getTime(), y: 173}, {
+                                    x: new Date("2018-01-28").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-01-29").getTime(), y: 163}, {
+                                    x: new Date("2018-01-30").getTime(),
+                                    y: 158
+                                }, {x: new Date("2018-02-01").getTime(), y: 153}, {
+                                    x: new Date("2018-02-02").getTime(),
+                                    y: 149
+                                }, {x: new Date("2018-02-03").getTime(), y: 144}, {
+                                    x: new Date("2018-02-05").getTime(),
+                                    y: 150
+                                }, {x: new Date("2018-02-06").getTime(), y: 155}, {
+                                    x: new Date("2018-02-07").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-02-08").getTime(), y: 163}, {
+                                    x: new Date("2018-02-09").getTime(),
+                                    y: 156
+                                }, {x: new Date("2018-02-11").getTime(), y: 151}, {
+                                    x: new Date("2018-02-12").getTime(),
+                                    y: 157
+                                }, {x: new Date("2018-02-13").getTime(), y: 161}, {
+                                    x: new Date("2018-02-14").getTime(),
+                                    y: 150
+                                }, {x: new Date("2018-02-15").getTime(), y: 154}, {
+                                    x: new Date("2018-02-16").getTime(),
+                                    y: 160
+                                }, {x: new Date("2018-02-17").getTime(), y: 165}, {
+                                    x: new Date("2018-02-18").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-02-20").getTime(), y: 159}, {
+                                    x: new Date("2018-02-21").getTime(),
+                                    y: 164
+                                }, {x: new Date("2018-02-22").getTime(), y: 160}, {
+                                    x: new Date("2018-02-23").getTime(),
+                                    y: 165
+                                }, {x: new Date("2018-02-24").getTime(), y: 169}, {
+                                    x: new Date("2018-02-25").getTime(),
+                                    y: 172
+                                }, {x: new Date("2018-02-26").getTime(), y: 177}, {
+                                    x: new Date("2018-02-27").getTime(),
+                                    y: 173
+                                }, {x: new Date("2018-02-28").getTime(), y: 169}, {
+                                    x: new Date("2018-02-29").getTime(),
+                                    y: 163
+                                }, {x: new Date("2018-02-30").getTime(), y: 162}, {
+                                    x: new Date("2018-03-01").getTime(),
+                                    y: 158
+                                }, {x: new Date("2018-03-02").getTime(), y: 152}, {
+                                    x: new Date("2018-03-03").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-03-05").getTime(), y: 142}, {
+                                    x: new Date("2018-03-06").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-03-07").getTime(), y: 151}, {
+                                    x: new Date("2018-03-08").getTime(),
+                                    y: 155
+                                }, {x: new Date("2018-03-09").getTime(), y: 159}, {
+                                    x: new Date("2018-03-11").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-03-12").getTime(), y: 157}, {
+                                    x: new Date("2018-03-13").getTime(),
+                                    y: 161
+                                }, {x: new Date("2018-03-14").getTime(), y: 166}, {
+                                    x: new Date("2018-03-15").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-03-16").getTime(), y: 172}, {
+                                    x: new Date("2018-03-17").getTime(),
+                                    y: 177
+                                }, {x: new Date("2018-03-18").getTime(), y: 181}, {
+                                    x: new Date("2018-03-20").getTime(),
+                                    y: 178
+                                }, {x: new Date("2018-03-21").getTime(), y: 173}, {
+                                    x: new Date("2018-03-22").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-03-23").getTime(), y: 163}, {
+                                    x: new Date("2018-03-24").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-03-25").getTime(), y: 164}, {
+                                    x: new Date("2018-03-26").getTime(),
+                                    y: 168
+                                }, {x: new Date("2018-03-27").getTime(), y: 172}, {
+                                    x: new Date("2018-03-28").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-03-29").getTime(), y: 163}, {
+                                    x: new Date("2018-03-30").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-04-01").getTime(), y: 158}, {
+                                    x: new Date("2018-04-02").getTime(),
+                                    y: 152
+                                }, {x: new Date("2018-04-03").getTime(), y: 147}, {
+                                    x: new Date("2018-04-05").getTime(),
+                                    y: 142
+                                }, {x: new Date("2018-04-06").getTime(), y: 147}, {
+                                    x: new Date("2018-04-07").getTime(),
+                                    y: 151
+                                }, {x: new Date("2018-04-08").getTime(), y: 155}, {
+                                    x: new Date("2018-04-09").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-04-11").getTime(), y: 162}, {
+                                    x: new Date("2018-04-12").getTime(),
+                                    y: 157
+                                }, {x: new Date("2018-04-13").getTime(), y: 161}, {
+                                    x: new Date("2018-04-14").getTime(),
+                                    y: 166
+                                }, {x: new Date("2018-04-15").getTime(), y: 169}, {
+                                    x: new Date("2018-04-16").getTime(),
+                                    y: 172
+                                }, {x: new Date("2018-04-17").getTime(), y: 177}, {
+                                    x: new Date("2018-04-18").getTime(),
+                                    y: 181
+                                }, {x: new Date("2018-04-20").getTime(), y: 178}, {
+                                    x: new Date("2018-04-21").getTime(),
+                                    y: 173
+                                }, {x: new Date("2018-04-22").getTime(), y: 169}, {
+                                    x: new Date("2018-04-23").getTime(),
+                                    y: 163
+                                }, {x: new Date("2018-04-24").getTime(), y: 159}, {
+                                    x: new Date("2018-04-25").getTime(),
+                                    y: 164
+                                }, {x: new Date("2018-04-26").getTime(), y: 168}, {
+                                    x: new Date("2018-04-27").getTime(),
+                                    y: 172
+                                }, {x: new Date("2018-04-28").getTime(), y: 169}, {
+                                    x: new Date("2018-04-29").getTime(),
+                                    y: 163
+                                }, {x: new Date("2018-04-30").getTime(), y: 162}, {
+                                    x: new Date("2018-05-01").getTime(),
+                                    y: 158
+                                }, {x: new Date("2018-05-02").getTime(), y: 152}, {
+                                    x: new Date("2018-05-03").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-05-04").getTime(), y: 142}, {
+                                    x: new Date("2018-05-05").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-05-07").getTime(), y: 151}, {
+                                    x: new Date("2018-05-08").getTime(),
+                                    y: 155
+                                }, {x: new Date("2018-05-09").getTime(), y: 159}, {
+                                    x: new Date("2018-05-11").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-05-12").getTime(), y: 157}, {
+                                    x: new Date("2018-05-13").getTime(),
+                                    y: 161
+                                }, {x: new Date("2018-05-14").getTime(), y: 166}, {
+                                    x: new Date("2018-05-15").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-05-16").getTime(), y: 172}, {
+                                    x: new Date("2018-05-17").getTime(),
+                                    y: 177
+                                }, {x: new Date("2018-05-18").getTime(), y: 181}, {
+                                    x: new Date("2018-05-20").getTime(),
+                                    y: 178
+                                }, {x: new Date("2018-05-21").getTime(), y: 173}, {
+                                    x: new Date("2018-05-22").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-05-23").getTime(), y: 163}, {
+                                    x: new Date("2018-05-24").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-05-25").getTime(), y: 164}, {
+                                    x: new Date("2018-05-26").getTime(),
+                                    y: 168
+                                }, {x: new Date("2018-05-27").getTime(), y: 172}, {
+                                    x: new Date("2018-05-28").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-05-29").getTime(), y: 163}, {x: new Date("2018-05-30").getTime(), y: 162}]
+                            }],
+                            chart: {
+                                type: "area",
+                                stacked: !1,
+                                height: 350,
+                                zoom: {type: "x", enabled: !0, autoScaleYaxis: !0},
+                                toolbar: {autoSelected: "zoom"}
+                            },
+                            colors: linechartZoomColors,
+                            dataLabels: {enabled: !1},
+                            markers: {size: 0},
+                            title: {text: "Stock Price Movement", align: "left", style: {fontWeight: 500}},
+                            fill: {
+                                type: "gradient",
+                                gradient: {shadeIntensity: 1, inverseColors: !1, opacityFrom: .5, opacityTo: 0, stops: [0, 90, 100]}
+                            },
+                            yaxis: {
+                                showAlways: !0, labels: {
+                                    show: !0, formatter: function (e) {
+                                        return (e / 1e6).toFixed(0)
+                                    }
+                                }, title: {text: "Price", style: {fontWeight: 500}}
+                            },
+                            xaxis: {type: "datetime"},
+                            tooltip: {
+                                shared: !1, y: {
+                                    formatter: function (e) {
+                                        return (e / 1e6).toFixed(0)
+                                    }
+                                }
+                            }
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_zoomable"), options)).render()), getChartColorsArray("line_chart_datalabel")),
+                        linechartDashedColors = (linechartDatalabelColors && (options = {
+                            chart: {
+                                height: 600,
+                                type: "line",
+                                zoom: {enabled: !1},
+                                toolbar: {show: !1}
+                            },
+                            colors: linechartDatalabelColors,
+                            dataLabels: {enabled: !1},
+                            stroke: {width: [3, 3], curve: "straight"},
+                            series: [
+                                {
+                                    name: "High - 2018",
+                                    data: [26, 24, 32, 36, 33, 31, 33]
+                                },
+                                {
+                                    name: "Low - 2018",
+                                    data: [14, 11, 16, 12, 17, 13, 12]
+                                },
+                                {
+                                    name: "Low - 2018",
+                                    data: [61, 1, 25, 27, 85, 36, 11]
+                                },
+                                {
+                                    name: "Low - 2018",
+                                    data: [33, 66, 22, 98, 14, 63, 12]
+                                }
+                            ],
+                            title: {text: "Average High & Low Temperature", align: "left", style: {fontWeight: 500}},
+                            grid: {row: {colors: ["transparent", "transparent"], opacity: .2}, borderColor: "#f1f1f1"},
+                            markers: {style: "inverted", size: 6},
+                            xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], title: {text: "Month"}},
+                            yaxis: {title: {text: "Temperature"}, min: 5, max: 200},
+                            legend: {position: "top", horizontalAlign: "right", floating: !0, offsetY: -25, offsetX: -5},
+                            responsive: [{breakpoint: 600, options: {chart: {toolbar: {show: !1}}, legend: {show: !1}}}]
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_datalabel"), options)).render()), getChartColorsArray("line_chart_dashed")),
+                        linechartannotationsColors = (linechartDashedColors && (options = {
+                            chart: {
+                                height: 380,
+                                type: "line",
+                                zoom: {enabled: !1},
+                                toolbar: {show: !1}
+                            },
+                            colors: linechartDashedColors,
+                            dataLabels: {enabled: !1},
+                            stroke: {width: [3, 4, 3], curve: "straight", dashArray: [0, 8, 5]},
+                            series: [{name: "Session Duration", data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]}, {
+                                name: "Page Views",
+                                data: [36, 42, 60, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+                            }, {name: "Total Visits", data: [89, 56, 74, 98, 72, 38, 64, 46, 84, 58, 46, 49]}],
+                            title: {text: "Page Statistics", align: "left", style: {fontWeight: 500}},
+                            markers: {size: 0, hover: {sizeOffset: 6}},
+                            xaxis: {categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"]},
+                            tooltip: {
+                                y: [{
+                                    title: {
+                                        formatter: function (e) {
+                                            return e + " (mins)"
+                                        }
+                                    }
+                                }, {
+                                    title: {
+                                        formatter: function (e) {
+                                            return e + " per session"
+                                        }
+                                    }
+                                }, {
+                                    title: {
+                                        formatter: function (e) {
+                                            return e
+                                        }
+                                    }
+                                }]
+                            },
+                            grid: {borderColor: "#f1f1f1"}
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_dashed"), options)).render()), getChartColorsArray("line_chart_annotations"));
+
+                } else {
+                    window.location.href = "/management-time/";
                 }
             }
-            xhr.send();
-            document.getElementById('session-year-report').removeEventListener('click', handleClickTabReport);
         }
+        xhr.send();
+        document.getElementById('session-year-report').removeEventListener('click', handleClickTabReport);
+    }
 
-        // Call function handleClick
-        document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
-    })
+    // Call function handleClick
+    document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
 
     // Get total hours of 1 year
     function getNumberOfHoursInYear(year) {

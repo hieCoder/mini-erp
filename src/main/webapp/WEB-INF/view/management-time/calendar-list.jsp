@@ -325,7 +325,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    console.log(parseData)
                     let dayData = parseData.days;
                     let weekData = parseData.weeklys;
                     let colors = parseData.color;
@@ -838,17 +837,21 @@
         });
     });
 
+    var colorYearGoals = '';
     function toggleEdit(element) {
         var isEditing = element.classList.contains('editing');
-        element.style.background = element.style.background
+        const colorElemnt = element.style.backgroundColor;
+
+        if (colorElemnt != '') colorYearGoals = colorElemnt;
+
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
             paragraphElement.classList.add('editable', 'm-0', 'ps-2', 'text-white');
+            paragraphElement.style.backgroundColor = colorYearGoals;
             paragraphElement.ondblclick = function () {
                 toggleEdit(paragraphElement);
             };
-
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
@@ -865,15 +868,18 @@
 
     function toggleEditYear(element) {
         var isEditing = element.classList.contains('editingYear');
+        const colorElemnt = element.style.backgroundColor;
+
+        if (colorElemnt != '') colorYearGoals = colorElemnt;
 
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
-            paragraphElement.classList.add('editableYear', 'm-0', 'yearTarget');
+            paragraphElement.classList.add('editableYear', 'm-0', 'text-white', 'ps-2', 'yearTarget');
+            paragraphElement.style.backgroundColor = colorYearGoals;
             paragraphElement.ondblclick = function () {
                 toggleEditYear(paragraphElement);
             };
-
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
@@ -882,11 +888,8 @@
             inputElement.ondblclick = function () {
                 toggleEditYear(inputElement);
             };
-
             element.replaceWith(inputElement);
-
             inputElement.style.display = 'block';
-
             inputElement.focus();
         }
     }
