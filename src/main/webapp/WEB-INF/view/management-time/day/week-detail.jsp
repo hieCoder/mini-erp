@@ -21,7 +21,12 @@
     <link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css"/>
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
     <style>
-
+        /*
+            #f2aaaa
+            #bcd6af
+            #ffe180
+            #ad9ad9
+         */
         .add-node, .remove-node {
             position: absolute;
             bottom: -15px;
@@ -98,9 +103,9 @@
         }
 
         .nodeChill ul li:nth-child(-n+2) {
-           margin-right: 14px;
+            margin-right: 14px;
         }
-        
+
         #elem0child0 {
             margin-left: -100px;
             top: -275px !important;
@@ -272,7 +277,7 @@
         #addDaily {
             position: absolute;
             top: 0;
-            left: 56%;
+            left: 61%;
             transform: translate(-50%, -50%);
             padding: 4px;
             border-radius: 50%;
@@ -387,6 +392,14 @@
         .yearTarget {
             width: 145px !important;
         }
+
+        #table-monthlyReview-per th {
+            border: 1px solid black; !important;
+        }
+
+        #table-monthlyReview-per td {
+            border: 1px solid black; !important;
+        }
     </style>
 </head>
 <body>
@@ -475,8 +488,8 @@
                                 <div id="elem0" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]};">
                                     <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
-                                       ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
-                                   </p>
+                                        ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
+                                    </p>
                                     <div style="position: absolute; top: 92px">
                                         <div class="pickr"></div>
                                         <p hidden="hidden"
@@ -495,7 +508,7 @@
                                     </div>
                                 </div>
                                 <div id="elem2" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
-                                    style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
+                                     style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
                                     <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
                                     </p>
@@ -506,7 +519,7 @@
                                     </div>
                                 </div>
                                 <div id="elem3" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
-                                    style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
+                                     style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
                                     <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
                                     </p>
@@ -538,8 +551,8 @@
                                 </div>
                                 <div id="elem0child1" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="top: -75px; right: 100px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[0].contentNode[1] == null || weekly.year.target[0].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[1].childContent[0]}
@@ -558,8 +571,8 @@
                                 </div>
                                 <div id="elem0child2" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="top: -75px; left: 115px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[0].contentNode[2] == null || weekly.year.target[0].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[2].childContent[0]}
@@ -578,8 +591,8 @@
                                 </div>
                                 <div id="elem0child3" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[0].contentNode[3].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[0].contentNode[3] == null || weekly.year.target[0].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[0].contentNode[3].childContent[0]}
@@ -598,8 +611,8 @@
                                 </div>
                                 <div id="elem1child0" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[0].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[0] == null || weekly.year.target[1].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[0].childContent[0]}
@@ -618,8 +631,8 @@
                                 </div>
                                 <div id="elem1child1" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[1] == null || weekly.year.target[1].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[1].childContent[0]}
@@ -638,8 +651,8 @@
                                 </div>
                                 <div id="elem1child2" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[2] == null || weekly.year.target[1].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[2].childContent[0]}
@@ -658,8 +671,8 @@
                                 </div>
                                 <div id="elem1child3" class="elem elem1child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[1].contentNode[3].mainContent}
+                                      </span>
                                     <ul style="left: 125px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[1].contentNode[3] == null || weekly.year.target[1].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[1].contentNode[3].childContent[0]}
@@ -678,8 +691,8 @@
                                 </div>
                                 <div id="elem2child0" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[0].mainContent}
+                                      </span>
                                     <ul style="left: 130px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[0] == null || weekly.year.target[2].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[0].childContent[0]}
@@ -698,8 +711,8 @@
                                 </div>
                                 <div id="elem2child1" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="top: 110px; left: 0px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[1] == null || weekly.year.target[2].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[1].childContent[0]}
@@ -718,8 +731,8 @@
                                 </div>
                                 <div id="elem2child2" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="top: 110px; right: 0px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[2] == null || weekly.year.target[2].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[2].childContent[0]}
@@ -738,8 +751,8 @@
                                 </div>
                                 <div id="elem2child3" class="elem elem2child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[2].contentNode[3].mainContent}
+                                      </span>
                                     <ul style="right: 100px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[2].contentNode[3] == null || weekly.year.target[2].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[2].contentNode[3].childContent[0]}
@@ -758,8 +771,8 @@
                                 </div>
                                 <div id="elem3child0" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[0].mainContent}
+                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[0] == null || weekly.year.target[3].contentNode[0].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[0].childContent[0]}
@@ -778,8 +791,8 @@
                                 </div>
                                 <div id="elem3child1" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[1].mainContent}
+                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[1] == null || weekly.year.target[3].contentNode[1].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[1].childContent[0]}
@@ -798,8 +811,8 @@
                                 </div>
                                 <div id="elem3child2" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                       <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                         ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
-                                     </span>
+                                          ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[2].mainContent}
+                                      </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[2] == null || weekly.year.target[3].contentNode[2].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[2].childContent[0]}
@@ -818,8 +831,8 @@
                                 </div>
                                 <div id="elem3child3" class="elem elem3child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
-                                        ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
-                                    </span>
+                                         ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].mainContent == '' ? 'TEXT' : weekly.year.target[3].contentNode[3].mainContent}
+                                     </span>
                                     <ul style="right: 110px">
                                         <li class="child-content-node" contenteditable="true">
                                             ${weekly.year == null || weekly.year.target[3].contentNode[3] == null || weekly.year.target[3].contentNode[3].childContent[0] == '' ? 'Click To Edit' : weekly.year.target[3].contentNode[3].childContent[0]}
@@ -897,7 +910,7 @@
                                 </tr>
                                 <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[0].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[0].target}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[0].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -929,38 +942,38 @@
                                         </ul>
                                     </td>
                                     <td>
-                                       <div class="d-flex align-items-center">
-                                           <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}">
-                                           <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[0].status}" type="button" data-bs-toggle="dropdown"
-                                                   aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
-                                           </button>
-                                           <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-warning waves-effect waves-light pending"
-                                                           style="margin: 0 5px; width: 102px;"><i
-                                                           class="ri-arrow-right-line"></i> </button>
-                                               </li>
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-danger waves-effect waves-light mt-2 close"
-                                                           style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
-                                                   </button>
-                                               </li>
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-success waves-effect waves-light mt-2 complete"
-                                                           style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
-                                                   </button>
-                                               </li>
-                                               <li>
-                                                   <button type="button"
-                                                           class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
-                                                           style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
-                                                   </button>
-                                               </li>
-                                           </ul>
-                                       </div>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[0].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]}">
+                                            <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[0].status}" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: unset">
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-warning waves-effect waves-light pending"
+                                                            style="margin: 0 5px; width: 102px;"><i
+                                                            class="ri-arrow-right-line"></i> </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-danger waves-effect waves-light mt-2 close"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-close-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-success waves-effect waves-light mt-2 complete"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-check-line"></i>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button"
+                                                            class="btn btn-outline-info waves-effect waves-light mt-2 in-progress"
+                                                            style="margin: 0 5px; width: 102px;"><i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td class="text-center rate-onething" style="width: 75px;"></td>
                                     <td class="text-center target-onething" contenteditable="true"  onkeydown="return isNumberKey(event)">
@@ -979,7 +992,7 @@
                                 </tr>
                                 <tr style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[1].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[1].target}" style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[1].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -1012,7 +1025,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[1].content}">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[1].content}" style="background-color:  ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]}">
                                             <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[1].status}" type="button" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                             </button>
@@ -1061,7 +1074,7 @@
                                 </tr>
                                 <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[2].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[2].target}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[2].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -1094,7 +1107,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[2].content}">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[2].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]}">
                                             <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[2].status}" type="button" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                             </button>
@@ -1143,7 +1156,7 @@
                                 </tr>
                                 <tr style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                     <td class="text-start d-flex align-items-center">
-                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[3].target}">
+                                        <input class="form-control yearTarget me-1" type="text" value="${weekly.year.target[3].target}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                         <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.year.target[3].status}" type="button" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                         </button>
@@ -1176,7 +1189,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[3].content}">
+                                            <input class="form-control monthTarget me-1" type="text" value="${weekly.monthlys[0].monthlyContents[3].content}" style="background-color: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]}">
                                             <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.monthlys[0].monthlyContents[3].status}" type="button" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                             </button>
@@ -1365,21 +1378,14 @@
                                 <thead>
                                 <tr>
                                     <c:forEach items="${weekly.colors}" var="color" varStatus="loop">
-                                        <th scope="col" class="panel colorPicker category-color"
-                                            style="background-color: ${color.color != '' ? color.color : "#FFFFFF"}">
-                                            <p class="m-0 color-category">${color.category}</p>
-                                            <div class="pickr"></div>
-                                            <p hidden="hidden"
-                                               class="pickedColor">${color.color != '' ? color.color : "#FFFFFF"}</p>
+                                        <th scope="col" class="category-color">
+                                            <p class="m-0 color-category">${weekly.year.target[loop.index].target}</p>
                                         </th>
                                     </c:forEach>
                                     <c:if test="${weekly.colors.size() < 4}">
-                                        <c:forEach begin="${weekly.colors.size()}" end="3">
-                                            <th scope="col" class="panel colorPicker category-color"
-                                                style="background-color: #FFFFFF;">
-                                                <p class="m-0 color-category">Default Category</p>
-                                                <div class="pickr"></div>
-                                                <p hidden="hidden" class="pickedColor">#FFFFFF</p>
+                                        <c:forEach begin="${weekly.colors.size()}" end="3" varStatus="loop">
+                                            <th scope="col" class="category-color">
+                                                <p class="m-0 color-category">${weekly.year.target[loop.index].target}</p>
                                             </th>
                                         </c:forEach>
                                     </c:if>
@@ -1411,23 +1417,18 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td></td>
-                                        <td colspan="2" class="fw-bolder">Goals</td>
+                                        <td colspan="3" class="fw-bolder">Weekly Goals</td>
                                     </tr>
                                     <tr class="theSingleMostImportantThing" style="height: 42px">
-                                        <td rowspan="5" style="max-width: 5rem;white-space: normal" class="fw-bolder">
-                                            Weekly Goals
-                                        </td>
-                                        <td colspan="2"
-                                            style="border-top: 0; border-left: 0; border-bottom: 0;">
+                                        <td colspan="3">
                                             <span class="mx-auto fw-bolder text-danger">Important matter</span>
                                         </td>
                                     </tr>
                                     <tr class="lecture">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[1].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[1].content}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[1].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1462,10 +1463,10 @@
                                         </td>
                                     </tr>
                                     <tr class="dailyEvaluation">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[2].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[2].content}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[2].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1499,10 +1500,10 @@
                                         </td>
                                     </tr>
                                     <tr class="work">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[3].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[3].content}" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[3].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1536,10 +1537,10 @@
                                         </td>
                                     </tr>
                                     <tr class="reading">
-                                        <td colspan="2"
-                                            style="border-left: 0; border-bottom: 0; background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
+                                        <td colspan="3"
+                                            style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
                                             <div class="d-flex align-items-center">
-                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[4].content}">
+                                                <input class="form-control weekTarget me-1" type="text" value="${weekly.weeklys.weeklys[4].content}"  style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">
                                                 <button class="btn btn-info dropdown-toggle btn-status p-1" data-value="${weekly.weeklys.weeklys[4].status}" type="button" data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="ri-play-mini-line fs-5"></i>
                                                 </button>
@@ -1614,19 +1615,19 @@
                                     </c:forEach>
                                     <tr>
                                         <td rowspan="4" style="height: 71px" class="fw-bolder">Time Usage <br> Report</td>
-                                        <td class="title-report-category" style="background-color: #f2aaaa"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#f2aaaa' : weekly.year.color[0]}">${weekly.weeklys.weeklys[1].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #bcd6af"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#bcd6af' : weekly.year.color[1]}">${weekly.weeklys.weeklys[2].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #ffe180"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ffe180' : weekly.year.color[2]}">${weekly.weeklys.weeklys[3].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: #ad9ad9"></td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">${weekly.weeklys.weeklys[1].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
@@ -1664,7 +1665,7 @@
                                             </td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="lecture" style="height: 49px">
+                                    <tr class="lecture" style="height: 47px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="lecture" value="${day.data.oneThingCalendar[1]}"/>
                                             <td class="editable-cell target-color-lecture isModifyLecture" colspan="2"
@@ -1675,7 +1676,7 @@
                                                     type="checkbox" ${lecture.performance ? 'checked' : ''}></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="dailyEvaluation" style="height: 48px">
+                                    <tr class="dailyEvaluation" style="height: 46px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="dailyEvaluation" value="${day.data.oneThingCalendar[2]}"/>
                                             <td class="editable-cell target-color-dailyEvaluation isModifyDaily" colspan="2"
@@ -1687,7 +1688,7 @@
                                                     type="checkbox" ${dailyEvaluation.performance ? 'checked' : ''}></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="work" style="height: 49px">
+                                    <tr class="work" style="height: 47px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="work" value="${day.data.oneThingCalendar[3]}"/>
                                             <td class="editable-cell target-color-work isModifyWork" colspan="2"
@@ -1697,7 +1698,7 @@
                                             </td>
                                         </c:forEach>
                                     </tr>
-                                    <tr class="reading" style="height: 48px">
+                                    <tr class="reading" style="height: 46px">
                                         <c:forEach var="day" items="${weekly.days}">
                                             <c:set var="reading" value="${day.data.oneThingCalendar[4]}"/>
                                             <td class="editable-cell target-color-reading isModifyReading" colspan="2"
@@ -1801,7 +1802,7 @@
                                                 <c:forEach var="color" items="${weekly.colors}">
                                                     <c:forEach var="value" items="${color.values}">
                                                         <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">
-                                                            <c:if test="${data[0].contentPlan ne '' && value eq data[0].contentPlan}">
+                                                            <c:if test="${data[0].actual ne '' && value eq data[0].contentPlan}">
                                                                 <c:set var="backgroundColor0" value="${color.color}"/>
                                                                 <c:set var="exitLoop0" value="true"/>
                                                             </c:if>
@@ -1836,7 +1837,7 @@
                                                                     <input class="form-check-input mt-0 performance-plan" type="checkbox" aria-label="Checkbox for following text input">
                                                                 </div>
                                                             </div>
-                                                            <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
+                                                            <button class="addPlan btn btn-primary mt-1">+</button>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
@@ -1862,7 +1863,7 @@
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </c:forEach>
-                                                            <button class="addPlan btn btn-primary mt-1 w-100">Add Plan</button>
+                                                            <button class="addPlan btn btn-primary mt-1">+</button>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -2189,12 +2190,20 @@
                                         <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                                             <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                                         </div>
-                                        <h5 class="fs-14 text-end mb-3">Goals of <span id="monthTarget">${weekly.monthlys[0].month}</span></h5>
-                                        <div class="m-0" id="monthlyTarget">
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[0].content}</p>
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[1].content}</p>
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[2].content}</p>
-                                            <p class="editable m-0">${weekly.monthlys[0].monthlyContents[3].content}</p>
+                                        <h5 class="fs-14 text-end mb-3"><span id="monthTarget">${weekly.monthlys[0].month}</span> Goals</h5>
+                                        <div class="m-0" id="monthlyTarget" style="background: ${weekly.year.color[0]}">
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[0]}">
+                                                ${weekly.monthlys[0].monthlyContents[0].content}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[1]}">
+                                                ${weekly.monthlys[0].monthlyContents[1].content}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[2]}">
+                                                ${weekly.monthlys[0].monthlyContents[2].content}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[3]}">
+                                                ${weekly.monthlys[0].monthlyContents[3].content}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -2209,78 +2218,58 @@
                         </div>
                         <div class="col-md-12 d-flex mt-2">
                             <div class="table-detail" style="width: unset;">
-                                <table id="table-title-review" class="table-sm">
+                                <table id="table-title-review" class="table-sm" style="width: 140px">
                                     <thead>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td id="daily-onething-routine" rowspan="6" style="height: 311px; background-color: #FFEAA7">
-                                            <h5 class="fw-bolder text-white">Daily Onething <br>&<br> Daily routine</h5>
-                                        </td>
-                                        <td style="height: 65px"></td>
+                                    <tr style="height: 89px">
+                                        <td class="text-info fw-bold">Daily Tracker</td>
                                     </tr>
-                                    <tr>
-                                        <td class="reivew-daily-onething text-nowrap"></td>
+                                    <tr style="height: 45px">
+                                        <td class="fw-bold text-danger">Important matter</td>
                                     </tr>
-                                    <tr style="background-color: #f2aaaa">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
-                                    <tr style="background-color: #bcd6af">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
-                                    <tr style="background-color: #ffe180">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
-                                    <tr style="background-color: #ad9ad9">
-                                        <td class="reivew-daily-onething"></td>
-                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr style="height: 45px; background: ${weekly.year.color[loop.index]}">
+                                            <td>${weekly.monthlys[0].monthlyContents[loop.index].content}</td>
+                                        </tr>
+                                    </c:forEach>
                                     <c:choose>
                                         <c:when test="${empty weekly.monthlys[0].dailyRoutine}">
-                                            <tr class="review-dailyRoutine">
+                                            <tr class="review-dailyRoutine" style="height: 45px">
                                                 <td></td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
                                             <c:forEach items="${weekly.monthlys[0].dailyRoutine}" var="dailyRoutine" varStatus="loop">
-                                                <tr class="review-dailyRoutine">
+                                                <tr class="review-dailyRoutine" style="height: 45px">
                                                     <td>${dailyRoutine.title}</td>
                                                 </tr>
                                             </c:forEach>
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 50px; background-color: #f2aaaa">
-                                        <td rowspan="4" style="background-color: #FFBB64;">
-                                            <h5 class="fw-bolder text-white">Weekly <br> & <br> MonthLy Goals</h5>
+                                    <tr style="height: 202px; background-color: #f2aaaa">
+                                        <td  style="background-color: #FFBB64;">
+                                            <h5 class="fw-bolder text-white">Weekly Goals</h5>
                                         </td>
-                                        <td class="review-weekly-goals"></td>
                                     </tr>
-                                    <tr style="height: 51px; background-color: #bcd6af">
-                                        <td class="review-weekly-goals"></td>
-                                    </tr>
-                                    <tr style="height: 50px; background-color: #ffe180">
-                                        <td class="review-weekly-goals"></td>
-                                    </tr>
-                                    <tr style="height: 51px; background-color: #ad9ad9">
-                                        <td class="review-weekly-goals"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #f2aaaa">
-                                        <td rowspan="4" style="background-color: #E6A4B4;">
-                                            <h5 class="fw-bolder text-white">Amount of <br>time</h5>
+                                    <tr style="height: 180px; background-color: #f2aaaa">
+                                        <td style="background-color: #E6A4B4;">
+                                            <h5 class="fw-bolder text-white">Time Usage</h5>
                                             <button type="button" id="btn-chart-time-used" class="btn btn-primary btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
-                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Time Usage: 4C
+                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Chart
                                             </button>
                                             <div id="modalChart" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category By Month</h4>
+                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage By Month</h4>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="card-body">
                                                                 <c:choose>
-                                                                    <c:when test="${weekly.monthlys[0].color != null}">
-                                                                        <div id="simple_pie_chart" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                                                    <c:when test="${weekly.year.color != null}">
+                                                                        <div id="simple_pie_chart" data-colors='["${weekly.year.color[0]}", "${weekly.year.color[1]}", "${weekly.year.color[2]}", "${weekly.year.color[3]}"]' class="apex-charts" dir="ltr"></div>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <div id="simple_pie_chart" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
@@ -2295,30 +2284,11 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="review-weekly-amount-time"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #bcd6af">
-                                        <td class="review-weekly-amount-time"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #ffe180">
-                                        <td class="review-weekly-amount-time"></td>
-                                    </tr>
-                                    <tr style="height: 45px; background-color: #ad9ad9">
-                                        <td class="review-weekly-amount-time"></td>
                                     </tr>
                                     <tr style="background-color: #FF9BD2">
-                                        <td rowspan="4" style="height: 378px">
-                                            <h5 class="fw-bolder text-white">Weekly <br>&<br> Monthly Review</h5>
+                                        <td  style="height: 378px">
+                                            <h5 class="fw-bolder text-white">Review</h5>
                                         </td>
-                                    </tr>
-                                    <tr >
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Gratitude Diary</td>
-                                    </tr>
-                                    <tr >
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Compliment</td>
-                                    </tr>
-                                    <tr >
-                                        <td class="review-weekly-amount-time fw-bolder text-uppercase" style="height: 57px">Reflection/<br>Improvement</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -2337,47 +2307,59 @@
                                     <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="tr-review-weekly" style="height: 50.5px">
+                                        <tr class="tr-review-weekly" style="height: 50.5px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="7" class="weekly-goals fw-bolder"></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="tr-weekly-amountTime" style="height: 45px">
+                                        <tr class="tr-weekly-amountTime" style="height: 45px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="4" class="weekly-amountTime">0/168 hours</td>
                                                 <td colspan="3.5" class="performance-time-used-amountTime"></td>
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <c:forEach begin="0" end="2" varStatus="outerLoop">
-                                        <tr class="tr-weekly-sentence${outerLoop.index}">
-                                            <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                                <td colspan="7" style="height: 126px">
-                                                    <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter here..."></textarea>
-                                                </td>
-                                            </c:forEach>
-                                        </tr>
-                                    </c:forEach>
+                                    <tr class="tr-weekly-sentence0">
+                                        <c:forEach begin="0" end="4" varStatus="innerLoop">
+                                            <td colspan="7" style="height: 126px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Gratitude Diary"></textarea>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr class="tr-weekly-sentence1">
+                                        <c:forEach begin="0" end="4" varStatus="innerLoop">
+                                            <td colspan="7" style="height: 126px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Compliment"></textarea>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr class="tr-weekly-sentence2">
+                                        <c:forEach begin="0" end="4" varStatus="innerLoop">
+                                            <td colspan="7" style="height: 126px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Reflection/Improvement"></textarea>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div>
-                                <table class="table table-bordered text-center mb-0" style="border: 1px solid black; width: 240px">
+                                <table id="table-monthlyReview-per" class="table text-center mb-0" style="width: 245px; border: 1px solid black !important;">
                                     <thead>
-                                    <tr>
-                                        <th colspan="3" style="border: 1px solid black" class="month-current text-danger fw-bolder text-uppercase"></th>
+                                    <tr style="border: 1px solid black">
+                                        <th colspan="3" class="month-current text-danger fw-bolder text-uppercase"></th>
                                     </tr>
-                                    <tr>
-                                        <th style="border: 1px solid black">Rate</th>
-                                        <th style="border: 1px solid black">Target</th>
-                                        <th class="text-wrap" style="border: 1px solid black">Performance</th>
+                                    <tr style="border: 1px solid black">
+                                        <th >Rate</th>
+                                        <th >Target</th>
+                                        <th class="text-wrap" >Performance</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <%-- Review OneThing Calendar Session --%>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[0]}">
+                                    <tr class="text-center">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[0] == null ? 0 : weekly.monthlys[0].targetCategory[0].target}
@@ -2386,7 +2368,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[1] == null ? '#f2aaaa' : weekly.monthlys[0].color[1]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[0] == null ? '#f2aaaa' : weekly.year.color[0]}; height: 46px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -2395,7 +2377,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[2] == null ? '#bcd6af' : weekly.monthlys[0].color[2]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[1] == null ? '#bcd6af' : weekly.year.color[1]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -2404,7 +2386,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[3] == null ? '#ffe180' : weekly.monthlys[0].color[3]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[2] == null ? '#ffe180' : weekly.year.color[2]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -2413,7 +2395,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.monthlys[0].color[4] == null ? '#ad9ad9' : weekly.monthlys[0].color[4]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[3] == null ? '#ad9ad9' : weekly.year.color[3]}">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -2470,7 +2452,7 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center" >
-                                        <td style="height: 50px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 50px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[0].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2487,10 +2469,20 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 50px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 50px; background: ${weekly.year.color[1]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[1].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2508,10 +2500,20 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 51px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 51px; background: ${weekly.year.color[2]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[2].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2528,10 +2530,20 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 48px" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 48px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[3].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -2548,6 +2560,16 @@
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('INPROGRESS')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
+                                                <button class="btn btn-info" style="width: 53px">
+                                                    <i class="ri-play-mini-line"></i>
+                                                </button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2557,19 +2579,19 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[0]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[1]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[2]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px">
+                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[3]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
@@ -2582,17 +2604,17 @@
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center">
                                         <td>
-                                            <textarea id="monthly-gratitudeDiary" class="form-control" style="height: 100px" placeholder="Enter here...">${weekly.monthlys[0].gratitudeDiary}</textarea>
+                                            <textarea id="monthly-gratitudeDiary" class="form-control" style="height: 100px" placeholder="Enter Gratitude Diary...">${weekly.monthlys[0].gratitudeDiary}</textarea>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
                                         <td>
-                                            <textarea id="monthly-compliment" class="form-control" style="height: 101px" placeholder="Enter here...">${weekly.monthlys[0].compliment}</textarea>
+                                            <textarea id="monthly-compliment" class="form-control" style="height: 101px" placeholder="Enter Compliment">${weekly.monthlys[0].compliment}</textarea>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
                                         <td>
-                                            <textarea class="form-control" id="monthly-reflectionAndImprovement" style="height: 101px" placeholder="Enter here...">${weekly.monthlys[0].reflectionAndImprovement}</textarea>
+                                            <textarea id="monthly-reflectionAndImprovement" class="form-control" style="height: 101px" placeholder="Enter Reflection/Improvement">${weekly.monthlys[0].reflectionAndImprovement}</textarea>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2603,7 +2625,7 @@
                             <button class="btn btn-primary mr-2" onclick="history.back()">
                                 Back
                             </button>
-                            <button class="btn btn-success ml-2 btn-save">Save</button>
+                            <button class="btn btn-success ml-2 btn-save" data-value="save-WMReport">Save</button>
                         </div>
                     </div>
                 </div>
@@ -2620,12 +2642,19 @@
                                         <div class="ribbon ribbon-info ribbon-shape trending-ribbon">
                                             <span class="trending-ribbon-text">Focus</span> <i class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                                         </div>
-                                        <h5 class="fs-14 text-end mb-3">Goals of <span >${weekly.year.year}</span></h5>
+                                        <h5 class="fs-14 text-end mb-3"><span id="current-year">${weekly.year.year}</span> Goals</h5>
                                         <div class="m-0">
-                                            <p class="editable m-0">${weekly.year.target[0].target}</p>
-                                            <p class="editable m-0">${weekly.year.target[1].target}</p>
-                                            <p class="editable m-0">${weekly.year.target[2].target}</p>
-                                            <p class="editable m-0">${weekly.year.target[3].target}</p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[0]}">
+                                                ${weekly.year.target[0].target}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[1]}">
+                                                ${weekly.year.target[1].target}</p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[2]}">
+                                                ${weekly.year.target[2].target}
+                                            </p>
+                                            <p class="editable m-0 ps-2 text-white" style="background: ${weekly.year.color[3]}">
+                                                ${weekly.year.target[3].target}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -2638,48 +2667,28 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 d-flex mt-2 p-0">
+                        <div class="col-md-12 d-flex mt-2 p-0 content-wrapper overflow-auto">
                             <div class="table-detail" style="width: unset;">
                                 <table class="text-center table-sm">
                                     <thead>
                                     </thead>
                                     <tbody>
                                     <tr style="height: 34px">
-                                        <td colspan="2"></td>
+                                        <td></td>
                                     </tr>
-                                    <tr class="fw-bolder" style="background-color: rgba(60, 127, 234, 0.7); height: 34px">
-                                        <td colspan="2">
-                                            Objective
+                                    <tr style="height: 266px">
+                                        <td class="fw-bolder" style="height: 232px;">
+                                            Monthly <br> Goals
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bolder" style="height: 232px;" rowspan="4">
-                                            ONETHING
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
                                     </tr>
                                     <tr style="height: 464px;">
                                         <td colspan="2" class="fw-bolder">
-                                            DAILY <br> ROUTINE
-                                        </td>
-                                    </tr>
-                                    <tr style="height: 232px;">
-                                        <td class="fw-bolder" colspan="2">
-                                            MONTHLY
+                                            ROUTINE
                                         </td>
                                     </tr>
                                     <tr style="height: 200px">
                                         <td class="fw-bolder" colspan="2">
-                                            ${weekly.year.year} GOAL
+                                            Time <br> Usage
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2689,20 +2698,21 @@
                                 <table class="table table-sm table-bordered text-center" id="table-year-report">
                                     <thead>
                                     <tr style="height: 34px; max-width: 1500px">
-                                        <c:forEach begin="0" end="11" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
+                                        <c:set var="monthName" value='Jan.,Feb.,Mar.,Apr.,May,Jun.,Jul.,Aug.,Sep.,Oct., Nov.,Dec.' />
+                                        <c:forEach items="${monthName}" var="month" varStatus="loop">
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white"><span>${month}</span></th>
                                         </c:forEach>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr style="max-width: 1500px; height: 34px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td class="text-white fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);">P/T</td>
+                                            <td class="text-white fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);">Progress</td>
                                             <td class="fw-bolder" style="width: 39px;">Rate</td>
                                         </c:forEach>
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="onething-report" style="max-width: 1500px; height: 58px">
+                                        <tr class="monthly-report" style="max-width: 1500px; height: 58px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="11" varStatus="loop">
                                                 <c:set var="month" value="${loop.index + 1}" />
                                                 <c:choose>
@@ -2713,7 +2723,7 @@
                                                         <c:set var="formattedMonth" value="${month}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 90px; max-width: 90px; max-height: 57px" data-simplebar></td>
                                                 <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0.00%</td>
                                             </c:forEach>
                                         </tr>
@@ -2735,107 +2745,9 @@
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-                                    <c:forEach begin="0" end="3">
-                                        <tr class="monthly-report" style="max-width: 1500px; max-height: 58px; height: 58px">
-                                            <c:forEach begin="0" end="11" varStatus="loop">
-                                                <c:set var="month" value="${loop.index + 1}" />
-                                                <c:choose>
-                                                    <c:when test="${month lt 10}">
-                                                        <c:set var="formattedMonth" value="0${month}" />
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:set var="formattedMonth" value="${month}" />
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <td colspan="2" data-month="${weekly.year.year}-${formattedMonth}" style="width: 70px; max-width: 70px; max-height: 57px" data-simplebar></td>
-                                            </c:forEach>
-                                        </tr>
-                                    </c:forEach>
-                                    <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr style="max-width: 1500px;" >
-                                            <td colspan="24" style="height: 50px">
-                                                <span class="d-inline-block">${weekly.year.target[loop.index].target}</span>
-                                                <c:if test="${weekly.year.target[loop.index].status.equals('COMPLETE')}">
-                                                    <button class="btn btn-success float-end" style="width: 53px">
-                                                        <i class="ri-check-line"></i>
-                                                    </button>
-                                                </c:if>
-                                                <c:if test="${weekly.year.target[loop.index].status.equals('POSTPONE')}">
-                                                    <button class="btn btn-warning float-end" style="width: 53px">
-                                                        <i class="ri-arrow-right-line"></i>
-                                                    </button>
-                                                </c:if>
-                                                <c:if test="${weekly.year.target[loop.index].status.equals('CANCELLATION')}">
-                                                    <button class="btn btn-danger float-end" style="width: 53px">
-                                                        <i class="ri-close-line"></i>
-                                                    </button>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-12 d-flex mt-2 p-0">
-                            <div class="table-detail" style="width: unset;">
-                                <table class="text-center table-sm">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                    <tr style="height: 34px">
-                                        <td>
-                                            <button type="button" id="btn-chart-time-used-yearReport" class="btn btn-info btn-label waves-effect waves-light text-white"  data-bs-toggle="modal" data-bs-target="#modalChart-yearReport">
-                                                <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Chart
-                                            </button>
-                                            <div id="modalChart-yearReport" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="card-title mb-0 flex-grow-1">Chart Time Usage Of Category By Year</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="card-body">
-                                                                <c:choose>
-                                                                    <c:when test="${weekly.monthlys[0].color != null}">
-                                                                        <div id="simple_pie_chart2" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <div id="simple_pie_chart2" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="fw-bolder">
-                                            <td class="text-wrap" style="max-width: 90px; width: 90px; height: 50px; max-height: 50px" data-simplebar>
 
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div style="width: 100%">
-                                <table class="table table-sm text-center">
-                                    <thead>
-                                    <tr style="height: 49px; max-width: 1500px">
-                                        <c:forEach begin="0" end="11" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white">Month <span>${loop.index + 1}</span></th>
-                                        </c:forEach>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="monthly-time-report" style="max-width: 1500px; height: 51px">
+                                        <tr class="monthly-time-report" style="height: 50px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="11" varStatus="loop">
                                                 <c:set var="month" value="${loop.index + 1}" />
                                                 <c:choose>
@@ -2854,6 +2766,83 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="table-detail" style="width: unset;">
+                                <table class="text-center table-sm">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="height: 34px; background: red" class="fw-bold text-white">
+                                        <td colspan="2">${weekly.year.year.substring(2)}' goals</td>
+                                    </tr>
+                                    <tr class="fw-bold" style="height: 34px">
+                                        <td class="text-white" style="background-color: rgba(60, 127, 234, 0.7);">Progess</td>
+                                        <td>Rate</td>
+                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr style="height: 58px; background: ${weekly.year.color[loop.index]}">
+                                            <td colspan="2">
+                                                <span class="d-inline-block">${weekly.year.target[loop.index].target}</span>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('COMPLETE')}">
+                                                    <button class="btn btn-success float-end" style="width: 53px">
+                                                        <i class="ri-check-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('POSTPONE')}">
+                                                    <button class="btn btn-warning float-end" style="width: 53px">
+                                                        <i class="ri-arrow-right-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('CANCELLATION')}">
+                                                    <button class="btn btn-danger float-end" style="width: 53px">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('INPROGRESS')}">
+                                                    <button class="btn btn-info float-end" style="width: 53px">
+                                                        <i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${weekly.year.target[loop.index].status.equals('')}">
+                                                    <button class="btn btn-info float-end" style="width: 53px">
+                                                        <i class="ri-play-mini-line"></i>
+                                                    </button>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    <tr style="height: 464px;">
+                                        <td colspan="2" class="fw-bolder">
+                                            ROUTINE
+                                        </td>
+                                    </tr>
+                                    <c:forEach begin="0" end="3" varStatus="loop">
+                                        <tr style="height: 50px; background: ${weekly.year.color[loop.index]}">
+                                            <td class="year-time-usage">
+
+                                            </td>
+                                            <td class="rate-year-time-usage">
+
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-7 mt-4 p-0">
+                            <h4 class="text-center">Line Chart Time Usage ${weekly.year.year}</h4>
+                            <div id="line_chart_basic" data-colors='["--vz-primary", "--vz-success", "--vz-danger", "--vz-info"]' class="apex-charts" dir="ltr"></div>
+                        </div>
+                        <div class="col-md-5 mt-4 p-0">
+                            <h4 class="text-center">Pie Chart Time Usage ${weekly.year.year}</h4>
+                            <c:choose>
+                                <c:when test="${weekly.monthlys[0].color != null}">
+                                    <div id="simple_pie_chart2" data-colors='["${weekly.monthlys[0].color[1]}", "${weekly.monthlys[0].color[2]}", "${weekly.monthlys[0].color[3]}", "${weekly.monthlys[0].color[4]}"]' class="apex-charts" dir="ltr"></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div id="simple_pie_chart2" data-colors='["#f5c0c0", "#bbd6b0", "#ffe79a", "#bcace0"]' class="apex-charts" dir="ltr"></div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="col-md-12 mt-4">
                             <h1 class="font-weight-bold mb-4">Year in Review and Self-Inspiration</h1>
@@ -2903,7 +2892,7 @@
                                 <button class="btn btn-primary mr-2" onclick="history.back()">
                                     Back
                                 </button>
-                                <button class="btn btn-success ml-2 btn-save">Save</button>
+                                <button class="btn btn-success ml-2 btn-save" data-value="save-year-report">Save</button>
                             </div>
                         </div>
                     </div>
@@ -3131,8 +3120,9 @@
 <script src="/assets/custom/js/management-time/management-time.js"></script>
 <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script>
-
     // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
@@ -3155,27 +3145,29 @@
         function removeTabParamFromURL(url) {
             var url = new URL(currentURL);
             url.searchParams.delete('tab');
-            window.history.replaceState( {}, document.title, url);
+            window.history.replaceState({}, document.title, url);
         }
 
-       switch (tabPlanner) {
-           case 'year-goals':
-               $('#session-goals').tab('show');
-               $('#session-goals').click();
-               removeTabParamFromURL(currentURL);
-               break;
-           case 'wm-report':
-               $('#session-review').tab('show');
-               removeTabParamFromURL(currentURL);
-               break;
-           case 'year-report':
-               $('#session-year-report').tab('show');
-               $('#session-year-report').click();
-               removeTabParamFromURL(currentURL);
-               break;
-           default:
-               break;
-       }
+        switch (tabPlanner) {
+            case 'year-goals':
+                $('#session-goals').tab('show');
+                setTimeout(function () {
+                    $('#session-goals').click();
+                }, 0.00000000001);
+                removeTabParamFromURL(currentURL);
+                break;
+            case 'wm-report':
+                $('#session-review').tab('show');
+                removeTabParamFromURL(currentURL);
+                break;
+            case 'year-report':
+                $('#session-year-report').tab('show');
+                handleClickTabReport();
+                removeTabParamFromURL(currentURL);
+                break;
+            default:
+                break;
+        }
     })
 
     // Mind map
@@ -3197,7 +3189,7 @@
                 $("#elem" + i).click(function(e) {
                     if ( hasLevel2Children($(this).attr('id').match(/\d+/)[0]) === true ) {
                         for (var i = 0; i < $(".level1").length; i++) {
-                                if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
+                            if ($("#elem" + i + "child0").hasClass("hiddenLevel2")) {
                                 if ("elem" + i !== $(this).attr('id'))
                                     toggle("elem" + i);
                             }
@@ -3549,7 +3541,7 @@
         if (tableDailyOnethingRoutine) {
             for (let i = 0; i < 5 + totalDailyRoutine; i++) {
                 const tr = document.createElement('tr');
-                tr.style.height = '44.5px';
+                tr.style.height = '45px';
                 tr.classList.add('category-review');
                 for (let j = 0; j < daysOfMonth.children.length; j++) {
                     const td = document.createElement('td');
@@ -3565,7 +3557,6 @@
         $('#table-dailyOnethingRoutine th').css('border', '1px solid #000');
         $('#table-dailyOnethingRoutine tr').css('border', '1px solid #000');
         $('#table-dailyOnethingRoutine td').css('border', '1px solid #000');
-
 
         var queryString = window.location.search;
         var urlParams = new URLSearchParams(queryString);
@@ -3634,53 +3625,55 @@
                         }
                     })
 
-                    // const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
-                    // weeklyGoalsRow.forEach(function (weekRow, index) {
-                    //     weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                    //         const startDate = onlyWeek.getAttribute('data-week');
-                    //         weeklys.forEach(week => {
-                    //             const startDateDB = week.startDate;
-                    //             if (startDate == startDateDB) {
-                    //                 if (week.weeklys != null) {
-                    //                     const weeklyTarget = week.weeklys[index + 1].content;
-                    //                     const statusWeek = week.weeklys[index + 1].status;
-                    //                     if (weeklyTarget != null && weeklyTarget != '') {
-                    //                         var btnStatus = ``;
-                    //                         if (statusWeek == 'COMPLETE') {
-                    //                             btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
-                    //                         } else if (statusWeek == 'POSTPONE') {
-                    //                             btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
-                    //                         } else if (statusWeek == 'CANCELLATION') {
-                    //                             btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
-                    //                         } else if (statusWeek == '') {
-                    //                             btnStatus = `<button class="btn btn-info float-end">null</button>`
-                    //                         }
-                    //                         const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
-                    //                         $(onlyWeek).append(html);
-                    //                     }
-                    //                 }
-                    //             }
-                    //         });
-                    //     })
-                    // })
+                    const weeklyGoalsRow = document.querySelectorAll('.tr-review-weekly');
+                    weeklyGoalsRow.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    if (week.weeklys != null) {
+                                        const weeklyTarget = week.weeklys[index + 1].content;
+                                        const statusWeek = week.weeklys[index + 1].status;
+                                        if (weeklyTarget != null && weeklyTarget != '') {
+                                            var btnStatus = ``;
+                                            if (statusWeek == 'COMPLETE') {
+                                                btnStatus = `<button class="btn btn-success float-end" style="width: 53px"><i class="ri-check-line"></i></button>`
+                                            } else if (statusWeek == 'POSTPONE') {
+                                                btnStatus = `<button class="btn btn-warning float-end" style="width: 53px"><i class="ri-arrow-right-line"></i></button>`
+                                            } else if (statusWeek == 'CANCELLATION') {
+                                                btnStatus = `<button class="btn btn-danger float-end" style="width: 53px"><i class="ri-close-line"></i></button>`
+                                            } else if (statusWeek == 'INPROGRESS') {
+                                                btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
+                                            } else if (statusWeek == '') {
+                                                btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
+                                            }
+                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                                            $(onlyWeek).append(html);
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
 
-                    // const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
-                    // weeklyAmountTime.forEach(function (weekRow, index) {
-                    //     weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
-                    //         const startDate = onlyWeek.getAttribute('data-week');
-                    //         weeklys.forEach(week => {
-                    //             const startDateDB = week.startDate;
-                    //             if (startDate == startDateDB) {
-                    //                 if (week.weeklys != null) {
-                    //                     const timeusedWeekly = week.weeklys[index + 1].timeUsed;
-                    //                     if (timeusedWeekly != null && timeusedWeekly != '') {
-                    //                         onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
-                    //                     }
-                    //                 }
-                    //             }
-                    //         });
-                    //     })
-                    // })
+                    const weeklyAmountTime = document.querySelectorAll('.tr-weekly-amountTime');
+                    weeklyAmountTime.forEach(function (weekRow, index) {
+                        weekRow.querySelectorAll('td').forEach(function (onlyWeek) {
+                            const startDate = onlyWeek.getAttribute('data-week');
+                            weeklys.forEach(week => {
+                                const startDateDB = week.startDate;
+                                if (startDate == startDateDB) {
+                                    if (week.weeklys != null) {
+                                        const timeusedWeekly = week.weeklys[index + 1].timeUsed;
+                                        if (timeusedWeekly != null && timeusedWeekly != '') {
+                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                    })
 
                     const gratitudeDiaryTr = document.querySelectorAll('.tr-weekly-sentence0');
                     gratitudeDiaryTr.forEach(function (weekRow, index) {
@@ -3725,12 +3718,14 @@
                         if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
                         else if (e.textContent.trim() == 'POSTPONE') e.classList.add('text-warning')
                         else if (e.textContent.trim() == 'CANCELLATION') e.classList.add('text-danger')
+                        else if (e.textContent.trim() == 'INPROGRESS') e.classList.add('text-info')
                     })
 
                     document.querySelectorAll('.monthly-goals').forEach(function (e) {
                         if (e.textContent.trim() == 'COMPLETE') e.classList.add('text-success')
                         else if (e.textContent.trim() == 'POSTPONE') e.classList.add('text-warning')
                         else if (e.textContent.trim() == 'CANCELLATION') e.classList.add('text-danger')
+                        else if (e.textContent.trim() == 'INPROGRESS') e.classList.add('text-info')
                     })
 
                     const weeklyAmountTimeUsed = document.querySelectorAll('.weekly-amountTime');
@@ -3756,15 +3751,15 @@
                         e.querySelectorAll('span').forEach(function (eSpan) {
                             totalTimeUsedWeekly += parseFloat(eSpan.textContent);
                         })
-                        $( timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
+                        $(timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
                         performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
                         arrayTimeUsedCategory.push(totalTimeUsedWeekly)
                     })
                     const btnChart = document.getElementById('btn-chart-time-used');
                     btnChart.addEventListener('click', function (e) {
                         const arrCategory = [];
-                        document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
-                            arrCategory.push(e.textContent);
+                        document.querySelectorAll('.yearTarget').forEach(function (e) {
+                            arrCategory.push(e.value);
                         })
                         var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart"),
                             chartDonutBasicColors = (chartPieBasicColors && (options = {
@@ -3797,79 +3792,78 @@
         }
         xhr.send();
 
-        const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
-        document.querySelectorAll('.review-dailyRoutine').forEach(function () {
-            dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
-            dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
-        });
+        // const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
+        // document.querySelectorAll('.review-dailyRoutine').forEach(function () {
+        //     dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
+        //     dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
+        // });
     })
 
-    // Handle Tab Year Report
-    document.addEventListener("DOMContentLoaded", function () {
-        // Function handle Click tab report
-        function handleClickTabReport(e) {
-            var currentUrl = window.location.href;
-            var year = getParameterByName('currentDay', currentUrl);
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "/api/v1/management-time/weekly-detail/monthOfYear/" + "${requestScope.user.id}" + "?year=" + year, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        const parseData = JSON.parse(xhr.responseText);
-                        document.querySelectorAll('.onething-report').forEach(function (e, index) {
-                            const onethingReport = e.querySelectorAll('.onething-category-report');
-                            const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
-                            onethingReport.forEach(function (e, indexTd) {
-                                const dataMonth = e.getAttribute('data-month');
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        if (month.targetCategory != null) {
-                                            const monthTarget = month.targetCategory[index + 1].target;
-                                            const monthPer = month.targetCategory[index + 1].performance;
-                                            const performanceMonthtTarget = month.targetCategory[index + 1].performance
-                                            e.textContent = monthPer + '/' + monthTarget;
+    // Function handle Click tab report
+    function handleClickTabReport(e) {
+        var currentUrl = window.location.href;
+        var year = getParameterByName('currentDay', currentUrl);
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/v1/management-time/weekly-detail/monthOfYear/" + "${requestScope.user.id}" + "?year=" + year, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const parseData = JSON.parse(xhr.responseText);
+                    // document.querySelectorAll('.onething-report').forEach(function (e, index) {
+                    //     const onethingReport = e.querySelectorAll('.onething-category-report');
+                    //     const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
+                    //     onethingReport.forEach(function (e, indexTd) {
+                    //         const dataMonth = e.getAttribute('data-month');
+                    //         parseData.forEach(month => {
+                    //             if (dataMonth == month.month) {
+                    //                 if (month.targetCategory != null) {
+                    //                     const monthTarget = month.targetCategory[index + 1].target;
+                    //                     const monthPer = month.targetCategory[index + 1].performance;
+                    //                     const performanceMonthtTarget = month.targetCategory[index + 1].performance
+                    //                     e.textContent = monthPer + '/' + monthTarget;
+                    //
+                    //                     const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                    //                     if (!isNaN(performancePercentage)) {
+                    //                         const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                    //                         perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
+                    //                         if (month.color != null) {
+                    //                             e.style.backgroundColor = month.color[index + 1];
+                    //                             perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
+                    //                         }
+                    //                     }
+                    //                 }
+                    //             }
+                    //         });
+                    //     });
+                    // })
 
-                                            const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                                            if (!isNaN(performancePercentage)) {
-                                                const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                                                perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
-                                                if (month.color != null) {
-                                                    e.style.backgroundColor = month.color[index + 1];
-                                                    perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
-                                                }
-                                            }
+                    document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
+                        const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
+                        const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
+                        titleDailyReport.forEach(function (eTitle, indexTitle) {
+                            const dataMonth = eTitle.getAttribute('data-month');
+                            parseData.forEach(month => {
+                                if (dataMonth == month.month) {
+                                    if (month.dailyRoutine != null) {
+                                        const dailyDB = month.dailyRoutine[indexTr];
+                                        if (month.dailyRoutine != null && dailyDB != null) {
+                                            const titleDailyDB = dailyDB.title;
+                                            eTitle.textContent = titleDailyDB;
+                                            perfDailyReport[indexTitle].textContent = dailyDB.rate == null || dailyDB.rate == '0%' ? '0.00%' : dailyDB.rate;
                                         }
                                     }
-                                });
+                                }
                             });
                         })
+                    })
 
-                        document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
-                            const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
-                            const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
-                            titleDailyReport.forEach(function (eTitle, indexTitle) {
-                                const dataMonth = eTitle.getAttribute('data-month');
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        if (month.dailyRoutine != null) {
-                                            const dailyDB = month.dailyRoutine[indexTr];
-                                            if (month.dailyRoutine != null && dailyDB != null) {
-                                                const titleDailyDB = dailyDB.title;
-                                                eTitle.textContent = titleDailyDB;
-                                                perfDailyReport[indexTitle].textContent = dailyDB.rate == null || dailyDB.rate == '0%' ? '0.00%' : dailyDB.rate;
-                                            }
-                                        }
-                                    }
-                                });
-                            })
-                        })
-
-                        document.querySelectorAll('.monthly-report').forEach(function (eTr, indexTr) {
-                            const targetMonthReport = eTr.querySelectorAll('td');
-                            targetMonthReport.forEach(function (eTarget, indexTarget) {
-                                const dataMonth = eTarget.getAttribute('data-month');
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
+                    document.querySelectorAll('.monthly-report').forEach(function (eTr, indexTr) {
+                        const targetMonthReport = eTr.querySelectorAll('td');
+                        targetMonthReport.forEach(function (eTarget, indexTarget) {
+                            const dataMonth = eTarget.getAttribute('data-month');
+                            parseData.forEach(month => {
+                                if (dataMonth == month.month) {
+                                    if (indexTarget % 2 == 0) {
                                         const monthDB = month.monthlyContents[indexTr];
                                         if (month.monthlyContents != null && monthDB != null) {
                                             const content = monthDB.content;
@@ -3882,82 +3876,471 @@
                                                     btnStatus = `<button class="btn btn-warning float-end"><i class="ri-arrow-right-line"></i></button>`
                                                 } else if (status == 'CANCELLATION') {
                                                     btnStatus = `<button class="btn btn-danger float-end"><i class="ri-close-line"></i></button>`
+                                                } else if (status == 'INPROGRESS') {
+                                                    btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
                                                 } else if (status == '') {
-                                                    btnStatus = `<button class="btn btn-info float-end">null</button>`
+                                                    btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
                                                 }
                                                 const html = `<span>` + content + `</span>`+ btnStatus;
                                                 $(eTarget).append(html);
                                             }
                                         }
+                                    } else {
+                                        if (month.targetCategory != null) {
+                                            const monthTarget = month.targetCategory[indexTr + 1].target;
+                                            const performanceMonthtTarget = month.targetCategory[indexTr + 1].performance
+
+                                            const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
+                                            if (!isNaN(performancePercentage)) {
+                                                const roundedPerformancePercentage = performancePercentage.toFixed(2);
+                                                eTarget.textContent = roundedPerformancePercentage + '%';
+                                            }
+                                        }
                                     }
-                                });
-                            })
+                                }
+                            });
                         })
+                    })
 
-                        function getTotalHoursInMonth(dataMonth) {
-                            const monthDate = new Date(dataMonth);
-                            const month = monthDate.getMonth() + 1;
-                            const year = monthDate.getFullYear();
-                            const daysInMonth = new Date(year, month, 0).getDate();
-                            const totalHoursInMonth = daysInMonth * 24;
-                            return totalHoursInMonth;
-                        }
-
-                        const totalTimeUsedMonthlyArr = [];
-                        document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
-                            const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
-                            const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
-                            var totalTimeUsedMonthLy = 0;
-                            timeUsedMonthly.forEach(function (eTd, indexTd) {
-                                const dataMonth = eTd.getAttribute('data-month');
-                                const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
-                                parseData.forEach(month => {
-                                    if (dataMonth == month.month) {
-                                        const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                                        eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
-                                        totalTimeUsedMonthLy += parseFloat(timeUsed);
-                                        performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
-                                    }
-                                });
-                            })
-                            totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
-                        })
-
-                        const btnChart = document.getElementById('btn-chart-time-used-yearReport');
-                        btnChart.addEventListener('click', function (e) {
-                            const arrCategory = [];
-                            document.querySelectorAll('.review-weekly-goals').forEach(function (e) {
-                                arrCategory.push(e.textContent);
-                            })
-                            var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
-                                chartDonutBasicColors = (chartPieBasicColors && (options = {
-                                    series: totalTimeUsedMonthlyArr,
-                                    chart: {height: 300, type: "pie"},
-                                    labels: arrCategory,
-                                    legend: {position: "bottom"},
-                                    dataLabels: {dropShadow: {enabled: !1}},
-                                    colors: chartPieBasicColors
-                                }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
-                                chartDonutupdatingColors = (chartDonutBasicColors && (options = {
-                                    series: [44, 55, 41, 17, 15],
-                                    chart: {height: 300, type: "donut"},
-                                    legend: {position: "bottom"},
-                                    dataLabels: {dropShadow: {enabled: !1}},
-                                    colors: chartDonutBasicColors
-                                }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
-                        })
-                    } else {
-                        window.location.href = "/management-time/";
+                    function getTotalHoursInMonth(dataMonth) {
+                        const monthDate = new Date(dataMonth);
+                        const month = monthDate.getMonth() + 1;
+                        const year = monthDate.getFullYear();
+                        const daysInMonth = new Date(year, month, 0).getDate();
+                        const totalHoursInMonth = daysInMonth * 24;
+                        return totalHoursInMonth;
                     }
+
+                    function totalHoursInYear(year) {
+                        var isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+                        var totalHours = isLeapYear ? 366 * 24 : 365 * 24;
+                        return totalHours;
+                    }
+
+                    const totalTimeUsedMonthlyArr = [];
+                    document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                        const timeUsedMonthly = eTr.querySelectorAll('.timeUsed-monthly-report');
+                        const performanceCategory = eTr.querySelectorAll('.performance-monthly-report');
+                        var totalTimeUsedMonthLy = 0;
+                        timeUsedMonthly.forEach(function (eTd, indexTd) {
+                            const dataMonth = eTd.getAttribute('data-month');
+                            const totalHoursInMonth = getTotalHoursInMonth(dataMonth);
+                            parseData.forEach(month => {
+                                if (dataMonth == month.month) {
+                                    const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
+                                    eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
+                                    totalTimeUsedMonthLy += parseFloat(timeUsed);
+                                    performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
+                                }
+                            });
+                        })
+                        totalTimeUsedMonthlyArr.push(totalTimeUsedMonthLy);
+                    })
+
+                    const hoursInYear = totalHoursInYear(parseInt(document.getElementById('current-year').textContent));
+                    const rateYearTimeUsage = document.querySelectorAll('.rate-year-time-usage');
+                    document.querySelectorAll('.year-time-usage').forEach(function (e, index) {
+                        e.textContent = totalTimeUsedMonthlyArr[index] + '/' + hoursInYear + 'hours';
+                        rateYearTimeUsage[index].textContent = parseFloat(parseFloat(totalTimeUsedMonthlyArr[index]) * 100 / hoursInYear).toFixed(2) + '%';
+                    })
+
+                    const yearGoals = [];
+                    document.querySelectorAll('.yearTarget').forEach(function (e) {
+                        yearGoals.push(e.value);
+                    })
+                    const yearColorGoals = [];
+                    document.querySelectorAll('.tr-weekly-amountTime').forEach(function (e) {
+                        yearColorGoals.push(e.style.background);
+                    })
+                    var upadatedonutchart, chartPieBasicColors = getChartColorsArray("simple_pie_chart2"),
+                        chartDonutBasicColors = (chartPieBasicColors && (options = {
+                            series: totalTimeUsedMonthlyArr,
+                            chart: {height: 600, type: "pie"},
+                            labels: yearGoals,
+                            legend: {position: "bottom"},
+                            dataLabels: {dropShadow: {enabled: !1}},
+                            colors: yearColorGoals
+                        }, (chart = new ApexCharts(document.querySelector("#simple_pie_chart2"), options)).render()), getChartColorsArray("simple_dount_chart")),
+                        chartDonutupdatingColors = (chartDonutBasicColors && (options = {
+                            series: [44, 55, 41, 17, 15],
+                            chart: {height: 300, type: "donut"},
+                            legend: {position: "bottom"},
+                            dataLabels: {dropShadow: {enabled: !1}},
+                            colors: yearColorGoals
+                        }, (chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options)).render()), getChartColorsArray("updating_donut_chart"));
+
+                    const yearTarget = document.querySelectorAll('.yearTarget');
+
+                    const yearGoals1 = [], yearGoals2 = [], yearGoals3 = [], yearGoals4 = [];
+                    document.querySelectorAll('.monthly-time-report').forEach(function (eTr, indexTr) {
+                        if (indexTr == 0) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals1.push(timeUsageOfMonth)
+                            })
+                        } else if (indexTr == 1) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals2.push(timeUsageOfMonth)
+                            })
+                        } else if (indexTr == 2) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals3.push(timeUsageOfMonth)
+                            })
+                        } else if (indexTr == 3) {
+                            eTr.querySelectorAll('.timeUsed-monthly-report').forEach(function (eTd) {
+                                let timeUsageOfMonth = eTd.textContent;
+                                if (timeUsageOfMonth == '') timeUsageOfMonth = 0;
+                                else timeUsageOfMonth = parseFloat(timeUsageOfMonth.substring(0, timeUsageOfMonth.indexOf('/')));
+                                yearGoals4.push(timeUsageOfMonth)
+                            })
+                        }
+                    })
+
+                    var linechartBasicColors = getChartColorsArray("line_chart_basic"),
+                        linechartZoomColors = (linechartBasicColors && (options = {
+                            series: [
+                                {
+                                    name: yearTarget[0].value,
+                                    data: yearGoals1
+                                },
+                                {
+                                    name: yearTarget[1].value,
+                                    data: yearGoals2
+                                },
+                                {
+                                    name: yearTarget[2].value,
+                                    data: yearGoals3
+                                },
+                                {
+                                    name: yearTarget[3].value,
+                                    data: yearGoals4
+                                },
+                            ],
+                            chart: {height: 570, type: "line", zoom: {enabled: !1}, toolbar: {show: !1}},
+                            markers: {size: 4},
+                            dataLabels: {enabled: !1},
+                            stroke: {curve: "straight"},
+                            colors: yearColorGoals,
+                            xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]}
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_basic"), options)).render()), getChartColorsArray("line_chart_zoomable")),
+                        linechartDatalabelColors = (linechartZoomColors && (options = {
+                            series: [{
+                                name: "XYZ MOTORS",
+                                data: [{x: new Date("2018-01-12").getTime(), y: 140}, {
+                                    x: new Date("2018-01-13").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-01-14").getTime(), y: 150}, {
+                                    x: new Date("2018-01-15").getTime(),
+                                    y: 154
+                                }, {x: new Date("2018-01-16").getTime(), y: 160}, {
+                                    x: new Date("2018-01-17").getTime(),
+                                    y: 165
+                                }, {x: new Date("2018-01-18").getTime(), y: 162}, {
+                                    x: new Date("2018-01-20").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-01-21").getTime(), y: 164}, {
+                                    x: new Date("2018-01-22").getTime(),
+                                    y: 160
+                                }, {x: new Date("2018-01-23").getTime(), y: 165}, {
+                                    x: new Date("2018-01-24").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-01-25").getTime(), y: 172}, {
+                                    x: new Date("2018-01-26").getTime(),
+                                    y: 177
+                                }, {x: new Date("2018-01-27").getTime(), y: 173}, {
+                                    x: new Date("2018-01-28").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-01-29").getTime(), y: 163}, {
+                                    x: new Date("2018-01-30").getTime(),
+                                    y: 158
+                                }, {x: new Date("2018-02-01").getTime(), y: 153}, {
+                                    x: new Date("2018-02-02").getTime(),
+                                    y: 149
+                                }, {x: new Date("2018-02-03").getTime(), y: 144}, {
+                                    x: new Date("2018-02-05").getTime(),
+                                    y: 150
+                                }, {x: new Date("2018-02-06").getTime(), y: 155}, {
+                                    x: new Date("2018-02-07").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-02-08").getTime(), y: 163}, {
+                                    x: new Date("2018-02-09").getTime(),
+                                    y: 156
+                                }, {x: new Date("2018-02-11").getTime(), y: 151}, {
+                                    x: new Date("2018-02-12").getTime(),
+                                    y: 157
+                                }, {x: new Date("2018-02-13").getTime(), y: 161}, {
+                                    x: new Date("2018-02-14").getTime(),
+                                    y: 150
+                                }, {x: new Date("2018-02-15").getTime(), y: 154}, {
+                                    x: new Date("2018-02-16").getTime(),
+                                    y: 160
+                                }, {x: new Date("2018-02-17").getTime(), y: 165}, {
+                                    x: new Date("2018-02-18").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-02-20").getTime(), y: 159}, {
+                                    x: new Date("2018-02-21").getTime(),
+                                    y: 164
+                                }, {x: new Date("2018-02-22").getTime(), y: 160}, {
+                                    x: new Date("2018-02-23").getTime(),
+                                    y: 165
+                                }, {x: new Date("2018-02-24").getTime(), y: 169}, {
+                                    x: new Date("2018-02-25").getTime(),
+                                    y: 172
+                                }, {x: new Date("2018-02-26").getTime(), y: 177}, {
+                                    x: new Date("2018-02-27").getTime(),
+                                    y: 173
+                                }, {x: new Date("2018-02-28").getTime(), y: 169}, {
+                                    x: new Date("2018-02-29").getTime(),
+                                    y: 163
+                                }, {x: new Date("2018-02-30").getTime(), y: 162}, {
+                                    x: new Date("2018-03-01").getTime(),
+                                    y: 158
+                                }, {x: new Date("2018-03-02").getTime(), y: 152}, {
+                                    x: new Date("2018-03-03").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-03-05").getTime(), y: 142}, {
+                                    x: new Date("2018-03-06").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-03-07").getTime(), y: 151}, {
+                                    x: new Date("2018-03-08").getTime(),
+                                    y: 155
+                                }, {x: new Date("2018-03-09").getTime(), y: 159}, {
+                                    x: new Date("2018-03-11").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-03-12").getTime(), y: 157}, {
+                                    x: new Date("2018-03-13").getTime(),
+                                    y: 161
+                                }, {x: new Date("2018-03-14").getTime(), y: 166}, {
+                                    x: new Date("2018-03-15").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-03-16").getTime(), y: 172}, {
+                                    x: new Date("2018-03-17").getTime(),
+                                    y: 177
+                                }, {x: new Date("2018-03-18").getTime(), y: 181}, {
+                                    x: new Date("2018-03-20").getTime(),
+                                    y: 178
+                                }, {x: new Date("2018-03-21").getTime(), y: 173}, {
+                                    x: new Date("2018-03-22").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-03-23").getTime(), y: 163}, {
+                                    x: new Date("2018-03-24").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-03-25").getTime(), y: 164}, {
+                                    x: new Date("2018-03-26").getTime(),
+                                    y: 168
+                                }, {x: new Date("2018-03-27").getTime(), y: 172}, {
+                                    x: new Date("2018-03-28").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-03-29").getTime(), y: 163}, {
+                                    x: new Date("2018-03-30").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-04-01").getTime(), y: 158}, {
+                                    x: new Date("2018-04-02").getTime(),
+                                    y: 152
+                                }, {x: new Date("2018-04-03").getTime(), y: 147}, {
+                                    x: new Date("2018-04-05").getTime(),
+                                    y: 142
+                                }, {x: new Date("2018-04-06").getTime(), y: 147}, {
+                                    x: new Date("2018-04-07").getTime(),
+                                    y: 151
+                                }, {x: new Date("2018-04-08").getTime(), y: 155}, {
+                                    x: new Date("2018-04-09").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-04-11").getTime(), y: 162}, {
+                                    x: new Date("2018-04-12").getTime(),
+                                    y: 157
+                                }, {x: new Date("2018-04-13").getTime(), y: 161}, {
+                                    x: new Date("2018-04-14").getTime(),
+                                    y: 166
+                                }, {x: new Date("2018-04-15").getTime(), y: 169}, {
+                                    x: new Date("2018-04-16").getTime(),
+                                    y: 172
+                                }, {x: new Date("2018-04-17").getTime(), y: 177}, {
+                                    x: new Date("2018-04-18").getTime(),
+                                    y: 181
+                                }, {x: new Date("2018-04-20").getTime(), y: 178}, {
+                                    x: new Date("2018-04-21").getTime(),
+                                    y: 173
+                                }, {x: new Date("2018-04-22").getTime(), y: 169}, {
+                                    x: new Date("2018-04-23").getTime(),
+                                    y: 163
+                                }, {x: new Date("2018-04-24").getTime(), y: 159}, {
+                                    x: new Date("2018-04-25").getTime(),
+                                    y: 164
+                                }, {x: new Date("2018-04-26").getTime(), y: 168}, {
+                                    x: new Date("2018-04-27").getTime(),
+                                    y: 172
+                                }, {x: new Date("2018-04-28").getTime(), y: 169}, {
+                                    x: new Date("2018-04-29").getTime(),
+                                    y: 163
+                                }, {x: new Date("2018-04-30").getTime(), y: 162}, {
+                                    x: new Date("2018-05-01").getTime(),
+                                    y: 158
+                                }, {x: new Date("2018-05-02").getTime(), y: 152}, {
+                                    x: new Date("2018-05-03").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-05-04").getTime(), y: 142}, {
+                                    x: new Date("2018-05-05").getTime(),
+                                    y: 147
+                                }, {x: new Date("2018-05-07").getTime(), y: 151}, {
+                                    x: new Date("2018-05-08").getTime(),
+                                    y: 155
+                                }, {x: new Date("2018-05-09").getTime(), y: 159}, {
+                                    x: new Date("2018-05-11").getTime(),
+                                    y: 162
+                                }, {x: new Date("2018-05-12").getTime(), y: 157}, {
+                                    x: new Date("2018-05-13").getTime(),
+                                    y: 161
+                                }, {x: new Date("2018-05-14").getTime(), y: 166}, {
+                                    x: new Date("2018-05-15").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-05-16").getTime(), y: 172}, {
+                                    x: new Date("2018-05-17").getTime(),
+                                    y: 177
+                                }, {x: new Date("2018-05-18").getTime(), y: 181}, {
+                                    x: new Date("2018-05-20").getTime(),
+                                    y: 178
+                                }, {x: new Date("2018-05-21").getTime(), y: 173}, {
+                                    x: new Date("2018-05-22").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-05-23").getTime(), y: 163}, {
+                                    x: new Date("2018-05-24").getTime(),
+                                    y: 159
+                                }, {x: new Date("2018-05-25").getTime(), y: 164}, {
+                                    x: new Date("2018-05-26").getTime(),
+                                    y: 168
+                                }, {x: new Date("2018-05-27").getTime(), y: 172}, {
+                                    x: new Date("2018-05-28").getTime(),
+                                    y: 169
+                                }, {x: new Date("2018-05-29").getTime(), y: 163}, {x: new Date("2018-05-30").getTime(), y: 162}]
+                            }],
+                            chart: {
+                                type: "area",
+                                stacked: !1,
+                                height: 350,
+                                zoom: {type: "x", enabled: !0, autoScaleYaxis: !0},
+                                toolbar: {autoSelected: "zoom"}
+                            },
+                            colors: linechartZoomColors,
+                            dataLabels: {enabled: !1},
+                            markers: {size: 0},
+                            title: {text: "Stock Price Movement", align: "left", style: {fontWeight: 500}},
+                            fill: {
+                                type: "gradient",
+                                gradient: {shadeIntensity: 1, inverseColors: !1, opacityFrom: .5, opacityTo: 0, stops: [0, 90, 100]}
+                            },
+                            yaxis: {
+                                showAlways: !0, labels: {
+                                    show: !0, formatter: function (e) {
+                                        return (e / 1e6).toFixed(0)
+                                    }
+                                }, title: {text: "Price", style: {fontWeight: 500}}
+                            },
+                            xaxis: {type: "datetime"},
+                            tooltip: {
+                                shared: !1, y: {
+                                    formatter: function (e) {
+                                        return (e / 1e6).toFixed(0)
+                                    }
+                                }
+                            }
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_zoomable"), options)).render()), getChartColorsArray("line_chart_datalabel")),
+                        linechartDashedColors = (linechartDatalabelColors && (options = {
+                            chart: {
+                                height: 600,
+                                type: "line",
+                                zoom: {enabled: !1},
+                                toolbar: {show: !1}
+                            },
+                            colors: linechartDatalabelColors,
+                            dataLabels: {enabled: !1},
+                            stroke: {width: [3, 3], curve: "straight"},
+                            series: [
+                                {
+                                    name: "High - 2018",
+                                    data: [26, 24, 32, 36, 33, 31, 33]
+                                },
+                                {
+                                    name: "Low - 2018",
+                                    data: [14, 11, 16, 12, 17, 13, 12]
+                                },
+                                {
+                                    name: "Low - 2018",
+                                    data: [61, 1, 25, 27, 85, 36, 11]
+                                },
+                                {
+                                    name: "Low - 2018",
+                                    data: [33, 66, 22, 98, 14, 63, 12]
+                                }
+                            ],
+                            title: {text: "Average High & Low Temperature", align: "left", style: {fontWeight: 500}},
+                            grid: {row: {colors: ["transparent", "transparent"], opacity: .2}, borderColor: "#f1f1f1"},
+                            markers: {style: "inverted", size: 6},
+                            xaxis: {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], title: {text: "Month"}},
+                            yaxis: {title: {text: "Temperature"}, min: 5, max: 200},
+                            legend: {position: "top", horizontalAlign: "right", floating: !0, offsetY: -25, offsetX: -5},
+                            responsive: [{breakpoint: 600, options: {chart: {toolbar: {show: !1}}, legend: {show: !1}}}]
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_datalabel"), options)).render()), getChartColorsArray("line_chart_dashed")),
+                        linechartannotationsColors = (linechartDashedColors && (options = {
+                            chart: {
+                                height: 380,
+                                type: "line",
+                                zoom: {enabled: !1},
+                                toolbar: {show: !1}
+                            },
+                            colors: linechartDashedColors,
+                            dataLabels: {enabled: !1},
+                            stroke: {width: [3, 4, 3], curve: "straight", dashArray: [0, 8, 5]},
+                            series: [{name: "Session Duration", data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]}, {
+                                name: "Page Views",
+                                data: [36, 42, 60, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+                            }, {name: "Total Visits", data: [89, 56, 74, 98, 72, 38, 64, 46, 84, 58, 46, 49]}],
+                            title: {text: "Page Statistics", align: "left", style: {fontWeight: 500}},
+                            markers: {size: 0, hover: {sizeOffset: 6}},
+                            xaxis: {categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"]},
+                            tooltip: {
+                                y: [{
+                                    title: {
+                                        formatter: function (e) {
+                                            return e + " (mins)"
+                                        }
+                                    }
+                                }, {
+                                    title: {
+                                        formatter: function (e) {
+                                            return e + " per session"
+                                        }
+                                    }
+                                }, {
+                                    title: {
+                                        formatter: function (e) {
+                                            return e
+                                        }
+                                    }
+                                }]
+                            },
+                            grid: {borderColor: "#f1f1f1"}
+                        }, (chart = new ApexCharts(document.querySelector("#line_chart_dashed"), options)).render()), getChartColorsArray("line_chart_annotations"));
+
+                } else {
+                    window.location.href = "/management-time/";
                 }
             }
-            xhr.send();
-            document.getElementById('session-year-report').removeEventListener('click', handleClickTabReport);
         }
+        xhr.send();
+        document.getElementById('session-year-report').removeEventListener('click', handleClickTabReport);
+    }
 
-        // Call function handleClick
-        document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
-    })
+    // Call function handleClick
+    document.getElementById('session-year-report').addEventListener('click', handleClickTabReport);
 
     // Get total hours of 1 year
     function getNumberOfHoursInYear(year) {
@@ -4659,41 +5042,40 @@
         $(".containerLoading").addClass("d-none")
         $("div.calendar-container").removeClass("d-none")
 
+        function notificationSuccess(image) {
+            Swal.fire(
+                {
+                    html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
+                        '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
+                    imageAlt: 'A tall image',
+                    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                    buttonsStyling: false,
+                    showCloseButton: true,
+                    width: 800
+                }
+            )
+            if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
+            document.getElementById('imageQuote').style.display = 'none';
+        }
         const result = localStorage.getItem('result');
         const image = '${weekly.quotes.image}';
         switch (true) {
             case (result == 'addSuccess'):
-                Swal.fire(
-                    {
-                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
-                            '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
-                        imageAlt: 'A tall image',
-                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
-                        buttonsStyling: false,
-                        showCloseButton: true,
-                        width: 800
-                    }
-                )
-                if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
-                document.getElementById('imageQuote').style.display = 'none';
-                localStorage.clear();
+                notificationSuccess(image);
                 break;
             case (result == 'year-goals'):
-                Swal.fire(
-                    {
-                        html: '<div class="mt-1 text-center"><div class="d-flex align-items-center justify-content-center"><i class="ri-calendar-check-line text-success fs-3 mb-2 me-1"></i><h4 class="text-success">Well done !</h4></div><p class="text-muted mx-4 mb-0">' + 'Success' + ' successfully</p></div></div>' +
-                            '<img src="' + image + '" alt="A tall image" class="custom-image-class border" style="max-height: 700px; max-width: 700px">',
-                        imageAlt: 'A tall image',
-                        confirmButtonClass: 'btn btn-primary w-xs mt-2',
-                        buttonsStyling: false,
-                        showCloseButton: true,
-                        width: 800
-                    }
-                )
-                if (image == '') document.querySelector('img.custom-image-class.border').classList.add('d-none');
-                document.getElementById('imageQuote').style.display = 'none';
+                notificationSuccess(image);
                 $('#session-goals').tab('show');
                 $('#session-goals').click();
+                break;
+            case (result == 'wmReport'):
+                notificationSuccess(image);
+                $('#session-review').tab('show');
+                break;
+            case (result == 'year-report'):
+                notificationSuccess(image);
+                $('#session-year-report').tab('show');
+                handleClickTabReport();
                 break;
             case !(result == 'addSuccess'):
                 if (document.getElementById('srcImageQuote').getAttribute('src') != '') document.getElementById('showImageQuoteBtn').click();
@@ -4808,9 +5190,9 @@
             }
 
             const colors = [];
-            $('th.colorPicker').each(function () {
+            $('th.category-color').each(function () {
                 const category = $(this).find('p:first').text().trim();
-                const color = $(this).find('.pickedColor').text().trim();
+                const color = $(this).css('background-color');
                 const values = [];
                 const columnIndex = $(this).index();
                 $('table.categoryColor tbody tr').each(function () {
@@ -4865,32 +5247,32 @@
                 }
                 monthly.targetCategory.push(obj);
             })
-            // const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
-            // const yearTitle = document.querySelectorAll('.yearTitle');
-            // timeUsedMonthly.forEach(function (e, index) {
-            //     let obj = {
-            //         category: yearTitle[index + 1].textContent,
-            //         timeUsedCategory: e.textContent
-            //     }
-            //     monthly.timeUsedMonthly.push(obj);
-            // })
+            const timeUsedMonthly = document.querySelectorAll('.total-timeUsed-monthly');
+            const title = document.querySelectorAll('.monthTarget');
+            timeUsedMonthly.forEach(function (e, index) {
+                let obj = {
+                    category: title[index].value,
+                    timeUsedCategory: e.textContent
+                }
+                monthly.timeUsedMonthly.push(obj);
+            })
             monthly.gratitudeDiary = document.getElementById('monthly-gratitudeDiary').value;
             monthly.compliment = document.getElementById('monthly-compliment').value;
             monthly.reflectionAndImprovement = document.getElementById('monthly-reflectionAndImprovement').value;
             data.monthly = monthly;
 
-            const timeUsedCategory = document.querySelectorAll('.time-used-category');
             weekly.weeklys.push({
                 content: 'Important matter',
                 status: '',
                 timeUsed: ''
             })
+            const timeUsedCategory = document.querySelectorAll('.time-used-category');
             $("input.form-control.weekTarget").each(function (index) {
                 const statusWeekly = $(this).closest('div').find('button');
                 var timeUsed = '';
                 var valueStatus = statusWeekly.data('value');
                 if (valueStatus == null || valueStatus == undefined) valueStatus = '';
-                if (index != 0) timeUsed = timeUsedCategory[index - 1].textContent;
+                timeUsed = timeUsedCategory[index].textContent;
                 let obj = {
                     content: $(this).val(),
                     status: valueStatus,
@@ -4898,6 +5280,7 @@
                 }
                 weekly.weeklys.push(obj);
             })
+            console.log(data.weekly)
             data.weekly = weekly;
 
             const tr0 = document.querySelector('.tr-weekly-sentence0').querySelectorAll('textarea');
@@ -5133,8 +5516,8 @@
             data.year.keywords3 = $('#year-keywords3').val();
 
             document.querySelectorAll('.level1').forEach(function (e) {
-                    var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
-                    data.year.color.push(backgroundColor);
+                var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
+                data.year.color.push(backgroundColor);
             })
 
             data.days.push(...days);
@@ -5154,6 +5537,7 @@
                     i--;
                 }
             }
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
@@ -5162,6 +5546,8 @@
                         $("div.calendar-container").removeClass("d-none");
                         localStorage.setItem('result', 'addSuccess');
                         if (btnSaveMindmap == 'save-mindmap')  localStorage.setItem('result', 'year-goals');
+                        else if (btnSaveMindmap == 'save-WMReport')  localStorage.setItem('result', 'wmReport');
+                        else if (btnSaveMindmap == 'save-year-report')  localStorage.setItem('result', 'year-report');
                         window.location.reload();
                     } else {
                         rsUnSuccess();
@@ -5368,6 +5754,47 @@
             $('.category-color').eq(index).css('background-color', backgroundColor);
         });
     });
+
+    document.querySelectorAll('.yearTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
+    document.querySelectorAll('.monthTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
+    document.querySelectorAll('.weekTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
+    document.querySelectorAll('.weekTarget').forEach(function (e) {
+        e.style.border = 'none';
+        e.addEventListener('focus', function () {
+            e.style.border = '1px solid black';
+        })
+        e.addEventListener('blur', function () {
+            e.style.border = 'none';
+        });
+    })
+
 </script>
 </body>
 </html>

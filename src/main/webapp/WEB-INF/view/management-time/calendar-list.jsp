@@ -87,7 +87,7 @@
                         <span class="trending-ribbon-text">Focus</span> <i
                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                     </div>
-                    <h5 class="fs-14 text-end mb-3" id="yearCurrent">Monthly Goals</h5>
+                    <h5 class="fs-14 text-end mb-3" id="yearCurrent"></h5>
                     <div class="m-0" id="yearTarget">
                     </div>
                 </div>
@@ -330,7 +330,7 @@
                     let colors = parseData.color;
                     let monthlyTarget = document.getElementById("monthlyTarget");
                     let monthTarget = document.getElementById("monthTarget");
-                    // let yearCurrent = document.getElementById('yearCurrent');
+                    let yearCurrent = document.getElementById('yearCurrent');
                     let yearTarget = document.getElementById('yearTarget');
 
                     let xhtml = '';
@@ -377,6 +377,8 @@
                     currentMonth.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsMonth);
                     currentYear.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', optionsYear);
                     monthTarget.textContent = startDateOfCurrentDate.toLocaleDateString('en-US', targetOptions) + ' Goals';
+                    const targetOfYear = parseData.year == null ? currentYear.textContent : parseData.year.year;
+                    yearCurrent.textContent = targetOfYear + " Goals";
 
                     const startDay = startDateOfCurrentDate.getDay();
 
@@ -387,6 +389,7 @@
                     var countLine = -1;
                     const tbody = table.querySelector('tbody');
                     const weeksInSpecificMonth = getWeeksInMonth(year, month) * numberOfRowsPerWeek;
+
                     for (let i = 0; i < weeksInSpecificMonth; i++) {
                         const row = document.createElement('tr');
                         for (let j = 0; j < 8; j++) {
@@ -510,6 +513,7 @@
                         $(".containerLoading ").addClass("d-none")
                         $("div.calendar-container").removeClass("d-none")
                     }
+
                     $.each(colors, function (index, value) {
                         switch (index) {
                             case 0:
@@ -531,6 +535,7 @@
                                 break;
                         }
                     })
+
                     document.querySelectorAll('.title').forEach(function (e, index) {
                         if (index < 5 && index != 0) e.setAttribute('contenteditable', 'true');
                     });
@@ -538,12 +543,15 @@
                     document.querySelectorAll('.lecture').forEach(function (e) {
                         e.style.backgroundColor = yearColor[0]
                     })
+
                     document.querySelectorAll('.dailyEvaluation').forEach(function (e) {
                         e.style.backgroundColor = yearColor[1]
                     })
+
                     document.querySelectorAll('.work').forEach(function (e) {
                         e.style.backgroundColor = yearColor[2]
                     })
+
                     document.querySelectorAll('.reading').forEach(function (e) {
                         e.style.backgroundColor = yearColor[3]
                     })
@@ -829,17 +837,21 @@
         });
     });
 
+    var colorYearGoals = '';
     function toggleEdit(element) {
         var isEditing = element.classList.contains('editing');
-        element.style.background = element.style.background
+        const colorElemnt = element.style.backgroundColor;
+
+        if (colorElemnt != '') colorYearGoals = colorElemnt;
+
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
             paragraphElement.classList.add('editable', 'm-0', 'ps-2', 'text-white');
+            paragraphElement.style.backgroundColor = colorYearGoals;
             paragraphElement.ondblclick = function () {
                 toggleEdit(paragraphElement);
             };
-
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
@@ -856,15 +868,18 @@
 
     function toggleEditYear(element) {
         var isEditing = element.classList.contains('editingYear');
+        const colorElemnt = element.style.backgroundColor;
+
+        if (colorElemnt != '') colorYearGoals = colorElemnt;
 
         if (isEditing) {
             var paragraphElement = document.createElement('p');
             paragraphElement.innerText = element.value == '' ? 'Double click to edit' : element.value;
-            paragraphElement.classList.add('editableYear', 'm-0', 'yearTarget');
+            paragraphElement.classList.add('editableYear', 'm-0', 'text-white', 'ps-2', 'yearTarget');
+            paragraphElement.style.backgroundColor = colorYearGoals;
             paragraphElement.ondblclick = function () {
                 toggleEditYear(paragraphElement);
             };
-
             element.replaceWith(paragraphElement);
         } else {
             var inputElement = document.createElement('input');
@@ -873,11 +888,8 @@
             inputElement.ondblclick = function () {
                 toggleEditYear(inputElement);
             };
-
             element.replaceWith(inputElement);
-
             inputElement.style.display = 'block';
-
             inputElement.focus();
         }
     }
