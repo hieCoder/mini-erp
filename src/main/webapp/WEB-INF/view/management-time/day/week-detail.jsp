@@ -1338,31 +1338,27 @@
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <input class="form-control quotes" type="text" value="${weekly.quotes.content[0]}">
+                                        <textarea class="form-control quotes" type="text">${weekly.quotes.content[0]}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-control quotes checkQuote" type="text"
-                                               value="${weekly.quotes.content[1]}">
+                                        <textarea class="form-control quotes checkQuote" type="text" placeholder="Enter here...">${weekly.quotes.content[1]}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-control quotes checkQuote" type="text"
-                                               value="${weekly.quotes.content[2]}">
+                                        <textarea class="form-control quotes checkQuote" type="text" placeholder="Enter here...">${weekly.quotes.content[2]}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-control quotes checkQuote" type="text"
-                                               value="${weekly.quotes.content[3]}">
+                                        <textarea class="form-control quotes checkQuote" type="text" placeholder="Enter here...">${weekly.quotes.content[3]}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-control quotes checkQuote" type="text"
-                                               value="${weekly.quotes.content[4]}">
+                                        <textarea class="form-control quotes checkQuote" type="text" placeholder="Enter here...">${weekly.quotes.content[4]}</textarea>
                                     </td>
                                 </tr>
                                 <tr id="quoteSession">
@@ -2183,7 +2179,7 @@
             <div class="row calendar-container d-none">
                 <div class="card">
                     <div class="row card-body">
-                        <div class="d-flex border p-0" style="background-color: rgba(233, 30, 105, 0.81); margin: 0 12px">
+                        <div class="d-flex border p-0" style="margin: 0 12px">
                             <div class="col-2 ms-2">
                                 <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem; margin-right: 80px">
                                     <div class="card-body text-muted">
@@ -2211,7 +2207,7 @@
                             <div class="col-8 mt-4">
                                 <div class="d-flex flex-column align-items-center">
                                     <div class="d-flex align-items-center">
-                                        <h1 class="text-center text-white month-current"></h1>
+                                        <h1 class="text-center month-current"></h1>
                                     </div>
                                 </div>
                             </div>
@@ -2248,14 +2244,14 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 202px; background-color: #f2aaaa">
-                                        <td  style="background-color: #FFBB64;">
-                                            <h5 class="fw-bolder text-white">Weekly Goals</h5>
+                                    <tr style="height: 202px;">
+                                        <td>
+                                            <h5 class="fw-bolder">Weekly Goals</h5>
                                         </td>
                                     </tr>
-                                    <tr style="height: 180px; background-color: #f2aaaa">
-                                        <td style="background-color: #E6A4B4;">
-                                            <h5 class="fw-bolder text-white">Time Usage</h5>
+                                    <tr style="height: 180px;">
+                                        <td>
+                                            <h5 class="fw-bolder">Time Usage</h5>
                                             <button type="button" id="btn-chart-time-used" class="btn btn-primary btn-label waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalChart">
                                                 <i class="ri-pie-chart-2-line label-icon align-middle fs-16 me-2"></i> Chart
                                             </button>
@@ -2285,9 +2281,9 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr style="background-color: #FF9BD2">
-                                        <td  style="height: 378px">
-                                            <h5 class="fw-bolder text-white">Review</h5>
+                                    <tr>
+                                        <td style="height: 378px">
+                                            <h5 class="fw-bolder">Review</h5>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -2316,7 +2312,7 @@
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="tr-weekly-amountTime" style="height: 45px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
-                                                <td colspan="4" class="weekly-amountTime">0/168 hours</td>
+                                                <td colspan="4" class="weekly-amountTime">0/168 hrs</td>
                                                 <td colspan="3.5" class="performance-time-used-amountTime"></td>
                                             </c:forEach>
                                         </tr>
@@ -2635,7 +2631,7 @@
             <div class="row calendar-container d-none">
                 <div class="card p-0">
                     <div class="row card-body">
-                        <div class="d-flex border p-0 m-0" style="background-color: rgba(60, 127, 234, 0.7); margin: 0 12px">
+                        <div class="d-flex border p-0 m-0" style="margin: 0 12px">
                             <div class="col-2 ms-2">
                                 <div class="card ribbon-box border shadow-none overflow-hidden mt-2 mb-2" style="width: 16rem; margin-right: 80px">
                                     <div class="card-body text-muted">
@@ -2662,7 +2658,7 @@
                             <div class="col-8 mt-4">
                                 <div class="d-flex flex-column align-items-center">
                                     <div class="d-flex align-items-center">
-                                        <h1 class="text-center text-white">Myself in ${weekly.year.year}</h1>
+                                        <h1 class="text-center">Myself in ${weekly.year.year}</h1>
                                     </div>
                                 </div>
                             </div>
@@ -3667,7 +3663,7 @@
                                     if (week.weeklys != null) {
                                         const timeusedWeekly = week.weeklys[index + 1].timeUsed;
                                         if (timeusedWeekly != null && timeusedWeekly != '') {
-                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hours`;
+                                            onlyWeek.innerHTML = `<span>` + timeusedWeekly + `</span>` + `/168 hrs`;
                                         }
                                     }
                                 }
@@ -3751,7 +3747,7 @@
                         e.querySelectorAll('span').forEach(function (eSpan) {
                             totalTimeUsedWeekly += parseFloat(eSpan.textContent);
                         })
-                        $(timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hours');
+                        $(timeUsedMonthly[index]).append(`<span class="total-timeUsed-monthly">` + totalTimeUsedWeekly + `</span>` + `/` + hoursInMonth + ' hrs');
                         performanceAmountTimeMonthly[index].textContent = (totalTimeUsedWeekly * 100 / hoursInMonth).toFixed(2) + '%';
                         arrayTimeUsedCategory.push(totalTimeUsedWeekly)
                     })
@@ -3928,7 +3924,7 @@
                             parseData.forEach(month => {
                                 if (dataMonth == month.month) {
                                     const timeUsed = month.timeUsedMonthly[indexTr].timeUsedCategory;
-                                    eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hours';
+                                    eTd.textContent = timeUsed + '/' + totalHoursInMonth + ' hrs';
                                     totalTimeUsedMonthLy += parseFloat(timeUsed);
                                     performanceCategory[indexTd].textContent = (parseFloat(timeUsed) * 100 / parseFloat(totalHoursInMonth)).toFixed(2) + '%'
                                 }
@@ -3940,7 +3936,7 @@
                     const hoursInYear = totalHoursInYear(parseInt(document.getElementById('current-year').textContent));
                     const rateYearTimeUsage = document.querySelectorAll('.rate-year-time-usage');
                     document.querySelectorAll('.year-time-usage').forEach(function (e, index) {
-                        e.textContent = totalTimeUsedMonthlyArr[index] + '/' + hoursInYear + 'hours';
+                        e.textContent = totalTimeUsedMonthlyArr[index] + '/' + hoursInYear + 'hrs';
                         rateYearTimeUsage[index].textContent = parseFloat(parseFloat(totalTimeUsedMonthlyArr[index]) * 100 / hoursInYear).toFixed(2) + '%';
                     })
 
@@ -4460,7 +4456,6 @@
     // Function when user next page list book
     function loadPaging() {
         callAjaxByJsonWithData(getCountListApiUrl(objPaging.search), 'GET', null, function (totalItem) {
-
             removePagingIfExsit();
 
             //paging
@@ -4509,7 +4504,7 @@
                                 count1++;
                             }
                         }
-                        eTotal.textContent = count1 * 0.5 + '/24 hours';
+                        eTotal.textContent = count1 * 0.5 + '/24 hrs';
                         performanceOfDay[index].textContent = ((count1 * 0.5) * 100 /24).toFixed(2) + '%';
                     }
                 }
@@ -4520,7 +4515,7 @@
                                 count2++;
                             }
                         }
-                        eTotal.textContent = count2 * 0.5 + '/24 hours';
+                        eTotal.textContent = count2 * 0.5 + '/24 hrs';
                         performanceOfDay[index].textContent = ((count2 * 0.5) * 100 /24).toFixed(2) + '%';
                     }
                 }
@@ -4531,7 +4526,7 @@
                                 count3++;
                             }
                         }
-                        eTotal.textContent = count3 * 0.5 + '/24 hours';
+                        eTotal.textContent = count3 * 0.5 + '/24 hrs';
                         performanceOfDay[index].textContent = ((count3 * 0.5) * 100 /24).toFixed(2) + '%';
                     }
                 }
@@ -4542,7 +4537,7 @@
                                 count4++;
                             }
                         }
-                        eTotal.textContent = count4 * 0.5 + '/24 hours';
+                        eTotal.textContent = count4 * 0.5 + '/24 hrs';
                         performanceOfDay[index].textContent = ((count4 * 0.5) * 100 /24).toFixed(2) + '%';
                     }
                 }
@@ -4555,7 +4550,7 @@
             eTr.querySelectorAll('td').forEach(function (eTd, index) {
                 if (index % 2 == 0) total += parseFloat(eTd.textContent);
             })
-            totalTimeCategory[index].innerHTML = 'Total time: ' + '<span class="text-danger time-used-category fw-bolder">' + total + '</span>' +' hours';
+            totalTimeCategory[index].innerHTML = 'Total time: ' + '<span class="text-danger time-used-category fw-bolder">' + total + '</span>' +' hrs';
         })
     }
 
@@ -4836,10 +4831,10 @@
         const checkQuote = document.querySelectorAll('.checkQuote');
         var countValue = 0;
         checkQuote.forEach(function (e) {
-            if (e.getAttribute('value') == '') {
+            if (e.value == '') {
                 const trElment = e.parentNode;
                 trElment.remove();
-            } else if (e.getAttribute('value') != '') countValue++;
+            } else if (e.value != '') countValue++;
         })
         const btnAddQuote = document.getElementById('addQuote');
         if (countValue == 4) {
