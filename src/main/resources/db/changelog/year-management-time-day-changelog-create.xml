@@ -12,12 +12,7 @@
             <column name="CODE" type="VARCHAR(255)"/>
             <column name="TARGET" type="TEXT"/>
             <column name="USER_ID" type="VARCHAR(255)"/>
-            <column name="GRATEFUL" type="VARCHAR(1500)"/>
-            <column name="HAPPY" type="VARCHAR(1500)"/>
-            <column name="WHO_U_BECOME" type="VARCHAR(1500)"/>
-            <column name="PERSONAL_GOAL" type="VARCHAR(1500)"/>
-            <column name="COMMENDABLE" type="VARCHAR(1500)"/>
-            <column name="KEYWORDS_3" type="VARCHAR(1500)"/>
+            <column name="SELF_INSPIRATION" type="VARCHAR(2000)"/>
             <column name="COLOR" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>

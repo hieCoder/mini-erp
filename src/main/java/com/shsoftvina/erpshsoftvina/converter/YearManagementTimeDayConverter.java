@@ -15,12 +15,7 @@ public class YearManagementTimeDayConverter {
         return YearManagementTimeDay.builder()
                 .code(yearRequest.getYear())
                 .target(JsonUtils.objectToJson(yearRequest.getTarget()))
-                .grateful(yearRequest.getGrateful())
-                .happy(yearRequest.getHappy())
-                .whoUBecome(yearRequest.getWhoUBecome())
-                .personalGoal(yearRequest.getPersonalGoal())
-                .commendable(yearRequest.getCommendable())
-                .keywords3(yearRequest.getKeywords3())
+                .selfInspiration(yearRequest.getSelfInspiration())
                 .color(JsonUtils.objectToJson(yearRequest.getColor()))
                 .user(User.builder().id(userId).build()).build();
     }
@@ -30,12 +25,7 @@ public class YearManagementTimeDayConverter {
         return YearResponse.builder()
                 .year(yearManagementTimeDay.getCode())
                 .target(JsonUtils.jsonToObject(yearManagementTimeDay.getTarget(), YearTargetDto[].class))
-                .grateful(yearManagementTimeDay.getGrateful())
-                .happy(yearManagementTimeDay.getHappy())
-                .whoUBecome(yearManagementTimeDay.getWhoUBecome())
-                .personalGoal(yearManagementTimeDay.getPersonalGoal())
-                .commendable(yearManagementTimeDay.getCommendable())
-                .keywords3(yearManagementTimeDay.getKeywords3())
+                .selfInspiration(yearManagementTimeDay.getSelfInspiration())
                 .color(JsonUtils.jsonToObject(yearManagementTimeDay.getColor(), String[].class))
                 .build();
     }

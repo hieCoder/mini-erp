@@ -654,12 +654,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             YearRequest yearRequest = daysUpdateRequest.getYear();
             String yearCode = yearRequest.getYear();
             YearTargetDto[] target = yearRequest.getTarget();
-            String grateful = yearRequest.getGrateful();
-            String happy = yearRequest.getHappy();
-            String whoUBecome = yearRequest.getWhoUBecome();
-            String personalGoal = yearRequest.getPersonalGoal();
-            String commendable = yearRequest.getCommendable();
-            String keywords3 = yearRequest.getKeywords3();
+            String selfInspiration = yearRequest.getSelfInspiration();
             String[] color = yearRequest.getColor();
             YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
             if (yearE == null) {
@@ -670,12 +665,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 asyncTasks.add(createYearManagementTimeDayAsync);
             } else {
                 yearE.setTarget(JsonUtils.objectToJson(target));
-                yearE.setGrateful(grateful);
-                yearE.setHappy(happy);
-                yearE.setWhoUBecome(whoUBecome);
-                yearE.setPersonalGoal(personalGoal);
-                yearE.setCommendable(commendable);
-                yearE.setKeywords3(keywords3);
+                yearE.setSelfInspiration(selfInspiration);
                 yearE.setColor(JsonUtils.objectToJson(color));
                 CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);

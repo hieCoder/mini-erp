@@ -13,12 +13,7 @@ public class YearManagementTimeDay {
     private String id;
     private String code;
     private String target;
-    private String grateful;
-    private String happy;
-    private String whoUBecome;
-    private String personalGoal;
-    private String commendable;
-    private String keywords3;
+    private String selfInspiration;
     private String color;
     private User user;
 }

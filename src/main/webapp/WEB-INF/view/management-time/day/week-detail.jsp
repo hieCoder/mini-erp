@@ -285,6 +285,23 @@
             align-items: center;
         }
 
+        #addQuote {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+        }
+
+        .addPlan {
+            transform: translate(-50%, -50%) !important;
+            padding: 4px !important;
+            border-radius: 50% !important;
+        }
+
         .w-100px {
             width: 100px;
         }
@@ -1362,9 +1379,9 @@
                                     </td>
                                 </tr>
                                 <tr id="quoteSession">
-                                    <td>
-                                        <button type="button" class="btn btn-success waves-effect waves-light w-100"
-                                                id="addQuote">ADD</button>
+                                    <td style="position: relative">
+                                        <button type="button" class="btn btn-success waves-effect waves-light"
+                                                id="addQuote"><i class="bx bx-plus"></i></button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -1623,7 +1640,7 @@
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     <tr>
-                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">${weekly.weeklys.weeklys[1].content}</td>
+                                        <td class="title-report-category" style="background-color: ${weekly.year == null || weekly.year.color == null ? '#ad9ad9' : weekly.year.color[3]}">${weekly.weeklys.weeklys[4].content}</td>
                                         <td class="w-100px total-category text-lg-start"></td>
                                     </tr>
                                     </tbody>
@@ -1833,7 +1850,7 @@
                                                                     <input class="form-check-input mt-0 performance-plan" type="checkbox" aria-label="Checkbox for following text input">
                                                                 </div>
                                                             </div>
-                                                            <button class="addPlan btn btn-primary mt-1">+</button>
+                                                            <button class="addPlan btn waves-effect waves-light btn-success mt-1"><i class="bx bx-plus"></i></button>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
@@ -1859,7 +1876,7 @@
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </c:forEach>
-                                                            <button class="addPlan btn btn-primary mt-1">+</button>
+                                                            <button class="addPlan btn waves-effect waves-light btn-success mt-1"><i class="bx bx-plus"></i></button>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -2841,48 +2858,13 @@
                             </c:choose>
                         </div>
                         <div class="col-md-12 mt-4">
-                            <h1 class="font-weight-bold mb-4">Year in Review and Self-Inspiration</h1>
-                            <div class="form-group mt-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pe-0"><i class="ri-hand-heart-line fs-4"></i></div>
-                                    <div class="col ps-2 fs-5">What are you most grateful for this year?</div>
-                                </div>
-                                <textarea class="form-control" id="year-grateful" placeholder="Enter here...">${weekly.year.grateful}</textarea>
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pe-0"><i class="ri-heart-line fs-4"> </i></div>
-                                    <div class="col ps-2 fs-5">When did you feel happiest this year?</div>
-                                </div>
-                                <textarea class="form-control" id="year-happy" placeholder="Enter here...">${weekly.year.happy}</textarea>
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pe-0"><i class="ri-user-heart-line fs-4"></i></div>
-                                    <div class="col ps-2 fs-5">What kind of person did you want to be this year, and are you close to that person now?</div>
-                                </div>
-                                <textarea class="form-control" id="year-whoUBecome" placeholder="Enter here...">${weekly.year.whoUBecome}</textarea>
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pe-0"><i class="mdi mdi-bullseye-arrow fs-4"></i></div>
-                                    <div class="col ps-2 fs-5">Have you achieved this year's most important goal? If not, why haven't you achieved it yet?</div>
-                                </div>
-                                <textarea class="form-control" id="year-personalGoal" placeholder="Enter here...">${weekly.year.personalGoal}</textarea>
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pe-0"><i class="ri-award-line fs-4"></i></div>
-                                    <div class="col ps-2 fs-5">What is your most commendable thing this year?</div>
-                                </div>
-                                <textarea class="form-control" id="year-commendable" placeholder="Enter here...">${weekly.year.commendable}</textarea>
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pe-0"><i class="ri-key-line fs-4"></i></div>
-                                    <div class="col ps-2 fs-5">What are the 3 keywords that represent you this year?</div>
-                                </div>
-                                <textarea class="form-control" id="year-keywords3" placeholder="Enter here...">${weekly.year.keywords3}</textarea>
+                           <div class="d-flex align-items-center">
+                               <h1 class="font-weight-bold">Year in Review and Self-Inspiration</h1>
+                               <i id="year-guide" class="ri-question-line fs-2 ms-2 cursor-pointer" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top"
+                                  data-bs-content="....." style="color: #11a4dd"></i>
+                           </div>
+                            <div class="form-group mt-1">
+                                <textarea class="form-control" id="self-inspiration" placeholder="Enter here..." style="height: 120px">${weekly.year.selfInspiration}</textarea>
                             </div>
                             <div class="col-md-12 text-center align-middle mt-3">
                                 <button class="btn btn-primary mr-2" onclick="history.back()">
@@ -4326,6 +4308,31 @@
                             grid: {borderColor: "#f1f1f1"}
                         }, (chart = new ApexCharts(document.querySelector("#line_chart_dashed"), options)).render()), getChartColorsArray("line_chart_annotations"));
 
+                    var yearGuide = document.getElementById('year-guide');
+                    yearGuide.addEventListener('shown.bs.popover', function () {
+                        document.querySelectorAll('.popover-body').forEach(function (popoverBody) {
+                            popoverBody.innerHTML = '<div class="d-flex align-items-center border-top">' +
+                                '<i class="ri-hand-heart-line fs-4 me-2"></i>What are you most grateful for this year?' +
+                                '</div>' +
+                                '<div class="d-flex align-items-center border-top">' +
+                                '<i class="ri-heart-line fs-4 me-2"></i>When did you feel happiest this year?' +
+                                '</div>' +
+                                '<div class="d-flex align-items-center border-top">' +
+                                '<i class="ri-user-heart-line fs-4 me-2"></i>What kind of person did you want to be this year, and are you close to that person now?' +
+                                '</div>' +
+                                '<div class="d-flex align-items-center border-top">' +
+                                '<i class="mdi mdi-bullseye-arrow fs-4 me-2"></i>Have you achieved this year\'s most important goal? If not, why haven\'t you achieved it yet?' +
+                                '</div>' +
+                                '<div class="d-flex align-items-center border-top">' +
+                                '<i class="ri-award-line fs-4 me-2"></i>What is your most commendable thing this year?' +
+                                '</div>' +
+                                '<div class="d-flex align-items-center border-top border-bottom">' +
+                                '<i class="ri-key-line fs-4 me-2"></i>What are the 3 keywords that represent you this year?' +
+                                '</div>';
+                        });
+                    });
+
+
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -4838,27 +4845,27 @@
         })
         const btnAddQuote = document.getElementById('addQuote');
         if (countValue == 4) {
-            btnAddQuote.textContent = 'Remove';
+            btnAddQuote.innerHTML = `<i class="bx bx-minus"></i>`
             $('#addQuote').removeClass('btn-success');
             $('#addQuote').addClass('btn-danger');
         }
         btnAddQuote.addEventListener('click', function () {
-            if (btnAddQuote.textContent == 'ADD') {
+            if (btnAddQuote.classList.contains('btn-success')) {
                 const newQuote = '<tr><td><input class="form-control quotes" type="text"></td></tr>';
                 $(newQuote).insertBefore('#quoteSession');
                 countValue++;
 
                 if (countValue == 4) {
-                    btnAddQuote.textContent = 'Remove';
+                    btnAddQuote.innerHTML = `<i class="bx bx-minus"></i>`
                     $('#addQuote').removeClass('btn-success');
                     $('#addQuote').addClass('btn-danger');
                 }
-            } else if (btnAddQuote.textContent == 'Remove') {
+            } else if (btnAddQuote.classList.contains('btn-danger')) {
                 var pToDelete = $("#quoteSession").prev("tr");
                 if (pToDelete.length > 0) pToDelete.remove();
                 countValue--;
                 if (countValue == 0) {
-                    btnAddQuote.textContent = 'ADD';
+                    btnAddQuote.innerHTML = `<i class="bx bx-plus"></i>`
                     $('#addQuote').removeClass('btn-danger');
                     $('#addQuote').addClass('btn-success');
                 }
@@ -5503,12 +5510,7 @@
 
                 data.year.target.push(obj);
             });
-            data.year.grateful = $('#year-grateful').val();
-            data.year.happy = $('#year-happy').val();
-            data.year.whoUBecome = $('#year-whoUBecome').val();
-            data.year.personalGoal = $('#year-personalGoal').val();
-            data.year.commendable = $('#year-commendable').val();
-            data.year.keywords3 = $('#year-keywords3').val();
+            data.year.selfInspiration = $('#self-inspiration').val();
 
             document.querySelectorAll('.level1').forEach(function (e) {
                 var backgroundColor = window.getComputedStyle(e).getPropertyValue('background-color');
