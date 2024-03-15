@@ -4671,7 +4671,7 @@
         })
     })
 
-    // Function show Dream Board when user shoose image
+    // Function show Dream Board when user shoose image aaa
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
