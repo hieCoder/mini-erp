@@ -5,10 +5,7 @@
 
     <update id="updateFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         UPDATE FEELING_OF_BOOK
-        SET FEELING = #{feeling},
-            QUOTE   = #{quote},
-            LESSON  = #{lesson},
-            ACTION  = #{action},
+        SET BOOK_REPORT  = #{bookReport},
             TIME_SPENT_READING = #{timeSpentReading},
             NOTE = #{note}
         WHERE ID = #{id}
@@ -16,10 +13,7 @@
 
     <select id="findById" resultMap="feelingOfBookResultMap">
         SELECT fb.ID           AS fb_id,
-               fb.FEELING      AS fb_feeling,
-               fb.QUOTE        AS fb_quote,
-               fb.LESSON       AS fb_lesson,
-               fb.ACTION       AS fb_action,
+               fb.BOOK_REPORT       AS fb_book_report,
                fb.CREATED_DATE AS fb_created_date,
                fb.TIME_SPENT_READING       AS fb_time_spent_reading,
                fb.NOTE         AS fb_NOTE,
@@ -45,10 +39,7 @@
     <select id="findAllByBook" parameterType="String"
             resultMap="feelingOfBookResultMap">
         SELECT fb.ID           AS fb_id,
-               fb.FEELING      AS fb_feeling,
-               fb.QUOTE        AS fb_quote,
-               fb.LESSON       AS fb_lesson,
-               fb.ACTION       AS fb_action,
+               fb.BOOK_REPORT       AS fb_book_report,
                fb.CREATED_DATE AS fb_created_date,
                fb.TIME_SPENT_READING       AS fb_time_spent_reading,
                fb.NOTE         AS fb_NOTE,
@@ -73,10 +64,7 @@
 
     <select id="findByUserAndBook" resultMap="feelingOfBookResultMap">
         SELECT fb.ID           AS fb_id,
-               fb.FEELING      AS fb_feeling,
-               fb.QUOTE        AS fb_quote,
-               fb.LESSON       AS fb_lesson,
-               fb.ACTION       AS fb_action,
+               fb.BOOK_REPORT       AS fb_book_report,
                fb.CREATED_DATE AS fb_created_date,
                fb.TIME_SPENT_READING       AS fb_time_spent_reading,
                fb.NOTE         AS fb_NOTE,
@@ -101,10 +89,7 @@
 
     <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         <id property="id" column="fb_id"/>
-        <result property="feeling" column="fb_feeling"/>
-        <result property="quote" column="fb_quote"/>
-        <result property="lesson" column="fb_lesson"/>
-        <result property="action" column="fb_action"/>
+        <result property="bookReport" column="fb_book_report"/>
         <result property="createdDate" column="fb_created_date"/>
         <result property="timeSpentReading" column="fb_time_spent_reading"/>
         <result property="note" column="fb_note"/>
@@ -173,8 +158,8 @@
 
     <insert id="createFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         INSERT
-        INTO FEELING_OF_BOOK (ID, USER_ID, FEELING, QUOTE, LESSON, ACTION, CREATED_DATE, TIME_SPENT_READING, NOTE, BOOK_ID)
-        VALUES (#{id}, #{user.id}, #{feeling}, #{quote}, #{lesson}, #{action}, #{createdDate}, #{timeSpentReading}, #{note}, #{book.id})
+        INTO FEELING_OF_BOOK (ID, USER_ID, BOOK_REPORT, CREATED_DATE, TIME_SPENT_READING, NOTE, BOOK_ID)
+        VALUES (#{id}, #{user.id}, #{bookReport}, #{createdDate}, #{timeSpentReading}, #{note}, #{book.id})
     </insert>
 
     <delete id="deleteFeelingOfBook" parameterType="String">
@@ -193,10 +178,7 @@
 
     <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
         <id property="id" column="id"/>
-        <result property="feeling" column="FEELING"/>
-        <result property="quote" column="QUOTE"/>
-        <result property="lesson" column="LESSON"/>
-        <result property="action" column="ACTION"/>
+        <result property="bookReport" column="BOOK_REPORT"/>
         <result property="createdDate" column="CREATED_DATE"/>
         <result property="timeSpentReading" column="TIME_SPENT_READING"/>
         <result property="note" column="NOTE"/>

@@ -16,10 +16,7 @@ public class FeelingOfBookCreateRequest {
     @NotBlank(message = "Field userId is not filled")
     private String userId;
 
-    private String feeling;
-    private String quote;
-    private String lesson;
-    private String action;
+    private String bookReport;
     private Double timeSpentReading;
     private String note;
 

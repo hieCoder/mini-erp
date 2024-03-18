@@ -18,10 +18,7 @@ public class FeelingOfBookUpdateRequest {
     @NotBlank(message = "Field bookId is not filled")
     private String bookId;
 
-    private String feeling;
-    private String quote;
-    private String lesson;
-    private String action;
+    private String bookReport;
     private Double timeSpentReading;
     private String note;
 }

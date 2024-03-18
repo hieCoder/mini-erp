@@ -13,11 +13,6 @@ import lombok.NoArgsConstructor;
 public class YearResponse {
     private String year;
     private YearTargetDto[] target;
-    private String grateful;
-    private String happy;
-    private String whoUBecome;
-    private String personalGoal;
-    private String commendable;
-    private String keywords3;
+    private String selfInspiration;
     private String[] color;
 }

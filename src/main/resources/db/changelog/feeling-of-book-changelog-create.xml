@@ -10,10 +10,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="USER_ID" type="VARCHAR(255)"/>
-            <column name="FEELING" type="NVARCHAR(1000)"/>
-            <column name="QUOTE" type="NVARCHAR(1000)"/>
-            <column name="LESSON" type="NVARCHAR(1000)"/>
-            <column name="ACTION" type="NVARCHAR(1000)"/>
+            <column name="BOOK_REPORT" type="NVARCHAR(2000)"/>
             <column name="CREATED_DATE" type="DATETIME"/>
             <column name="BOOK_ID" type="VARCHAR(255)"/>
         </createTable>

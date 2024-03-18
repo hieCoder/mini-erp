@@ -50,40 +50,9 @@ function createFeeling(feeling) {
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group mt-3">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto pe-0"><i class="ri-message-2-line fs-4"></i></div>
-                                                        <div class="col ps-2 fs-5">Feel about the book:</div>
-                                                    </div>
-                                                    <div class="p-2 feeling-content">`+feeling.feeling+`</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group mt-3">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto pe-0"><i class="ri-pencil-ruler-line fs-4"> </i></div>
-                                                        <div class="col ps-2 fs-5">Lessons Learned:</div>
-                                                    </div>
-                                                    <div class="p-2 lesson-content">`+feeling.lesson+`</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group mt-3">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto pe-0"><i class="ri-double-quotes-l fs-4"></i></div>
-                                                        <div class="col ps-2 fs-5">Quotes:</div>
-                                                    </div>
-                                                    <div class="p-2 quote-content">`+feeling.quote+`</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group mt-3">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto pe-0"><i class="ri-user-location-line fs-4"></i></div>
-                                                        <div class="col ps-2 fs-5">Action:</div>
-                                                    </div>
-                                                    <div class="p-2 action-content">`+feeling.action+`</div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="p-2 bookReport-content">`+feeling.bookReport+`</div>
                                                 </div>
                                             </div>
                                         </div>

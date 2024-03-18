@@ -1,8 +1,6 @@
 package com.shsoftvina.erpshsoftvina.converter;
 
-import com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook;
 import com.shsoftvina.erpshsoftvina.entity.FeelingOfBook;
-import com.shsoftvina.erpshsoftvina.entity.User;
 import com.shsoftvina.erpshsoftvina.mapper.BookMapper;
 import com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
@@ -11,7 +9,6 @@ import com.shsoftvina.erpshsoftvina.model.request.feelingofbook.FeelingOfBookUpd
 import com.shsoftvina.erpshsoftvina.model.response.feelingofbook.FeelingOfBookResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +38,7 @@ public class FeelingOfBookConverter {
         if(feelingOfBook == null) return null;
         return FeelingOfBookResponse.builder()
                 .id(feelingOfBook.getId())
-                .feeling(feelingOfBook.getFeeling())
-                .quote(feelingOfBook.getQuote())
-                .lesson(feelingOfBook.getLesson())
-                .action(feelingOfBook.getAction())
+                .bookReport(feelingOfBook.getBookReport())
                 .createdDate(DateUtils.formatDateTime(feelingOfBook.getCreatedDate()))
                 .timeSpentReading(feelingOfBook.getTimeSpentReading())
                 .note(feelingOfBook.getNote())
@@ -61,10 +55,7 @@ public class FeelingOfBookConverter {
         return FeelingOfBook.builder()
                 .id(ApplicationUtils.generateId())
                 .user(userMapper.findById(feelingOfBookCreateRequest.getUserId()))
-                .feeling(feelingOfBookCreateRequest.getFeeling())
-                .quote(feelingOfBookCreateRequest.getQuote())
-                .lesson(feelingOfBookCreateRequest.getLesson())
-                .action(feelingOfBookCreateRequest.getAction())
+                .bookReport(feelingOfBookCreateRequest.getBookReport())
                 .createdDate(new Date())
                 .timeSpentReading(feelingOfBookCreateRequest.getTimeSpentReading())
                 .note(feelingOfBookCreateRequest.getNote())
@@ -72,12 +63,8 @@ public class FeelingOfBookConverter {
     }
 
     public FeelingOfBook toEntity(FeelingOfBookUpdateRequest feelingOfBookUpdateRequest){
-
         FeelingOfBook feelingOfBook = feelingOfBookMapper.findByUserAndBook(feelingOfBookUpdateRequest.getUserId(), feelingOfBookUpdateRequest.getBookId());
-        feelingOfBook.setFeeling(feelingOfBookUpdateRequest.getFeeling());
-        feelingOfBook.setQuote(feelingOfBookUpdateRequest.getQuote());
-        feelingOfBook.setLesson(feelingOfBookUpdateRequest.getLesson());
-        feelingOfBook.setAction(feelingOfBookUpdateRequest.getAction());
+        feelingOfBook.setBookReport(feelingOfBookUpdateRequest.getBookReport());
         feelingOfBook.setTimeSpentReading(feelingOfBookUpdateRequest.getTimeSpentReading());
         feelingOfBook.setNote(feelingOfBookUpdateRequest.getNote());
         return feelingOfBook;
