@@ -16,10 +16,7 @@ import java.util.List;
 @Builder
 public class FeelingOfBookResponse {
     private String id;
-    private String feeling;
-    private String quote;
-    private String lesson;
-    private String action;
+    private String bookReport;
     private String createdDate;
     private Double timeSpentReading;
     private String note;

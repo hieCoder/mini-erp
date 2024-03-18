@@ -15,10 +15,7 @@ import java.util.List;
 public class FeelingOfBook {
     private String id;
     private User user;
-    private String feeling;
-    private String quote;
-    private String lesson;
-    private String action;
+    private String bookReport;
     private Date createdDate;
     private Double timeSpentReading;
     private String note;
