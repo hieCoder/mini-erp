@@ -27,6 +27,21 @@
             #ffe180
             #ad9ad9
          */
+
+        .add-text-node-elem0, .remove-text-node-elem0 {
+            position: absolute;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            text-align: center;
+            line-height: 26px;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
         .add-node, .remove-node {
             position: absolute;
             bottom: -15px;
@@ -125,7 +140,6 @@
             margin-left: 150px;
             top: -280px !important;
         }
-
 
         #elem1child0 {
             margin-left: 130px;
@@ -237,7 +251,6 @@
         }
 
         .hiddenLine {
-            /* !important because width was originally set by js */
             width: 0 !important;
             border: 0 rgba(0, 0, 0, 0) solid;
             transition: all 0.4s;
@@ -297,6 +310,10 @@
         }
 
         .addPlan {
+            top: -2%;
+            left: 44%;
+            display: flex !important;
+            align-items: center !important;
             transform: translate(-50%, -50%) !important;
             padding: 4px !important;
             border-radius: 50% !important;
@@ -501,10 +518,10 @@
                         <div class="container vh-100">
                             <div class="containerMindMap">
                                 <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #9a9a9a;"></div>
-                                <div class="remove-node" style="background:#ff4d4d;">-</div>
-                                <div id="elem0" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div class="remove-node text-white" style="background:#ff4d4d;"> - </div>
+                                <div id="elem0" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -512,10 +529,14 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: 17px; left: 15px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: -12px; left: 52px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: -12px; right: 12px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: 20px; ; right: -20px;"> + </div>
                                 </div>
-                                <div id="elem1" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div id="elem1" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -524,9 +545,9 @@
                                            class="pickedColor"></p>
                                     </div>
                                 </div>
-                                <div id="elem2" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div id="elem2" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -535,9 +556,9 @@
                                            class="pickedColor"></p>
                                     </div>
                                 </div>
-                                <div id="elem3" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div id="elem3" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -1850,7 +1871,7 @@
                                                                     <input class="form-check-input mt-0 performance-plan" type="checkbox" aria-label="Checkbox for following text input">
                                                                 </div>
                                                             </div>
-                                                            <button class="addPlan btn waves-effect waves-light btn-success mt-1"><i class="bx bx-plus"></i></button>
+                                                            <button type="button" class="addPlan btn waves-effect waves-light btn-success mt-1"><i class="bx bx-plus"></i></button>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
@@ -2630,7 +2651,7 @@
                                     <tbody>
                                     <tr style="max-width: 1500px; height: 34px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td class="text-white fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);">Progress</td>
+                                            <td class="fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px;">Progress</td>
                                             <td class="fw-bolder" style="width: 39px;">Rate</td>
                                         </c:forEach>
                                     </tr>
@@ -2698,7 +2719,7 @@
                                         <td colspan="2">${weekly.year.year.substring(2)}' goals</td>
                                     </tr>
                                     <tr class="fw-bold" style="height: 34px">
-                                        <td class="text-white" style="background-color: rgba(60, 127, 234, 0.7);">Progess</td>
+                                        <td>Progress</td>
                                         <td>Rate</td>
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
@@ -3058,8 +3079,7 @@
         }
     })
 
-    // Mind map
-    // Handle User click TAB 2024 Golas
+    // Handle User click TAB 2024 Goals
     $('#session-goals').one('click', function() {
         RADIUS_L1 = 150;
         RADIUS_L2 = 130;
@@ -3139,7 +3159,6 @@
                     angle = Math.PI - Math.atan2(toTop - fromTop, fromLeft - toLeft);
                     redrawLevel2(i, angle, false);
                 } else {
-                    // now collapse layer 1 element
                     for (var j = 0; j < $(".elem" + i + "child").length; j++) {
                         xPos = parseFloat($("#elem" + i).css("left").slice(0, -2)) + $("#elem" + i).outerWidth() / 2;
                         yPos = parseFloat($("#elem" + i).css("top").slice(0, -2)) + $("#elem" + i).outerHeight() / 2;
@@ -3197,13 +3216,6 @@
 
         $('#line2').addClass('d-none');
 
-        // Function to draw lines for a given level 1 element
-        // function drawLinesForLevel1Element(level1ElemId) {
-        //     for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
-        //         createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
-        //     }
-        // }
-
         for (var i = 0; i < $(".level1").length; i++) { $("#elem" + i).off('click'); }
 
         // Add Main node
@@ -3211,6 +3223,7 @@
             $(this).css('background-color', '#ff4d4d');
             $(this).text('-');
             $(this).addClass('remove-node');
+            $(this).addClass('text-white');
             $(this).removeClass('add-node');
             $('#elem2').removeClass('d-none');
             $('.lineFrom_elem2').removeClass('d-none');
@@ -3224,6 +3237,7 @@
             $(this).css('background-color', '#ffff');
             $(this).text('+');
             $(this).removeClass('remove-node');
+            $(this).removeClass('text-white');
             $('.lineFrom_elem2').addClass('d-none');
             $('.elem2child').addClass('d-none');
         });
@@ -3297,6 +3311,81 @@
                 e.textContent = 'Click To Edit';
             }
         })
+
+        // Add Text Node
+        $(document).on('click', '.add-text-node-elem0', function() {
+            $(this).css('background-color', '#ff4d4d');
+            $(this).text('-');
+            $(this).addClass('remove-text-node-elem0');
+            $(this).addClass('text-white');
+            $(this).removeClass('add-text-node-elem0');
+        });
+
+        // Remove Text Node
+        $(document).on('click', '.remove-text-node-elem0', function () {
+            $(this).addClass('add-text-node-elem0');
+            $(this).css('background-color', '#ffff');
+            $(this).text('+');
+            $(this).removeClass('text-white');
+            $(this).removeClass('remove-text-node-elem0');
+        });
+
+        // Add Text Node
+        // document.querySelectorAll('.btn-addTextNode').forEach(function (e, index) {
+        //     e.addEventListener('click', function () {
+        //         if (index == 0) {
+        //             const lineText = document.getElementById('line0child0');
+        //             const textNode = document.getElementById('elem0child0');
+        //             if (e.textContent.trim() == '+') {
+        //                 lineText.classList.remove('d-none');
+        //                 textNode.classList.remove('d-none');
+        //             } else {
+        //                 lineText.classList.add('d-none');
+        //                 textNode.classList.add('d-none');
+        //             }
+        //         } else  if (index == 1) {
+        //             const lineText = document.getElementById('line0child1');
+        //             const textNode = document.getElementById('elem0child1');
+        //             if (e.textContent.trim() == '+') {
+        //                 lineText.classList.remove('d-none');
+        //                 textNode.classList.remove('d-none');
+        //             } else {
+        //                 lineText.classList.add('d-none');
+        //                 textNode.classList.add('d-none');
+        //             }
+        //         } else  if (index == 2) {
+        //             const lineText = document.getElementById('line0child2');
+        //             const textNode = document.getElementById('elem0child2');
+        //             if (e.textContent.trim() == '+') {
+        //                 lineText.classList.remove('d-none');
+        //                 textNode.classList.remove('d-none');
+        //             } else {
+        //                 lineText.classList.add('d-none');
+        //                 textNode.classList.add('d-none');
+        //             }
+        //         } else  if (index == 3) {
+        //             const lineText = document.getElementById('line0child3');
+        //             const textNode = document.getElementById('elem0child3');
+        //             if (e.textContent.trim() == '+') {
+        //                 lineText.classList.remove('d-none');
+        //                 textNode.classList.remove('d-none');
+        //             } else {
+        //                 lineText.classList.add('d-none');
+        //                 textNode.classList.add('d-none');
+        //             }
+        //         }
+        //     })
+        // })
+
+        // Hide TextNode No Content
+        // document.querySelectorAll('.level2').forEach(function (e) {
+        //     if (e.querySelector('span').textContent.trim() == 'TEXT') {
+        //         e.classList.add('d-none');
+        //         const idElem = e.getAttribute('id').slice(4);
+        //         document.getElementById('line' + idElem).classList.add('d-none');
+        //
+        //     }
+        // })
     });
 
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
@@ -3679,12 +3768,6 @@
             }
         }
         xhr.send();
-
-        // const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
-        // document.querySelectorAll('.review-dailyRoutine').forEach(function () {
-        //     dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
-        //     dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
-        // });
     })
 
     // Function handle Click tab report
@@ -3697,33 +3780,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    // document.querySelectorAll('.onething-report').forEach(function (e, index) {
-                    //     const onethingReport = e.querySelectorAll('.onething-category-report');
-                    //     const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
-                    //     onethingReport.forEach(function (e, indexTd) {
-                    //         const dataMonth = e.getAttribute('data-month');
-                    //         parseData.forEach(month => {
-                    //             if (dataMonth == month.month) {
-                    //                 if (month.targetCategory != null) {
-                    //                     const monthTarget = month.targetCategory[index + 1].target;
-                    //                     const monthPer = month.targetCategory[index + 1].performance;
-                    //                     const performanceMonthtTarget = month.targetCategory[index + 1].performance
-                    //                     e.textContent = monthPer + '/' + monthTarget;
-                    //
-                    //                     const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                    //                     if (!isNaN(performancePercentage)) {
-                    //                         const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                    //                         perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
-                    //                         if (month.color != null) {
-                    //                             e.style.backgroundColor = month.color[index + 1];
-                    //                             perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
-                    //                         }
-                    //                     }
-                    //                 }
-                    //             }
-                    //         });
-                    //     });
-                    // })
 
                     document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
                         const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
@@ -4475,33 +4531,6 @@
         })
     }
 
-    // Handle change content Category Color
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const elColorCategory = document.querySelectorAll('.color-category');
-    //     const titleReportCategory = document.querySelectorAll('.title-report-category');
-    //     const reviewWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
-    //     const reivewWeeklyAmountTime = document.querySelectorAll('.review-weekly-amount-time');
-    //     const reivewDailyOnething = document.querySelectorAll('.reivew-daily-onething');
-    //     const yearTitle = document.querySelectorAll('.yearTitle');
-    //
-    //     yearTitle.forEach(function (e, index) {
-    //         if (index != 0) {
-    //             if (e.textContent != '') {
-    //                 elColorCategory[index - 1].textContent = e.textContent;
-    //                 titleReportCategory[index - 1].textContent = e.textContent;
-    //                 titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //                 reviewWeeklyGoals[index - 1].textContent = e.textContent;
-    //                 reviewWeeklyGoals[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //                 reivewWeeklyAmountTime[index - 1].textContent = e.textContent;
-    //                 reivewWeeklyAmountTime[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //             }
-    //         }
-    //         reivewDailyOnething[0].classList.add('text-danger', 'fw-bolder')
-    //         reivewDailyOnething[index].textContent = e.textContent;
-    //         reivewDailyOnething[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //     })
-    // })
-
     // Handle performance onething calendar
     document.addEventListener("DOMContentLoaded", function () {
         const tartgetOnething = document.querySelectorAll('.target-onething');
@@ -4867,91 +4896,6 @@
             if (quote.querySelector('p').textContent == '') $(quote).remove();
         });
     });
-
-    // Handle add content and icon notification when user right click
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var plant = document.querySelectorAll('.setting');
-    //     plant.forEach(function (elementPlant) {
-    //         const note = elementPlant.querySelector('.note');
-    //         const imgNoti = note.querySelector('img');
-    //         elementPlant.addEventListener('contextmenu', function (event) {
-    //             if (elementPlant.innerText != '') {
-    //                 const contentNotiPlan = note.getAttribute('data-value');
-    //
-    //                 if (contentNotiPlan != '') {
-    //                     const imgHTML = imgNoti.outerHTML;
-    //                     note.innerHTML = imgHTML + 'Remove Allowed';
-    //                 }
-    //                 const isAllowed = note.innerText.trim();
-    //                 if (note) {
-    //                     $(note).removeClass('d-none');
-    //                     if (isAllowed == 'Allow notifications') {
-    //                         note.addEventListener('click', function (e) {
-    //                             $(note).addClass('d-none');
-    //                             elementPlant.querySelectorAll('img')[1].classList.remove('d-none');
-    //                             note.innerHTML = '';
-    //                             note.appendChild(imgNoti);
-    //                             note.appendChild(document.createTextNode('Remove Allowed'));
-    //                         })
-    //                     } else if (isAllowed == 'Remove Allowed') {
-    //                         note.addEventListener('click', function (e) {
-    //                             const imgIconPlan = elementPlant.querySelectorAll('img')[1];
-    //                             imgIconPlan.classList.add('d-none');
-    //                             note.innerHTML = '';
-    //                             note.appendChild(imgNoti);
-    //                             note.appendChild(document.createTextNode('Allow notifications'));
-    //                             note.setAttribute('data-value', '');
-    //                             $(note).addClass('d-none');
-    //                         })
-    //                     }
-    //                 }
-    //
-    //                 event.preventDefault();
-    //                 document.addEventListener('click', function hideNoteOnClickOutside(e) {
-    //                     if (!note.contains(e.target) && e.target !== note) {
-    //                         $(note).addClass('d-none');
-    //                         document.removeEventListener('click', hideNoteOnClickOutside);
-    //                     }
-    //                 });
-    //             } else event.preventDefault();
-    //         });
-    //     })
-    // })
-
-    // Handle when content notification is null -> hide icon
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var plant = document.querySelectorAll('.setting');
-    //     plant.forEach(function (elementPlant) {
-    //         const note = elementPlant.querySelector('.note');
-    //         const contentNotiPlan = note.getAttribute('data-value');
-    //         if (contentNotiPlan == '' || contentNotiPlan == null) elementPlant.querySelectorAll('img')[1].classList.add('d-none');
-    //         else elementPlant.querySelectorAll('img')[1].classList.remove('d-none');
-    //     })
-    // })
-
-    // Show modal notification
-    // function showModal(element) {
-    //     const isAllowedNoti = element.innerText;
-    //
-    //     function saveNotiHandler() {
-    //         var contentNotiPlant = document.getElementById('contentNotiPlan').value;
-    //         element.setAttribute('data-value', contentNotiPlant);
-    //         $('#contentNoti').modal('hide');
-    //         document.getElementById('contentNotiPlan').value = '';
-    //         document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
-    //     }
-    //
-    //     if (isAllowedNoti == 'Allow notifications') {
-    //         $('#contentNoti').modal('show');
-    //         document.getElementById('cancelSaveNoti').addEventListener('click', function () {
-    //             const imgNoti = element.querySelector('img').outerHTML;
-    //             element.innerHTML = imgNoti + 'Allow notifications';
-    //             element.nextElementSibling.classList.add('d-none');
-    //         });
-    //         document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
-    //         document.getElementById('saveNoti').addEventListener('click', saveNotiHandler);
-    //     }
-    // }
 
     // Handle show image quote + message success when user save all success
     $(document).ready(function () {
@@ -5448,7 +5392,6 @@
                     i--;
                 }
             }
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
