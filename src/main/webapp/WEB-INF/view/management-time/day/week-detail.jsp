@@ -28,7 +28,10 @@
             #ad9ad9
          */
 
-        .add-text-node-elem0, .remove-text-node-elem0 {
+        .add-text-node-elem0, .remove-text-node-elem0,
+        .add-text-node-elem1, .remove-text-node-elem1,
+        .add-text-node-elem2, .remove-text-node-elem2,
+        .add-text-node-elem3, .remove-text-node-elem3 {
             position: absolute;
             transform: translateX(-50%);
             width: 30px;
@@ -529,10 +532,10 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
-                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: 17px; left: 15px;"> + </div>
-                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: -12px; left: 52px;"> + </div>
-                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: -12px; right: 12px;"> + </div>
-                                    <div class="add-text-node-elem0 text-black btn-addTextNode" style="top: 20px; ; right: -20px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: 17px; left: 15px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: -12px; left: 52px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: -12px; right: 12px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: 20px; ; right: -20px;"> + </div>
                                 </div>
                                 <div id="elem1" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]};">
@@ -544,6 +547,10 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 5px;  right: -15px;"> + </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 35px; right: -30px;"> + </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 67px; right: -31px;"> + </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 100px; right: -17px;"> + </div>
                                 </div>
                                 <div id="elem2" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
@@ -555,6 +562,10 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: 27px; left: 140px;"> + </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: -5px; left: 108px;"> + </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: -6px; left: 48px;"> + </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: 27px; left: 10px;"> + </div>
                                 </div>
                                 <div id="elem3" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
@@ -566,6 +577,10 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 3px; left: 24px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 29px; left: 2px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 64px; left: 2px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 100px; left: 15px;"> + </div>
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
@@ -1829,24 +1844,7 @@
                                                 <c:set var="backgroundColor1" value=""/>
                                                 <c:forEach var="color" items="${weekly.colors}">
                                                     <c:forEach var="value" items="${color.values}">
-<%--                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">--%>
-<%--                                                            <c:if test="${data[0].actual ne '' && value eq data[0].contentPlan}">--%>
-<%--                                                                <c:set var="backgroundColor0" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop0" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">--%>
-<%--                                                                <c:set var="backgroundColor1" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop1" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">--%>
-<%--                                                                <c:set var="backgroundColor2" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop2" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">--%>
-<%--                                                                <c:set var="backgroundColor3" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop3" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                        </c:if>--%>
+
                                                         <c:if test="${data.actual[10] ne '' && value eq data.actual[10]}">
                                                             <c:set var="backgroundColor0" value="${color.color}"/>
                                                         </c:if>
@@ -3032,6 +3030,24 @@
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script>
+
+    // function changeStatusBtnAddTextNode(btnElem) {
+    //     var classes = btnElem.className.split(' ');
+    //     console.log(classes)
+    //     var containsAdd = classes.some(function(cls) {
+    //         return cls.indexOf('add-text-node') !== -1;
+    //     });
+    //
+    //     if (containsAdd == true) {
+    //         btnElem.style.backgroundColor = '#ff4d4d';
+    //         btnElem.textContent = '-';
+    //         btnElem.classList.add('text-white', 'remove-text-node-elem0');
+    //         btnElem.classList.remove('add-text-node')
+    //         // $(this).addClass('text-white');
+    //         // $(this).removeClass('add-text-node-elem0');
+    //     }
+    // }
+
     // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
@@ -3311,27 +3327,27 @@
                 e.textContent = 'Click To Edit';
             }
         })
+        
+        // Add Text Node
+        // $(document).on('click', '.add-text-node-elem0', function() {
+        //     $(this).css('background-color', '#ff4d4d');
+        //     $(this).text('-');
+        //     $(this).addClass('remove-text-node-elem0');
+        //     $(this).addClass('text-white');
+        //     $(this).removeClass('add-text-node-elem0');
+        // });
+        //
+        // // Remove Text Node
+        // $(document).on('click', '.remove-text-node-elem0', function () {
+        //     $(this).addClass('add-text-node-elem0');
+        //     $(this).css('background-color', '#ffff');
+        //     $(this).text('+');
+        //     $(this).removeClass('text-white');
+        //     $(this).removeClass('remove-text-node-elem0');
+        // });
 
         // Add Text Node
-        $(document).on('click', '.add-text-node-elem0', function() {
-            $(this).css('background-color', '#ff4d4d');
-            $(this).text('-');
-            $(this).addClass('remove-text-node-elem0');
-            $(this).addClass('text-white');
-            $(this).removeClass('add-text-node-elem0');
-        });
-
-        // Remove Text Node
-        $(document).on('click', '.remove-text-node-elem0', function () {
-            $(this).addClass('add-text-node-elem0');
-            $(this).css('background-color', '#ffff');
-            $(this).text('+');
-            $(this).removeClass('text-white');
-            $(this).removeClass('remove-text-node-elem0');
-        });
-
-        // Add Text Node
-        // document.querySelectorAll('.btn-addTextNode').forEach(function (e, index) {
+        // document.querySelectorAll('.btn-addTextNode0').forEach(function (e, index) {
         //     e.addEventListener('click', function () {
         //         if (index == 0) {
         //             const lineText = document.getElementById('line0child0');
@@ -3377,15 +3393,87 @@
         //     })
         // })
 
-        // Hide TextNode No Content
-        // document.querySelectorAll('.level2').forEach(function (e) {
-        //     if (e.querySelector('span').textContent.trim() == 'TEXT') {
-        //         e.classList.add('d-none');
-        //         const idElem = e.getAttribute('id').slice(4);
-        //         document.getElementById('line' + idElem).classList.add('d-none');
-        //
-        //     }
-        // })
+        // Hide Text Node No Content
+        const btnAddTextNode = document.querySelectorAll('.btn-text-node');
+        document.querySelectorAll('.level2').forEach(function (e, index) {
+            if (e.querySelector('span').textContent.trim() == 'TEXT') {
+                e.classList.add('d-none');
+                const idElem = e.getAttribute('id').slice(4);
+                document.getElementById('line' + idElem).classList.add('d-none');
+            } else {
+                btnAddTextNode[index].textContent = '-';
+                btnAddTextNode[index].style.backgroundColor = '#ff4d4d';
+                btnAddTextNode[index].classList.add('text-white');
+                if (index < 4) {
+                    btnAddTextNode[index].classList.remove('add-text-node-elem0');
+                    btnAddTextNode[index].classList.add('remove-text-node-elem0');
+                } else if (index > 4 && index < 8) {
+                    btnAddTextNode[index].classList.remove('add-text-node-elem1');
+                    btnAddTextNode[index].classList.add('remove-text-node-elem1');
+                } else if (index > 8 && index < 12) {
+                    btnAddTextNode[index].classList.remove('add-text-node-elem2');
+                    btnAddTextNode[index].classList.add('remove-text-node-elem2');
+                } else if (index > 12 && index < 16) {
+                    btnAddTextNode[index].classList.remove('add-text-node-elem3');
+                    btnAddTextNode[index].classList.add('remove-text-node-elem3');
+                }
+            }
+        })
+
+        btnAddTextNode.forEach(function (e, index) {
+            e.addEventListener('click', function () {
+                if (index < 4) {
+                    if (e.textContent.trim() == '+') {
+                        e.textContent = '-'
+                        e.style.backgroundColor = '#ff4d4d';
+                        e.classList.remove('add-text-node-elem0');
+                        e.classList.add('remove-text-node-elem0', 'text-white');
+                    } else {
+                        e.textContent = '+';
+                        e.style.backgroundColor = '#ffffff';
+                        e.classList.remove('remove-text-node-elem0', 'text-white');
+                        e.classList.add('add-text-node-elem0');
+                    }
+                } else if (index >= 4 && index < 8) {
+                    if (e.textContent.trim() == '+') {
+                        e.textContent = '-'
+                        e.style.backgroundColor = '#ff4d4d';
+                        e.classList.remove('add-text-node-elem1');
+                        e.classList.add('remove-text-node-elem1', 'text-white');
+                    } else {
+                        e.textContent = '+';
+                        e.style.backgroundColor = '#ffffff';
+                        e.classList.remove('remove-text-node-elem1', 'text-white');
+                        e.classList.add('add-text-node-elem1');
+                    }
+                } else if (index >= 8 && index < 12) {
+                    if (e.textContent.trim() == '+') {
+                        e.textContent = '-'
+                        e.style.backgroundColor = '#ff4d4d';
+                        e.classList.remove('add-text-node-elem2');
+                        e.classList.add('remove-text-node-elem2', 'text-white');
+                    } else {
+                        e.textContent = '+';
+                        e.style.backgroundColor = '#ffffff';
+                        e.classList.remove('remove-text-node-elem2', 'text-white');
+                        e.classList.add('add-text-node-elem2');
+                    }
+                } else if (index >= 12 && index < 16) {
+                    if (e.textContent.trim() == '+') {
+                        e.textContent = '-'
+                        e.style.backgroundColor = '#ff4d4d';
+                        e.classList.remove('add-text-node-elem3');
+                        e.classList.add('remove-text-node-elem3', 'text-white');
+                    } else {
+                        e.textContent = '+';
+                        e.style.backgroundColor = '#ffffff';
+                        e.classList.remove('remove-text-node-elem3', 'text-white');
+                        e.classList.add('add-text-node-elem3');
+                    }
+                }
+            })
+        })
+
     });
 
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
@@ -4614,7 +4702,7 @@
         })
     })
 
-    // Function show Dream Board when user shoose image aaa
+    // Function show Dream Board when user choose image
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
