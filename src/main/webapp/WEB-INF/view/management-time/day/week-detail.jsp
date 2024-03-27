@@ -577,10 +577,10 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
-                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 3px; left: 24px;"> + </div>
-                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 29px; left: 2px;"> + </div>
-                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 64px; left: 2px;"> + </div>
                                     <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 100px; left: 15px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 64px; left: 2px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 29px; left: 2px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 3px; left: 24px;"> + </div>
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
@@ -2240,7 +2240,7 @@
                                     <thead>
                                     <tr style="height: 45px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
-                                            <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
+                                            <th style="background-color: #f2f2f2;" class="fw-bolder cursor-pointer week-of-the-month" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
                                         <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">EXTRA DAYS</th>
                                     </tr>
@@ -2288,7 +2288,7 @@
                                 </table>
                             </div>
                             <div>
-                                <table id="table-monthlyReview-per" class="table text-center mb-0" style="width: 245px; border: 1px solid black !important;">
+                                <table id="table-monthlyReview-per" class="table text-center mb-0" style="width: 248px; border: 1px solid black !important;">
                                     <thead>
                                     <tr style="border: 1px solid black">
                                         <th colspan="3" class="month-current text-danger fw-bolder text-uppercase"></th>
@@ -2394,7 +2394,7 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center" >
-                                        <td style="height: 50px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 50px; width: 246px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[0].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success" style="width: 53px">
@@ -3031,23 +3031,6 @@
 <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script>
 
-    // function changeStatusBtnAddTextNode(btnElem) {
-    //     var classes = btnElem.className.split(' ');
-    //     console.log(classes)
-    //     var containsAdd = classes.some(function(cls) {
-    //         return cls.indexOf('add-text-node') !== -1;
-    //     });
-    //
-    //     if (containsAdd == true) {
-    //         btnElem.style.backgroundColor = '#ff4d4d';
-    //         btnElem.textContent = '-';
-    //         btnElem.classList.add('text-white', 'remove-text-node-elem0');
-    //         btnElem.classList.remove('add-text-node')
-    //         // $(this).addClass('text-white');
-    //         // $(this).removeClass('add-text-node-elem0');
-    //     }
-    // }
-
     // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
@@ -3129,7 +3112,7 @@
                 $("#elem" + i).css("top", centery - RADIUS_L1 * Math.sin((i / $(".level1").length) * 2 * Math.PI + Math.PI / 2) - $("#elem" + i).outerHeight() / 2 + "px");
 
                 angle = createLineFromTo("#main", "#elem" + i, "#line" + i);
-                if ( hasLevel2Children(i))
+                if (hasLevel2Children(i))
                 {
                     redrawLevel2(i, angle, true);
                     toggle("elem" + i);
@@ -3148,7 +3131,6 @@
                 $(fromElem).after("<div class='line lineFrom_" + $(fromElem).attr('id') + "' id='" + lineId.substring(1) + "'></div>");
             }
             $(lineId).css("width", Math.sqrt(Math.pow((fromTop + 40 - toTop), 2) + Math.pow((fromLeft - toLeft), 2)) + "px");
-
             $(lineId).css("left", (fromLeft - $("#main").offset().left) + "px");
             $(lineId).css("top", (fromTop - $("#main").offset().top) + "px");
             $(lineId).css("transform", "rotate(" + theta + "rad)");
@@ -3244,6 +3226,12 @@
             $('#elem2').removeClass('d-none');
             $('.lineFrom_elem2').removeClass('d-none');
             $('.elem2child').removeClass('d-none');
+            document.querySelectorAll('.btn-addTextNode2').forEach(function (e) {
+                e.textContent = '-';
+                e.style.backgroundColor = '#ff4d4d';
+                e.classList.remove('add-text-node-elem2');
+                e.classList.add('remove-text-node-elem2');
+            })
         });
 
         // Remove Main node
@@ -3327,153 +3315,100 @@
                 e.textContent = 'Click To Edit';
             }
         })
-        
-        // Add Text Node
-        // $(document).on('click', '.add-text-node-elem0', function() {
-        //     $(this).css('background-color', '#ff4d4d');
-        //     $(this).text('-');
-        //     $(this).addClass('remove-text-node-elem0');
-        //     $(this).addClass('text-white');
-        //     $(this).removeClass('add-text-node-elem0');
-        // });
-        //
-        // // Remove Text Node
-        // $(document).on('click', '.remove-text-node-elem0', function () {
-        //     $(this).addClass('add-text-node-elem0');
-        //     $(this).css('background-color', '#ffff');
-        //     $(this).text('+');
-        //     $(this).removeClass('text-white');
-        //     $(this).removeClass('remove-text-node-elem0');
-        // });
 
         // Add Text Node
-        // document.querySelectorAll('.btn-addTextNode0').forEach(function (e, index) {
-        //     e.addEventListener('click', function () {
-        //         if (index == 0) {
-        //             const lineText = document.getElementById('line0child0');
-        //             const textNode = document.getElementById('elem0child0');
-        //             if (e.textContent.trim() == '+') {
-        //                 lineText.classList.remove('d-none');
-        //                 textNode.classList.remove('d-none');
-        //             } else {
-        //                 lineText.classList.add('d-none');
-        //                 textNode.classList.add('d-none');
-        //             }
-        //         } else  if (index == 1) {
-        //             const lineText = document.getElementById('line0child1');
-        //             const textNode = document.getElementById('elem0child1');
-        //             if (e.textContent.trim() == '+') {
-        //                 lineText.classList.remove('d-none');
-        //                 textNode.classList.remove('d-none');
-        //             } else {
-        //                 lineText.classList.add('d-none');
-        //                 textNode.classList.add('d-none');
-        //             }
-        //         } else  if (index == 2) {
-        //             const lineText = document.getElementById('line0child2');
-        //             const textNode = document.getElementById('elem0child2');
-        //             if (e.textContent.trim() == '+') {
-        //                 lineText.classList.remove('d-none');
-        //                 textNode.classList.remove('d-none');
-        //             } else {
-        //                 lineText.classList.add('d-none');
-        //                 textNode.classList.add('d-none');
-        //             }
-        //         } else  if (index == 3) {
-        //             const lineText = document.getElementById('line0child3');
-        //             const textNode = document.getElementById('elem0child3');
-        //             if (e.textContent.trim() == '+') {
-        //                 lineText.classList.remove('d-none');
-        //                 textNode.classList.remove('d-none');
-        //             } else {
-        //                 lineText.classList.add('d-none');
-        //                 textNode.classList.add('d-none');
-        //             }
-        //         }
-        //     })
-        // })
+        function addButtonListener(buttonClass, linePrefix, elemPrefix) {
+            document.querySelectorAll(buttonClass).forEach(function (e, index) {
+                e.addEventListener('click', function () {
+                    const lineText = document.getElementById(linePrefix + index);
+                    const textNode = document.getElementById(elemPrefix + index);
+                    if (e.textContent.trim() == '+') {
+                        lineText.classList.remove('d-none');
+                        textNode.classList.remove('d-none');
+                    } else {
+                        lineText.classList.add('d-none');
+                        textNode.classList.add('d-none');
+                    }
+                });
+            });
+        }
+        addButtonListener('.btn-addTextNode0', 'line0child', 'elem0child');
+        addButtonListener('.btn-addTextNode1', 'line1child', 'elem1child');
+        addButtonListener('.btn-addTextNode2', 'line2child', 'elem2child');
+        addButtonListener('.btn-addTextNode3', 'line3child', 'elem3child');
+
 
         // Hide Text Node No Content
         const btnAddTextNode = document.querySelectorAll('.btn-text-node');
+        var flag = false;
         document.querySelectorAll('.level2').forEach(function (e, index) {
-            if (e.querySelector('span').textContent.trim() == 'TEXT') {
+            const spanTextContent = e.querySelector('span').textContent.trim();
+            if (spanTextContent == 'TEXT') {
                 e.classList.add('d-none');
                 const idElem = e.getAttribute('id').slice(4);
                 document.getElementById('line' + idElem).classList.add('d-none');
             } else {
-                btnAddTextNode[index].textContent = '-';
-                btnAddTextNode[index].style.backgroundColor = '#ff4d4d';
-                btnAddTextNode[index].classList.add('text-white');
+                flag = true;
+                const btn = btnAddTextNode[index];
+                btn.textContent = '-';
+                btn.style.backgroundColor = '#ff4d4d';
+                btn.classList.add('text-white');
+
+                const categoryIndex = Math.floor(index / 4);
+                const classPrefix = `remove-text-node-elem${categoryIndex}`;
+
                 if (index < 4) {
-                    btnAddTextNode[index].classList.remove('add-text-node-elem0');
-                    btnAddTextNode[index].classList.add('remove-text-node-elem0');
-                } else if (index > 4 && index < 8) {
-                    btnAddTextNode[index].classList.remove('add-text-node-elem1');
-                    btnAddTextNode[index].classList.add('remove-text-node-elem1');
-                } else if (index > 8 && index < 12) {
-                    btnAddTextNode[index].classList.remove('add-text-node-elem2');
-                    btnAddTextNode[index].classList.add('remove-text-node-elem2');
-                } else if (index > 12 && index < 16) {
-                    btnAddTextNode[index].classList.remove('add-text-node-elem3');
-                    btnAddTextNode[index].classList.add('remove-text-node-elem3');
+                    btn.classList.remove(`add-text-node-elem${categoryIndex}`);
+                } else {
+                    btn.classList.remove(`add-text-node-elem${categoryIndex - 1}`);
                 }
+                btn.classList.add(classPrefix);
             }
-        })
+        });
 
-        btnAddTextNode.forEach(function (e, index) {
-            e.addEventListener('click', function () {
+        if (flag == false) {
+            const btnAddTextNode = document.querySelectorAll('.btn-text-node');
+            document.querySelectorAll('.level2').forEach(function (e, index) {
+                e.classList.remove('d-none');
+                const idElem = e.getAttribute('id').slice(4);
+                document.getElementById('line' + idElem).classList.remove('d-none');
+                const btn = btnAddTextNode[index];
+                btn.textContent = '-';
+                btn.style.backgroundColor = '#ff4d4d';
+                btn.classList.add('text-white');
+
+                const categoryIndex = Math.floor(index / 4);
+                const classPrefix = `remove-text-node-elem${categoryIndex}`;
+
                 if (index < 4) {
-                    if (e.textContent.trim() == '+') {
-                        e.textContent = '-'
-                        e.style.backgroundColor = '#ff4d4d';
-                        e.classList.remove('add-text-node-elem0');
-                        e.classList.add('remove-text-node-elem0', 'text-white');
-                    } else {
-                        e.textContent = '+';
-                        e.style.backgroundColor = '#ffffff';
-                        e.classList.remove('remove-text-node-elem0', 'text-white');
-                        e.classList.add('add-text-node-elem0');
-                    }
-                } else if (index >= 4 && index < 8) {
-                    if (e.textContent.trim() == '+') {
-                        e.textContent = '-'
-                        e.style.backgroundColor = '#ff4d4d';
-                        e.classList.remove('add-text-node-elem1');
-                        e.classList.add('remove-text-node-elem1', 'text-white');
-                    } else {
-                        e.textContent = '+';
-                        e.style.backgroundColor = '#ffffff';
-                        e.classList.remove('remove-text-node-elem1', 'text-white');
-                        e.classList.add('add-text-node-elem1');
-                    }
-                } else if (index >= 8 && index < 12) {
-                    if (e.textContent.trim() == '+') {
-                        e.textContent = '-'
-                        e.style.backgroundColor = '#ff4d4d';
-                        e.classList.remove('add-text-node-elem2');
-                        e.classList.add('remove-text-node-elem2', 'text-white');
-                    } else {
-                        e.textContent = '+';
-                        e.style.backgroundColor = '#ffffff';
-                        e.classList.remove('remove-text-node-elem2', 'text-white');
-                        e.classList.add('add-text-node-elem2');
-                    }
-                } else if (index >= 12 && index < 16) {
-                    if (e.textContent.trim() == '+') {
-                        e.textContent = '-'
-                        e.style.backgroundColor = '#ff4d4d';
-                        e.classList.remove('add-text-node-elem3');
-                        e.classList.add('remove-text-node-elem3', 'text-white');
-                    } else {
-                        e.textContent = '+';
-                        e.style.backgroundColor = '#ffffff';
-                        e.classList.remove('remove-text-node-elem3', 'text-white');
-                        e.classList.add('add-text-node-elem3');
-                    }
+                    btn.classList.remove(`add-text-node-elem${categoryIndex}`);
+                } else {
+                    btn.classList.remove(`add-text-node-elem${categoryIndex - 1}`);
                 }
+                btn.classList.add(classPrefix);
             })
-        })
+        }
 
+        btnAddTextNode.forEach(function (e) {
+            e.addEventListener('click', function () {
+                const index = Array.from(this.parentNode.children).indexOf(this);
+                const categoryIndex = Math.floor(index / 4);
+                const subIndex = index % 4;
+                const classPrefix = `add-text-node-elem${categoryIndex}`;
+
+                if (e.textContent.trim() == '+') {
+                    e.textContent = '-';
+                    e.style.backgroundColor = '#ff4d4d';
+                    e.classList.remove(classPrefix);
+                    e.classList.add(`remove-text-node-elem${categoryIndex}`, 'text-white');
+                } else {
+                    e.textContent = '+';
+                    e.style.backgroundColor = '#ffffff';
+                    e.classList.remove(`remove-text-node-elem${categoryIndex}`, 'text-white');
+                    e.classList.add(classPrefix);
+                }
+            });
+        });
     });
 
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
@@ -3561,14 +3496,14 @@
 
         for (let i = 1; i <= numberOfDays; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder', 'unset-table');
+            td.classList.add('fw-bolder', 'unset-table', 'cursor-pointer');
 
             const day = i < 10 ? '0' + i : i;
             const monthString = (monthDate.getMonth() + 1) < 10 ? '0' + (monthDate.getMonth() + 1) : (monthDate.getMonth() + 1);
             const dateString = monthDate.getFullYear() + '-' + monthString + '-' + day;
 
-
             td.textContent = day;
+
             daysOfMonth.appendChild(td);
 
             td.setAttribute('data-week', dateString);
@@ -3579,7 +3514,16 @@
             } else {
                 currentWeekDay++;
             }
+            td.addEventListener('click', function () {
+                window.location.href = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + td.getAttribute('data-week');
+            })
         }
+
+        document.querySelectorAll('.week-of-the-month').forEach(function (e) {
+            e.addEventListener('click', function () {
+                console.log('/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + currentWeekDay);
+            })
+        })
 
         if (lastDayOfWeek < 6) {
             const nextMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 1);
@@ -3868,7 +3812,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-
                     document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
                         const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
                         const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
@@ -5708,16 +5651,6 @@
     })
 
     document.querySelectorAll('.monthTarget').forEach(function (e) {
-        e.style.border = 'none';
-        e.addEventListener('focus', function () {
-            e.style.border = '1px solid black';
-        })
-        e.addEventListener('blur', function () {
-            e.style.border = 'none';
-        });
-    })
-
-    document.querySelectorAll('.weekTarget').forEach(function (e) {
         e.style.border = 'none';
         e.addEventListener('focus', function () {
             e.style.border = '1px solid black';
