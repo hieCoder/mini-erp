@@ -921,8 +921,7 @@
                         <div class="col-md-5">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h4 class="fw-bolder">One Thing Calendar</h4>
-                                    <h5 class="fst-italic">Performance Overview</h5>
+                                    <h4 class="fw-bolder">Performance Overview</h4>
                                 </div>
                                 <!-- Default Modals -->
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal"
@@ -2190,7 +2189,7 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 202px;">
+                                    <tr style="height: 316px;">
                                         <td>
                                             <h5 class="fw-bolder">Weekly Goals</h5>
                                         </td>
@@ -2249,7 +2248,7 @@
                                     <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="tr-review-weekly" style="height: 50.5px; background: ${weekly.year.color[loop.index]}">
+                                        <tr class="tr-review-weekly" style="height: 79px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="7" class="weekly-goals fw-bolder"></td>
                                             </c:forEach>
@@ -2394,121 +2393,121 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center" >
-                                        <td style="height: 50px; width: 246px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
+                                        <td style="height: 79px; width: 246px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[0].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 50px; background: ${weekly.year.color[1]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 79px; background: ${weekly.year.color[1]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[1].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
 
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 51px; background: ${weekly.year.color[2]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 79px; background: ${weekly.year.color[2]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[2].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 48px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 79px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[3].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
@@ -2521,19 +2520,19 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[0]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[0]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[1]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[1]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[2]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[2]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[3]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[3]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
@@ -2642,7 +2641,7 @@
                                     <tr style="height: 34px; max-width: 1500px">
                                         <c:set var="monthName" value='Jan.,Feb.,Mar.,Apr.,May,Jun.,Jul.,Aug.,Sep.,Oct., Nov.,Dec.' />
                                         <c:forEach items="${monthName}" var="month" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white"><span>${month}</span></th>
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white title-monthly cursor-pointer"><span>${month}</span></th>
                                         </c:forEach>
                                     </tr>
                                     </thead>
@@ -3519,9 +3518,19 @@
             })
         }
 
-        document.querySelectorAll('.week-of-the-month').forEach(function (e) {
+        // Link of Weekly
+        const linkToDayOfWeek = document.getElementById('days-of-month');
+        document.querySelectorAll('.week-of-the-month').forEach(function (e, index) {
             e.addEventListener('click', function () {
-                console.log('/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + currentWeekDay);
+                var dayOfWeek = '';
+
+                if (index == 0) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[5].getAttribute('data-week');
+                else if (index == 1) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[12].getAttribute('data-week');
+                else if (index == 2) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[19].getAttribute('data-week');
+                else if (index == 3) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[26].getAttribute('data-week');
+                else if (index == 4) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[26].getAttribute('data-week');
+
+                window.location.href = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + dayOfWeek;
             })
         })
 
@@ -3555,7 +3564,7 @@
                 for (let j = 0; j < daysOfMonth.children.length; j++) {
                     const td = document.createElement('td');
                     td.classList.add('fw-bolder', 'unset-table');
-
+                    td.style.width = '20px'
                     const weekValue = daysOfMonth.children[j].getAttribute('data-week');
                     td.setAttribute('data-week', weekValue);
                     tr.appendChild(td);
@@ -3802,7 +3811,7 @@
         xhr.send();
     })
 
-    // Function handle Click tab report
+    // Handle Click Tab Report
     function handleClickTabReport(e) {
         var currentUrl = window.location.href;
         var year = getParameterByName('currentDay', currentUrl);
@@ -4334,6 +4343,12 @@
                                 '</div>';
                         });
                     });
+
+                    document.querySelectorAll('.title-monthly').forEach(function (e, index) {
+                        e.addEventListener('click', function () {
+                            window.location.href = '/management-time/1?year=' + ${weekly.year.year} + '&month='  + (index + 1);
+                        })
+                    })
                 } else {
                     window.location.href = "/management-time/";
                 }
