@@ -2264,22 +2264,22 @@
                                     </c:forEach>
                                     <tr class="tr-weekly-sentence0">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                            <td colspan="7" style="height: 126px">
-                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Gratitude Diary"></textarea>
+                                            <td colspan="7" style="height: 126px; width: 170px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%; width: 100%;" placeholder="Enter Gratitude Diary"></textarea>
                                             </td>
                                         </c:forEach>
                                     </tr>
                                     <tr class="tr-weekly-sentence1">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                            <td colspan="7" style="height: 126px">
-                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Compliment"></textarea>
+                                            <td colspan="7" style="height: 126px; width: 170px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%; width: 100%;" placeholder="Enter Compliment"></textarea>
                                             </td>
                                         </c:forEach>
                                     </tr>
                                     <tr class="tr-weekly-sentence2">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                            <td colspan="7" style="height: 126px">
-                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Reflection/Improvement"></textarea>
+                                            <td colspan="7" style="height: 126px; width: 170px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%; width: 100%;" placeholder="Enter Reflection/Improvement"></textarea>
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -2309,7 +2309,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[0] == null ? '#f2aaaa' : weekly.year.color[0]}; height: 46px">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[0] == null ? '#f2aaaa' : weekly.year.color[0]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -2318,7 +2318,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[1] == null ? '#bcd6af' : weekly.year.color[1]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[1] == null ? '#bcd6af' : weekly.year.color[1]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -2327,7 +2327,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[2] == null ? '#ffe180' : weekly.year.color[2]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[2] == null ? '#ffe180' : weekly.year.color[2]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -2336,7 +2336,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[3] == null ? '#ad9ad9' : weekly.year.color[3]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[3] == null ? '#ad9ad9' : weekly.year.color[3]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -2348,7 +2348,7 @@
 
                                     <%-- Review Daily Session --%>
                                     <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
-                                    <tr name="theSingleMostImportantThing">
+                                    <tr name="theSingleMostImportantThing" style="height: 45px">
                                         <td class="text-center">
                                             <script>
                                                 var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};
@@ -2367,7 +2367,7 @@
                                     <c:forEach var="index" begin="1" end="10">
                                         <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>
                                         <c:if test="${not empty dailyRoutine.title}">
-                                            <tr name="theSingleMostImportantThing">
+                                            <tr name="theSingleMostImportantThing" style="height: 45px">
                                                 <td class="text-center">
                                                     <script>
                                                         var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};
@@ -2393,7 +2393,7 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center" >
-                                        <td style="height: 79px; width: 246px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
+                                        <td style="height: 78px; width: 246px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[0].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success d-flex align-items-center" style="width: 53px">
@@ -2484,7 +2484,7 @@
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 79px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
+                                        <td style="height: 78px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[3].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('COMPLETE')}">
                                                 <button class="btn btn-success d-flex align-items-center" style="width: 53px">
@@ -2528,11 +2528,11 @@
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style=" background: ${weekly.year.color[2]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[2]}; height: 45px">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style=" background: ${weekly.year.color[3]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[3]}; height: 45px">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
@@ -2664,9 +2664,9 @@
                                                         <c:set var="formattedMonth" value="${month}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 90px; max-width: 90px; max-height: 57px" data-simplebar></td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}"></td>
                                                 <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0.00%</td>
-                                            </c:forEach>
+                                            </c:forEach >
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="7" varStatus="loop">
@@ -2686,7 +2686,6 @@
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="monthly-time-report" style="height: 50px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="11" varStatus="loop">
@@ -3666,7 +3665,7 @@
                                             } else if (statusWeek == '') {
                                                 btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
                                             }
-                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                                            const html = `<div class="d-flex align-items-center justify-content-between mt-3"><span>` + weeklyTarget + `</span>`+ btnStatus + `</div>`;
                                             $(onlyWeek).append(html);
                                         }
                                     }
