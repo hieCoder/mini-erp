@@ -2638,7 +2638,7 @@
                             <div style="width: 100%">
                                 <table class="table table-sm table-bordered text-center" id="table-year-report">
                                     <thead>
-                                    <tr style="height: 34px; max-width: 1500px">
+                                    <tr style="height: 34px;">
                                         <c:set var="monthName" value='Jan.,Feb.,Mar.,Apr.,May,Jun.,Jul.,Aug.,Sep.,Oct., Nov.,Dec.' />
                                         <c:forEach items="${monthName}" var="month" varStatus="loop">
                                             <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white title-monthly cursor-pointer"><span>${month}</span></th>
@@ -2664,7 +2664,7 @@
                                                         <c:set var="formattedMonth" value="${month}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="height: 60px"></td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}"></td>
                                                 <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0.00%</td>
                                             </c:forEach >
                                         </tr>
