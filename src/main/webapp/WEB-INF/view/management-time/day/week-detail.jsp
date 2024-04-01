@@ -2664,7 +2664,7 @@
                                                         <c:set var="formattedMonth" value="${month}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}"></td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="height: 60px"></td>
                                                 <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0.00%</td>
                                             </c:forEach >
                                         </tr>
