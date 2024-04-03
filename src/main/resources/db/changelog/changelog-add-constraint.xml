@@ -228,9 +228,9 @@
 
     <changeSet id="27" author="team2">
         <addForeignKeyConstraint baseTableName="COLOR_MANAGEMENT_TIME_DAY"
-                                 baseColumnNames="WEEKLY_ID"
-                                 referencedTableName="WEEKLY_MANAGEMENT_TIME_DAY"
+                                 baseColumnNames="YEAR_ID"
+                                 referencedTableName="YEAR_MANAGEMENT_TIME_DAY"
                                  referencedColumnNames="ID"
-                                 constraintName="FK_COLOR_MANAGEMENT_TIME_DAY_WEEKLY"/>
+                                 constraintName="FK_COLOR_MANAGEMENT_TIME_DAY_YEAR"/>
     </changeSet>
 </databaseChangeLog>

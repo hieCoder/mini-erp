@@ -27,6 +27,24 @@
             #ffe180
             #ad9ad9
          */
+
+        .add-text-node-elem0, .remove-text-node-elem0,
+        .add-text-node-elem1, .remove-text-node-elem1,
+        .add-text-node-elem2, .remove-text-node-elem2,
+        .add-text-node-elem3, .remove-text-node-elem3 {
+            position: absolute;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            text-align: center;
+            line-height: 26px;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
         .add-node, .remove-node {
             position: absolute;
             bottom: -15px;
@@ -125,7 +143,6 @@
             margin-left: 150px;
             top: -280px !important;
         }
-
 
         #elem1child0 {
             margin-left: 130px;
@@ -237,7 +254,6 @@
         }
 
         .hiddenLine {
-            /* !important because width was originally set by js */
             width: 0 !important;
             border: 0 rgba(0, 0, 0, 0) solid;
             transition: all 0.4s;
@@ -297,6 +313,10 @@
         }
 
         .addPlan {
+            top: -2%;
+            left: 44%;
+            display: flex !important;
+            align-items: center !important;
             transform: translate(-50%, -50%) !important;
             padding: 4px !important;
             border-radius: 50% !important;
@@ -501,10 +521,10 @@
                         <div class="container vh-100">
                             <div class="containerMindMap">
                                 <div id="main" class="elem text-danger overflow-auto d-flex align-items-center justify-content-around fs-5 text-white fw-bold" style="background: #9a9a9a;"></div>
-                                <div class="remove-node" style="background:#ff4d4d;">-</div>
-                                <div id="elem0" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div class="remove-node text-white" style="background:#ff4d4d;"> - </div>
+                                <div id="elem0" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#f2aaaa' : weekly.year.color[0]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[0].target == '' ? 'Click To Edit' : weekly.year.target[0].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -512,10 +532,14 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: 17px; left: 15px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: -12px; left: 52px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: -12px; right: 12px;"> + </div>
+                                    <div class="add-text-node-elem0 text-black btn-addTextNode0 btn-text-node" style="top: 20px; ; right: -20px;"> + </div>
                                 </div>
-                                <div id="elem1" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div id="elem1" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#bcd6af' : weekly.year.color[1]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[1].target == '' ? 'Click To Edit' : weekly.year.target[1].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -523,10 +547,14 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 5px;  right: -15px;"> + </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 35px; right: -30px;"> + </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 67px; right: -31px;"> + </div>
+                                    <div class="add-text-node-elem1 text-black btn-addTextNode1 btn-text-node" style="top: 100px; right: -17px;"> + </div>
                                 </div>
-                                <div id="elem2" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div id="elem2" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ffe180' : weekly.year.color[2]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[2].target == '' ? 'Click To Edit' : weekly.year.target[2].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -534,10 +562,14 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: 27px; left: 140px;"> + </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: -5px; left: 108px;"> + </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: -6px; left: 48px;"> + </div>
+                                    <div class="add-text-node-elem2 text-black btn-addTextNode2 btn-text-node" style="bottom: 27px; left: 10px;"> + </div>
                                 </div>
-                                <div id="elem3" class="panel colorPicker level1 elem overflow-auto d-flex align-items-center justify-content-around fs-5 text-white"
+                                <div id="elem3" class="panel colorPicker level1 elem d-flex align-items-center justify-content-around fs-5 text-white"
                                      style="background: ${weekly.year == null || weekly.year.color == null || empty weekly.year.color ? '#ad9ad9' : weekly.year.color[3]};">
-                                    <p class="content-level1 d-flex flex-nowrap position-relative fw-bold" contenteditable="true">
+                                    <p class="content-level1 d-flex overflow-auto flex-nowrap position-relative fw-bold" contenteditable="true">
                                         ${weekly.year == null || weekly.year.target[3].target == '' ? 'Click To Edit' : weekly.year.target[3].target}
                                     </p>
                                     <div style="position: absolute; top: 92px">
@@ -545,6 +577,10 @@
                                         <p hidden="hidden"
                                            class="pickedColor"></p>
                                     </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 100px; left: 15px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 64px; left: 2px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 29px; left: 2px;"> + </div>
+                                    <div class="add-text-node-elem3 text-black btn-addTextNode3 btn-text-node" style="top: 3px; left: 24px;"> + </div>
                                 </div>
                                 <div id="elem0child0" class="elem elem0child level2 nodeChill d-flex align-items-center justify-content-around">
                                      <span contenteditable="true" class="main-content-node text-wrap overflow-auto fw-bolder" style="max-height: 65px;">
@@ -885,8 +921,7 @@
                         <div class="col-md-5">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h4 class="fw-bolder">One Thing Calendar</h4>
-                                    <h5 class="fst-italic">Performance Overview</h5>
+                                    <h4 class="fw-bolder">Performance Overview</h4>
                                 </div>
                                 <!-- Default Modals -->
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal"
@@ -1808,24 +1843,7 @@
                                                 <c:set var="backgroundColor1" value=""/>
                                                 <c:forEach var="color" items="${weekly.colors}">
                                                     <c:forEach var="value" items="${color.values}">
-<%--                                                        <c:if test="${exitLoop0 eq false || exitLoop1 eq false || exitLoop2 eq false || exitLoop3 eq false}">--%>
-<%--                                                            <c:if test="${data[0].actual ne '' && value eq data[0].contentPlan}">--%>
-<%--                                                                <c:set var="backgroundColor0" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop0" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                            <c:if test="${data[1].contentPlan ne '' && value eq data[1].contentPlan}">--%>
-<%--                                                                <c:set var="backgroundColor1" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop1" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                            <c:if test="${data[0].actual ne '' && value eq data[0].actual}">--%>
-<%--                                                                <c:set var="backgroundColor2" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop2" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                            <c:if test="${data[1].actual ne '' && value eq data[1].actual}">--%>
-<%--                                                                <c:set var="backgroundColor3" value="${color.color}"/>--%>
-<%--                                                                <c:set var="exitLoop3" value="true"/>--%>
-<%--                                                            </c:if>--%>
-<%--                                                        </c:if>--%>
+
                                                         <c:if test="${data.actual[10] ne '' && value eq data.actual[10]}">
                                                             <c:set var="backgroundColor0" value="${color.color}"/>
                                                         </c:if>
@@ -1850,7 +1868,7 @@
                                                                     <input class="form-check-input mt-0 performance-plan" type="checkbox" aria-label="Checkbox for following text input">
                                                                 </div>
                                                             </div>
-                                                            <button class="addPlan btn waves-effect waves-light btn-success mt-1"><i class="bx bx-plus"></i></button>
+                                                            <button type="button" class="addPlan btn waves-effect waves-light btn-success mt-1"><i class="bx bx-plus"></i></button>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:forEach var="plan" items="${data.plans}" varStatus="loop1">
@@ -2171,7 +2189,7 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <tr style="height: 202px;">
+                                    <tr style="height: 316px;">
                                         <td>
                                             <h5 class="fw-bolder">Weekly Goals</h5>
                                         </td>
@@ -2221,7 +2239,7 @@
                                     <thead>
                                     <tr style="height: 45px">
                                         <c:forEach begin="0" end="3" varStatus="loop">
-                                            <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">WEEK <span>${loop.index + 1}</span></th>
+                                            <th style="background-color: #f2f2f2;" class="fw-bolder cursor-pointer week-of-the-month" colspan="7">WEEK <span>${loop.index + 1}</span></th>
                                         </c:forEach>
                                         <th style="background-color: #f2f2f2;" class="fw-bolder" colspan="7">EXTRA DAYS</th>
                                     </tr>
@@ -2230,7 +2248,7 @@
                                     <tr id="days-of-month" style="height: 44px" data-value="${weekly.monthlys[0].month}">
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
-                                        <tr class="tr-review-weekly" style="height: 50.5px; background: ${weekly.year.color[loop.index]}">
+                                        <tr class="tr-review-weekly" style="height: 79px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="4" varStatus="loop">
                                                 <td colspan="7" class="weekly-goals fw-bolder"></td>
                                             </c:forEach>
@@ -2246,22 +2264,22 @@
                                     </c:forEach>
                                     <tr class="tr-weekly-sentence0">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                            <td colspan="7" style="height: 126px">
-                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Gratitude Diary"></textarea>
+                                            <td colspan="7" style="height: 126px; width: 170px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%; width: 100%;" placeholder="Enter Gratitude Diary"></textarea>
                                             </td>
                                         </c:forEach>
                                     </tr>
                                     <tr class="tr-weekly-sentence1">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                            <td colspan="7" style="height: 126px">
-                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Compliment"></textarea>
+                                            <td colspan="7" style="height: 126px; width: 170px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%; width: 100%;" placeholder="Enter Compliment"></textarea>
                                             </td>
                                         </c:forEach>
                                     </tr>
                                     <tr class="tr-weekly-sentence2">
                                         <c:forEach begin="0" end="4" varStatus="innerLoop">
-                                            <td colspan="7" style="height: 126px">
-                                                <textarea class="form-control weekly-sentence" style="height: 100%" placeholder="Enter Reflection/Improvement"></textarea>
+                                            <td colspan="7" style="height: 126px; width: 170px">
+                                                <textarea class="form-control weekly-sentence" style="height: 100%; width: 100%;" placeholder="Enter Reflection/Improvement"></textarea>
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -2269,7 +2287,7 @@
                                 </table>
                             </div>
                             <div>
-                                <table id="table-monthlyReview-per" class="table text-center mb-0" style="width: 245px; border: 1px solid black !important;">
+                                <table id="table-monthlyReview-per" class="table text-center mb-0" style="width: 248px; border: 1px solid black !important;">
                                     <thead>
                                     <tr style="border: 1px solid black">
                                         <th colspan="3" class="month-current text-danger fw-bolder text-uppercase"></th>
@@ -2291,7 +2309,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[0] == null ? '#f2aaaa' : weekly.year.color[0]}; height: 46px">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[0] == null ? '#f2aaaa' : weekly.year.color[0]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[1] == null ? 0 : weekly.monthlys[0].targetCategory[1].target}
@@ -2300,7 +2318,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[1] == null ? '#bcd6af' : weekly.year.color[1]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[1] == null ? '#bcd6af' : weekly.year.color[1]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[2] == null ? 0 : weekly.monthlys[0].targetCategory[2].target}
@@ -2309,7 +2327,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[2] == null ? '#ffe180' : weekly.year.color[2]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[2] == null ? '#ffe180' : weekly.year.color[2]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[3] == null ? 0 : weekly.monthlys[0].targetCategory[3].target}
@@ -2318,7 +2336,7 @@
                                             0
                                         </td>
                                     </tr>
-                                    <tr class="text-center" style="background-color: ${weekly.year.color[3] == null ? '#ad9ad9' : weekly.year.color[3]}">
+                                    <tr class="text-center" style="background-color: ${weekly.year.color[3] == null ? '#ad9ad9' : weekly.year.color[3]}; height: 45px">
                                         <td class="text-center review-rate-ongthing">0%</td>
                                         <td class="text-center review-target-ongthing">
                                             ${weekly.monthlys[0].targetCategory[4] == null ? 0 : weekly.monthlys[0].targetCategory[4].target}
@@ -2330,7 +2348,7 @@
 
                                     <%-- Review Daily Session --%>
                                     <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[0]}"/>
-                                    <tr name="theSingleMostImportantThing">
+                                    <tr name="theSingleMostImportantThing" style="height: 45px">
                                         <td class="text-center">
                                             <script>
                                                 var performance = ${dailyRoutine != null && dailyRoutine.title != '' ? dailyRoutine.performance : 0};
@@ -2349,7 +2367,7 @@
                                     <c:forEach var="index" begin="1" end="10">
                                         <c:set var="dailyRoutine" value="${weekly.monthlys[0].dailyRoutine[index]}"/>
                                         <c:if test="${not empty dailyRoutine.title}">
-                                            <tr name="theSingleMostImportantThing">
+                                            <tr name="theSingleMostImportantThing" style="height: 45px">
                                                 <td class="text-center">
                                                     <script>
                                                         var performance = ${dailyRoutine.title != '' ? dailyRoutine.performance : 0};
@@ -2375,121 +2393,121 @@
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
                                     <tr class="text-center" >
-                                        <td style="height: 50px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 78px; width: 246px; background: ${weekly.year.color[0]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[0].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[0].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 50px; background: ${weekly.year.color[1]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 79px; background: ${weekly.year.color[1]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[1].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
 
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 51px; background: ${weekly.year.color[2]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 79px; background: ${weekly.year.color[2]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[2].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[2].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                         </td>
                                     </tr>
                                     <tr class="text-center" >
-                                        <td style="height: 48px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center justify-content-between">
+                                        <td style="height: 78px; background: ${weekly.year.color[3]}" class="text-center fw-bolder monthly-goals d-flex align-items-center overflow-auto justify-content-between">
                                             <span class="d-inline-block">${weekly.monthlys[0].monthlyContents[3].content}</span>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('COMPLETE')}">
-                                                <button class="btn btn-success" style="width: 53px">
+                                                <button class="btn btn-success d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('POSTPONE')}">
-                                                <button class="btn btn-warning" style="width: 53px">
+                                                <button class="btn btn-warning d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-arrow-right-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('CANCELLATION')}">
-                                                <button class="btn btn-danger" style="width: 53px">
+                                                <button class="btn btn-danger d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[3].status.equals('INPROGRESS')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
                                             <c:if test="${weekly.monthlys[0].monthlyContents[1].status.equals('')}">
-                                                <button class="btn btn-info" style="width: 53px">
+                                                <button class="btn btn-info d-flex align-items-center" style="width: 53px">
                                                     <i class="ri-play-mini-line"></i>
                                                 </button>
                                             </c:if>
@@ -2502,19 +2520,19 @@
                                     </thead>
                                     <tbody>
                                     <%-- OneThing Calendar Session --%>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[0]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[0]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[1]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[1]}">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[2]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[2]}; height: 45px">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
-                                    <tr class="text-center" style="height: 45px; background: ${weekly.year.color[3]}">
+                                    <tr class="text-center" style=" background: ${weekly.year.color[3]}; height: 45px">
                                         <td class="text-center time-used-monthly" style="width: 75px;"></td>
                                         <td class="text-center performance-amountTime-monthly" style="width: 75px;"></td>
                                     </tr>
@@ -2620,17 +2638,17 @@
                             <div style="width: 100%">
                                 <table class="table table-sm table-bordered text-center" id="table-year-report">
                                     <thead>
-                                    <tr style="height: 34px; max-width: 1500px">
+                                    <tr style="height: 34px;">
                                         <c:set var="monthName" value='Jan.,Feb.,Mar.,Apr.,May,Jun.,Jul.,Aug.,Sep.,Oct., Nov.,Dec.' />
                                         <c:forEach items="${monthName}" var="month" varStatus="loop">
-                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white"><span>${month}</span></th>
+                                            <th colspan="2" style="background-color: black; min-width: 125px !important; border-right: 1px solid #FFFFFF !important;" class="fw-bolder text-white title-monthly cursor-pointer"><span>${month}</span></th>
                                         </c:forEach>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr style="max-width: 1500px; height: 34px">
                                         <c:forEach begin="0" end="11" varStatus="loop">
-                                            <td class="text-white fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px; background-color: rgba(60, 127, 234, 0.7);">Progress</td>
+                                            <td class="fw-bolder" data-day="${weekly.year.year}-${loop.index + 1}" style="width: 70px; max-width: 70px;">Progress</td>
                                             <td class="fw-bolder" style="width: 39px;">Rate</td>
                                         </c:forEach>
                                     </tr>
@@ -2646,9 +2664,9 @@
                                                         <c:set var="formattedMonth" value="${month}"/>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 90px; max-width: 90px; max-height: 57px" data-simplebar></td>
+                                                <td class="onething-category-report" data-month="${weekly.year.year}-${formattedMonth}"></td>
                                                 <td class="perf-onething-report" data-month="${weekly.year.year}-${formattedMonth}" style="width: 39px;">0.00%</td>
-                                            </c:forEach>
+                                            </c:forEach >
                                         </tr>
                                     </c:forEach>
                                     <c:forEach begin="0" end="7" varStatus="loop">
@@ -2668,7 +2686,6 @@
                                             </c:forEach>
                                         </tr>
                                     </c:forEach>
-
                                     <c:forEach begin="0" end="3" varStatus="loop">
                                         <tr class="monthly-time-report" style="height: 50px; background: ${weekly.year.color[loop.index]}">
                                             <c:forEach begin="0" end="11" varStatus="loop">
@@ -2695,10 +2712,10 @@
                                     </thead>
                                     <tbody>
                                     <tr style="height: 34px; background: red" class="fw-bold text-white">
-                                        <td colspan="2">${weekly.year.year.substring(2)}' goals</td>
+                                        <td colspan="2">${weekly.year.year.substring(2)} goals</td>
                                     </tr>
                                     <tr class="fw-bold" style="height: 34px">
-                                        <td class="text-white" style="background-color: rgba(60, 127, 234, 0.7);">Progess</td>
+                                        <td>Progress</td>
                                         <td>Rate</td>
                                     </tr>
                                     <c:forEach begin="0" end="3" varStatus="loop">
@@ -3011,6 +3028,7 @@
 <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script>
+
     // Handle Tab Redirection
     $(document).ready(function () {
         const currentURL = window.location.href;
@@ -3058,8 +3076,7 @@
         }
     })
 
-    // Mind map
-    // Handle User click TAB 2024 Golas
+    // Handle User click TAB 2024 Goals
     $('#session-goals').one('click', function() {
         RADIUS_L1 = 150;
         RADIUS_L2 = 130;
@@ -3093,7 +3110,7 @@
                 $("#elem" + i).css("top", centery - RADIUS_L1 * Math.sin((i / $(".level1").length) * 2 * Math.PI + Math.PI / 2) - $("#elem" + i).outerHeight() / 2 + "px");
 
                 angle = createLineFromTo("#main", "#elem" + i, "#line" + i);
-                if ( hasLevel2Children(i))
+                if (hasLevel2Children(i))
                 {
                     redrawLevel2(i, angle, true);
                     toggle("elem" + i);
@@ -3112,7 +3129,6 @@
                 $(fromElem).after("<div class='line lineFrom_" + $(fromElem).attr('id') + "' id='" + lineId.substring(1) + "'></div>");
             }
             $(lineId).css("width", Math.sqrt(Math.pow((fromTop + 40 - toTop), 2) + Math.pow((fromLeft - toLeft), 2)) + "px");
-
             $(lineId).css("left", (fromLeft - $("#main").offset().left) + "px");
             $(lineId).css("top", (fromTop - $("#main").offset().top) + "px");
             $(lineId).css("transform", "rotate(" + theta + "rad)");
@@ -3139,7 +3155,6 @@
                     angle = Math.PI - Math.atan2(toTop - fromTop, fromLeft - toLeft);
                     redrawLevel2(i, angle, false);
                 } else {
-                    // now collapse layer 1 element
                     for (var j = 0; j < $(".elem" + i + "child").length; j++) {
                         xPos = parseFloat($("#elem" + i).css("left").slice(0, -2)) + $("#elem" + i).outerWidth() / 2;
                         yPos = parseFloat($("#elem" + i).css("top").slice(0, -2)) + $("#elem" + i).outerHeight() / 2;
@@ -3197,13 +3212,6 @@
 
         $('#line2').addClass('d-none');
 
-        // Function to draw lines for a given level 1 element
-        // function drawLinesForLevel1Element(level1ElemId) {
-        //     for (var j = 0; j < $(".elem" + level1ElemId + "child").length; j++) {
-        //         createLineFromTo("#elem" + level1ElemId, "#elem" + level1ElemId + "child" + j, "#line" + level1ElemId + "child" + j);
-        //     }
-        // }
-
         for (var i = 0; i < $(".level1").length; i++) { $("#elem" + i).off('click'); }
 
         // Add Main node
@@ -3211,10 +3219,17 @@
             $(this).css('background-color', '#ff4d4d');
             $(this).text('-');
             $(this).addClass('remove-node');
+            $(this).addClass('text-white');
             $(this).removeClass('add-node');
             $('#elem2').removeClass('d-none');
             $('.lineFrom_elem2').removeClass('d-none');
             $('.elem2child').removeClass('d-none');
+            document.querySelectorAll('.btn-addTextNode2').forEach(function (e) {
+                e.textContent = '-';
+                e.style.backgroundColor = '#ff4d4d';
+                e.classList.remove('add-text-node-elem2');
+                e.classList.add('remove-text-node-elem2');
+            })
         });
 
         // Remove Main node
@@ -3224,6 +3239,7 @@
             $(this).css('background-color', '#ffff');
             $(this).text('+');
             $(this).removeClass('remove-node');
+            $(this).removeClass('text-white');
             $('.lineFrom_elem2').addClass('d-none');
             $('.elem2child').addClass('d-none');
         });
@@ -3297,6 +3313,100 @@
                 e.textContent = 'Click To Edit';
             }
         })
+
+        // Add Text Node
+        function addButtonListener(buttonClass, linePrefix, elemPrefix) {
+            document.querySelectorAll(buttonClass).forEach(function (e, index) {
+                e.addEventListener('click', function () {
+                    const lineText = document.getElementById(linePrefix + index);
+                    const textNode = document.getElementById(elemPrefix + index);
+                    if (e.textContent.trim() == '+') {
+                        lineText.classList.remove('d-none');
+                        textNode.classList.remove('d-none');
+                    } else {
+                        lineText.classList.add('d-none');
+                        textNode.classList.add('d-none');
+                    }
+                });
+            });
+        }
+        addButtonListener('.btn-addTextNode0', 'line0child', 'elem0child');
+        addButtonListener('.btn-addTextNode1', 'line1child', 'elem1child');
+        addButtonListener('.btn-addTextNode2', 'line2child', 'elem2child');
+        addButtonListener('.btn-addTextNode3', 'line3child', 'elem3child');
+
+
+        // Hide Text Node No Content
+        const btnAddTextNode = document.querySelectorAll('.btn-text-node');
+        var flag = false;
+        document.querySelectorAll('.level2').forEach(function (e, index) {
+            const spanTextContent = e.querySelector('span').textContent.trim();
+            if (spanTextContent == 'TEXT') {
+                e.classList.add('d-none');
+                const idElem = e.getAttribute('id').slice(4);
+                document.getElementById('line' + idElem).classList.add('d-none');
+            } else {
+                flag = true;
+                const btn = btnAddTextNode[index];
+                btn.textContent = '-';
+                btn.style.backgroundColor = '#ff4d4d';
+                btn.classList.add('text-white');
+
+                const categoryIndex = Math.floor(index / 4);
+                const classPrefix = `remove-text-node-elem${categoryIndex}`;
+
+                if (index < 4) {
+                    btn.classList.remove(`add-text-node-elem${categoryIndex}`);
+                } else {
+                    btn.classList.remove(`add-text-node-elem${categoryIndex - 1}`);
+                }
+                btn.classList.add(classPrefix);
+            }
+        });
+
+        if (flag == false) {
+            const btnAddTextNode = document.querySelectorAll('.btn-text-node');
+            document.querySelectorAll('.level2').forEach(function (e, index) {
+                e.classList.remove('d-none');
+                const idElem = e.getAttribute('id').slice(4);
+                document.getElementById('line' + idElem).classList.remove('d-none');
+                const btn = btnAddTextNode[index];
+                btn.textContent = '-';
+                btn.style.backgroundColor = '#ff4d4d';
+                btn.classList.add('text-white');
+
+                const categoryIndex = Math.floor(index / 4);
+                const classPrefix = `remove-text-node-elem${categoryIndex}`;
+
+                if (index < 4) {
+                    btn.classList.remove(`add-text-node-elem${categoryIndex}`);
+                } else {
+                    btn.classList.remove(`add-text-node-elem${categoryIndex - 1}`);
+                }
+                btn.classList.add(classPrefix);
+            })
+        }
+
+        btnAddTextNode.forEach(function (e) {
+            e.addEventListener('click', function () {
+                const index = Array.from(this.parentNode.children).indexOf(this);
+                const categoryIndex = Math.floor(index / 4);
+                const subIndex = index % 4;
+                const classPrefix = `add-text-node-elem${categoryIndex}`;
+
+                if (e.textContent.trim() == '+') {
+                    e.textContent = '-';
+                    e.style.backgroundColor = '#ff4d4d';
+                    e.classList.remove(classPrefix);
+                    e.classList.add(`remove-text-node-elem${categoryIndex}`, 'text-white');
+                } else {
+                    e.textContent = '+';
+                    e.style.backgroundColor = '#ffffff';
+                    e.classList.remove(`remove-text-node-elem${categoryIndex}`, 'text-white');
+                    e.classList.add(classPrefix);
+                }
+            });
+        });
     });
 
     document.getElementById('table-title-review').querySelectorAll('td').forEach(function (e) {
@@ -3384,14 +3494,14 @@
 
         for (let i = 1; i <= numberOfDays; i++) {
             const td = document.createElement('td');
-            td.classList.add('fw-bolder', 'unset-table');
+            td.classList.add('fw-bolder', 'unset-table', 'cursor-pointer');
 
             const day = i < 10 ? '0' + i : i;
             const monthString = (monthDate.getMonth() + 1) < 10 ? '0' + (monthDate.getMonth() + 1) : (monthDate.getMonth() + 1);
             const dateString = monthDate.getFullYear() + '-' + monthString + '-' + day;
 
-
             td.textContent = day;
+
             daysOfMonth.appendChild(td);
 
             td.setAttribute('data-week', dateString);
@@ -3402,7 +3512,26 @@
             } else {
                 currentWeekDay++;
             }
+            td.addEventListener('click', function () {
+                window.location.href = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + td.getAttribute('data-week');
+            })
         }
+
+        // Link of Weekly
+        const linkToDayOfWeek = document.getElementById('days-of-month');
+        document.querySelectorAll('.week-of-the-month').forEach(function (e, index) {
+            e.addEventListener('click', function () {
+                var dayOfWeek = '';
+
+                if (index == 0) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[5].getAttribute('data-week');
+                else if (index == 1) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[12].getAttribute('data-week');
+                else if (index == 2) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[19].getAttribute('data-week');
+                else if (index == 3) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[26].getAttribute('data-week');
+                else if (index == 4) dayOfWeek = linkToDayOfWeek.querySelectorAll('td')[26].getAttribute('data-week');
+
+                window.location.href = '/management-time/weekly-detail/' + userCurrent.id + '?currentDay=' + dayOfWeek;
+            })
+        })
 
         if (lastDayOfWeek < 6) {
             const nextMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 1);
@@ -3434,7 +3563,7 @@
                 for (let j = 0; j < daysOfMonth.children.length; j++) {
                     const td = document.createElement('td');
                     td.classList.add('fw-bolder', 'unset-table');
-
+                    td.style.width = '20px'
                     const weekValue = daysOfMonth.children[j].getAttribute('data-week');
                     td.setAttribute('data-week', weekValue);
                     tr.appendChild(td);
@@ -3536,7 +3665,7 @@
                                             } else if (statusWeek == '') {
                                                 btnStatus = `<button class="btn btn-info float-end" style="width: 53px"><i class="ri-play-mini-line"></i></button>`
                                             }
-                                            const html = `<span>` + weeklyTarget + `</span>`+ btnStatus;
+                                            const html = `<div class="d-flex align-items-center justify-content-between mt-3"><span>` + weeklyTarget + `</span>`+ btnStatus + `</div>`;
                                             $(onlyWeek).append(html);
                                         }
                                     }
@@ -3679,15 +3808,9 @@
             }
         }
         xhr.send();
-
-        // const dailyOnethingRoutine = document.getElementById('daily-onething-routine');
-        // document.querySelectorAll('.review-dailyRoutine').forEach(function () {
-        //     dailyOnethingRoutine.setAttribute('rowspan', parseInt(dailyOnethingRoutine.getAttribute('rowspan')) + 1);
-        //     dailyOnethingRoutine.style.height = (parseInt(dailyOnethingRoutine.style.height) + 45) + 'px';
-        // });
     })
 
-    // Function handle Click tab report
+    // Handle Click Tab Report
     function handleClickTabReport(e) {
         var currentUrl = window.location.href;
         var year = getParameterByName('currentDay', currentUrl);
@@ -3697,34 +3820,6 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const parseData = JSON.parse(xhr.responseText);
-                    // document.querySelectorAll('.onething-report').forEach(function (e, index) {
-                    //     const onethingReport = e.querySelectorAll('.onething-category-report');
-                    //     const perfOnethingReport = e.querySelectorAll('.perf-onething-report');
-                    //     onethingReport.forEach(function (e, indexTd) {
-                    //         const dataMonth = e.getAttribute('data-month');
-                    //         parseData.forEach(month => {
-                    //             if (dataMonth == month.month) {
-                    //                 if (month.targetCategory != null) {
-                    //                     const monthTarget = month.targetCategory[index + 1].target;
-                    //                     const monthPer = month.targetCategory[index + 1].performance;
-                    //                     const performanceMonthtTarget = month.targetCategory[index + 1].performance
-                    //                     e.textContent = monthPer + '/' + monthTarget;
-                    //
-                    //                     const performancePercentage = parseFloat(performanceMonthtTarget) * 100 / parseFloat(monthTarget);
-                    //                     if (!isNaN(performancePercentage)) {
-                    //                         const roundedPerformancePercentage = performancePercentage.toFixed(2);
-                    //                         perfOnethingReport[indexTd].textContent = roundedPerformancePercentage + '%';
-                    //                         if (month.color != null) {
-                    //                             e.style.backgroundColor = month.color[index + 1];
-                    //                             perfOnethingReport[indexTd].style.backgroundColor = month.color[index + 1];
-                    //                         }
-                    //                     }
-                    //                 }
-                    //             }
-                    //         });
-                    //     });
-                    // })
-
                     document.querySelectorAll('.report-dailyRoutine').forEach(function (eTr, indexTr) {
                         const titleDailyReport = eTr.querySelectorAll('.title-dailyRoutine-report');
                         const perfDailyReport = eTr.querySelectorAll('.perf-dailyRoutine-report');
@@ -3769,7 +3864,7 @@
                                                 } else if (status == '') {
                                                     btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
                                                 }
-                                                const html = `<span>` + content + `</span>`+ btnStatus;
+                                                const html = `<div class="d-flex align-items-center justify-content-between"><span>` + content + `</span>`+ btnStatus + `</div>`;
                                                 $(eTarget).append(html);
                                             }
                                         }
@@ -4247,6 +4342,12 @@
                                 '</div>';
                         });
                     });
+
+                    document.querySelectorAll('.title-monthly').forEach(function (e, index) {
+                        e.addEventListener('click', function () {
+                            window.location.href = '/management-time/1?year=' + ${weekly.year.year} + '&month='  + (index + 1);
+                        })
+                    })
                 } else {
                     window.location.href = "/management-time/";
                 }
@@ -4475,33 +4576,6 @@
         })
     }
 
-    // Handle change content Category Color
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const elColorCategory = document.querySelectorAll('.color-category');
-    //     const titleReportCategory = document.querySelectorAll('.title-report-category');
-    //     const reviewWeeklyGoals = document.querySelectorAll('.review-weekly-goals');
-    //     const reivewWeeklyAmountTime = document.querySelectorAll('.review-weekly-amount-time');
-    //     const reivewDailyOnething = document.querySelectorAll('.reivew-daily-onething');
-    //     const yearTitle = document.querySelectorAll('.yearTitle');
-    //
-    //     yearTitle.forEach(function (e, index) {
-    //         if (index != 0) {
-    //             if (e.textContent != '') {
-    //                 elColorCategory[index - 1].textContent = e.textContent;
-    //                 titleReportCategory[index - 1].textContent = e.textContent;
-    //                 titleReportCategory[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //                 reviewWeeklyGoals[index - 1].textContent = e.textContent;
-    //                 reviewWeeklyGoals[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //                 reivewWeeklyAmountTime[index - 1].textContent = e.textContent;
-    //                 reivewWeeklyAmountTime[index - 1].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //             }
-    //         }
-    //         reivewDailyOnething[0].classList.add('text-danger', 'fw-bolder')
-    //         reivewDailyOnething[index].textContent = e.textContent;
-    //         reivewDailyOnething[index].style.backgroundColor = yearTitle[index].style.backgroundColor;
-    //     })
-    // })
-
     // Handle performance onething calendar
     document.addEventListener("DOMContentLoaded", function () {
         const tartgetOnething = document.querySelectorAll('.target-onething');
@@ -4585,7 +4659,7 @@
         })
     })
 
-    // Function show Dream Board when user shoose image aaa
+    // Function show Dream Board when user choose image
     function previewImage() {
         var input = document.getElementById('quoteImage');
         var preview = document.getElementById('imagePreview');
@@ -4867,91 +4941,6 @@
             if (quote.querySelector('p').textContent == '') $(quote).remove();
         });
     });
-
-    // Handle add content and icon notification when user right click
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var plant = document.querySelectorAll('.setting');
-    //     plant.forEach(function (elementPlant) {
-    //         const note = elementPlant.querySelector('.note');
-    //         const imgNoti = note.querySelector('img');
-    //         elementPlant.addEventListener('contextmenu', function (event) {
-    //             if (elementPlant.innerText != '') {
-    //                 const contentNotiPlan = note.getAttribute('data-value');
-    //
-    //                 if (contentNotiPlan != '') {
-    //                     const imgHTML = imgNoti.outerHTML;
-    //                     note.innerHTML = imgHTML + 'Remove Allowed';
-    //                 }
-    //                 const isAllowed = note.innerText.trim();
-    //                 if (note) {
-    //                     $(note).removeClass('d-none');
-    //                     if (isAllowed == 'Allow notifications') {
-    //                         note.addEventListener('click', function (e) {
-    //                             $(note).addClass('d-none');
-    //                             elementPlant.querySelectorAll('img')[1].classList.remove('d-none');
-    //                             note.innerHTML = '';
-    //                             note.appendChild(imgNoti);
-    //                             note.appendChild(document.createTextNode('Remove Allowed'));
-    //                         })
-    //                     } else if (isAllowed == 'Remove Allowed') {
-    //                         note.addEventListener('click', function (e) {
-    //                             const imgIconPlan = elementPlant.querySelectorAll('img')[1];
-    //                             imgIconPlan.classList.add('d-none');
-    //                             note.innerHTML = '';
-    //                             note.appendChild(imgNoti);
-    //                             note.appendChild(document.createTextNode('Allow notifications'));
-    //                             note.setAttribute('data-value', '');
-    //                             $(note).addClass('d-none');
-    //                         })
-    //                     }
-    //                 }
-    //
-    //                 event.preventDefault();
-    //                 document.addEventListener('click', function hideNoteOnClickOutside(e) {
-    //                     if (!note.contains(e.target) && e.target !== note) {
-    //                         $(note).addClass('d-none');
-    //                         document.removeEventListener('click', hideNoteOnClickOutside);
-    //                     }
-    //                 });
-    //             } else event.preventDefault();
-    //         });
-    //     })
-    // })
-
-    // Handle when content notification is null -> hide icon
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var plant = document.querySelectorAll('.setting');
-    //     plant.forEach(function (elementPlant) {
-    //         const note = elementPlant.querySelector('.note');
-    //         const contentNotiPlan = note.getAttribute('data-value');
-    //         if (contentNotiPlan == '' || contentNotiPlan == null) elementPlant.querySelectorAll('img')[1].classList.add('d-none');
-    //         else elementPlant.querySelectorAll('img')[1].classList.remove('d-none');
-    //     })
-    // })
-
-    // Show modal notification
-    // function showModal(element) {
-    //     const isAllowedNoti = element.innerText;
-    //
-    //     function saveNotiHandler() {
-    //         var contentNotiPlant = document.getElementById('contentNotiPlan').value;
-    //         element.setAttribute('data-value', contentNotiPlant);
-    //         $('#contentNoti').modal('hide');
-    //         document.getElementById('contentNotiPlan').value = '';
-    //         document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
-    //     }
-    //
-    //     if (isAllowedNoti == 'Allow notifications') {
-    //         $('#contentNoti').modal('show');
-    //         document.getElementById('cancelSaveNoti').addEventListener('click', function () {
-    //             const imgNoti = element.querySelector('img').outerHTML;
-    //             element.innerHTML = imgNoti + 'Allow notifications';
-    //             element.nextElementSibling.classList.add('d-none');
-    //         });
-    //         document.getElementById('saveNoti').removeEventListener('click', saveNotiHandler);
-    //         document.getElementById('saveNoti').addEventListener('click', saveNotiHandler);
-    //     }
-    // }
 
     // Handle show image quote + message success when user save all success
     $(document).ready(function () {
@@ -5448,7 +5437,6 @@
                     i--;
                 }
             }
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.image = rs[0];
                 callAjaxByJsonWithData("/api/v1/management-time/weekly-detail", "POST", data, function (rs) {
@@ -5677,16 +5665,6 @@
     })
 
     document.querySelectorAll('.monthTarget').forEach(function (e) {
-        e.style.border = 'none';
-        e.addEventListener('focus', function () {
-            e.style.border = '1px solid black';
-        })
-        e.addEventListener('blur', function () {
-            e.style.border = 'none';
-        });
-    })
-
-    document.querySelectorAll('.weekTarget').forEach(function (e) {
         e.style.border = 'none';
         e.addEventListener('focus', function () {
             e.style.border = '1px solid black';

@@ -54,7 +54,8 @@
                             </div>
                             <form id="feelingBookForm">
                                 <div class="form-group mt-3">
-                                    <textarea class="form-control data" name="bookReport" id="bookReport" placeholder="Enter here..." style="height: 120px"></textarea>
+                                    <textarea class="form-control data" name="bookReport" id="bookReport" placeholder="Enter here..."
+                                              style="height: 150px;"></textarea>
                                 </div>
                                 <div class="form-group mt-3">
                                     <button id="submit-feeling" type="submit" class="btn btn-primary btn-load d-none" disabled>
@@ -140,6 +141,18 @@
 <script>
     var bookId = '${bookId}';
 
+    function resetHeightBookReport() {
+        var textarea = document.getElementById("bookReport");
+        var content = textarea.value;
+        var maxContentLength = 150;
+
+        if (content.length > maxContentLength) {
+            textarea.style.overflowY = "hidden";
+            textarea.style.height = "auto";
+            textarea.style.height = textarea.scrollHeight + "px";
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         var bookGuide = document.getElementById('book-guide');
         bookGuide.addEventListener('shown.bs.popover', function () {
@@ -182,6 +195,7 @@
             $('#update-feeling').removeClass('d-none');
             $('#delete-feeling').attr('data-id', rs.id);
             $('#delete-feeling').removeClass('d-none');
+            resetHeightBookReport();
         }, function (rs) {
             $('#submit-feeling').removeClass('d-none');
             $('#update-feeling').addClass('d-none');
@@ -217,6 +231,7 @@
                 $('.btn').attr('disabled', true);
                 callAjaxByJsonWithData('/api/v1/feeling-of-book/' + bookId + '/' + userCurrent.id, 'GET', null, function (rs) {
                     var id = rs.id;
+                    resetHeightBookReport();
                     callAjaxByJsonWithDataForm('/api/v1/feeling-of-book', 'PUT', formData, function (rs) {
                         $('#feelingBookForm .spinner-border').addClass('d-none');
                         $('.btn').attr('disabled', false);
@@ -224,6 +239,7 @@
 
                         var feelingItemE = $('.feeling-item[data-id="' + id + '"]');
                         feelingItemE.find('.bookReport-content').text(rs.bookReport);
+                        resetHeightBookReport();
                     });
                 }, function (rs) {
                     callAjaxByJsonWithDataForm('/api/v1/feeling-of-book', 'POST', formData, function (rs) {
@@ -239,6 +255,7 @@
                         var newFeeling = createFeeling(rs);
                         var feelingListE = $('.list-feeling');
                         feelingListE.prepend(newFeeling);
+                        resetHeightBookReport();
                     });
                 });
             }
@@ -271,7 +288,7 @@
             $('#note').val('');
             resetFormFeeling('feelingBookForm');
             alertSuccess("Delete success");
-
+            location.reload();
             $('.feeling-item[data-id="' + id + '"]').remove();
         });
     });

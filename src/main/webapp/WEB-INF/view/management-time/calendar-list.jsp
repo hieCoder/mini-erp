@@ -48,8 +48,6 @@
             font-size: 25px !important;
             margin-left: 0 !important;
         }
-
-
     </style>
     <title>Calendars</title>
     <link rel="stylesheet" href="../../../assets/custom/css/management-time/style.css">
@@ -450,9 +448,30 @@
                                                 cell.setAttribute('data-week', getPreviousSunday(currentColDay, false));
                                             }
                                             if (weekNumber === (Math.floor((i / 6) + 1))) {
-                                                cell.textContent = e.weeklys[dayTodo].content;
+                                                const status = e.weeklys[dayTodo].status;
+                                                var btnStatus;
+                                                if (status == 'INPROGRESS' || status == null || status == '') {
+                                                    btnStatus = `<button contenteditable="false" type="button" class="btn btn-info waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                                    <i class="ri-play-mini-line"></i>
+                                                                </button>`;
+                                                } else if (status == 'COMPLETE') {
+                                                    btnStatus = ` <button contenteditable="false" type="button" class="btn btn-success waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                                    <i class="ri-check-line"></i>
+                                                                </button>`;
+                                                } else if (status == 'CANCELLATION') {
+                                                    btnStatus = ` <button contenteditable="false" type="button" class="btn btn-danger waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                                    <i class="ri-close-line"></i>
+                                                                </button>`;
+                                                } else {
+                                                    btnStatus = `<button contenteditable="false" type="button" class="btn btn-warning waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                                    <i class="ri-arrow-right-line"></i>
+                                                                </button>`
+                                                }
+                                                cell.innerHTML = `<span contenteditable="true" class="me-2" style="min-width: 12px">` + e.weeklys[dayTodo].content + `</span>` + btnStatus;
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                                 cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
+                                                cell.setAttribute('contenteditable', 'true');
+                                                cell.style.height = "64px";
                                             }
                                             cell.setAttribute('data-array', dayTodo);
                                         });
@@ -471,6 +490,7 @@
                                     cell.classList.add("content");
                                     cell.style.maxWidth = 'fit-content';
                                     cell.setAttribute('contenteditable', 'true');
+                                    cell.style.height = "64px"
                                 } else if (j < 8) {
                                     const dayNumber = countLine * 7 + j - startDay;
                                     if (dayNumber > 0 && dayNumber <= daysInMonth) {
@@ -561,6 +581,7 @@
                         elImportant.classList.add('text-danger', 'fw-bold');
                         elImportant.textContent = 'Important matter';
                         elImportant.setAttribute('contenteditable', 'false');
+                        elImportant.style.height = '64px'
                     })
 
                 } else {
@@ -670,6 +691,7 @@
         return year + '-' + month + '-' + day;
     }
 
+    // Handle user click button Save
     saveCalendar();
     function saveCalendar() {
         const statusMonthly = [];
@@ -787,6 +809,7 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
+            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.quotes = [];
                 data.quotes.image = rs[0];

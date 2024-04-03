@@ -14,5 +14,5 @@ public class ColorManagementTimeDay {
     private String category;
     private String color;
     private String values;
-    private WeeklyManagementTimeDay weekly;
+    private YearManagementTimeDay year;
 }

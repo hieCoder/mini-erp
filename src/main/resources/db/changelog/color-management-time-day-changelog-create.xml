@@ -12,7 +12,7 @@
             <column name="CATEGORY" type="VARCHAR(255)"/>
             <column name="COLOR" type="VARCHAR(255)"/>
             <column name="VALUES" type="VARCHAR(1000)"/>
-            <column name="WEEKLY_ID" type="VARCHAR(255)"/>
+            <column name="YEAR_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
 

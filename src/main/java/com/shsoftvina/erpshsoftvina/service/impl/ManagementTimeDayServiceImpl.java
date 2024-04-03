@@ -436,6 +436,7 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
         });
         String weeklyCode = ApplicationUtils.generateWeeklyCodeOfDay(DateUtils.parseDate(currentDay));
         WeeklyManagementTimeDay weeklyManagementTimeDay = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
+        YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayMapper.findByCode(userId, getYear(currentDay));
 
         CompletableFuture<WeeklyManagementTimeDayResponse> weeklyFuture = CompletableFuture.supplyAsync(() -> {
             return WeeklyManagementTimeDayResponse.builder()
@@ -449,19 +450,19 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             return managementTimeDayConvert.toListDayDetailResponse(managementTimeDayMapper.findByCode(userId, weeklyCode), weeklyCode);
         });
 
-        CompletableFuture<List<ColorResponse>> colorsFuture = CompletableFuture.supplyAsync(() ->
-                weeklyManagementTimeDay != null ?
-                        colorManagementTimeDayConvert.toListResponse(colorManagementTimeDayMapper.findAllByWeeklyId(weeklyManagementTimeDay.getId())) :
-                        new ArrayList<>()
-        );
-
         CompletableFuture<QuoteResponse> quoteFuture = CompletableFuture.supplyAsync(() -> {
             return quoteMangementTimeDayConvert.toResponse(quoteManagementTimeDayMapper.findByUserId(userId));
         });
 
         CompletableFuture<YearResponse> yearFuture = CompletableFuture.supplyAsync(() -> {
-            return yearManagementTimeDayConverter.toResponse(yearManagementTimeDayMapper.findByCode(userId, getYear(currentDay)));
+            return yearManagementTimeDayConverter.toResponse(yearManagementTimeDay);
         });
+
+        CompletableFuture<List<ColorResponse>> colorsFuture = CompletableFuture.supplyAsync(() ->
+                yearManagementTimeDay != null ?
+                        colorManagementTimeDayConvert.toListResponse(colorManagementTimeDayMapper.findAllByYearId(yearManagementTimeDay.getId())) :
+                        new ArrayList<>()
+        );
 
         CompletableFuture<Void> allOf = CompletableFuture.allOf(getPerformance, monthlysFuture, weeklyFuture, daysFuture, colorsFuture, quoteFuture, yearFuture);
         allOf.join();
@@ -533,15 +534,10 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             String compliment = weeklyRequest.getCompliment();
             String reflectionAndImprovement = weeklyRequest.getReflectionAndImprovement();
             WeeklyManagementTimeDay weeklyEntity = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
-            ColorRequest[] colorRequests = daysUpdateRequest.getColors();
             if (weeklyEntity == null) {
                 WeeklyManagementTimeDay weeklyE = weeklyManagementTimeDayConverter.toEntity(userId, weeklyCode, JsonUtils.objectToJson(weeklys), gratitudeDiary, compliment, reflectionAndImprovement);
                 CompletableFuture<Void> createWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.createWeeklyManagementTimeDay(weeklyE);
-                    WeeklyManagementTimeDay weeklySaved = weeklyManagementTimeDayMapper.findByCode(userId, weeklyCode);
-                    colorManagementTimeDayMapper.deleteAllByWeeklyId(weeklySaved.getId());
-                    List<ColorManagementTimeDay> colorManagementTimeDays = colorManagementTimeDayConvert.toListEntity(weeklySaved, colorRequests);
-                    colorManagementTimeDayMapper.createColors(colorManagementTimeDays);
                 });
                 asyncTasks.add(createWeeklyManagementTimeDayAsync);
             } else {
@@ -551,9 +547,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 weeklyEntity.setReflectionAndImprovement(reflectionAndImprovement);
                 CompletableFuture<Void> updateWeeklyManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     weeklyManagementTimeDayMapper.updateWeeklyManagementTimeDay(weeklyEntity);
-                    colorManagementTimeDayMapper.deleteAllByWeeklyId(weeklyEntity.getId());
-                    List<ColorManagementTimeDay> colorManagementTimeDays = colorManagementTimeDayConvert.toListEntity(weeklyEntity, colorRequests);
-                    colorManagementTimeDayMapper.createColors(colorManagementTimeDays);
                 });
                 asyncTasks.add(updateWeeklyManagementTimeDayAsync);
             }
@@ -657,10 +650,15 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
             String selfInspiration = yearRequest.getSelfInspiration();
             String[] color = yearRequest.getColor();
             YearManagementTimeDay yearE = yearManagementTimeDayMapper.findByCode(userId, yearCode);
+            ColorRequest[] colorRequests = daysUpdateRequest.getColors();
             if (yearE == null) {
                 YearManagementTimeDay yearManagementTimeDay = yearManagementTimeDayConverter.toEntity(userId, yearRequest);
                 CompletableFuture<Void> createYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.createYearManagementTimeDay(yearManagementTimeDay);
+                    YearManagementTimeDay yearSaved = yearManagementTimeDayMapper.findByCode(userId, yearCode);
+                    colorManagementTimeDayMapper.deleteAllByYearlyId(yearSaved.getId());
+                    List<ColorManagementTimeDay> colorManagementTimeDays = colorManagementTimeDayConvert.toListEntity(yearSaved, colorRequests);
+                    colorManagementTimeDayMapper.createColors(colorManagementTimeDays);
                 });
                 asyncTasks.add(createYearManagementTimeDayAsync);
             } else {
@@ -669,6 +667,9 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 yearE.setColor(JsonUtils.objectToJson(color));
                 CompletableFuture<Void> updateYearManagementTimeDayAsync = CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.updateYearManagementTimeDay(yearE);
+                    colorManagementTimeDayMapper.deleteAllByYearlyId(yearE.getId());
+                    List<ColorManagementTimeDay> colorManagementTimeDays = colorManagementTimeDayConvert.toListEntity(yearE, colorRequests);
+                    colorManagementTimeDayMapper.createColors(colorManagementTimeDays);
                 });
                 asyncTasks.add(updateYearManagementTimeDayAsync);
             }

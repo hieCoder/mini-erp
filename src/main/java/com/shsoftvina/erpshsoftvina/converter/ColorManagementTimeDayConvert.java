@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.converter;
 
 import com.shsoftvina.erpshsoftvina.entity.ColorManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay;
+import com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay;
 import com.shsoftvina.erpshsoftvina.model.request.managementtime.day.ColorRequest;
 import com.shsoftvina.erpshsoftvina.model.response.managementtime.day.ColorResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
@@ -15,20 +16,20 @@ import java.util.stream.Collectors;
 @Component
 public class ColorManagementTimeDayConvert {
 
-    public ColorManagementTimeDay toEntity(WeeklyManagementTimeDay weekly, ColorRequest colorRequest){
+    public ColorManagementTimeDay toEntity(YearManagementTimeDay year, ColorRequest colorRequest){
         return ColorManagementTimeDay.builder()
                 .id(ApplicationUtils.generateId())
                 .category(colorRequest.getCategory())
                 .color(colorRequest.getColor())
                 .values(JsonUtils.objectToJson(colorRequest.getValues()))
-                .weekly(weekly)
+                .year(year)
                 .build();
     }
 
-    public List<ColorManagementTimeDay> toListEntity(WeeklyManagementTimeDay weekly, ColorRequest[] colorRequests){
+    public List<ColorManagementTimeDay> toListEntity(YearManagementTimeDay year, ColorRequest[] colorRequests){
         List<ColorManagementTimeDay> list = new ArrayList<>();
         for(ColorRequest colorManagementTimeDay: colorRequests){
-            list.add(toEntity(weekly, colorManagementTimeDay));
+            list.add(toEntity(year, colorManagementTimeDay));
         }
         return list;
     }
