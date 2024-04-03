@@ -451,23 +451,23 @@
                                                 const status = e.weeklys[dayTodo].status;
                                                 var btnStatus;
                                                 if (status == 'INPROGRESS' || status == null || status == '') {
-                                                    btnStatus = `<button type="button" class="btn btn-info waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                    btnStatus = `<button contenteditable="false" type="button" class="btn btn-info waves-effect waves-light float-end" style="margin: 0 5px;">
                                                                     <i class="ri-play-mini-line"></i>
                                                                 </button>`;
                                                 } else if (status == 'COMPLETE') {
-                                                    btnStatus = ` <button type="button" class="btn btn-success waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                    btnStatus = ` <button contenteditable="false" type="button" class="btn btn-success waves-effect waves-light float-end" style="margin: 0 5px;">
                                                                     <i class="ri-check-line"></i>
                                                                 </button>`;
                                                 } else if (status == 'CANCELLATION') {
-                                                    btnStatus = ` <button type="button" class="btn btn-danger waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                    btnStatus = ` <button contenteditable="false" type="button" class="btn btn-danger waves-effect waves-light float-end" style="margin: 0 5px;">
                                                                     <i class="ri-close-line"></i>
                                                                 </button>`;
                                                 } else {
-                                                    btnStatus = `<button type="button" class="btn btn-warning waves-effect waves-light float-end" style="margin: 0 5px;">
+                                                    btnStatus = `<button contenteditable="false" type="button" class="btn btn-warning waves-effect waves-light float-end" style="margin: 0 5px;">
                                                                     <i class="ri-arrow-right-line"></i>
                                                                 </button>`
                                                 }
-                                                cell.innerHTML = `<span class="me-2" style="min-width: 12px">` + e.weeklys[dayTodo].content + `</span>` + btnStatus;
+                                                cell.innerHTML = `<span contenteditable="true" class="me-2" style="min-width: 12px">` + e.weeklys[dayTodo].content + `</span>` + btnStatus;
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                                 cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                                 cell.setAttribute('contenteditable', 'true');

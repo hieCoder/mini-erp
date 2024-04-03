@@ -2712,7 +2712,7 @@
                                     </thead>
                                     <tbody>
                                     <tr style="height: 34px; background: red" class="fw-bold text-white">
-                                        <td colspan="2">${weekly.year.year.substring(2)}' goals</td>
+                                        <td colspan="2">${weekly.year.year.substring(2)} goals</td>
                                     </tr>
                                     <tr class="fw-bold" style="height: 34px">
                                         <td>Progress</td>
@@ -3864,7 +3864,7 @@
                                                 } else if (status == '') {
                                                     btnStatus = `<button class="btn btn-info float-end"><i class="ri-play-mini-line"></i></button>`
                                                 }
-                                                const html = `<span>` + content + `</span>`+ btnStatus;
+                                                const html = `<div class="d-flex align-items-center justify-content-between"><span>` + content + `</span>`+ btnStatus + `</div>`;
                                                 $(eTarget).append(html);
                                             }
                                         }
