@@ -79,7 +79,6 @@ public class TimesheetsServiceImpl implements TimesheetsService {
                         throw new NotFoundException("Some user not exist in system");
                     }
 
-
                     int[] indexCell ={2,6,7,8,11,16,18,21,24,25};
                     while(true){
 

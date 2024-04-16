@@ -16,6 +16,8 @@
                t.PROGRESS     AS task_progress,
                t.STATUS       AS task_status,
                t.CONTENT      AS task_content,
+               t.PIC          AS task_pic,
+               t.RELATED_TASK AS task_related_task,
                u.ID           AS user_id,
                u.FULLNAME     AS user_fullname
         FROM TASK t
@@ -54,6 +56,8 @@
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
         <result property="status" column="task_status"/>
+        <result property="pic" column="task_pic"/>
+        <result property="relatedTask" column="task_related_task"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap">
         </association>
@@ -68,9 +72,9 @@
 
     <insert id="registerTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
         INSERT
-        INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS)
+        INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS, PIC, RELATED_TASK)
         VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{dueDate}, #{priority},
-                #{progress}, #{status});
+                #{progress}, #{status}, #{pic}, #{relatedTask});
     </insert>
 
     <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
@@ -84,6 +88,8 @@
             CLOSE_DATE  = #{closeDate},
             DUE_DATE    = #{dueDate},
             USER_ID     = #{user.id}
+            PIC         = #{pic},
+            RELATED_TASK = #{relatedTask}
         WHERE ID = #{id};
     </update>
 
@@ -139,6 +145,8 @@
                t.PROGRESS      AS task_progress,
                t.STATUS        AS task_status,
                t.CONTENT       AS task_content,
+               t.PIC           AS task_pic,
+               t.RELATED_TASK  AS task_related_task,
                c.ID            AS comment_id,
                c.USER_ID       AS comment_user_id,
                c.TITLE         AS comment_title,
@@ -169,6 +177,8 @@
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
         <result property="status" column="task_status"/>
+        <result property="pic" column="task_pic"/>
+        <result property="relatedTask" column="task_related_task"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap">
         </association>
@@ -254,6 +264,8 @@
                t.PROGRESS     AS task_progress,
                t.STATUS       AS task_status,
                t.CONTENT      AS task_content,
+               t.PIC          AS task_pic,
+               t.RELATED_TASK AS task_related_task,
                u.ID           AS user_id,
                u.FULLNAME     AS user_fullname
         FROM TASK t

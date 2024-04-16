@@ -28,4 +28,10 @@ public class TaskRegisterRequest {
 
     @NotBlank(message = "Field priority is not filled")
     private String priority;
+
+    @NotBlank(message = "Field priority is not filled")
+    private String pic;
+
+    @NotBlank(message = "Field priority is not filled")
+    private String relatedTask;
 }

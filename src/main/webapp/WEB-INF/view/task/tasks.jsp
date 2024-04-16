@@ -26,14 +26,13 @@
 <!-- end page title -->
 
 <div class="row">
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Total Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-total-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"> <i class="ri-arrow-up-line align-middle"></i> 17.32 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -47,14 +46,13 @@
         </div> <!-- end card-->
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Closed Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-closed-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 2.52 % </span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -68,14 +66,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Opened Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-opened-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -89,14 +86,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-reopend-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -110,14 +106,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Postponed Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-postponed-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -131,14 +126,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Registered Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-registered-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -168,7 +162,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button id="register-task-btn" class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
+                        <a href="/tasks/register" class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Register task</a>
                         <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
@@ -664,80 +658,80 @@
     });
 
     var isFirstTimeOpenModalRegister = true;
-    $(document).on('click', '#register-task-btn', function() {
-
-        $('#title').val('');
-
-        $('#content .ql-editor').html('<p><br></p>');
-        $('#registerTaskForm .ql-toolbar.ql-snow').remove();
-        activeEditor("#registerTaskForm");
-
-        $('#dueDate').val('');
-        $('#registerTaskForm .spinner-border').addClass('d-none');
-
-        var selectElement = $('#selectUsername');
-        if(isDeleveloper()){
-            selectElement.empty();
-            $('.username-register-task').text(userCurrent.fullname);
-            var option = $('<option></option>');
-            option.attr('value', userCurrent.id);
-            option.text(userCurrent.fullname);
-            selectElement.append(option);
-
-            $('#registerTaskModal').modal('show');
-        } else{
-            if (isFirstTimeOpenModalRegister) {
-                selectElement.empty();
-
-                var swal = showAlertLoading();
-                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
-                    $('#selectUsername').removeClass('d-none');
-
-                    rs.forEach(function(user) {
-                        var option = $('<option></option>');
-                        option.attr('value', user.id);
-                        option.text(user.fullname);
-
-                        if (user.id == userCurrent.id) {
-                            option.attr('selected', 'selected');
-                        }
-
-                        selectElement.append(option);
-                    });
-
-                    swal.close();
-                    $('#registerTaskModal').modal('show');
-
-                    isFirstTimeOpenModalRegister = false;
-                });
-            } else{
-                $('#registerTaskModal').modal('show');
-            }
-        }
-
-        Validator({
-            form:'#registerTaskForm',
-            errorSelector: '.form-message',
-            rules:[
-                Validator.isRequired('#title'),
-                Validator.isRequired('#content'),
-                Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
-            ],
-            onSubmit: function (formData) {
-                formData.append('content', $('#content').html());
-
-                $('#registerTaskForm .spinner-border').removeClass('d-none');
-                callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
-                    tableTask.ajax.reload(function () {
-                        $('#registerTaskForm .spinner-border').addClass('d-none');
-                        $("#registerTaskModal").modal("hide");
-                        showAlert(SUCCESS_ALERT, 'Register success!');
-                        loadCountStatus();
-                    });
-                });
-            }
-        });
-    });
+    // $(document).on('click', '#register-task-btn', function() {
+    //
+    //     $('#title').val('');
+    //
+    //     $('#content .ql-editor').html('<p><br></p>');
+    //     $('#registerTaskForm .ql-toolbar.ql-snow').remove();
+    //     activeEditor("#registerTaskForm");
+    //
+    //     $('#dueDate').val('');
+    //     $('#registerTaskForm .spinner-border').addClass('d-none');
+    //
+    //     var selectElement = $('#selectUsername');
+    //     if(isDeleveloper()){
+    //         selectElement.empty();
+    //         $('.username-register-task').text(userCurrent.fullname);
+    //         var option = $('<option></option>');
+    //         option.attr('value', userCurrent.id);
+    //         option.text(userCurrent.fullname);
+    //         selectElement.append(option);
+    //
+    //         $('#registerTaskModal').modal('show');
+    //     } else{
+    //         if (isFirstTimeOpenModalRegister) {
+    //             selectElement.empty();
+    //
+    //             var swal = showAlertLoading();
+    //             callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
+    //                 $('#selectUsername').removeClass('d-none');
+    //
+    //                 rs.forEach(function(user) {
+    //                     var option = $('<option></option>');
+    //                     option.attr('value', user.id);
+    //                     option.text(user.fullname);
+    //
+    //                     if (user.id == userCurrent.id) {
+    //                         option.attr('selected', 'selected');
+    //                     }
+    //
+    //                     selectElement.append(option);
+    //                 });
+    //
+    //                 swal.close();
+    //                 $('#registerTaskModal').modal('show');
+    //
+    //                 isFirstTimeOpenModalRegister = false;
+    //             });
+    //         } else{
+    //             $('#registerTaskModal').modal('show');
+    //         }
+    //     }
+    //
+    //     Validator({
+    //         form:'#registerTaskForm',
+    //         errorSelector: '.form-message',
+    //         rules:[
+    //             Validator.isRequired('#title'),
+    //             Validator.isRequired('#content'),
+    //             Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
+    //         ],
+    //         onSubmit: function (formData) {
+    //             formData.append('content', $('#content').html());
+    //
+    //             $('#registerTaskForm .spinner-border').removeClass('d-none');
+    //             callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
+    //                 tableTask.ajax.reload(function () {
+    //                     $('#registerTaskForm .spinner-border').addClass('d-none');
+    //                     $("#registerTaskModal").modal("hide");
+    //                     showAlert(SUCCESS_ALERT, 'Register success!');
+    //                     loadCountStatus();
+    //                 });
+    //             });
+    //         }
+    //     });
+    // });
 
     $(document).on('click', '.remove-item-task-btn', function (e) {
         var idTask = $(this).data('id');
@@ -888,7 +882,6 @@
                 });
             }
         });
-
     });
 </script>
 </body>

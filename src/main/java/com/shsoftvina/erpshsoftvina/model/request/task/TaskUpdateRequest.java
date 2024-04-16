@@ -39,4 +39,7 @@ public class TaskUpdateRequest {
     private String content;
 
     private Date dueDate;
+
+    private String pic;
+    private String relatedTask;
 }

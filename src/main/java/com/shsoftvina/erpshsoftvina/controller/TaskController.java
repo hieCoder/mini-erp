@@ -27,6 +27,12 @@ public class TaskController {
         return mav;
     }
 
+    @GetMapping("/register")
+    public ModelAndView registerTask() {
+        ModelAndView mav = new ModelAndView("task/task-register");
+        return mav;
+    }
+
     @GetMapping("/{id}")
     public ModelAndView getTask(@PathVariable String id) {
 
