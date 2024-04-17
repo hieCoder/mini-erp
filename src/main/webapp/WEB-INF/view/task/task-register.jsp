@@ -83,7 +83,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label class="form-label">TAG: </label>
-                                <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>
+                                <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>
                                 <div id="tagModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
@@ -92,42 +92,28 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <select class="form-control" id="choices-multiple-remove-button" data-choices data-choices-removeItem name="choices-multiple-remove-button" multiple>
-                                                            <option value="Choice 1">Choice 1</option>
-                                                            <option value="Choice 2">Choice 2</option>
-                                                            <option value="Choice 3">Choice 3</option>
-                                                            <option value="Choice 4">Choice 4</option>
-                                                        </select>
-
-                                                    </div>
+                                                <div class="col-lg-12">
+                                                    <input id="tag-selected" class="form-control" type="text" />
                                                 </div>
-                                                <div class="row mt-2">
-                                                    <table id="scroll-vertical" class="table table-bordered dt-responsive nowrap align-middle mdl-data-table" style="width:100%">
+                                                <div class="mt-2 text-center align-items-center">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <input type="text" id="searchInput" class="form-control" placeholder="Search Tag..." style="width: 30%">
+                                                        <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">+ TAG NAME</button>
+                                                    </div>
+                                                    <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
                                                         <thead>
                                                         <tr>
-                                                            <th>Project</th>
-                                                            <th>Task</th>
+                                                            <th style="border: 1px solid black">Default Tags</th>
+                                                            <th style="border: 1px solid black">Tags added</th>
+                                                            <th style="border: 1px solid black"></th>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>Symox v1.0.0</td>
-                                                            <td><a href="#!">Add Dynamic Contact List</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Doot - Chat App Template</td>
-                                                            <td><a href="#!">Additional Calendar</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Qexal - Landing Page</td>
-                                                            <td><a href="#!">Make a creating an account profile</a></td>
-                                                        </tr>
+                                                        <tbody id="dataBody">
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
+
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                                                 <button type="button" class="btn btn-primary ">Save Changes</button>
@@ -135,7 +121,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="col-lg-6">
                                 <label class="form-label">PIC: </label>
@@ -221,14 +206,107 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script>
 
-    // Data table add tag
-    document.addEventListener('DOMContentLoaded', function () {
+    // Real-time Multi-field Search
+    document.getElementById('add-tag').addEventListener('click', function () {
         let table = new DataTable('#scroll-vertical', {
             "scrollY":        "210px",
             "scrollCollapse": true,
-            "paging":         false
+            "paging":         false,
+            "searching":      false,
+            "ordering":       false,
+            "info":           false
         });
-    });
+
+        const data1 = ['A', 'B', 'C', 'AA', 'AB'];
+        const data2 = ['AD', 'E', 'F', 'BB', 'CC', 'DD'];
+
+        const dataBody = document.getElementById('dataBody');
+
+        displayData(data1, data2);
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            var searchText = this.value.toLowerCase();
+
+            var filteredData1 = data1.filter(item => item.toLowerCase().includes(searchText));
+            var filteredData2 = data2.filter(item => item.toLowerCase().includes(searchText));
+
+            displayData(filteredData1, filteredData2);
+        });
+
+        function displayData(data1, data2) {
+            dataBody.innerHTML = '';
+
+            var maxRows = Math.max(data1.length, data2.length);
+
+            for (var i = 0; i < maxRows; i++) {
+                var row = document.createElement('tr');
+                var cell1 = document.createElement('td');
+                var cell2 = document.createElement('td');
+
+                cell1.classList.add('tag-name', 'cursor-pointer');
+                cell2.classList.add('tag-name', 'cursor-pointer');
+
+                // Gán nội dung từ mảng data1 và data2
+                if (i < data1.length) {
+                    cell1.textContent = data1[i];
+                }
+                if (i < data2.length) {
+                    cell2.textContent = data2[i];
+                }
+
+                // Thêm dropdown menu vào cell1 và cell2 nếu cần
+                if (i < data1.length) {
+                    cell1.innerHTML += `
+            <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink1_${i}" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ri-more-2-fill"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1_${i}">
+                    <li><a class="dropdown-item" href="#">View</a></li>
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Delete</a></li>
+                </ul>
+            </div>
+        `;
+                }
+                if (i < data2.length) {
+                    cell2.innerHTML += `
+            <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink2_${i}" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ri-more-2-fill"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2_${i}">
+                    <li><a class="dropdown-item" href="#">View</a></li>
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Delete</a></li>
+                </ul>
+            </div>
+        `;
+                }
+
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                dataBody.appendChild(row);
+            }
+
+        }
+
+        const selectedTag = document.getElementById('tag-selected');
+        var clickCount = 0;
+        document.querySelectorAll('.tag-name').forEach(function (e) {
+            e.addEventListener('click', function () {
+                const tagName = e.textContent;
+                console.log(tagName)
+               if (tagName.trim() != '') {
+                   if (clickCount === 0) {
+                       selectedTag.value += tagName;
+                       clickCount++;
+                   } else selectedTag.value += ', ' + tagName;
+               }
+            })
+        })
+
+    })
 
     $(document).ready(function () {
         $('#title').val('');
