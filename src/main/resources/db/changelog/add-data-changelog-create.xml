@@ -32,8 +32,41 @@
         </insert>
     </changeSet>
 
-    <!-- SETTING -->
+    <!-- TAG -->
     <changeSet id="2" author="team2">
+        <insert tableName="TAG">
+            <column name="ID" value="1"/>
+            <column name="TAG_NAME" value="#erp"/>
+            <column name="TYPE" value="DEFAULT_TAG"/>
+        </insert>
+
+        <insert tableName="TAG">
+            <column name="ID" value="2"/>
+            <column name="TAG_NAME" value="#login"/>
+            <column name="TYPE" value="DEFAULT_TAG"/>
+        </insert>
+
+        <insert tableName="TAG">
+            <column name="ID" value="3"/>
+            <column name="TAG_NAME" value="#register"/>
+            <column name="TYPE" value="DEFAULT_TAG"/>
+        </insert>
+
+        <insert tableName="TAG">
+            <column name="ID" value="4"/>
+            <column name="TAG_NAME" value="#salary"/>
+            <column name="TYPE" value="DEFAULT_TAG"/>
+        </insert>
+
+        <insert tableName="TAG">
+            <column name="ID" value="5"/>
+            <column name="TAG_NAME" value="#employee"/>
+            <column name="TYPE" value="DEFAULT_TAG"/>
+        </insert>
+    </changeSet>
+
+    <!-- SETTING -->
+    <changeSet id="3" author="team2">
         <insert tableName="SETTING">
             <column name="ID" value="1"/>
             <column name="CODE" value="USER"/>

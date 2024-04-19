@@ -82,10 +82,15 @@
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <label class="form-label">TAG: </label>
-                                <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>
-                                <div id="tagModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog modal-xl">
+                              <div class="d-flex align-items-center">
+                                  <label class="form-label m-0">TAG: </label>
+                                  <div id="show-tag-selected">
+                                      <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>
+                                  </div>
+                              </div>
+                                <!-- Modal Add Tag To Tag -->
+                                <div id="tagModal" class="modal fade" tabindex="-1" aria-labelledby="..." aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">TAG</h5>
@@ -98,26 +103,83 @@
                                                 <div class="mt-2 text-center align-items-center">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <input type="text" id="searchInput" class="form-control" placeholder="Search Tag..." style="width: 30%">
-                                                        <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">+ TAG NAME</button>
+                                                        <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#add-tag-name" data-bs-dismiss="modal">+ TAG NAME</button>
                                                     </div>
-                                                    <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
-                                                        <thead>
-                                                        <tr>
-                                                            <th style="border: 1px solid black">Default Tags</th>
-                                                            <th style="border: 1px solid black">Tags added</th>
-                                                            <th style="border: 1px solid black"></th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody id="dataBody">
-                                                        </tbody>
-                                                    </table>
+                                                   <div data-simplebar style="max-height: 400px">
+                                                       <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
+                                                           <thead>
+                                                           <tr>
+                                                               <th style="border: 1px solid black">Default Tags</th>
+                                                               <th style="border: 1px solid black">Tags added</th>
+                                                           </tr>
+                                                           </thead>
+                                                           <tbody id="dataBody">
+                                                           </tbody>
+                                                       </table>
+                                                   </div>
                                                 </div>
                                             </div>
 
                                             <div class="modal-footer">
+                                                <button id="save-tag-selected" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary ">Save Changes</button>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal Add Tag Name -->
+                                <div class="modal fade" id="add-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <form>
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalgridLabel">Add a new tag Name</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-center">
+                                                    <label for="new-tag-name" class="form-label float-start">Tag Name</label>
+                                                    <input id="new-tag-name" class="form-control" type="text" name="tagName" placeholder="Enter here..." required>
+
+                                                    <label for="type-tag" class="form-label float-start mt-2">Type</label>
+                                                    <select id="type-tag" class="form-select mb-3" aria-label="Default select example" name="type">
+                                                        <option value="DEFAULT_TAG" selected>Default Tag</option>
+                                                        <option value="TAG_ADDED">Tag Normal</option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button id="save-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">ADD</button>
+                                                    <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal Edit Tag Name -->
+                                <div class="modal fade" id="modal-edit-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <form>
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" >Edit tag Name</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-center">
+                                                    <label for="edit-tag-name" class="form-label float-start">Tag Name</label>
+                                                    <input id="edit-tag-name" class="form-control" type="text" name="tagName" placeholder="Enter here..." required>
+
+                                                    <label for="edit-type-tag" class="form-label float-start mt-2">Type</label>
+                                                    <select id="edit-type-tag" class="form-select mb-3" aria-label="Default select example" name="type">
+                                                        <option value="DEFAULT_TAG">Default Tag</option>
+                                                        <option value="TAG_ADDED">Tag Normal</option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button id="save-edit-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+                                                    <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -206,104 +268,189 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script>
 
-    // Real-time Multi-field Search
-    document.getElementById('add-tag').addEventListener('click', function () {
-        let table = new DataTable('#scroll-vertical', {
-            "scrollY":        "210px",
-            "scrollCollapse": true,
-            "paging":         false,
-            "searching":      false,
-            "ordering":       false,
-            "info":           false
-        });
+    document.getElementById('save-tag-selected').addEventListener('click', function () {
+        const tagsSelected = document.getElementById('tag-selected').value;
+        const showTagSelect = document.getElementById('show-tag-selected');
+        showTagSelect.innerHTML = `<div class="d-lex align-items-center ms-2">` + `<span class="fw-bold">` + tagsSelected + `</span> <i class="ri-edit-line fs-5"></i>` + `</div>`;
+    })
 
-        const data1 = ['A', 'B', 'C', 'AA', 'AB'];
-        const data2 = ['AD', 'E', 'F', 'BB', 'CC', 'DD'];
+    function showListTag() {
+        callAjaxByJsonWithData('/api/v1/tags', 'GET', null, function (rs) {
+            let table = new DataTable('#scroll-vertical', {
+                "scrollY":        "210px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "searching":      false,
+                "ordering":       false,
+                "info":           false
+            });
 
-        const dataBody = document.getElementById('dataBody');
+            const defaultTagNames  = [];
+            const tagAddedTagNames  = [];
 
-        displayData(data1, data2);
+            rs.forEach(function (item) {
+                let obj = {
+                    id: item.id,
+                    tagName: item.tagName,
+                    type: item.type.code
+                };
+                if (item.type.code == 'DEFAULT_TAG') defaultTagNames.push(obj);
+                else if (item.type.code == 'TAG_ADDED') tagAddedTagNames.push(obj);
+            })
+            const dataBody = document.getElementById('dataBody');
 
-        document.getElementById('searchInput').addEventListener('input', function() {
-            var searchText = this.value.toLowerCase();
+            displayData(defaultTagNames, tagAddedTagNames);
 
-            var filteredData1 = data1.filter(item => item.toLowerCase().includes(searchText));
-            var filteredData2 = data2.filter(item => item.toLowerCase().includes(searchText));
+            document.getElementById('searchInput').addEventListener('input', function() {
+                var searchText = this.value.toLowerCase();
 
-            displayData(filteredData1, filteredData2);
-        });
+                var filteredData1 = defaultTagNames.filter(item => item.tagName.toLowerCase().includes(searchText));
+                var filteredData2 = tagAddedTagNames.filter(item => item.tagName.toLowerCase().includes(searchText));
 
-        function displayData(data1, data2) {
-            dataBody.innerHTML = '';
+                displayData(filteredData1, filteredData2);
+            });
 
-            var maxRows = Math.max(data1.length, data2.length);
+            function displayData(data1, data2) {
+                dataBody.innerHTML = '';
 
-            for (var i = 0; i < maxRows; i++) {
-                var row = document.createElement('tr');
-                var cell1 = document.createElement('td');
-                var cell2 = document.createElement('td');
+                var maxRows = Math.max(data1.length, data2.length);
 
-                cell1.classList.add('tag-name', 'cursor-pointer');
-                cell2.classList.add('tag-name', 'cursor-pointer');
+                for (var i = 0; i < maxRows; i++) {
+                    var row = document.createElement('tr');
+                    var cell1 = document.createElement('td');
+                    var cell2 = document.createElement('td');
+                    var div1 = document.createElement('div');
+                    var div2 = document.createElement('div');
+                    var span1 = document.createElement('span');
+                    var span2 = document.createElement('span');
 
-                // Gán nội dung từ mảng data1 và data2
-                if (i < data1.length) {
-                    cell1.textContent = data1[i];
+                    div1.classList.add('d-flex', 'justify-content-center');
+                    div2.classList.add('d-flex', 'justify-content-center');
+                    span1.classList.add('tag-name', 'cursor-pointer');
+                    span2.classList.add('tag-name', 'cursor-pointer');
+
+                    if (i < data1.length) {
+                        span1.textContent = data1[i].tagName;
+                        span1.setAttribute('data-value', data1[i].id);
+                        span1.setAttribute('data-type', data1[i].type);
+                    }
+                    if (i < data2.length) {
+                        span2.textContent = data2[i].tagName;
+                        span2.setAttribute('data-value',data2[i].id);
+                        span2.setAttribute('data-type', data2[i].type);
+                    }
+
+                    div1.appendChild(span1);
+                    div2.appendChild(span2);
+                    cell1.appendChild(div1);
+                    cell2.appendChild(div2);
+
+
+                    if (i < data1.length) {
+                        div1.innerHTML += `
+                            <div class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink1_${i}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1_${i}">
+                                    <li><a class="dropdown-item edit-tag" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag-name" data-bs-dismiss="modal">Edit</a></li>
+                                    <li><a class="dropdown-item del-tag" href="#">Delete</a></li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    if (i < data2.length) {
+                        div2.innerHTML += `
+                            <div class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink2_${i}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2_${i}">
+                                    <li><a class="dropdown-item edit-tag" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag-name" data-bs-dismiss="modal">Edit</a></li>
+                                    <li><a class="dropdown-item del-tag" href="#">Delete</a></li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    dataBody.appendChild(row);
                 }
-                if (i < data2.length) {
-                    cell2.textContent = data2[i];
-                }
 
-                // Thêm dropdown menu vào cell1 và cell2 nếu cần
-                if (i < data1.length) {
-                    cell1.innerHTML += `
-            <div class="dropdown">
-                <a href="#" role="button" id="dropdownMenuLink1_${i}" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="ri-more-2-fill"></i>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1_${i}">
-                    <li><a class="dropdown-item" href="#">View</a></li>
-                    <li><a class="dropdown-item" href="#">Edit</a></li>
-                    <li><a class="dropdown-item" href="#">Delete</a></li>
-                </ul>
-            </div>
-        `;
-                }
-                if (i < data2.length) {
-                    cell2.innerHTML += `
-            <div class="dropdown">
-                <a href="#" role="button" id="dropdownMenuLink2_${i}" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="ri-more-2-fill"></i>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2_${i}">
-                    <li><a class="dropdown-item" href="#">View</a></li>
-                    <li><a class="dropdown-item" href="#">Edit</a></li>
-                    <li><a class="dropdown-item" href="#">Delete</a></li>
-                </ul>
-            </div>
-        `;
-                }
+                // Handle Update Tag
+                var idTagEdit = '';
+                document.querySelectorAll('.edit-tag').forEach(function (eEdit) {
+                    eEdit.addEventListener('click', function (e) {
+                        var tag = eEdit.closest('.d-flex').querySelector('span.tag-name');
+                        idTagEdit = tag.getAttribute('data-value');
+                        var tagName = tag.textContent.substring(1);
+                        var typeTag = tag.getAttribute('data-type');
+                        const editTagName = document.getElementById('edit-tag-name');
+                        editTagName.value = tagName;
 
-                row.appendChild(cell1);
-                row.appendChild(cell2);
-                dataBody.appendChild(row);
+                        document.querySelectorAll('#edit-type-tag option').forEach(function(option) {
+                            if (typeTag === option.value) option.selected = true;
+                            else option.selected = false;
+                        });
+                    })
+                })
+
+                document.getElementById('save-edit-tag-name').addEventListener('click', function () {
+                    const formDataEdiTag = new FormData();
+                    const tagName = document.getElementById('edit-tag-name');
+                    const typeTag = document.getElementById('edit-type-tag');
+                    formDataEdiTag.append('id', idTagEdit);
+                    formDataEdiTag.append('tagName', '#' + tagName.value);
+                    formDataEdiTag.append('type', typeTag.value);
+
+                    callAjaxByJsonWithDataForm("/api/v1/tags/updation", "POST", formDataEdiTag, function (rs) {
+                        showListTag()
+                    });
+                })
+
+                // Handle Delete Tag
+                document.querySelectorAll('.del-tag').forEach(function (eDel) {
+                    eDel.addEventListener('click', function () {
+                        var idTag = eDel.closest('.d-flex').querySelector('span.tag-name').getAttribute('data-value');
+                        callAjaxByJsonWithData("/api/v1/tags/" + idTag, "DELETE", null, function (rs) {
+                            showListTag()
+                        });
+                    })
+                })
             }
 
-        }
-
-        const selectedTag = document.getElementById('tag-selected');
-        var clickCount = 0;
-        document.querySelectorAll('.tag-name').forEach(function (e) {
-            e.addEventListener('click', function () {
-                const tagName = e.textContent;
-                console.log(tagName)
-               if (tagName.trim() != '') {
-                   if (clickCount === 0) {
-                       selectedTag.value += tagName;
-                       clickCount++;
-                   } else selectedTag.value += ', ' + tagName;
-               }
+            const selectedTag = document.getElementById('tag-selected');
+            var clickCount = 0;
+            document.querySelectorAll('.tag-name').forEach(function (e) {
+                e.addEventListener('click', function () {
+                    const tagName = e.textContent;
+                    if (tagName.trim() != '') {
+                        if (clickCount === 0) {
+                            selectedTag.value += tagName;
+                            clickCount++;
+                        } else selectedTag.value += ', ' + tagName;
+                    }
+                })
             })
+        });
+    }
+
+    // Handle click btn ADD Tag to task
+    document.getElementById('add-tag').addEventListener('click', function () {
+        showListTag();
+
+        // Handle Click button add tag name
+        document.getElementById('save-tag-name').addEventListener('click', function () {
+            var formData = new FormData();
+            const tagName = document.getElementById('new-tag-name');
+            const typeTag = document.getElementById('type-tag');
+            formData.append('tagName', '#' + tagName.value);
+            formData.append('type', typeTag.value);
+            callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
+                tagName.value = '';
+                showListTag();
+            });
         })
 
     })
@@ -367,6 +514,7 @@
                 callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
                     showAlert(SUCCESS_ALERT, 'Register success!');
                     loadCountStatus();
+                    console.log(rs)
                 });
             }
         });
