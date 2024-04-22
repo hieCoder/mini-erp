@@ -19,5 +19,7 @@ public class ListTaskRequest {
     private Integer page;
     private Integer pageSize;
     private String statusTask;
-    private String search;
+    private String picSearch;
+    private String tagSearch;
+    private String titleSearch;
 }

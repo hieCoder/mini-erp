@@ -25,11 +25,9 @@
                  INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE'
           AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
-          AND (
-                    t.PIC LIKE CONCAT('%', #{search}, '%') OR
-                    t.TAG LIKE CONCAT('%', #{search}, '%') OR
-                    t.TITLE LIKE CONCAT('%', #{search}, '%')
-            )
+          AND t.PIC LIKE CONCAT('%', #{picSearch}, '%')
+          AND t.TAG LIKE CONCAT('%', #{tagSearch}, '%')
+          AND t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
         ORDER BY t.ID DESC
     </select>
 
@@ -39,9 +37,9 @@
         INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
         AND (
-                u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
-                t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
-                t.TITLE LIKE CONCAT('%', #{search}, '%')
+                t.PIC LIKE CONCAT('%', #{picSearch}, '%') OR
+                t.TAG LIKE CONCAT('%', #{tagSearch}, '%') OR
+                t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
         )
     </select>
 

@@ -196,27 +196,27 @@
                 <div class="row g-3">
                     <div class="col-xxl-3 col-sm-12">
                         <div class="search-box">
-                            <input type="text" class="form-control search bg-light border-light search-task"
+                            <input id="titleSearch" type="text" class="form-control search bg-light border-light search-task"
                                    placeholder="Search by title">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-xxl-3 col-sm-12">
                         <div class="search-box">
-                            <input type="text" class="form-control search bg-light border-light search-task"
+                            <input id="picSearch" type="text" class="form-control search bg-light border-light search-task"
                                    placeholder="Search by Pic">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-xxl-3 col-sm-12">
                         <div class="search-box">
-                            <input type="text" class="form-control search bg-light border-light search-task"
+                            <input id="tagSearch" type="text" class="form-control search bg-light border-light search-task"
                                    placeholder="Search by tag">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-xxl-1 col-sm-4">
-                        <button id="filter-btn" type="button" class="btn btn-primary btn-load">
+                        <button id="reset-search" type="button" class="btn btn-primary btn-load">
                               Reset
                         </button>
                     </div>
@@ -547,7 +547,7 @@
             </div>
             <div class="modal-body text-center">
                 <label for="new-tag-name" class="form-label float-start">Tag Name</label>
-                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required>
+                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required maxlength="10">
 
                 <label for="type-tag" class="form-label float-start mt-2">Type</label>
                 <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
@@ -685,7 +685,9 @@
         page: 1,
         pageSize: $('#page-count-select').val(),
         statusTask: '',
-        search: ''
+        picSearch: '',
+        tagSearch: '',
+        titleSearch: ''
     }
     var tableTask = null;
 
@@ -790,20 +792,22 @@
             info: false
         });
 
-        $('#filter-btn').on('click', function () {
-            tasksRequest.search = $('.search-task').val();
-            tasksRequest.statusTask = $('#idStatus').val();
+        $('.search-task').on('input', function () {
+            tasksRequest.picSearch = $('#picSearch').val();
+            tasksRequest.tagSearch = $('#tagSearch').val();
+            tasksRequest.titleSearch = $('#titleSearch').val();
+            // Filter by task
+            document.querySelectorAll('.task-status').forEach(function (e) {
+                e.addEventListener('click', function () {
+                    var taskStatus = this.getAttribute('data-value');
+                    tasksRequest.statusTask = taskStatus;
+                })
+            })
             tasksRequest.page = 1;
-
-            var btn = $(this);
-            btn.find('.spinner-border').removeClass('d-none');
-
-            tableTask.ajax.reload(function () {
-                btn.find('.spinner-border').addClass('d-none');
-            });
+            tableTask.ajax.reload(function () {});
         });
 
-        // Filter by task
+        // Filter by status
         document.querySelectorAll('.task-status').forEach(function (e) {
             e.addEventListener('click', function () {
                 var taskStatus = this.getAttribute('data-value');
@@ -1419,6 +1423,24 @@
             }
         });
     });
+
+    $('#reset-search').on('click', function () {
+        $('.search-task').val('');
+        tasksRequest.picSearch = $('#picSearch').val();
+        tasksRequest.tagSearch = $('#tagSearch').val();
+        tasksRequest.titleSearch = $('#titleSearch').val();
+        // Filter by task
+        document.querySelectorAll('.task-status').forEach(function (e) {
+            e.addEventListener('click', function () {
+                var taskStatus = this.getAttribute('data-value');
+                tasksRequest.statusTask = taskStatus;
+            })
+        })
+        tasksRequest.page = 1;
+
+        tableTask.ajax.reload(function () {});
+    });
+
 </script>
 </body>
 </html>

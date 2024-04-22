@@ -13,10 +13,14 @@ import java.util.Map;
 public interface TaskMapper {
 
     List<Task> findAll( String statusTask,
-                        String search,
+                        String picSearch,
+                        String tagSearch,
+                        String titleSearch,
                        RowBounds rowBounds);
     long getTotalItem( String statusTask,
-                       String search);
+                       String picSearch,
+                       String tagSearch,
+                       String titleSearch);
     int registerTask(Task task);
     int updateTask(Task task);
     int changeStatusTask( String id,

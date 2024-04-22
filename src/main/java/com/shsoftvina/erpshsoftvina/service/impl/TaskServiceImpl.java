@@ -50,15 +50,15 @@ public class TaskServiceImpl implements TaskService {
     private ApplicationUtils applicationUtils;
 
     @Override
-    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String search) {
+    public List<TaskShowResponse> findAll(int start, int pageSize, String statusTask, String picSearch, String tagSearch, String titleSearch) {
         int offset = (start - 1) * pageSize;
         RowBounds rowBounds = new RowBounds(offset, pageSize);
-        return taskMapper.findAll(statusTask, search, rowBounds).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
+        return taskMapper.findAll(statusTask, picSearch, tagSearch, titleSearch, rowBounds).stream().map(task -> taskConverter.toResponse(task)).collect(Collectors.toList());
     }
 
     @Override
-    public long getTotalItem(String statusTask, String search) {
-        return taskMapper.getTotalItem(statusTask, search);
+    public long getTotalItem(String statusTask,  String picSearch, String tagSearch, String titleSearch) {
+        return taskMapper.getTotalItem(statusTask, picSearch, tagSearch, titleSearch);
     }
 
     @Override

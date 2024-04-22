@@ -169,7 +169,7 @@
             </div>
             <div class="modal-body text-center">
                 <label for="new-tag-name" class="form-label float-start">Tag Name</label>
-                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required>
+                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." maxlength="10" required>
 
                 <label for="type-tag" class="form-label float-start mt-2">Type</label>
                 <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
