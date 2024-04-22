@@ -630,7 +630,7 @@
             var formData = new FormData();
             const tagName = document.getElementById('new-tag-name');
             const typeTag = document.getElementById('type-tag');
-            formData.append('tagName', '#' + tagName.value);
+            formData.append('tagName', '#' + tagName.value.trim());
             formData.append('type', typeTag.value);
             callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
                 tagName.value = '';
