@@ -24,8 +24,11 @@ public class TaskRegisterRequest {
     @NotBlank(message = "Field userId is not filled")
     private String userId;
 
-    private Date dueDate;
-
     @NotBlank(message = "Field priority is not filled")
     private String priority;
+
+    private Date dueDate;
+    private String tag;
+    private String pic;
+    private String relatedTask;
 }

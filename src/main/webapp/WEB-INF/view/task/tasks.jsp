@@ -26,14 +26,13 @@
 <!-- end page title -->
 
 <div class="row">
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Total Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-total-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"> <i class="ri-arrow-up-line align-middle"></i> 17.32 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -47,14 +46,13 @@
         </div> <!-- end card-->
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Closed Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-closed-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 2.52 % </span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -68,14 +66,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Opened Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-opened-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -89,14 +86,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-reopend-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -110,14 +106,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Postponed Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-postponed-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -131,14 +126,13 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-2 col-sm-6">
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <p class="fw-medium text-muted mb-0">Registered Tasks</p>
                         <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-registered-task">0</span></h2>
-                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"> <i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                     </div>
                     <div>
                         <div class="avatar-sm flex-shrink-0">
@@ -168,65 +162,84 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                     <div class="flex-shrink-0">
-                        <button id="register-task-btn" class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Register task</button>
-                        <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i></button>
+                        <a href="/tasks/register" class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i>
+                            Register task</a>
+                        <button class="btn btn-soft-danger" id="delete-mul-task"><i class="ri-delete-bin-2-line"></i>
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <div class="row g-3">
-                        <div class="col-xxl-7 col-sm-12">
-                            <div class="search-box">
-                                <input id="search-input" type="text" class="form-control search bg-light border-light" placeholder="Search by username, title, content">
-                                <i class="ri-search-line search-icon"></i>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="hstack gap-2 flex-wrap">
+                            <input type="radio" class="btn-check task-status" name="options" id="all" data-value=""  checked>
+                            <label class="btn btn btn-light" for="all">ALL</label>
+
+                            <input type="radio" class="btn-check task-status" name="options" id="opened" data-value="OPENED">
+                            <label class="btn btn-warning" for="opened">OPENED</label>
+
+                            <input type="radio" class="btn-check task-status" name="options" id="reopened" data-value="REOPENED">
+                            <label class="btn btn-info" for="reopened">REOPENED</label>
+
+                            <input type="radio" class="btn-check task-status" name="options" id="registered" data-value="REGISTERED">
+                            <label class="btn btn-secondary" for="registered">REGISTERED</label>
+
+                            <input type="radio" class="btn-check task-status" name="options" id="postponed" data-value="POSTPONED">
+                            <label class="btn btn-danger" for="postponed">POSTPONED</label>
+
+                            <input type="radio" class="btn-check task-status" name="options" id="closed" data-value="CLOSED">
+                            <label class="btn btn-success" for="closed">CLOSED</label>
                         </div>
-                        <!--end col-->
-                        <div class="col-xxl-2 col-sm-4">
-                            <div class="input-light">
-                                <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                    <option value="" selected>All</option>
-                                    <option value="REGISTERED">Registered</option>
-                                    <option value="OPENED">Opened</option>
-                                    <option value="POSTPONED">Postponed</option>
-                                    <option value="REOPENED">Reopend</option>
-                                    <option value="CLOSED">Closed</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!--end col-->
-                        <div class="col-xxl-1 col-sm-4">
-                            <button id="filter-btn" type="button" class="btn btn-primary btn-load">
-                                <span class="d-flex align-items-center">
-                                    <span class="spinner-border flex-shrink-0 d-none"></span>
-                                    <span class="flex-grow-1 ms-2">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Filters
-                                    </span>
-                                </span>
-                            </button>
-                        </div>
-                        <!--end col-->
-                        <div class="col-xxl-2 col-sm-4 d-flex align-items-center justify-content-end">
-                            <div style="margin-right: 5px;">Show entries: </div>
-                            <div class="d-flex align-items-center align-items-center">
-                                <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
-                                <span class="btn-load ml-10">
-                                    <span class="spinner-border flex-shrink-0 d-none"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <!--end col-->
                     </div>
-                    <!--end row-->
+                </div>
+                <div class="row g-3">
+                    <div class="col-xxl-3 col-sm-12">
+                        <div class="search-box">
+                            <input id="titleSearch" type="text" class="form-control search bg-light border-light search-task"
+                                   placeholder="Search by title">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-12">
+                        <div class="search-box">
+                            <input id="picSearch" type="text" class="form-control search bg-light border-light search-task"
+                                   placeholder="Search by Pic">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-12">
+                        <div class="search-box">
+                            <input id="tagSearch" type="text" class="form-control search bg-light border-light search-task"
+                                   placeholder="Search by tag">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-xxl-1 col-sm-4">
+                        <button id="reset-search" type="button" class="btn btn-primary btn-load">
+                              Reset
+                        </button>
+                    </div>
+                    <div class="col-xxl-2 col-sm-4 d-flex align-items-center float-end">
+                        <div style="margin-right: 5px;">Show entries:</div>
+                        <div class="d-flex align-items-center align-items-center">
+                            <select id="page-count-select" class="form-select" aria-label=".form-select-lg example">
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                            <span class="btn-load ml-10">
+                                    <span class="spinner-border flex-shrink-0 d-none"></span>
+                                </span>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
             </div>
-            <!--end card-body-->
             <div class="card-body">
                 <div class="table-responsive table-card">
-                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;" id="tasksTable">
+                    <table class="table align-middle table-nowrap mb-0 w-100" style="margin: 0px!important;"
+                           id="tasksTable">
                         <thead class="table-light text-muted">
                         <tr>
                             <th scope="col" style="width: 40px;">
@@ -237,11 +250,12 @@
                             <th>ID</th>
                             <th>Status</th>
                             <th>Title</th>
-                            <th>Username</th>
+                            <th>Pic</th>
                             <th>Priority</th>
                             <th>Progress</th>
                             <th>Start date</th>
                             <th>Due/Closed date</th>
+                            <th>Tag</th>
                         </tr>
                         </thead>
                         <tbody class="list form-check-all"></tbody>
@@ -266,7 +280,8 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body p-5 text-center">
-                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                           colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
                 <div class="mt-4 text-center">
                     <h4>You are about to delete a task ?</h4>
                     <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
@@ -278,7 +293,10 @@
                                 <span class="flex-grow-1">Yes, Delete It</span>
                             </span>
                         </button>
-                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="delete-task-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none"
+                                id="delete-task-close" data-bs-dismiss="modal"><i
+                                class="ri-close-line me-1 align-middle"></i> Close
+                        </button>
                     </div>
                 </div>
             </div>
@@ -287,19 +305,23 @@
 </div>
 <!--end delete modal -->
 
-<div class="modal fade zoomIn" id="registerTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade zoomIn" id="registerTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
                 <h5 class="modal-title" id="exampleModalLabel">Register Task</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
             </div>
             <form id="registerTaskForm">
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-lg-12">
-                            <label for="selectUsername" class="form-label">Username: <span class="username-register-task"></span></label>
-                            <select id="selectUsername" name="userId" class="form-select d-none" aria-label="Default select example">
+                            <label for="selectUsername" class="form-label">Username: <span
+                                    class="username-register-task"></span></label>
+                            <select id="selectUsername" name="userId" class="form-select d-none"
+                                    aria-label="Default select example">
                             </select>
                         </div>
                         <div class="col-lg-12">
@@ -318,13 +340,15 @@
                         <!--end col-->
                         <div class="col-lg-6">
                             <label for="dueDate" class="form-label">Due date</label>
-                            <input type="text" id="dueDate" name="dueDate" class="form-control" data-provider="flatpickr" placeholder="Due date"/>
+                            <input type="text" id="dueDate" name="dueDate" class="form-control"
+                                   data-provider="flatpickr" placeholder="Due date"/>
                             <small class="form-message"></small>
                         </div>
                         <!--end col-->
                         <div class="col-lg-6">
                             <label for="selectPriority" class="form-label">Priority</label>
-                            <select id="selectPriority" name="priority"  class="form-control" data-choices data-choices-search-false>
+                            <select id="selectPriority" name="priority" class="form-control" data-choices
+                                    data-choices-search-false>
                                 <option value="LOW">Low</option>
                                 <option value="MEDIUM">Medium</option>
                                 <option value="HIGH">High</option>
@@ -342,34 +366,38 @@
                                 <span class="flex-grow-1">Register</span>
                             </span>
                         </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!--end modal-->
 
 <div class="modal fade zoomIn" id="editTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
                 <h5 class="modal-title" id="exampleModalLabel-edit-task">Update task</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
             </div>
             <form id="editTaskForm">
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-lg-12">
-                            <label for="selectUsernameEdit" class="form-label">Username: <span class="username-edit-task"></span></label>
-                            <select id="selectUsernameEdit" name="userId" class="form-select d-none" aria-label="Default select example">
+                            <label for="selectUsernameEdit" class="form-label">Username: <span
+                                    class="username-edit-task"></span></label>
+                            <select id="selectUsernameEdit" name="userId" class="form-select d-none"
+                                    aria-label="Default select example">
                             </select>
                         </div>
                         <div class="col-lg-12">
                             <div>
                                 <label for="title" class="form-label">Title</label>
-                                <input type="text" id="title-edit" name="title" class="form-control" placeholder="Title"/>
+                                <input type="text" id="title-edit" name="title" class="form-control"
+                                       placeholder="Title"/>
                                 <small class="form-message"></small>
                             </div>
                         </div>
@@ -381,7 +409,8 @@
                         </div>
                         <!--end col-->
                         <div class="col-lg-6">
-                            <label for="selectActionEdit" class="form-label">Status:<span id="statusTaskEdit"></span></label>
+                            <label for="selectActionEdit" class="form-label">Status:<span
+                                    id="statusTaskEdit"></span></label>
                             <select id="selectActionEdit" name="action" class="form-control"></select>
                         </div>
                         <!--end col-->
@@ -411,13 +440,12 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <!--end col-->
                         <div class="col-lg-6">
                             <label for="dueDateEdit" class="form-label">Due date</label>
-                            <input type="text" id="dueDateEdit" name="dueDate" class="form-control" data-provider="flatpickr" placeholder="Due date"/>
+                            <input type="text" id="dueDateEdit" name="dueDate" class="form-control"
+                                   data-provider="flatpickr" placeholder="Due date"/>
                             <small class="form-message"></small>
                         </div>
-                        <!--end col-->
                         <div class="col-lg-6">
                             <label for="selectPriority" class="form-label">Priority</label>
                             <select id="selectPriorityEdit" name="priority" class="form-control">
@@ -426,9 +454,25 @@
                                 <option value="HIGH">High</option>
                             </select>
                         </div>
-                        <!--end col-->
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <label class="form-label m-0">Tag: </label>
+                            <div id="show-tag" class="d-flex align-items-center">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <label class="form-label m-0">Pic: </label>
+                            <div id="show-pic" class="d-flex align-items-center">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12 d-flex align-items-center">
+                            <label class="form-label m-0">Related Task: </label>
+                            <div id="show-related-task" class="d-flex align-items-center">
+
+                            </div>
+                        </div>
                     </div>
-                    <!--end row-->
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
@@ -438,14 +482,201 @@
                                 <span class="flex-grow-1">Update</span>
                             </span>
                         </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!--end modal-->
+
+<!-- Modal Add Tag To Tag -->
+<div id="tagModal" class="modal fade" tabindex="-1" aria-labelledby="..." aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">TAG</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input id="tag-selected" class="form-control" type="text"/>
+                </div>
+                <div class="mt-2 text-center align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" id="searchTag" class="form-control" placeholder="Search Tag..."
+                               style="width: 30%">
+                        <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal"
+                                data-bs-target="#add-tag-name">+ TAG NAME
+                        </button>
+                    </div>
+                    <div data-simplebar style="max-height: 400px">
+                        <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
+                            <thead>
+                            <tr>
+                                <th style="border: 1px solid black">Default Tags</th>
+                                <th style="border: 1px solid black">Tags added</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dataBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="save-tag-selected" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save
+                    Changes
+                </button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Tag Name -->
+<div class="modal fade" id="add-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalgridLabel">Add a new tag Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <label for="new-tag-name" class="form-label float-start">Tag Name</label>
+                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required maxlength="10">
+
+                <label for="type-tag" class="form-label float-start mt-2">Type</label>
+                <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
+                    <option value="DEFAULT_TAG" selected>Default Tag</option>
+                    <option value="TAG_ADDED">Tag Normal</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button id="save-tag-name" type="button" class="btn btn-primary">ADD</button>
+                <button type="button" class="btn btn-light">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Tag Name -->
+<div class="modal fade" id="modal-edit-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit tag Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <label for="edit-tag-name" class="form-label float-start">Tag Name</label>
+                    <input id="edit-tag-name" class="form-control" type="text" placeholder="Enter here..." required>
+
+                    <label for="edit-type-tag" class="form-label float-start mt-2">Type</label>
+                    <select id="edit-type-tag" class="form-select mb-3" aria-label="Default select example">
+                        <option value="DEFAULT_TAG">Default Tag</option>
+                        <option value="TAG_ADDED">Tag Normal</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-edit-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal"
+                            data-bs-toggle="modal" data-bs-dismiss="modal">Save
+                    </button>
+                    <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal"
+                            data-bs-dismiss="modal">Back
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%-- Modal Add Pic --%>
+<div id="picModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">PIC</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input id="pic-selected" class="form-control" type="text"/>
+                </div>
+                <div class="mt-2 text-center align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" id="searchPic" class="form-control" placeholder="Search Pic..."
+                               style="width: 30%">
+                    </div>
+                    <div data-simplebar style="max-height: 400px">
+                        <table class="table table-bordered mt-2 nowrap align-middle" id="table-pic">
+                            <thead>
+                            <tr>
+                                <th>UserName</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-save-pic" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes
+                </button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-- Modal Add Related Task--%>
+<div id="relatedTaskModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input id="related-task-selected" class="form-control" type="text"/>
+                </div>
+                <div class="mt-2 text-center align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" id="searchTask" class="form-control" placeholder="Search Task..."
+                               style="width: 30%">
+                    </div>
+                    <div data-simplebar style="max-height: 400px">
+                        <table class="table table-bordered mt-2 nowrap align-middle" id="table-task">
+                            <thead>
+                            <tr>
+                                <th>Title Task</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-save-task" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes
+                </button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="/assets/custom/js/task/task.js"></script>
 <script>
@@ -454,11 +685,13 @@
         page: 1,
         pageSize: $('#page-count-select').val(),
         statusTask: '',
-        search: ''
+        picSearch: '',
+        tagSearch: '',
+        titleSearch: ''
     }
     var tableTask = null;
 
-    $(document).ready(function (){
+    $(document).ready(function () {
 
         var swal = showAlertLoading();
 
@@ -477,11 +710,10 @@
                     return JSON.stringify(tasksRequest);
                 },
                 dataSrc: function (json) {
-                    if(json.length != 0) {
+                    if (json.length != 0) {
                         loadPaging();
                         $('#pagination').addClass('mt-4');
-                    }
-                    else {
+                    } else {
                         removePagingIfExsit();
                         $('#pagination').removeClass('mt-4');
                     }
@@ -490,8 +722,8 @@
             },
             columns: [
                 {
-                    render: function(data, type, row) {
-                        if(!isAdminOrUserLogin(row.user.id)) return '';
+                    render: function (data, type, row) {
+                        if (!isAdminOrUserLogin(row.user.id)) return '';
                         return `<th scope="row">
                             <div class="form-check">
                                 <input data-id="` + row.id + `" class="form-check-input" type="checkbox" name="chk_child" value="option1">
@@ -501,22 +733,22 @@
                 },
                 {
                     data: 'id',
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         return `<a class="fw-medium link-primary">` + data + `</a>`;
                     }
                 },
                 {
                     data: 'statusTask.code',
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         var colorClass = getStatusColor(data);
                         return '<span class="badge ' + colorClass + '">' + data + '</span>';
                     }
                 },
                 {
                     data: 'title',
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         var editAndRemoveE = '';
-                        if(isAdminOrUserLogin(row.user.id)){
+                        if (isAdminOrUserLogin(row.user.id)) {
                             editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#" data-id="` + row.id + `"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
                                             <li class="list-inline-item">
                                                 <a class="remove-item-task-btn" data-bs-toggle="modal" href="#deleteTaskModal" data-id="` + row.id + `">
@@ -525,31 +757,33 @@
                                             </li>`;
                         }
                         return `<div class="d-flex">
-                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary text-decoration-underline" href="/tasks/`+ row.id +`">` + data + `</a></div>
+                                    <div class="flex-grow-1 tasks_name"><a class="fw-medium link-primary text-decoration-underline" href="/tasks/` + row.id + `">` + data + `</a></div>
                                     <div class="flex-shrink-0 ms-4">
                                         <ul class="list-inline tasks-list-menu mb-0">
-                                            <li class="list-inline-item"><a href="/tasks/`+ row.id +`"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>`
-                                            + editAndRemoveE +`
+                                            <li class="list-inline-item"><a href="/tasks/` + row.id + `"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>`
+                            + editAndRemoveE + `
                                         </ul>
                                     </div>
                                 </div>`;
                     }
                 },
-                { data: 'user.fullname' },
-                { data: 'priority.code',
-                    render: function(data, type, row) {
+                {data: 'pic'},
+                {
+                    data: 'priority.code',
+                    render: function (data, type, row) {
                         var colorClass = getPriorityColor(data);
                         return `<span class="badge ` + colorClass + ` text-uppercase">` + data + `</span>`;
                     }
                 },
                 {
                     data: 'progress',
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         return getProgressE(data);
                     }
                 },
-                { data: 'startDate' },
-                { data: 'dueOrCloseDate' }
+                {data: 'startDate'},
+                {data: 'dueOrCloseDate'},
+                {data: 'tag'}
             ],
             ordering: false,
             searching: false,
@@ -558,20 +792,34 @@
             info: false
         });
 
-        $('#filter-btn').on('click', function() {
-            tasksRequest.search = $('#search-input').val();
-            tasksRequest.statusTask = $('#idStatus').val();
+        $('.search-task').on('input', function () {
+            tasksRequest.picSearch = $('#picSearch').val();
+            tasksRequest.tagSearch = $('#tagSearch').val();
+            tasksRequest.titleSearch = $('#titleSearch').val();
+            // Filter by task
+            document.querySelectorAll('.task-status').forEach(function (e) {
+                e.addEventListener('click', function () {
+                    var taskStatus = this.getAttribute('data-value');
+                    tasksRequest.statusTask = taskStatus;
+                })
+            })
             tasksRequest.page = 1;
-
-            var btn = $(this);
-            btn.find('.spinner-border').removeClass('d-none');
-
-            tableTask.ajax.reload(function () {
-                btn.find('.spinner-border').addClass('d-none');
-            });
+            tableTask.ajax.reload(function () {});
         });
 
-        $('#page-count-select').on('change', function() {
+        // Filter by status
+        document.querySelectorAll('.task-status').forEach(function (e) {
+            e.addEventListener('click', function () {
+                var taskStatus = this.getAttribute('data-value');
+                tasksRequest.statusTask = taskStatus;
+                tasksRequest.page = 1;
+
+                tableTask.ajax.reload(function () {
+                });
+            })
+        })
+
+        $('#page-count-select').on('change', function () {
 
             var selectE = $(this);
             var selectedValue = selectE.val();
@@ -586,20 +834,20 @@
         });
     });
 
-    function removePagingIfExsit(){
+    function removePagingIfExsit() {
         if (window.pagObj) {
             window.pagObj.twbsPagination('destroy');
         }
     }
 
-    function loadPaging(){
+    function loadPaging() {
         callAjaxByJsonWithData('/api/v1/tasks/count', 'POST', tasksRequest, function (totalItem) {
 
             removePagingIfExsit();
 
             //paging
             var totalPages = 0;
-            if(totalItem <= tasksRequest.pageSize) totalPages = 1;
+            if (totalItem <= tasksRequest.pageSize) totalPages = 1;
             else totalPages = Math.ceil(totalItem / tasksRequest.pageSize);
             var currentPage = tasksRequest.page;
 
@@ -663,82 +911,6 @@
         }
     });
 
-    var isFirstTimeOpenModalRegister = true;
-    $(document).on('click', '#register-task-btn', function() {
-
-        $('#title').val('');
-
-        $('#content .ql-editor').html('<p><br></p>');
-        $('#registerTaskForm .ql-toolbar.ql-snow').remove();
-        activeEditor("#registerTaskForm");
-
-        $('#dueDate').val('');
-        $('#registerTaskForm .spinner-border').addClass('d-none');
-
-        var selectElement = $('#selectUsername');
-        if(isDeleveloper()){
-            selectElement.empty();
-            $('.username-register-task').text(userCurrent.fullname);
-            var option = $('<option></option>');
-            option.attr('value', userCurrent.id);
-            option.text(userCurrent.fullname);
-            selectElement.append(option);
-
-            $('#registerTaskModal').modal('show');
-        } else{
-            if (isFirstTimeOpenModalRegister) {
-                selectElement.empty();
-
-                var swal = showAlertLoading();
-                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(rs) {
-                    $('#selectUsername').removeClass('d-none');
-
-                    rs.forEach(function(user) {
-                        var option = $('<option></option>');
-                        option.attr('value', user.id);
-                        option.text(user.fullname);
-
-                        if (user.id == userCurrent.id) {
-                            option.attr('selected', 'selected');
-                        }
-
-                        selectElement.append(option);
-                    });
-
-                    swal.close();
-                    $('#registerTaskModal').modal('show');
-
-                    isFirstTimeOpenModalRegister = false;
-                });
-            } else{
-                $('#registerTaskModal').modal('show');
-            }
-        }
-
-        Validator({
-            form:'#registerTaskForm',
-            errorSelector: '.form-message',
-            rules:[
-                Validator.isRequired('#title'),
-                Validator.isRequired('#content'),
-                Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
-            ],
-            onSubmit: function (formData) {
-                formData.append('content', $('#content').html());
-
-                $('#registerTaskForm .spinner-border').removeClass('d-none');
-                callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
-                    tableTask.ajax.reload(function () {
-                        $('#registerTaskForm .spinner-border').addClass('d-none');
-                        $("#registerTaskModal").modal("hide");
-                        showAlert(SUCCESS_ALERT, 'Register success!');
-                        loadCountStatus();
-                    });
-                });
-            }
-        });
-    });
-
     $(document).on('click', '.remove-item-task-btn', function (e) {
         var idTask = $(this).data('id');
         $('#delete-task').attr('data-id', idTask);
@@ -766,11 +938,170 @@
     });
 
     $(document).on('click', '.edit-item-task-btn', function (e) {
+        function showListTag() {
+            callAjaxByJsonWithData('/api/v1/tags', 'GET', null, function (rs) {
+                let table = new DataTable('#scroll-vertical', {
+                    "scrollY": "210px",
+                    "scrollCollapse": true,
+                    "paging": false,
+                    "searching": false,
+                    "ordering": false,
+                    "info": false
+                });
+
+                const defaultTagNames = [];
+                const tagAddedTagNames = [];
+
+                rs.forEach(function (item) {
+                    let obj = {
+                        id: item.id,
+                        tagName: item.tagName,
+                        type: item.type.code
+                    };
+                    if (item.type.code == 'DEFAULT_TAG') defaultTagNames.push(obj);
+                    else if (item.type.code == 'TAG_ADDED') tagAddedTagNames.push(obj);
+                })
+                const dataBody = document.getElementById('dataBody');
+
+                displayData(defaultTagNames, tagAddedTagNames);
+
+                document.getElementById('searchTag').addEventListener('input', function () {
+                    var searchText = this.value.toLowerCase();
+
+                    var filteredData1 = defaultTagNames.filter(item => item.tagName.toLowerCase().includes(searchText));
+                    var filteredData2 = tagAddedTagNames.filter(item => item.tagName.toLowerCase().includes(searchText));
+
+                    displayData(filteredData1, filteredData2);
+                });
+
+                function displayData(data1, data2) {
+                    dataBody.innerHTML = '';
+
+                    var maxRows = Math.max(data1.length, data2.length);
+
+                    for (var i = 0; i < maxRows; i++) {
+                        var row = document.createElement('tr');
+                        var cell1 = document.createElement('td');
+                        var cell2 = document.createElement('td');
+                        var div1 = document.createElement('div');
+                        var div2 = document.createElement('div');
+                        var span1 = document.createElement('span');
+                        var span2 = document.createElement('span');
+
+                        div1.classList.add('d-flex', 'justify-content-center');
+                        div2.classList.add('d-flex', 'justify-content-center');
+                        span1.classList.add('tag-name', 'cursor-pointer');
+                        span2.classList.add('tag-name', 'cursor-pointer');
+
+                        if (i < data1.length) {
+                            span1.textContent = data1[i].tagName;
+                            span1.setAttribute('data-value', data1[i].id);
+                            span1.setAttribute('data-type', data1[i].type);
+                        }
+                        if (i < data2.length) {
+                            span2.textContent = data2[i].tagName;
+                            span2.setAttribute('data-value', data2[i].id);
+                            span2.setAttribute('data-type', data2[i].type);
+                        }
+
+                        div1.appendChild(span1);
+                        div2.appendChild(span2);
+                        cell1.appendChild(div1);
+                        cell2.appendChild(div2);
+
+
+                        if (i < data1.length) {
+                            div1.innerHTML += `
+                            <div class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink1_${i}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1_${i}">
+                                    <li><a class="dropdown-item edit-tag" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag-name" data-bs-dismiss="modal">Edit</a></li>
+                                    <li><a class="dropdown-item del-tag" href="#">Delete</a></li>
+                                </ul>
+                            </div>
+                        `;
+                        }
+                        if (i < data2.length) {
+                            div2.innerHTML += `
+                            <div class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink2_${i}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2_${i}">
+                                    <li><a class="dropdown-item edit-tag" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag-name" data-bs-dismiss="modal">Edit</a></li>
+                                    <li><a class="dropdown-item del-tag" href="#">Delete</a></li>
+                                </ul>
+                            </div>
+                        `;
+                        }
+
+                        row.appendChild(cell1);
+                        row.appendChild(cell2);
+                        dataBody.appendChild(row);
+                    }
+
+                    // Handle Update Tag
+                    var idTagEdit = '';
+                    document.querySelectorAll('.edit-tag').forEach(function (eEdit) {
+                        eEdit.addEventListener('click', function (e) {
+                            var tag = eEdit.closest('.d-flex').querySelector('span.tag-name');
+                            idTagEdit = tag.getAttribute('data-value');
+                            var tagName = tag.textContent.substring(1);
+                            var typeTag = tag.getAttribute('data-type');
+                            const editTagName = document.getElementById('edit-tag-name');
+                            editTagName.value = tagName;
+
+                            document.querySelectorAll('#edit-type-tag option').forEach(function (option) {
+                                if (typeTag === option.value) option.selected = true;
+                                else option.selected = false;
+                            });
+                        })
+                    })
+
+                    document.getElementById('save-edit-tag-name').addEventListener('click', function () {
+                        const formDataEdiTag = new FormData();
+                        const tagName = document.getElementById('edit-tag-name');
+                        const typeTag = document.getElementById('edit-type-tag');
+                        formDataEdiTag.append('id', idTagEdit);
+                        formDataEdiTag.append('tagName', '#' + tagName.value);
+                        formDataEdiTag.append('type', typeTag.value);
+
+                        callAjaxByJsonWithDataForm("/api/v1/tags/updation", "POST", formDataEdiTag, function (rs) {
+                            showListTag()
+                        });
+                    })
+
+                    // Handle Delete Tag
+                    document.querySelectorAll('.del-tag').forEach(function (eDel) {
+                        eDel.addEventListener('click', function () {
+                            var idTag = eDel.closest('.d-flex').querySelector('span.tag-name').getAttribute('data-value');
+                            callAjaxByJsonWithData("/api/v1/tags/" + idTag, "DELETE", null, function (rs) {
+                                showListTag()
+                            });
+                        })
+                    })
+                }
+
+                const selectedTag = document.getElementById('tag-selected');
+                document.querySelectorAll('.tag-name').forEach(function (e) {
+                    e.addEventListener('click', function () {
+                        const tagName = e.textContent;
+                        if (tagName.trim() != '') {
+                            if (selectedTag.value == '') {
+                                selectedTag.value += tagName;
+                            } else selectedTag.value += ', ' + tagName;
+                        }
+                    })
+                })
+            });
+        }
+
         var idTask = $(this).data('id');
 
         var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
-
             $('#title-edit').val(rs.title);
 
             $('#content-edit').html(rs.content);
@@ -781,7 +1112,7 @@
             $('#statusTaskEdit').replaceWith('<span id="statusTaskEdit" class="badge ' + getStatusColor(statusCode) + '">' + statusCode + '</span>');
 
             $('#selectActionEdit').html('<option value="">-- Select actions --</option>');
-            rs.statusTask.actions.forEach(function(action) {
+            rs.statusTask.actions.forEach(function (action) {
                 var option = $('<option></option>');
                 option.attr('value', action.code);
                 option.text(action.name);
@@ -790,27 +1121,229 @@
 
             $('#selectProgressEdit').val(rs.progress);
 
-            if(!isBlank(rs.dueDate)){
+            if (!isBlank(rs.dueDate)) {
                 $('#dueDateEdit').val(formatDateValueToValueOfInputDate(rs.dueDate));
-            } else{
+            } else {
                 $('#dueDateEdit').val('');
             }
 
             $('#selectPriorityEdit').val(rs.priority.code);
 
+            // Tag
+            const sessionTag = document.getElementById('show-tag');
+            sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+
+            const btnEditTag = document.getElementById('btn-edit-tag');
+            if (btnEditTag) {
+                btnEditTag.addEventListener('click', function () {
+                    var modal = new bootstrap.Modal(document.getElementById('tagModal'));
+                    modal.show();
+
+                    const tagSelected = document.getElementById('tag-selected');
+                    const tagsDbSelected = document.getElementById('tag-db-selected');
+                    if (tagsDbSelected != '') tagSelected.value = tagsDbSelected.textContent;
+                    showListTag();
+                })
+            }
+
+            document.getElementById('save-tag-selected').addEventListener('click', function () {
+                const tagsSelected = document.getElementById('tag-selected').value;
+                const showTagSelect = document.getElementById('show-tag');
+                if (tagsSelected != '') {
+                    showTagSelect.innerHTML = `<span class="fw-bold ms-2">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                }
+
+                const btnEditTag = document.getElementById('btn-edit-tag');
+                if (btnEditTag) {
+                    btnEditTag.addEventListener('click', function () {
+                        var modal = new bootstrap.Modal(document.getElementById('tagModal'));
+                        modal.show();
+                    })
+                }
+            })
+
+            // Handle Click button add tag name
+            document.getElementById('save-tag-name').addEventListener('click', function () {
+                var formData = new FormData();
+                const tagName = document.getElementById('new-tag-name');
+                const typeTag = document.getElementById('type-tag');
+                formData.append('tagName', '#' + tagName.value);
+                formData.append('type', typeTag.value);
+                callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
+                    tagName.value = '';
+                    var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+                    modal.show();
+                    $('#add-tag-name').modal('hide');
+                    showListTag();
+                });
+            })
+
+            // Pic
+            const sessionPic = document.getElementById('show-pic');
+            sessionPic.innerHTML = `<span class="fw-bold ms-2">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+
+            const btnEditPic = document.getElementById('btn-edit-pic');
+            if (btnEditPic) {
+                btnEditPic.addEventListener('click', function () {
+                    var modal = new bootstrap.Modal(document.getElementById('picModal'));
+                    modal.show();
+                    if (!this.clicked) {
+                        this.clicked = true;
+
+                        callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                            rs.forEach(function (user) {
+                                const tablePic = document.getElementById('table-pic');
+                                const tbody = tablePic.querySelector('tbody');
+                                const pic = `<tr><td class="cursor-pointer pic-username">` + user.fullname + `</td></tr>`;
+                                tbody.innerHTML += pic;
+                            });
+
+                            const inputSelectPic = document.getElementById('pic-selected');
+                            document.querySelectorAll('.pic-username').forEach(function (ePic) {
+                                ePic.addEventListener('click', function () {
+                                    const picName = ePic.textContent;
+                                    if (inputSelectPic.value == '') {
+                                        inputSelectPic.value += picName;
+                                    } else inputSelectPic.value += ', ' + picName;
+                                });
+                            });
+
+                            const searchInput = document.getElementById('searchPic');
+
+                            const rows = document.querySelectorAll('#table-pic tbody tr');
+
+                            searchInput.addEventListener('input', function () {
+                                const searchText = this.value.trim().toLowerCase();
+
+                                rows.forEach(function (row) {
+                                    const cells = row.querySelectorAll('.pic-username');
+                                    let found = false;
+
+                                    cells.forEach(function (cell) {
+                                        const cellText = cell.textContent.trim().toLowerCase();
+                                        if (cellText.includes(searchText)) {
+                                            found = true;
+                                        }
+                                    });
+
+                                    if (found) {
+                                        row.style.display = '';
+                                    } else {
+                                        row.style.display = 'none';
+                                    }
+                                });
+                            });
+
+                            document.getElementById('btn-save-pic').addEventListener('click', function () {
+                                const picsSelected = document.getElementById('pic-selected').value;
+                                const showPicSelect = document.getElementById('show-pic');
+                                if (picsSelected != '') {
+                                    showPicSelect.innerHTML = `<span class="fw-bold ms-2">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                }
+
+                                const btnEditPic = document.getElementById('btn-edit-pic');
+                                if (btnEditPic) {
+                                    btnEditPic.addEventListener('click', function () {
+                                        var modal = new bootstrap.Modal(document.getElementById('picModal'));
+                                        modal.show();
+                                    })
+                                }
+                            })
+                        });
+                    }
+                })
+            }
+
+
+            // Related Task
+            const sessionRelatedTask = document.getElementById('show-related-task');
+            sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+
+            const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
+            if (btnEditRelatedTask) {
+                btnEditRelatedTask.addEventListener('click', function () {
+                    var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
+                    modal.show();
+                    if (!this.clicked) {
+                        this.clicked = true;
+
+                        callAjaxByJsonWithData('/api/v1/tasks/titles', 'GET', null, function (rs) {
+                            rs.forEach(function (task) {
+                                const tableTask = document.getElementById('table-task');
+                                const tbody = tableTask.querySelector('tbody');
+                                const titleTask = `<tr><td class="cursor-pointer task-title">` + task.title + `</td></tr>`;
+                                tbody.innerHTML += titleTask;
+                            });
+
+                            const inputSelectTask = document.getElementById('related-task-selected');
+                            document.querySelectorAll('.task-title').forEach(function (eTask) {
+                                eTask.addEventListener('click', function () {
+                                    const taskTitle = eTask.textContent;
+                                    if (inputSelectTask.value == '') {
+                                        inputSelectTask.value += taskTitle;
+                                    } else inputSelectTask.value += ', ' + taskTitle;
+                                });
+                            });
+
+                            const searchInput = document.getElementById('searchTask');
+
+                            const rows = document.querySelectorAll('#table-task tbody tr');
+
+                            searchInput.addEventListener('input', function () {
+                                const searchText = this.value.trim().toLowerCase();
+
+                                rows.forEach(function (row) {
+                                    const cells = row.querySelectorAll('.task-title');
+                                    let found = false;
+
+                                    cells.forEach(function (cell) {
+                                        const cellText = cell.textContent.trim().toLowerCase();
+                                        if (cellText.includes(searchText)) {
+                                            found = true;
+                                        }
+                                    });
+
+                                    if (found) {
+                                        row.style.display = '';
+                                    } else {
+                                        row.style.display = 'none';
+                                    }
+                                });
+                            });
+
+                            document.getElementById('btn-save-task').addEventListener('click', function () {
+                                const taskSelected = document.getElementById('related-task-selected').value;
+                                const showTaskSelect = document.getElementById('show-related-task');
+                                if (taskSelected != '') {
+                                    showTaskSelect.innerHTML = `<span class="fw-bold ms-2">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                }
+
+                                const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
+                                if (btnEditRelatedTask) {
+                                    btnEditRelatedTask.addEventListener('click', function () {
+                                        var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
+                                        modal.show();
+                                    })
+                                }
+                            })
+                        });
+                    }
+                })
+            }
+
             //handle case
-            if([T_REGISTERED, T_POSTPONED, T_CLOSED].includes(statusCode)){
+            if ([T_REGISTERED, T_POSTPONED, T_CLOSED].includes(statusCode)) {
                 $('#selectProgressEdit').prop('disabled', true);
             } else $('#selectProgressEdit').prop('disabled', false);
 
-            if(statusCode == T_POSTPONED){
+            if (statusCode == T_POSTPONED) {
                 $('#selectPriorityEdit').prop('disabled', true);
             } else $('#selectPriorityEdit').prop('disabled', false);
 
             var selectElement = $('#selectUsernameEdit');
             selectElement.empty();
             // username
-            if(isDeleveloper()){
+            if (isDeleveloper()) {
                 $('.username-edit-task').text(rs.user.fullname);
                 var option = $('<option></option>');
                 option.attr('value', rs.user.id);
@@ -819,9 +1352,9 @@
 
                 swal.close();
                 $('#editTaskModal').modal('show');
-            } else{
-                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function(users) {
-                    users.forEach(function(user) {
+            } else {
+                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (users) {
+                    users.forEach(function (user) {
                         var option = $('<option></option>');
                         option.attr('value', user.id);
                         option.text(user.fullname);
@@ -842,9 +1375,9 @@
         });
 
         Validator({
-            form:'#editTaskForm',
+            form: '#editTaskForm',
             errorSelector: '.form-message',
-            rules:[
+            rules: [
                 Validator.isRequired('#title-edit'),
                 Validator.isRequired('#content-edit'),
                 Validator.isThen("#dueDateEdit", function () {
@@ -852,20 +1385,18 @@
                     var action = $('#selectActionEdit').val();
                     var dueDate = $('#dueDateEdit').val();
 
-                    if(status == T_REGISTERED){
-                        if(action == '') {
-                            if(dueDate == '') return 1; // valid
+                    if (status == T_REGISTERED) {
+                        if (action == '') {
+                            if (dueDate == '') return 1; // valid
                             return 2; // validate dueday
-                        }
-                        else{
-                            if(dueDate == '') return 3; // dueday empty
+                        } else {
+                            if (dueDate == '') return 3; // dueday empty
                             return 2;
                         }
-                    }
-                    else{
-                        if(dueDate == '') return 3;
+                    } else {
+                        if (dueDate == '') return 3;
 
-                        if(status == T_POSTPONED && action != ''){
+                        if (status == T_POSTPONED && action != '') {
                             return 2;
                         }
                         return 1;
@@ -875,6 +1406,9 @@
             onSubmit: function (formData) {
                 formData.append('id', idTask);
                 formData.append('content', $('#content-edit').html());
+                formData.append('tag', $('#show-tag').find('span').text())
+                formData.append('pic', $('#show-pic').find('span').text());
+                formData.append('relatedTask',$('#show-related-task').find('span').text())
 
                 $('#editTaskForm .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {
@@ -888,8 +1422,25 @@
                 });
             }
         });
-
     });
+
+    $('#reset-search').on('click', function () {
+        $('.search-task').val('');
+        tasksRequest.picSearch = $('#picSearch').val();
+        tasksRequest.tagSearch = $('#tagSearch').val();
+        tasksRequest.titleSearch = $('#titleSearch').val();
+        // Filter by task
+        document.querySelectorAll('.task-status').forEach(function (e) {
+            e.addEventListener('click', function () {
+                var taskStatus = this.getAttribute('data-value');
+                tasksRequest.statusTask = taskStatus;
+            })
+        })
+        tasksRequest.page = 1;
+
+        tableTask.ajax.reload(function () {});
+    });
+
 </script>
 </body>
 </html>

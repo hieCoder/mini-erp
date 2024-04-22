@@ -24,7 +24,7 @@ public class TaskApi {
     public ResponseEntity<?> findAll(@RequestBody ListTaskRequest listTaskRequest) {
         Integer page = listTaskRequest.getPage() != null?listTaskRequest.getPage():1;
         int pageSize = listTaskRequest.getPageSize() != null?listTaskRequest.getPageSize(): TaskConstant.pageSizeDefault;
-        return ResponseEntity.ok(taskService.findAll(page, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
+        return ResponseEntity.ok(taskService.findAll(page, pageSize, listTaskRequest.getStatusTask(), listTaskRequest.getPicSearch(), listTaskRequest.getTagSearch(), listTaskRequest.getTitleSearch()));
     }
 
     @PostMapping("/register")
@@ -63,9 +63,14 @@ public class TaskApi {
         return ResponseEntity.ok(taskService.getTaskByTitle(userId, title));
     }
 
+    @GetMapping("/titles")
+    public ResponseEntity<?> findAllTitle(){
+        return ResponseEntity.ok(taskService.findAllTitle());
+    }
+
     @PostMapping("/count")
     public ResponseEntity<?> getTotalItem(@RequestBody ListTaskRequest listTaskRequest){
-        return ResponseEntity.ok(taskService.getTotalItem(listTaskRequest.getStatusTask(), listTaskRequest.getSearch()));
+        return ResponseEntity.ok(taskService.getTotalItem(listTaskRequest.getStatusTask(), listTaskRequest.getPicSearch(), listTaskRequest.getTagSearch(), listTaskRequest.getTitleSearch()));
     }
 
     @GetMapping("/opened/{userId}")

@@ -73,6 +73,18 @@
                             <td class="fw-medium">Closed date</td>
                             <td class="task-closed-date"></td>
                         </tr>
+                        <tr>
+                            <td class="fw-medium">Tag</td>
+                            <td class="task-tag"></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-medium">Pic</td>
+                            <td class="task-pic"></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-medium">Related Task</td>
+                            <td class="task-related-task"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <!--end table-->
@@ -596,6 +608,9 @@
             $('.task-started-date').text(rs.startDate);
             $('.task-due-date').text(rs.dueDate);
             $('.task-closed-date').text(rs.closeDate);
+            $('.task-tag').text(rs.tag);
+            $('.task-pic').text(rs.pic);
+            $('.task-related-task').text(rs.relatedTask);
 
             $('.task-content').html(getContentViewOfEditorSnow(rs.content));
 

@@ -30,4 +30,7 @@ public class Task {
     private PriorityTaskEnum priority;
     private StatusDeleteTaskEnum status;
     private List<CommentTask> comments;
+    private String tag;
+    private String pic;
+    private String relatedTask;
 }

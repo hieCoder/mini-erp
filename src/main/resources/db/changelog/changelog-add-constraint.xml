@@ -37,13 +37,12 @@
     </changeSet>
 
     <changeSet id="5" author="team2">
-        <addForeignKeyConstraint
-                baseTableName="COMMENT_NOTIFICATION"
-                baseColumnNames="PARENT_ID"
-                referencedTableName="COMMENT_NOTIFICATION"
-                referencedColumnNames="ID"
-                constraintName="FK_COMMENT_NOTIFICATION_PARENT"
-                onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="COMMENT_NOTIFICATION"
+                                 baseColumnNames="PARENT_ID"
+                                 referencedTableName="COMMENT_NOTIFICATION"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_COMMENT_NOTIFICATION_PARENT"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="6" author="team2">
@@ -72,13 +71,12 @@
     </changeSet>
 
     <changeSet id="9" author="team2">
-        <addForeignKeyConstraint
-                baseTableName="COMMENT_TASK"
-                baseColumnNames="PARENT_ID"
-                referencedTableName="COMMENT_TASK"
-                referencedColumnNames="ID"
-                constraintName="FK_COMMENT_TASK_PARENT"
-                onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="COMMENT_TASK"
+                                 baseColumnNames="PARENT_ID"
+                                 referencedTableName="COMMENT_TASK"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_COMMENT_TASK_PARENT"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="10" author="team2">
@@ -131,22 +129,21 @@
     </changeSet>
 
     <changeSet id="16" author="team2">
-        <addForeignKeyConstraint
-                baseTableName="CONTRACT"
-                baseColumnNames="HISTORY_ID"
-                referencedTableName="CONTRACT"
-                referencedColumnNames="ID"
-                constraintName="FK_CONTRACT_PARENT"
-                onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="CONTRACT"
+                                 baseColumnNames="HISTORY_ID"
+                                 referencedTableName="CONTRACT"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_CONTRACT_PARENT"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
 
     <changeSet id="17" author="team2">
         <addForeignKeyConstraint baseTableName="TIMESHEETS"
-                             baseColumnNames="TIMESHEETS_CODE"
-                             referencedTableName="USER"
-                             referencedColumnNames="TIMESHEETS_CODE"
-                             constraintName="FK_TIMESHEETS_USER"/>
+                                 baseColumnNames="TIMESHEETS_CODE"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="TIMESHEETS_CODE"
+                                 constraintName="FK_TIMESHEETS_USER"/>
     </changeSet>
 
     <changeSet id="18" author="team2">
@@ -199,15 +196,13 @@
     </changeSet>
 
     <changeSet id="24" author="team2">
-        <addForeignKeyConstraint
-                baseTableName="COMMENT_FEELING_OF_BOOK"
-                baseColumnNames="PARENT_ID"
-                constraintName="FK_COMMENT_FEELING_OF_BOOK_PARENT"
-                referencedTableName="COMMENT_FEELING_OF_BOOK"
-                referencedColumnNames="ID"
-                onUpdate="CASCADE"
-                onDelete="CASCADE"
-        />
+        <addForeignKeyConstraint baseTableName="COMMENT_FEELING_OF_BOOK"
+                                 baseColumnNames="PARENT_ID"
+                                 constraintName="FK_COMMENT_FEELING_OF_BOOK_PARENT"
+                                 referencedTableName="COMMENT_FEELING_OF_BOOK"
+                                 referencedColumnNames="ID"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="25" author="team2">
@@ -232,5 +227,21 @@
                                  referencedTableName="YEAR_MANAGEMENT_TIME_DAY"
                                  referencedColumnNames="ID"
                                  constraintName="FK_COLOR_MANAGEMENT_TIME_DAY_YEAR"/>
+    </changeSet>
+
+    <changeSet id="28" author="team2">
+        <addForeignKeyConstraint baseTableName="TAG_TASK"
+                                 baseColumnNames="TAG_ID"
+                                 referencedTableName="TAG"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_TAG_TASK_TAG"/>
+    </changeSet>
+
+    <changeSet id="29" author="team2">
+        <addForeignKeyConstraint baseTableName="TAG_TASK"
+                                 baseColumnNames="TASK_ID"
+                                 referencedTableName="TASK"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_TAG_TASK_TASK"/>
     </changeSet>
 </databaseChangeLog>

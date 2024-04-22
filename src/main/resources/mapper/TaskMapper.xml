@@ -16,17 +16,18 @@
                t.PROGRESS     AS task_progress,
                t.STATUS       AS task_status,
                t.CONTENT      AS task_content,
+               t.TAG          AS task_tag,
+               t.PIC          AS task_pic,
+               t.RELATED_TASK AS task_related_task,
                u.ID           AS user_id,
                u.FULLNAME     AS user_fullname
         FROM TASK t
                  INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE'
           AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
-          AND (
-                    u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
-                    t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
-                    t.TITLE LIKE CONCAT('%', #{search}, '%')
-            )
+          AND t.PIC LIKE CONCAT('%', #{picSearch}, '%')
+          AND t.TAG LIKE CONCAT('%', #{tagSearch}, '%')
+          AND t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
         ORDER BY t.ID DESC
     </select>
 
@@ -36,9 +37,9 @@
         INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
         AND (
-                u.FULLNAME LIKE CONCAT('%', #{search}, '%') OR
-                t.CONTENT LIKE CONCAT('%#', #{search}, '%') OR
-                t.TITLE LIKE CONCAT('%', #{search}, '%')
+                t.PIC LIKE CONCAT('%', #{picSearch}, '%') OR
+                t.TAG LIKE CONCAT('%', #{tagSearch}, '%') OR
+                t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
         )
     </select>
 
@@ -54,6 +55,9 @@
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
         <result property="status" column="task_status"/>
+        <result property="tag" column="task_tag"/>
+        <result property="pic" column="task_pic"/>
+        <result property="relatedTask" column="task_related_task"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap">
         </association>
@@ -68,9 +72,9 @@
 
     <insert id="registerTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
         INSERT
-        INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS)
+        INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS, TAG, PIC, RELATED_TASK)
         VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{dueDate}, #{priority},
-                #{progress}, #{status});
+                #{progress}, #{status}, #{tag}, #{pic}, #{relatedTask});
     </insert>
 
     <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
@@ -83,7 +87,10 @@
             START_DATE  = #{startDate},
             CLOSE_DATE  = #{closeDate},
             DUE_DATE    = #{dueDate},
-            USER_ID     = #{user.id}
+            USER_ID     = #{user.id},
+            TAG         = #{tag},
+            PIC         = #{pic},
+            RELATED_TASK = #{relatedTask}
         WHERE ID = #{id};
     </update>
 
@@ -139,6 +146,9 @@
                t.PROGRESS      AS task_progress,
                t.STATUS        AS task_status,
                t.CONTENT       AS task_content,
+               t.TAG           AS task_tag,
+               t.PIC           AS task_pic,
+               t.RELATED_TASK  AS task_related_task,
                c.ID            AS comment_id,
                c.USER_ID       AS comment_user_id,
                c.TITLE         AS comment_title,
@@ -169,6 +179,9 @@
         <result property="progress" column="task_progress"/>
         <result property="priority" column="task_priority"/>
         <result property="status" column="task_status"/>
+        <result property="tag" column="task_tag"/>
+        <result property="pic" column="task_pic"/>
+        <result property="relatedTask" column="task_related_task"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap">
         </association>
@@ -254,6 +267,9 @@
                t.PROGRESS     AS task_progress,
                t.STATUS       AS task_status,
                t.CONTENT      AS task_content,
+               t.TAG          AS task_tag,
+               t.PIC          AS task_pic,
+               t.RELATED_TASK AS task_related_task,
                u.ID           AS user_id,
                u.FULLNAME     AS user_fullname
         FROM TASK t
@@ -276,4 +292,14 @@
         FROM TASK
         WHERE STATUS = 'ACTIVE' AND user_id = #{userId}
     </select>
+
+    <select id="findAllTitle" resultType="map" resultMap="titleTaskResultMap">
+        SELECT ID, TITLE
+        FROM TASK
+    </select>
+
+    <resultMap id="titleTaskResultMap" type="java.util.Map">
+        <result property="id" column="ID"/>
+        <result property="title" column="TITLE"/>
+    </resultMap>
 </mapper>

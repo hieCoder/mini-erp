@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TagMapper">
+
+    <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.Tag" resultMap="tagResultMap">
+        SELECT * FROM TAG
+    </select>
+
+    <resultMap id="tagResultMap" type="com.shsoftvina.erpshsoftvina.entity.Tag">
+        <id property="id" column="ID"/>
+        <result property="tagName" column="TAG_NAME"/>
+        <result property="type" column="TYPE"/>
+    </resultMap>
+
+    <select id="findById" parameterType="String" resultMap="tagResultMap">
+        SELECT *
+        FROM TAG
+        WHERE ID = #{id}
+    </select>
+
+    <insert id="createTag" parameterType="com.shsoftvina.erpshsoftvina.entity.Tag">
+        INSERT
+        INTO TAG (ID, TAG_NAME, TYPE)
+        VALUES (#{id}, #{tagName}, #{type});
+    </insert>
+
+    <update id="updateTag" parameterType="com.shsoftvina.erpshsoftvina.entity.Tag">
+        UPDATE TAG
+        SET TAG_NAME = #{tagName},
+            TYPE = #{type}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteTag" parameterType="String">
+        DELETE
+        FROM TAG
+        WHERE ID = #{id}
+    </delete>
+</mapper>
