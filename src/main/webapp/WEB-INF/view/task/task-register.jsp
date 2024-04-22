@@ -29,7 +29,6 @@
         </div>
     </div>
 </div>
-<!-- end page title -->
 
 <div class="row">
     <div class="col-lg-12">
@@ -58,20 +57,17 @@
                                     <small class="form-message"></small>
                                 </div>
                             </div>
-                            <!--end col-->
                             <div class="col-lg-12">
                                 <label for="content" class="form-label">Content</label>
                                 <div id="content" class="snow-editor h-auto"></div>
                                 <small class="form-message"></small>
                             </div>
-                            <!--end col-->
                             <div class="col-lg-6">
                                 <label for="dueDate" class="form-label">Due date</label>
                                 <input type="text" id="dueDate" name="dueDate" class="form-control"
                                        data-provider="flatpickr" placeholder="Due date"/>
                                 <small class="form-message"></small>
                             </div>
-                            <!--end col-->
                             <div class="col-lg-6">
                                 <label for="selectPriority" class="form-label">Priority</label>
                                 <select id="selectPriority" name="priority" class="form-control" data-choices
@@ -84,170 +80,211 @@
                             <div class="col-lg-6">
                               <div class="d-flex align-items-center">
                                   <label class="form-label m-0">TAG: </label>
-                                  <div id="show-tag-selected">
+                                  <div id="show-tag-selected" class="d-flex align-items-center">
                                       <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>
                                   </div>
                               </div>
-                                <!-- Modal Add Tag To Tag -->
-                                <div id="tagModal" class="modal fade" tabindex="-1" aria-labelledby="..." aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog modal-xl modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">TAG</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="col-lg-12">
-                                                    <input id="tag-selected" class="form-control" type="text" />
-                                                </div>
-                                                <div class="mt-2 text-center align-items-center">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <input type="text" id="searchInput" class="form-control" placeholder="Search Tag..." style="width: 30%">
-                                                        <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#add-tag-name" data-bs-dismiss="modal">+ TAG NAME</button>
-                                                    </div>
-                                                   <div data-simplebar style="max-height: 400px">
-                                                       <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
-                                                           <thead>
-                                                           <tr>
-                                                               <th style="border: 1px solid black">Default Tags</th>
-                                                               <th style="border: 1px solid black">Tags added</th>
-                                                           </tr>
-                                                           </thead>
-                                                           <tbody id="dataBody">
-                                                           </tbody>
-                                                       </table>
-                                                   </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button id="save-tag-selected" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Modal Add Tag Name -->
-                                <div class="modal fade" id="add-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <form>
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalgridLabel">Add a new tag Name</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body text-center">
-                                                    <label for="new-tag-name" class="form-label float-start">Tag Name</label>
-                                                    <input id="new-tag-name" class="form-control" type="text" name="tagName" placeholder="Enter here..." required>
-
-                                                    <label for="type-tag" class="form-label float-start mt-2">Type</label>
-                                                    <select id="type-tag" class="form-select mb-3" aria-label="Default select example" name="type">
-                                                        <option value="DEFAULT_TAG" selected>Default Tag</option>
-                                                        <option value="TAG_ADDED">Tag Normal</option>
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button id="save-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">ADD</button>
-                                                    <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Modal Edit Tag Name -->
-                                <div class="modal fade" id="modal-edit-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <form>
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" >Edit tag Name</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body text-center">
-                                                    <label for="edit-tag-name" class="form-label float-start">Tag Name</label>
-                                                    <input id="edit-tag-name" class="form-control" type="text" name="tagName" placeholder="Enter here..." required>
-
-                                                    <label for="edit-type-tag" class="form-label float-start mt-2">Type</label>
-                                                    <select id="edit-type-tag" class="form-select mb-3" aria-label="Default select example" name="type">
-                                                        <option value="DEFAULT_TAG">Default Tag</option>
-                                                        <option value="TAG_ADDED">Tag Normal</option>
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button id="save-edit-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
-                                                    <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="d-flex align-items-center">
+                                    <label class="form-label m-0">PIC: </label>
+                                    <div id="show-pic-selected" class="d-flex align-items-center">
+                                        <button id="btn-add-pic" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD PIC</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <label class="form-label">PIC: </label>
-                                <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD PIC</button>
-                                <div id="picModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="picModalLabel">Modal Heading</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 class="fs-15">
-                                                    Overflowing text to show scroll behavior
-                                                </h5>
-                                                <p class="text-muted">One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.</p>
-                                                <p class="text-muted">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought.</p>
-                                                <p class="text-muted">It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary ">Save Changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">Related Task: </label>
-                                <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD Related Task</button>
-                                <div id="relatedTaskModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="relatedTaskModalLabel">Modal Heading</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 class="fs-15">
-                                                    Overflowing text to show scroll behavior
-                                                </h5>
-                                                <p class="text-muted">One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.</p>
-                                                <p class="text-muted">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought.</p>
-                                                <p class="text-muted">It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary ">Save Changes</button>
-                                            </div>
-                                        </div>
+                                <div class="d-flex align-items-center">
+                                    <label class="form-label">Related Task: </label>
+                                    <div id="show-related-task-selected" class="d-flex align-items-center">
+                                        <button id="btn-add-related-task" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#relatedTaskModal">ADD Related Task</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="hstack gap-2 justify-content-end mt-2">
-                        <button type="submit" class="btn btn-success btn-load">
+                        <div class="hstack gap-2 justify-content-end mt-2">
+                            <button type="submit" class="btn btn-success btn-load">
                             <span class="d-flex align-items-center">
                                 <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
                                 <span class="flex-grow-1">Register</span>
                             </span>
-                        </button>
-                        <button type="button" class="btn btn-light">Cancel</button>
+                            </button>
+                            <a href="/tasks" type="button" class="btn btn-light">Cancel</a>
+                        </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Tag To Tag -->
+<div id="tagModal" class="modal fade" tabindex="-1" aria-labelledby="..." aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">TAG</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input id="tag-selected" class="form-control" type="text" />
+                </div>
+                <div class="mt-2 text-center align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" id="searchTag" class="form-control" placeholder="Search Tag..." style="width: 30%">
+                        <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#add-tag-name" data-bs-dismiss="modal">+ TAG NAME</button>
+                    </div>
+                    <div data-simplebar style="max-height: 400px">
+                        <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
+                            <thead>
+                            <tr>
+                                <th style="border: 1px solid black">Default Tags</th>
+                                <th style="border: 1px solid black">Tags added</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dataBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="save-tag-selected" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Tag Name -->
+<div class="modal fade" id="add-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalgridLabel">Add a new tag Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <label for="new-tag-name" class="form-label float-start">Tag Name</label>
+                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required>
+
+                <label for="type-tag" class="form-label float-start mt-2">Type</label>
+                <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
+                    <option value="DEFAULT_TAG" selected>Default Tag</option>
+                    <option value="TAG_ADDED">Tag Normal</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button id="save-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">ADD</button>
+                <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Tag Name -->
+<div class="modal fade" id="modal-edit-tag-name" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title" >Edit tag Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <label for="edit-tag-name" class="form-label float-start">Tag Name</label>
+                    <input id="edit-tag-name" class="form-control" type="text" placeholder="Enter here..." required>
+
+                    <label for="edit-type-tag" class="form-label float-start mt-2">Type</label>
+                    <select id="edit-type-tag" class="form-select mb-3" aria-label="Default select example">
+                        <option value="DEFAULT_TAG">Default Tag</option>
+                        <option value="TAG_ADDED">Tag Normal</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-edit-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%-- Modal Add Pic --%>
+<div id="picModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">PIC</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input id="pic-selected" class="form-control" type="text" />
+                </div>
+                <div class="mt-2 text-center align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" id="searchPic" class="form-control" placeholder="Search Pic..." style="width: 30%">
+                    </div>
+                    <div data-simplebar style="max-height: 400px">
+                        <table class="table table-bordered mt-2 nowrap align-middle" id="table-pic">
+                            <thead>
+                            <tr>
+                                <th>UserName</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-save-pic" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-- Modal Add Related Task--%>
+<div id="relatedTaskModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input id="related-task-selected" class="form-control" type="text" />
+                </div>
+                <div class="mt-2 text-center align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" id="searchTask" class="form-control" placeholder="Search Task..." style="width: 30%">
+                    </div>
+                    <div data-simplebar style="max-height: 400px">
+                        <table class="table table-bordered mt-2 nowrap align-middle" id="table-task">
+                            <thead>
+                            <tr>
+                                <th>Title Task</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-save-task" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -271,8 +308,158 @@
     document.getElementById('save-tag-selected').addEventListener('click', function () {
         const tagsSelected = document.getElementById('tag-selected').value;
         const showTagSelect = document.getElementById('show-tag-selected');
-        showTagSelect.innerHTML = `<div class="d-lex align-items-center ms-2">` + `<span class="fw-bold">` + tagsSelected + `</span> <i class="ri-edit-line fs-5"></i>` + `</div>`;
+        if (tagsSelected != '') {
+            showTagSelect.innerHTML = `<span class="fw-bold ms-2">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+        } else {
+            showTagSelect.innerHTML = ` <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>`
+        }
+
+        const btnEditTag = document.getElementById('btn-edit-tag');
+        if (btnEditTag) {
+            btnEditTag.addEventListener('click', function () {
+                var modal = new bootstrap.Modal(document.getElementById('tagModal'));
+                modal.show();
+            })
+        }
     })
+
+    document.getElementById('btn-add-pic').addEventListener('click', function () {
+        if (!this.clicked) {
+            this.clicked = true;
+
+            callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                rs.forEach(function (user) {
+                    const tablePic = document.getElementById('table-pic');
+                    const tbody = tablePic.querySelector('tbody');
+                    const pic = `<tr><td class="cursor-pointer pic-username">` + user.fullname + `</td></tr>`;
+                    tbody.innerHTML += pic;
+                });
+
+                const inputSelectPic = document.getElementById('pic-selected');
+                document.querySelectorAll('.pic-username').forEach(function (ePic) {
+                    ePic.addEventListener('click', function () {
+                        const picName = ePic.textContent;
+                        if (inputSelectPic.value == '') {
+                            inputSelectPic.value += picName;
+                        } else inputSelectPic.value += ', ' + picName;
+                    });
+                });
+
+                const searchInput = document.getElementById('searchPic');
+
+                const rows = document.querySelectorAll('#table-pic tbody tr');
+
+                searchInput.addEventListener('input', function () {
+                    const searchText = this.value.trim().toLowerCase();
+
+                    rows.forEach(function(row) {
+                        const cells = row.querySelectorAll('.pic-username');
+                        let found = false;
+
+                        cells.forEach(function(cell) {
+                            const cellText = cell.textContent.trim().toLowerCase();
+                            if (cellText.includes(searchText)) {
+                                found = true;
+                            }
+                        });
+
+                        if (found) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+
+                document.getElementById('btn-save-pic').addEventListener('click', function () {
+                    const picsSelected = document.getElementById('pic-selected').value;
+                    const showPicSelect = document.getElementById('show-pic-selected');
+                    if (picsSelected != '') {
+                        showPicSelect.innerHTML = `<span class="fw-bold ms-2">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    } else {
+                        showPicSelect.innerHTML = `<button id="btn-add-pic" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD PIC</button>`
+                    }
+
+                    const btnEditPic = document.getElementById('btn-edit-pic');
+                    if (btnEditPic) {
+                        btnEditPic.addEventListener('click', function () {
+                            var modal = new bootstrap.Modal(document.getElementById('picModal'));
+                            modal.show();
+                        })
+                    }
+                })
+            });
+        }
+    });
+
+    document.getElementById('btn-add-related-task').addEventListener('click', function () {
+        if (!this.clicked) {
+            this.clicked = true;
+
+            callAjaxByJsonWithData('/api/v1/tasks/titles', 'GET', null, function (rs) {
+                rs.forEach(function (task) {
+                    const tableTask = document.getElementById('table-task');
+                    const tbody = tableTask.querySelector('tbody');
+                    const titleTask = `<tr><td class="cursor-pointer task-title">` + task.title + `</td></tr>`;
+                    tbody.innerHTML += titleTask;
+                });
+
+                const inputSelectTask = document.getElementById('related-task-selected');
+                document.querySelectorAll('.task-title').forEach(function (eTask) {
+                    eTask.addEventListener('click', function () {
+                        const taskTitle = eTask.textContent;
+                        if (inputSelectTask.value == '') {
+                            inputSelectTask.value += taskTitle;
+                        } else inputSelectTask.value += ', ' + taskTitle;
+                    });
+                });
+
+                const searchInput = document.getElementById('searchTask');
+
+                const rows = document.querySelectorAll('#table-task tbody tr');
+
+                searchInput.addEventListener('input', function () {
+                    const searchText = this.value.trim().toLowerCase();
+
+                    rows.forEach(function(row) {
+                        const cells = row.querySelectorAll('.task-title');
+                        let found = false;
+
+                        cells.forEach(function(cell) {
+                            const cellText = cell.textContent.trim().toLowerCase();
+                            if (cellText.includes(searchText)) {
+                                found = true;
+                            }
+                        });
+
+                        if (found) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+
+                document.getElementById('btn-save-task').addEventListener('click', function () {
+                    const taskSelected = document.getElementById('related-task-selected').value;
+                    const showTaskSelect = document.getElementById('show-related-task-selected');
+                    if (taskSelected != '') {
+                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    } else {
+                        showTaskSelect.innerHTML = `<button id="btn-add-related-task" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#relatedTaskModal">ADD Related Task</button>`
+                    }
+
+                    const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
+                    if (btnEditRelatedTask) {
+                        btnEditRelatedTask.addEventListener('click', function () {
+                            var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
+                            modal.show();
+                        })
+                    }
+                })
+            });
+        }
+    });
 
     function showListTag() {
         callAjaxByJsonWithData('/api/v1/tags', 'GET', null, function (rs) {
@@ -301,7 +488,7 @@
 
             displayData(defaultTagNames, tagAddedTagNames);
 
-            document.getElementById('searchInput').addEventListener('input', function() {
+            document.getElementById('searchTag').addEventListener('input', function() {
                 var searchText = this.value.toLowerCase();
 
                 var filteredData1 = defaultTagNames.filter(item => item.tagName.toLowerCase().includes(searchText));
@@ -421,14 +608,12 @@
             }
 
             const selectedTag = document.getElementById('tag-selected');
-            var clickCount = 0;
             document.querySelectorAll('.tag-name').forEach(function (e) {
                 e.addEventListener('click', function () {
                     const tagName = e.textContent;
                     if (tagName.trim() != '') {
-                        if (clickCount === 0) {
+                        if (selectedTag.value == '') {
                             selectedTag.value += tagName;
-                            clickCount++;
                         } else selectedTag.value += ', ' + tagName;
                     }
                 })
@@ -509,12 +694,15 @@
             ],
             onSubmit: function (formData) {
                 formData.append('content', $('#content').html());
+                formData.append('tag', $('#tag-selected').val())
+                formData.append('pic', $('#pic-selected').val());
+                formData.append('relatedTask', $('#related-task-selected').val())
 
                 $('#registerTaskForm .spinner-border').removeClass('d-none');
                 callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
-                    showAlert(SUCCESS_ALERT, 'Register success!');
                     loadCountStatus();
-                    console.log(rs)
+                    localStorage.setItem('result', 'registerTaskSuccess')
+                    window.location.href = '/tasks';
                 });
             }
         });

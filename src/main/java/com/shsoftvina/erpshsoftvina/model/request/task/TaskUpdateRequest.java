@@ -40,6 +40,7 @@ public class TaskUpdateRequest {
 
     private Date dueDate;
 
+    private String tag;
     private String pic;
     private String relatedTask;
 }

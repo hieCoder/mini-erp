@@ -29,5 +29,5 @@ public interface TaskMapper {
                           @Param("status") String status);
     List<Task> getOpenedTask( String userId);
     List<Map<String, Object>> getOpenedStatusTaskCounts( String userId);
-
+    List<Map<String, Object>> findAllTitle();
 }

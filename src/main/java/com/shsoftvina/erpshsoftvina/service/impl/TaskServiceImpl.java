@@ -142,6 +142,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Map<String, Object>> findAllTitle() {
+        return taskMapper.findAllTitle();
+    }
+
+    @Override
     public int deleteByIds(String[] ids) {
         for(String id: ids){
             if (taskMapper.findById(id) == null)

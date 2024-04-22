@@ -20,6 +20,7 @@
             <column name="STATUS" type="VARCHAR(255)"/>
             <column name="CONTENT" type="LONGTEXT"/>
             <column name="DUE_DATE" type="DATE"/>
+            <column name="TAG" type="VARCHAR(1000)"/>
             <column name="PIC" type="VARCHAR(1000)"/>
             <column name="RELATED_TASK" type="VARCHAR(1000)"/>
         </createTable>

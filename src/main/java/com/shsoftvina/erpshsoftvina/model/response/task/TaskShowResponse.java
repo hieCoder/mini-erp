@@ -21,6 +21,7 @@ public class TaskShowResponse {
     private String dueOrCloseDate;
     private Integer progress;
     private EnumDto priority;
+    private String tag;
     private String pic;
     private String relatedTask;
 }

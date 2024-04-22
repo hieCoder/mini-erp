@@ -28,6 +28,7 @@ public class TaskDetailResponse {
     private EnumDto priority;
     private String content;
     private List<CommentTaskResponse> comments;
+    private String tag;
     private String pic;
     private String relatedTask;
 }

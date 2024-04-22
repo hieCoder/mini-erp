@@ -63,6 +63,7 @@ public class TaskConverter {
                 .dueOrCloseDate(dueOrCloseDate)
                 .progress(task.getProgress())
                 .priority(EnumUtils.instance(task.getPriority()))
+                .tag(task.getTag())
                 .pic(task.getPic())
                 .relatedTask(task.getRelatedTask())
                 .build();
@@ -160,6 +161,7 @@ public class TaskConverter {
                         taskRegisterRequest.getPriority()))
                 .progress(0)
                 .status(StatusDeleteTaskEnum.ACTIVE)
+                .tag(taskRegisterRequest.getTag())
                 .pic(taskRegisterRequest.getPic())
                 .relatedTask(taskRegisterRequest.getRelatedTask())
                 .build();
@@ -198,6 +200,7 @@ public class TaskConverter {
                 .priority(EnumUtils.instance(task.getPriority()))
                 .content(task.getContent())
                 .comments(commentTaskConverter.toListResponse(task.getComments()))
+                .tag(task.getTag())
                 .pic(task.getPic())
                 .relatedTask(task.getRelatedTask())
                 .build();
@@ -247,6 +250,7 @@ public class TaskConverter {
                 .progress(progress)
                 .closeDate(closeDate)
                 .dueDate(dueDate)
+                .tag(taskUpdateRequest.getTag())
                 .pic(taskUpdateRequest.getPic())
                 .relatedTask(taskUpdateRequest.getRelatedTask())
                 .build();
