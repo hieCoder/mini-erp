@@ -18,13 +18,17 @@ import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
 import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
 import com.shsoftvina.erpshsoftvina.utils.DateUtils;
 import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
+import com.shsoftvina.erpshsoftvina.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -66,6 +70,7 @@ public class TaskConverter {
                 .tag(task.getTag())
                 .pic(task.getPic())
                 .relatedTask(task.getRelatedTask())
+                .filesTask(FileUtils.getPathUploadList(Task.class, task.getFilesTask()))
                 .build();
     }
 
@@ -147,7 +152,12 @@ public class TaskConverter {
         }
     }
 
-    public Task toEntity(TaskRegisterRequest taskRegisterRequest) {
+    public Task toEntity(TaskRegisterRequest taskRegisterRequest, List<String> listFileNameSaveFileSuccess) {
+        String files = null;
+
+        if (!listFileNameSaveFileSuccess.isEmpty()) {
+            files = String.join(",", listFileNameSaveFileSuccess);
+        }
 
         return Task.builder()
                 .id(ApplicationUtils.generateId())
@@ -164,6 +174,7 @@ public class TaskConverter {
                 .tag(taskRegisterRequest.getTag())
                 .pic(taskRegisterRequest.getPic())
                 .relatedTask(taskRegisterRequest.getRelatedTask())
+                .filesTask(files)
                 .build();
     }
 
@@ -203,10 +214,11 @@ public class TaskConverter {
                 .tag(task.getTag())
                 .pic(task.getPic())
                 .relatedTask(task.getRelatedTask())
+                .filesTask(FileUtils.getPathUploadList(Task.class, task.getFilesTask()))
                 .build();
     }
 
-    public Task toEntity(TaskUpdateRequest taskUpdateRequest) {
+    public Task toEntity(TaskUpdateRequest taskUpdateRequest, String newFilesToDB) {
 
         String id = taskUpdateRequest.getId();
         String action = taskUpdateRequest.getAction();
@@ -253,6 +265,7 @@ public class TaskConverter {
                 .tag(taskUpdateRequest.getTag())
                 .pic(taskUpdateRequest.getPic())
                 .relatedTask(taskUpdateRequest.getRelatedTask())
+                .filesTask(newFilesToDB)
                 .build();
     }
 }

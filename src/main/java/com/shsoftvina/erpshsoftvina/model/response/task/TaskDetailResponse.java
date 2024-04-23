@@ -31,4 +31,5 @@ public class TaskDetailResponse {
     private String tag;
     private String pic;
     private String relatedTask;
+    private String[] filesTask;
 }

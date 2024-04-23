@@ -1,6 +1,7 @@
 const S_TASK_COMMENT = 'TASK_COMMENT';
+const S_TASK = 'TASK';
 
-function getPriorityColor(code){
+function getPriorityColor(code) {
     var colorClass = '';
     switch (code) {
         case 'LOW':
@@ -19,7 +20,7 @@ function getPriorityColor(code){
     return colorClass;
 }
 
-function getStatusColor(code){
+function getStatusColor(code) {
     var colorClass = '';
     switch (code) {
         case 'REGISTERED':
@@ -44,10 +45,10 @@ function getStatusColor(code){
     return colorClass;
 }
 
-function getProgressE(progress){
+function getProgressE(progress) {
     return `<div class="progress">
                             <div class="progress-bar bg-success" role="progressbar" style="width:` + progress
-        +`%" aria-valuenow="` + progress +`" aria-valuemin="0" aria-valuemax="100"></div>
+        + `%" aria-valuenow="` + progress + `" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>`
 }
 
@@ -69,11 +70,11 @@ async function createCommentForm(comment) {
         // btn reply, group edit & delete btn
         var btnReply = ``, groupEditAndDeleteBtn = ``;
         if (parentId == null && !isDeleveloper()) {
-            btnReply = `<a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="`+id+`" style="margin-right: 3px; font-size: 10px;"><i class="mdi mdi-reply"></i> Reply</a>`;
+            btnReply = `<a href="javascript: void(0);" class="badge text-muted bg-light btn-reply" data-id="` + id + `" style="margin-right: 3px; font-size: 10px;"><i class="mdi mdi-reply"></i> Reply</a>`;
         }
         if (isAdminOrUserLogin(idUser)) {
-            groupEditAndDeleteBtn = `<a style="font-size: 10px;" href="javascript: void(0);" data-id="`+ id + `" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
-                    <a style="font-size: 10px;" href="#deleteCommentModal" data-bs-toggle="modal" data-id="`+ id +`" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>`;
+            groupEditAndDeleteBtn = `<a style="font-size: 10px;" href="javascript: void(0);" data-id="` + id + `" class="badge text-muted bg-light btn-edit"><i class="mdi mdi-edit"></i> Edit</a>
+                    <a style="font-size: 10px;" href="#deleteCommentModal" data-bs-toggle="modal" data-id="` + id + `" class="badge text-muted bg-light remove-comment-btn"><i class="mdi mdi-delete"></i> Delete</a>`;
         }
 
         // files
@@ -81,7 +82,7 @@ async function createCommentForm(comment) {
         if (filesComment && filesComment.length > 0) {
             try {
                 await handleFilesAsync(filesComment, function (fileName, fileSize, url) {
-                    files += createFile({ fileName: fileName, fileSize: fileSize, url: url });
+                    files += createFile({fileName: fileName, fileSize: fileSize, url: url});
                 });
             } catch (error) {
                 console.error(error);
@@ -99,7 +100,7 @@ async function createCommentForm(comment) {
             }
         }
 
-        const commentHTML = `<div class="d-flex mt-4 comment-container" data-id="`+ id +`">
+        const commentHTML = `<div class="d-flex mt-4 comment-container" data-id="` + id + `">
                                         <div class="flex-shrink-0">
                                             <img src="` + avatarUser + `" alt="" class="avatar-xs rounded-circle" />
                                         </div>
@@ -109,15 +110,15 @@ async function createCommentForm(comment) {
                                             <div class="text-muted mb-1">` + getContentViewOfEditorSnow(content) + `</div>`
             + `<div class="row mb-1">` + files + `</div>`
             + btnReply + groupEditAndDeleteBtn +
-            `<div class="form-reply mt-3" data-id="`+id+`"></div>` +
-            `<div class="form-edit mt-3" data-id="`+id+`"></div>`+ listChildComment.html() + `
+            `<div class="form-reply mt-3" data-id="` + id + `"></div>` +
+            `<div class="form-edit mt-3" data-id="` + id + `"></div>` + listChildComment.html() + `
                                         </div>
                                     </div>`;
         resolve(commentHTML);
     });
 }
 
-function resetFormPostComment(){
+function resetFormPostComment() {
     $('.post-comment-form .title-post-comment').val('');
     $('.ql-toolbar.ql-snow').remove();
     $('.post-comment-form .content-post-comment').replaceWith('<div class="content-post-comment snow-editor h-auto"></div>');
@@ -167,11 +168,11 @@ function resetFormPostComment(){
 function createFile(file, isShowDeleteIcon) {
 
     var iconDelete = '';
-    if(isShowDeleteIcon){
-        iconDelete = `<a class="delete-file" data-name="`+file.fileName+`" href="#deleteFileCommentModal" data-bs-toggle="modal"><i class="ri-delete-bin-fill align-bottom text-muted"></i></a>`;
+    if (isShowDeleteIcon) {
+        iconDelete = `<a class="delete-file" data-name="` + file.fileName + `" href="#deleteFileCommentModal" data-bs-toggle="modal"><i class="ri-delete-bin-fill align-bottom text-muted"></i></a>`;
     }
 
-    return `<div class="col-lg-3 mb-1 file-container-item" data-name="`+file.fileName+`">
+    return `<div class="col-lg-3 mb-1 file-container-item" data-name="` + file.fileName + `">
                     <div class="border rounded border-dashed p-2">
                         <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-3">
@@ -182,12 +183,12 @@ function createFile(file, isShowDeleteIcon) {
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="`+file.fileName+`">`+file.fileName+`</a></h5>
-                                                    <div>`+bToKbShow(file.fileSize)+`Kb</div>
+                                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="` + file.fileName + `">` + file.fileName + `</a></h5>
+                                                    <div>` + bToKbShow(file.fileSize) + `Kb</div>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <div class="d-flex gap-1 align-items-center">
-                                                        <a href="`+ file.url +`" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></a>`
+                                                        <a href="` + file.url + `" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></a>`
         + iconDelete +
         `</div>
                                                 </div>
@@ -196,8 +197,8 @@ function createFile(file, isShowDeleteIcon) {
                 </div>`;
 }
 
-function showReplyCommentForm(id){
-    return `<form class="form-control reply-comment-form" data-id="`+id+`">
+function showReplyCommentForm(id) {
+    return `<form class="form-control reply-comment-form" data-id="` + id + `">
                 <div class="row g-3">
                         <div class="col-lg-12">
                             <div>
@@ -266,7 +267,7 @@ function showReplyCommentForm(id){
             </form>`;
 }
 
-async function showEditCommentForm(comment){
+async function showEditCommentForm(comment) {
 
     return new Promise(async (resolve, reject) => {
 
@@ -279,19 +280,19 @@ async function showEditCommentForm(comment){
         if (filesComment && filesComment.length > 0) {
             try {
                 await handleFilesAsync(filesComment, function (fileName, fileSize, url) {
-                    files += createFile({ fileName: fileName, fileSize: fileSize, url: url }, true);
+                    files += createFile({fileName: fileName, fileSize: fileSize, url: url}, true);
                 });
             } catch (error) {
                 console.error(error);
             }
         }
 
-        const commentHTML = `<form class="form-control edit-comment-form" data-id="`+id+`">
+        const commentHTML = `<form class="form-control edit-comment-form" data-id="` + id + `">
                 <div class="row g-3">
                         <div class="col-lg-12">
                             <div>
                                 <label class="form-label">Title</label>
-                                <input value="`+title+`" type="text" name="title" class="title-edit form-control" placeholder="Title"/>
+                                <input value="` + title + `" type="text" name="title" class="title-edit form-control" placeholder="Title"/>
                                 <small class="form-message"></small>
                             </div>
                         </div>

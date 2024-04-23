@@ -19,6 +19,7 @@
                t.TAG          AS task_tag,
                t.PIC          AS task_pic,
                t.RELATED_TASK AS task_related_task,
+               t.FILES_TASK   AS task_files_task,
                u.ID           AS user_id,
                u.FULLNAME     AS user_fullname
         FROM TASK t
@@ -58,6 +59,7 @@
         <result property="tag" column="task_tag"/>
         <result property="pic" column="task_pic"/>
         <result property="relatedTask" column="task_related_task"/>
+        <result property="filesTask" column="FILES_TASK"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap">
         </association>
@@ -72,9 +74,9 @@
 
     <insert id="registerTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
         INSERT
-        INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS, TAG, PIC, RELATED_TASK)
+        INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS, TAG, PIC, RELATED_TASK, FILES_TASK)
         VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{dueDate}, #{priority},
-                #{progress}, #{status}, #{tag}, #{pic}, #{relatedTask});
+                #{progress}, #{status}, #{tag}, #{pic}, #{relatedTask}, #{filesTask});
     </insert>
 
     <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
@@ -90,7 +92,8 @@
             USER_ID     = #{user.id},
             TAG         = #{tag},
             PIC         = #{pic},
-            RELATED_TASK = #{relatedTask}
+            RELATED_TASK = #{relatedTask},
+            FILES_TASK  = #{filesTask}
         WHERE ID = #{id};
     </update>
 
@@ -149,6 +152,7 @@
                t.TAG           AS task_tag,
                t.PIC           AS task_pic,
                t.RELATED_TASK  AS task_related_task,
+               t.FILES_TASK    AS task_files_task,
                c.ID            AS comment_id,
                c.USER_ID       AS comment_user_id,
                c.TITLE         AS comment_title,
@@ -182,6 +186,7 @@
         <result property="tag" column="task_tag"/>
         <result property="pic" column="task_pic"/>
         <result property="relatedTask" column="task_related_task"/>
+        <result property="filesTask" column="task_files_task"/>
         <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
                      resultMap="userResultMap">
         </association>
@@ -270,6 +275,7 @@
                t.TAG          AS task_tag,
                t.PIC          AS task_pic,
                t.RELATED_TASK AS task_related_task,
+               t.FILES_TASK   AS task_files_task,
                u.ID           AS user_id,
                u.FULLNAME     AS user_fullname
         FROM TASK t

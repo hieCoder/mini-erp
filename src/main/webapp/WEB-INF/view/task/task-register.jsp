@@ -10,6 +10,8 @@
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <!-- dropzone css -->
+    <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css" />
 </head>
 <body>
 
@@ -62,9 +64,51 @@
                                 <div id="content" class="snow-editor h-auto"></div>
                                 <small class="form-message"></small>
                             </div>
+                            <div class="col-lg-12">
+                                <label class="form-label">Attach file</label>
+                                <div class="card-body attach-file-container">
+                                    <div class="dropzone">
+                                        <div class="fallback">
+                                            <input name="fileList" type="file" multiple="multiple">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+                                            <h4>Drop files here or click to upload.</h4>
+                                        </div>
+                                    </div>
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                        <li class="mt-2" id="dropzone-preview-list">
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm bg-light rounded">
+                                                            <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                                <i class="ri-file-upload-line"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="message-error-file"></div>
+                                </div>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="dueDate" class="form-label">Due date</label>
-                                <input type="text" id="dueDate" name="dueDate" class="form-control"
+                                <input type="text" id="dueDate" class="form-control"
                                        data-provider="flatpickr" placeholder="Due date"/>
                                 <small class="form-message"></small>
                             </div>
@@ -303,6 +347,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<!-- dropzone js -->
+<script src="/assets/libs/dropzone/dropzone-min.js"></script>
+<script src="/assets/custom/js/task/task-detail.js"></script>
 <script>
 
     document.getElementById('save-tag-selected').addEventListener('click', function () {
@@ -641,70 +688,76 @@
     })
 
     $(document).ready(function () {
-        $('#title').val('');
+        var dropzone = '';
+        callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK, 'GET', null, function (setting) {
+            dropzone = activeFile('#registerTaskForm', setting);
+            $('#title').val('');
 
-        $('#content .ql-editor').html('<p><br></p>');
-        $('#registerTaskForm .ql-toolbar.ql-snow').remove();
-        activeEditor("#registerTaskForm");
+            $('#content .ql-editor').html('<p><br></p>');
+            $('#registerTaskForm .ql-toolbar.ql-snow').remove();
+            activeEditor("#registerTaskForm");
 
-        $('#dueDate').val('');
-        $('#registerTaskForm .spinner-border').addClass('d-none');
+            $('#dueDate').val('');
+            $('#registerTaskForm .spinner-border').addClass('d-none');
 
-        var selectElement = $('#selectUsername');
-        if (isDeleveloper()) {
-            selectElement.empty();
-            $('.username-register-task').text(userCurrent.fullname);
-            var option = $('<option></option>');
-            option.attr('value', userCurrent.id);
-            option.text(userCurrent.fullname);
-            selectElement.append(option);
+            var selectElement = $('#selectUsername');
+            if (isDeleveloper()) {
+                selectElement.empty();
+                $('.username-register-task').text(userCurrent.fullname);
+                var option = $('<option></option>');
+                option.attr('value', userCurrent.id);
+                option.text(userCurrent.fullname);
+                selectElement.append(option);
 
-            $('#registerTaskModal').modal('show');
-        } else {
-            selectElement.empty();
+                $('#registerTaskModal').modal('show');
+            } else {
+                selectElement.empty();
 
-            var swal = showAlertLoading();
-            callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
-                $('#selectUsername').removeClass('d-none');
+                var swal = showAlertLoading();
+                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                    $('#selectUsername').removeClass('d-none');
 
-                rs.forEach(function (user) {
-                    var option = $('<option></option>');
-                    option.attr('value', user.id);
-                    option.text(user.fullname);
+                    rs.forEach(function (user) {
+                        var option = $('<option></option>');
+                        option.attr('value', user.id);
+                        option.text(user.fullname);
 
-                    if (user.id == userCurrent.id) {
-                        option.attr('selected', 'selected');
-                    }
+                        if (user.id == userCurrent.id) {
+                            option.attr('selected', 'selected');
+                        }
 
-                    selectElement.append(option);
-                });
-
-                swal.close();
-
-            });
-        }
-
-        Validator({
-            form: '#registerTaskForm',
-            errorSelector: '.form-message',
-            rules: [
-                Validator.isRequired('#title'),
-                Validator.isRequired('#content'),
-                Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
-            ],
-            onSubmit: function (formData) {
-                formData.append('content', $('#content').html());
-                formData.append('tag', $('#tag-selected').val())
-                formData.append('pic', $('#pic-selected').val());
-                formData.append('relatedTask', $('#related-task-selected').val())
-
-                $('#registerTaskForm .spinner-border').removeClass('d-none');
-                callAjaxByJsonWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
-                    loadCountStatus();
-                    localStorage.setItem('result', 'registerTaskSuccess')
-                    window.location.href = '/tasks';
+                        selectElement.append(option);
+                    });
+                    swal.close();
                 });
             }
+
+            Validator({
+                form: '#registerTaskForm',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#title'),
+                    Validator.isRequired('#content'),
+                    Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
+                ],
+                onSubmit: function (formData) {
+                    formData.append('content', $('#content').html());
+                    formData.append('tag', $('#tag-selected').val())
+                    formData.append('pic', $('#pic-selected').val());
+                    formData.append('relatedTask', $('#related-task-selected').val())
+                    var dateString = document.getElementById('dueDate').value;
+                    var dueDate = new Date(dateString);
+                    formData.append('dueDate', dueDate);
+                    dropzone.files.forEach((file) => {
+                        formData.append('filesTask', file);
+                    });
+                    $('#registerTaskForm .spinner-border').removeClass('d-none');
+                    callAjaxByDataFormWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
+                        loadCountStatus();
+                        window.location.href = '/tasks';
+                    });
+                }
+            });
         });
     })
 </script>

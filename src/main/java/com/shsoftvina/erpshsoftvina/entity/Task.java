@@ -33,4 +33,5 @@ public class Task {
     private String tag;
     private String pic;
     private String relatedTask;
+    private String filesTask;
 }
