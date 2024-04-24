@@ -139,7 +139,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center">
-                                    <label class="form-label">Related Task: </label>
+                                    <label class="form-label m-0">Related Task: </label>
                                     <div id="show-related-task-selected" class="d-flex align-items-center">
                                         <button id="btn-add-related-task" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#relatedTaskModal">ADD Related Task</button>
                                     </div>
@@ -171,8 +171,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
-                    <input id="tag-selected" class="form-control" type="text" />
+                <div class="col-lg-12 border p-1" id="tag-selected" style="height: 45px">
                 </div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
@@ -267,9 +266,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
-                    <input id="pic-selected" class="form-control" type="text" />
-                </div>
+                <div class="col-lg-12 border p-1" id="pic-selected" style="height: 45px"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchPic" class="form-control" placeholder="Search Pic..." style="width: 30%">
@@ -305,9 +302,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
-                    <input id="related-task-selected" class="form-control" type="text" />
-                </div>
+                <div class="col-lg-12 border p-1" id="related-task-selected" style="height: 45px"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTask" class="form-control" placeholder="Search Task..." style="width: 30%">
@@ -367,10 +362,20 @@
 
 
     document.getElementById('save-tag-selected').addEventListener('click', function () {
-        const tagsSelected = document.getElementById('tag-selected').value;
+        var tagsSelected = '';
+        document.querySelectorAll('.tag-selected').forEach(function (eTag, index) {
+            if (!eTag.classList.contains('d-none')) {
+                const tagText = eTag.textContent.trim();
+                if (tagsSelected.length > 0) {
+                    tagsSelected += ', ';
+                }
+                tagsSelected += tagText;
+            }
+        });
+
         const showTagSelect = document.getElementById('show-tag-selected');
         if (tagsSelected != '') {
-            showTagSelect.innerHTML = `<span class="fw-bold ms-2">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+            showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tags-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
         } else {
             showTagSelect.innerHTML = ` <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>`
         }
@@ -396,15 +401,32 @@
                     tbody.innerHTML += pic;
                 });
 
+                let selectedPicsArray = [];
                 const inputSelectPic = document.getElementById('pic-selected');
                 document.querySelectorAll('.pic-username').forEach(function (ePic) {
                     ePic.addEventListener('click', function () {
                         const picName = ePic.textContent;
-                        if (inputSelectPic.value == '') {
-                            inputSelectPic.value += picName;
-                        } else inputSelectPic.value += ', ' + picName;
+                        if (!selectedPicsArray.includes(picName.trim())) {
+                            selectedPicsArray.push(picName.trim());
+                            if (picName.trim() != '') {
+                                inputSelectPic.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + picName + `</button>`;
+                            }
+                            document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
+                                eRemove.addEventListener('click', function () {
+                                    const btnRemovePic = eRemove.parentElement;
+                                    if (btnRemovePic) btnRemovePic.classList.add('d-none');
+                                    const removedPicName = btnRemovePic.textContent.trim();
+                                    const index = selectedPicsArray.indexOf(removedPicName);
+                                    if (index !== -1) {
+                                        selectedPicsArray.splice(index, 1);
+                                    }
+                                });
+                            });
+                        }
                     });
                 });
+
 
                 const searchInput = document.getElementById('searchPic');
 
@@ -433,10 +455,20 @@
                 });
 
                 document.getElementById('btn-save-pic').addEventListener('click', function () {
-                    const picsSelected = document.getElementById('pic-selected').value;
+                    var picsSelected = '';
+                    document.querySelectorAll('.pic-selected').forEach(function (ePic, index) {
+                        if (!ePic.classList.contains('d-none')) {
+                            const picText = ePic.textContent.trim();
+                            if (picsSelected.length > 0) {
+                                picsSelected += ', ';
+                            }
+                            picsSelected += picText;
+                        }
+                    });
+
                     const showPicSelect = document.getElementById('show-pic-selected');
                     if (picsSelected != '') {
-                        showPicSelect.innerHTML = `<span class="fw-bold ms-2">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pics-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
                     } else {
                         showPicSelect.innerHTML = `<button id="btn-add-pic" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD PIC</button>`
                     }
@@ -465,15 +497,32 @@
                     tbody.innerHTML += titleTask;
                 });
 
+                let selectedTasksArray = [];
                 const inputSelectTask = document.getElementById('related-task-selected');
                 document.querySelectorAll('.task-title').forEach(function (eTask) {
                     eTask.addEventListener('click', function () {
                         const taskTitle = eTask.textContent;
-                        if (inputSelectTask.value == '') {
-                            inputSelectTask.value += taskTitle;
-                        } else inputSelectTask.value += ', ' + taskTitle;
+                        if (!selectedTasksArray.includes(taskTitle.trim())) {
+                            selectedTasksArray.push(taskTitle.trim());
+                            if (taskTitle.trim() != '') {
+                                inputSelectTask.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 task-selected">
+                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + taskTitle + `</button>`;
+                            }
+                            document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {
+                                eRemove.addEventListener('click', function () {
+                                    const btnRemoveRelatedTask = eRemove.parentElement;
+                                    if (btnRemoveRelatedTask) btnRemoveRelatedTask.classList.add('d-none');
+                                    const removedTaskTitle = btnRemoveRelatedTask.textContent.trim();
+                                    const index = selectedTasksArray.indexOf(removedTaskTitle);
+                                    if (index !== -1) {
+                                        selectedTasksArray.splice(index, 1);
+                                    }
+                                });
+                            });
+                        }
                     });
                 });
+
 
                 const searchInput = document.getElementById('searchTask');
 
@@ -502,10 +551,19 @@
                 });
 
                 document.getElementById('btn-save-task').addEventListener('click', function () {
-                    const taskSelected = document.getElementById('related-task-selected').value;
+                    var taskSelected = '';
+                    document.querySelectorAll('.task-selected').forEach(function (eTask, index) {
+                        if (!eTask.classList.contains('d-none')) {
+                            const tagText = eTask.textContent.trim();
+                            if (taskSelected.length > 0) {
+                                taskSelected += ', ';
+                            }
+                            taskSelected += tagText;
+                        }
+                    });
                     const showTaskSelect = document.getElementById('show-related-task-selected');
                     if (taskSelected != '') {
-                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTasks-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
                     } else {
                         showTaskSelect.innerHTML = `<button id="btn-add-related-task" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#relatedTaskModal">ADD Related Task</button>`
                     }
@@ -668,17 +726,32 @@
                 })
             }
 
+            let selectedTagsArray = [];
             const selectedTag = document.getElementById('tag-selected');
             document.querySelectorAll('.tag-name').forEach(function (e) {
                 e.addEventListener('click', function () {
                     const tagName = e.textContent;
-                    if (tagName.trim() != '') {
-                        if (selectedTag.value == '') {
-                            selectedTag.value += tagName;
-                        } else selectedTag.value += ', ' + tagName;
+                    if (!selectedTagsArray.includes(tagName.trim())) {
+                        selectedTagsArray.push(tagName.trim());
+                        if (tagName.trim() != '') {
+                            selectedTag.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
+                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-tag-selected"></i> ` + tagName + `</button>`;
+                        }
+                        document.querySelectorAll('.remove-tag-selected').forEach(function (eRemove) {
+                            eRemove.addEventListener('click', function () {
+                                const btnRemoveTag = eRemove.parentElement;
+                                if (btnRemoveTag) btnRemoveTag.classList.add('d-none');
+                                const removedTagName = btnRemoveTag.textContent.trim();
+                                const index = selectedTagsArray.indexOf(removedTagName);
+                                if (index !== -1) {
+                                    selectedTagsArray.splice(index, 1);
+                                }
+                            });
+                        });
                     }
-                })
-            })
+                });
+            });
+
         });
     }
 
@@ -755,10 +828,17 @@
                     Validator.isDayAfterTodayOrNull("#dueDate", 'Due day is not before today')
                 ],
                 onSubmit: function (formData) {
+                    const tagSelected = document.getElementById('tags-selected');
+                    const picSelected = document.getElementById('pics-selected');
+                    const relatedTaskSelected = document.getElementById('relatedTasks-selected');
+                    var tag = '', pic = '', relatedTask = '';
+                    if (tagSelected) tag = tagSelected.textContent;
+                    if (picSelected) pic = picSelected.textContent;
+                    if (relatedTaskSelected) relatedTask = relatedTaskSelected.textContent;
                     formData.append('content', $('#content').html());
-                    formData.append('tag', $('#tag-selected').val())
-                    formData.append('pic', $('#pic-selected').val());
-                    formData.append('relatedTask', $('#related-task-selected').val())
+                    formData.append('tag', tag)
+                    formData.append('pic', pic);
+                    formData.append('relatedTask', relatedTask)
                     var dateString = document.getElementById('dueDate').value;
                     var dueDate = new Date(dateString);
                     formData.append('dueDate', dueDate);

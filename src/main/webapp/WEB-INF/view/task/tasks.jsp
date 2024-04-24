@@ -395,157 +395,157 @@
                         id="close-modal"></button>
             </div>
             <form id="editTaskForm">
-                <div class="modal-body" data-simplebar style="max-height: 800px">
-                    <div class="row g-3">
-                        <div class="col-lg-12">
-                            <label for="selectUsernameEdit" class="form-label">Username: <span
-                                    class="username-edit-task"></span></label>
-                            <select id="selectUsernameEdit" name="userId" class="form-select d-none"
-                                    aria-label="Default select example">
-                            </select>
-                        </div>
-                        <div class="col-lg-12">
-                            <div>
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" id="title-edit" name="title" class="form-control"
-                                       placeholder="Title"/>
-                                <small class="form-message"></small>
-                            </div>
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="content" class="form-label">Content</label>
-                            <div id="content-edit" class="snow-editor h-auto"></div>
-                            <small class="form-message"></small>
-                        </div>
-                        <div class="col-lg-12">
-                            <label class="form-label">Old files</label>
-                            <div class="row mb-1">`
-                                + files +
-                                `
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <label class="form-label">Attach file</label>
-                            <div class="card-body">
-                                <div class="dropzone">
-                                    <div class="fallback">
-                                        <input name="fileList" type="file" multiple="multiple">
-                                    </div>
-                                    <div class="dz-message needsclick">
-                                        <div class="mb-3">
-                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                        </div>
-                                        <h4>Drop files here or click to upload.</h4>
-                                    </div>
-                                </div>
-                                <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                    <li class="mt-2" id="dropzone-preview-list">
-                                        <div class="border rounded">
-                                            <div class="d-flex p-2">
-                                                <div class="flex-shrink-0 me-3">
-                                                    <div class="avatar-sm bg-light rounded">
-                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
-                                                            <i class="ri-file-upload-line"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <div class="pt-1">
-                                                        <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                                        <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                        <strong class="error text-danger" data-dz-errormessage></strong>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-shrink-0 ms-3">
-                                                    <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="message-error-file"></div>
-                            </div>
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-6">
-                            <label for="selectActionEdit" class="form-label">Status:<span
-                                    id="statusTaskEdit"></span></label>
-                            <select id="selectActionEdit" name="action" class="form-control"></select>
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-6">
-                            <label for="selectProgressEdit" class="form-label">Progress</label>
-                            <select id="selectProgressEdit" name="progress" class="form-control">
-                                <option value="0">0</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="25">25</option>
-                                <option value="30">30</option>
-                                <option value="35">35</option>
-                                <option value="40">40</option>
-                                <option value="45">45</option>
-                                <option value="50">50</option>
-                                <option value="55">55</option>
-                                <option value="60">60</option>
-                                <option value="65">65</option>
-                                <option value="70">70</option>
-                                <option value="75">75</option>
-                                <option value="80">80</option>
-                                <option value="85">85</option>
-                                <option value="90">90</option>
-                                <option value="95">95</option>
-                                <option value="100">100</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="dueDateEdit" class="form-label">Due date</label>
-                            <input type="text" id="dueDateEdit" class="form-control"
-                                   data-provider="flatpickr" placeholder="Due date"/>
-                            <small class="form-message"></small>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="selectPriority" class="form-label">Priority</label>
-                            <select id="selectPriorityEdit" name="priority" class="form-control">
-                                <option value="LOW">Low</option>
-                                <option value="MEDIUM">Medium</option>
-                                <option value="HIGH">High</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-6 d-flex align-items-center">
-                            <label class="form-label m-0">Tag: </label>
-                            <div id="show-tag" class="d-flex align-items-center">
+<%--                <div class="modal-body" data-simplebar style="max-height: 800px">--%>
+<%--                    <div class="row g-3">--%>
+<%--                        <div class="col-lg-12">--%>
+<%--                            <label for="selectUsernameEdit" class="form-label">Username: <span--%>
+<%--                                    class="username-edit-task"></span></label>--%>
+<%--                            <select id="selectUsernameEdit" name="userId" class="form-select d-none"--%>
+<%--                                    aria-label="Default select example">--%>
+<%--                            </select>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-12">--%>
+<%--                            <div>--%>
+<%--                                <label for="title" class="form-label">Title</label>--%>
+<%--                                <input type="text" id="title-edit" name="title" class="form-control"--%>
+<%--                                       placeholder="Title"/>--%>
+<%--                                <small class="form-message"></small>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <!--end col-->--%>
+<%--                        <div class="col-lg-12">--%>
+<%--                            <label for="content" class="form-label">Content</label>--%>
+<%--                            <div id="content-edit" class="snow-editor h-auto"></div>--%>
+<%--                            <small class="form-message"></small>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-12">--%>
+<%--                            <label class="form-label">Old files</label>--%>
+<%--                            <div class="row mb-1">`--%>
+<%--                                + files +--%>
+<%--                                `--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-12">--%>
+<%--                            <label class="form-label">Attach file</label>--%>
+<%--                            <div class="card-body">--%>
+<%--                                <div class="dropzone">--%>
+<%--                                    <div class="fallback">--%>
+<%--                                        <input name="fileList" type="file" multiple="multiple">--%>
+<%--                                    </div>--%>
+<%--                                    <div class="dz-message needsclick">--%>
+<%--                                        <div class="mb-3">--%>
+<%--                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>--%>
+<%--                                        </div>--%>
+<%--                                        <h4>Drop files here or click to upload.</h4>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                                <ul class="list-unstyled mb-0" id="dropzone-preview">--%>
+<%--                                    <li class="mt-2" id="dropzone-preview-list">--%>
+<%--                                        <div class="border rounded">--%>
+<%--                                            <div class="d-flex p-2">--%>
+<%--                                                <div class="flex-shrink-0 me-3">--%>
+<%--                                                    <div class="avatar-sm bg-light rounded">--%>
+<%--                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">--%>
+<%--                                                            <i class="ri-file-upload-line"></i>--%>
+<%--                                                        </div>--%>
+<%--                                                    </div>--%>
+<%--                                                </div>--%>
+<%--                                                <div class="flex-grow-1">--%>
+<%--                                                    <div class="pt-1">--%>
+<%--                                                        <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>--%>
+<%--                                                        <p class="fs-13 text-muted mb-0" data-dz-size></p>--%>
+<%--                                                        <strong class="error text-danger" data-dz-errormessage></strong>--%>
+<%--                                                    </div>--%>
+<%--                                                </div>--%>
+<%--                                                <div class="flex-shrink-0 ms-3">--%>
+<%--                                                    <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    </li>--%>
+<%--                                </ul>--%>
+<%--                                <div class="message-error-file"></div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <!--end col-->--%>
+<%--                        <div class="col-lg-6">--%>
+<%--                            <label for="selectActionEdit" class="form-label">Status:<span--%>
+<%--                                    id="statusTaskEdit"></span></label>--%>
+<%--                            <select id="selectActionEdit" name="action" class="form-control"></select>--%>
+<%--                        </div>--%>
+<%--                        <!--end col-->--%>
+<%--                        <div class="col-lg-6">--%>
+<%--                            <label for="selectProgressEdit" class="form-label">Progress</label>--%>
+<%--                            <select id="selectProgressEdit" name="progress" class="form-control">--%>
+<%--                                <option value="0">0</option>--%>
+<%--                                <option value="5">5</option>--%>
+<%--                                <option value="10">10</option>--%>
+<%--                                <option value="15">15</option>--%>
+<%--                                <option value="20">20</option>--%>
+<%--                                <option value="25">25</option>--%>
+<%--                                <option value="30">30</option>--%>
+<%--                                <option value="35">35</option>--%>
+<%--                                <option value="40">40</option>--%>
+<%--                                <option value="45">45</option>--%>
+<%--                                <option value="50">50</option>--%>
+<%--                                <option value="55">55</option>--%>
+<%--                                <option value="60">60</option>--%>
+<%--                                <option value="65">65</option>--%>
+<%--                                <option value="70">70</option>--%>
+<%--                                <option value="75">75</option>--%>
+<%--                                <option value="80">80</option>--%>
+<%--                                <option value="85">85</option>--%>
+<%--                                <option value="90">90</option>--%>
+<%--                                <option value="95">95</option>--%>
+<%--                                <option value="100">100</option>--%>
+<%--                            </select>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-6">--%>
+<%--                            <label for="dueDateEdit" class="form-label">Due date</label>--%>
+<%--                            <input type="text" id="dueDateEdit" class="form-control"--%>
+<%--                                   data-provider="flatpickr" placeholder="Due date"/>--%>
+<%--                            <small class="form-message"></small>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-6">--%>
+<%--                            <label for="selectPriority" class="form-label">Priority</label>--%>
+<%--                            <select id="selectPriorityEdit" name="priority" class="form-control">--%>
+<%--                                <option value="LOW">Low</option>--%>
+<%--                                <option value="MEDIUM">Medium</option>--%>
+<%--                                <option value="HIGH">High</option>--%>
+<%--                            </select>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-6 d-flex align-items-center">--%>
+<%--                            <label class="form-label m-0">Tag: </label>--%>
+<%--                            <div id="show-tag" class="d-flex align-items-center">--%>
 
-                            </div>
-                        </div>
-                        <div class="col-lg-6 d-flex align-items-center">
-                            <label class="form-label m-0">Pic: </label>
-                            <div id="show-pic" class="d-flex align-items-center">
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-6 d-flex align-items-center">--%>
+<%--                            <label class="form-label m-0">Pic: </label>--%>
+<%--                            <div id="show-pic" class="d-flex align-items-center">--%>
 
-                            </div>
-                        </div>
-                        <div class="col-lg-12 d-flex align-items-center">
-                            <label class="form-label m-0">Related Task: </label>
-                            <div id="show-related-task" class="d-flex align-items-center">
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-lg-12 d-flex align-items-center">--%>
+<%--                            <label class="form-label m-0">Related Task: </label>--%>
+<%--                            <div id="show-related-task" class="d-flex align-items-center">--%>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success btn-load" id="update-task-btn">
-                            <span class="d-flex align-items-center">
-                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
-                                <span class="flex-grow-1">Update</span>
-                            </span>
-                        </button>
-                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
-                        </button>
-                    </div>
-                </div>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <div class="modal-footer">--%>
+<%--                    <div class="hstack gap-2 justify-content-end">--%>
+<%--                        <button type="submit" class="btn btn-success btn-load" id="update-task-btn">--%>
+<%--                            <span class="d-flex align-items-center">--%>
+<%--                                <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>--%>
+<%--                                <span class="flex-grow-1">Update</span>--%>
+<%--                            </span>--%>
+<%--                        </button>--%>
+<%--                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close--%>
+<%--                        </button>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </form>
         </div>
     </div>
@@ -560,9 +560,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
-                    <input id="tag-selected" class="form-control" type="text"/>
-                </div>
+                <div class="col-lg-12 border p-1" id="tag-selected" style="height: 45px"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTag" class="form-control" placeholder="Search Tag..."
@@ -667,9 +665,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
-                    <input id="pic-selected" class="form-control" type="text"/>
-                </div>
+                <div class="col-lg-12 border p-1" id="pic-selected" style="height: 45px"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchPic" class="form-control" placeholder="Search Pic..."
@@ -708,9 +704,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
-                    <input id="related-task-selected" class="form-control" type="text"/>
-                </div>
+                <div class="col-lg-12 border p-1" id="related-task-selected" style="height: 45px"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTask" class="form-control" placeholder="Search Task..."
@@ -921,7 +915,7 @@
             <div class="col-lg-6">
             <label for="dueDateEdit" class="form-label">Due date</label>
             <input type="text" id="dueDateEdit" class="form-control"
-            data-provider="flatpickr" placeholder="Due date"/>
+             placeholder="Due date"/>
             <small class="form-message"></small>
             </div>
             <div class="col-lg-6">
@@ -1384,17 +1378,33 @@
                     })
                 }
 
+                const tagString = document.getElementById('tag-db-selected').textContent;
+                const selectedTagsArray = tagString.split(',').map(tag => tag.trim());
                 const selectedTag = document.getElementById('tag-selected');
                 document.querySelectorAll('.tag-name').forEach(function (e) {
                     e.addEventListener('click', function () {
                         const tagName = e.textContent;
-                        if (tagName.trim() != '') {
-                            if (selectedTag.value == '') {
-                                selectedTag.value += tagName;
-                            } else selectedTag.value += ', ' + tagName;
+                        if (!selectedTagsArray.includes(tagName.trim())) {
+                            selectedTagsArray.push(tagName.trim());
+                            if (tagName.trim() != '') {
+                                selectedTag.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
+                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-tag-selected"></i> ` + tagName + `</button>`;
+                            }
+                            document.querySelectorAll('.remove-tag-selected').forEach(function (eRemove) {
+                                eRemove.addEventListener('click', function () {
+                                    const btnRemoveTag = eRemove.parentElement;
+                                    if (btnRemoveTag) btnRemoveTag.classList.add('d-none');
+                                    const removedTagName = btnRemoveTag.textContent.trim();
+                                    const index = selectedTagsArray.indexOf(removedTagName);
+                                    if (index !== -1) {
+                                        selectedTagsArray.splice(index, 1);
+                                    }
+                                });
+                            });
                         }
-                    })
-                })
+                    });
+                });
+
             });
         }
 
@@ -1414,6 +1424,10 @@
             showEditTaskForm(rs)
                 .then(function (commentHTML) {
                     editContainer.html(commentHTML);
+
+                    // Code right here
+                    $('#dueDateEdit').attr('data-provider', 'flatpickr');
+
                     $('#title-edit').val(rs.title);
 
                     $('#content-edit').html(rs.content);
@@ -1435,6 +1449,7 @@
 
                     if (!isBlank(rs.dueDate)) {
                         $('#dueDateEdit').val(formatDateValueToValueOfInputDate(rs.dueDate));
+                        $('#dueDateEdit').attr('data-provider', 'flatpickr');
                     } else {
                         $('#dueDateEdit').val('');
                     }
@@ -1450,20 +1465,42 @@
                         btnEditTag.addEventListener('click', function () {
                             var modal = new bootstrap.Modal(document.getElementById('tagModal'));
                             modal.show();
-
-                            const tagSelected = document.getElementById('tag-selected');
-                            const tagsDbSelected = document.getElementById('tag-db-selected');
-                            if (tagsDbSelected != '') tagSelected.value = tagsDbSelected.textContent;
+                            if (!this.clicked) {
+                                this.clicked = true;
+                                const tagSelected = document.getElementById('tag-selected');
+                                const tagsDbSelected = document.getElementById('tag-db-selected');
+                                if (tagsDbSelected.textContent != '') {
+                                    const arrayTagsDbSelected = tagsDbSelected.textContent.trim().split(', ');
+                                    arrayTagsDbSelected.forEach(function (eTag) {
+                                        tagSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-tag-selected"></i> ` + eTag + `</button>`
+                                    })
+                                    document.querySelectorAll('.remove-tag-selected').forEach(function (eRemove) {
+                                        eRemove.addEventListener('click', function () {
+                                            const btnRemoveTag = eRemove.parentElement;
+                                            if (btnRemoveTag) btnRemoveTag.classList.add('d-none')
+                                        })
+                                    })
+                                }
+                            }
                             showListTag();
                         })
                     }
 
                     document.getElementById('save-tag-selected').addEventListener('click', function () {
-                        const tagsSelected = document.getElementById('tag-selected').value;
+                        var tagsSelected = '';
+                        document.querySelectorAll('.tag-selected').forEach(function (eTag, index) {
+                            if (!eTag.classList.contains('d-none')) {
+                                const tagText = eTag.textContent.trim();
+                                if (tagsSelected.length > 0) {
+                                    tagsSelected += ', ';
+                                }
+                                tagsSelected += tagText;
+                            }
+                        });
+
                         const showTagSelect = document.getElementById('show-tag');
-                        if (tagsSelected != '') {
-                            showTagSelect.innerHTML = `<span class="fw-bold ms-2">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-                        }
+                        showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tag-db-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
 
                         const btnEditTag = document.getElementById('btn-edit-tag');
                         if (btnEditTag) {
@@ -1492,7 +1529,7 @@
 
                     // Pic
                     const sessionPic = document.getElementById('show-pic');
-                    sessionPic.innerHTML = `<span class="fw-bold ms-2">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionPic.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
 
                     const btnEditPic = document.getElementById('btn-edit-pic');
                     if (btnEditPic) {
@@ -1502,6 +1539,22 @@
                             if (!this.clicked) {
                                 this.clicked = true;
 
+                                const picSelected = document.getElementById('pic-selected');
+                                const picsDbSelected = document.getElementById('pic-db-selected');
+                                if (picsDbSelected.textContent != '') {
+                                    const arrayPicsDbSelected = picsDbSelected.textContent.trim().split(', ');
+                                    arrayPicsDbSelected.forEach(function (ePic) {
+                                        picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + ePic + `</button>`
+                                    })
+                                    document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
+                                        eRemove.addEventListener('click', function () {
+                                            const btnRemovePic = eRemove.parentElement;
+                                            if (btnRemovePic) btnRemovePic.classList.add('d-none')
+                                        })
+                                    })
+                                }
+
                                 callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
                                     rs.forEach(function (user) {
                                         const tablePic = document.getElementById('table-pic');
@@ -1510,13 +1563,30 @@
                                         tbody.innerHTML += pic;
                                     });
 
+                                    const picString = document.getElementById('pic-db-selected').textContent;
+                                    const selectedPicsArray = picString.split(',').map(pic => pic.trim());
                                     const inputSelectPic = document.getElementById('pic-selected');
                                     document.querySelectorAll('.pic-username').forEach(function (ePic) {
                                         ePic.addEventListener('click', function () {
                                             const picName = ePic.textContent;
-                                            if (inputSelectPic.value == '') {
-                                                inputSelectPic.value += picName;
-                                            } else inputSelectPic.value += ', ' + picName;
+                                            if (!selectedPicsArray.includes(picName.trim())) {
+                                                selectedPicsArray.push(picName.trim());
+                                                if (picName.trim() != '') {
+                                                    inputSelectPic.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + picName + `</button>`;
+                                                }
+                                                document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
+                                                    eRemove.addEventListener('click', function () {
+                                                        const btnRemovePic = eRemove.parentElement;
+                                                        if (btnRemovePic) btnRemovePic.classList.add('d-none');
+                                                        const removedPicName = btnRemovePic.textContent.trim();
+                                                        const index = selectedPicsArray.indexOf(removedPicName);
+                                                        if (index !== -1) {
+                                                            selectedPicsArray.splice(index, 1);
+                                                        }
+                                                    });
+                                                });
+                                            }
                                         });
                                     });
 
@@ -1547,11 +1617,19 @@
                                     });
 
                                     document.getElementById('btn-save-pic').addEventListener('click', function () {
-                                        const picsSelected = document.getElementById('pic-selected').value;
+                                        var picsSelected = '';
+                                        document.querySelectorAll('.pic-selected').forEach(function (ePic, index) {
+                                            if (!ePic.classList.contains('d-none')) {
+                                                const picText = ePic.textContent.trim();
+                                                if (picsSelected.length > 0) {
+                                                    picsSelected += ', ';
+                                                }
+                                                picsSelected += picText;
+                                            }
+                                        });
+
                                         const showPicSelect = document.getElementById('show-pic');
-                                        if (picsSelected != '') {
-                                            showPicSelect.innerHTML = `<span class="fw-bold ms-2">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-                                        }
+                                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
 
                                         const btnEditPic = document.getElementById('btn-edit-pic');
                                         if (btnEditPic) {
@@ -1569,7 +1647,7 @@
 
                     // Related Task
                     const sessionRelatedTask = document.getElementById('show-related-task');
-                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
 
                     const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
                     if (btnEditRelatedTask) {
@@ -1579,6 +1657,22 @@
                             if (!this.clicked) {
                                 this.clicked = true;
 
+                                const relatedTaskSelected = document.getElementById('related-task-selected');
+                                const relatedTaskDbSelected = document.getElementById('relatedTask-db-selected');
+                                if (relatedTaskDbSelected.textContent != '') {
+                                    const arrayRelatedTasksDbSelected = relatedTaskDbSelected.textContent.trim().split(', ');
+                                    arrayRelatedTasksDbSelected.forEach(function (eRelatedTask) {
+                                        relatedTaskSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 related-task-selected">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + eRelatedTask + `</button>`
+                                    })
+                                    document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {
+                                        eRemove.addEventListener('click', function () {
+                                            const btnRemoveRelatedTask = eRemove.parentElement;
+                                            if (btnRemoveRelatedTask) btnRemoveRelatedTask.classList.add('d-none')
+                                        })
+                                    })
+                                }
+
                                 callAjaxByJsonWithData('/api/v1/tasks/titles', 'GET', null, function (rs) {
                                     rs.forEach(function (task) {
                                         const tableTask = document.getElementById('table-task');
@@ -1587,15 +1681,34 @@
                                         tbody.innerHTML += titleTask;
                                     });
 
+
+                                    const relatedTaskString = document.getElementById('relatedTask-db-selected').textContent;
+                                    const selectedTasksArray = relatedTaskString.split(',').map(relatedTask => relatedTask.trim());
                                     const inputSelectTask = document.getElementById('related-task-selected');
                                     document.querySelectorAll('.task-title').forEach(function (eTask) {
                                         eTask.addEventListener('click', function () {
                                             const taskTitle = eTask.textContent;
-                                            if (inputSelectTask.value == '') {
-                                                inputSelectTask.value += taskTitle;
-                                            } else inputSelectTask.value += ', ' + taskTitle;
+                                            if (!selectedTasksArray.includes(taskTitle.trim())) {
+                                                selectedTasksArray.push(taskTitle.trim());
+                                                if (taskTitle.trim() != '') {
+                                                    inputSelectTask.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 related-task-selected">
+                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + taskTitle + `</button>`;
+                                                }
+                                                document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {
+                                                    eRemove.addEventListener('click', function () {
+                                                        const btnRemoveRelatedTask = eRemove.parentElement;
+                                                        if (btnRemoveRelatedTask) btnRemoveRelatedTask.classList.add('d-none');
+                                                        const removedTaskTitle = btnRemoveRelatedTask.textContent.trim();
+                                                        const index = selectedTasksArray.indexOf(removedTaskTitle);
+                                                        if (index !== -1) {
+                                                            selectedTasksArray.splice(index, 1);
+                                                        }
+                                                    });
+                                                });
+                                            }
                                         });
                                     });
+
 
                                     const searchInput = document.getElementById('searchTask');
 
@@ -1624,11 +1737,18 @@
                                     });
 
                                     document.getElementById('btn-save-task').addEventListener('click', function () {
-                                        const taskSelected = document.getElementById('related-task-selected').value;
+                                        var taskSelected = '';
+                                        document.querySelectorAll('.related-task-selected').forEach(function (eRelatedTask, index) {
+                                            if (!eRelatedTask.classList.contains('d-none')) {
+                                                const relatedTaskText = eRelatedTask.textContent.trim();
+                                                if (taskSelected.length > 0) {
+                                                    taskSelected += ', ';
+                                                }
+                                                taskSelected += relatedTaskText;
+                                            }
+                                        });
                                         const showTaskSelect = document.getElementById('show-related-task');
-                                        if (taskSelected != '') {
-                                            showTaskSelect.innerHTML = `<span class="fw-bold ms-2">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-                                        }
+                                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
 
                                         const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
                                         if (btnEditRelatedTask) {
@@ -1720,9 +1840,16 @@
                 onSubmit: function (formData) {
                     formData.append('id', idTask);
                     formData.append('content', $('#content-edit').html());
-                    formData.append('tag', $('#show-tag').find('span').text())
-                    formData.append('pic', $('#show-pic').find('span').text());
-                    formData.append('relatedTask', $('#show-related-task').find('span').text())
+                    const tagSelected = document.getElementById('tag-db-selected');
+                    const picSelected = document.getElementById('pic-db-selected');
+                    const relatedTaskSelected = document.getElementById('relatedTask-db-selected');
+                    var tag = '', pic = '', relatedTask = '';
+                    if (tagSelected) tag = tagSelected.textContent;
+                    if (picSelected) pic = picSelected.textContent;
+                    if (relatedTaskSelected) relatedTask = relatedTaskSelected.textContent;
+                    formData.append('tag', tag)
+                    formData.append('pic', pic);
+                    formData.append('relatedTask', relatedTask)
                     var dateString = document.getElementById('dueDateEdit').value;
                     var dueDate = new Date(dateString);
                     formData.append('dueDate', dueDate);
