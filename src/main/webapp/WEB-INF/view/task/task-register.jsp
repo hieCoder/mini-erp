@@ -147,7 +147,7 @@
                             </div>
                         </div>
                         <div class="hstack gap-2 justify-content-end mt-2">
-                            <button type="submit" class="btn btn-success btn-load">
+                            <button type="submit" class="btn btn-success btn-load" disabled>
                             <span class="d-flex align-items-center">
                                 <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
                                 <span class="flex-grow-1">Register</span>
@@ -351,6 +351,20 @@
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 <script src="/assets/custom/js/task/task-detail.js"></script>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var dueDateInput = document.getElementById('dueDate');
+        var submitButton = document.querySelector('.btn-load');
+
+        dueDateInput.addEventListener('input', function() {
+            if (dueDateInput.value.trim() === '') {
+                submitButton.disabled = true;
+            } else {
+                submitButton.disabled = false;
+            }
+        });
+    });
+
 
     document.getElementById('save-tag-selected').addEventListener('click', function () {
         const tagsSelected = document.getElementById('tag-selected').value;

@@ -5,7 +5,7 @@
 <head>
     <title>Tasks</title>
     <!-- dropzone css -->
-    <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css" />
+    <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.css" type="text/css"/>
 </head>
 <body>
 
@@ -175,22 +175,28 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="hstack gap-2 flex-wrap">
-                            <input type="radio" class="btn-check task-status" name="options" id="all" data-value=""  checked>
+                            <input type="radio" class="btn-check task-status" name="options" id="all" data-value=""
+                                   checked>
                             <label class="btn btn btn-light" for="all">ALL</label>
 
-                            <input type="radio" class="btn-check task-status" name="options" id="opened" data-value="OPENED">
+                            <input type="radio" class="btn-check task-status" name="options" id="opened"
+                                   data-value="OPENED">
                             <label class="btn btn-warning" for="opened">OPENED</label>
 
-                            <input type="radio" class="btn-check task-status" name="options" id="reopened" data-value="REOPENED">
+                            <input type="radio" class="btn-check task-status" name="options" id="reopened"
+                                   data-value="REOPENED">
                             <label class="btn btn-info" for="reopened">REOPENED</label>
 
-                            <input type="radio" class="btn-check task-status" name="options" id="registered" data-value="REGISTERED">
+                            <input type="radio" class="btn-check task-status" name="options" id="registered"
+                                   data-value="REGISTERED">
                             <label class="btn btn-secondary" for="registered">REGISTERED</label>
 
-                            <input type="radio" class="btn-check task-status" name="options" id="postponed" data-value="POSTPONED">
+                            <input type="radio" class="btn-check task-status" name="options" id="postponed"
+                                   data-value="POSTPONED">
                             <label class="btn btn-danger" for="postponed">POSTPONED</label>
 
-                            <input type="radio" class="btn-check task-status" name="options" id="closed" data-value="CLOSED">
+                            <input type="radio" class="btn-check task-status" name="options" id="closed"
+                                   data-value="CLOSED">
                             <label class="btn btn-success" for="closed">CLOSED</label>
                         </div>
                     </div>
@@ -198,28 +204,31 @@
                 <div class="row g-3">
                     <div class="col-xxl-3 col-sm-12">
                         <div class="search-box">
-                            <input id="titleSearch" type="text" class="form-control search bg-light border-light search-task"
+                            <input id="titleSearch" type="text"
+                                   class="form-control search bg-light border-light search-task"
                                    placeholder="Search by title">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-xxl-3 col-sm-12">
                         <div class="search-box">
-                            <input id="picSearch" type="text" class="form-control search bg-light border-light search-task"
+                            <input id="picSearch" type="text"
+                                   class="form-control search bg-light border-light search-task"
                                    placeholder="Search by Pic">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-xxl-3 col-sm-12">
                         <div class="search-box">
-                            <input id="tagSearch" type="text" class="form-control search bg-light border-light search-task"
+                            <input id="tagSearch" type="text"
+                                   class="form-control search bg-light border-light search-task"
                                    placeholder="Search by tag">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-xxl-1 col-sm-4">
                         <button id="reset-search" type="button" class="btn btn-primary btn-load">
-                              Reset
+                            Reset
                         </button>
                     </div>
                     <div class="col-xxl-2 col-sm-4 d-flex align-items-center float-end">
@@ -377,7 +386,7 @@
     </div>
 </div>
 
-<div class="modal fade zoomIn" id="editTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade zoomIn" id="editTaskModal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-soft-info">
@@ -413,7 +422,8 @@
                             <label class="form-label">Old files</label>
                             <div class="row mb-1">`
                                 + files +
-                                `</div>
+                                `
+                            </div>
                         </div>
                         <div class="col-lg-12">
                             <label class="form-label">Attach file</label>
@@ -492,7 +502,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label for="dueDateEdit" class="form-label">Due date</label>
-                            <input type="text" id="dueDateEdit" name="dueDate" class="form-control"
+                            <input type="text" id="dueDateEdit" class="form-control"
                                    data-provider="flatpickr" placeholder="Due date"/>
                             <small class="form-message"></small>
                         </div>
@@ -597,7 +607,8 @@
             </div>
             <div class="modal-body text-center">
                 <label for="new-tag-name" class="form-label float-start">Tag Name</label>
-                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required maxlength="10">
+                <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required
+                       maxlength="10">
 
                 <label for="type-tag" class="form-label float-start mt-2">Type</label>
                 <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
@@ -728,21 +739,246 @@
     </div>
 </div>
 
+<!--end delete modal -->
+
+<div class="modal fade flip" id="deleteFileTaskModal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 text-center">
+                    <h4>You are about to delete a file ?</h4>
+                    <p class="text-muted fs-14 mb-4">Deleting your task will remove all of
+                        your information from our database.</p>
+                    <div class="hstack gap-2 justify-content-center remove">
+                        <button class="btn btn-danger" id="delete-file-comment" data-name="" data-bs-target="#editTaskModal" data-bs-toggle="modal" data-bs-dismiss="modal">Yes, Delete It</button>
+                        <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" data-bs-target="#editTaskModal" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="/assets/custom/js/task/task.js"></script>
 <!-- dropzone js -->
 <script src="/assets/libs/dropzone/dropzone-min.js"></script>
 <script src="/assets/custom/js/task/task-detail.js"></script>
 <script>
 
-    $(document).ready(function () {
-        var dropzone = '';
-        callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK, 'GET', null, function (setting) {
-            dropzone = activeFile("#editTaskForm", setting);
-            swal.close();
-        }, function (err) {
-            swal.close();
+    function createFileTask(file, isShowDeleteIcon) {
+
+        var iconDelete = '';
+        if (isShowDeleteIcon) {
+            iconDelete = `<button type="button" class="delete-file border-0" data-name="` + file.fileName + `" data-bs-toggle="modal" data-bs-target="#deleteFileTaskModal"><i class="ri-delete-bin-fill align-bottom text-muted"></i></button>`;
+        }
+
+        return `<div class="col-lg-4 mb-1 file-container-item" data-name="` + file.fileName + `">
+                    <div class="border rounded border-dashed p-2">
+                        <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar-sm">
+                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                            <i class="ri-folder-zip-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="` + file.fileName + `">` + file.fileName + `</a></h5>
+                                                    <div>` + bToKbShow(file.fileSize) + `Kb</div>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="d-flex gap-1 align-items-center">
+                                                        <a href="` + file.url + `" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></a>`
+            + iconDelete +
+            `</div>
+                                                </div>
+                                            </div>
+                    </div>
+                </div>`;
+    }
+
+    async function showEditTaskForm(rs) {
+
+        return new Promise(async (resolve, reject) => {
+
+            var filesTask = rs.filesTask;
+
+            // files
+            var files = ``;
+            if (filesTask && filesTask.length > 0) {
+                try {
+                    await handleFilesAsync(filesTask, function (fileName, fileSize, url) {
+                        files += createFileTask({fileName: fileName, fileSize: fileSize, url: url}, true);
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            const taskHTML = ` <form id="editTaskForm">
+                <div class="modal-body" data-simplebar style="max-height: 800px">
+                    <div class="row g-3">
+                        <div class="col-lg-12">
+                            <label for="selectUsernameEdit" class="form-label">Username: <span
+                                    class="username-edit-task"></span></label>
+                            <select id="selectUsernameEdit" name="userId" class="form-select d-none"
+                                    aria-label="Default select example">
+                            </select>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" id="title-edit" name="title" class="form-control"
+                                       placeholder="Title"/>
+                                <small class="form-message"></small>
+                            </div>
+                        </div>
+            <div class="col-lg-12">
+            <label for="content" class="form-label">Content</label>
+            <div id="content-edit" class="snow-editor h-auto"></div>
+            <small class="form-message"></small>
+            </div>
+            <div class="col-lg-12">
+            <label class="form-label">Old files</label>
+            <div class="row mb-1">`
+                + files +
+                `</div>
+            </div>
+            <div class="col-lg-12">
+            <label class="form-label">Attach file</label>
+            <div class="card-body">
+            <div class="dropzone">
+            <div class="fallback">
+            <input name="fileList" type="file" multiple="multiple">
+            </div>
+            <div class="dz-message needsclick">
+            <div class="mb-3">
+            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+            </div>
+            <h4>Drop files here or click to upload.</h4>
+            </div>
+            </div>
+            <ul class="list-unstyled mb-0" id="dropzone-preview">
+            <li class="mt-2" id="dropzone-preview-list">
+            <div class="border rounded">
+            <div class="d-flex p-2">
+            <div class="flex-shrink-0 me-3">
+            <div class="avatar-sm bg-light rounded">
+            <div class="avatar-title bg-light text-secondary rounded fs-24">
+            <i class="ri-file-upload-line"></i>
+            </div>
+            </div>
+            </div>
+            <div class="flex-grow-1">
+            <div class="pt-1">
+            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+            <strong class="error text-danger" data-dz-errormessage></strong>
+            </div>
+            </div>
+            <div class="flex-shrink-0 ms-3">
+            <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+            </div>
+            </div>
+            </div>
+            </li>
+            </ul>
+            <div class="message-error-file"></div>
+            </div>
+            </div>
+            <div class="col-lg-6">
+            <label for="selectActionEdit" class="form-label">Status:<span
+            id="statusTaskEdit"></span></label>
+            <select id="selectActionEdit" name="action" class="form-control"></select>
+            </div>
+            <div class="col-lg-6">
+            <label for="selectProgressEdit" class="form-label">Progress</label>
+            <select id="selectProgressEdit" name="progress" class="form-control">
+            <option value="0">0</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+            <option value="50">50</option>
+            <option value="55">55</option>
+            <option value="60">60</option>
+            <option value="65">65</option>
+            <option value="70">70</option>
+            <option value="75">75</option>
+            <option value="80">80</option>
+            <option value="85">85</option>
+            <option value="90">90</option>
+            <option value="95">95</option>
+            <option value="100">100</option>
+            </select>
+            </div>
+            <div class="col-lg-6">
+            <label for="dueDateEdit" class="form-label">Due date</label>
+            <input type="text" id="dueDateEdit" class="form-control"
+            data-provider="flatpickr" placeholder="Due date"/>
+            <small class="form-message"></small>
+            </div>
+            <div class="col-lg-6">
+            <label for="selectPriority" class="form-label">Priority</label>
+            <select id="selectPriorityEdit" name="priority" class="form-control">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+            </select>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label m-0">Tag: </label>
+            <div id="show-tag" class="d-flex align-items-center">
+
+            </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center">
+            <label class="form-label m-0">Pic: </label>
+            <div id="show-pic" class="d-flex align-items-center">
+
+            </div>
+            </div>
+            <div class="col-lg-12 d-flex align-items-center">
+            <label class="form-label m-0">Related Task: </label>
+            <div id="show-related-task" class="d-flex align-items-center">
+
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <div class="hstack gap-2 justify-content-end">
+            <button type="submit" class="btn btn-success btn-load" id="update-task-btn">
+            <span class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0 d-none" style="margin-right: 5px;"></span>
+            <span class="flex-grow-1">Update</span>
+            </span>
+            </button>
+            <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close
+            </button>
+            </div>
+            </div>
+            </form>`;
+            resolve(taskHTML);
         });
-    })
+    }
+
+    $(document).on('click', '.delete-file', function (e){
+        var name = $(this).data('name');
+        $('#delete-file-comment').attr('data-name', name);
+    });
+
+    $(document).on('click', '#delete-file-comment', function (e) {
+        var name = $(this).attr('data-name');
+        $(".file-container-item[data-name='" + name + "']").remove();
+        $('#deleteFileTaskModal').modal('hide');
+    });
 
     var tasksRequest = {
         page: 1,
@@ -867,7 +1103,8 @@
                 })
             })
             tasksRequest.page = 1;
-            tableTask.ajax.reload(function () {});
+            tableTask.ajax.reload(function () {
+            });
         });
 
         // Filter by status
@@ -1165,326 +1402,350 @@
 
         var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
-            console.log(rs)
-            $('#title-edit').val(rs.title);
-
-            $('#content-edit').html(rs.content);
-            $('#editTaskForm .ql-toolbar.ql-snow').remove();
-            activeEditor("#editTaskForm");
-
-            var statusCode = rs.statusTask.code;
-            $('#statusTaskEdit').replaceWith('<span id="statusTaskEdit" class="badge ' + getStatusColor(statusCode) + '">' + statusCode + '</span>');
-
-            $('#selectActionEdit').html('<option value="">-- Select actions --</option>');
-            rs.statusTask.actions.forEach(function (action) {
-                var option = $('<option></option>');
-                option.attr('value', action.code);
-                option.text(action.name);
-                $('#selectActionEdit').append(option);
+            var dropzone = '';
+            callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK, 'GET', null, function (setting) {
+                dropzone = activeFile("#editTaskForm", setting);
+                swal.close();
+            }, function (err) {
+                swal.close();
             });
 
-            $('#selectProgressEdit').val(rs.progress);
+            var editContainer = $("#editTaskForm");
+            showEditTaskForm(rs)
+                .then(function (commentHTML) {
+                    editContainer.html(commentHTML);
+                    $('#title-edit').val(rs.title);
 
-            if (!isBlank(rs.dueDate)) {
-                $('#dueDateEdit').val(formatDateValueToValueOfInputDate(rs.dueDate));
-            } else {
-                $('#dueDateEdit').val('');
-            }
+                    $('#content-edit').html(rs.content);
+                    $('#editTaskForm .ql-toolbar.ql-snow').remove();
+                    activeEditor("#editTaskForm");
 
-            $('#selectPriorityEdit').val(rs.priority.code);
+                    var statusCode = rs.statusTask.code;
+                    $('#statusTaskEdit').replaceWith('<span id="statusTaskEdit" class="badge ' + getStatusColor(statusCode) + '">' + statusCode + '</span>');
 
-            // Tag
-            const sessionTag = document.getElementById('show-tag');
-            sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-
-            const btnEditTag = document.getElementById('btn-edit-tag');
-            if (btnEditTag) {
-                btnEditTag.addEventListener('click', function () {
-                    var modal = new bootstrap.Modal(document.getElementById('tagModal'));
-                    modal.show();
-
-                    const tagSelected = document.getElementById('tag-selected');
-                    const tagsDbSelected = document.getElementById('tag-db-selected');
-                    if (tagsDbSelected != '') tagSelected.value = tagsDbSelected.textContent;
-                    showListTag();
-                })
-            }
-
-            document.getElementById('save-tag-selected').addEventListener('click', function () {
-                const tagsSelected = document.getElementById('tag-selected').value;
-                const showTagSelect = document.getElementById('show-tag');
-                if (tagsSelected != '') {
-                    showTagSelect.innerHTML = `<span class="fw-bold ms-2">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-                }
-
-                const btnEditTag = document.getElementById('btn-edit-tag');
-                if (btnEditTag) {
-                    btnEditTag.addEventListener('click', function () {
-                        var modal = new bootstrap.Modal(document.getElementById('tagModal'));
-                        modal.show();
-                    })
-                }
-            })
-
-            // Handle Click button add tag name
-            document.getElementById('save-tag-name').addEventListener('click', function () {
-                var formData = new FormData();
-                const tagName = document.getElementById('new-tag-name');
-                const typeTag = document.getElementById('type-tag');
-                formData.append('tagName', '#' + tagName.value.trim());
-                formData.append('type', typeTag.value);
-                callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
-                    tagName.value = '';
-                    var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
-                    modal.show();
-                    $('#add-tag-name').modal('hide');
-                    showListTag();
-                });
-            })
-
-            // Pic
-            const sessionPic = document.getElementById('show-pic');
-            sessionPic.innerHTML = `<span class="fw-bold ms-2">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-
-            const btnEditPic = document.getElementById('btn-edit-pic');
-            if (btnEditPic) {
-                btnEditPic.addEventListener('click', function () {
-                    var modal = new bootstrap.Modal(document.getElementById('picModal'));
-                    modal.show();
-                    if (!this.clicked) {
-                        this.clicked = true;
-
-                        callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
-                            rs.forEach(function (user) {
-                                const tablePic = document.getElementById('table-pic');
-                                const tbody = tablePic.querySelector('tbody');
-                                const pic = `<tr><td class="cursor-pointer pic-username">` + user.fullname + `</td></tr>`;
-                                tbody.innerHTML += pic;
-                            });
-
-                            const inputSelectPic = document.getElementById('pic-selected');
-                            document.querySelectorAll('.pic-username').forEach(function (ePic) {
-                                ePic.addEventListener('click', function () {
-                                    const picName = ePic.textContent;
-                                    if (inputSelectPic.value == '') {
-                                        inputSelectPic.value += picName;
-                                    } else inputSelectPic.value += ', ' + picName;
-                                });
-                            });
-
-                            const searchInput = document.getElementById('searchPic');
-
-                            const rows = document.querySelectorAll('#table-pic tbody tr');
-
-                            searchInput.addEventListener('input', function () {
-                                const searchText = this.value.trim().toLowerCase();
-
-                                rows.forEach(function (row) {
-                                    const cells = row.querySelectorAll('.pic-username');
-                                    let found = false;
-
-                                    cells.forEach(function (cell) {
-                                        const cellText = cell.textContent.trim().toLowerCase();
-                                        if (cellText.includes(searchText)) {
-                                            found = true;
-                                        }
-                                    });
-
-                                    if (found) {
-                                        row.style.display = '';
-                                    } else {
-                                        row.style.display = 'none';
-                                    }
-                                });
-                            });
-
-                            document.getElementById('btn-save-pic').addEventListener('click', function () {
-                                const picsSelected = document.getElementById('pic-selected').value;
-                                const showPicSelect = document.getElementById('show-pic');
-                                if (picsSelected != '') {
-                                    showPicSelect.innerHTML = `<span class="fw-bold ms-2">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-                                }
-
-                                const btnEditPic = document.getElementById('btn-edit-pic');
-                                if (btnEditPic) {
-                                    btnEditPic.addEventListener('click', function () {
-                                        var modal = new bootstrap.Modal(document.getElementById('picModal'));
-                                        modal.show();
-                                    })
-                                }
-                            })
-                        });
-                    }
-                })
-            }
-
-
-            // Related Task
-            const sessionRelatedTask = document.getElementById('show-related-task');
-            sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-
-            const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
-            if (btnEditRelatedTask) {
-                btnEditRelatedTask.addEventListener('click', function () {
-                    var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
-                    modal.show();
-                    if (!this.clicked) {
-                        this.clicked = true;
-
-                        callAjaxByJsonWithData('/api/v1/tasks/titles', 'GET', null, function (rs) {
-                            rs.forEach(function (task) {
-                                const tableTask = document.getElementById('table-task');
-                                const tbody = tableTask.querySelector('tbody');
-                                const titleTask = `<tr><td class="cursor-pointer task-title">` + task.title + `</td></tr>`;
-                                tbody.innerHTML += titleTask;
-                            });
-
-                            const inputSelectTask = document.getElementById('related-task-selected');
-                            document.querySelectorAll('.task-title').forEach(function (eTask) {
-                                eTask.addEventListener('click', function () {
-                                    const taskTitle = eTask.textContent;
-                                    if (inputSelectTask.value == '') {
-                                        inputSelectTask.value += taskTitle;
-                                    } else inputSelectTask.value += ', ' + taskTitle;
-                                });
-                            });
-
-                            const searchInput = document.getElementById('searchTask');
-
-                            const rows = document.querySelectorAll('#table-task tbody tr');
-
-                            searchInput.addEventListener('input', function () {
-                                const searchText = this.value.trim().toLowerCase();
-
-                                rows.forEach(function (row) {
-                                    const cells = row.querySelectorAll('.task-title');
-                                    let found = false;
-
-                                    cells.forEach(function (cell) {
-                                        const cellText = cell.textContent.trim().toLowerCase();
-                                        if (cellText.includes(searchText)) {
-                                            found = true;
-                                        }
-                                    });
-
-                                    if (found) {
-                                        row.style.display = '';
-                                    } else {
-                                        row.style.display = 'none';
-                                    }
-                                });
-                            });
-
-                            document.getElementById('btn-save-task').addEventListener('click', function () {
-                                const taskSelected = document.getElementById('related-task-selected').value;
-                                const showTaskSelect = document.getElementById('show-related-task');
-                                if (taskSelected != '') {
-                                    showTaskSelect.innerHTML = `<span class="fw-bold ms-2">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
-                                }
-
-                                const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
-                                if (btnEditRelatedTask) {
-                                    btnEditRelatedTask.addEventListener('click', function () {
-                                        var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
-                                        modal.show();
-                                    })
-                                }
-                            })
-                        });
-                    }
-                })
-            }
-
-            //handle case
-            if ([T_REGISTERED, T_POSTPONED, T_CLOSED].includes(statusCode)) {
-                $('#selectProgressEdit').prop('disabled', true);
-            } else $('#selectProgressEdit').prop('disabled', false);
-
-            if (statusCode == T_POSTPONED) {
-                $('#selectPriorityEdit').prop('disabled', true);
-            } else $('#selectPriorityEdit').prop('disabled', false);
-
-            var selectElement = $('#selectUsernameEdit');
-            selectElement.empty();
-            // username
-            if (isDeleveloper()) {
-                $('.username-edit-task').text(rs.user.fullname);
-                var option = $('<option></option>');
-                option.attr('value', rs.user.id);
-                option.text(rs.user.fullname);
-                selectElement.append(option);
-
-                swal.close();
-                $('#editTaskModal').modal('show');
-            } else {
-                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (users) {
-                    users.forEach(function (user) {
+                    $('#selectActionEdit').html('<option value="">-- Select actions --</option>');
+                    rs.statusTask.actions.forEach(function (action) {
                         var option = $('<option></option>');
-                        option.attr('value', user.id);
-                        option.text(user.fullname);
-
-                        if (user.id == rs.user.id) {
-                            option.attr('selected', 'selected');
-                        }
-
-                        selectElement.append(option);
+                        option.attr('value', action.code);
+                        option.text(action.name);
+                        $('#selectActionEdit').append(option);
                     });
 
-                    $('#selectUsernameEdit').removeClass('d-none');
+                    $('#selectProgressEdit').val(rs.progress);
 
-                    swal.close();
-                    $('#editTaskModal').modal('show');
-                });
-            }
-        });
-
-        Validator({
-            form: '#editTaskForm',
-            errorSelector: '.form-message',
-            rules: [
-                Validator.isRequired('#title-edit'),
-                Validator.isRequired('#content-edit'),
-                Validator.isThen("#dueDateEdit", function () {
-                    var status = $('#statusTaskEdit').text();
-                    var action = $('#selectActionEdit').val();
-                    var dueDate = $('#dueDateEdit').val();
-
-                    if (status == T_REGISTERED) {
-                        if (action == '') {
-                            if (dueDate == '') return 1; // valid
-                            return 2; // validate dueday
-                        } else {
-                            if (dueDate == '') return 3; // dueday empty
-                            return 2;
-                        }
+                    if (!isBlank(rs.dueDate)) {
+                        $('#dueDateEdit').val(formatDateValueToValueOfInputDate(rs.dueDate));
                     } else {
-                        if (dueDate == '') return 3;
-
-                        if (status == T_POSTPONED && action != '') {
-                            return 2;
-                        }
-                        return 1;
+                        $('#dueDateEdit').val('');
                     }
-                })
-            ],
-            onSubmit: function (formData) {
-                formData.append('id', idTask);
-                formData.append('content', $('#content-edit').html());
-                formData.append('tag', $('#show-tag').find('span').text())
-                formData.append('pic', $('#show-pic').find('span').text());
-                formData.append('relatedTask',$('#show-related-task').find('span').text())
 
-                $('#editTaskForm .spinner-border').removeClass('d-none');
-                callAjaxByJsonWithDataForm("/api/v1/tasks", "PUT", formData, function (rs) {
+                    $('#selectPriorityEdit').val(rs.priority.code);
 
-                    tableTask.ajax.reload(function () {
-                        $('#editTaskForm .spinner-border').addClass('d-none');
-                        $("#editTaskModal").modal("hide");
-                        showAlert(SUCCESS_ALERT, 'Update success!');
-                        loadCountStatus();
+                    // Tag
+                    const sessionTag = document.getElementById('show-tag');
+                    sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+
+                    const btnEditTag = document.getElementById('btn-edit-tag');
+                    if (btnEditTag) {
+                        btnEditTag.addEventListener('click', function () {
+                            var modal = new bootstrap.Modal(document.getElementById('tagModal'));
+                            modal.show();
+
+                            const tagSelected = document.getElementById('tag-selected');
+                            const tagsDbSelected = document.getElementById('tag-db-selected');
+                            if (tagsDbSelected != '') tagSelected.value = tagsDbSelected.textContent;
+                            showListTag();
+                        })
+                    }
+
+                    document.getElementById('save-tag-selected').addEventListener('click', function () {
+                        const tagsSelected = document.getElementById('tag-selected').value;
+                        const showTagSelect = document.getElementById('show-tag');
+                        if (tagsSelected != '') {
+                            showTagSelect.innerHTML = `<span class="fw-bold ms-2">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        }
+
+                        const btnEditTag = document.getElementById('btn-edit-tag');
+                        if (btnEditTag) {
+                            btnEditTag.addEventListener('click', function () {
+                                var modal = new bootstrap.Modal(document.getElementById('tagModal'));
+                                modal.show();
+                            })
+                        }
+                    })
+
+                    // Handle Click button add tag name
+                    document.getElementById('save-tag-name').addEventListener('click', function () {
+                        var formData = new FormData();
+                        const tagName = document.getElementById('new-tag-name');
+                        const typeTag = document.getElementById('type-tag');
+                        formData.append('tagName', '#' + tagName.value.trim());
+                        formData.append('type', typeTag.value);
+                        callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
+                            tagName.value = '';
+                            var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+                            modal.show();
+                            $('#add-tag-name').modal('hide');
+                            showListTag();
+                        });
+                    })
+
+                    // Pic
+                    const sessionPic = document.getElementById('show-pic');
+                    sessionPic.innerHTML = `<span class="fw-bold ms-2">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+
+                    const btnEditPic = document.getElementById('btn-edit-pic');
+                    if (btnEditPic) {
+                        btnEditPic.addEventListener('click', function () {
+                            var modal = new bootstrap.Modal(document.getElementById('picModal'));
+                            modal.show();
+                            if (!this.clicked) {
+                                this.clicked = true;
+
+                                callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
+                                    rs.forEach(function (user) {
+                                        const tablePic = document.getElementById('table-pic');
+                                        const tbody = tablePic.querySelector('tbody');
+                                        const pic = `<tr><td class="cursor-pointer pic-username">` + user.fullname + `</td></tr>`;
+                                        tbody.innerHTML += pic;
+                                    });
+
+                                    const inputSelectPic = document.getElementById('pic-selected');
+                                    document.querySelectorAll('.pic-username').forEach(function (ePic) {
+                                        ePic.addEventListener('click', function () {
+                                            const picName = ePic.textContent;
+                                            if (inputSelectPic.value == '') {
+                                                inputSelectPic.value += picName;
+                                            } else inputSelectPic.value += ', ' + picName;
+                                        });
+                                    });
+
+                                    const searchInput = document.getElementById('searchPic');
+
+                                    const rows = document.querySelectorAll('#table-pic tbody tr');
+
+                                    searchInput.addEventListener('input', function () {
+                                        const searchText = this.value.trim().toLowerCase();
+
+                                        rows.forEach(function (row) {
+                                            const cells = row.querySelectorAll('.pic-username');
+                                            let found = false;
+
+                                            cells.forEach(function (cell) {
+                                                const cellText = cell.textContent.trim().toLowerCase();
+                                                if (cellText.includes(searchText)) {
+                                                    found = true;
+                                                }
+                                            });
+
+                                            if (found) {
+                                                row.style.display = '';
+                                            } else {
+                                                row.style.display = 'none';
+                                            }
+                                        });
+                                    });
+
+                                    document.getElementById('btn-save-pic').addEventListener('click', function () {
+                                        const picsSelected = document.getElementById('pic-selected').value;
+                                        const showPicSelect = document.getElementById('show-pic');
+                                        if (picsSelected != '') {
+                                            showPicSelect.innerHTML = `<span class="fw-bold ms-2">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                        }
+
+                                        const btnEditPic = document.getElementById('btn-edit-pic');
+                                        if (btnEditPic) {
+                                            btnEditPic.addEventListener('click', function () {
+                                                var modal = new bootstrap.Modal(document.getElementById('picModal'));
+                                                modal.show();
+                                            })
+                                        }
+                                    })
+                                });
+                            }
+                        })
+                    }
+
+
+                    // Related Task
+                    const sessionRelatedTask = document.getElementById('show-related-task');
+                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+
+                    const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
+                    if (btnEditRelatedTask) {
+                        btnEditRelatedTask.addEventListener('click', function () {
+                            var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
+                            modal.show();
+                            if (!this.clicked) {
+                                this.clicked = true;
+
+                                callAjaxByJsonWithData('/api/v1/tasks/titles', 'GET', null, function (rs) {
+                                    rs.forEach(function (task) {
+                                        const tableTask = document.getElementById('table-task');
+                                        const tbody = tableTask.querySelector('tbody');
+                                        const titleTask = `<tr><td class="cursor-pointer task-title">` + task.title + `</td></tr>`;
+                                        tbody.innerHTML += titleTask;
+                                    });
+
+                                    const inputSelectTask = document.getElementById('related-task-selected');
+                                    document.querySelectorAll('.task-title').forEach(function (eTask) {
+                                        eTask.addEventListener('click', function () {
+                                            const taskTitle = eTask.textContent;
+                                            if (inputSelectTask.value == '') {
+                                                inputSelectTask.value += taskTitle;
+                                            } else inputSelectTask.value += ', ' + taskTitle;
+                                        });
+                                    });
+
+                                    const searchInput = document.getElementById('searchTask');
+
+                                    const rows = document.querySelectorAll('#table-task tbody tr');
+
+                                    searchInput.addEventListener('input', function () {
+                                        const searchText = this.value.trim().toLowerCase();
+
+                                        rows.forEach(function (row) {
+                                            const cells = row.querySelectorAll('.task-title');
+                                            let found = false;
+
+                                            cells.forEach(function (cell) {
+                                                const cellText = cell.textContent.trim().toLowerCase();
+                                                if (cellText.includes(searchText)) {
+                                                    found = true;
+                                                }
+                                            });
+
+                                            if (found) {
+                                                row.style.display = '';
+                                            } else {
+                                                row.style.display = 'none';
+                                            }
+                                        });
+                                    });
+
+                                    document.getElementById('btn-save-task').addEventListener('click', function () {
+                                        const taskSelected = document.getElementById('related-task-selected').value;
+                                        const showTaskSelect = document.getElementById('show-related-task');
+                                        if (taskSelected != '') {
+                                            showTaskSelect.innerHTML = `<span class="fw-bold ms-2">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                        }
+
+                                        const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
+                                        if (btnEditRelatedTask) {
+                                            btnEditRelatedTask.addEventListener('click', function () {
+                                                var modal = new bootstrap.Modal(document.getElementById('relatedTaskModal'));
+                                                modal.show();
+                                            })
+                                        }
+                                    })
+                                });
+                            }
+                        })
+                    }
+
+                    //handle case
+                    if ([T_REGISTERED, T_POSTPONED, T_CLOSED].includes(statusCode)) {
+                        $('#selectProgressEdit').prop('disabled', true);
+                    } else $('#selectProgressEdit').prop('disabled', false);
+
+                    if (statusCode == T_POSTPONED) {
+                        $('#selectPriorityEdit').prop('disabled', true);
+                    } else $('#selectPriorityEdit').prop('disabled', false);
+
+                    var selectElement = $('#selectUsernameEdit');
+                    selectElement.empty();
+                    // username
+                    if (isDeleveloper()) {
+                        $('.username-edit-task').text(rs.user.fullname);
+                        var option = $('<option></option>');
+                        option.attr('value', rs.user.id);
+                        option.text(rs.user.fullname);
+                        selectElement.append(option);
+
+                        swal.close();
+                        $('#editTaskModal').modal('show');
+                    } else {
+                        callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (users) {
+                            users.forEach(function (user) {
+                                var option = $('<option></option>');
+                                option.attr('value', user.id);
+                                option.text(user.fullname);
+
+                                if (user.id == rs.user.id) {
+                                    option.attr('selected', 'selected');
+                                }
+
+                                selectElement.append(option);
+                            });
+
+                            $('#selectUsernameEdit').removeClass('d-none');
+
+                            swal.close();
+                            $('#editTaskModal').modal('show');
+                        });
+                    }
+                }).catch(function (error) {
+                console.error(error);
+            });
+
+            Validator({
+                form: '#editTaskForm',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#title-edit'),
+                    Validator.isRequired('#content-edit'),
+                    Validator.isThen("#dueDateEdit", function () {
+                        var status = $('#statusTaskEdit').text();
+                        var action = $('#selectActionEdit').val();
+                        var dueDate = $('#dueDateEdit').val();
+
+                        if (status == T_REGISTERED) {
+                            if (action == '') {
+                                if (dueDate == '') return 1; // valid
+                                return 2; // validate dueday
+                            } else {
+                                if (dueDate == '') return 3; // dueday empty
+                                return 2;
+                            }
+                        } else {
+                            if (dueDate == '') return 3;
+
+                            if (status == T_POSTPONED && action != '') {
+                                return 2;
+                            }
+                            return 1;
+                        }
+                    })
+                ],
+                onSubmit: function (formData) {
+                    formData.append('id', idTask);
+                    formData.append('content', $('#content-edit').html());
+                    formData.append('tag', $('#show-tag').find('span').text())
+                    formData.append('pic', $('#show-pic').find('span').text());
+                    formData.append('relatedTask', $('#show-related-task').find('span').text())
+                    var dateString = document.getElementById('dueDateEdit').value;
+                    var dueDate = new Date(dateString);
+                    formData.append('dueDate', dueDate);
+                    var oldFiles = $('#editTaskForm').find('a.file-name-item').map(function() {
+                        return $(this).text();
+                    }).get().join(',');
+                    formData.append('remainFiles', oldFiles);
+
+                    dropzone.files.forEach((file) => {
+                        formData.append('filesTask', file);
                     });
-                });
-            }
+
+                    $('#editTaskForm .spinner-border').removeClass('d-none');
+                    callAjaxByDataFormWithDataForm("/api/v1/tasks/updation", "POST", formData, function (rs) {
+                        tableTask.ajax.reload(function () {
+                            $('#editTaskForm .spinner-border').addClass('d-none');
+                            $("#editTaskModal").modal("hide");
+                            showAlert(SUCCESS_ALERT, 'Update success!');
+                            loadCountStatus();
+                        });
+                    });
+                }
+            });
         });
     });
 
@@ -1502,7 +1763,8 @@
         })
         tasksRequest.page = 1;
 
-        tableTask.ajax.reload(function () {});
+        tableTask.ajax.reload(function () {
+        });
     });
 
 </script>

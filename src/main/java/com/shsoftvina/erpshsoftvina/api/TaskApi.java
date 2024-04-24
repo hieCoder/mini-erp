@@ -28,11 +28,11 @@ public class TaskApi {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerTask(@Valid  TaskRegisterRequest taskRegisterRequest) {
+    public ResponseEntity<?> registerTask(@Valid TaskRegisterRequest taskRegisterRequest) {
         return ResponseEntity.ok(taskService.registerTask(taskRegisterRequest));
     }
 
-    @PutMapping
+    @PostMapping("/updation")
     public ResponseEntity<?> updateTask(@Valid TaskUpdateRequest taskUpdateRequest){
         return ResponseEntity.ok(taskService.updateTask(taskUpdateRequest));
     }
