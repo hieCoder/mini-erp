@@ -164,6 +164,9 @@ public class FileUtils {
             else if (c == Book.class) {
                 return BookConstant.PATH_FILE + fileName;
             }
+            else if (c == Task.class) {
+                return TaskConstant.PATH_FILE + fileName;
+            }
             else if(c == CommentTask.class){
                 return CommentTaskConstant.PATH_FILE + fileName;
             }

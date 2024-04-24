@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -43,4 +44,6 @@ public class TaskUpdateRequest {
     private String tag;
     private String pic;
     private String relatedTask;
+    private String remainFiles;
+    private MultipartFile[] filesTask;
 }
