@@ -914,8 +914,8 @@
             </div>
             <div class="col-lg-6">
             <label for="dueDateEdit" class="form-label">Due date</label>
-            <input type="text" id="dueDateEdit" class="form-control"
-             placeholder="Due date"/>
+            <input type="date" id="dueDateEdit" class="form-control"
+             data-provider="flatpickr" placeholder="Due date"/>
             <small class="form-message"></small>
             </div>
             <div class="col-lg-6">
@@ -1378,16 +1378,33 @@
                     })
                 }
 
-                const tagString = document.getElementById('tag-db-selected').textContent;
-                const selectedTagsArray = tagString.split(',').map(tag => tag.trim());
-                const selectedTag = document.getElementById('tag-selected');
+                const tagSelected = document.getElementById('tag-selected');
+                const tagsDbSelected = document.getElementById('tag-db-selected').textContent;
+                const selectedTagsArray = tagsDbSelected.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+                if (tagsDbSelected.textContent != '') {
+                    selectedTagsArray.forEach(function (eTag) {
+                        tagSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-tag-selected"></i> ` + eTag + `</button>`
+                    })
+                }
+                document.querySelectorAll('.remove-tag-selected').forEach(function (eRemove) {
+                    eRemove.addEventListener('click', function () {
+                        const btnRemoveTag = eRemove.parentElement;
+                        if (btnRemoveTag) btnRemoveTag.classList.add('d-none');
+                        const removedTagName = btnRemoveTag.textContent.trim();
+                        const index = selectedTagsArray.indexOf(removedTagName);
+                        if (index !== -1) {
+                            selectedTagsArray.splice(index, 1);
+                        }
+                    });
+                });
                 document.querySelectorAll('.tag-name').forEach(function (e) {
                     e.addEventListener('click', function () {
                         const tagName = e.textContent;
                         if (!selectedTagsArray.includes(tagName.trim())) {
                             selectedTagsArray.push(tagName.trim());
                             if (tagName.trim() != '') {
-                                selectedTag.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
+                                tagSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
                     <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-tag-selected"></i> ` + tagName + `</button>`;
                             }
                             document.querySelectorAll('.remove-tag-selected').forEach(function (eRemove) {
@@ -1404,7 +1421,6 @@
                         }
                     });
                 });
-
             });
         }
 
@@ -1414,7 +1430,10 @@
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
             var dropzone = '';
             callAjaxByJsonWithData('/api/v1/settings/code?code='+ S_TASK, 'GET', null, function (setting) {
-                dropzone = activeFile("#editTaskForm", setting);
+                setTimeout(function() {
+                    dropzone = activeFile("#editTaskForm", setting);
+                }, 100);
+
                 swal.close();
             }, function (err) {
                 swal.close();
@@ -1424,9 +1443,6 @@
             showEditTaskForm(rs)
                 .then(function (commentHTML) {
                     editContainer.html(commentHTML);
-
-                    // Code right here
-                    $('#dueDateEdit').attr('data-provider', 'flatpickr');
 
                     $('#title-edit').val(rs.title);
 
@@ -1467,23 +1483,9 @@
                             modal.show();
                             if (!this.clicked) {
                                 this.clicked = true;
-                                const tagSelected = document.getElementById('tag-selected');
-                                const tagsDbSelected = document.getElementById('tag-db-selected');
-                                if (tagsDbSelected.textContent != '') {
-                                    const arrayTagsDbSelected = tagsDbSelected.textContent.trim().split(', ');
-                                    arrayTagsDbSelected.forEach(function (eTag) {
-                                        tagSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 tag-selected">
-                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-tag-selected"></i> ` + eTag + `</button>`
-                                    })
-                                    document.querySelectorAll('.remove-tag-selected').forEach(function (eRemove) {
-                                        eRemove.addEventListener('click', function () {
-                                            const btnRemoveTag = eRemove.parentElement;
-                                            if (btnRemoveTag) btnRemoveTag.classList.add('d-none')
-                                        })
-                                    })
-                                }
+                                showListTag();
                             }
-                            showListTag();
+
                         })
                     }
 
@@ -1539,22 +1541,6 @@
                             if (!this.clicked) {
                                 this.clicked = true;
 
-                                const picSelected = document.getElementById('pic-selected');
-                                const picsDbSelected = document.getElementById('pic-db-selected');
-                                if (picsDbSelected.textContent != '') {
-                                    const arrayPicsDbSelected = picsDbSelected.textContent.trim().split(', ');
-                                    arrayPicsDbSelected.forEach(function (ePic) {
-                                        picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
-                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + ePic + `</button>`
-                                    })
-                                    document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
-                                        eRemove.addEventListener('click', function () {
-                                            const btnRemovePic = eRemove.parentElement;
-                                            if (btnRemovePic) btnRemovePic.classList.add('d-none')
-                                        })
-                                    })
-                                }
-
                                 callAjaxByJsonWithData('/api/v1/users/usernames', 'GET', null, function (rs) {
                                     rs.forEach(function (user) {
                                         const tablePic = document.getElementById('table-pic');
@@ -1563,16 +1549,33 @@
                                         tbody.innerHTML += pic;
                                     });
 
-                                    const picString = document.getElementById('pic-db-selected').textContent;
-                                    const selectedPicsArray = picString.split(',').map(pic => pic.trim());
-                                    const inputSelectPic = document.getElementById('pic-selected');
+                                    const picSelected = document.getElementById('pic-selected');
+                                    const picsDbSelected = document.getElementById('pic-db-selected').textContent;
+                                    const selectedPicsArray = picsDbSelected.split(',').map(pic => pic.trim()).filter(pic => pic !== '');
+                                    if (picsDbSelected != '') {
+                                        selectedPicsArray.forEach(function (ePic) {
+                                            picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + ePic + `</button>`
+                                        })
+                                    }
+                                    document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
+                                        eRemove.addEventListener('click', function () {
+                                            const btnRemovePic = eRemove.parentElement;
+                                            if (btnRemovePic) btnRemovePic.classList.add('d-none');
+                                            const removedPicName = btnRemovePic.textContent.trim();
+                                            const index = selectedPicsArray.indexOf(removedPicName);
+                                            if (index !== -1) {
+                                                selectedPicsArray.splice(index, 1);
+                                            }
+                                        });
+                                    });
                                     document.querySelectorAll('.pic-username').forEach(function (ePic) {
                                         ePic.addEventListener('click', function () {
                                             const picName = ePic.textContent;
                                             if (!selectedPicsArray.includes(picName.trim())) {
                                                 selectedPicsArray.push(picName.trim());
                                                 if (picName.trim() != '') {
-                                                    inputSelectPic.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                                                    picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
                     <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + picName + `</button>`;
                                                 }
                                                 document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
@@ -1644,7 +1647,6 @@
                         })
                     }
 
-
                     // Related Task
                     const sessionRelatedTask = document.getElementById('show-related-task');
                     sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
@@ -1657,22 +1659,6 @@
                             if (!this.clicked) {
                                 this.clicked = true;
 
-                                const relatedTaskSelected = document.getElementById('related-task-selected');
-                                const relatedTaskDbSelected = document.getElementById('relatedTask-db-selected');
-                                if (relatedTaskDbSelected.textContent != '') {
-                                    const arrayRelatedTasksDbSelected = relatedTaskDbSelected.textContent.trim().split(', ');
-                                    arrayRelatedTasksDbSelected.forEach(function (eRelatedTask) {
-                                        relatedTaskSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 related-task-selected">
-                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + eRelatedTask + `</button>`
-                                    })
-                                    document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {
-                                        eRemove.addEventListener('click', function () {
-                                            const btnRemoveRelatedTask = eRemove.parentElement;
-                                            if (btnRemoveRelatedTask) btnRemoveRelatedTask.classList.add('d-none')
-                                        })
-                                    })
-                                }
-
                                 callAjaxByJsonWithData('/api/v1/tasks/titles', 'GET', null, function (rs) {
                                     rs.forEach(function (task) {
                                         const tableTask = document.getElementById('table-task');
@@ -1681,17 +1667,35 @@
                                         tbody.innerHTML += titleTask;
                                     });
 
+                                    const relatedTaskSelected = document.getElementById('related-task-selected');
+                                    const relatedTaskDbSelected = document.getElementById('relatedTask-db-selected').textContent;
+                                    const selectedTasksArray = relatedTaskDbSelected.split(',').map(relatedTask => relatedTask.trim()).filter(relatedTask => relatedTask !== '');
+                                    if (relatedTaskDbSelected != '') {
+                                        selectedTasksArray.forEach(function (eRelatedTask) {
+                                            relatedTaskSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 related-task-selected">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + eRelatedTask + `</button>`
+                                        })
+                                    }
 
-                                    const relatedTaskString = document.getElementById('relatedTask-db-selected').textContent;
-                                    const selectedTasksArray = relatedTaskString.split(',').map(relatedTask => relatedTask.trim());
-                                    const inputSelectTask = document.getElementById('related-task-selected');
+                                    document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {
+                                        eRemove.addEventListener('click', function () {
+                                            const btnRemoveRelatedTask = eRemove.parentElement;
+                                            if (btnRemoveRelatedTask) btnRemoveRelatedTask.classList.add('d-none');
+                                            const removedTaskTitle = btnRemoveRelatedTask.textContent.trim();
+                                            const index = selectedTasksArray.indexOf(removedTaskTitle);
+                                            if (index !== -1) {
+                                                selectedTasksArray.splice(index, 1);
+                                            }
+                                        });
+                                    });
+
                                     document.querySelectorAll('.task-title').forEach(function (eTask) {
                                         eTask.addEventListener('click', function () {
                                             const taskTitle = eTask.textContent;
                                             if (!selectedTasksArray.includes(taskTitle.trim())) {
                                                 selectedTasksArray.push(taskTitle.trim());
                                                 if (taskTitle.trim() != '') {
-                                                    inputSelectTask.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 related-task-selected">
+                                                    relatedTaskSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 related-task-selected">
                     <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + taskTitle + `</button>`;
                                                 }
                                                 document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {
@@ -1781,7 +1785,7 @@
                         option.attr('value', rs.user.id);
                         option.text(rs.user.fullname);
                         selectElement.append(option);
-
+                        $('button[data-bs-target="#add-tag-name"]').addClass('d-none');
                         swal.close();
                         $('#editTaskModal').modal('show');
                     } else {
@@ -1869,6 +1873,7 @@
                             $("#editTaskModal").modal("hide");
                             showAlert(SUCCESS_ALERT, 'Update success!');
                             loadCountStatus();
+                            window.location.reload();
                         });
                     });
                 }
