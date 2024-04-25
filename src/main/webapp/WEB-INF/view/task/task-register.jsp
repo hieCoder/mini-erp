@@ -654,7 +654,7 @@
 
                     if (i < data1.length) {
                         div1.innerHTML += `
-                            <div class="dropdown">
+                            <div class="dropdown edit-tag-admin">
                                 <a href="#" role="button" id="dropdownMenuLink1_${i}" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="ri-more-2-fill"></i>
                                 </a>
@@ -667,7 +667,7 @@
                     }
                     if (i < data2.length) {
                         div2.innerHTML += `
-                            <div class="dropdown">
+                            <div class="dropdown edit-tag-admin">
                                 <a href="#" role="button" id="dropdownMenuLink2_${i}" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="ri-more-2-fill"></i>
                                 </a>
@@ -724,6 +724,10 @@
                         });
                     })
                 })
+
+                if (isDeleveloper()) {
+                    $('.edit-tag-admin').addClass('d-none');
+                }
             }
 
             let selectedTagsArray = [];
@@ -796,7 +800,6 @@
                 option.text(userCurrent.fullname);
                 selectElement.append(option);
                 $('button[data-bs-target="#add-tag-name"]').addClass('d-none');
-
                 $('#registerTaskModal').modal('show');
             } else {
                 selectElement.empty();
