@@ -75,7 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // setting
                 .antMatchers(HttpMethod.PUT, "/api/v1/settings/**").access("hasAnyRole('OWNER', 'MANAGER')")
                 // user
-                .antMatchers(HttpMethod.GET, "/api/v1/users/usernames").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.GET, "/api/v1/users").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/users/**").access("hasAnyRole('OWNER', 'MANAGER')")
                 .antMatchers(HttpMethod.PUT, "/api/v1/users/register/approval").access("hasAnyRole('OWNER', 'MANAGER')")

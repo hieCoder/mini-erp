@@ -795,6 +795,7 @@
                 option.attr('value', userCurrent.id);
                 option.text(userCurrent.fullname);
                 selectElement.append(option);
+                $('button[data-bs-target="#add-tag-name"]').addClass('d-none');
 
                 $('#registerTaskModal').modal('show');
             } else {
