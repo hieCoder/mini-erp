@@ -561,7 +561,7 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-12 border p-1" id="tag-selected" style="height: 45px"></div>
-                <div class="mt-2 text-center align-items-center">
+                <div class="mt-2 text-center align-items-center" data-simplebar style="max-height: 400px">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTag" class="form-control" placeholder="Search Tag..."
                                style="width: 30%">
@@ -569,7 +569,7 @@
                                 data-bs-target="#add-tag-name">+ TAG NAME
                         </button>
                     </div>
-                    <div data-simplebar style="max-height: 400px">
+                    <div>
                         <table class="table table-bordered mt-2 nowrap align-middle" style="border: 1px solid black">
                             <thead>
                             <tr>
