@@ -607,8 +607,9 @@
                 <label for="new-tag-name" class="form-label float-start">Tag Name</label>
                 <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." required
                        maxlength="10">
+                <span id="message-new-tag-name" class="text-danger d-none">Tag already exists</span>
 
-                <label for="type-tag" class="form-label float-start mt-2">Type</label>
+                <label for="type-tag" class="form-label float-start mt-3">Type</label>
                 <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
                     <option value="DEFAULT_TAG" selected>Default Tag</option>
                     <option value="TAG_ADDED">Tag Normal</option>
@@ -616,7 +617,7 @@
             </div>
             <div class="modal-footer">
                 <button id="save-tag-name" type="button" class="btn btn-primary">ADD</button>
-                <button type="button" class="btn btn-light">Back</button>
+                <button type="button" class="btn btn-light" onclick="showEditTaskModal()">Back</button>
             </div>
         </div>
     </div>
@@ -1514,19 +1515,32 @@
                     })
 
                     // Handle Click button add tag name
-                    document.getElementById('save-tag-name').addEventListener('click', function () {
-                        var formData = new FormData();
+                    const btnAddTagName = document.getElementById('save-tag-name');
+                    const messageTag = document.getElementById('message-new-tag-name');
+                    btnAddTagName.addEventListener('click', function () {
                         const tagName = document.getElementById('new-tag-name');
-                        const typeTag = document.getElementById('type-tag');
-                        formData.append('tagName', '#' + tagName.value.trim());
-                        formData.append('type', typeTag.value);
-                        callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
-                            tagName.value = '';
-                            var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
-                            modal.show();
-                            $('#add-tag-name').modal('hide');
-                            showListTag();
-                        });
+                        const specialTag = '#' + tagName.value.trim();
+                        var isDoubleTag = false;
+                        document.querySelectorAll('.tag-name').forEach(function (eTagName) {
+                            if (eTagName.textContent.trim() == specialTag) {
+                                isDoubleTag = true;
+                                messageTag.classList.remove('d-none');
+                            }
+                        })
+                        if (isDoubleTag == false && tagName.value.trim() != '') {
+                            messageTag.classList.add('d-none');
+                            var formData = new FormData();
+                            const typeTag = document.getElementById('type-tag');
+                            formData.append('tagName', '#' + tagName.value.trim());
+                            formData.append('type', typeTag.value);
+                            callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
+                                tagName.value = '';
+                                var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+                                modal.show();
+                                $('#add-tag-name').modal('hide');
+                                showListTag();
+                            });
+                        }
                     })
 
                     // Pic
@@ -1898,6 +1912,13 @@
         tableTask.ajax.reload(function () {
         });
     });
+
+    function showEditTaskModal() {
+        var modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+        modal.show();
+        $('#add-tag-name').modal('hide');
+        showListTag();
+    }
 
 </script>
 </body>

@@ -212,15 +212,16 @@
             <div class="modal-body text-center">
                 <label for="new-tag-name" class="form-label float-start">Tag Name</label>
                 <input id="new-tag-name" class="form-control" type="text" placeholder="Enter here..." maxlength="10" required>
+                <span id="message-new-tag-name" class="text-danger d-none">Tag already exists</span>
 
-                <label for="type-tag" class="form-label float-start mt-2">Type</label>
+                <label for="type-tag" class="form-label float-start mt-3">Type</label>
                 <select id="type-tag" class="form-select mb-3" aria-label="Default select example">
                     <option value="DEFAULT_TAG" selected>Default Tag</option>
                     <option value="TAG_ADDED">Tag Normal</option>
                 </select>
             </div>
             <div class="modal-footer">
-                <button id="save-tag-name" type="button" class="btn btn-primary" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">ADD</button>
+                <button id="save-tag-name" type="button" class="btn btn-primary">ADD</button>
                 <button type="button" class="btn btn-light" data-bs-target="#tagModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
             </div>
         </div>
@@ -763,16 +764,31 @@
         showListTag();
 
         // Handle Click button add tag name
-        document.getElementById('save-tag-name').addEventListener('click', function () {
-            var formData = new FormData();
+        const btnAddTagName = document.getElementById('save-tag-name');
+        const messageTag = document.getElementById('message-new-tag-name');
+        btnAddTagName.addEventListener('click', function () {
             const tagName = document.getElementById('new-tag-name');
-            const typeTag = document.getElementById('type-tag');
-            formData.append('tagName', '#' + tagName.value.trim());
-            formData.append('type', typeTag.value);
-            callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
-                tagName.value = '';
-                showListTag();
-            });
+            const specialTag = '#' + tagName.value.trim();
+            var isDoubleTag = false;
+            document.querySelectorAll('.tag-name').forEach(function (eTagName) {
+                if (eTagName.textContent.trim() == specialTag) {
+                    isDoubleTag = true;
+                    messageTag.classList.remove('d-none');
+                }
+            })
+            if (isDoubleTag == false && tagName.value.trim() != '') {
+               $('#add-tag-name').modal('hide');
+               $('#tagModal').modal('show');
+               messageTag.classList.add('d-none');
+               var formData = new FormData();
+               const typeTag = document.getElementById('type-tag');
+               formData.append('tagName', '#' + tagName.value.trim());
+               formData.append('type', typeTag.value);
+               callAjaxByJsonWithDataForm("/api/v1/tags/createTag", "POST", formData, function (rs) {
+                   tagName.value = '';
+                   showListTag();
+               });
+           }
         })
 
     })
