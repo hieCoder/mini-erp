@@ -994,7 +994,7 @@
         }).catch(function (error) {
             console.error("Error loading task counts:", error);
         });
-
+        $('#tasksTable').DataTable().destroy();
         tableTask = $('#tasksTable').DataTable({
             ajax: {
                 url: '/api/v1/tasks',
