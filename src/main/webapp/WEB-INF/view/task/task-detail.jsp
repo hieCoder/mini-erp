@@ -103,6 +103,14 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted">
+                    <h6 class="mb-3 fw-semibold text-uppercase">Files Task</h6>
+                    <div id="task-file-content" class="d-flex align-items-center"></div>
+                </div>
+            </div>
+        </div>
         <!--end card-->
         <div class="card">
             <div class="card-header">
@@ -594,10 +602,60 @@
 
 <script src="/assets/custom/js/task/task-detail.js"></script>
 <script>
+
+
+    function createFileTask(file, isShowDeleteIcon) {
+        return `<div class="col-lg-4 file-container-item ms-1" data-name="` + file.fileName + `">
+                    <div class="border rounded border-dashed p-2">
+                        <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar-sm">
+                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
+                                                            <i class="ri-folder-zip-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block file-name-item" title="` + file.fileName + `">` + file.fileName + `</a></h5>
+                                                    <div>` + bToKbShow(file.fileSize) + `Kb</div>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="d-flex gap-1 align-items-center">
+                                                        <a href="` + file.url + `" class="btn btn-icon text-muted btn-sm fs-18"><i class="ri-download-2-line"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    </div>
+                </div>`;
+    }
+
+    async function showFilesTask(rs) {
+
+        return new Promise(async (resolve, reject) => {
+
+            var filesTask = rs.filesTask;
+
+            // files
+            var files = ``;
+            if (filesTask && filesTask.length > 0) {
+                try {
+                    await handleFilesAsync(filesTask, function (fileName, fileSize, url) {
+                        files += createFileTask({fileName: fileName, fileSize: fileSize, url: url}, true);
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            resolve(files);
+        });
+    }
+
     $(document).ready(function() {
         var idTask = ${id};
         var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
+            console.log(rs)
             $('.task-username').text(rs.user.fullname);
             $('.task-id').text(rs.id);
             $('.task-title').text(rs.title);
@@ -613,6 +671,14 @@
             $('.task-related-task').text(rs.relatedTask);
 
             $('.task-content').html(getContentViewOfEditorSnow(rs.content));
+
+            const fileTask = $("#task-file-content");
+            showFilesTask(rs)
+                .then(function (commentHTML) {
+                    fileTask.html(commentHTML);
+                }).catch(function (error) {
+                console.error(error);
+            });
 
             // LIST OF COMMENT
             var commentPromises = rs.comments.map(function (comment) {
