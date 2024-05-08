@@ -51,7 +51,7 @@ public class UpdateProfileFilter extends OncePerRequestFilter {
     private boolean urlsAllow(String u){
         String[] urls = new String[]{
                 "/assets/",
-                "/upload/", "/uploaded",
+                "/upload/", "/assets/upload",
                 "/users/", "/forbidden",
                 "/j_spring_security_check", "/api/",
                 "/service-worker.js",

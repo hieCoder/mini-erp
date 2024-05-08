@@ -45,7 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/forbidden") // 403 no access
                 .and()
                 .authorizeRequests()
-                .antMatchers("/upload/**", "/uploaded/**").permitAll() // resource
+                .antMatchers("/assets/upload/**").permitAll() // resource
+                .antMatchers("/upload/**").permitAll() // resource
                 .antMatchers("/assets/**").permitAll() // css, js
 
 

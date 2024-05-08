@@ -52,8 +52,8 @@
         var avatarUserCurrent = <%="'" + Principal.getUserCurrent().getAvatar() + "'"%>;
         var avatarLink = null;
         if(avatarUserCurrent == U_AVATAR_DEFAULT){
-            avatarLink = '/upload/user/' + U_AVATAR_DEFAULT;
-        }else avatarLink = '/uploaded/user/' + avatarUserCurrent;
+            avatarLink = '/assets/upload/user/' + U_AVATAR_DEFAULT;
+        }else avatarLink = '/assets/upload/user/' + avatarUserCurrent;
 
         var userCurrent = {
             id: <%="'" + Principal.getUserCurrent().getId() + "'"%>,
