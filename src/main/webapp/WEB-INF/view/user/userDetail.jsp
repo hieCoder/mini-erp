@@ -398,7 +398,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <h5 class="fs-13 mb-1"><a href="/uploaded/user/${resume}"
+                                                    <h5 class="fs-13 mb-1"><a href="/assets/upload/user/${resume}"
                                                                               class="text-body text-truncate d-block fileName-Resume"
                                                                               data-bs-toggle="tooltip"
                                                                               data-bs-placement="bottom"
@@ -410,7 +410,7 @@
                                                         <button type="button"
                                                                 class="btn btn-icon text-muted btn-sm fs-18 downFileBtn">
                                                             <i class="ri-download-2-line"
-                                                               data-url="/uploaded/user/${resume}"></i></button>
+                                                               data-url="/assets/upload/user/${resume}"></i></button>
                                                         <button type="button"
                                                                 class="btn btn-icon text-muted btn-sm fs-18 delete-fileResume-button">
                                                             <i class="ri-delete-bin-fill"></i></button>
