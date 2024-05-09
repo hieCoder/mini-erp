@@ -1475,7 +1475,7 @@
 
                     // Tag
                     const sessionTag = document.getElementById('show-tag');
-                    sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditTag = document.getElementById('btn-edit-tag');
                     if (btnEditTag) {
@@ -1503,7 +1503,7 @@
                         });
 
                         const showTagSelect = document.getElementById('show-tag');
-                        showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tag-db-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tag-db-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                         const btnEditTag = document.getElementById('btn-edit-tag');
                         if (btnEditTag) {
@@ -1545,7 +1545,7 @@
 
                     // Pic
                     const sessionPic = document.getElementById('show-pic');
-                    sessionPic.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionPic.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditPic = document.getElementById('btn-edit-pic');
                     if (btnEditPic) {
@@ -1646,7 +1646,7 @@
                                         });
 
                                         const showPicSelect = document.getElementById('show-pic');
-                                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                                         const btnEditPic = document.getElementById('btn-edit-pic');
                                         if (btnEditPic) {
@@ -1663,7 +1663,7 @@
 
                     // Related Task
                     const sessionRelatedTask = document.getElementById('show-related-task');
-                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
                     if (btnEditRelatedTask) {
@@ -1766,7 +1766,7 @@
                                             }
                                         });
                                         const showTaskSelect = document.getElementById('show-related-task');
-                                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                                         const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
                                         if (btnEditRelatedTask) {

@@ -109,7 +109,7 @@
                                             <button class="btn btn-danger btn-label waves-effect waves-light"
                                                     data-bs-toggle="modal" data-bs-target="#createModal">
                                                 <i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i>
-                                                Create Account
+                                                Create Transaction
                                             </button>
                                         </div>
                                     </div>

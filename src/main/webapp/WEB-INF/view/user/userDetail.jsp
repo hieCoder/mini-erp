@@ -216,7 +216,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                </div><!--end col-->
+                                </div>
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
                                         <button type="submit" class="btn btn-primary" id="updateBasic">
@@ -318,7 +318,7 @@
                                                value="${user.atm}">
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-6" id="role-session">
                                     <label for="role" class="form-label">Role</label>
                                     <select id="role" class="form-select" name="role">
                                         <option selected>Choose...</option>
@@ -335,7 +335,7 @@
                                             Developer
                                         </option>
                                     </select>
-                                </div><!--end col-->
+                                </div>
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="position" class="form-label">Position</label>
@@ -1003,7 +1003,6 @@
             document.getElementById("profile-img-file-input").value = "";
         });
     })
-
 
     // Handle Password
     var isNewPassword = false;
@@ -2075,12 +2074,14 @@
         var linkCancle = '/users';
         if (isDeleveloper()) linkCancle = '/home';
         $('.cancle-button').attr('href', linkCancle);
-
         if (!isDeleveloper()) {
             $('.permission').removeClass('d-none');
             $('#del-user-button').removeClass('d-none');
             $('#timeSheetsCode').prop('readonly', false);
             $('#timeSheetsCode').prop('disabled', false);
+        }
+        if (isManager()) {
+            $('#role-session').addClass('d-none');
         }
     });
 </script>

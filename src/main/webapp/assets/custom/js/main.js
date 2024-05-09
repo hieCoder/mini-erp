@@ -426,6 +426,10 @@ function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
 
+function isManager() {
+    return userCurrent.role == U_MANAGER;
+}
+
 function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
