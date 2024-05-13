@@ -14,4 +14,5 @@ public interface WeeklyReportMapper {
     WeeklyReport findById( String id);
     int createWeeklyReport(WeeklyReport weeklyReport);
     int updateWeeklyReport(WeeklyReport weeklyReport);
+    int deleteWeeklyReport(String id);
 }

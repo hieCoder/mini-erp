@@ -222,7 +222,7 @@
                                         <button type="submit" class="btn btn-primary" id="updateBasic">
                                             Updates
                                         </button>
-                                        <a class="btn btn-soft-success cancle-button">Cancel</a>
+                                        <a class="btn btn-soft-success cancle-button">Back</a>
                                     </div>
                                 </div>
                             </div><!--end row-->
@@ -374,7 +374,7 @@
                                              style="font-size: 15px"></div>
                                         <button type="submit" class="btn btn-primary" id="updateDetail">Updates
                                         </button>
-                                        <a class="btn btn-soft-success cancle-button">Cancel</a>
+                                        <a class="btn btn-soft-success cancle-button">Back</a>
                                     </div>
 
                                 </div>
@@ -450,10 +450,9 @@
                                 <button type="submit" class="btn btn-primary" id="saveFileResume"
                                         onclick="addLoadingPrimary(this)" disabled>Save
                                 </button>
-                                <a class="btn btn-soft-success cancle-button" id="cancelFileResume">Cancel</a>
+                                <a class="btn btn-soft-success cancle-button" id="cancelFileResume">Back</a>
                             </div>
                         </div>
-                        <!--end tab-pane-->
                         <%--========================== Contract =================================--%>
                         <div class="tab-pane" id="contractSession" role="tabpanel">
                             <div class="row">

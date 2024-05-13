@@ -74,11 +74,6 @@
                                                                                                       value="${account.revenue}"
                                                                                                       pattern="#,##0 ₫"/></span>
                                     </h4>
-                                    <p class="text-muted mb-0">From $1,750.04 last year</p>
-                                </div>
-                                <div class="flex-shrink-0 align-self-center">
-                                    <span class="badge badge-soft-success fs-12"><i
-                                            class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>22.96 %<span></span></span>
                                 </div>
                             </div>
                         </div><!-- end card body -->
@@ -99,11 +94,6 @@
                                                                                                       value="${account.expense}"
                                                                                                       pattern="#,##0 ₫"/></span>
                                     </h4>
-                                    <p class="text-muted mb-0">From $1,750.04 last year</p>
-                                </div>
-                                <div class="flex-shrink-0 align-self-center">
-                                    <span class="badge badge-soft-success fs-12"><i
-                                            class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>22.96 %<span></span></span>
                                 </div>
                             </div>
                         </div><!-- end card body -->
@@ -125,11 +115,6 @@
                                                                                                      value="${account.remain}"
                                                                                                      pattern="#,##0 ₫"/></span>
                                     </h4>
-                                    <p class="text-muted mb-0">From $1,750.04 last year</p>
-                                </div>
-                                <div class="flex-shrink-0 align-self-center">
-                                    <span class="badge badge-soft-success fs-12"><i
-                                            class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>22.96 %<span></span></span>
                                 </div>
                             </div>
                         </div><!-- end card body -->

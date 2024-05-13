@@ -52,4 +52,10 @@
             NEXT_WEEKLY_CONTENT = #{nextWeeklyContent}
         WHERE ID = #{id};
     </update>
+
+    <delete id="deleteWeeklyReport" parameterType="String">
+        DELETE
+        FROM WEEKLY_REPORT
+        WHERE ID = #{id}
+    </delete>
 </mapper>

@@ -46,4 +46,9 @@ public class WeeklyReportApi {
     public ResponseEntity<?> updateWeeklyReport(@Valid @RequestBody UpdateWeeklyReportRequest updateWeeklyReportRequest) {
         return ResponseEntity.ok(weeklyReportService.updateWeeklyReport(updateWeeklyReportRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteWeeklyReport(@PathVariable String id) {
+        return ResponseEntity.ok(weeklyReportService.deleteWeeklyReport(id));
+    }
 }

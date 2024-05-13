@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-6">
                                         <div id="example_filter" class="dataTables_filter mb-2">
-                                            <button class="btn btn-danger btn-label waves-effect waves-light"
+                                            <button class="btn btn-success btn-label waves-effect waves-light"
                                                     data-bs-toggle="modal" data-bs-target="#createModal">
                                                 <i class="bx bx-add-to-queue label-icon align-middle fs-16 me-2"></i>
                                                 Create Transaction

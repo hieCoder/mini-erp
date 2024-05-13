@@ -60,7 +60,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <label for="content" class="form-label">Content</label>
-                                <div id="content" class="snow-editor h-auto"></div>
+                                <div id="content" class="snow-editor h-auto " style="height: 150px !important;"></div>
                                 <small class="form-message"></small>
                             </div>
                             <div class="col-lg-12">
@@ -152,7 +152,7 @@
                                 <span class="flex-grow-1">Register</span>
                             </span>
                             </button>
-                            <a href="/tasks" type="button" class="btn btn-light">Cancel</a>
+                            <a href="/tasks" type="button" class="btn btn-light">Back</a>
                         </div>
                     </div>
                 </form>

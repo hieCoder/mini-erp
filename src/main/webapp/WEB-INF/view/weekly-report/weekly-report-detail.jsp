@@ -47,6 +47,8 @@
                 </div>
                 <div>
                     <button type="button" class="btn btn-primary" id="edit-btn">Edit</button>
+                    <button type="button" class="btn btn-danger" id="del-btn" data-value="${wr.id}">Delete</button>
+                    <a href="/weekly-reports" class="btn btn-light">Back</a>
                 </div>
             </div>
         </div>
@@ -71,13 +73,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="this-week-content" class="col-form-label">This week's content:</label>
-                        <div class="snow-editor content-report" id="this-week-content"></div>
+                        <div class="snow-editor content-report" id="this-week-content" style="height: 150px !important;"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
-                        <div class="snow-editor content-report" id="next-week-content"></div>
+                        <div class="snow-editor content-report" id="next-week-content" style="height: 150px !important;"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
@@ -106,7 +108,7 @@
 
     $(document).ready(function (){
         activeEditor(".wr-info-container");
-        setWeeklyReport(${wr.title} ,'${wr.currentWeeklyContent}', '${wr.nextWeeklyContent}');
+        setWeeklyReport('${wr.title}' ,'${wr.currentWeeklyContent}', '${wr.nextWeeklyContent}');
     });
 
     $(document).on('keyup', '.content-report', function (e) {
@@ -199,9 +201,10 @@
         var swal = showAlertLoading();
         callAjaxByJsonWithData("/api/v1/weekly-reports/" + ${wr.id}, "GET", null, function (rs) {
             $('#title').val(rs.title);
-
-            $('#this-week-content').html(rs.currentWeeklyContent);
-            $('#next-week-content').html(rs.nextWeeklyContent);
+            const currenWeelyReport = rs.currentWeeklyContent;
+            const nextWeeklyReport = rs.nextWeeklyContent;
+            $('#this-week-content').html(currenWeelyReport.replace(/\\'/g, "'"));
+            $('#next-week-content').html(nextWeeklyReport.replace(/\\'/g, "'"));
             $('#edit-wr-form .ql-toolbar.ql-snow').remove();
             activeEditor("#edit-wr-form");
 
@@ -218,8 +221,10 @@
                 Validator.isRequired('#next-week-content')
             ],
             onSubmit: function (formData) {
-                formData.append("currentWeeklyContent", $('#this-week-content').html());
-                formData.append("nextWeeklyContent", $('#next-week-content').html());
+                const contentCurrentWeeklyContent = $('#this-week-content').html();
+                const contentNextWeeklyContent = $('#next-week-content').html();
+                formData.append("currentWeeklyContent", contentCurrentWeeklyContent.replace(/'/g, "\\'"));
+                formData.append("nextWeeklyContent", contentNextWeeklyContent.replace(/'/g, "\\'"));
                 formData.append("id", ${wr.id});
 
                 $('#edit-wr-form .spinner-border').removeClass('d-none');
@@ -228,10 +233,44 @@
                     $('#edit-wr-form .spinner-border').addClass('d-none');
                     $('#editReport').modal('hide');
 
-                    setWeeklyReport(rs.title, rs.currentWeeklyContent, rs.nextWeeklyContent);
+                    const respCurrentWeeklyContent = rs.currentWeeklyContent;
+                    const respNextWeeklyContent = rs.nextWeeklyContent;
+
+                    setWeeklyReport(rs.title, respCurrentWeeklyContent.replace(/\\'/g, "'"), respNextWeeklyContent.replace(/\\'/g, "'"));
                 });
             }
         });
+    });
+
+    $(document).on('click', '#del-btn', function() {
+        const weeklyId = $(this).data('value');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+                cancelButtonClass: 'btn btn-danger w-xs mt-2',
+                confirmButtonText: "Yes, delete it!",
+                buttonsStyling: false,
+                showCloseButton: true
+            }).then(function (result) {
+                if (result.value) {
+                    callAjaxByJsonWithData('/api/v1/weekly-reports/' +  weeklyId, 'DELETE', null, function (rs) {
+                        if (rs == 1) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your WeeklyReport has been deleted.',
+                                icon: 'success',
+                                confirmButtonClass: 'btn btn-primary w-xs mt-2',
+                                buttonsStyling: false
+                            }).then(function (result2) {
+                                window.location = '/weekly-reports';
+                            })
+                        }
+                    });
+                }
+            });
     });
 </script>
 </body>
