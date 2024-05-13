@@ -60,7 +60,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <label for="content" class="form-label">Content</label>
-                                <div id="content" class="snow-editor h-auto"></div>
+                                <div id="content" class="snow-editor h-auto " style="height: 150px !important;"></div>
                                 <small class="form-message"></small>
                             </div>
                             <div class="col-lg-12">
@@ -152,7 +152,7 @@
                                 <span class="flex-grow-1">Register</span>
                             </span>
                             </button>
-                            <a href="/tasks" type="button" class="btn btn-light">Cancel</a>
+                            <a href="/tasks" type="button" class="btn btn-light">Back</a>
                         </div>
                     </div>
                 </form>
@@ -375,7 +375,7 @@
 
         const showTagSelect = document.getElementById('show-tag-selected');
         if (tagsSelected != '') {
-            showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tags-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+            showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tags-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
         } else {
             showTagSelect.innerHTML = ` <button id="add-tag" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#tagModal">ADD TAG</button>`
         }
@@ -468,7 +468,7 @@
 
                     const showPicSelect = document.getElementById('show-pic-selected');
                     if (picsSelected != '') {
-                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pics-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pics-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
                     } else {
                         showPicSelect.innerHTML = `<button id="btn-add-pic" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD PIC</button>`
                     }
@@ -563,7 +563,7 @@
                     });
                     const showTaskSelect = document.getElementById('show-related-task-selected');
                     if (taskSelected != '') {
-                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTasks-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTasks-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
                     } else {
                         showTaskSelect.innerHTML = `<button id="btn-add-related-task" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#relatedTaskModal">ADD Related Task</button>`
                     }

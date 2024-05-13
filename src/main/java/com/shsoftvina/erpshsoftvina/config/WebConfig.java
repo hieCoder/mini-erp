@@ -16,8 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/service-worker.js")
-                .addResourceLocations("/service-worker.js");
+//        registry.addResourceHandler("/service-worker.js")
+//                .addResourceLocations("/service-worker.js");
         registry
                 .addResourceHandler("/upload/**")
                 .addResourceLocations("/upload/");

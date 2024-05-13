@@ -27,127 +27,128 @@
 </div>
 <!-- end page title -->
 
+
 <div class="row">
-    <div class="col-xxl-2 col-sm-6">
-        <div class="card card-animate">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="fw-medium text-muted mb-0">Total Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-total-task">0</span></h2>
-                    </div>
-                    <div>
-                        <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-soft-info text-info rounded-circle fs-4">
-                                                    <i class="ri-ticket-2-line"></i>
-                                                </span>
+        <%--Total Tasks--%>
+        <div class="col-xxl-2 col-sm-6">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="fw-medium text-muted mb-0">Total Tasks</p>
+                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-total-task">0</span></h2>
+                        </div>
+                        <div>
+                            <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-soft-info text-info rounded-circle fs-4">
+                                                        <i class="ri-ticket-2-line"></i>
+                                                    </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div><!-- end card body -->
-        </div> <!-- end card-->
-    </div>
-    <!--end col-->
-    <div class="col-xxl-2 col-sm-6">
-        <div class="card card-animate">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="fw-medium text-muted mb-0">Closed Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-closed-task">0</span></h2>
-                    </div>
-                    <div>
-                        <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-soft-success text-success rounded-circle fs-4">
-                                                    <i class="ri-checkbox-circle-line"></i>
-                                                </span>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end card body -->
+                </div><!-- end card body -->
+            </div> <!-- end card-->
         </div>
-    </div>
-    <!--end col-->
-    <div class="col-xxl-2 col-sm-6">
-        <div class="card card-animate">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="fw-medium text-muted mb-0">Opened Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-opened-task">0</span></h2>
-                    </div>
-                    <div>
-                        <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-soft-warning text-warning rounded-circle fs-4">
-                                                    <i class="mdi mdi-timer-sand"></i>
-                                                </span>
+        <!--Registered Task-->
+        <div class="col-xxl-2 col-sm-6">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="fw-medium text-muted mb-0">Registered Tasks</p>
+                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-registered-task">0</span></h2>
                         </div>
-                    </div>
-                </div>
-            </div><!-- end card body -->
-        </div>
-    </div>
-    <!--end col-->
-    <div class="col-xxl-2 col-sm-6">
-        <div class="card card-animate">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-reopend-task">0</span></h2>
-                    </div>
-                    <div>
-                        <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-soft-secondary text-secondary rounded-circle fs-4">
-                                                    <i class="mdi mdi-timer-sand"></i>
-                                                </span>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end card body -->
-        </div>
-    </div>
-    <!--end col-->
-    <div class="col-xxl-2 col-sm-6">
-        <div class="card card-animate">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="fw-medium text-muted mb-0">Postponed Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-postponed-task">0</span></h2>
-                    </div>
-                    <div>
-                        <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-4">
-                                                    <i class="mdi mdi-timer-sand"></i>
-                                                </span>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end card body -->
-        </div>
-    </div>
-    <!--end col-->
-    <div class="col-xxl-2 col-sm-6">
-        <div class="card card-animate">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="fw-medium text-muted mb-0">Registered Tasks</p>
-                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-registered-task">0</span></h2>
-                    </div>
-                    <div>
-                        <div class="avatar-sm flex-shrink-0">
+                        <div>
+                            <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-soft-primary text-primary rounded-circle fs-4">
                                                     <i class="mdi mdi-timer-sand"></i>
                                                 </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div><!-- end card body -->
+                </div><!-- end card body -->
+            </div>
         </div>
-    </div>
-    <!--end col-->
+        <!--Opened Tasks-->
+        <div class="col-xxl-2 col-sm-6">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="fw-medium text-muted mb-0">Opened Tasks</p>
+                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-opened-task">0</span></h2>
+                        </div>
+                        <div>
+                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-soft-warning text-warning rounded-circle fs-4">
+                                                    <i class="mdi mdi-timer-sand"></i>
+                                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div>
+        </div>
+        <!--Postponed Tasks-->
+        <div class="col-xxl-2 col-sm-6">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="fw-medium text-muted mb-0">Postponed Tasks</p>
+                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-postponed-task">0</span></h2>
+                        </div>
+                        <div>
+                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-4">
+                                                    <i class="mdi mdi-timer-sand"></i>
+                                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div>
+        </div>
+        <!--Reopened Tasks-->
+        <div class="col-xxl-2 col-sm-6">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="fw-medium text-muted mb-0">Reopened Tasks</p>
+                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-reopend-task">0</span></h2>
+                        </div>
+                        <div>
+                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-soft-secondary text-secondary rounded-circle fs-4">
+                                                    <i class="mdi mdi-timer-sand"></i>
+                                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div>
+        </div>
+        <!-- Closed Tasks-->
+        <div class="col-xxl-2 col-sm-6">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="fw-medium text-muted mb-0">Closed Tasks</p>
+                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-closed-task">0</span></h2>
+                        </div>
+                        <div>
+                            <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-soft-success text-success rounded-circle fs-4">
+                                                        <i class="ri-checkbox-circle-line"></i>
+                                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div>
+        </div>
 </div>
 <!--end row-->
 
@@ -179,21 +180,21 @@
                                    checked>
                             <label class="btn btn btn-light" for="all">ALL</label>
 
-                            <input type="radio" class="btn-check task-status" name="options" id="opened"
-                                   data-value="OPENED">
-                            <label class="btn btn-warning" for="opened">OPENED</label>
-
-                            <input type="radio" class="btn-check task-status" name="options" id="reopened"
-                                   data-value="REOPENED">
-                            <label class="btn btn-info" for="reopened">REOPENED</label>
-
                             <input type="radio" class="btn-check task-status" name="options" id="registered"
                                    data-value="REGISTERED">
                             <label class="btn btn-secondary" for="registered">REGISTERED</label>
 
+                            <input type="radio" class="btn-check task-status" name="options" id="opened"
+                                   data-value="OPENED">
+                            <label class="btn btn-warning" for="opened">OPENED</label>
+
                             <input type="radio" class="btn-check task-status" name="options" id="postponed"
                                    data-value="POSTPONED">
                             <label class="btn btn-danger" for="postponed">POSTPONED</label>
+
+                            <input type="radio" class="btn-check task-status" name="options" id="reopened"
+                                   data-value="REOPENED">
+                            <label class="btn btn-info" for="reopened">REOPENED</label>
 
                             <input type="radio" class="btn-check task-status" name="options" id="closed"
                                    data-value="CLOSED">
@@ -1475,7 +1476,7 @@
 
                     // Tag
                     const sessionTag = document.getElementById('show-tag');
-                    sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionTag.innerHTML = `<span id="tag-db-selected" class="fw-bold ms-2">` + rs.tag + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditTag = document.getElementById('btn-edit-tag');
                     if (btnEditTag) {
@@ -1503,7 +1504,7 @@
                         });
 
                         const showTagSelect = document.getElementById('show-tag');
-                        showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tag-db-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                        showTagSelect.innerHTML = `<span class="fw-bold ms-2" id="tag-db-selected">` + tagsSelected + `</span> <i id="btn-edit-tag" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                         const btnEditTag = document.getElementById('btn-edit-tag');
                         if (btnEditTag) {
@@ -1545,7 +1546,7 @@
 
                     // Pic
                     const sessionPic = document.getElementById('show-pic');
-                    sessionPic.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionPic.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditPic = document.getElementById('btn-edit-pic');
                     if (btnEditPic) {
@@ -1646,7 +1647,7 @@
                                         });
 
                                         const showPicSelect = document.getElementById('show-pic');
-                                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                                         const btnEditPic = document.getElementById('btn-edit-pic');
                                         if (btnEditPic) {
@@ -1663,7 +1664,7 @@
 
                     // Related Task
                     const sessionRelatedTask = document.getElementById('show-related-task');
-                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                    sessionRelatedTask.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + rs.relatedTask + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
                     if (btnEditRelatedTask) {
@@ -1766,7 +1767,7 @@
                                             }
                                         });
                                         const showTaskSelect = document.getElementById('show-related-task');
-                                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-5 cursor-pointer ms-1"></i>`;
+                                        showTaskSelect.innerHTML = `<span class="fw-bold ms-2" id="relatedTask-db-selected">` + taskSelected + `</span> <i id="btn-edit-related-task" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                                         const btnEditRelatedTask = document.getElementById('btn-edit-related-task');
                                         if (btnEditRelatedTask) {

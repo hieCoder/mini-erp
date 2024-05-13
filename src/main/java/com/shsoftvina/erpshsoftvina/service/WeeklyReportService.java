@@ -15,4 +15,5 @@ public interface WeeklyReportService {
     WeeklyReportDetailResponse findById(String id);
     int createWeeklyReport(CreateWeeklyReportRequest createWeeklyReportRequest);
     WeeklyReportDetailResponse updateWeeklyReport(UpdateWeeklyReportRequest updateWeeklyReportRequest);
+    int deleteWeeklyReport(String id);
 }

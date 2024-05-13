@@ -82,4 +82,15 @@ public class WeeklyReportServiceImpl implements WeeklyReportService {
         }catch (Exception e){}
         return null;
     }
+
+    @Override
+    public int deleteWeeklyReport(String id) {
+        WeeklyReport weeklyReport = weeklyReportMapper.findById(id);
+        if (weeklyReport == null) throw new NotFoundException(MessageErrorUtils.notFound("id"));
+        try {
+            return weeklyReportMapper.deleteWeeklyReport(id);
+        }catch (Exception e) {}
+
+        return 0;
+    }
 }

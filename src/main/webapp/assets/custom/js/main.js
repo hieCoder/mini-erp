@@ -426,6 +426,10 @@ function isAdminOrUserLogin(idUser) {
     return userCurrent.role != U_DEVELOPER || userCurrent.id == idUser;
 }
 
+function isManager() {
+    return userCurrent.role == U_MANAGER;
+}
+
 function isDeleveloper() {
     return userCurrent.role == U_DEVELOPER;
 }
@@ -471,40 +475,40 @@ function activeEditor(classNameOfForm) {
     });
 }
 
-function subscribeUser() {
-    navigator.serviceWorker.ready.then(function (registration) {
-        try {
-            if (!registration.pushManager) {
-                alert('Push Unsupported');
-                return;
-            }
-            registration.pushManager.getSubscription().then(function (subscription) {
-                if (subscription) {
-                    console.log('User is already subscribed:', subscription);
-                } else {
-                    registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array("BH9v1XdUflNRCS0s7vExsPf7KPj5h2wXG3hW92S2jpXcFtbCDP4jP_nW4kFOOMV2AFfb_CTTHW8soN74VsT9u9k")
-                    }).then(function (subscription) {
-                        console.log('User is subscribed:', subscription);
-                        localStorage.setItem("webPushEndpoint", subscription.endpoint);
-                        const subscriptionJson = subscription.toJSON();
-                        updateSubscriptionOnServer({
-                            endpoint: subscriptionJson.endpoint,
-                            p256dh: subscriptionJson.keys.p256dh,
-                            auth: subscriptionJson.keys.auth
-                        });
-                    }).catch(function (error) {
-                        console.log('Failed to subscribe', error.message);
-                    });
-                }
-            });
-        } catch (e) {
-            console.log(e)
-            unsubscribeUser()
-        }
-    });
-}
+// function subscribeUser() {
+//     navigator.serviceWorker.ready.then(function (registration) {
+//         try {
+//             if (!registration.pushManager) {
+//                 alert('Push Unsupported');
+//                 return;
+//             }
+//             registration.pushManager.getSubscription().then(function (subscription) {
+//                 if (subscription) {
+//                     console.log('User is already subscribed:', subscription);
+//                 } else {
+//                     registration.pushManager.subscribe({
+//                         userVisibleOnly: true,
+//                         applicationServerKey: urlBase64ToUint8Array("BH9v1XdUflNRCS0s7vExsPf7KPj5h2wXG3hW92S2jpXcFtbCDP4jP_nW4kFOOMV2AFfb_CTTHW8soN74VsT9u9k")
+//                     }).then(function (subscription) {
+//                         console.log('User is subscribed:', subscription);
+//                         localStorage.setItem("webPushEndpoint", subscription.endpoint);
+//                         const subscriptionJson = subscription.toJSON();
+//                         updateSubscriptionOnServer({
+//                             endpoint: subscriptionJson.endpoint,
+//                             p256dh: subscriptionJson.keys.p256dh,
+//                             auth: subscriptionJson.keys.auth
+//                         });
+//                     }).catch(function (error) {
+//                         console.log('Failed to subscribe', error.message);
+//                     });
+//                 }
+//             });
+//         } catch (e) {
+//             console.log(e)
+//             unsubscribeUser()
+//         }
+//     });
+// }
 
 // Helper function
 function saveIdToLocal(id, nameLocal) {
@@ -544,31 +548,31 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
-function updateSubscriptionOnServer(subscription) {
-    fetch('/api/v1/subscribe/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(subscription)
-    })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error('Bad status code from server.');
-            }
-            return response.json();
-        })
-        .then(function (responseData) {
-            console.log(responseData)
-            if (responseData != 1) {
-                throw new Error('Bad response from server.');
-            }
-            console.log('User subscription updated on server.');
-        })
-        .catch(function (error) {
-            console.error('Error during subscription update on server:', error);
-        });
-}
+// function updateSubscriptionOnServer(subscription) {
+//     fetch('/api/v1/subscribe/', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(subscription)
+//     })
+//         .then(function (response) {
+//             if (!response.ok) {
+//                 throw new Error('Bad status code from server.');
+//             }
+//             return response.json();
+//         })
+//         .then(function (responseData) {
+//             console.log(responseData)
+//             if (responseData != 1) {
+//                 throw new Error('Bad response from server.');
+//             }
+//             console.log('User subscription updated on server.');
+//         })
+//         .catch(function (error) {
+//             console.error('Error during subscription update on server:', error);
+//         });
+// }
 
 function deleteEndPoint(endpoint) {
     if (endpoint) {
@@ -589,33 +593,33 @@ function deleteEndPoint(endpoint) {
     }
 }
 
-function unsubscribeUser() {
-    navigator.serviceWorker.ready.then(function (registration) {
-        registration.pushManager.getSubscription().then(function (subscription) {
-            if (subscription) {
-                subscription.unsubscribe().then(function (successful) {
-                    deleteEndPoint(subscription.endpoint)
-                    console.log('User is unsubscribed.');
-                }).catch(function (e) {
-                    console.log('Failed to unsubscribe the user: ', e);
-                });
-            } else {
-                console.log('User IS NOT subscribed.');
-            }
-        });
-    });
-}
+// function unsubscribeUser() {
+//     navigator.serviceWorker.ready.then(function (registration) {
+//         registration.pushManager.getSubscription().then(function (subscription) {
+//             if (subscription) {
+//                 subscription.unsubscribe().then(function (successful) {
+//                     deleteEndPoint(subscription.endpoint)
+//                     console.log('User is unsubscribed.');
+//                 }).catch(function (e) {
+//                     console.log('Failed to unsubscribe the user: ', e);
+//                 });
+//             } else {
+//                 console.log('User IS NOT subscribed.');
+//             }
+//         });
+//     });
+// }
 
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("/service-worker.js")
-            .then(function (registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-            }).catch(function (error) {
-            console.log('Service Worker registration failed:', error);
-        });
-    }
-}
+// function registerServiceWorker() {
+//     if ('serviceWorker' in navigator) {
+//         navigator.serviceWorker.register("/service-worker.js")
+//             .then(function (registration) {
+//                 console.log('Service Worker registered with scope:', registration.scope);
+//             }).catch(function (error) {
+//             console.log('Service Worker registration failed:', error);
+//         });
+//     }
+// }
 
 function connectSocketNotification() {
     let stompClient = Stomp.over(new SockJS("/websocket"));
@@ -670,40 +674,40 @@ function connectSocketNotification() {
     })
 }
 
-registerServiceWorker()
+// registerServiceWorker()
 
-// Check if notification permission has been granted
-if (typeof userCurrent !== "undefined") {
-    if (Notification.permission === 'granted') {
-        // Permission has been granted, you can perform notification operations here
-        subscribeUser()
-    } else if (Notification.permission === 'default') {
-        // Permission hasn't been granted, request notification permission from the user
-        Notification.requestPermission().then(function (permission) {
-            if (permission === 'granted') {
-                // Permission has been granted, you can perform notification operations here
-                subscribeUser()
-            } else {
-                // Permission denied, handle accordingly
-                unsubscribeUser()
-                let endPoint = localStorage.getItem("webPushEndpoint")
-                deleteEndPoint(endPoint)
-                console.log('Permission for notifications denied.');
-                connectSocketNotification()
-            }
-        });
-    } else {
-        // Permission denied, handle accordingly
-        unsubscribeUser()
-        let endPoint = localStorage.getItem("webPushEndpoint")
-        deleteEndPoint(endPoint)
-        console.log('Permission for notifications denied.');
-        connectSocketNotification()
-    }
-} else {
-    unsubscribeUser()
-    console.log('Must log in');
-}
+// // Check if notification permission has been granted
+// if (typeof userCurrent !== "undefined") {
+//     if (Notification.permission === 'granted') {
+//         // Permission has been granted, you can perform notification operations here
+//         subscribeUser()
+//     } else if (Notification.permission === 'default') {
+//         // Permission hasn't been granted, request notification permission from the user
+//         Notification.requestPermission().then(function (permission) {
+//             if (permission === 'granted') {
+//                 // Permission has been granted, you can perform notification operations here
+//                 subscribeUser()
+//             } else {
+//                 // Permission denied, handle accordingly
+//                 unsubscribeUser()
+//                 let endPoint = localStorage.getItem("webPushEndpoint")
+//                 deleteEndPoint(endPoint)
+//                 console.log('Permission for notifications denied.');
+//                 connectSocketNotification()
+//             }
+//         });
+//     } else {
+//         // Permission denied, handle accordingly
+//         unsubscribeUser()
+//         let endPoint = localStorage.getItem("webPushEndpoint")
+//         deleteEndPoint(endPoint)
+//         console.log('Permission for notifications denied.');
+//         connectSocketNotification()
+//     }
+// } else {
+//     unsubscribeUser()
+//     console.log('Must log in');
+// }
 
 async function fetchNotificationsData(limit) {
     return new Promise((resolve, reject) => {

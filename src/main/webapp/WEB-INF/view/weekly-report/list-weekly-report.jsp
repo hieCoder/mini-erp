@@ -34,8 +34,7 @@
                         <div id="staff-list"></div>
                     </div>
                 </div>
-                <!--end card-->
-            </div> <!-- end col-->
+            </div>
 
             <div class="col-xl-12 list-wr-container">
                 <div class="row">
@@ -71,7 +70,6 @@
                                     </span>
                                 </div>
                             </div>
-                            <!--end col-->
                         </div>
                     </div>
                     <div class="card-body">
@@ -88,7 +86,6 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <!--end table-->
                         </div>
                         <div class="d-flex justify-content-center">
                             <div class="pagination-wrap hstack gap-2">
@@ -97,11 +94,10 @@
                         </div>
                     </div>
                 </div>
-            </div><!-- end col -->
+            </div>
         </div>
-        <!--end row-->
     </div>
-</div> <!-- end row-->
+</div>
 
 <!-- create modal -->
 <div class="modal modal-xl fade" id="createReport" tabindex="-1" aria-labelledby="createReportLabel" aria-hidden="true">
@@ -120,13 +116,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="this-week-content" class="col-form-label">This week's content:</label>
-                        <div class="snow-editor content-report" id="this-week-content"></div>
+                        <div class="snow-editor content-report" id="this-week-content" style="height: 150px !important;"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
                     <div class="mb-3">
                         <label for="next-week-content" class="col-form-label">Next week's content:</label>
-                        <div class="snow-editor content-report" id="next-week-content"></div>
+                        <div class="snow-editor content-report" id="next-week-content" style="height: 150px !important;"></div>
                         <small class="form-message"></small>
                         <ul class="list-group list-title-by-hashtag" style="max-height: 200px; overflow: auto;"></ul>
                     </div>
@@ -233,8 +229,10 @@
                 Validator.isRequired('#next-week-content')
             ],
             onSubmit: function (formData) {
-                formData.append("currentWeeklyContent", $('#this-week-content').html());
-                formData.append("nextWeeklyContent", $('#next-week-content').html());
+                const contentCurrentWeeklyContent = $('#this-week-content').html();
+                const contentNextWeeklyContent = $('#next-week-content').html();
+                formData.append("currentWeeklyContent", contentCurrentWeeklyContent.replace(/'/g, "\\'"));
+                formData.append("nextWeeklyContent", contentNextWeeklyContent.replace(/'/g, "\\'"));
                 formData.append("userId", userCurrent.id);
 
                 $('#create-wr-form .spinner-border').removeClass('d-none');
@@ -254,6 +252,9 @@
         $(this).addClass('text-decoration-underline');
         pagingObj.staffId = $(this).data('id');
         pagingObj.page = 1;
+
+        if (pagingObj.staffId != userCurrent.id) $('.add-btn').addClass('d-none');
+        else $('.add-btn').removeClass('d-none');
 
         var spinnerE = $(this).closest('.card-body').find('.spinner-border');
         spinnerE.removeClass('d-none');
@@ -281,21 +282,24 @@
         const enteredText = e.target.innerText;
         const getCoordinate = getCoordinates(e.target);
         const caretPosition = getCursorPosition(e.target);
-        const lastHashIndex = enteredText.lastIndexOf('#', getCoordinate - 1);
-        if (lastHashIndex !== -1) {
-            var lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
-            const containsSpace = lastHashtag.includes(' ');
-            if (containsSpace || (e.which == 13)) {
-                ulElement.empty();
-            } else {
-                if (enteredText.includes('#') && (e.which == 13)) lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
-                callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag,
-                    'GET', null, function (rs) {
+        const lastHashIndex = enteredText.lastIndexOf('#', caretPosition);
+        const spaceIndex = enteredText.indexOf(' ', caretPosition);
+        const lastSpaceIndex = spaceIndex === -1 ? enteredText.length : spaceIndex;
+        if (lastHashIndex !== -1 && lastSpaceIndex > lastHashIndex) {
+            if (enteredText.trim() != '') {
+                var lastHashtag = enteredText.substring(lastHashIndex + 1, lastSpaceIndex);
+                const containsSpace = lastHashtag.includes(' ');
+                if (containsSpace || (e.which == 13)) {
+                    ulElement.empty();
+                } else {
+                    if (enteredText.includes('#') && (e.which == 13)) lastHashtag = enteredText.substring(lastHashIndex + 1, caretPosition);
+                    callAjaxByJsonWithData('/api/v1/tasks/search/' + userCurrent.id + '?title=' + lastHashtag, 'GET', null, function (rs) {
                         ulElement.empty();
                         rs.forEach(function (e) {
                             ulElement.append(`<li class="hashtag-e list-group-item list-group-item-action cursor-pointer" data-task-id="` + e.id + `">` + e.title + `</li>`);
                         });
                     });
+                }
             }
         } else {
             ulElement.empty();
@@ -311,6 +315,7 @@
         const cursorPos = preCaretRange.toString().length;
         return cursorPos;
     }
+
     function getCoordinates(element) {
         let caretOffset = 0;
         const doc = element.ownerDocument || element.document;
