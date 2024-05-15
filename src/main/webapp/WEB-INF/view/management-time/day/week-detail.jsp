@@ -5185,7 +5185,6 @@
                 }
                 weekly.weeklys.push(obj);
             })
-            console.log(data.weekly)
             data.weekly = weekly;
 
             const tr0 = document.querySelector('.tr-weekly-sentence0').querySelectorAll('textarea');

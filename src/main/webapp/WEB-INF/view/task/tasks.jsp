@@ -1018,12 +1018,21 @@
             columns: [
                 {
                     render: function (data, type, row) {
-                        if (!isAdminOrUserLogin(row.user.id)) return '';
-                        return `<th scope="row">
+                        const pics = row.pic;
+                        const idUserCurrent = userCurrent.id;
+                        const picId = [];
+                        pics.forEach(function (pic, index) {
+                            picId.push(pic.userId);
+                        })
+                        if (isAdminOrUserLogin(row.user.id) || picId.includes(idUserCurrent)) {
+                            return `<th scope="row">
                             <div class="form-check">
                                 <input data-id="` + row.id + `" class="form-check-input" type="checkbox" name="chk_child" value="option1">
                             </div>
                         </th>`;
+                        }
+
+                        return '';
                     }
                 },
                 {
@@ -1043,7 +1052,13 @@
                     data: 'title',
                     render: function (data, type, row) {
                         var editAndRemoveE = '';
-                        if (isAdminOrUserLogin(row.user.id)) {
+                        const pics = row.pic;
+                        const idUserCurrent = userCurrent.id;
+                        const picId = [];
+                        pics.forEach(function (pic, index) {
+                            picId.push(pic.userId);
+                        })
+                        if (isAdminOrUserLogin(row.user.id) || picId.includes(idUserCurrent)) {
                             editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#" data-id="` + row.id + `"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
                                             <li class="list-inline-item">
                                                 <a class="remove-item-task-btn" data-bs-toggle="modal" href="#deleteTaskModal" data-id="` + row.id + `">
@@ -1062,7 +1077,19 @@
                                 </div>`;
                     }
                 },
-                {data: 'pic'},
+                {
+                    data: 'pic',
+                    render: function (data, type, row) {
+                        var pic = '';
+                        if (data.length > 0) {
+                            data.forEach(function (e, index) {
+                                if (index != 0) pic += ', ';
+                                pic += e.userName;
+                            })
+                        }
+                        return pic;
+                    }
+                },
                 {
                     data: 'priority.code',
                     render: function (data, type, row) {
@@ -1546,7 +1573,14 @@
 
                     // Pic
                     const sessionPic = document.getElementById('show-pic');
-                    sessionPic.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + rs.pic + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
+                    const rsPic = rs.pic;
+                    if (rsPic.length > 0) {
+                        rsPic.forEach(function (pic, index) {
+                            if (index != 0 && index != (rsPic.length)) sessionPic.innerHTML += `<span class="fw-bold">,</span>`
+                            sessionPic.innerHTML += `<span class="fw-bold ms-2 pic-db-selected" data-value="` + pic.userId + `">` + pic.userName + `</span> `;
+                        })
+                    }
+                    sessionPic.innerHTML += `<i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                     const btnEditPic = document.getElementById('btn-edit-pic');
                     if (btnEditPic) {
@@ -1560,17 +1594,24 @@
                                     rs.forEach(function (user) {
                                         const tablePic = document.getElementById('table-pic');
                                         const tbody = tablePic.querySelector('tbody');
-                                        const pic = `<tr><td class="cursor-pointer pic-username">` + user.fullname + `</td></tr>`;
+                                        const pic = `<tr><td class="cursor-pointer pic-username" data-value="` + user.id + `">` + user.fullname + `</td></tr>`;
                                         tbody.innerHTML += pic;
                                     });
 
                                     const picSelected = document.getElementById('pic-selected');
-                                    const picsDbSelected = document.getElementById('pic-db-selected').textContent;
-                                    const selectedPicsArray = picsDbSelected.split(',').map(pic => pic.trim()).filter(pic => pic !== '');
-                                    if (picsDbSelected != '') {
+                                    const picsDbSelected = document.querySelectorAll('.pic-db-selected');
+                                    const selectedPicsArray = [];
+                                    picsDbSelected.forEach(function (piced, index) {
+                                        let obj = {
+                                            userId: piced.getAttribute('data-value'),
+                                            userName: piced.textContent.trim()
+                                        }
+                                        selectedPicsArray.push(obj)
+                                    })
+                                    if (picsDbSelected.length != 0) {
                                         selectedPicsArray.forEach(function (ePic) {
-                                            picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
-                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + ePic + `</button>`
+                                            picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected" data-value="` + ePic.userId + `">
+                                    <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + ePic.userName + `</button>`
                                         })
                                     }
                                     document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
@@ -1578,7 +1619,10 @@
                                             const btnRemovePic = eRemove.parentElement;
                                             if (btnRemovePic) btnRemovePic.classList.add('d-none');
                                             const removedPicName = btnRemovePic.textContent.trim();
-                                            const index = selectedPicsArray.indexOf(removedPicName);
+                                            var index = -1;
+                                            selectedPicsArray.forEach(function (pic, indexPic) {
+                                                if (removedPicName == pic.userName) index = indexPic;
+                                            })
                                             if (index !== -1) {
                                                 selectedPicsArray.splice(index, 1);
                                             }
@@ -1587,10 +1631,19 @@
                                     document.querySelectorAll('.pic-username').forEach(function (ePic) {
                                         ePic.addEventListener('click', function () {
                                             const picName = ePic.textContent;
-                                            if (!selectedPicsArray.includes(picName.trim())) {
-                                                selectedPicsArray.push(picName.trim());
+                                            const picId = ePic.getAttribute('data-value');
+                                            var isHavePicName = false;
+                                            selectedPicsArray.forEach(function (pic, index) {
+                                                if (picName.trim() == pic.userName) isHavePicName = true;
+                                            })
+                                            if (!isHavePicName) {
+                                                let obj = {
+                                                    userId: picId,
+                                                    userName: picName
+                                                }
+                                                selectedPicsArray.push(obj);
                                                 if (picName.trim() != '') {
-                                                    picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                                                    picSelected.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected" data-value="` + picId + `">
                     <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + picName + `</button>`;
                                                 }
                                                 document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
@@ -1598,7 +1651,10 @@
                                                         const btnRemovePic = eRemove.parentElement;
                                                         if (btnRemovePic) btnRemovePic.classList.add('d-none');
                                                         const removedPicName = btnRemovePic.textContent.trim();
-                                                        const index = selectedPicsArray.indexOf(removedPicName);
+                                                        var index = -1;
+                                                        selectedPicsArray.forEach(function (pic, indexPic) {
+                                                            if (removedPicName == pic.userName) index = indexPic;
+                                                        })
                                                         if (index !== -1) {
                                                             selectedPicsArray.splice(index, 1);
                                                         }
@@ -1635,19 +1691,28 @@
                                     });
 
                                     document.getElementById('btn-save-pic').addEventListener('click', function () {
-                                        var picsSelected = '';
+                                        var picsSelected = [];
                                         document.querySelectorAll('.pic-selected').forEach(function (ePic, index) {
                                             if (!ePic.classList.contains('d-none')) {
                                                 const picText = ePic.textContent.trim();
-                                                if (picsSelected.length > 0) {
-                                                    picsSelected += ', ';
+                                                const picId = ePic.getAttribute('data-value');
+                                                let obj = {
+                                                    userId: picId,
+                                                    userName: picText
                                                 }
-                                                picsSelected += picText;
+                                                picsSelected.push(obj);
                                             }
                                         });
 
                                         const showPicSelect = document.getElementById('show-pic');
-                                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pic-db-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
+                                        if (picsSelected.length > 0) {
+                                            showPicSelect.innerHTML = '';
+                                            picsSelected.forEach(function (pic, index) {
+                                                if (index != 0 && index != (picsSelected.length)) showPicSelect.innerHTML += `<span class="fw-bold">,</span>`
+                                                showPicSelect.innerHTML += `<span class="fw-bold ms-2 pic-db-selected" data-value="` + pic.userId + `">` + pic.userName + `</span>`;
+                                            })
+                                        } else showPicSelect.innerHTML = '';
+                                        showPicSelect.innerHTML += `<i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
 
                                         const btnEditPic = document.getElementById('btn-edit-pic');
                                         if (btnEditPic) {
@@ -1860,14 +1925,23 @@
                     formData.append('id', idTask);
                     formData.append('content', $('#content-edit').html());
                     const tagSelected = document.getElementById('tag-db-selected');
-                    const picSelected = document.getElementById('pic-db-selected');
+                    const picSelected = document.querySelectorAll('.pic-db-selected');
+
                     const relatedTaskSelected = document.getElementById('relatedTask-db-selected');
-                    var tag = '', pic = '', relatedTask = '';
+                    var tag = '', pic = [], relatedTask = '';
                     if (tagSelected) tag = tagSelected.textContent;
-                    if (picSelected) pic = picSelected.textContent;
+                    if (picSelected.length > 0) {
+                        picSelected.forEach(function (e) {
+                            let obj = {
+                                userId: e.getAttribute('data-value'),
+                                userName: e.textContent.trim()
+                            }
+                            pic.push(obj)
+                        })
+                    }
                     if (relatedTaskSelected) relatedTask = relatedTaskSelected.textContent;
                     formData.append('tag', tag)
-                    formData.append('pic', pic);
+                    formData.append('pic', JSON.stringify(pic));
                     formData.append('relatedTask', relatedTask)
                     var dateString = document.getElementById('dueDateEdit').value;
                     var dueDate = new Date(dateString);

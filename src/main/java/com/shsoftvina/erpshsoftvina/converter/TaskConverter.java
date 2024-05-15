@@ -9,16 +9,14 @@ import com.shsoftvina.erpshsoftvina.enums.task.StatusTaskEnum;
 import com.shsoftvina.erpshsoftvina.mapper.TaskMapper;
 import com.shsoftvina.erpshsoftvina.mapper.UserMapper;
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
+import com.shsoftvina.erpshsoftvina.model.dto.task.PicDto;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskRegisterRequest;
 import com.shsoftvina.erpshsoftvina.model.request.task.TaskUpdateRequest;
 import com.shsoftvina.erpshsoftvina.model.response.schedule.ScheduleListResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.StatusTaskCountsResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskDetailResponse;
 import com.shsoftvina.erpshsoftvina.model.response.task.TaskShowResponse;
-import com.shsoftvina.erpshsoftvina.utils.ApplicationUtils;
-import com.shsoftvina.erpshsoftvina.utils.DateUtils;
-import com.shsoftvina.erpshsoftvina.utils.EnumUtils;
-import com.shsoftvina.erpshsoftvina.utils.FileUtils;
+import com.shsoftvina.erpshsoftvina.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -68,7 +66,7 @@ public class TaskConverter {
                 .progress(task.getProgress())
                 .priority(EnumUtils.instance(task.getPriority()))
                 .tag(task.getTag())
-                .pic(task.getPic())
+                .pic(JsonUtils.jsonToObject(task.getPic(), PicDto[].class))
                 .relatedTask(task.getRelatedTask())
                 .filesTask(FileUtils.getPathUploadList(Task.class, task.getFilesTask()))
                 .build();
@@ -212,7 +210,7 @@ public class TaskConverter {
                 .content(task.getContent())
                 .comments(commentTaskConverter.toListResponse(task.getComments()))
                 .tag(task.getTag())
-                .pic(task.getPic())
+                .pic(JsonUtils.jsonToObject(task.getPic(), PicDto[].class))
                 .relatedTask(task.getRelatedTask())
                 .filesTask(FileUtils.getPathUploadList(Task.class, task.getFilesTask()))
                 .build();

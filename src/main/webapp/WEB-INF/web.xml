@@ -60,7 +60,7 @@
     <session-config>
         <cookie-config>
             <name>SESSION</name>
-            <max-age>3600</max-age>
+            <max-age>86400</max-age>
             <secure>false</secure>
             <http-only>true</http-only>
         </cookie-config>

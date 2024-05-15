@@ -655,7 +655,6 @@
         var idTask = ${id};
         var swal = showAlertLoading();
         callAjaxByJsonWithData('/api/v1/tasks/' + idTask, "GET", null, function (rs) {
-            console.log(rs)
             $('.task-username').text(rs.user.fullname);
             $('.task-id').text(rs.id);
             $('.task-title').text(rs.title);
@@ -667,7 +666,14 @@
             $('.task-due-date').text(rs.dueDate);
             $('.task-closed-date').text(rs.closeDate);
             $('.task-tag').text(rs.tag);
-            $('.task-pic').text(rs.pic);
+
+            const rsPic = rs.pic;
+            var picTask = '';
+            rsPic.forEach(function (pic, index) {
+                if (index != 0) picTask += ', ';
+                picTask += pic.userName;
+            })
+            $('.task-pic').text(picTask);
             $('.task-related-task').text(rs.relatedTask);
 
             $('.task-content').html(getContentViewOfEditorSnow(rs.content));
