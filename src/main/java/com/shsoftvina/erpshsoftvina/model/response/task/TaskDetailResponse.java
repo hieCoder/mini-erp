@@ -2,6 +2,7 @@ package com.shsoftvina.erpshsoftvina.model.response.task;
 
 import com.shsoftvina.erpshsoftvina.model.dto.EnumDto;
 import com.shsoftvina.erpshsoftvina.model.dto.task.ActionChangeStatusTaskEnumDto;
+import com.shsoftvina.erpshsoftvina.model.dto.task.PicDto;
 import com.shsoftvina.erpshsoftvina.model.response.commenttask.CommentTaskResponse;
 import com.shsoftvina.erpshsoftvina.model.response.user.IdAndFullnameUserResponse;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class TaskDetailResponse {
     private String content;
     private List<CommentTaskResponse> comments;
     private String tag;
-    private String pic;
+    private PicDto[] pic;
     private String relatedTask;
     private String[] filesTask;
 }

@@ -360,7 +360,6 @@
         });
     });
 
-
     document.getElementById('save-tag-selected').addEventListener('click', function () {
         var tagsSelected = '';
         document.querySelectorAll('.tag-selected').forEach(function (eTag, index) {
@@ -397,7 +396,7 @@
                 rs.forEach(function (user) {
                     const tablePic = document.getElementById('table-pic');
                     const tbody = tablePic.querySelector('tbody');
-                    const pic = `<tr><td class="cursor-pointer pic-username">` + user.fullname + `</td></tr>`;
+                    const pic = `<tr><td class="cursor-pointer pic-username" data-value="` + user.id + `">` + user.fullname + `</td></tr>`;
                     tbody.innerHTML += pic;
                 });
 
@@ -406,10 +405,11 @@
                 document.querySelectorAll('.pic-username').forEach(function (ePic) {
                     ePic.addEventListener('click', function () {
                         const picName = ePic.textContent;
+                        const idPic = ePic.getAttribute('data-value');
                         if (!selectedPicsArray.includes(picName.trim())) {
                             selectedPicsArray.push(picName.trim());
                             if (picName.trim() != '') {
-                                inputSelectPic.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
+                                inputSelectPic.innerHTML += `<button data-value="` + idPic + `" type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 pic-selected">
                     <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-pic-selected"></i> ` + picName + `</button>`;
                             }
                             document.querySelectorAll('.remove-pic-selected').forEach(function (eRemove) {
@@ -455,20 +455,27 @@
                 });
 
                 document.getElementById('btn-save-pic').addEventListener('click', function () {
-                    var picsSelected = '';
+                    var picsSelected = [];
                     document.querySelectorAll('.pic-selected').forEach(function (ePic, index) {
                         if (!ePic.classList.contains('d-none')) {
-                            const picText = ePic.textContent.trim();
-                            if (picsSelected.length > 0) {
-                                picsSelected += ', ';
+                            const userName = ePic.textContent.trim();
+                            const idPic = ePic.getAttribute('data-value');
+                            let obj = {
+                                userId: idPic,
+                                userName: userName
                             }
-                            picsSelected += picText;
+                            picsSelected.push(obj);
                         }
                     });
 
                     const showPicSelect = document.getElementById('show-pic-selected');
-                    if (picsSelected != '') {
-                        showPicSelect.innerHTML = `<span class="fw-bold ms-2" id="pics-selected">` + picsSelected + `</span> <i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
+                    if (picsSelected.length > 0) {
+                        showPicSelect.innerHTML = '';
+                        picsSelected.forEach(function (pic, index) {
+                            if (index != 0 && index != (picsSelected.length)) showPicSelect.innerHTML += `<span class="fw-bold">,</span>`
+                            showPicSelect.innerHTML += `<span class="fw-bold ms-2 pics-selected" data-value="` + pic.userId + `">` + pic.userName + `</span>`;
+                        })
+                        showPicSelect.innerHTML += `<i id="btn-edit-pic" class="ri-edit-line fs-4 cursor-pointer ms-1"></i>`;
                     } else {
                         showPicSelect.innerHTML = `<button id="btn-add-pic" type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#picModal">ADD PIC</button>`
                     }
@@ -848,22 +855,32 @@
                 ],
                 onSubmit: function (formData) {
                     const tagSelected = document.getElementById('tags-selected');
-                    const picSelected = document.getElementById('pics-selected');
+                    const picSelected = document.querySelectorAll('.pics-selected');
                     const relatedTaskSelected = document.getElementById('relatedTasks-selected');
-                    var tag = '', pic = '', relatedTask = '';
+                    var tag = '', pic = [], relatedTask = '', jsonPic = '';
                     if (tagSelected) tag = tagSelected.textContent;
-                    if (picSelected) pic = picSelected.textContent;
+                    if (picSelected.length > 0) {
+                        picSelected.forEach(function (e) {
+                            let obj = {
+                                userId: e.getAttribute('data-value'),
+                                userName: e.textContent.trim()
+                            }
+                            pic.push(obj)
+                        })
+                        jsonPic = JSON.stringify(pic);
+                    }
                     if (relatedTaskSelected) relatedTask = relatedTaskSelected.textContent;
                     formData.append('content', $('#content').html());
-                    formData.append('tag', tag)
-                    formData.append('pic', pic);
-                    formData.append('relatedTask', relatedTask)
+                    formData.append('tag', tag);
+                    formData.append('pic', jsonPic);
+                    formData.append('relatedTask', relatedTask);
                     var dateString = document.getElementById('dueDate').value;
                     var dueDate = new Date(dateString);
                     formData.append('dueDate', dueDate);
                     dropzone.files.forEach((file) => {
                         formData.append('filesTask', file);
                     });
+
                     $('#registerTaskForm .spinner-border').removeClass('d-none');
                     callAjaxByDataFormWithDataForm("/api/v1/tasks/register", "POST", formData, function (rs) {
                         loadCountStatus();

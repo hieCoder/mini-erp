@@ -1,5 +1,6 @@
 package com.shsoftvina.erpshsoftvina.model.request.task;
 
+import com.shsoftvina.erpshsoftvina.model.dto.task.PicDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
