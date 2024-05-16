@@ -86,7 +86,7 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- end card body -->
+                </div>
             </div>
         </div>
         <!--Postponed Tasks-->
@@ -1021,9 +1021,11 @@
                         const pics = row.pic;
                         const idUserCurrent = userCurrent.id;
                         const picId = [];
-                        pics.forEach(function (pic, index) {
-                            picId.push(pic.userId);
-                        })
+                        if (pics != '' && pics != null) {
+                            pics.forEach(function (pic, index) {
+                                picId.push(pic.userId);
+                            })
+                        }
                         if (isAdminOrUserLogin(row.user.id) || picId.includes(idUserCurrent)) {
                             return `<th scope="row">
                             <div class="form-check">
@@ -1055,9 +1057,11 @@
                         const pics = row.pic;
                         const idUserCurrent = userCurrent.id;
                         const picId = [];
-                        pics.forEach(function (pic, index) {
-                            picId.push(pic.userId);
-                        })
+                       if (pics != '' && pics != null) {
+                           pics.forEach(function (pic, index) {
+                               picId.push(pic.userId);
+                           })
+                       }
                         if (isAdminOrUserLogin(row.user.id) || picId.includes(idUserCurrent)) {
                             editAndRemoveE = `<li class="list-inline-item"><a class="edit-item-task-btn" href="#" data-id="` + row.id + `"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
                                             <li class="list-inline-item">
@@ -1081,7 +1085,7 @@
                     data: 'pic',
                     render: function (data, type, row) {
                         var pic = '';
-                        if (data.length > 0) {
+                        if (data != '' && data != null) {
                             data.forEach(function (e, index) {
                                 if (index != 0) pic += ', ';
                                 pic += e.userName;
@@ -1136,7 +1140,6 @@
                 var taskStatus = this.getAttribute('data-value');
                 tasksRequest.statusTask = taskStatus;
                 tasksRequest.page = 1;
-
                 tableTask.ajax.reload(function () {
                 });
             })
@@ -1574,7 +1577,7 @@
                     // Pic
                     const sessionPic = document.getElementById('show-pic');
                     const rsPic = rs.pic;
-                    if (rsPic.length > 0) {
+                    if (rsPic != '' && rsPic != null) {
                         rsPic.forEach(function (pic, index) {
                             if (index != 0 && index != (rsPic.length)) sessionPic.innerHTML += `<span class="fw-bold">,</span>`
                             sessionPic.innerHTML += `<span class="fw-bold ms-2 pic-db-selected" data-value="` + pic.userId + `">` + pic.userName + `</span> `;
@@ -1928,7 +1931,7 @@
                     const picSelected = document.querySelectorAll('.pic-db-selected');
 
                     const relatedTaskSelected = document.getElementById('relatedTask-db-selected');
-                    var tag = '', pic = [], relatedTask = '';
+                    var tag = '', pic = [], relatedTask = '', jsonPic = '';;
                     if (tagSelected) tag = tagSelected.textContent;
                     if (picSelected.length > 0) {
                         picSelected.forEach(function (e) {
@@ -1938,10 +1941,11 @@
                             }
                             pic.push(obj)
                         })
+                        jsonPic = JSON.stringify(pic);
                     }
                     if (relatedTaskSelected) relatedTask = relatedTaskSelected.textContent;
                     formData.append('tag', tag)
-                    formData.append('pic', JSON.stringify(pic));
+                    formData.append('pic', jsonPic);
                     formData.append('relatedTask', relatedTask)
                     var dateString = document.getElementById('dueDateEdit').value;
                     var dueDate = new Date(dateString);
@@ -1983,7 +1987,6 @@
             })
         })
         tasksRequest.page = 1;
-
         tableTask.ajax.reload(function () {
         });
     });

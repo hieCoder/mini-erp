@@ -669,10 +669,12 @@
 
             const rsPic = rs.pic;
             var picTask = '';
-            rsPic.forEach(function (pic, index) {
-                if (index != 0) picTask += ', ';
-                picTask += pic.userName;
-            })
+            if (rsPic != '' && rsPic != null) {
+                rsPic.forEach(function (pic, index) {
+                    if (index != 0) picTask += ', ';
+                    picTask += pic.userName;
+                })
+            }
             $('.task-pic').text(picTask);
             $('.task-related-task').text(rs.relatedTask);
 

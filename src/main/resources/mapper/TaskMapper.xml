@@ -26,7 +26,7 @@
                  INNER JOIN USER u ON t.USER_ID = u.ID
         WHERE t.STATUS = 'ACTIVE'
           AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
-          AND JSON_SEARCH(t.PIC, 'all', CONCAT('%', #{picSearch}, '%'), NULL, '$[*].userName') IS NOT NULL
+          AND (#{picSearch} = '' OR (t.PIC IS NOT NULL AND t.PIC != '' AND JSON_SEARCH(t.PIC, 'all', CONCAT('%', #{picSearch}, '%'), NULL, '$[*].userName') IS NOT NULL))
           AND t.TAG LIKE CONCAT('%', #{tagSearch}, '%')
           AND t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
         ORDER BY t.ID DESC
@@ -35,13 +35,18 @@
     <select id="getTotalItem" resultType="long">
         SELECT COUNT(*)
         FROM TASK t
-        INNER JOIN USER u ON t.USER_ID = u.ID
-        WHERE t.STATUS = 'ACTIVE' AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
-        AND (
-                JSON_SEARCH(t.PIC, 'all', CONCAT('%', #{picSearch}, '%'), NULL, '$[*].userName') IS NOT NULL OR
-                t.TAG LIKE CONCAT('%', #{tagSearch}, '%') OR
-                t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
-        )
+                 INNER JOIN USER u ON t.USER_ID = u.ID
+        WHERE t.STATUS = 'ACTIVE'
+          AND (#{statusTask} = '' OR t.STATUS_TASK = #{statusTask})
+          AND (
+                (
+                        #{picSearch} = '' OR
+                        (t.PIC IS NOT NULL AND t.PIC != '' AND JSON_SEARCH(t.PIC, 'all', CONCAT('%', #{picSearch}, '%'), NULL, '$[*].userName') IS NOT NULL)
+                    )
+                OR t.TAG LIKE CONCAT('%', #{tagSearch}, '%')
+                OR t.TITLE LIKE CONCAT('%', #{titleSearch}, '%')
+            )
+
     </select>
 
     <resultMap id="taskResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">

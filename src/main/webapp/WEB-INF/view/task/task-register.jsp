@@ -857,7 +857,7 @@
                     const tagSelected = document.getElementById('tags-selected');
                     const picSelected = document.querySelectorAll('.pics-selected');
                     const relatedTaskSelected = document.getElementById('relatedTasks-selected');
-                    var tag = '', pic = [], relatedTask = '';
+                    var tag = '', pic = [], relatedTask = '', jsonPic = '';
                     if (tagSelected) tag = tagSelected.textContent;
                     if (picSelected.length > 0) {
                         picSelected.forEach(function (e) {
@@ -867,11 +867,12 @@
                             }
                             pic.push(obj)
                         })
+                        jsonPic = JSON.stringify(pic);
                     }
                     if (relatedTaskSelected) relatedTask = relatedTaskSelected.textContent;
                     formData.append('content', $('#content').html());
                     formData.append('tag', tag);
-                    formData.append('pic', JSON.stringify(pic));
+                    formData.append('pic', jsonPic);
                     formData.append('relatedTask', relatedTask);
                     var dateString = document.getElementById('dueDate').value;
                     var dueDate = new Date(dateString);
