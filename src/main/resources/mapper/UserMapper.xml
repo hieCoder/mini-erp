@@ -24,7 +24,9 @@
             avatar = #{avatar},
             type = #{type},
             department = #{department},
-            atm = #{atm},
+            account_holder_name = #{accountHolderName},
+            account_number = #{accountNumber},
+            bank_name = #{bankName},
             email = #{email},
             password = #{password},
             role = #{role},
@@ -56,7 +58,9 @@
         <result property="avatar" column="AVATAR"/>
         <result property="type" column="TYPE"/>
         <result property="department" column="DEPARTMENT"/>
-        <result property="atm" column="ATM"/>
+        <result property="accountHolderName" column="ACCOUNT_HOLDER_NAME"/>
+        <result property="accountNumber" column="ACCOUNT_NUMBER"/>
+        <result property="bankName" column="BANK_NAME"/>
         <result property="email" column="EMAIL"/>
         <result property="role" column="ROLE"/>
         <result property="status" column="STATUS"/>
@@ -106,7 +110,9 @@
         <result property="avatar" column="AVATAR"/>
         <result property="type" column="TYPE"/>
         <result property="department" column="DEPARTMENT"/>
-        <result property="atm" column="ATM"/>
+        <result property="accountHolderName" column="ACCOUNT_HOLDER_NAME"/>
+        <result property="accountNumber" column="ACCOUNT_NUMBER"/>
+        <result property="bankName" column="BANK_NAME"/>
         <result property="email" column="EMAIL"/>
         <result property="password" column="PASSWORD"/>
         <result property="role" column="ROLE"/>

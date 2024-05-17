@@ -28,7 +28,9 @@ public class User implements UserDetails, OAuth2User {
     private String avatar;
     private TypeUserEnum type;
     private DepartmentEnum department;
-    private String atm;
+    private String accountHolderName;
+    private String accountNumber;
+    private String bankName;
     private String email; // user_id
     private String password;
     private RoleEnum role;

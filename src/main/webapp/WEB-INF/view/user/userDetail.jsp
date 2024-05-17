@@ -311,11 +311,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-4">
                                     <div class="mb-3">
-                                        <label for="atm" class="form-label">ATM</label>
-                                        <input type="text" class="form-control" placeholder="ATM" id="atm" name="atm"
-                                               value="${user.atm}">
+                                        <label for="accountHolderName" class="form-label">Account Holder Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter here..." id="accountHolderName" name="accountHolderName"
+                                               value="${user.accountHolderName}">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="accountNumber" class="form-label">Account Number</label>
+                                        <input type="text" class="form-control" placeholder="Enter here..." id="accountNumber" name="accountNumber"
+                                               value="${user.accountNumber}">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="bankName" class="form-label">Bank Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter here..." id="bankName" name="bankName"
+                                               value="${user.bankName}">
                                     </div>
                                 </div>
                                 <div class="col-6" id="role-session">
