@@ -29,7 +29,9 @@ public class UserDetailResponse{
     private EnumDto role;
     private EnumDto position;
     private String resume;
-    private String atm;
+    private String accountHolderName;
+    private String accountNumber;
+    private String bankName;
     private String timesheetsCode;
     private List<ContractResponse> contracts;
     private String createdDate;

@@ -56,7 +56,9 @@ public class UserConverter {
                 .avatar(FileUtils.getPathUpload(User.class, user.getAvatar()))
                 .type(EnumUtils.instance(user.getType()))
                 .department(EnumUtils.instance(user.getDepartment()))
-                .atm(user.getAtm())
+                .accountHolderName(user.getAccountHolderName())
+                .accountNumber(user.getAccountNumber())
+                .bankName(user.getBankName())
                 .email(user.getEmail())
                 .resume(user.getResume())
                 .role(EnumUtils.instance(user.getRole()))
@@ -121,7 +123,9 @@ public class UserConverter {
                 .avatar(newAvatarFileName)
                 .resume(newResumeFileName)
                 .timesheetsCode(timesheetsCode)
-                .atm(userUpdateRequest.getAtm())
+                .accountHolderName(userUpdateRequest.getAccountHolderName())
+                .accountNumber(userUpdateRequest.getAccountNumber())
+                .bankName(userUpdateRequest.getBankName())
                 .gender(EnumUtils.getEnumFromValue(GenderEnum.class, userUpdateRequest.getGender()))
                 .build();
     }

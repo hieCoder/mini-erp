@@ -16,7 +16,9 @@
             <column name="AVATAR" type="VARCHAR(255)"/>
             <column name="TYPE" type="VARCHAR(255)"/>
             <column name="DEPARTMENT" type="VARCHAR(255)"/>
-            <column name="ATM" type="VARCHAR(255)"/>
+            <column name="ACCOUNT_HOLDER_NAME" type="VARCHAR(1000)"/>
+            <column name="ACCOUNT_NUMBER" type="VARCHAR(500)"/>
+            <column name="BANK_NAME" type="VARCHAR(500)"/>
             <column name="EMAIL" type="VARCHAR(255)">
                 <constraints unique="true"/>
             </column>

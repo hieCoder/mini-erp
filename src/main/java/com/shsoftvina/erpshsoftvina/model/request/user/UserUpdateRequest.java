@@ -38,7 +38,9 @@ public class UserUpdateRequest {
     private MultipartFile[] newResumeFiles;
 
     private String timesheetsCode;
-    private String atm;
+    private String accountHolderName;
+    private String accountNumber;
+    private String bankName;
     private String type;
     private String department;
     private String email;
