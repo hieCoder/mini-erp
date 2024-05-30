@@ -561,7 +561,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12 border p-1" id="tag-selected" style="height: 45px"></div>
+                <div class="col-lg-12 border p-1" id="tag-selected" style="min-height: 45px; max-height: 140px; overflow-y: auto;"></div>
                 <div class="mt-2 text-center align-items-center" data-simplebar style="max-height: 400px">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTag" class="form-control" placeholder="Search Tag..."
@@ -667,7 +667,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12 border p-1" id="pic-selected" style="height: 45px"></div>
+                <div class="col-lg-12 border p-1" id="pic-selected" style="min-height: 45px; max-height: 140px; overflow-y: auto;"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchPic" class="form-control" placeholder="Search Pic..."
@@ -706,7 +706,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12 border p-1" id="related-task-selected" style="height: 45px"></div>
+                <div class="col-lg-12 border p-1" id="related-task-selected" style="min-height: 45px; max-height: 140px; overflow-y: auto;"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTask" class="form-control" placeholder="Search Task..."

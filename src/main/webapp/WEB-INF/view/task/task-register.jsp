@@ -170,7 +170,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12 border p-1" id="tag-selected" style="height: 45px">
+                <div class="col-lg-12 border p-1" id="tag-selected" style="min-height: 45px; max-height: 140px; overflow-y: auto;">
                 </div>
                 <div class="mt-2 text-center align-items-center" data-simplebar style="max-height: 400px">
                     <div class="d-flex justify-content-between align-items-center">
@@ -266,7 +266,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12 border p-1" id="pic-selected" style="height: 45px"></div>
+                <div class="col-lg-12 border p-1" id="pic-selected" style="min-height: 45px; max-height: 140px; overflow-y: auto;"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchPic" class="form-control" placeholder="Search Pic..." style="width: 30%">
@@ -302,7 +302,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12 border p-1" id="related-task-selected" style="height: 45px"></div>
+                <div class="col-lg-12 border p-1" id="related-task-selected" style="min-height: 45px; max-height: 140px; overflow-y: auto;"></div>
                 <div class="mt-2 text-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="text" id="searchTask" class="form-control" placeholder="Search Task..." style="width: 30%">
@@ -512,7 +512,7 @@
                         if (!selectedTasksArray.includes(taskTitle.trim())) {
                             selectedTasksArray.push(taskTitle.trim());
                             if (taskTitle.trim() != '') {
-                                inputSelectTask.innerHTML += `<button type="button" class="btn btn-primary btn-label waves-effect right waves-light rounded-pill ms-1 task-selected">
+                                inputSelectTask.innerHTML += `<button type="button" class="btn btn-primary btn-label mt-2 waves-effect right waves-light rounded-pill ms-1 task-selected">
                     <i class="ri-close-line label-icon align-middle fs-16 ms-2 remove-related-task-selected"></i> ` + taskTitle + `</button>`;
                             }
                             document.querySelectorAll('.remove-related-task-selected').forEach(function (eRemove) {

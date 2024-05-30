@@ -4763,7 +4763,7 @@
         var count = 0;
         document.querySelectorAll('.checkDailyRoutine').forEach(function (e) {
             var tdDaily = e.getElementsByTagName('td');
-            var lastElement = tdDaily[tdDaily.length - 2];
+            var lastElement = tdDaily[tdDaily.length - 6];
             if (lastElement.textContent == '') {
                 count++;
                 if (count != 8) {
