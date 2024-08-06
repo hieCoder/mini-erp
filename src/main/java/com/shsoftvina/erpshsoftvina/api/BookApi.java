@@ -45,4 +45,5 @@ public class BookApi {
     public ResponseEntity<?> deleteBook(@PathVariable String id) {
         return ResponseEntity.ok(bookService.deleteBook(id));
     }
+
 }
