@@ -137,7 +137,8 @@
             <div style="width: 345px" class="m-3 position-relative">
                 <button class="btn btn-primary bottom-left createCalendar" type="button">Save</button>
                 <button type="button" class="btn btn-info bottom-right" data-bs-toggle="modal"
-                        data-bs-target="#exampleModalgrid">Dream Board</button>
+                        data-bs-target="#exampleModalgrid">Dream Board
+                </button>
             </div>
         </div>
         <table class="table table-bordered" id="todoTable">
@@ -332,7 +333,7 @@
                     let yearTarget = document.getElementById('yearTarget');
 
                     let xhtml = '';
-                    var yearColor = parseData.year == null || parseData.year.color == null || parseData.year.color == '' ? ['#f2aaaa','#bcd6af','#ffe180','#ad9ad9'] : parseData.year.color;
+                    var yearColor = parseData.year == null || parseData.year.color == null || parseData.year.color == '' ? ['#f2aaaa', '#bcd6af', '#ffe180', '#ad9ad9'] : parseData.year.color;
                     if (parseData.monthlyContents != null) {
                         parseData.monthlyContents.forEach((e, index) => {
                             if (e.content === "") {
@@ -462,12 +463,15 @@
                                                     btnStatus = ` <button contenteditable="false" type="button" class="btn btn-danger waves-effect waves-light float-end" style="margin: 0 5px;">
                                                                     <i class="ri-close-line"></i>
                                                                 </button>`;
-                                                } else {
+                                                } else if (status == "POSTPONE") {
                                                     btnStatus = `<button contenteditable="false" type="button" class="btn btn-warning waves-effect waves-light float-end" style="margin: 0 5px;">
                                                                     <i class="ri-arrow-right-line"></i>
                                                                 </button>`
                                                 }
-                                                cell.innerHTML = `<span contenteditable="true" class="me-2" style="min-width: 12px">` + e.weeklys[dayTodo].content + `</span>` + btnStatus;
+                                                const weeklyValue = e.weeklys[dayTodo].content;
+                                                var isShowValue = false;
+                                                if (weeklyValue == null || weeklyValue == "") isShowValue = true;
+                                                cell.innerHTML = `<span contenteditable="true" class="me-2" style="min-width: 12px">` + (isShowValue ? "&nbsp;" : weeklyValue) + `</span>` + (isShowValue && (status == null || status == "") ? "" : btnStatus);
                                                 cell.setAttribute('data-status', e.weeklys[dayTodo].status)
                                                 cell.setAttribute('data-timeused', e.weeklys[dayTodo].timeUsed)
                                                 cell.setAttribute('contenteditable', 'true');
@@ -693,10 +697,11 @@
 
     // Handle user click button Save
     saveCalendar();
+
     function saveCalendar() {
         const statusMonthly = [];
         const statusYear = [];
-        document.getElementById('monthlyTarget').querySelectorAll('p').forEach( function (e) {
+        document.getElementById('monthlyTarget').querySelectorAll('p').forEach(function (e) {
             statusMonthly.push(e.getAttribute('data-value'));
         })
         document.querySelectorAll('.yearTarget').forEach(function (e) {
@@ -809,7 +814,6 @@
             const imageQuote = document.getElementById('quoteImage').files[0];
             const formData = new FormData();
             formData.append('files', imageQuote);
-            console.log(data)
             callAjaxByDataFormWithDataForm("/api/v1/upload?typeFile=" + M_QUOTE, "POST", formData, function (rs) {
                 data.quotes.quotes = [];
                 data.quotes.image = rs[0];
@@ -861,6 +865,7 @@
     });
 
     var colorYearGoals = '';
+
     function toggleEdit(element) {
         var isEditing = element.classList.contains('editing');
         const colorElemnt = element.style.backgroundColor;
