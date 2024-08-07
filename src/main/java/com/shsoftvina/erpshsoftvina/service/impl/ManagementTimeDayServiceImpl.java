@@ -241,7 +241,6 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                 CompletableFuture.runAsync(() -> {
                     managementTimeDayMapper.updateOneThingCalendarAllDayNull(userId, getDaysNotInMonth(monthlyCode, new ArrayList<>()));
                 });
-
             }
         });
 
@@ -304,7 +303,22 @@ public class ManagementTimeDayServiceImpl implements ManagementTimeDayService {
                     yearManagementTimeDayMapper.createYearManagementTimeDay(yearE);
                 });
             } else {
-                yearEntity.setTarget(JsonUtils.objectToJson(yearRequest.getTarget()));
+                String oldTarget = yearEntity.getTarget();
+                String newTarget = JsonUtils.objectToJson(yearRequest.getTarget());
+                String[] newTargets = newTarget.split("\"target\":\"");
+                for (int i = 1; i < newTargets.length; i++) {
+                    newTargets[i] = newTargets[i].split("\"")[0];
+                }
+
+                String[] oldTargets = oldTarget.split("\"target\":\"");
+
+                StringBuilder result = new StringBuilder(oldTargets[0]);
+                for (int i = 1; i < oldTargets.length; i++) {
+                    String remainingPart = oldTargets[i].substring(oldTargets[i].indexOf("\""));
+                    result.append("\"target\":\"").append(newTargets[i]).append(remainingPart);
+                }
+
+                yearEntity.setTarget(result.toString());
                 CompletableFuture.runAsync(() -> {
                     yearManagementTimeDayMapper.updateYearManagementTimeDay(yearEntity);
                 });
