@@ -1,13 +1,13 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TagMapper">
+<mapper namespace="com.hieDev.minierp.mapper.TagMapper">
 
-    <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.Tag" resultMap="tagResultMap">
+    <select id="findAll" parameterType="com.hieDev.minierp.entity.Tag" resultMap="tagResultMap">
         SELECT * FROM TAG
     </select>
 
-    <resultMap id="tagResultMap" type="com.shsoftvina.erpshsoftvina.entity.Tag">
+    <resultMap id="tagResultMap" type="com.hieDev.minierp.entity.Tag">
         <id property="id" column="ID"/>
         <result property="tagName" column="TAG_NAME"/>
         <result property="type" column="TYPE"/>
@@ -19,13 +19,13 @@
         WHERE ID = #{id}
     </select>
 
-    <insert id="createTag" parameterType="com.shsoftvina.erpshsoftvina.entity.Tag">
+    <insert id="createTag" parameterType="com.hieDev.minierp.entity.Tag">
         INSERT
         INTO TAG (ID, TAG_NAME, TYPE)
         VALUES (#{id}, #{tagName}, #{type});
     </insert>
 
-    <update id="updateTag" parameterType="com.shsoftvina.erpshsoftvina.entity.Tag">
+    <update id="updateTag" parameterType="com.hieDev.minierp.entity.Tag">
         UPDATE TAG
         SET TAG_NAME = #{tagName},
             TYPE = #{type}

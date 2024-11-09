@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.YearManagementTimeDayMapper">
+<mapper namespace="com.hieDev.minierp.mapper.YearManagementTimeDayMapper">
 
-    <insert id="createYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+    <insert id="createYearManagementTimeDay" parameterType="com.hieDev.minierp.entity.YearManagementTimeDay">
         INSERT INTO YEAR_MANAGEMENT_TIME_DAY (ID, CODE, TARGET, USER_ID, SELF_INSPIRATION, COLOR)
         VALUES (UUID(), #{code}, #{target}, #{user.id},  #{selfInspiration}, #{color})
     </insert>
@@ -15,21 +15,21 @@
         WHERE y.USER_ID = #{userId} AND y.CODE = #{code}
     </select>
 
-    <resultMap id="yearManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+    <resultMap id="yearManagementTimeDayResultMap" type="com.hieDev.minierp.entity.YearManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="target" column="TARGET"/>
         <result property="selfInspiration" column="SELF_INSPIRATION"/>
         <result property="color" column="COLOR"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <association property="user" column="USER_ID" javaType="com.hieDev.minierp.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="USER_ID"/>
         <result property="fullname" column="FULLNAME"/>
     </resultMap>
 
-    <update id="updateYearManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.YearManagementTimeDay">
+    <update id="updateYearManagementTimeDay" parameterType="com.hieDev.minierp.entity.YearManagementTimeDay">
         UPDATE YEAR_MANAGEMENT_TIME_DAY
         SET TARGET = #{target},
             SELF_INSPIRATION = #{selfInspiration},

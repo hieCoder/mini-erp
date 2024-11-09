@@ -1,15 +1,15 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.PushSubscriptionMapper">
+<mapper namespace="com.hieDev.minierp.mapper.PushSubscriptionMapper">
     <!--    Create new subscribe-->
-    <insert id="createPushSubscription" parameterType="com.shsoftvina.erpshsoftvina.entity.PushSubscription">
+    <insert id="createPushSubscription" parameterType="com.hieDev.minierp.entity.PushSubscription">
         INSERT INTO SUBSCRIBE (ID, ENDPOINT, P256DH, AUTH, USER_ID)
         VALUES (#{id}, #{endpoint}, #{p256dh}, #{auth}, #{user.id})
     </insert>
 
     <!--    Find all subscribe-->
-    <select id="findAll" parameterType="String" resultType="com.shsoftvina.erpshsoftvina.entity.PushSubscription">
+    <select id="findAll" parameterType="String" resultType="com.hieDev.minierp.entity.PushSubscription">
         SELECT *
         FROM SUBSCRIBE
         WHERE USER_ID != #{id}

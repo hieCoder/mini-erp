@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.FeelingOfBookMapper">
+<mapper namespace="com.hieDev.minierp.mapper.FeelingOfBookMapper">
 
-    <update id="updateFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+    <update id="updateFeelingOfBook" parameterType="com.hieDev.minierp.entity.FeelingOfBook">
         UPDATE FEELING_OF_BOOK
         SET BOOK_REPORT  = #{bookReport},
             TIME_SPENT_READING = #{timeSpentReading},
@@ -87,38 +87,38 @@
         WHERE fb.USER_ID = #{userId} AND fb.BOOK_ID = #{bookId}
     </select>
 
-    <resultMap id="feelingOfBookResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+    <resultMap id="feelingOfBookResultMap" type="com.hieDev.minierp.entity.FeelingOfBook">
         <id property="id" column="fb_id"/>
         <result property="bookReport" column="fb_book_report"/>
         <result property="createdDate" column="fb_created_date"/>
         <result property="timeSpentReading" column="fb_time_spent_reading"/>
         <result property="note" column="fb_note"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User"
                      resultMap="userResultMap"></association>
         <collection property="comments" column="comment_id"
-                    ofType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook"
+                    ofType="com.hieDev.minierp.entity.CommentFeelingBook"
                     resultMap="commentResultMap"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="comment_user_id"/>
         <result property="id" column="user_id"/>
         <result property="fullname" column="user_fullname"/>
         <result property="avatar" column="user_avatar"/>
     </resultMap>
 
-    <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+    <resultMap id="commentResultMap" type="com.hieDev.minierp.entity.CommentFeelingBook">
         <id property="id" column="comment_id"/>
         <result property="content" column="comment_content"/>
         <result property="createdDate" column="comment_created_date"/>
         <result property="modifiedDate" column="comment_modified_date"/>
         <result property="modifiedBy" column="comment_modified_by"/>
         <association property="parentComment" column="comment_parent_id"
-                     javaType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getParentComment"/>
-        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+                     javaType="com.hieDev.minierp.entity.CommentFeelingBook" select="getParentComment"/>
+        <association property="user" column="comment_user_id" javaType="com.hieDev.minierp.entity.User"
                      select="getUserId"/>
         <collection property="childComments" column="comment_id"
-                    ofType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getChildComments"/>
+                    ofType="com.hieDev.minierp.entity.CommentFeelingBook" select="getChildComments"/>
     </resultMap>
 
     <select id="getParentComment" resultMap="parentCommentResultMap">
@@ -127,7 +127,7 @@
         WHERE ID = #{id}
     </select>
 
-    <resultMap id="parentCommentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+    <resultMap id="parentCommentResultMap" type="com.hieDev.minierp.entity.CommentFeelingBook">
         <id property="id" column="comment_parent_id"/>
         <result property="id" column="PARENT_ID"/>
     </resultMap>
@@ -156,7 +156,7 @@
         WHERE c.parent_id = #{id}
     </select>
 
-    <insert id="createFeelingOfBook" parameterType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+    <insert id="createFeelingOfBook" parameterType="com.hieDev.minierp.entity.FeelingOfBook">
         INSERT
         INTO FEELING_OF_BOOK (ID, USER_ID, BOOK_REPORT, CREATED_DATE, TIME_SPENT_READING, NOTE, BOOK_ID)
         VALUES (#{id}, #{user.id}, #{bookReport}, #{createdDate}, #{timeSpentReading}, #{note}, #{book.id})
@@ -176,13 +176,13 @@
           and fb.user_id = #{userId};
     </select>
 
-    <resultMap id="feelingOfBookDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+    <resultMap id="feelingOfBookDetailResultMap" type="com.hieDev.minierp.entity.FeelingOfBook">
         <id property="id" column="id"/>
         <result property="bookReport" column="BOOK_REPORT"/>
         <result property="createdDate" column="CREATED_DATE"/>
         <result property="timeSpentReading" column="TIME_SPENT_READING"/>
         <result property="note" column="NOTE"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+        <association property="user" column="USER_ID" javaType="com.hieDev.minierp.entity.User"
                      resultMap="userResultMap"></association>
     </resultMap>
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.MonthlyManagementTimeDayMapper">
+<mapper namespace="com.hieDev.minierp.mapper.MonthlyManagementTimeDayMapper">
 
     <select id="findByListCode" resultMap="monthlyManagementTimeDayResultMap">
         SELECT *
@@ -27,7 +27,7 @@
         WHERE m.USER_ID = #{userId} AND LEFT(m.CODE, 4) = LEFT(#{year}, 4)
     </select>
 
-    <resultMap id="monthlyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+    <resultMap id="monthlyManagementTimeDayResultMap" type="com.hieDev.minierp.entity.MonthlyManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="content" column="CONTENT"/>
@@ -38,20 +38,20 @@
         <result property="compliment" column="COMPLIMENT"/>
         <result property="reflectionAndImprovement" column="REFLECTIONS_AND_IMPROVEMENTS"/>
         <result property="timeUsedCategory" column="TIME_USED_CATEGORY"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <association property="user" column="USER_ID" javaType="com.hieDev.minierp.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="USER_ID"/>
         <result property="fullname" column="FULLNAME"/>
     </resultMap>
 
-    <insert id="createMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+    <insert id="createMonthlyManagementTimeDay" parameterType="com.hieDev.minierp.entity.MonthlyManagementTimeDay">
         INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID, DAILY_ROUTINE, TARGET_CATEGORY, GRATITUDE_DIARY, COMPLIMENT, REFLECTIONS_AND_IMPROVEMENTS, TIME_USED_CATEGORY)
         VALUES (UUID(), #{code}, #{content}, #{user.id}, #{dailyRoutine}, #{targetCategory}, #{gratitudeDiary}, #{compliment}, #{reflectionAndImprovement}, #{timeUsedCategory})
     </insert>
 
-    <update id="updateMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+    <update id="updateMonthlyManagementTimeDay" parameterType="com.hieDev.minierp.entity.MonthlyManagementTimeDay">
         UPDATE MONTHLY_MANAGEMENT_TIME_DAY
         SET CONTENT = #{content},
             DAILY_ROUTINE = #{dailyRoutine},
@@ -63,12 +63,12 @@
         WHERE ID = #{id};
     </update>
 
-    <insert id="createSpendingMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+    <insert id="createSpendingMonthlyManagementTimeDay" parameterType="com.hieDev.minierp.entity.MonthlyManagementTimeDay">
         INSERT INTO MONTHLY_MANAGEMENT_TIME_DAY (ID, CODE, USER_ID, SPENDING_GOALS)
         VALUES (UUID(), #{code}, #{user.id}, #{spendingGoals})
     </insert>
 
-    <update id="updateSpendingMonthlyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.MonthlyManagementTimeDay">
+    <update id="updateSpendingMonthlyManagementTimeDay" parameterType="com.hieDev.minierp.entity.MonthlyManagementTimeDay">
         UPDATE MONTHLY_MANAGEMENT_TIME_DAY
         SET SPENDING_GOALS = #{spendingGoals}
         WHERE ID = #{id};

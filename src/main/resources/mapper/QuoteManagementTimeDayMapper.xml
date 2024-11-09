@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.QuoteManagementTimeDayMapper">
+<mapper namespace="com.hieDev.minierp.mapper.QuoteManagementTimeDayMapper">
 
-    <insert id="createQuote" parameterType="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
+    <insert id="createQuote" parameterType="com.hieDev.minierp.entity.QuoteManagementTimeDay">
         INSERT INTO QUOTE_MANAGEMENT_TIME_DAY (ID, CONTENT, USER_ID, IMAGE)
         VALUES (#{id}, #{content}, #{user.id}, #{image})
     </insert>
@@ -14,14 +14,14 @@
         WHERE USER_ID = #{userId}
     </select>
 
-    <update id="editQuote" parameterType="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
+    <update id="editQuote" parameterType="com.hieDev.minierp.entity.QuoteManagementTimeDay">
             UPDATE QUOTE_MANAGEMENT_TIME_DAY
             SET CONTENT = #{content},
                 IMAGE = #{image}
             WHERE ID = #{id}
     </update>
 
-    <resultMap id="quoteResultMap" type="com.shsoftvina.erpshsoftvina.entity.QuoteManagementTimeDay">
+    <resultMap id="quoteResultMap" type="com.hieDev.minierp.entity.QuoteManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="content" column="CONTENT"/>
         <result property="image" column="IMAGE"/>

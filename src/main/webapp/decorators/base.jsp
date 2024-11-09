@@ -1,4 +1,4 @@
-<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
+<%@ page import="com.hieDev.minierp.security.Principal" %>
 <%@include file="/common/taglib.jsp" %>
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"

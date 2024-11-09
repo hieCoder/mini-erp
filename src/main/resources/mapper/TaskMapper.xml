@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TaskMapper">
+<mapper namespace="com.hieDev.minierp.mapper.TaskMapper">
 
     <select id="findAll" parameterType="org.apache.ibatis.session.RowBounds" resultMap="taskResultMap">
         SELECT t.ID           AS task_id,
@@ -49,7 +49,7 @@
 
     </select>
 
-    <resultMap id="taskResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">
+    <resultMap id="taskResultMap" type="com.hieDev.minierp.entity.Task">
         <id property="id" column="task_id"/>
         <result property="statusTask" column="task_status_task"/>
         <result property="title" column="task_title"/>
@@ -65,26 +65,26 @@
         <result property="pic" column="task_pic"/>
         <result property="relatedTask" column="task_related_task"/>
         <result property="filesTask" column="FILES_TASK"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User"
                      resultMap="userResultMap">
         </association>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="comment_user_id"/>
         <result property="id" column="user_id"/>
         <result property="fullname" column="user_fullname"/>
         <result property="avatar" column="user_avatar"/>
     </resultMap>
 
-    <insert id="registerTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
+    <insert id="registerTask" parameterType="com.hieDev.minierp.entity.Task">
         INSERT
         INTO TASK (ID, STATUS_TASK, TITLE, CONTENT, USER_ID, CREATED_DATE, DUE_DATE, PRIORITY, PROGRESS, STATUS, TAG, PIC, RELATED_TASK, FILES_TASK)
         VALUES (#{id}, #{statusTask}, #{title}, #{content}, #{user.id}, #{createdDate}, #{dueDate}, #{priority},
                 #{progress}, #{status}, #{tag}, #{pic}, #{relatedTask}, #{filesTask});
     </insert>
 
-    <update id="updateTask" parameterType="com.shsoftvina.erpshsoftvina.entity.Task">
+    <update id="updateTask" parameterType="com.hieDev.minierp.entity.Task">
         UPDATE TASK
         SET TITLE       = #{title},
             STATUS_TASK = #{statusTask},
@@ -176,7 +176,7 @@
         WHERE t.ID = #{id}
     </select>
 
-    <resultMap id="taskDetailResultMap" type="com.shsoftvina.erpshsoftvina.entity.Task">
+    <resultMap id="taskDetailResultMap" type="com.hieDev.minierp.entity.Task">
         <id property="id" column="task_id"/>
         <result property="statusTask" column="task_status_task"/>
         <result property="title" column="task_title"/>
@@ -192,14 +192,14 @@
         <result property="pic" column="task_pic"/>
         <result property="relatedTask" column="task_related_task"/>
         <result property="filesTask" column="task_files_task"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User"
                      resultMap="userResultMap">
         </association>
-        <collection property="comments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentTask"
+        <collection property="comments" column="comment_id" ofType="com.hieDev.minierp.entity.CommentTask"
                     resultMap="commentResultMap"/>
     </resultMap>
 
-    <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
+    <resultMap id="commentResultMap" type="com.hieDev.minierp.entity.CommentTask">
         <id property="id" column="comment_id"/>
         <result property="title" column="comment_title"/>
         <result property="content" column="comment_content"/>
@@ -208,11 +208,11 @@
         <result property="modifiedDate" column="comment_modified_date"/>
         <result property="modifiedBy" column="comment_modified_by"/>
         <association property="parentComment" column="comment_parent_id"
-                     javaType="com.shsoftvina.erpshsoftvina.entity.CommentTask" select="getParentComment"/>
-        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+                     javaType="com.hieDev.minierp.entity.CommentTask" select="getParentComment"/>
+        <association property="user" column="comment_user_id" javaType="com.hieDev.minierp.entity.User"
                      select="getUserId"/>
         <collection property="childComments" column="comment_id"
-                    ofType="com.shsoftvina.erpshsoftvina.entity.CommentTask" select="getChildComments"/>
+                    ofType="com.hieDev.minierp.entity.CommentTask" select="getChildComments"/>
     </resultMap>
 
     <select id="getChildComments" resultMap="commentResultMap">
@@ -239,7 +239,7 @@
         WHERE ID = #{id}
     </select>
 
-    <resultMap id="parentCommentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentTask">
+    <resultMap id="parentCommentResultMap" type="com.hieDev.minierp.entity.CommentTask">
         <id property="id" column="comment_parent_id"/>
         <result property="id" column="PARENT_ID"/>
     </resultMap>

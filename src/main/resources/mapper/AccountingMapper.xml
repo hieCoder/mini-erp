@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AccountingMapper">
+<mapper namespace="com.hieDev.minierp.mapper.AccountingMapper">
     <select id="findAllMonthlyHistory" resultMap="MonthYearFormatResultMap">
         SELECT DISTINCT YEAR(pay_date) AS year, DATE_FORMAT(pay_date, '%m') AS month_list
         FROM ACCOUNTING
@@ -9,7 +9,7 @@
         ORDER BY year DESC, month_list DESC
     </select>
 
-    <select id="getRemainBalanceEachMonth" resultType="com.shsoftvina.erpshsoftvina.model.response.accounting.RemainBalanceEachMonth">
+    <select id="getRemainBalanceEachMonth" resultType="com.hieDev.minierp.model.response.accounting.RemainBalanceEachMonth">
         SELECT DATE_FORMAT(ranked.pay_date, '%Y-%m') AS yearMonth, remain
         FROM (
                  SELECT *,
@@ -21,20 +21,20 @@
         ORDER BY yearMonth ASC
     </select>
 
-    <resultMap id="MonthYearFormatResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.MonthYearFormat">
+    <resultMap id="MonthYearFormatResultMap" type="com.hieDev.minierp.model.response.accounting.MonthYearFormat">
         <id property="year" column="year" />
         <collection property="month" ofType="java.lang.String">
             <result column="month_list" />
         </collection>
     </resultMap>
 
-    <insert id="createAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <insert id="createAccounting" parameterType="com.hieDev.minierp.entity.Accounting">
         INSERT
         INTO ACCOUNTING (id,pay_date,spending,remain, user_id, bill, title, status, note,created_date)
         VALUES (#{id}, #{payDate},#{expense}, #{remain},#{user.id}, #{bill}, #{title}, #{status}, #{note}, now());
     </insert>
 
-    <update id="updateAccounting" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <update id="updateAccounting" parameterType="com.hieDev.minierp.entity.Accounting">
         UPDATE ACCOUNTING
         SET spending = #{expense},
         user_id = #{user.id},
@@ -55,7 +55,7 @@
         </foreach>
     </update>
 
-    <select id="getRemainRecordInMonth" parameterType="com.shsoftvina.erpshsoftvina.entity.Accounting" resultMap="remainAccountingResultMap">
+    <select id="getRemainRecordInMonth" parameterType="com.hieDev.minierp.entity.Accounting" resultMap="remainAccountingResultMap">
         SELECT spending, remain, id
         FROM ACCOUNTING
         WHERE
@@ -155,7 +155,7 @@
         WHERE id =#{id}
     </update>
 
-    <resultMap id="accountingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <resultMap id="accountingResultMap" type="com.hieDev.minierp.entity.Accounting">
         <id property="id" column="id"/>
         <result property="createdDate" column="created_date"/>
         <result property="expense" column="spending"/>
@@ -165,22 +165,22 @@
         <result property="status" column="status"/>
         <result property="note" column="note"/>
         <result property="payDate" column="pay_date"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap">
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User" resultMap="userResultMap">
         </association>
     </resultMap>
 
-    <resultMap id="remainAccountingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Accounting">
+    <resultMap id="remainAccountingResultMap" type="com.hieDev.minierp.entity.Accounting">
         <id property="id" column="id"/>
         <result property="expense" column="spending"/>
         <result property="remain" column="remain"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="user_id" />
         <result property="fullname" column="fullname" />
     </resultMap>
 
-    <resultMap id="totalSpendingResultMap" type="com.shsoftvina.erpshsoftvina.model.response.accounting.TotalSpendAndRemain">
+    <resultMap id="totalSpendingResultMap" type="com.hieDev.minierp.model.response.accounting.TotalSpendAndRemain">
         <result column="totalExpense" property="totalExpense"/>
         <result column="totalRevenue" property="totalRevenue"/>
         <result column="remain" property="totalRemain"/>

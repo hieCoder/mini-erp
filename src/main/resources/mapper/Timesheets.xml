@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.TimesheetsMapper">
+<mapper namespace="com.hieDev.minierp.mapper.TimesheetsMapper">
 
-    <select id="findAllByUserAndMonthYear" parameterType="com.shsoftvina.erpshsoftvina.entity.Timesheets" resultMap="timesheetsResultMap">
+    <select id="findAllByUserAndMonthYear" parameterType="com.hieDev.minierp.entity.Timesheets" resultMap="timesheetsResultMap">
         SELECT t.*
         FROM TIMESHEETS t
         INNER JOIN USER u ON t.TIMESHEETS_CODE = u.TIMESHEETS_CODE
@@ -28,7 +28,7 @@
         ORDER BY month ASC;
     </select>
 
-    <resultMap id="timesheetsResultMap" type="com.shsoftvina.erpshsoftvina.entity.Timesheets">
+    <resultMap id="timesheetsResultMap" type="com.hieDev.minierp.entity.Timesheets">
         <id property="id" column="ID"/>
         <result property="checkin" column="CHECKIN"/>
         <result property="checkout" column="CHECKOUT"/>

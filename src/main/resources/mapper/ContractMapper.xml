@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.ContractMapper">
+<mapper namespace="com.hieDev.minierp.mapper.ContractMapper">
 
-    <insert id="addContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
+    <insert id="addContract" parameterType="com.hieDev.minierp.entity.Contract">
         INSERT INTO CONTRACT (ID, BASIC_SALARY, FILES, CREATED_DATE, USER_ID, STATUS, HISTORY_ID)
         VALUES (#{id}, #{basicSalary}, #{files}, #{createdDate}, #{user.id}, #{status}, #{parentContract.id})
     </insert>
@@ -28,24 +28,24 @@
         WHERE c.ID = #{id}
     </select>
 
-    <resultMap id="contractResultMap" type="com.shsoftvina.erpshsoftvina.entity.Contract">
+    <resultMap id="contractResultMap" type="com.hieDev.minierp.entity.Contract">
         <id property="id" column="contract_id"/>
         <result property="basicSalary" column="contract_basic_salary"/>
         <result property="files" column="contract_contractFile"/>
         <result property="createdDate" column="contract_created_date"/>
         <result property="status" column="contract_status"/>
-        <collection property="allowanceInsurances" column="contract_id" ofType="com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance"
+        <collection property="allowanceInsurances" column="contract_id" ofType="com.hieDev.minierp.entity.AllowanceInsurance"
                     resultMap="allowanceInsuranceResultMap"/>
     </resultMap>
 
-    <resultMap id="allowanceInsuranceResultMap" type="com.shsoftvina.erpshsoftvina.entity.AllowanceInsurance">
+    <resultMap id="allowanceInsuranceResultMap" type="com.hieDev.minierp.entity.AllowanceInsurance">
         <id property="id" column="allowance_insurance_id" />
         <result property="item" column="allowance_insurance_item" />
         <result property="itemValue" column="allowance_insurance_item_value" />
         <result property="type" column="allowance_insurance_type" />
     </resultMap>
 
-    <update id="updateContract" parameterType="com.shsoftvina.erpshsoftvina.entity.Contract">
+    <update id="updateContract" parameterType="com.hieDev.minierp.entity.Contract">
         UPDATE CONTRACT
         SET BASIC_SALARY = #{basicSalary},
             FILES = #{files}

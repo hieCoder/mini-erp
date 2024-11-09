@@ -1,4 +1,4 @@
-<%@ page import="com.shsoftvina.erpshsoftvina.constant.TaskConstant" %>
+<%@ page import="com.hieDev.minierp.constant.TaskConstant" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <html>

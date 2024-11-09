@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.WeeklyManagementTimeDayMapper">
+<mapper namespace="com.hieDev.minierp.mapper.WeeklyManagementTimeDayMapper">
 
     <select id="findByListCode" resultMap="weeklyManagementTimeDayResultMap">
         SELECT *
@@ -49,27 +49,27 @@
         WHERE w.USER_ID = #{userId} AND w.CODE = #{code}
     </select>
 
-    <resultMap id="weeklyManagementTimeDayResultMap" type="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
+    <resultMap id="weeklyManagementTimeDayResultMap" type="com.hieDev.minierp.entity.WeeklyManagementTimeDay">
         <id property="id" column="ID"/>
         <result property="code" column="CODE"/>
         <result property="content" column="CONTENT"/>
         <result property="gratitudeDiary" column="GRATITUDE_DIARY"/>
         <result property="compliment" column="COMPLIMENT"/>
         <result property="reflectionAndImprovement" column="REFLECTIONS_AND_IMPROVEMENTS"/>
-        <association property="user" column="USER_ID" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
+        <association property="user" column="USER_ID" javaType="com.hieDev.minierp.entity.User" resultMap="userResultMap"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="USER_ID"/>
         <result property="fullname" column="FULLNAME"/>
     </resultMap>
 
-    <insert id="createWeeklyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
+    <insert id="createWeeklyManagementTimeDay" parameterType="com.hieDev.minierp.entity.WeeklyManagementTimeDay">
         INSERT INTO WEEKLY_MANAGEMENT_TIME_DAY (ID, CODE, CONTENT, USER_ID, GRATITUDE_DIARY, COMPLIMENT, REFLECTIONS_AND_IMPROVEMENTS)
         VALUES (UUID(), #{code}, #{content}, #{user.id}, #{gratitudeDiary}, #{compliment}, #{reflectionAndImprovement})
     </insert>
 
-    <update id="updateWeeklyManagementTimeDay" parameterType="com.shsoftvina.erpshsoftvina.entity.WeeklyManagementTimeDay">
+    <update id="updateWeeklyManagementTimeDay" parameterType="com.hieDev.minierp.entity.WeeklyManagementTimeDay">
         UPDATE WEEKLY_MANAGEMENT_TIME_DAY
         SET CONTENT = #{content},
             GRATITUDE_DIARY = #{gratitudeDiary},

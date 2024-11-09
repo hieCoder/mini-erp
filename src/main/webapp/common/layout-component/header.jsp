@@ -1,3 +1,4 @@
+<%@ page import="com.hieDev.minierp.security.Principal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String department = Principal.getUserCurrent().getDepartment()==null?"":Principal.getUserCurrent().getDepartment().getValue();

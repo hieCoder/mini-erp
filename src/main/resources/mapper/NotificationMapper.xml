@@ -1,10 +1,10 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.NotificationMapper">
+<mapper namespace="com.hieDev.minierp.mapper.NotificationMapper">
 
     <!--    Get All Notification-->
-    <select id="getAllNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
+    <select id="getAllNoti" parameterType="com.hieDev.minierp.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
         SELECT n.*,u.ID,u.FULLNAME
         FROM NOTIFICATION n
@@ -15,7 +15,7 @@
         ]]>
     </select>
 
-    <select id="getInactiveNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
+    <select id="getInactiveNoti" parameterType="com.hieDev.minierp.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
         SELECT n.*,u.ID,u.FULLNAME
         FROM NOTIFICATION n
@@ -26,7 +26,7 @@
         ]]>
     </select>
 
-    <select id="getNotificationLatest" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiListShowResultMap">
+    <select id="getNotificationLatest" parameterType="com.hieDev.minierp.entity.Notification" resultMap="notiListShowResultMap">
         <![CDATA[
         SELECT n.*,u.ID,u.FULLNAME
         FROM NOTIFICATION n
@@ -36,7 +36,7 @@
         ]]>
     </select>
 
-    <select id="getNotificationById" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification" resultMap="notiShowResultMap">
+    <select id="getNotificationById" parameterType="com.hieDev.minierp.entity.Notification" resultMap="notiShowResultMap">
         SELECT *
         FROM NOTIFICATION n
         WHERE n.ID = #{id}
@@ -50,13 +50,13 @@
     </select>
 
     <!--    Create new Notification-->
-    <select id="createNoti" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
+    <select id="createNoti" parameterType="com.hieDev.minierp.entity.Notification">
         INSERT INTO NOTIFICATION (ID, TITLE, CONTENT, FILES, CREATED_DATE, USER_ID, STATUS)
         VALUES (#{id}, #{title}, #{content}, #{files}, #{createdDate}, #{user.id}, #{status})
     </select>
 
     <!--    Update Notification-->
-    <update id="updateNotification" parameterType="com.shsoftvina.erpshsoftvina.entity.Notification">
+    <update id="updateNotification" parameterType="com.hieDev.minierp.entity.Notification">
         UPDATE NOTIFICATION
         SET TITLE   = #{title},
             CONTENT = #{content},
@@ -71,25 +71,25 @@
         WHERE ID = #{id}
     </update>
 
-    <resultMap id="notiShowResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+    <resultMap id="notiShowResultMap" type="com.hieDev.minierp.entity.Notification">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
         <result property="file" column="file"/>
         <result property="createdDate" column="created_date"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser" />
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User" select="getUser" />
     </resultMap>
 
-    <resultMap id="notiListShowResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+    <resultMap id="notiListShowResultMap" type="com.hieDev.minierp.entity.Notification">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
         <result property="file" column="file"/>
         <result property="createdDate" column="created_date"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userSimpleResultMap"/>
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User" resultMap="userSimpleResultMap"/>
     </resultMap>
 
-    <resultMap id="userSimpleResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userSimpleResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="user_id" />
         <result property="fullname" column="FULLNAME" />
     </resultMap>
@@ -120,25 +120,25 @@
         ORDER BY c.CREATED_DATE DESC;
     </select>
 
-    <resultMap id="notificationResultMap" type="com.shsoftvina.erpshsoftvina.entity.Notification">
+    <resultMap id="notificationResultMap" type="com.hieDev.minierp.entity.Notification">
         <id property="id" column="notification_id" />
         <result property="title" column="notification_title" />
         <result property="status" column="notification_status" />
         <result property="content" column="notification_content" />
         <result property="files" column="notification_file" />
         <result property="createdDate" column="notification_created_date" />
-        <association property="user" column="notification_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" select="getUser"/>
-        <collection property="comments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" resultMap="commentResultMap" />
+        <association property="user" column="notification_user_id" javaType="com.hieDev.minierp.entity.User" select="getUser"/>
+        <collection property="comments" column="comment_id" ofType="com.hieDev.minierp.entity.CommentNotification" resultMap="commentResultMap" />
     </resultMap>
 
-    <resultMap id="commentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentNotification">
+    <resultMap id="commentResultMap" type="com.hieDev.minierp.entity.CommentNotification">
         <id property="id" column="comment_id" />
         <result property="content" column="comment_content" />
         <result property="createdDate" column="comment_created_date" />
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
-        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentNotification" select="getChildComments" />
+        <association property="user" column="comment_user_id" javaType="com.hieDev.minierp.entity.User" resultMap="userResultMap"/>
+        <collection property="childComments" column="comment_id" ofType="com.hieDev.minierp.entity.CommentNotification" select="getChildComments" />
     </resultMap>
 
     <select id="getUser" resultMap="userNotiResultMap">
@@ -147,12 +147,12 @@
         WHERE ID = #{id}
     </select>
 
-    <resultMap id="userNotiResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userNotiResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="ID" />
         <result property="fullname" column="FULLNAME" />
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="comment_user_id" />
         <result property="fullname" column="user_fullname" />
         <result property="avatar" column="user_avatar" />

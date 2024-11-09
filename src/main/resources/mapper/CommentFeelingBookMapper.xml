@@ -1,14 +1,14 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.CommentFeelingBookMapper">
+<mapper namespace="com.hieDev.minierp.mapper.CommentFeelingBookMapper">
 
-    <insert id="createCommentFeeling" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+    <insert id="createCommentFeeling" parameterType="com.hieDev.minierp.entity.CommentFeelingBook">
         INSERT INTO COMMENT_FEELING_OF_BOOK (ID, CONTENT, CREATED_DATE, FEELING_OF_BOOK_ID, USER_ID, PARENT_ID)
         VALUES (#{id}, #{content}, #{createdDate}, #{feelingOfBook.id}, #{user.id}, #{parentComment.id});
     </insert>
 
-    <update id="updateCommentFeeling" parameterType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+    <update id="updateCommentFeeling" parameterType="com.hieDev.minierp.entity.CommentFeelingBook">
         UPDATE COMMENT_FEELING_OF_BOOK
         SET
             CONTENT = #{content},
@@ -36,15 +36,15 @@
         WHERE c.ID = #{id}
     </select>
 
-    <resultMap id="commentFeelingResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+    <resultMap id="commentFeelingResultMap" type="com.hieDev.minierp.entity.CommentFeelingBook">
         <id property="id" column="comment_id" />
         <result property="content" column="comment_content" />
         <result property="createdDate" column="comment_created_date" />
         <result property="modifiedDate" column="comment_modified_date" />
         <result property="modifiedBy" column="comment_modified_by" />
-        <association property="parentComment" column="comment_parent_id" javaType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getParentComment"/>
-        <association property="user" column="comment_user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User" resultMap="userResultMap"/>
-        <collection property="childComments" column="comment_id" ofType="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook" select="getChildComments" />
+        <association property="parentComment" column="comment_parent_id" javaType="com.hieDev.minierp.entity.CommentFeelingBook" select="getParentComment"/>
+        <association property="user" column="comment_user_id" javaType="com.hieDev.minierp.entity.User" resultMap="userResultMap"/>
+        <collection property="childComments" column="comment_id" ofType="com.hieDev.minierp.entity.CommentFeelingBook" select="getChildComments" />
     </resultMap>
 
     <select id="getParentComment" resultMap="parentCommentResultMap">
@@ -53,12 +53,12 @@
         WHERE ID = #{id}
     </select>
 
-    <resultMap id="parentCommentResultMap" type="com.shsoftvina.erpshsoftvina.entity.CommentFeelingBook">
+    <resultMap id="parentCommentResultMap" type="com.hieDev.minierp.entity.CommentFeelingBook">
         <id property="id" column="comment_parent_id" />
         <result property="id" column="PARENT_ID" />
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="comment_user_id" />
         <result property="fullname" column="user_fullname" />
         <result property="avatar" column="user_avatar" />

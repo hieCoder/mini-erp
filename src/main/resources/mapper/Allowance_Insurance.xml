@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.AllowanceInsuranceMapper">
+<mapper namespace="com.hieDev.minierp.mapper.AllowanceInsuranceMapper">
 
     <insert id="insertAllowanceInsurances" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ALLOWANCE_INSURANCE (ID, ITEM, ITEM_VALUE, CONTRACT_ID, TYPE)

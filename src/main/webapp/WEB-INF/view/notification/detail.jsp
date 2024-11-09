@@ -1,6 +1,6 @@
-<%@ page import="com.shsoftvina.erpshsoftvina.security.Principal" %>
-<%@ page import="com.shsoftvina.erpshsoftvina.enums.user.RoleEnum" %>
-<%@ page import="com.shsoftvina.erpshsoftvina.enums.Notification.StatusNotificationEnum" %>
+<%@ page import="com.hieDev.minierp.security.Principal" %>
+<%@ page import="com.hieDev.minierp.enums.user.RoleEnum" %>
+<%@ page import="com.hieDev.minierp.enums.Notification.StatusNotificationEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>

@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.BookMapper">
+<mapper namespace="com.hieDev.minierp.mapper.BookMapper">
 
     <select id="findAll" parameterType="org.apache.ibatis.session.RowBounds" resultMap="bookResultMap">
         SELECT b.*, fb.ID AS fb_id, fb.TIME_SPENT_READING AS fb_time_spent_reading, fb.NOTE AS fb_note
@@ -16,7 +16,7 @@
         WHERE b.TITLE LIKE '%' #{searchTerm} '%' OR SUBSTRING_INDEX(b.CREATED_BY, ' ', -1) LIKE '%' #{searchTerm} '%'
     </select>
 
-    <update id="updateBook" parameterType="com.shsoftvina.erpshsoftvina.entity.Book">
+    <update id="updateBook" parameterType="com.hieDev.minierp.entity.Book">
         UPDATE BOOK
         SET TITLE = #{title},
             AUTHOR = #{author},
@@ -25,7 +25,7 @@
         WHERE ID = #{id}
     </update>
 
-    <resultMap id="bookResultMap" type="com.shsoftvina.erpshsoftvina.entity.Book">
+    <resultMap id="bookResultMap" type="com.hieDev.minierp.entity.Book">
         <id property="id" column="ID"/>
         <result property="title" column="TITLE"/>
         <result property="author" column="AUTHOR"/>
@@ -33,18 +33,18 @@
         <result property="createdDate" column="CREATED_DATE"/>
         <result property="createdBy" column="CREATED_BY"/>
         <result property="image" column="IMAGE"/>
-        <association property="feelingOfBook" column="fb_id" javaType="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook"
+        <association property="feelingOfBook" column="fb_id" javaType="com.hieDev.minierp.entity.FeelingOfBook"
                      resultMap="feelingResultMap"></association>
     </resultMap>
 
 
-    <resultMap id="feelingResultMap" type="com.shsoftvina.erpshsoftvina.entity.FeelingOfBook">
+    <resultMap id="feelingResultMap" type="com.hieDev.minierp.entity.FeelingOfBook">
         <id property="id" column="fb_id"/>
         <result property="timeSpentReading" column="fb_time_spent_reading"/>
         <result property="note" column="fb_note"/>
     </resultMap>
 
-    <insert id="createBook" parameterType="com.shsoftvina.erpshsoftvina.entity.Book">
+    <insert id="createBook" parameterType="com.hieDev.minierp.entity.Book">
         INSERT
         INTO BOOK (ID, TITLE, AUTHOR, LINK, CREATED_DATE, CREATED_BY, IMAGE)
         VALUES (#{id}, #{title}, #{author}, #{link}, #{createdDate}, #{createdBy}, #{image})

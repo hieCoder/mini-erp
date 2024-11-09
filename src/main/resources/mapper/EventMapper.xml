@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.EventMapper">
+<mapper namespace="com.hieDev.minierp.mapper.EventMapper">
     <select id="getAllEventsByMonth" resultMap="eventResultMap">
         select e.*, u.fullname, u.avatar
         from EVENT e
@@ -43,12 +43,12 @@
         WHERE id = #{id}
     </delete>
 
-    <insert id="createEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
+    <insert id="createEvent" parameterType="com.hieDev.minierp.entity.Event">
         INSERT INTO EVENT(id,created_date, start_date, end_date, title, content, type, user_id)
         VALUES (#{id},now(), #{startDate}, #{endDate}, #{title}, #{content}, #{type}, #{user.id});
     </insert>
 
-    <update id="editEvent" parameterType="com.shsoftvina.erpshsoftvina.entity.Event">
+    <update id="editEvent" parameterType="com.hieDev.minierp.entity.Event">
         UPDATE EVENT
         SET start_date = #{startDate},
             end_date   = #{endDate},
@@ -59,7 +59,7 @@
         WHERE id = #{id}
     </update>
 
-    <resultMap id="eventResultMap" type="com.shsoftvina.erpshsoftvina.entity.Event">
+    <resultMap id="eventResultMap" type="com.hieDev.minierp.entity.Event">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="createdDate" column="created_date"/>
@@ -67,11 +67,11 @@
         <result property="endDate" column="end_date"/>
         <result property="content" column="content"/>
         <result property="type" column="type"/>
-        <association property="user" column="user_id" javaType="com.shsoftvina.erpshsoftvina.entity.User"
+        <association property="user" column="user_id" javaType="com.hieDev.minierp.entity.User"
                      resultMap="userResultMap"/>
     </resultMap>
 
-    <resultMap id="userResultMap" type="com.shsoftvina.erpshsoftvina.entity.User">
+    <resultMap id="userResultMap" type="com.hieDev.minierp.entity.User">
         <id property="id" column="user_id"/>
         <result property="fullname" column="fullname"/>
         <result property="avatar" column="avatar"/>

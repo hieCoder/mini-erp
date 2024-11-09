@@ -1,14 +1,14 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shsoftvina.erpshsoftvina.mapper.SettingMapper">
+<mapper namespace="com.hieDev.minierp.mapper.SettingMapper">
 
-    <select id="findAll" parameterType="com.shsoftvina.erpshsoftvina.entity.Setting" resultMap="settingResultMap">
+    <select id="findAll" parameterType="com.hieDev.minierp.entity.Setting" resultMap="settingResultMap">
         SELECT *
         FROM SETTING
     </select>
 
-    <update id="updateSetting" parameterType="com.shsoftvina.erpshsoftvina.entity.Setting">
+    <update id="updateSetting" parameterType="com.hieDev.minierp.entity.Setting">
         UPDATE SETTING
         SET IMAGE_TYPE = #{imageType},
             FILE_TYPE = #{fileType},
@@ -17,7 +17,7 @@
         WHERE CODE = #{code}
     </update>
 
-    <resultMap id="settingResultMap" type="com.shsoftvina.erpshsoftvina.entity.Setting">
+    <resultMap id="settingResultMap" type="com.hieDev.minierp.entity.Setting">
         <id property="id" column="id"/>
         <result property="code" column="CODE"/>
         <result property="imageType" column="IMAGE_TYPE"/>
